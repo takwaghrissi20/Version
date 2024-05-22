@@ -32,21 +32,17 @@ const ContratB1Page2 = () => {
                 color: black; /* Couleur du texte */
                 background-color: #fff; /* Couleur de fond */
                 padding: 20px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre */
+        
               }
 
               @media print {
                 .contrat-page2 {
-                  color: #000; /* Couleur du texte pour l'impression */
-                  background-color: #fff; /* Couleur de fond pour l'impression */
-                  -webkit-print-color-adjust: exact; /* Ajustement des couleurs pour l'impression */
-                }
-                .logo {
-                  max-width: 100%; /* Assurez-vous que l'image s'adapte bien à la page imprimée */
-                  height: auto;
+                  color: #000; 
+                  background-color: #fff;
+                  -webkit-print-color-adjust: exact; 
                 }
                 .zui-table, .zui-table th, .zui-table td {
-                  border: 1px solid #000; /* Bordure noire pour la table lors de l'impression */
+                  border: 1px solid #000; 
                 }
                 .page2, .ContratPage, .HeaderContrat, .HeaderContratPage, .table {
                   margin: 0;

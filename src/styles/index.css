@@ -2,6 +2,12 @@
 @import 'country-flag/sprite-flags-24x24.css';
 @import 'ql-editor.css';
 @import url(http://fonts.googleapis.com/earlyaccess/droidarabickufi.css);
+@font-face {
+  font-family: 'Arial';
+  src: url('path/to/arial.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 .ant-modal-root .ant-modal-mask {
   opacity:0.3  !important;
@@ -76,8 +82,18 @@
 
 .logo {
     align-self: flex-end;
-    width: 80px;
-    height: 80px;
+    width: 50px;
+    height: 50px;
+    font-weight: bold;
+    print-color-adjust: exact;
+    text-align: center;
+    font:
+      24px "Helvetica",
+      sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    print-color-adjust: exact;
 }
   .page1{
     /* width:210mm; /* Largeur en pixels */
@@ -158,7 +174,7 @@
   .stylepage{
   
     font-weight: bold;
-    font-size: 20px;
+    font-size: 10px;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     text-align: center;
     
@@ -192,7 +208,7 @@
 .TitleGeneral{
   font-Family:'Noto Kufi Arabic' ;
   text-Align: center;
-  font-Size: 2.333333em;
+  font-Size: 16px;
   color: "#000000";
   letter-Spacing:0rem,;
   font-Weight:bold;
@@ -202,10 +218,12 @@
 }
 .Title {
   font-weight: bold;
+  font-size: 14px;
 }
 .SousTitlepage1 {
   font-weight: bold;
   color: black;
+  font-size: 14px;
 }
 .TitleSouligne {
   font-weight: bold;
@@ -270,6 +288,13 @@ flex-Direction:row;
 color:black;
 font-Weight:400;
 line-height:1rem;
+
+}
+.infoContrat{
+  font-Weight: bold;
+   color: #001f5d;
+   font-Size:14px
+
 
 }
 .Espace{
