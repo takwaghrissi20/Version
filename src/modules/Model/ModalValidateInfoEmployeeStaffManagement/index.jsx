@@ -55,7 +55,7 @@ const ModalView = ({
       onOk={isViewInfo}
       footer={false}
       onCancel={handleAddContactClose}
-      bodyStyle={{ height: 600 }}
+      bodyStyle={{ height: 700 }}
     >
       <InformationVieForm
         handleAddContactClose={handleAddContactClose}

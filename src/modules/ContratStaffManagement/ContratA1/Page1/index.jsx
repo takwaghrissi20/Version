@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 import image from "../../../../assets/icon/logo-with-name.png"
 
 
-const ContratB2Page1= ({fullName,passportNumber,passportSubmitdate,arResidenceAdress,companyType,traveldate, 
+const ContratA1Page1= ({fullName,passportNumber,passportSubmitdate,arResidenceAdress,companyType,traveldate, 
   endTravelDate,arDestination,lastId,positionfieledarabe}) => {
   const { messages } = useIntl();
   const currentYear = new Date().getFullYear();
@@ -113,4 +113,4 @@ const ContratB2Page1= ({fullName,passportNumber,passportSubmitdate,arResidenceAd
   );
 };
 
-export default  ContratB2Page1;
+export default  ContratA1Page1;

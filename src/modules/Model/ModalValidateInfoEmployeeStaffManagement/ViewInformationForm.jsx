@@ -150,7 +150,7 @@ const ViewInformationForm = (props) => {
         duration
       };
 
-      const response = await fetch(`http://localhost:8085/api/v1/empT/create`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -200,6 +200,7 @@ const ViewInformationForm = (props) => {
   console.log(" LastIdIncremente", LastIdIncremente)
 
   const ContratB1 = () => {
+    console.log("testtttttContrattttt")
     navigate('/HRGetsCompany/ContartTypeB1', {
       state: {
         fullName: arName,
@@ -219,6 +220,7 @@ const ViewInformationForm = (props) => {
     });
   };
   const ContratA1 = () => {
+    console.log("testtttttContratttttA1")
     navigate('/HRGetsCompany/StaffManagement/ContartTypeA1', {
       state: {
         fullName: arName,
@@ -313,30 +315,50 @@ const ViewInformationForm = (props) => {
 
     });
   };
+  const ContratA3 = () => {
+    navigate('/HRGetsCompany/StaffManagement/ContartA3', {
+      state: {
+        fullName: arName,
+        passportNumber: passportnumber,
+        passportSubmitdate: passpordDate,
+        arResidenceAdress: arResidenceAdress,
+        companyType: companyTypepdf,
+        traveldate: traveldatepdf,
+        endTravelDate: endtraveldatepdf,
+        arDestination: arDestination,
+        arPosition: arPositionpdf,
+        lastId: LastIdIncremente
+
+      }
+
+
+    });
+  };
  
 
 
   const SelectionnnerContrat = () => {
     // Vérifier le type de contrat sélectionné
-    console.log(" contractCategorysssssss", contractCategory)
-    if (contractCategory === "CAT -B1") {
+    console.log("contractCategorysssssss", contractCategory)
+    if (contractCategory ==="CAT-B1") {
       console.log(" contractCategory", contractCategory)
-      ContratB1(); // Appeler la fonction ContratB1 pour le contrat B1
-    } else if (contractCategory === "CAT- A1") {
+      ContratB1(); 
+    } else if (contractCategory ==="CAT-A1") {
       console.log(" contractCategory A1")
+      //ContratA1()
       ContratA1()
-    }else if (contractCategory === "CAT- A2 ") {
+    }else if (contractCategory === "CAT-A2") {
       console.log(" contractCategory A2")
       ContratA2()
      
     }
-    else if (contractCategory === "CAT- A3 ") {
+    else if (contractCategory ==="CAT-A3") {
       console.log(" contractCategory  CAT- A3 ")
       ContratA3()
      
     }
   
-    else if (contractCategory === "CAT -E1") {
+    else if (contractCategory === "CAT-E1") {
       console.log(" contractCategory  CAT -E1")
       ContratE1()
      

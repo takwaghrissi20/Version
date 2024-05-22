@@ -172,6 +172,7 @@ const TableInterviewStaff = ({allinterviewStaffManagement,findIdData,id,  findId
         title: 'Candidate Feedback',
         dataIndex: 'feedback',
         key: 'feedback',
+        render: (text) => text === null || text === undefined ? ' null ' : text
       
       },
     {
@@ -179,6 +180,7 @@ const TableInterviewStaff = ({allinterviewStaffManagement,findIdData,id,  findId
       title: 'Agreed Join Date',
       dataIndex: 'agreedJoinedDat',
       key: 'agreedJoinedDat',
+      render: (text) => text === null || text === undefined ? 'null' : text
     },
    
     {

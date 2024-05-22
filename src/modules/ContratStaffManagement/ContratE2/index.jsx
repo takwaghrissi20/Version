@@ -8,7 +8,7 @@ import { useLocation } from 'react-router-dom';
 import { CiSaveDown2 } from "react-icons/ci";
 import { Button ,Col} from 'antd';
 
-const ContratE1 = () => {
+const ContratE2 = () => {
 
   const location = useLocation();
   const fullName = location.state ? location.state.fullName : null;
@@ -87,4 +87,4 @@ const ContratE1 = () => {
 
 
 
-export default ContratE1;
+export default ContratE2;

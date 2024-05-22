@@ -109,7 +109,7 @@ export const ecommerceConfig = [
   {
     permittedRole: RoutePermittedRole.User,
     path: '/HRGetsCompany/ContartTypeB1',
-    element: <  ContartTypeB1 />,
+    element: <ContartTypeB1 />,
   },
   //Contact B2
  

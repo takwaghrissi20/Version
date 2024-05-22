@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 import {Col,Row} from "antd"
 import image from "../../../../assets/icon/logo-with-name.png"
 
-const ContratCPage4= () => {
+const ContratA2Page4= () => {
   const { messages } = useIntl();
   const today = new Date();
 
@@ -128,4 +128,4 @@ const ContratCPage4= () => {
   );
 };
 
-export default ContratCPage4;
+export default ContratA2Page4;

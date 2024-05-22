@@ -50,23 +50,23 @@ const AddEmployeeTemporelleManagementStaff = ({  listInterview }) => {
   const ListContrat = [
    
     {
-      type: " CAT- A1 ",
+      type: "CAT-A1",
 
     },
     {
-      type: " CAT- A2 ",
+      type: "CAT-A2",
 
     },
     {
-      type: " CAT- A3 ",
+      type: "CAT-A3",
 
     },
     {
-      type: "CAT -B1",
+      type: "CAT-B1",
 
     },
     {
-      type: "CAT -E1",
+      type: "CAT-E1",
 
     },
     {
@@ -185,8 +185,8 @@ const AddEmployeeTemporelleManagementStaff = ({  listInterview }) => {
           : "";
       const CodeInterview = parseInt(searchValue) + 1; // Increment intCode by 1
       console.log("CodeInterview=", searchValue);
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${searchValue}`, {
-        method: 'POST',
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/findId?code=${searchValue}`, {
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json'
         },

@@ -84,8 +84,8 @@ const fetchListEmployee = async () => {
         
       );
       const filteredDataStaff = data.filter(employee => 
-        employee.contractCategory=== 'CAT- A1' ||
-        employee.contractCategory=== 'CAT -A2' ||
+        employee.contractCategory=== 'CAT-A1' ||
+        employee.contractCategory=== 'CAT-A2' ||
         employee.contractCategory === 'CAT-A3' ||
         
         employee.contractCategory === 'CAT-E1'   ||

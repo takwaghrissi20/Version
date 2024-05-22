@@ -26,6 +26,7 @@ const InterviewSheetById = () => {
   const totalNumber = location.state ? location.state.totalNumber : null;
   const level = location.state ? location.state.level : null;
   const projectName = location.state ? location.state.projectName : null;
+  console.log("projectNamefff",projectName)
   const position = location.state ? location.state.position : null;
   const experienceRequired = location.state ? location.state.experience : null;
   const [isConfirmationInterview, setIsConfirmationInterview] = useState(false);

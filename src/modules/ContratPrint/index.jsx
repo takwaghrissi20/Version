@@ -1,12 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Page1 from "./Page1";
 import Page2 from "./Page2";
 import Page3 from "./Page3";
 import Page4 from "./Page4";
 import html2pdf from 'html2pdf.js';
 import { useLocation } from 'react-router-dom';
-import { CiSaveDown2 } from "react-icons/ci";
 import { Button ,Col} from 'antd';
+import {
+  StyledScrumBoardDetailTitle,
+
+} from './index.styled';
+import { useNavigate} from "react-router-dom";
+import { IoCloudDownloadOutline } from "react-icons/io5";
 
 const ContratB1 = () => {
 
@@ -29,18 +34,29 @@ const ContratB1 = () => {
         filename: 'CONTRACT-B1-CDD-MANAGEMENT-STAFF-SITE.pdf' 
       });
     };
+    const navigate = useNavigate();
+    const onGoToBack = () => {
+      navigate(-1);
+    };
 
   return (
-    <div style={{ backgroundColor: "white" }}>
-     <Col xs={24} md={6} style={{ justifyContent: "flex-end",backgroundColor: "white"  }}>
+    <div>
+       <StyledScrumBoardDetailTitle onClick={onGoToBack}>
+            Add Employee Management Staff
+          </StyledScrumBoardDetailTitle>
+          &gt; CONTRACT-B1-CDD-MANAGEMENT-STAFF-SITE.pdf
+    <div style={{ backgroundColor: "white",marginTop:"20px" }}>
+     <Col xs={24} md={6} style={{backgroundColor: "white"  }}>
   
   <Button
     variant="contained"
-    color="primary"
-    startIcon={<CiSaveDown2 />}
+    type='primary' 
+    size='large'
+    style={{ margin: '0 20px', verticalAlign: 'middle' }}
     onClick={handleDownloadPDF}
-    style={{ marginTop:"2rem" , marginBottom:"2rem", marginLeft:"2rem" }}
+
   >
+    < IoCloudDownloadOutline />
     Download PDF
   </Button>
 
@@ -81,6 +97,7 @@ const ContratB1 = () => {
 
 
 
+  </div>
   </div>
 );
 };

@@ -279,7 +279,7 @@ const ViewInformationForm = (props) => {
 
   const SelectionnnerContrat = () => {
     // Vérifier le type de contrat sélectionné
-    console.log(" contractCategorysssssss", contractCategory)
+    console.log("contractCategorysssssss", contractCategory)
     if (contractCategory === "CAT -B1") {
       console.log(" contractCategory", contractCategory)
       ContratB1(); // Appeler la fonction ContratB1 pour le contrat B1

@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 import image from "../../../../assets/icon/logo-with-name.png"
 
 
-const ContratB2Page2= () => {
+const ContratA1Page2= () => {
   const { messages } = useIntl();
   
   
@@ -136,4 +136,4 @@ const ContratB2Page2= () => {
   );
 };
 
-export default ContratB2Page2;
+export default ContratA1Page2;

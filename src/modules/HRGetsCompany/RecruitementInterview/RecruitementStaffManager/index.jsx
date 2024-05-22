@@ -103,7 +103,8 @@ const RecruitementStaff = ({ allrecruitementabove }) => {
         level:findIdData?.experience,
         projectName:findIdData?.projectName,
         position:findIdData?.position,
-        experience:findIdData?.experience
+        experience:findIdData?.experience,
+     
                
     
       }
@@ -113,6 +114,7 @@ const RecruitementStaff = ({ allrecruitementabove }) => {
 
   
   } 
+  console.log("findIdData?.projectName",findIdData?.projectName)
   //Fin Bu Id 
   const findId = async (code) => {
     try {
@@ -126,7 +128,7 @@ const RecruitementStaff = ({ allrecruitementabove }) => {
 
       if (response.ok) {
         const responseData = await response.json();
-    
+        console.log("ttttttttt",responseData)
         setFindIdData(responseData);
         setId(responseData.jobCode)
       
