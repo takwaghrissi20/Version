@@ -3,7 +3,7 @@ import Page1 from "./Page1";
 import Page2 from "./Page2";
 import Page3 from "./Page3";
 import Page4 from "./Page4";
-import html2pdf from 'html2pdf.js';
+
 import { useLocation } from 'react-router-dom';
 import { Button ,Col} from 'antd';
 import {
@@ -12,9 +12,10 @@ import {
 } from './index.styled';
 import { useNavigate} from "react-router-dom";
 import { IoCloudDownloadOutline } from "react-icons/io5";
-
+import { useRef } from 'react';
+import generatePDF from 'react-to-pdf';
 const ContratB1 = () => {
-
+  const targetRef = useRef();
   const location = useLocation();
   const fullName = location.state ? location.state.fullName : null;
    const  passportNumber = location.state ? location.state.passportNumber : null;
@@ -29,15 +30,13 @@ const ContratB1 = () => {
    
    
     const handleDownloadPDF = () => {
-      const input = document.getElementById('pdf-content');
-      html2pdf(input, {
-        filename: 'CONTRACT-B1-CDD-MANAGEMENT-STAFF-SITE.pdf' 
-      });
+  
     };
     const navigate = useNavigate();
     const onGoToBack = () => {
       navigate(-1);
     };
+  
 
   return (
     <div>
@@ -53,31 +52,16 @@ const ContratB1 = () => {
     type='primary' 
     size='large'
     style={{ margin: '0 20px', verticalAlign: 'middle' }}
-    onClick={handleDownloadPDF}
-
-  >
+    onClick={() => generatePDF(targetRef, {filename: 'CONTRACT-B1-CDD-MANAGEMENT-STAFF-SITE.pdf'})}
+>
     < IoCloudDownloadOutline />
     Download PDF
   </Button>
-
-
-
 </Col>
-<style>
-        {`
-          @media print {
-            body, #pdf-content {
-              background: white !important;
-            }
-          }
-        `}
-      </style>
-
-
 
 {/* 
     <Button onClick={handleDownloadPDF}>Download PDF</Button> */}
-    <div id="pdf-content" style={{backgroundColor:"white"}}>
+    <div  ref={targetRef} id="pdf-content" style={{backgroundColor:"white"}}>
        <Page1  fullName={fullName} passportNumber={passportNumber} 
        passportSubmitdate={passportSubmitdate}
        arResidenceAdress={arResidenceAdress}
