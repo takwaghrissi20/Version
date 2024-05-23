@@ -200,7 +200,7 @@ const ViewInformationForm = (props) => {
   console.log(" LastIdIncremente", LastIdIncremente)
 
   const ContratB1 = () => {
-    console.log("testtttttContrattttt")
+
     navigate('/HRGetsCompany/ContartTypeB1', {
       state: {
         fullName: arName,
@@ -212,7 +212,8 @@ const ViewInformationForm = (props) => {
         endTravelDate: endtraveldatepdf,
         arDestination: arDestination,
         arPosition: arPositionpdf,
-        lastId: LastIdIncremente
+        lastId: LastIdIncremente,
+        salary: salary
 
       }
 
@@ -220,7 +221,7 @@ const ViewInformationForm = (props) => {
     });
   };
   const ContratA1 = () => {
-    console.log("testtttttContratttttA1")
+
     navigate('/HRGetsCompany/StaffManagement/ContartTypeA1', {
       state: {
         fullName: arName,
@@ -232,7 +233,11 @@ const ViewInformationForm = (props) => {
         endTravelDate: endtraveldatepdf,
         arDestination: arDestination,
         arPosition: arPositionpdf,
-        lastId: LastIdIncremente
+        lastId: LastIdIncremente,
+        salary: salary,
+        joinDate:joinDate,
+        finishDate:finishDate,
+        dailyRate:{dailyRate}
 
       }
 
@@ -251,7 +256,9 @@ const ViewInformationForm = (props) => {
         endTravelDate: endtraveldatepdf,
         arDestination: arDestination,
         arPosition: arPositionpdf,
-        lastId: LastIdIncremente
+        lastId: LastIdIncremente,
+        dailyRate:{dailyRate}
+
 
       }
 

@@ -21,12 +21,13 @@ const ContratB1 = () => {
    const  passportNumber = location.state ? location.state.passportNumber : null;
    const  passportSubmitdate=location.state ? location.state.passportSubmitdate : null;
     const arResidenceAdress=location.state ? location.state.arResidenceAdress : null;
-    const  companyType=location.state ? location.state.companyType : null;
+    const companyType=location.state ? location.state.companyType : null;
     const traveldate=location.state ? location.state.traveldate : null;
     const endTravelDate= location.state ? location.state.endTravelDate : null;
     const arDestination=location.state ? location.state.arDestination : null;
     const positionfieledarabe=location.state ? location.state.positionfieledarabe : null;
     const  lastId=location.state ? location.state. lastId : null;
+    const salary=location.state ? location.state. salary : null;
    
    
     const handleDownloadPDF = () => {
@@ -61,7 +62,7 @@ const ContratB1 = () => {
 
 {/* 
     <Button onClick={handleDownloadPDF}>Download PDF</Button> */}
-    <div  ref={targetRef} id="pdf-content" style={{backgroundColor:"white"}}>
+    <div  ref={targetRef} id="pdf-content">
        <Page1  fullName={fullName} passportNumber={passportNumber} 
        passportSubmitdate={passportSubmitdate}
        arResidenceAdress={arResidenceAdress}
@@ -71,12 +72,14 @@ const ContratB1 = () => {
        arDestination={arDestination}
        positionfieledarabe={positionfieledarabe}
        lastId={lastId}
+       salary={salary}
 
       /> 
    
-      {/* <Page2 />
+        <Page2 />
        <Page3 />
-      <Page4 />  */}
+
+      {/* <Page4 />   */}
     </div>
 
 

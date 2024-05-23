@@ -73,7 +73,9 @@ const ContratB2Page4= () => {
             }
           
           `}</style>
-           <div className="contrat-page4"></div>
+           <div className="contrat-page4">
+            
+           </div>
            <br></br> الغرض وفي صورة فشل المصالحة فانه يتم تحرير محضر فشل المحاولة الصلحية في الغرض ثم يتم الالتجاء للقضاء ويكون النظر فيها من طرف محاكم صفاقس 1 فقط.<br></br>
 
 <br></br>حرر بصفاقس في نظيرين بتاريخ  <span style={{fontWeight:"bold",paddingRight:"8px",paddingLeft:"8px"}}>{day} / {today.getDate()} / {month}</span> <br></br>

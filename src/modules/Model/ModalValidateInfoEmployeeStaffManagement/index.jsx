@@ -35,13 +35,14 @@ const ModalView = ({
   destination,
   arDestination,
   salary,
-  dailyRate, contractType,
+  contractType,
   emergencyName,
   emergencyRelation,
   phoneEmergency,
   contractCategory,
   projName,
-  duration
+  duration,
+  dailyRate
 
 
 }) => {
@@ -86,7 +87,6 @@ const ModalView = ({
         destination={ destination}
         arDestination={ arDestination}
         salary={salary}
-        dailyRate={dailyRate}
         contractType={contractType}
         emergencyName={emergencyName}
         emergencyRelation={ emergencyRelation}
@@ -94,6 +94,7 @@ const ModalView = ({
         contractCategory={contractCategory}
         projName={projName}
         duration={duration}
+        dailyRate={dailyRate}
       
       />
     </StyledContactModal>

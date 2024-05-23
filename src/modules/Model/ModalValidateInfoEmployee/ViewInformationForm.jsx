@@ -211,7 +211,9 @@ const ViewInformationForm = (props) => {
         endTravelDate: endtraveldatepdf,
         arDestination: arDestination,
         arPosition: arPositionpdf,
-        lastId: LastIdIncremente
+        lastId: LastIdIncremente,
+        salary: salary
+
 
       }
 

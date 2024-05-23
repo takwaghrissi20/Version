@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { useIntl } from 'react-intl';
 import { FaSearch } from "react-icons/fa";
 import ValidateEmployees from "../../../Model/ModalValidateInfoEmployeeStaffManagement"
-import moment from 'moment';
+
 const { Option } = Select;
 const AddEmployeeTemporelleManagementStaff = ({  listInterview }) => {
 
@@ -31,15 +31,6 @@ const AddEmployeeTemporelleManagementStaff = ({  listInterview }) => {
   const handleValidateEmployeeClose = () => {
     setIsModalVisible(false);
   };
-  const handleValidateEmployeOpen = () => {
-    
-    setIsModalVisible(true);
-  };
-
-  //////////////////////////
-  const infoViewActionsContext = useInfoViewActionsContext();
-
-
   const [showAlert, setShowAlert] = useState(false);
   const [showAlertError, setShowAlertError] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -175,8 +166,6 @@ const AddEmployeeTemporelleManagementStaff = ({  listInterview }) => {
   };
 
 
-
-  ////////////////////////////////////////////
   const fetchDataId = async (searchValue) => {
     try {
       const endPoint =

@@ -1,7 +1,7 @@
-import { light } from '@mui/material/styles/createPalette';
+
 import React,{useEffect,useState} from 'react';
 import { useIntl } from 'react-intl';
-import image from "../../../../assets/icon/logo-with-name.png"
+import image from "../../../../assets/icon/logo-with-name.png";
 
 
 const ContratA1Page3= () => {

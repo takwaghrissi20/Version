@@ -16,6 +16,7 @@ import EmployeeInformation from './EmployeeInformationManagementStaff'
 const AddEmployeesConstructionStaff = () => {
   const [listInterview, setListInterview] = useState([]);
   const navigate = useNavigate();
+  
   const onGoToBoardList = () => {
     navigate(-1);
   };
