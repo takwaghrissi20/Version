@@ -63,6 +63,10 @@ const ContartTypeE2= React.lazy(() =>
 const ContartTypeE3= React.lazy(() =>
   import('../../../modules/ContratStaffManagement/ContratE3'),
 );
+const ContratE3S2= React.lazy(() =>
+  import('../../../modules/ContratStaffManagement/ContratE3S2'),
+);
+
 
 export const ecommerceConfig = [
   {
@@ -160,9 +164,15 @@ export const ecommerceConfig = [
 },
 {
   permittedRole: RoutePermittedRole.User,
-  path: '/HRGetsCompany/StaffManagement/ContartE3',
+  path: '/HRGetsCompany/StaffManagement/SERVICE 1-E3',
   element: <ContartTypeE3 />,
 },
+{
+  permittedRole: RoutePermittedRole.User,
+  path: '/HRGetsCompany/StaffManagement/SERVICE2-E3',
+  element: <ContratE3S2/>,
+},
+
 
 
 

@@ -3,7 +3,6 @@ import Page1 from "./Page1";
 import Page2 from "./Page2";
 import Page3 from "./Page3";
 import Page4 from "./Page4";
-
 import { useLocation } from 'react-router-dom';
 import { Button ,Col} from 'antd';
 import {
@@ -28,11 +27,8 @@ const ContratB1 = () => {
     const positionfieledarabe=location.state ? location.state.positionfieledarabe : null;
     const  lastId=location.state ? location.state. lastId : null;
     const salary=location.state ? location.state. salary : null;
+    const  arPosition= location.state ? location.state. arPosition : null;
    
-   
-    const handleDownloadPDF = () => {
-  
-    };
     const navigate = useNavigate();
     const onGoToBack = () => {
       navigate(-1);
@@ -45,25 +41,35 @@ const ContratB1 = () => {
             Add Employee Management Staff
           </StyledScrumBoardDetailTitle>
           &gt; CONTRACT-B1-CDD-MANAGEMENT-STAFF-SITE.pdf
-    <div style={{ backgroundColor: "white",marginTop:"20px" }}>
-     <Col xs={24} md={6} style={{backgroundColor: "white"  }}>
-  
-  <Button
-    variant="contained"
-    type='primary' 
-    size='large'
-    style={{ margin: '0 20px', verticalAlign: 'middle' }}
-    onClick={() => generatePDF(targetRef, {filename: 'CONTRACT-B1-CDD-MANAGEMENT-STAFF-SITE.pdf'})}
->
-    < IoCloudDownloadOutline />
-    Download PDF
-  </Button>
-</Col>
+          <div style={{margin:"20px",textAlign: 'right' }}>
+    <Col >
+      <Button
+        variant="contained"
+        type="primary"
+        size="large"
+        style={{ margin: '0 20px', verticalAlign: 'middle' }}
+        onClick={() => generatePDF(targetRef, { filename: 'CONTRACT CDD-MANAGEMENT STAFF-SITE-B1' })}
+      >
+        <IoCloudDownloadOutline style={{ marginRight: '8px' }} />
+        Download PDF
+      </Button>
+    </Col>
+    </div>
+ 
 
 {/* 
     <Button onClick={handleDownloadPDF}>Download PDF</Button> */}
-    <div  ref={targetRef} id="pdf-content">
-       <Page1  fullName={fullName} passportNumber={passportNumber} 
+    <div  ref={targetRef} id="pdf-content"
+    
+    style={{
+      borderRadius: 8,
+      background: "white",
+
+    }}
+    >
+       <Page1  
+       fullName={fullName} 
+       passportNumber={passportNumber} 
        passportSubmitdate={passportSubmitdate}
        arResidenceAdress={arResidenceAdress}
        companyType={companyType}
@@ -73,6 +79,7 @@ const ContratB1 = () => {
        positionfieledarabe={positionfieledarabe}
        lastId={lastId}
        salary={salary}
+       arPosition={arPosition}
 
       /> 
    
@@ -84,7 +91,7 @@ const ContratB1 = () => {
 
 
 
-  </div>
+
   </div>
 );
 };

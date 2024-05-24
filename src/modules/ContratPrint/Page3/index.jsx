@@ -8,7 +8,8 @@ const ContratB1Page3 = () => {
   const today = new Date();
 
   const days = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
-  const months = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+  const months = ["جانفي", "فيفري", "مارس", "افريل", "ماي", "جوان", "جويلة", "اوت", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+
   
   const day = days[today.getDay()];
   const month = months[today.getMonth()];
@@ -20,7 +21,7 @@ const ContratB1Page3 = () => {
         <div className="page">
           <img style={{marginTop:"9rem"}}src={image} alt="logo" className="logo" />
         </div>
-        <div  style={{marginTop:"20px"}}className='HeaderContratPage'>
+        <div  style={{marginTop:"25px"}}className='HeaderContratPage'>
           <p dir="rtl" className="TitleGeneral">عقد شغل لمدة محدودة</p>
         </div>
 

@@ -30,41 +30,52 @@ const ContratA1 = () => {
     const joinDate=location.state ? location.state. joinDate : null;
     const finishDate=location.state ? location.state. finishDate : null;
     const dailyRate=location.state ? location.state.dailyRate : null;
+    const duration=location.state ? location.state.duration: null;
+   const arPosition=location.state ? location.state.arPosition: null;
       
     const navigate = useNavigate();
     const onGoToBack = () => {
       navigate(-1);
     };
-    console.log("dailyRate22222",dailyRate)
+
   return (
     <div>
        <StyledScrumBoardDetailTitle onClick={onGoToBack}>
             Add Employee Management Staff
           </StyledScrumBoardDetailTitle>
           &gt; CONTRACT -A1-CDD SITE+OFFICE.pdf
-    <div style={{ backgroundColor: "white",marginTop:"20px" }}>
-     <Col xs={24} md={6} style={{backgroundColor: "white"  }}>
-  
-  <Button
-    variant="contained"
-    type='primary' 
-    size='large'
-    style={{ margin: '0 20px', verticalAlign: 'middle' }}
-    onClick={() => generatePDF(targetRef, {filename: 'CONTRACT -A1-CDD SITE+OFFICE.pdf'})}
->
-    < IoCloudDownloadOutline />
-    Download PDF
-  </Button>
-</Col>
-
+    <div style={{margin:"20px",textAlign: 'right' }}>
+    <Col >
+      <Button
+        variant="contained"
+        type="primary"
+        size="large"
+        style={{ margin: '0 20px', verticalAlign: 'middle' }}
+        onClick={() => generatePDF(targetRef, { filename: 'CONTRACT -A1-CDD SITE+OFFICE.pdf' })}
+      >
+        <IoCloudDownloadOutline style={{ marginRight: '8px' }} />
+        Download PDF
+      </Button>
+    </Col>
+    </div>
 {/* 
     <Button onClick={handleDownloadPDF}>Download PDF</Button> */}
-    <div  ref={targetRef} id="pdf-content">
-       <Page1  fullName={fullName} passportNumber={passportNumber} 
+    <div  ref={targetRef} id="pdf-content"
+     style={{
+      borderRadius: 8,
+      background: "white",
+
+    }}
+    
+    
+    
+     >
+       <Page1  fullName={fullName} 
+       passportNumber={passportNumber} 
        passportSubmitdate={passportSubmitdate}
        arResidenceAdress={arResidenceAdress}
        companyType={companyType}
-        traveldate={traveldate}
+       traveldate={traveldate}
        endTravelDate={endTravelDate}
        arDestination={arDestination}
        positionfieledarabe={positionfieledarabe}
@@ -73,6 +84,8 @@ const ContratA1 = () => {
        joinDate={joinDate}
        finishDate={finishDate}
        dailyRate={dailyRate}
+       duration={duration}
+       arPosition={arPosition}
 
       /> 
    
@@ -84,7 +97,7 @@ const ContratA1 = () => {
 
 
 
-  </div>
+  
   </div>
 );
 };

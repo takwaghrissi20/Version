@@ -39,12 +39,12 @@ const ModalView = ({
   return (
 
     <StyledContactModal
-    width={1050}
+     width={1050}
       open={isViewEmployee}
       onOk={ isViewEmployee}
       footer={false}
       onCancel={handleAddContactClose}
-      bodyStyle={{ height: 600 }}
+      bodyStyle={{ height:"auto" }}
     >
       <ViewSammaryForm
         handleAddContactClose={handleAddContactClose}

@@ -44,7 +44,7 @@ const ViewInformationForm = (props) => {
 
 
 
-
+console.log("arPositionpdf",arPositionpdf)
   const navigate = useNavigate();
   const {
 
@@ -84,7 +84,8 @@ const ViewInformationForm = (props) => {
     phoneEmergency,
     contractCategory,
     projName,
-    duration
+    duration,
+    cinDate
   } = props;
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -102,7 +103,7 @@ const ViewInformationForm = (props) => {
 
   const SaveEmployees = async () => {
     try {
-      // if ( !arName || !CIN ||  !duration ||!nationality || !birthDate || !gender || !phoneNumber || !familyStatus || !residenceAdress || !arResidenceAdress || !passportnumber || !passportSubmitdate || !passport_finish_date || !position || !arPosition || !departement || !type_Emp || !projname || !email || !joinDate || !finishDate || !companyType || !traveldate || !endTravelDate || !destination || !arDestination || !salary || !dailyRate || !contractType || !emergencyName || !emergencyRelation || !phoneEmergency || !contractCategory) {
+      // if ( !arName || !CIN || !cinDate || !duration ||!nationality || !birthDate || !gender || !phoneNumber || !familyStatus || !residenceAdress || !arResidenceAdress || !passportnumber || !passportSubmitdate || !passport_finish_date || !position || !arPosition || !departement || !type_Emp || !projname || !email || !joinDate || !finishDate || !companyType || !traveldate || !endTravelDate || !destination || !arDestination || !salary || !dailyRate || !contractType || !emergencyName || !emergencyRelation || !phoneEmergency || !contractCategory) {
       //   alert("Please replace all the champs");
       //   return;
       // }
@@ -147,7 +148,8 @@ const ViewInformationForm = (props) => {
         phoneEmergency,
         contractCategory,
         projName,
-        duration
+        duration,
+        cinDate
       };
 
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/create`, {
@@ -195,9 +197,9 @@ const ViewInformationForm = (props) => {
     // Set grayBackground to true when generateBtnEnabled is false
     setGrayBackground(!generateBtnEnabled);
   }, [generateBtnEnabled]);
-  console.log("lastId", lastId)
+
   const LastIdIncremente = lastId + 1
-  console.log(" LastIdIncremente", LastIdIncremente)
+  console.log("arDestinationTestttt", arDestination)
 
   const ContratB1 = () => {
 
@@ -213,7 +215,9 @@ const ViewInformationForm = (props) => {
         arDestination: arDestination,
         arPosition: arPositionpdf,
         lastId: LastIdIncremente,
-        salary: salary
+        salary: salary,
+        dailyRate:dailyRate,
+        
 
       }
 
@@ -237,7 +241,8 @@ const ViewInformationForm = (props) => {
         salary: salary,
         joinDate:joinDate,
         finishDate:finishDate,
-        dailyRate:{dailyRate}
+        dailyRate:dailyRate,
+        duration: duration
 
       }
 
@@ -257,7 +262,10 @@ const ViewInformationForm = (props) => {
         arDestination: arDestination,
         arPosition: arPositionpdf,
         lastId: LastIdIncremente,
-        dailyRate:{dailyRate}
+        dailyRate:dailyRate,
+        duration: duration,
+        joinDate:joinDate,
+        salary: salary,
 
 
       }
@@ -277,7 +285,13 @@ const ViewInformationForm = (props) => {
         endTravelDate: endtraveldatepdf,
         arDestination: arDestination,
         arPosition: arPositionpdf,
-        lastId: LastIdIncremente
+        lastId: LastIdIncremente,
+        dailyRate:dailyRate,
+        duration:duration,
+        arPosition: arPositionpdf,
+        joinDate:joinDate,
+        finishDate:finishDate,
+      
 
       }
 
@@ -285,7 +299,7 @@ const ViewInformationForm = (props) => {
     });
   };
   const ContratE2 = () => {
-    navigate('/HRGetsCompany/StaffManagement/ContartE2', {
+  navigate('/HRGetsCompany/StaffManagement/ContartE2', {
       state: {
         fullName: arName,
         passportNumber: passportnumber,
@@ -296,7 +310,10 @@ const ViewInformationForm = (props) => {
         endTravelDate: endtraveldatepdf,
         arDestination: arDestination,
         arPosition: arPositionpdf,
-        lastId: LastIdIncremente
+        lastId: LastIdIncremente?
+        dailyRate:dailyRate,
+        duration:duration,
+        joinDate:joinDate
 
       }
 
@@ -304,7 +321,7 @@ const ViewInformationForm = (props) => {
     });
   };
   const ContratE3 = () => {
-    navigate('/HRGetsCompany/StaffManagement/ContartE3', {
+    navigate('/HRGetsCompany/StaffManagement/SERVICE 1-E3', {
       state: {
         fullName: arName,
         passportNumber: passportnumber,
@@ -315,7 +332,16 @@ const ViewInformationForm = (props) => {
         endTravelDate: endtraveldatepdf,
         arDestination: arDestination,
         arPosition: arPositionpdf,
-        lastId: LastIdIncremente
+        lastId: LastIdIncremente?
+        dailyRate:dailyRate,
+        duration:duration,
+        CIN:CIN,
+        cinDate:cinDate,
+        duration:duration,
+        salary: salary,
+        joinDate: joinDate,
+        finishDate:finishDate
+
 
       }
 
@@ -334,13 +360,47 @@ const ViewInformationForm = (props) => {
         endTravelDate: endtraveldatepdf,
         arDestination: arDestination,
         arPosition: arPositionpdf,
-        lastId: LastIdIncremente
+        lastId: LastIdIncremente,
+        dailyRate:dailyRate,
+        duration: duration,
+        joinDate:joinDate,
+        salary: salary,
+
+        
 
       }
 
 
     });
   };
+  const ContratS2E3 = () => {
+    navigate('/HRGetsCompany/StaffManagement/SERVICE2-E3', {
+      state: {
+        fullName: arName,
+        passportNumber: passportnumber,
+        passportSubmitdate: passpordDate,
+        arResidenceAdress: arResidenceAdress,
+        companyType: companyTypepdf,
+        traveldate: traveldatepdf,
+        endTravelDate: endtraveldatepdf,
+        arDestination: arDestination,
+        arPosition: arPositionpdf,
+        lastId: LastIdIncremente?
+        dailyRate:dailyRate,
+        duration:duration,
+        CIN:CIN,
+        cinDate:cinDate,
+        duration:duration,
+        salary: salary,
+        joinDate: joinDate,
+        finishDate:finishDate
+
+      }
+
+
+    });
+  };
+ 
  
 
 
@@ -375,9 +435,14 @@ const ViewInformationForm = (props) => {
       ContratE2()
      
     }
-    else if (contractCategory === "CAT-E3") {
-      console.log(" contractCategory  CAT-E3")
+    else if (contractCategory === "SERVICE1-E3") {
+      console.log(" contractCategory  SERVICE 1-E3")
       ContratE3()
+     
+    }
+    else if (contractCategory === "SERVICE2-E3") {
+      console.log(" contractCategory  SERVICE2-E3")
+      ContratS2E3()
      
     }
    
@@ -446,6 +511,18 @@ const ViewInformationForm = (props) => {
                     className='Input'
                     placeholder="ID Card Number"
                     value={CIN}
+                    classNames="ViewInput"
+                    readOnly={true}
+                  />
+                </FloatLabel>
+              </Form.Item>
+              <Form.Item className='form-field'>
+                <span className='modallabel'> Date ID Card Number :</span>
+                <FloatLabel name="DateCIN">
+                  <Input
+                    className='Input'
+                    placeholder="Date ID Card Number"
+                    value={cinDate}
                     classNames="ViewInput"
                     readOnly={true}
                   />

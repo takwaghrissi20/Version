@@ -65,9 +65,14 @@ const AddEmployeeTemporelleManagementStaff = ({  listInterview }) => {
 
     },
     {
-      type: "CAT-E3",
+      type: "SERVICE1-E3",
 
     },
+    {
+      type: "SERVICE2-E3",
+
+    },
+
    
 
 
@@ -246,37 +251,37 @@ const AddEmployeeTemporelleManagementStaff = ({  listInterview }) => {
   };
   const handleOpenAfter = () => {
     //e.preventDefault();
-    setIsModalVisible(true); 
   
-    // if (!arName.value || !CIN.value || !nationality.value || !phoneNumber.value || !selectedGenderType
-    //      || !residenceAdress.value  || !arResidenceAdress.value || !passportnumber.value 
-    //      || !passportSubmitdate.value || !passport_finish_date.value || !type_Emp.value
-    //      || !email.value  || !finishDate.value || !selectedStatusTypeCompany
-    //      || !traveldate.value || !endTravelDate.value || !destination.value
-    //      || !arDestination.value || !selectedContratType || !duration.value
-    //      || !emergencyName.value || !selectedRelationType || !phoneEmergency.value
+    if (!arName.value || !CIN.value || !nationality.value || !phoneNumber.value || !selectedGenderType
+         || !residenceAdress.value  || !arResidenceAdress.value || !passportnumber.value 
+         || !passportSubmitdate.value || !passport_finish_date.value || !type_Emp.value
+         || !email.value  || !finishDate.value || !selectedStatusTypeCompany
+         || !traveldate.value || !endTravelDate.value || !destination.value
+         || !arDestination.value || !selectedContratType || !duration.value
+         || !emergencyName.value || !selectedRelationType || !phoneEmergency.value || !cinDate
         
-    //     || !selectedContractCategorie
+        || !selectedContractCategorie
 
-    // ) {
-    //    alert("Please complete all fields.");
-    //    setIsModalVisible(false);
-    // } else {
-    //    setIsModalVisible(true); // Affiche la modal
-    // }
+    ) {
+       alert("Please complete all fields.");
+       setIsModalVisible(false);
+    } else {
+       setIsModalVisible(true); // Affiche la modal
+    }
  };
+
  const  cancelInfo = ()=> {
   form.setFieldsValue({ arName: '' ,CIN:'',nationality:'',phoneNumber:'',selectedGenderType:'',
   residenceAdress:'',arResidenceAdress:'',passportnumber:'',passportSubmitdate:'',passport_finish_date:'',
   type_Emp:'',email:'',finishDate:'',selectedStatusTypeCompany:'',traveldate:'',endTravelDate:'',
   destination:'',arDestination:'',selectedContratType:'',duration:'',emergencyName:'',selectedRelationType:'',
-  phoneEmergency:'',selectedContractCategorie:'',
+  phoneEmergency:'',selectedContractCategorie:'',cinDate:''
 
 
   });
  
 };
-
+console.log("formData?.CIN",formData?.CIN)
   
   return (
     <>
@@ -495,7 +500,23 @@ const AddEmployeeTemporelleManagementStaff = ({  listInterview }) => {
                     <Input placeholder='ID Card Number'  disabled={searchValue == ''}/>
                   </Form.Item>
                 </Col>
-
+                <Col xs={24} md={12}>
+                  <Form.Item label='Date ID Card Number' name='cinDate'
+                   rules={[
+                    {
+                      required: true,
+                      message: 'Please enter Date ID Card Number',
+                    },
+                    
+                  ]}
+                                  
+                  
+                  >
+                    <StyledScrumBoardDatePicker  disabled={searchValue == ''}/>
+                    {/* <Input placeholder='Date of issue' readOnly={!isEdit} /> */}
+                  </Form.Item>
+                </Col>
+            
 
                 <Col xs={24} md={12}>
                   <Form.Item label='Nationality' name='nationality' rules={[{ required: true, message: 'Please enter Nationality' }]}>
@@ -608,9 +629,7 @@ const AddEmployeeTemporelleManagementStaff = ({  listInterview }) => {
                   
                   ]}
                   
-                  
-                  
-                  
+                                  
                   >
                     <Input placeholder='Passport Number'
                     disabled={searchValue == ''}
@@ -1140,12 +1159,10 @@ const AddEmployeeTemporelleManagementStaff = ({  listInterview }) => {
   {/* Your form fields */}
 
   <Button 
+onClick={handleOpenAfter} type='primary' htmlType='submit' disabled={searchValue === '' || !selectedInterviews}>
+  Save
+</Button>
 
-  
-  
-  onClick={handleOpenAfter} type='primary' htmlType='submit' disabled={searchValue === '' || !selectedInterviews}>
-    Save
-  </Button>
 
         {/* <Button onClick={handleOpenAfter } type='primary' htmlType='submit'
              disabled={searchValue === '' || !selectedInterviews}>Save</Button> */}
@@ -1159,6 +1176,7 @@ const AddEmployeeTemporelleManagementStaff = ({  listInterview }) => {
             name={findIdInterview?.fullName}
             arName={formData?.arName}
             CIN={formData?.CIN}
+            cinDate={formData?.cinDate?.format('YYYY-MM-DD')}
             nationality={formData?.nationality}
             birthDate={findIdInterview?.birthayDate}
             gender={selectedGenderType}

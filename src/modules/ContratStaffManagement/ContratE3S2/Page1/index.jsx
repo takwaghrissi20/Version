@@ -83,10 +83,15 @@ const ContratE3Page1 = ({ fullName, passportNumber, passportSubmitdate, arReside
 
 
             <br /><span className='TitleSouligne'>	الفصل الأول: الموضوع</span><br />
+           
 
 
-            بموجب هدا العقد يشغل الطرف الثاني خطة<span className='infoContrat'> {arPosition} </span>صلب الشركة الطرف الأول للعقد وتتمثل المهام بالتحديد و المتفق عليها في الاستمارة الوظيفية .
-            يلتزم الطرف الثاني بتسخير السيد <span className='infoContrat'>{fullName} </span>صاحب بطاقة التعريف الوطنية عدد<span className='infoContrat'> {CIN} </span> و المؤرخة بتونس بتاريخ <span className='infoContrat'>{cinDate}</span> و القاطن ب<span className='infoContrat'> {arResidenceAdress} </span>  بإسداء الخدمة دون سواه ولا يمكن تعويضه أو تغييره سواء لمدة محدودة أو لبقية هدا العقد إلا باتفاق كتابي بين الطرفين
+            بموجب هدا العقد يشغل الطرف الثاني خطة <span className='infoContrat'> {arPosition} </span >صلب الشركة الطرف الأول للعقد وتتمثل المهام بالتحديد والمتفق عليها في الاستمارة الوظيفية 
+يلتزم الطرف الثاني بتسخير السيد <span className='infoContrat'>{fullName} </span> 
+صاحب بطاقة التعريف الوطنية
+ عدد <span className='infoContrat'> {CIN} </span>و المؤرخة بتونس بتاريخ
+ <span className='infoContrat'> {cinDate} </span> والقاطن ب<span className='infoContrat'> {arResidenceAdress} </span> بإسداء الخدمة دون سواه ولا يمكن تعويضه
+  أو تغييره سواء لمدة محدودة أو لبقية هدا العقد إلا باتفاق كتابي بين الطرفين  
 
 
 

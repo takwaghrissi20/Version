@@ -79,9 +79,9 @@ const AddEmployeesConstructionStaff = () => {
                 <StyledOrderHeader>
                 <StyledFormAddWrapper >
                 <EmployeeInformation 
-                listInterview={listInterview} ></EmployeeInformation>
-      
-              </StyledFormAddWrapper >
+                listInterview={listInterview} >
+                  </EmployeeInformation>     
+               </StyledFormAddWrapper >
        
                 </StyledOrderHeader>
               </AppsHeader>

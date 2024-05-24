@@ -105,8 +105,8 @@
     margin:10px;
     opacity: 1;
     scale: 1;
-    border-bottom: 3px solid #32a1ce;
-   
+    /* border-bottom: 3px solid #32a1ce;
+    */
 
   }
   .page2{
@@ -211,7 +211,7 @@
 .TitleGeneral{
   font-Family:'Noto Kufi Arabic' ;
   text-Align: center;
-  font-Size: 35px;
+  font-Size: 3rem;
   color: "#000000";
   letter-Spacing:0rem,;
   font-Weight:bold;
@@ -233,6 +233,11 @@
   color: black;
   text-decoration: underline;
   font-size: 28px;
+}
+.infoImportant{
+  text-decoration: underline;
+  font-weight: bold;
+
 }
 .HeaderContratPage{
 

@@ -128,9 +128,9 @@ const ContratB1Page2 = () => {
       </div>
     </div>
       </div >
-  <div dir="rtl">
+  {/* <div dir="rtl">
     <p className="stylepage">صفحة 2</p>
-  </div>
+  </div> */}
     </div >
   );
 };

@@ -1,138 +1,129 @@
-import { light } from '@mui/material/styles/createPalette';
-import React,{useEffect,useState} from 'react';
+
+import React from 'react';
 import { useIntl } from 'react-intl';
-import image from "../../../../assets/icon/logo-with-name.png"
+import image from "../../../../assets/icon/logo-with-name.png";
+import {Col,Row} from "antd"
 
-
-const ContratE1Page2= () => {
+const ContratE1Page2 = () => {
   const { messages } = useIntl();
-  
-  
+  const currentYear = new Date().getFullYear();
+
+  const days = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+  const months = ["جانفي", "فيفري", "مارس", "افريل", "ماي", "جوان", "جويلة", "اوت", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+  const today = new Date();
+  const day = days[today.getDay()];
+  const month = months[today.getMonth()];
+  const year = today.getFullYear();
   return (
-    <div style={{marginTop:"7rem"}}>
-  <div className='page2'>
-<div className='ContratPage'>
-<div className='HeaderContrat' style={{ display: 'flex' }}>
-  <div className='HeaderContratPage'>
-    <p dir="rtl" className="TitleGeneral">عقد شغل لمدة محدودة</p>
-  </div>
-  <img src={image} alt="logo" style={{ alignSelf: 'flex-end',marginRight:"1rem",width:"120px"}} />
-
-</div>
-
-{/*End Header*/}
-<div className='table' style={{display: "none"}}>
-  <div className='HeaderContratPage'>   
-  </div>
-
-  <table class="zui-table">
-      <thead>
-        <tr>
-          <th> G-E-..........-2024</th>
-          <th>{messages['Numero.contrat']}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-         B1
-
-          </td>
-          <td>{messages['categorie.name']}</td>
-        </tr>
-       
-        {/* Ajoutez autant de lignes que nécessaire */}
-      </tbody>
-    </table>
+    <div className='page1'>
+      <div className='ContratPage'>
+        <div className="page">
+          <img style={{ marginTop: "25px" }} src={image} alt="logo" className="logo" />
+        </div>
+        <div style={{ marginTop: "8px" }} className='HeaderContratPage'>
+          <p dir="rtl" className="TitleGeneral">عقد شغل لمدة محدودة</p>
+        </div>
 
 
-</div>
-
-<div dir="rtl">
-<style jsx>{`
-            .contrat-page2 {
-            
+        <div dir="rtl">
+          <style jsx>{`
+            .contrat-page1 {
               font-family: 'Arial', sans-serif;
-              font-size: 20px;
+              font-weight: normal;
+              font-size:30px;
+              font-style: normal;
               line-height: 1.6;
               text-align: justify;
-              color:black; /* Couleur du texte */
-              background-color: #fff; /* Couleur de fond */
-              padding: 20px;
-              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre */
+              color: black; 
+              background-color: #fff;
+              padding: 20px;        
+              opacity: 1;
+             
             }
             
+            @media print {
+              .contrat-page1 {
+                background-color: #fff; /* Couleur de fond pour l'impression */
+                -webkit-print-color-adjust: exact; 
+              }
+           
+              .zui-table, .zui-table th, .zui-table td {
+                border: 1px solid #000; /* Bordure noire pour la table lors de l'impression */
+              }
+              .page1, .ContratPage, .page, .HeaderContrat, .HeaderContratPage, .table {
+                margin: 0;
+                padding: 0;
+              }
+            }
           `}</style>
-            <div className="contrat-page2">
+          <div className="contrat-page1">
 
-  في صورة تجديد هدا العقد يلتزم الأجير باحترام بشكل قطعي قواعد التناوب الخاصة بالشركة والمتمثلة في على الأقل في 120 يوم عمل متواصلة بموقع الحظيرة دون انقطاع بالنسبة للعملة المختصين والتنفيذ التي تحتسب على أساس القاعدة التالية 
--	ما يفوق أو يساوي 90 يوم عمل بمقر موقع الحظيرة يقابله 21 يوم راحة.   
--	ما بين ما يفوق أو يساوي 60 يوم واقل من 90 يوم عمل بمقر موقع الحظيرة يقابله 14 يوم راحة.
--	ما بين ما يفوق أو يساوي 30 يوم واقل من 60 يوم عمل بمقر موقع الحظيرة يقابله 7 أيام راحة. 
--	ما اقل من 30 يوم عمل بمقر موقع الحظيرة لا يقابلها أيام راحة.
--	يمكن للأجير طلب تقليص مدة الراحة والعودة لموقع الحظيرة ادا توافقت مع متطلبات العمل بالموقع.  
- كما يخضع الأجير للشروط الاتي ذكرها 
--	يلتزم الأجير بالمواظبة على الحضور واحترام توقيت العمل وعدم مغادرة الموقع قبل المدة حتى في الأعياد 
--	ادا تبين تعدد الغيابات دون مبرر شرعي فللشركة حق فسخ العقد من طرفها دون المطالبة بتعويضات أو غرامة
--	من الأجير بعد التنبيه عليه بأي وسيلة تترك أثرا كتابيا في الالتحاق بالعمل في مدة لا تتجاوز 24 ساعة.   
--	في حالة كسر قاعدة التناوب يعرض الأجير نفسه إلى عقوبات إلا في حالات خاصة قاهرة يبررها الأجير وتقيمها الشركة وترخص له الشركة كتابيا 
--	خلال أيام الراحة الأسبوعية وادا تطلبت ظروف العمل دلك وجب على الأجيران يكون متاحا ويحتسب يوم عمل مضاعف الأجر        
--	في حالة زيارة قصيرة لموقع الحظيرة خلال الراحة الأسبوعية يتمتع الأجير بإجازة خصوصية  
--	وجب على الأجير تامين عملية نقل وتسليم مهامه لمن سيعوضه ودلك حسب القوانين الداخلية للشركة ودلك في مدة لا تقل عن 7 أيام من تاريخ وصول المعوض لموقع الحظيرة.
-<br></br><span className='TitleSouligne'>الفصل السادس: توقيت العمل والعطل</span><br></br>
-في العمل داخل موقع الحظيرة يلتزم الأجير بتقديم إجمالي 10 ساعات عمل في الموقع باحتساب 01 ساعة غداء ويخضع للقواعد التالية
--	استراحتان قصيرتان ب 15 دقيقة يوميا في العاشرة صباحا وفي الساعة الثالثة بعد الظهر
--	احتساب السفر ذهابا وإيابا يوم عمل
--	احتساب تعليق ظرفي أو وقتي للعمل عمل فعلي
--	احتساب يوم مرض نصف يوم عمل
--	احتساب يوم العمل خلال الراحة الأسبوعية يوم عمل مضاعف القيمة
--	احتساب يوم الإضراب يوم غياب 
-<br></br><span className='TitleSouligne'>الفصل السابع: التزامات الأجير داخل موقع الحظيرة</span><br></br>
+            <p>
 
-يلتزم الأجير داخل الموقع بالقواعد التالية
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            </div>
      
-    </div>
+              كما يلتزم الأجير بالحفاظ على جميع الأدوات والمعدات المقدمة من الشركة سواء في شكل امتيازات عينية أو أدوات لإنجاز الخدمة
+              كما لا يحق الأجير التعامل أو التعاقد مع حرفاء ومنافسي الشركة الطرف الأول للعقد
 
+            </p>
+            <span className='TitleSouligne'>
+              الفصل التاسع: التزام الصحة والسلامة والبيئة
+            </span><br />
+            <p>
+
+              يلتزم الأجير بما يلي
+              <br></br>*	  احترام قواعد الصحة للشركة
+              <br></br>*	احترام قواعد الصحة والسلامة المهنية
+              <br></br>* المساهمة في حماية البيئة
+
+            </p>
+
+
+            <br />
+          
+    <p>
  
+<span className='TitleSouligne'>
+            الفصل العاشر: أسباب فسخ العقد
+            </span><br></br>
+  
+يعتبر هدا العقد ملغى في إحدى الحالات التالية:   
+<br></br>* الإخلال بأي من بنود هذا العقد من أي من الطرفين، ولا يحق للطرف المخالف المطالبة بغرامة أو تعويض <br></br>*
+وقوع أخطاء مهنية جسيمة تضر بمصالح الطرف الأول في العقد، ولا يحق للطرف المخطئ المطالبة بغرامة أو تعويض.<br></br>
+وفي حالة طلب أحد الطرفين إنهاء العقد قبل الأوان يجب إبلاغ الطرف الآخر بأي وسيلة كتابية بذلك، ويجب أن يتم ذلك قبل شهر من تاريخ الإنهاء. كما يلتزم الموظف في جميع الحالات بإتاحة فترة شهر واحد لنقل وتسليم المهام
+
+
+    </p>
+  
+    <span className='TitleSouligne'> الفصل الحادي عشر: في حل النزاعات </span><br></br>
+    يصرح الطرفان أنهما قبلا هدا العقد وشروطه والتزما العمل بمقتضاه وفي صورة حدوث نزاعات بين الطرفين يكون الالتجاء للمصالحة الودية التي تكون مرحلة ملزمة للطرفين وفي صورة الوصول إلى الاتفاق يتم تحرير محضر في الغرض وفي صورة فشل المصالحة فانه يتم تحرير محضر فشل المحاولة الصلحية في الغرض ثم يتم الالتجاء للقضاء ويكون النظر فيها من طرف محاكم صفاقس 1 فقط. <br></br>
+<br></br>حرر بصفاقس في نظيرين بتاريخ  <span style={{fontWeight:"bold",paddingRight:"8px",paddingLeft:"8px"}}>{day} / {today.getDate()} / {month}</span> <br></br>
+  <span style={{paddingBottom:"20px",paddingTop:"25px"}}>
+
+<Row>
+      <Col span={12} style={{  color: 'black',  padding: '20px',fontSize:"30px" }}>
+     <br></br>الطرف الاول شركة  <br></br>
+                                                                                      
+     <br></br>  STE GLOBAL ENGINEERING  <br></br>
+                                                                                      
+     <br></br> FOR TECHNICAL SERVICES      <br></br> 
+     <br></br>  في شخص ممثلها القانوني أو من ينوبه
+      </Col>
+      <Col span={12} style={{ color: 'black', textAlign: 'center', padding: '20px',fontSize:"30px"  }}>
+      <br></br>الطرف الثاني الأجير<br></br>
+      </Col>
+    </Row>
+    </span>
 
 
 
 
-
-
-
-
-
-
-
-</div>
-
-
-<div dir="rtl" >
-<p className="stylepage">صفحة 2</p>
-</div>
-
-
-
-   </div>
-
-   </div> 
+          </div>
+        </div>
+      </div >
+      {/* <div dir="rtl">
+        <p className="stylepage">صفحة 2</p>
+      </div> */}
+    </div >
   );
 };
 

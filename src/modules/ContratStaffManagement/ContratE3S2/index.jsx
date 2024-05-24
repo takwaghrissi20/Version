@@ -13,7 +13,7 @@ import { useNavigate} from "react-router-dom";
 import { IoCloudDownloadOutline } from "react-icons/io5";
 import { useRef } from 'react';
 import generatePDF from 'react-to-pdf';
-const ContratA3 = () => {
+const ContratE3Service1 = () => {
   const targetRef = useRef();
   const location = useLocation();
   const fullName = location.state ? location.state.fullName : null;
@@ -30,8 +30,12 @@ const ContratA3 = () => {
     const joinDate=location.state ? location.state. joinDate : null;
     const finishDate=location.state ? location.state. finishDate : null;
     const dailyRate=location.state ? location.state.dailyRate : null;
-    const  arPosition= location.state ? location.state.arPosition : null;
-      
+    const duration=location.state ? location.state.duration : null;
+    const CIN=location.state ? location.state.CIN : null;
+    const cinDate=location.state ? location.state.cinDate : null;
+    const arPosition=location.state ? location.state.arPosition : null;
+  
+    
     const navigate = useNavigate();
     const onGoToBack = () => {
       navigate(-1);
@@ -42,7 +46,7 @@ const ContratA3 = () => {
        <StyledScrumBoardDetailTitle onClick={onGoToBack}>
             Add Employee Management Staff
           </StyledScrumBoardDetailTitle>
-          &gt; CONTRACT-A3- CDD-SITE ONLY
+          &gt; CONTRAT DE PRESTATION DE SERVICE 2-E3
           <div style={{margin:"20px",textAlign: 'right' }}>
     <Col >
       <Button
@@ -50,7 +54,7 @@ const ContratA3 = () => {
         type="primary"
         size="large"
         style={{ margin: '0 20px', verticalAlign: 'middle' }}
-        onClick={() => generatePDF(targetRef, { filename: 'CONTRACT -A1-CDD SITE+OFFICE.pdf' })}
+        onClick={() => generatePDF(targetRef, { filename: 'CONTRAT DE PRESTATION DE SERVICE 2-E3.pdf' })}
       >
         <IoCloudDownloadOutline style={{ marginRight: '8px' }} />
         Download PDF
@@ -58,27 +62,20 @@ const ContratA3 = () => {
     </Col>
     </div>
 
-{/* 
-    <div style={{ backgroundColor: "white",marginTop:"20px" }}>
-     <Col xs={24} md={6} style={{backgroundColor: "white"  }}>
-  
-  <Button
-    variant="contained"
-    type='primary' 
-    size='large'
-    style={{ margin: '0 20px', verticalAlign: 'middle' }}
-    onClick={() => generatePDF(targetRef, {filename: 'CONTRACT-A3- CDD-SITE ONLY'})}
->
-    < IoCloudDownloadOutline />/AddEmployees/AddEmployeesManagementStaff
-    Download PDF
-  </Button>
-</Col>
 
 {/* 
     <Button onClick={handleDownloadPDF}>Download PDF</Button> */}
-     <div  ref={targetRef} id="pdf-content">
-       <Page1  fullName={fullName} 
-       passportNumber={passportNumber} 
+     <div 
+        style={{
+          borderRadius: 8,
+          background: "white",
+    
+        }}
+     
+     ref={targetRef} id="pdf-content">
+       <Page1 
+        fullName={fullName} 
+        passportNumber={passportNumber} 
        passportSubmitdate={passportSubmitdate}
        arResidenceAdress={arResidenceAdress}
        companyType={companyType}
@@ -91,23 +88,27 @@ const ContratA3 = () => {
        joinDate={joinDate}
        finishDate={finishDate}
        dailyRate={dailyRate}
+       duration={duration}
+       CIN={CIN}
+       cinDate={cinDate}
        arPosition={arPosition}
+       
 
       /> 
    
-        <Page2 />
-       <Page3 />
+        <Page2   duration={duration} />
+      {/* <Page3 />  */}
 
       {/* <Page4 />   */}
     </div>
 
 
 
-  
+
   </div>
 );
 };
 
 
 
-export default ContratA3;
+export default ContratE3Service1;
