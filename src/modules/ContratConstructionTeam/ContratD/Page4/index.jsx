@@ -1,21 +1,22 @@
-
+import { light } from '@mui/material/styles/createPalette';
 import React,{useEffect,useState} from 'react';
 import { useIntl } from 'react-intl';
-import {Col,Row} from "antd"
 import image from "../../../../assets/icon/logo-with-name.png"
+import {Col,Row} from "antd"
 
-const ContratB2Page4= () => {
+
+const ContratDPage4= () => {
   const { messages } = useIntl();
   const today = new Date();
 
   // Tableaux pour mapper les noms des mois et des jours de la semaine
-  const days = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
-  const months = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
-  
+  const months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+  const days = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
+
+  // Obtenez le jour, le mois et l'année
   const day = days[today.getDay()];
   const month = months[today.getMonth()];
   const year = today.getFullYear();
-  
   
   return (
     <div style={{marginTop:"10rem"}}>
@@ -44,7 +45,7 @@ const ContratB2Page4= () => {
       <tbody>
         <tr>
           <td>
-         B2
+         B1
 
           </td>
           <td>{messages['categorie.name']}</td>
@@ -128,4 +129,4 @@ const ContratB2Page4= () => {
   );
 };
 
-export default ContratB2Page4;
+export default ContratDPage4;

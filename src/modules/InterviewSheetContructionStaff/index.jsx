@@ -26,7 +26,6 @@ const InterviewSheetById = () => {
   const totalNumber = location.state ? location.state.totalNumber : null;
   const level = location.state ? location.state.level : null;
   const projectName = location.state ? location.state.projectName : null;
-  console.log("projectNamefff",projectName)
   const position = location.state ? location.state.position : null;
   const experienceRequired = location.state ? location.state.experience : null;
   const [isConfirmationInterview, setIsConfirmationInterview] = useState(false);
@@ -39,6 +38,7 @@ const InterviewSheetById = () => {
   const [expectedJoinDate, setExpectedJoinDate] = useState("");
   const [datalastIdinterview, setDatalastIdinterview] = useState("")
   const [fullname, setFullName] = useState("");
+
   const [contactFullNumber, setContactFullNumber] = useState("");
   const [contactEmail, setcontactEmail] = useState("");
   const [departement, setDepartement] = useState("");
@@ -278,7 +278,7 @@ const InterviewSheetById = () => {
           requiredExperinece: requiredExperinece,
           positionToBeFilled: position,
           fullName: fullname,
-          interviwDate:interviwDate,
+          //interviwDate:interviwDate,//???? A faire
       
 
 

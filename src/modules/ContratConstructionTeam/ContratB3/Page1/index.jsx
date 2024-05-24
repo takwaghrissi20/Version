@@ -3,7 +3,7 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import image from "../../../../assets/icon/logo-with-name.png";
 
-const ContratDPage1 = ({ fullName, passportNumber, passportSubmitdate, arResidenceAdress, companyType, 
+const ContratB1Page1 = ({ fullName, passportNumber, passportSubmitdate, arResidenceAdress, companyType, 
   traveldate, endTravelDate, arDestination, lastId, positionfieledarabe ,salary,arPosition}) => {
   const { messages } = useIntl();
   const currentYear = new Date().getFullYear();
@@ -30,7 +30,7 @@ const ContratDPage1 = ({ fullName, passportNumber, passportSubmitdate, arResiden
             </thead>
             <tbody>
               <tr>
-                <td style={{fontSize:"30px"}}>D</td>
+                <td style={{fontSize:"30px"}}>B3</td>
                 <td style={{fontSize:"30px"}}>{messages['categorie.name']}</td>
               </tr>
             </tbody>
@@ -154,4 +154,4 @@ const ContratDPage1 = ({ fullName, passportNumber, passportSubmitdate, arResiden
   );
 };
 
-export default ContratDPage1;
+export default ContratB1Page1;

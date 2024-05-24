@@ -84,7 +84,8 @@ const ViewInformationForm = (props) => {
     phoneEmergency,
     contractCategory,
     projName,
-    duration
+    duration,
+    primeProductivity
   } = props;
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -147,7 +148,8 @@ const ViewInformationForm = (props) => {
         phoneEmergency,
         contractCategory,
         projName,
-        duration
+        duration,
+        primeProductivity
       };
 
       const response = await fetch(`http://localhost:8085/api/v1/empT/create`, {
@@ -232,7 +234,32 @@ const ViewInformationForm = (props) => {
         endTravelDate: endtraveldatepdf,
         arDestination: arDestination,
         arPosition: arPositionpdf,
-        lastId: LastIdIncremente
+        lastId: LastIdIncremente,
+        salary: salary,
+        primeProductivity:primeProductivity
+
+   
+
+      }
+
+
+    });
+  };
+  const ContratB3 = () => {
+    navigate('/HRGetsCompany/ContartTypeB3', {
+      state: {
+        fullName: arName,
+        passportNumber: passportnumber,
+        passportSubmitdate: passpordDate,
+        arResidenceAdress: arResidenceAdress,
+        companyType: companyTypepdf,
+        traveldate: traveldatepdf,
+        endTravelDate: endtraveldatepdf,
+        arDestination: arDestination,
+        arPosition: arPositionpdf,
+        lastId: LastIdIncremente,
+        salary: salary,
+        primeProductivity:primeProductivity
 
       }
 
@@ -251,7 +278,10 @@ const ViewInformationForm = (props) => {
         endTravelDate: endtraveldatepdf,
         arDestination: arDestination,
         arPosition: arPositionpdf,
-        lastId: LastIdIncremente
+        lastId: LastIdIncremente,
+        salary: salary,
+        primeProductivity:primeProductivity,
+        dailyRate:dailyRate
 
       }
 
@@ -270,7 +300,9 @@ const ViewInformationForm = (props) => {
         endTravelDate: endtraveldatepdf,
         arDestination: arDestination,
         arPosition: arPositionpdf,
-        lastId: LastIdIncremente
+        lastId: LastIdIncremente,
+        salary: salary,
+        primeProductivity:primeProductivity
 
       }
 
@@ -282,14 +314,12 @@ const ViewInformationForm = (props) => {
   const SelectionnnerContrat = () => {
     // Vérifier le type de contrat sélectionné
     console.log("contractCategorysssssss", contractCategory)
-    if (contractCategory === "CAT -B1") {
-      console.log(" contractCategory", contractCategory)
-      ContratB1(); // Appeler la fonction ContratB1 pour le contrat B1
-    } else if (contractCategory === "CAT -B2") {
+      if (contractCategory === "CAT-B2") {
       console.log(" contractCategory")
       ContratB2()
     }else if (contractCategory === "CAT-B3") {
       console.log(" contractCategory b3")
+      ContratB3()
      
     }
     else if (contractCategory === "CAT-C") {

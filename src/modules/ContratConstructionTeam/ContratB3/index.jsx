@@ -13,7 +13,7 @@ import { useNavigate} from "react-router-dom";
 import { IoCloudDownloadOutline } from "react-icons/io5";
 import { useRef } from 'react';
 import generatePDF from 'react-to-pdf';
-const ContratD = () => {
+const ContratB1 = () => {
   const targetRef = useRef();
   const location = useLocation();
   const fullName = location.state ? location.state.fullName : null;
@@ -38,9 +38,9 @@ const ContratD = () => {
   return (
     <div>
        <StyledScrumBoardDetailTitle onClick={onGoToBack}>
-            Add Employee  Construction Staff
+       Add Employee Construction Staff
           </StyledScrumBoardDetailTitle>
-          &gt; CCONTRACT CDD-MANPOWER SUPPLY-SALARY.pdf
+          &gt; CONTRACT -B3-CDD-SITE SALARY-.pdf
           <div style={{margin:"20px",textAlign: 'right' }}>
     <Col >
       <Button
@@ -48,7 +48,7 @@ const ContratD = () => {
         type="primary"
         size="large"
         style={{ margin: '0 20px', verticalAlign: 'middle' }}
-        onClick={() => generatePDF(targetRef, { filename: 'CONTRACT CDD-MANPOWER SUPPLY-SALARY.pdf' })}
+        onClick={() => generatePDF(targetRef, { filename: 'CONTRACT -B3-CDD-SITE SALARY-.pdf' })}
       >
         <IoCloudDownloadOutline style={{ marginRight: '8px' }} />
         Download PDF
@@ -98,4 +98,4 @@ const ContratD = () => {
 
 
 
-export default ContratD;
+export default ContratB1;

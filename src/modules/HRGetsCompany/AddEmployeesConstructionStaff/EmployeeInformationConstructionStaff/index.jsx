@@ -16,7 +16,7 @@ import { FaSearch } from "react-icons/fa";
 import ValidateEmployees from "../../../Model/ModalValidateInfoEmployee"
 import moment from 'moment';
 const { Option } = Select;
-const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
+const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
   const navigate = useNavigate();
   const { messages } = useIntl();
   const [intCode, setIntCode] = useState("Code Interview Sheet");
@@ -27,11 +27,15 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
   const [selectedContratType, setSelectedContratType] = useState('')
   const [selectedRelationType, setSelectedRelationType] = useState('')
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isTargetproductivityVisible, setIsTargetproductivityVisible] = useState(false);
+  const [contratType, setContratType] = useState("CDD");
+  const [employeeType, setEmployeeType] = useState("Site");
+  console.log("setContratType",contratType)
   const handleValidateEmployeeClose = () => {
     setIsModalVisible(false);
   };
   const handleValidateEmployeOpen = () => {
-    
+
     setIsModalVisible(true);
   };
 
@@ -47,9 +51,9 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
 
 
   const ListContrat = [
-  
+
     {
-      type: "CAT -B2",
+      type: "CAT-B2",
 
     },
     {
@@ -132,7 +136,7 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
 
 
   ]
- 
+
 
   ///////////////////////////////////////////////////////
   const [selectedInterviews, setSelectedInterviews] = useState([]);
@@ -159,8 +163,6 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
     setSearchValue(value);
     setIsDropdownOpen(value.trim() !== '');
   };
-
-
 
   ////////////////////////////////////////////
   const fetchDataId = async (searchValue) => {
@@ -197,7 +199,7 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
       console.error('Erreur lors de la récupération des données:', error);
     }
   };
- 
+
   //Api Position Fieled Arabe
   useEffect(() => {
     fetchPositionTranslate();
@@ -208,18 +210,18 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-  
+
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/trans/get?description=${findIdInterview?.positionToBeFilled}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
         },
       });
-  
+
       if (!response.ok) {
         throw new Error('La requête a échoué avec le code ' + response.status);
       }
-      
+
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
         const data = await response.json(); // Utilisez response.json() pour récupérer les données JSON
@@ -233,17 +235,17 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
       console.error('Erreur lors de la récupération des données:', error);
     }
   };
-  
+
 
 
   const formData = form.getFieldsValue();
 
-//Calcul Duration Period
+  //Calcul Duration Period
 
 
 
 
- 
+
   // if (FinishDate) {
   //   // Convertir la date en format "YYYY-MM-DD"
   //   const formattedDate = FinishDate.format("YYYY-MM-DD");
@@ -251,31 +253,31 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
   // } else {
   //   console.log("FinishDatdddd is undefined");
   // }
-//   console.log("expected JoinDate", findIdInterview?.expectedJoinDate)
-//   const ExpectedJoinDate=findIdInterview?.expectedJoinDate
-//   const finish=formData?.finishDate
+  //   console.log("expected JoinDate", findIdInterview?.expectedJoinDate)
+  //   const ExpectedJoinDate=findIdInterview?.expectedJoinDate
+  //   const finish=formData?.finishDate
 
-  
-// // Calcule la différence entre les deux dates en millisecondes
-// const differenceInMilliseconds = Math.abs(ExpectedJoinDate- FinishDate);
 
-// // Convertit la différence en jours
-// const differenceInDays = differenceInMilliseconds / (1000 * 3600 * 24);
+  // // Calcule la différence entre les deux dates en millisecondes
+  // const differenceInMilliseconds = Math.abs(ExpectedJoinDate- FinishDate);
 
-// console.log("Différence en jours :", differenceInDays);
-  
+  // // Convertit la différence en jours
+  // const differenceInDays = differenceInMilliseconds / (1000 * 3600 * 24);
 
-// const handleOpenAfter = () => {
-//   const formDataIsEmpty = Object.values(formData).every(value => !value);
- 
-//   if (formDataIsEmpty) {
-//     setIsModalVisible(true);
-   
-//   } else {
-//     setIsModalVisible(true);
-//     console.log(" setIsModalVisible Forma",formDataIsEmpty)
-//   }
-// };
+  // console.log("Différence en jours :", differenceInDays);
+
+
+  // const handleOpenAfter = () => {
+  //   const formDataIsEmpty = Object.values(formData).every(value => !value);
+
+  //   if (formDataIsEmpty) {
+  //     setIsModalVisible(true);
+
+  //   } else {
+  //     setIsModalVisible(true);
+  //     console.log(" setIsModalVisible Forma",formDataIsEmpty)
+  //   }
+  // };
 
   // const handleOpenAfter = () => {
   //   if (formData.arName) {
@@ -283,11 +285,11 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
   //   } else {
   //     setIsModalVisible(false);
   //   }
-  
+
   // };
   // const handleOpenAfter = () => {
   //   const formDataIsEmpty = Object.values(formData).some(value => !value);
-   
+
   //   if (formDataIsEmpty) {
   //     alert("Please replace all the champs");
   //   } else {
@@ -300,50 +302,58 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
   };
   const handleOpenAfter = () => {
     //e.preventDefault();
-    setIsModalVisible(true)
-  
-    // if (!arName.value || !CIN.value || !nationality.value || !phoneNumber.value || !selectedGenderType
-    //      || !residenceAdress.value  || !arResidenceAdress.value || !passportnumber.value 
-    //      || !passportSubmitdate.value || !passport_finish_date.value || !type_Emp.value
-    //      || !email.value  || !finishDate.value || !selectedStatusTypeCompany
-    //      || !traveldate.value || !endTravelDate.value || !destination.value
-    //      || !arDestination.value || !selectedContratType || !duration.value
-    //      || !emergencyName.value || !selectedRelationType || !phoneEmergency.value
-        
-    //     || !selectedContractCategorie
 
-    // ) {
-    //    alert("Please complete all fields.");
-    //    setIsModalVisible(false);
-    // } else {
-    //    setIsModalVisible(true); // Affiche la modal
-    // }
- };
- const  cancelInfo = ()=> {
-  form.setFieldsValue({ arName: '' ,CIN:'',nationality:'',phoneNumber:'',selectedGenderType:'',
-  residenceAdress:'',arResidenceAdress:'',passportnumber:'',passportSubmitdate:'',passport_finish_date:'',
-  type_Emp:'',email:'',finishDate:'',selectedStatusTypeCompany:'',traveldate:'',endTravelDate:'',
-  destination:'',arDestination:'',selectedContratType:'',duration:'',emergencyName:'',selectedRelationType:'',
-  phoneEmergency:'',selectedContractCategorie:'',
+    if (!arName.value || !CIN.value || !nationality.value || !phoneNumber.value || !selectedGenderType
+         || !residenceAdress.value  || !arResidenceAdress.value || !passportnumber.value 
+         || !passportSubmitdate.value || !passport_finish_date.value 
+         || !email.value  || !finishDate.value || !selectedStatusTypeCompany
+         || !traveldate.value || !endTravelDate.value || !destination.value
+         || !arDestination.value || !duration.value
+         || !emergencyName.value || !selectedRelationType || !phoneEmergency.value 
+
+        || !selectedContractCategorie
+
+    ) {
+       alert("Please complete all fields.");
+       setIsModalVisible(false);
+    } else {
+       setIsModalVisible(true); // Affiche la modal
+    }
+  };
+  const cancelInfo = () => {
+    form.setFieldsValue({
+      arName: '', CIN: '', nationality: '', phoneNumber: '', selectedGenderType: '',
+      residenceAdress: '', arResidenceAdress: '', passportnumber: '', passportSubmitdate: '', passport_finish_date: '',
+      email: '', finishDate: '', selectedStatusTypeCompany: '', traveldate: '', endTravelDate: '',
+      destination: '', arDestination: '',  duration: '', emergencyName: '', selectedRelationType: '',
+      phoneEmergency: '', selectedContractCategorie: '', primeProductivity: ''
 
 
-  });
- 
-};
+    });
 
-  
+  };
+
+  useEffect(() => {
+
+    if (selectedContractCategorie === "CAT-B2") {
+      console.log("proddd")
+      setIsTargetproductivityVisible(true)
+    }
+  }, []);
+
+
   return (
     <>
-     <Form
-  form={form}
-  initialValues={{ name: findIdInterview?.fullName }}
-  layout='vertical'
-  onSubmit={e => { e.preventDefault()} }
-  onKeyDown={(e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-    }
-  }}>
+      <Form
+        form={form}
+        initialValues={{ name: findIdInterview?.fullName }}
+        layout='vertical'
+        onSubmit={e => { e.preventDefault() }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+          }
+        }}>
         <Row style={{ justifyContent: "flex-end" }}>
           <Col xs={24} lg={6} style={{
             border: '1px solid red', paddingTop: "15px", paddingBottom: "15px", paddingLeft: "5px",
@@ -385,7 +395,7 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
                   dataSource={filteredInterviews}
                   renderItem={item => (
                     <List.Item onClick={() => { handleItemClick(item); fetchDataId(searchValue); }}>
-                    CIS-{item.interviewCode}</List.Item>
+                      CIS-{item.interviewCode}</List.Item>
                   )}
                 />
               </div>
@@ -518,9 +528,9 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
 
                 <Col xs={24} md={12}>
                   <Form.Item label='Arabic Full name' name='arName' rules={[{ required: true, message: 'Please enter full name' }]}>
-                    <Input placeholder="الاسم كامل بالعربي"  dir="rtl"
-                    disabled={searchValue == ''}
-                    
+                    <Input placeholder="الاسم كامل بالعربي" dir="rtl"
+                      disabled={searchValue == ''}
+
                     />
                   </Form.Item>
 
@@ -545,14 +555,14 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
                       },
                     ]}
                   >
-                    <Input placeholder='ID Card Number'  disabled={searchValue == ''}/>
+                    <Input placeholder='ID Card Number' disabled={searchValue == ''} />
                   </Form.Item>
                 </Col>
 
 
                 <Col xs={24} md={12}>
                   <Form.Item label='Nationality' name='nationality' rules={[{ required: true, message: 'Please enter Nationality' }]}>
-                    <Input placeholder='Nationality '  disabled={searchValue == ''} />
+                    <Input placeholder='Nationality ' disabled={searchValue == ''} />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
@@ -612,8 +622,8 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
                 <Col xs={24} md={12}>
                   <Form.Item label='Marital Status' name='familyStatus'>
                     <Input placeholder={findIdInterview?.familySituation} readOnly={true}
-                    disabled={searchValue == ''}
-                    
+                      disabled={searchValue == ''}
+
                     />
                     {/* <Select
                       defaultValue="Marital Status"
@@ -637,71 +647,71 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
 
                 <Col xs={24} md={12}>
                   <Form.Item label='Residence Address' name='residenceAdress' rules={[{ required: true, message: 'Please enter Residence Address' }]}>
-                    <Input placeholder='Residence Address' 
-                    disabled={searchValue == ''}
-                    
+                    <Input placeholder='Residence Address'
+                      disabled={searchValue == ''}
+
                     />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label='Arabic Residence Address' name='arResidenceAdress'rules={[{ required: true, message: 'Please enter Residence Address Arabe' }]}>
-                    <Input placeholder='عنوان السكني بالعربي'  dir="rtl"
-                    disabled={searchValue == ''}
-                    
+                  <Form.Item label='Arabic Residence Address' name='arResidenceAdress' rules={[{ required: true, message: 'Please enter Residence Address Arabe' }]}>
+                    <Input placeholder='عنوان السكني بالعربي' dir="rtl"
+                      disabled={searchValue == ''}
+
                     />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Passport Number' name='passportnumber'
-                   rules={[
-                    {
-                      required: true,
-                      message: 'Please enter Passport Number',
-                    },
-                  
-                  ]}
-                  
-                  
-                  
-                  
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please enter Passport Number',
+                      },
+
+                    ]}
+
+
+
+
                   >
                     <Input placeholder='Passport Number'
-                    disabled={searchValue == ''}
-                    
+                      disabled={searchValue == ''}
+
                     />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Date of issue' name='passportSubmitdate'
-                   rules={[
-                    {
-                      required: true,
-                      message: 'Please enter Date of issue',
-                    },
-                    
-                  ]}
-                  
-                  
-                  
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please enter Date of issue',
+                      },
+
+                    ]}
+
+
+
                   >
-                    <StyledScrumBoardDatePicker  disabled={searchValue == ''}/>
+                    <StyledScrumBoardDatePicker disabled={searchValue == ''} />
                     {/* <Input placeholder='Date of issue' readOnly={!isEdit} /> */}
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Date of expiry' name='passport_finish_date'
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Please enter Date of expiry',
-                    },
-                    
-                  ]}
-                  
-        
-             
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please enter Date of expiry',
+                      },
+
+                    ]}
+
+
+
                   >
-                    <StyledScrumBoardDatePicker  disabled={searchValue == ''} />
+                    <StyledScrumBoardDatePicker disabled={searchValue == ''} />
                     {/* <Input placeholder='Date of expiry' readOnly={!isEdit} /> */}
                   </Form.Item>
                 </Col>
@@ -729,20 +739,20 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
                   <Form.Item label='Arabic Position To be filled' name='arPosition' >
                     <Input placeholder={positionfieledarabe} dir="rtl"
                       readOnly={true}
-                      
-                      
-                      />
+
+
+                    />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Departement' name='departement'>
                     <Input placeholder={findIdInterview?.department}
                       readOnly={true}
-                
+
                     />
                   </Form.Item>
                 </Col>
-          
+
 
                 {/* <Col xs={24} md={12}>
                   <Form.Item label='Employee Type' name='type_Emp'
@@ -775,30 +785,42 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
                  
                   </Form.Item>
                 </Col> */}
-
-
-            
                 <Col xs={24} md={12}>
-                  <Form.Item label='Employee Type' name='type_Emp' 
+  <Form.Item label='Employee Type' name='type_Emp'
+   
+  >
+    <Input 
+      defaultValue={employeeType}
+      readOnly
+      placeholder='Site/Site&&Office /Offic'
+    />
+  </Form.Item>
+</Col>
+
+
+
+{/* 
+                <Col xs={24} md={12}>
+                  <Form.Item label='Employee Type' name='type_Emp'
                     rules={[
                       {
                         required: true,
                         message: 'Please enter Employee Type',
                       },
-                      
-                    
+
+
                     ]}
-                  
-                  
-                  
+
+
+
                   >
                     <Input placeholder="Site/Site&&Office /Office"
                       disabled={searchValue == ''}
-                    
-                
+
+
                     />
                   </Form.Item>
-                </Col>
+                </Col> */}
 
                 <Col xs={24} md={12}>
                   <Form.Item label='Project Name' name='projName' >
@@ -806,26 +828,26 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
                     <Input placeholder={findIdInterview?.projname} readOnly={true} />
                   </Form.Item>
                 </Col>
-                
+
                 <Col xs={24} md={12}>
                   <Form.Item label='E-mail Address' name='email'
-                   rules={[
-                    {
-                      type: 'email',
-                      message: 'Please enter a valid email address',
-                    },
-                    {
-                      required: true,
-                      message: 'Please enter your email address',
-                    },
-                  ]}
-                  
-                                  
-                  
+                    rules={[
+                      {
+                        type: 'email',
+                        message: 'Please enter a valid email address',
+                      },
+                      {
+                        required: true,
+                        message: 'Please enter your email address',
+                      },
+                    ]}
+
+
+
                   >
-                    <Input placeholder='E-mail Address' 
-                          disabled={searchValue == ''}
-                    
+                    <Input placeholder='E-mail Address'
+                      disabled={searchValue == ''}
+
                     />
                   </Form.Item>
                 </Col>
@@ -843,14 +865,14 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
                         required: true,
                         message: 'Please enter Contract End date',
                       },
-                      
+
                     ]}
-                  
-                  
-    
-                  
+
+
+
+
                   >
-                    <StyledScrumBoardDatePicker  disabled={searchValue == ''}/>
+                    <StyledScrumBoardDatePicker disabled={searchValue == ''} />
                     {/* <Input placeholder="Contract End date"
                       readOnly={true} /> */}
                   </Form.Item>
@@ -862,10 +884,10 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
                         required: true,
                         message: 'Please enter Type Company',
                       },
-                      
+
                     ]}
-                  
-                               
+
+
                   >
                     <Select
                       disabled={searchValue == ''}
@@ -873,7 +895,7 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
                       placeholder="Company Type"
                       onChange={(value) => setSelectedStatusTypeCompany(value)}
 
-                     >
+                    >
                       {TypeCompany.map((p) => {
                         return (
                           <Option value={p.type} key={p.type}>
@@ -889,17 +911,17 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
 
                 <Col xs={24} md={12}>
                   <Form.Item label='Travel Date ' name='traveldate'
-                   rules={[
-                    {
-                      required: true,
-                      message: 'Please enter Date Travel',
-                    },
-                    
-                  ]}
-                  
-                  
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please enter Date Travel',
+                      },
+
+                    ]}
+
+
                   >
-                    <StyledScrumBoardDatePicker  disabled={searchValue == ''}/>
+                    <StyledScrumBoardDatePicker disabled={searchValue == ''} />
                     {/* <Input placeholder="Date Travel"
                       readOnly={true} /> */}
                   </Form.Item>
@@ -911,30 +933,30 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
                         required: true,
                         message: 'Please enter End Travel Date',
                       },
-                      
+
                     ]}
-                  
-                  
-                  
-                  
+
+
+
+
                   >
-                    <StyledScrumBoardDatePicker   disabled={searchValue == ''} />
+                    <StyledScrumBoardDatePicker disabled={searchValue == ''} />
                     {/* <Input placeholder="End Travel Date"
                       readOnly={true} /> */}
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Location' name='destination'
-                  
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Please enter Location',
-                    },
-                    
-                  ]}
-                  
-                  
+
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please enter Location',
+                      },
+
+                    ]}
+
+
                   >
                     <Input placeholder="Location"
                       disabled={searchValue == ''}
@@ -943,15 +965,15 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Arabic Location' name='arDestination'
-                      rules={[
-                        {
-                          required: true,
-                          message: 'Please enter Location Arabe',
-                        },
-                        
-                      ]}
-                  
-                  
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please enter Location Arabe',
+                      },
+
+                    ]}
+
+
                   >
                     <Input placeholder=" موقع العمل"
                       disabled={searchValue == ''}
@@ -962,26 +984,40 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
                 <Col xs={24} md={12}>
                   <Form.Item label='Approved Office Salary ' name='salary'>
                     <Input.Password placeholder={findIdInterview?.propsedsalary} readOnly={true}
-                 
+
                     />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Daily Rate' name='DailyRate'>
-                    <Input.Password placeholder={findIdInterview?.dailyRate} readOnly={true} />
+                    <Input placeholder={findIdInterview?.dailyRate} readOnly={true} />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Contrat Type' name='contractType'
-                   rules={[
-                    {
-                      required: true,
-                      message: 'Please enter Contrat Type',
-                    },
-                    
-                  ]}
                   
-                                  
+                 
+                  
+                  >
+                    <Input 
+                      defaultValue={contratType}
+                      readOnly
+                     placeholder='Contrat Type'
+                  />
+                  </Form.Item>
+                </Col>
+
+                {/* <Col xs={24} md={12}>
+                  <Form.Item label='Contrat Type' name='contractType'
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please enter Contrat Type',
+                      },
+
+                    ]}
+
+
                   >
                     <Select
                       defaultValue="Contrat Type"
@@ -1002,22 +1038,22 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
                       })}
                     </Select>
                   </Form.Item>
-                </Col>
+                </Col> */}
                 <Col xs={24} md={12}>
                   <Form.Item label='Duration' name='duration'
-                   rules={[
-                    {
-                      required: true,
-                      message: 'Please enter Duration',
-                    },
-                    
-                  ]}
-                  
-                  
-                  
-                  
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please enter Duration',
+                      },
+
+                    ]}
+
+
+
+
                   >
-                    <Input placeholder='Duration'/>
+                    <Input placeholder='Duration' />
                   </Form.Item>
                 </Col>
               </AppRowContainer>
@@ -1041,12 +1077,12 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
                         required: true,
                         message: 'Please enter Full Name',
                       },
-                      
+
                     ]}
-                  
-                  
+
+
                   >
-                    <Input placeholder='Full Name'  disabled={searchValue == ''} />
+                    <Input placeholder='Full Name' disabled={searchValue == ''} />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
@@ -1056,7 +1092,7 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
                         required: true,
                         message: 'Please Select RelationShip',
                       },
-                      
+
                     ]}>
                     <Select
                       defaultValue="RelationShip"
@@ -1064,7 +1100,7 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
                       onChange={(value) => setSelectedRelationType(value)}
                       disabled={searchValue == ''}
 
-                      >
+                    >
                       {RelationShip.map((p) => {
                         return (
                           <Option value={p.type} key={p.type}>
@@ -1082,26 +1118,24 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Emergency Telephone' name='phoneEmergency'
-                  
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Please enter phone number',
-                    },
-                    {
-                      pattern: /^[0-9]+$/,
-                      message: 'Please enter a valid phone number',
-                    },
-                    {
-                      min: 8,
-                      message: 'Phone number must be at least 8 digits',
-                    },
-                  ]}
-                  
-                  
-                  
+
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please enter phone number',
+                      },
+                      {
+                        pattern: /^[0-9]+$/,
+                        message: 'Please enter a valid phone number',
+                      },
+                      {
+                        min: 8,
+                        message: 'Phone number must be at least 8 digits',
+                      },
+                    ]}
+
                   >
-                    <Input placeholder='Telephone'    disabled={searchValue == ''}/>
+                    <Input placeholder='Telephone' disabled={searchValue == ''} />
                   </Form.Item>
                 </Col>
 
@@ -1121,14 +1155,13 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
               <AppRowContainer>
                 <Col xs={24} md={12}>
                   <Form.Item label='Contract Category' name='contractCategory'
-                  
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Please Select contractCategory',
-                    },
-                    
-                  ]}
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please Select contract Category',
+                      },
+
+                    ]}
 
                   >
                     <Select
@@ -1152,6 +1185,27 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
                     </Select>
                   </Form.Item>
                 </Col>
+                {selectedContractCategorie === 'CAT-B2' && (
+                  < Col xs={24} md={12}>
+                    <Form.Item label='Target productivity' name='primeProductivity'
+                      rules={[
+                        {
+                          required: true,
+                          message: 'Please enter Target productivity',
+                        },
+
+                      ]}
+
+
+                    >
+                      <Input placeholder='Target productivity' />
+                    </Form.Item>
+                  </Col>
+
+                )}
+
+
+
 
 
 
@@ -1177,75 +1231,75 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
           </Col>
         </AppRowContainer>
 
-    
-          <Space
-            size={15}
-            style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
-          >
-            <Button onClick={cancelInfo} >Cancel</Button>
-            {/* <Button onClick={SaveEmployees} type='primary' htmlType='submit'
+
+        <Space
+          size={15}
+          style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
+        >
+          <Button onClick={cancelInfo} >Cancel</Button>
+          {/* <Button onClick={SaveEmployees} type='primary' htmlType='submit'
              disabled={searchValue == ''}
                      
             >
               Save
             </Button> */}
 
-  {/* Your form fields */}
+          {/* Your form fields */}
 
-  <Button 
+          <Button
+            onClick={handleOpenAfter} type='primary' htmlType='submit' disabled={searchValue === '' || !selectedInterviews}>
+            Save
+          </Button>
 
-  
-  
-  onClick={handleOpenAfter} type='primary' htmlType='submit' disabled={searchValue === '' || !selectedInterviews}>
-    Save
-  </Button>
-
-        {/* <Button onClick={handleOpenAfter } type='primary' htmlType='submit'
+          {/* <Button onClick={handleOpenAfter } type='primary' htmlType='submit'
              disabled={searchValue === '' || !selectedInterviews}>Save</Button> */}
-            
-          </Space>
-       
-         </Form>
-         <ValidateEmployees
-            isViewInfo={isModalVisible}
-            handleAddContactClose={handleValidateEmployeeClose}
-            name={findIdInterview?.fullName}
-            arName={formData?.arName}
-            CIN={formData?.CIN}
-            nationality={formData?.nationality}
-            birthDate={findIdInterview?.birthayDate}
-            gender={selectedGenderType}
-            phoneNumber={formData?.phoneNumber}
-            familyStatus={findIdInterview?.familySituation}
-            residenceAdress={formData?.residenceAdress}
-            arResidenceAdress={formData?.arResidenceAdress}
-            passportnumber={formData?.passportnumber}
-            passportSubmitdate={formData?.passportSubmitdate?.format('YYYY-MM-DD')}
-            passport_finish_date={formData?.passport_finish_date?.format('YYYY-MM-DD')}
-            position={findIdInterview?.positionToBeFilled} 
-            arPosition={positionfieledarabe}
-            departement={findIdInterview?.department}
-            type_Emp={formData?.type_Emp}
-            projname={findIdInterview?.projname}
-            email={formData?.email}
-            joinDate={findIdInterview?.expectedJoinDate}
-            finishDate={formData?.finishDate?.format('YYYY-MM-DD')}
-            companyType={formData?.companyType}
-            traveldate={formData?.traveldate?.format('YYYY-MM-DD')}
-            endTravelDate={formData?.endTravelDate?.format('YYYY-MM-DD')}
-            destination={formData?.destination}
-            arDestination={formData?.arDestination}
-            salary={findIdInterview?.propsedsalary}
-            dailyRate={findIdInterview?.dailyRate}
-            contractType={formData.contractType}
-            emergencyName={formData?.emergencyName}
-            emergencyRelation={formData.emergencyRelation}
-            phoneEmergency={formData?.phoneEmergency}
-            contractCategory={formData?.contractCategory}
-            projName={findIdInterview?.projname} 
-            duration={formData?.duration}
-            
-          />
+
+        </Space>
+
+      </Form >
+      <ValidateEmployees
+        isViewInfo={isModalVisible}
+        handleAddContactClose={handleValidateEmployeeClose}
+        name={findIdInterview?.fullName}
+        arName={formData?.arName}
+        CIN={formData?.CIN}
+        nationality={formData?.nationality}
+        birthDate={findIdInterview?.birthayDate}
+        gender={selectedGenderType}
+        phoneNumber={formData?.phoneNumber}
+        familyStatus={findIdInterview?.familySituation}
+        residenceAdress={formData?.residenceAdress}
+        arResidenceAdress={formData?.arResidenceAdress}
+        passportnumber={formData?.passportnumber}
+        passportSubmitdate={formData?.passportSubmitdate?.format('YYYY-MM-DD')}
+        passport_finish_date={formData?.passport_finish_date?.format('YYYY-MM-DD')}
+        position={findIdInterview?.positionToBeFilled}
+        arPosition={positionfieledarabe}
+        departement={findIdInterview?.department}
+        //type_Emp={formData?.type_Emp}
+        type_Emp={employeeType}
+        projname={findIdInterview?.projname}
+        email={formData?.email}
+        joinDate={findIdInterview?.expectedJoinDate}
+        finishDate={formData?.finishDate?.format('YYYY-MM-DD')}
+        companyType={formData?.companyType}
+        traveldate={formData?.traveldate?.format('YYYY-MM-DD')}
+        endTravelDate={formData?.endTravelDate?.format('YYYY-MM-DD')}
+        destination={formData?.destination}
+        arDestination={formData?.arDestination}
+        salary={findIdInterview?.propsedsalary}
+        dailyRate={findIdInterview?.dailyRate}
+        //contractType={formData.contractType}
+        contractType={contratType}
+        emergencyName={formData?.emergencyName}
+        emergencyRelation={formData.emergencyRelation}
+        phoneEmergency={formData?.phoneEmergency}
+        contractCategory={formData?.contractCategory}
+        projName={findIdInterview?.projname}
+        duration={formData?.duration}
+        primeProductivity={formData?.primeProductivity}
+
+      />
 
 
 
@@ -1254,28 +1308,32 @@ const AddEmployeeTemporelleConstructionStaff = ({  listInterview }) => {
 
       {/* <button onClick={ContratB1}>Contrat B1</button> */}
       {/*alert*/}
-      {showAlert && (
-        <Alert
-          message="Success"
-          description="Employee data saved successfully"
-          type="success"
-          showIcon
-          closable
-          onClose={() => setShowAlert(false)}
-          style={{ marginBottom: 16, marginTop: 20, height: 100 }}
-        />
-      )}
-      {showAlertError && (
-        <Alert
-          message="Failed"
-          description="Employee data saved Failed"
-          type="error"
-          showIcon
-          closable
-          onClose={() => setShowAlertError(false)}
-          style={{ marginBottom: 16, marginTop: 20, height: 100 }}
-        />
-      )}
+      {
+        showAlert && (
+          <Alert
+            message="Success"
+            description="Employee data saved successfully"
+            type="success"
+            showIcon
+            closable
+            onClose={() => setShowAlert(false)}
+            style={{ marginBottom: 16, marginTop: 20, height: 100 }}
+          />
+        )
+      }
+      {
+        showAlertError && (
+          <Alert
+            message="Failed"
+            description="Employee data saved Failed"
+            type="error"
+            showIcon
+            closable
+            onClose={() => setShowAlertError(false)}
+            style={{ marginBottom: 16, marginTop: 20, height: 100 }}
+          />
+        )
+      }
 
       {/*//Modal de confirmation de save */}
 

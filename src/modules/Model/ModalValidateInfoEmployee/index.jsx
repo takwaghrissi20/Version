@@ -41,7 +41,8 @@ const ModalView = ({
   phoneEmergency,
   contractCategory,
   projName,
-  duration
+  duration,
+  primeProductivity
 
 
 }) => {
@@ -94,6 +95,7 @@ const ModalView = ({
         contractCategory={contractCategory}
         projName={projName}
         duration={duration}
+        primeProductivity={primeProductivity}
       
       />
     </StyledContactModal>

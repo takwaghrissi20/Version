@@ -28,6 +28,10 @@ const ContartTypeB1 = React.lazy(() =>
 const ContartTypeB2 = React.lazy(() =>
   import('../../../modules/ContratConstructionTeam/ContratB2'),
 );
+const ContartTypeB3 = React.lazy(() =>
+  import('../../../modules/ContratConstructionTeam/ContratB3'),
+);
+
 const ContratStatus = React.lazy(() =>
   import('../../../modules/HRGetsCompany/ContratStatus'),   
 );
@@ -66,7 +70,9 @@ const ContartTypeE3= React.lazy(() =>
 const ContratE3S2= React.lazy(() =>
   import('../../../modules/ContratStaffManagement/ContratE3S2'),
 );
-
+const ContratB2= React.lazy(() =>
+  import('../../../modules/ContratConstructionTeam/ContratB2'),
+);
 
 export const ecommerceConfig = [
   {
@@ -122,6 +128,13 @@ export const ecommerceConfig = [
     path: '/HRGetsCompany/ContartTypeB2',
     element: <ContartTypeB2 />,
   },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/HRGetsCompany/ContartTypeB3',
+    element: <ContartTypeB3 />,
+  },
+  //Contrat B3
+
 //C
 {
   permittedRole: RoutePermittedRole.User,
@@ -172,7 +185,16 @@ export const ecommerceConfig = [
   path: '/HRGetsCompany/StaffManagement/SERVICE2-E3',
   element: <ContratE3S2/>,
 },
+//Construction Team Contract 
+{
+  permittedRole: RoutePermittedRole.User,
+  path: '/HRGetsCompany/ConstructionStaff/ContartB2',
+  element: <ContratB2/>,
+},
 
+
+
+//End Construction Team Contract
 
 
 
