@@ -1,6 +1,11 @@
 import React from 'react';
 
-import {  StyledOrderTable } from '../index.styled';
+import {  StyledOrderTable,StyledAction } from '../index.styled';
+import { MoreOutlined } from '@ant-design/icons';
+import { GrFormView } from "react-icons/gr";
+import { AiFillEdit } from "react-icons/ai";
+import { MdDelete } from "react-icons/md";
+import { RiAiGenerate } from "react-icons/ri";
 
 
 const columns = [
@@ -55,19 +60,13 @@ const columns = [
     key: 'id',
     render: (text, record) => (
       <>
-      <StyledAction  onClick={() => findId(record?.id)}>
+      {/* <StyledAction  onClick={() => findId(record?.id)}>
       <GrFormView className='iconeView'
         onClick={handleAddContratOpen}
       
       
       ></GrFormView>
-        {/* <Button
-          onClick={handleAddContratOpen}
-          type='primary'
-          shape='circle'
-          className='icon-btn icon-btn-eye'
-          icon={<AiOutlineEye />}
-        /> */}
+       
         <ContratStatusView
           isViewContrat={isViewContrat}
           handleAddContactClose={handleAddContartClose}
@@ -89,13 +88,7 @@ const columns = [
            onClick={handleEditContratOpen}
          
          className='iconeEdit'></AiFillEdit>
-         {/* <Button
-          type='primary'
-          shape='circle'
-          className='icon-btn icon-btn-eye'
-          onClick={handleEditContratOpen}
-          icon={<RiEditFill />}
-        /> */}
+   
    
         <ContratStatusEdit 
           isEditContrat={isEditContrat}        
@@ -170,7 +163,7 @@ const columns = [
           <CiSaveDown2 id="downloadButton" className='iconeDownload' />
         )}
        
-         </StyledAction>
+         </StyledAction> */}
         
       
      
