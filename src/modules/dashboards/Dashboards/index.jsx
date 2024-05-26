@@ -43,7 +43,7 @@ const Dashboards = () => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
-      console.log("testtttt",data)
+    
       setDatarecruitement(data);
     } catch (error) {
       console.error('Erreur lors de la récupération des données:', error);

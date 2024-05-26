@@ -1,14 +1,14 @@
 import React from 'react';
-import AreaChart from '../../../modules/thirdParty/recharts/Area';
-import BarChart from '../../../modules/thirdParty/recharts/Bar';
-import ComposedChart from '../../../modules/thirdParty/recharts/Composed';
-import LineChart from '../../../modules/thirdParty/recharts/Line';
-import PieChart from '../../../modules/thirdParty/recharts/Pie';
-import Radial from '../../../modules/thirdParty/recharts/Radial';
-import Treemap from '../../../modules/thirdParty/recharts/Treemap';
-import Scatter from '../../../modules/thirdParty/recharts/Scatter';
-import Radar from '../../../modules/thirdParty/recharts/Radar';
-import FunnelChart from '../../../modules/thirdParty/recharts/Funnel';
+import AreaChart from '../../../modules/thirdParty/visa/Area';
+import Visa from '../../../modules/thirdParty/visa/Visa';
+import ComposedChart from '../../../modules/thirdParty/visa/Composed';
+import LineChart from '../../../modules/thirdParty/visa/Line';
+import PieChart from '../../../modules/thirdParty/visa/Pie';
+import Radial from '../../../modules/thirdParty/visa/Radial';
+import Treemap from '../../../modules/thirdParty/visa/Treemap';
+import Scatter from '../../../modules/thirdParty/visa/Scatter';
+import Radar from '../../../modules/thirdParty/visa/Radar';
+import FunnelChart from '../../../modules/thirdParty/visa/Funnel';
 
 export const recharts2Configs = [
   {
@@ -17,7 +17,7 @@ export const recharts2Configs = [
   },
   {
     path: '/Hr/VisaHealth/Visa',
-    element: <BarChart />,
+    element: <Visa />,
   },
   {
     path: '/Hr/VisaHealth/HealthCertification',

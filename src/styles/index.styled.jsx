@@ -779,6 +779,7 @@ export const StyledAppMediaModal = styled(Modal)`
   display: flex;
   flex-direction: column;
 
+
   & .ant-modal-content {
     background-color: #DB6A8F;
     border-radius: 0;

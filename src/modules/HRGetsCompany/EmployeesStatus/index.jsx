@@ -379,7 +379,7 @@ const EmployeesStatus = () => {
      
       <Pagination
         currentPage={currentPage}
-        totalPages={Math.ceil(289 / pageSize)}
+        totalPages={Math.ceil(79 / pageSize)}
         handlePageChange={handlePageChangeOffice}
       />
      
