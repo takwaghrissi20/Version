@@ -91,60 +91,72 @@ const ContratViewForm = (props) => {
             </StyledContactFormItemTitle>
 
             <StyledContactFormContentField>
-
-              <Form.Item
-                className='form-field'>
-                <FloatLabel label="Id :" name="id">
+            <Form.Item className='form-field'>
+                <FloatLabel name="id">
+                  <span className='modallabel'> Id:</span>
                   <Input
                     className='Input'
-                    placeholder={id}                
-                    readOnly={true} />
-                </FloatLabel>
-
-              </Form.Item>
-              <Form.Item className='form-field'>
-                <FloatLabel label="Name :" name="name">
-                  <Input
-                    className='Input'
-                    placeholder={name}  
+                    placeholder="Id"
+                    value={id}
+                    classNames="ViewInput"
                     readOnly={true}
                   />
                 </FloatLabel>
-              </Form.Item>
-
-              <Form.Item className='form-field'>
-                <FloatLabel label="departement :" name="departement">
-                  <Input
-                    className='Input'
-                    placeholder={departement}  
-                    readOnly={true}
-                  />
-                </FloatLabel>
-              </Form.Item>
-          
+                </Form.Item>
                 <Form.Item className='form-field'>
-                <FloatLabel label="familyStatus :" name="familyStatus">
+                <FloatLabel name="name">
+                  <span className='modallabel'> Name :</span>
                   <Input
                     className='Input'
-                    placeholder={familyStatus}
-                
+                    placeholder="Id"
+                    value={name}
+                    classNames="ViewInput"
                     readOnly={true}
                   />
                 </FloatLabel>
-              </Form.Item>
+                </Form.Item>
+         
+                <Form.Item className='form-field'>
+                <FloatLabel name="departement">
+                  <span className='modallabel'> Departement :</span>
+                  <Input
+                    className='Input'
+                    placeholder="Departement"
+                    value={departement}
+                    classNames="ViewInput"
+                    readOnly={true}
+                  />
+                </FloatLabel>
+                </Form.Item>
+
+                <Form.Item className='form-field'>
+                <FloatLabel name="familyStatus">
+                  <span className='modallabel'>Family Status:</span>
+                  <Input
+                    className='Input'
+                    placeholder="Family Status"
+                    value={familyStatus}
+                    classNames="ViewInput"
+                    readOnly={true}
+                  />
+                </FloatLabel>
+                </Form.Item>
+
+                <Form.Item className='form-field'>
+                <FloatLabel name="position">
+                  <span className='modallabel'>Position:</span>
+                  <Input
+                    className='Input'
+                    placeholder="Position"
+                    value={position}
+                    classNames="ViewInput"
+                    readOnly={true}
+                  />
+                </FloatLabel>
+                </Form.Item>
             
 
-              <Form.Item
-                className='form-field'>
-                <FloatLabel label="position :" name="position">
-                  <Input                   
-                    className='Input'
-                    placeholder={position}         
-                    readOnly={true}
-
-                  />
-                </FloatLabel>
-              </Form.Item>
+          
              
              
         
@@ -159,79 +171,88 @@ const ContratViewForm = (props) => {
            
 
             <StyledContactFormContentField>
+         
               <Form.Item className='form-field'>
-                <FloatLabel label="traveldate" name="traveldate">
+                <FloatLabel name="traveldate">
+                  <span className='modallabel'>Travel Date:</span>
                   <Input
                     className='Input'
-                    placeholder={traveldate}
-                 
+                    placeholder="Travel Date"
+                    value={traveldate}
+                    classNames="ViewInput"
                     readOnly={true}
                   />
                 </FloatLabel>
-              </Form.Item>
+                </Form.Item>
+          
 
-              <Form.Item className='form-field' >
-                <FloatLabel label="destination :" name="destination">
+        
+              <Form.Item className='form-field'>
+                <FloatLabel name="destination">
+                  <span className='modallabel'>Destination:</span>
                   <Input
                     className='Input'
-                    placeholder={destination}
+                    placeholder="destination"
+                    value={destination}
+                    classNames="ViewInput"
                     readOnly={true}
-
                   />
                 </FloatLabel>
-              </Form.Item>
+                </Form.Item>
+           
               <Form.Item className='form-field'>
-                <FloatLabel label="companyType" name="companyType">
+                <FloatLabel name="companyType">
+                  <span className='modallabel'>Company Type:</span>
                   <Input
                     className='Input'
-                    placeholder={companyType}
+                    placeholder="company Type"
+                    value={companyType}
+                    classNames="ViewInput"
                     readOnly={true}
-
-
                   />
                 </FloatLabel>
-
-
-              </Form.Item>
-              <Form.Item className='form-field'>
-                <FloatLabel label="contractCategory" name="contractCategory">
-                  <Input
-                    className='Input'
+                </Form.Item>
+         
                 
-                    placeholder={contractCategory}
-                
-                    readOnly={true}
-
-                  />
-                </FloatLabel>
-
-
-              </Form.Item>
               <Form.Item className='form-field'>
-                <FloatLabel label="visaReady:" name="visaReady">
+                <FloatLabel name="contractCategory">
+                  <span className='modallabel'>Contract Category :</span>
                   <Input
                     className='Input'
-                    placeholder={visaReady}
-                   
+                    placeholder="Contract Category "
+                    value={contractCategory}
+                    classNames="ViewInput"
                     readOnly={true}
-
-
                   />
                 </FloatLabel>
-
-              </Form.Item>
+                </Form.Item>
+           
               <Form.Item className='form-field'>
-                <FloatLabel label=" contratctCopy:" name="contratctCopy">
+                <FloatLabel name="visaReady">
+                  <span className='modallabel'>Visa Ready:</span>
+                  <Input
+                    className='Input'
+                    placeholder="Visa Ready "
+                    value={visaReady}
+                    classNames="ViewInput"
+                    readOnly={true}
+                  />
+                </FloatLabel>
+                </Form.Item>
+                <Form.Item className='form-field'>
+                <FloatLabel name="contratctCopy">
+                  <span className='modallabel'>Contratct Copy:</span>
                   <Input
                     className='Input'
                     placeholder={messages['common.contratctCopy']}
-                    defaultValue={ contratctCopy}
+                    value={contratctCopy}
+                    classNames="ViewInput"
                     readOnly={true}
                   />
                 </FloatLabel>
-
-              </Form.Item>
-
+                </Form.Item>
+              
+           
             </StyledContactFormContentField>
           </StyledContactFormContentItem>
 

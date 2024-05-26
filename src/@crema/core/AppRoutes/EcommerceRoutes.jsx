@@ -7,10 +7,9 @@ const RecruitementInterview  = React.lazy(() =>
 const InterviewStatistics = React.lazy(() =>
   import('../../../modules/HRGetsCompany/InterviewStatistics'),
 );
-const Customers = React.lazy(() =>
-  import('../../../modules/HRGetsCompany/Customers'),
+const EmployeesStatus = React.lazy(() =>
+  import('../../../modules/HRGetsCompany/EmployeesStatus'),
 );
-
 const Planification = React.lazy(() => import('../../../modules/HRGetsCompany/Planification'));
 const Intergration = React.lazy(() => import('../../../modules/HRGetsCompany/Integration'));
 const IntegrationStatistics = React.lazy(() =>import('../../../modules/HRGetsCompany/IntegrationStatistics'),);
@@ -225,22 +224,14 @@ export const ecommerceConfig = [
 
   {
     permittedRole: RoutePermittedRole.User,
-    path: '/Hr/EmployeesOffice',
-    element: <Customers />,
+    path: '/Hr/EmployeesStatus',
+    element: <EmployeesStatus />,
   },
-  {
-    permittedRole: RoutePermittedRole.User,
-    path: '/Hr/EmployeesSite',
-    element:<Customers />,
-  },
+
   {
     permittedRole: RoutePermittedRole.User,
     path: '/apps/ecommerce-admin/edit-products/:id',
-    element:<Customers />,
+    element:<EmployeesStatus />,
   },
-  {
-    permittedRole: RoutePermittedRole.User,
-    path: '/Hr/EmployeesSiteOffice',
-    element: <Customers />,
-  },
+
 ];

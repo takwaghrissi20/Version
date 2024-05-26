@@ -23,7 +23,7 @@ export const StyledCustomerHeaderRight = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-left: 10px;
+ 
 
   [dir='rtl'] & {
     padding-left: 0;
@@ -69,6 +69,7 @@ export const StyledEditCustomerForm = styled(Form)`
 export const StyledCustomerTable = styled(AppTableContainer)`
   & .ant-table table {
     table-layout: auto !important;
+    text-align: center;
   }
 
   & .ant-table-thead > tr > th {
@@ -76,9 +77,10 @@ export const StyledCustomerTable = styled(AppTableContainer)`
     padding: 8px;
     font-weight: ${({ theme }) => theme.font.weight.bold};
     background-color: transparent;
+    text-align: center;
 
     &:first-child {
-      padding-left: 20px;
+
 
       [dir='rtl'] & {
         padding-left: 8px;
@@ -101,10 +103,10 @@ export const StyledCustomerTable = styled(AppTableContainer)`
 
   & .ant-table-tbody > tr > td {
     font-size: 13px;
-    padding: 12px 8px;
+    text-align: center;
 
     &:first-child {
-      padding-left: 20px;
+      text-align: center;
 
       [dir='rtl'] & {
         padding-left: 8px;
@@ -113,8 +115,7 @@ export const StyledCustomerTable = styled(AppTableContainer)`
     }
 
     &:last-child {
-      padding-right: 12px;
-      padding-left: 12px;
+      text-align: center;
     }
 
     &.customer-table-actions {
@@ -125,10 +126,10 @@ export const StyledCustomerTable = styled(AppTableContainer)`
   }
 
   & .badge {
-    padding: 3px 8px;
+    padding:20px;
     color: white;
     background-color: ${({ theme }) => theme.palette.green[6]};
-    width: 45px;
+    width: 100px;
     margin-right: 8px;
     display: flex;
     align-items: center;

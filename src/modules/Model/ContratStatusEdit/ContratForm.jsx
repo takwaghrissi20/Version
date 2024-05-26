@@ -330,67 +330,75 @@ const ContratEditForm = (props) => {
             </StyledContactFormItemTitle>
 
             <StyledContactFormContentField>
-
-              <Form.Item
-                className='form-field'>
-                <FloatLabel label="Id :" name="Id">
+            <Form.Item className='form-field'>
+                <FloatLabel name="Id">
+                  <span className='modallabel'>Id:</span>
                   <Input
                     className='Input'
-                    placeholder={id}
-
-                    readOnly={true} />
-                </FloatLabel>
-
-              </Form.Item>
-              <Form.Item className='form-field'>
-                <FloatLabel label="name :" name="name">
-                  <Input
-                    className='Input'
-                    placeholder={name}
-                    value={newName}
-                    onChange={(e) => setNewName(e.target.value)}
-                  />
-                </FloatLabel>
-              </Form.Item>
-
-              <Form.Item className='form-field'>
-                <FloatLabel label="departement :" name="Departement">
-                  <Input
-                    className='Input'
-                    placeholder={departement}
-                    //defaultValue={departement}
+                    placeholder="Id"
+                    value={id}
+                    classNames="ViewInput"
                     readOnly={true}
                   />
                 </FloatLabel>
-              </Form.Item>
+                </Form.Item>
+                <Form.Item className='form-field'>
+                <FloatLabel name="name">
+                  <span className='modallabel'>Name:</span>
+                  <Input
+                    className='Input'
+                    placeholder="name"
+                    value={newName}
+                    classNames="ViewInput"
+                    onChange={(e) => setNewName(e.target.value)}
+                  />
+                </FloatLabel>
+                </Form.Item>
+            
+                <Form.Item className='form-field'>
+                <FloatLabel name="Departement">
+                  <span className='modallabel'>Departement :</span>
+                  <Input
+                    className='Input'
+                    placeholder="name"
+                    value={departement}
+                    classNames="ViewInput"
+                    readOnly={true}
+                   
+                  />
+                </FloatLabel>
+                </Form.Item>
+
+    
+              <Form.Item className='form-field'>
+                <FloatLabel name="familyStatus">
+                  <span className='modallabel'>Family Status :</span>
+                  <Input
+                    className='Input'
+                    placeholder="Family Status"
+                    value={newfamilyStatus}
+                    classNames="ViewInput"
+                    onChange={(e) => setNewfamilyStatus(e.target.value)}
+                   
+                  />
+                </FloatLabel>
+                </Form.Item>
+
+             
 
               <Form.Item className='form-field'>
-                <FloatLabel label="familyStatus :" name="familyStatus">
+                <FloatLabel name="position">
+                  <span className='modallabel'>Position :</span>
                   <Input
                     className='Input'
-                    placeholder={familyStatus}
-                    value={newfamilyStatus}
-                    onChange={(e) => setNewfamilyStatus(e.target.value)}
-
-
-                  />
-                </FloatLabel>
-              </Form.Item>
-
-
-              <Form.Item
-                className='form-field'>
-                <FloatLabel label="position :" name="position">
-                  <Input
-                    placeholder={position}
-                    className='Input'
+                    placeholder="Position"
                     value={newposition}
+                    classNames="ViewInput"
                     onChange={(e) => setNewposition(e.target.value)}
+                   
                   />
                 </FloatLabel>
-              </Form.Item>
-
-
+                </Form.Item>
 
             </StyledContactFormContentField>
           </StyledContactFormContentItem>
@@ -401,88 +409,92 @@ const ContratEditForm = (props) => {
 
 
             <StyledContactFormContentField>
+         
+ 
+
               <Form.Item className='form-field'>
-                <FloatLabel label="traveldate" name="traveldate">
+                <FloatLabel name="traveldate">
+                  <span className='modallabel'>Travel Date:</span>
                   <Input
                     className='Input'
-                    placeholder={traveldate}
+                    placeholder="Travel Date"
                     value={newtravelDate}
+                    classNames="ViewInput"
                     onChange={(e) => setNewtravelDate(e.target.value)}
-                  
-
-
+                   
                   />
                 </FloatLabel>
-              </Form.Item>
-
-              <Form.Item className='form-field' >
-                <FloatLabel label="destination :" name="destination">
+                </Form.Item>
+      
+              <Form.Item className='form-field'>
+                <FloatLabel name="destination">
+                  <span className='modallabel'>Destination :</span>
                   <Input
                     className='Input'
-                    placeholder={destination}
+                    placeholder="destination"
                     value={newdistination}
+                    classNames="ViewInput"
                     onChange={(e) => setNewdistination(e.target.value)}
-                  
-
-
-
+                   
                   />
                 </FloatLabel>
-              </Form.Item>
+                </Form.Item>
+        
               <Form.Item className='form-field'>
-                <FloatLabel label="companyType" name="companyType">
+                <FloatLabel name="destination">
+                  <span className='modallabel'>Company Type:</span>
                   <Input
                     className='Input'
-                    placeholder={companyType}
+                    placeholder="Company Type"
                     value={newTypeCompany}
+                    classNames="ViewInput"
                     onChange={(e) => setNewTypeCompany(e.target.value)}
-                 
-
-
+                   
                   />
                 </FloatLabel>
-
-
-              </Form.Item>
+                </Form.Item>
+           
               <Form.Item className='form-field'>
-                <FloatLabel label="Contract Category" name="contractCategory">
+                <FloatLabel name="contractCategory">
+                  <span className='modallabel'>Contract Category:</span>
                   <Input
                     className='Input'
-                    placeholder={contractCategory}
-                    readOnly={true}
-
+                    placeholder="Contract Category"
+                    value={contractCategory}
+                    classNames="ViewInput"
+                    readOnly
+                   
                   />
                 </FloatLabel>
-
-
-              </Form.Item>
+                </Form.Item>
+         
               <Form.Item className='form-field'>
-                <FloatLabel label="visaReady:" name="visaReady">
+                <FloatLabel name="visaReady">
+                  <span className='modallabel'>Visa Ready:</span>
                   <Input
                     className='Input'
-                    placeholder={visaReady}
+                    placeholder="Visa Ready"
                     value={newVisaReady}
+                    classNames="ViewInput"
                     onChange={(e) => setNewvisaReady(e.target.value)}
                    
-
-
                   />
                 </FloatLabel>
-
-              </Form.Item>
-              <Form.Item className='form-field'>
-                <FloatLabel label=" contratctCopy:" name="contratctCopy">
+                </Form.Item>
+                <Form.Item className='form-field'>
+                <FloatLabel name="contratctCopy">
+                  <span className='modallabel'>Contratct Copy:</span>
                   <Input
                     className='Input'
-                    placeholder={newcontratCopy}
+                    placeholder="https://NextCloud"
                     value={newcontratCopy}
+                    classNames="ViewInput"
                     onChange={(e) => setNewcontratCopy(e.target.value)}
-
-
+                   
                   />
                 </FloatLabel>
-
-              </Form.Item>
+                </Form.Item>
+          
 
             </StyledContactFormContentField>
           </StyledContactFormContentItem>

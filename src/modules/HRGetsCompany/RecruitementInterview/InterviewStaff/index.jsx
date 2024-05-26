@@ -45,7 +45,7 @@ const StaffInterview = ({ allinterviewStaffManagement }) => {
       const data = await response.json();
       setInterviewStaff(data);
     } catch (error) {
-      console.error('Error fetching employees:', error);
+      console.error('Error fetching Interview:', error);
     }
   };
 

@@ -75,8 +75,8 @@ const fetchListEmployee = async () => {
     if (contentType && contentType.includes('application/json')) {
       const data = await response.json(); // Utilisez response.json() pour récupérer les données JSON
       const filteredData = data.filter(employee =>  
-        employee.contractCategory === 'CAT -B1' || 
-        employee.contractCategory=== 'CAT -B2' ||
+        
+        employee.contractCategory=== 'CAT-B2' ||
         employee.contractCategory === 'CAT-B3' ||
         employee.contractCategory === 'CAT-C'  ||
         employee.contractCategory === 'CAT-D'
@@ -87,15 +87,15 @@ const fetchListEmployee = async () => {
         employee.contractCategory=== 'CAT-A1' ||
         employee.contractCategory=== 'CAT-A2' ||
         employee.contractCategory === 'CAT-A3' ||
-        
+        employee.contractCategory === 'CAT-B1' || 
         employee.contractCategory === 'CAT-E1'   ||
         employee.contractCategory === 'CAT-E2'   ||
-        employee.contractCategory === 'CAT-E3'   
+        employee.contractCategory === 'SERVICE1-E3' ||
+        employee.contractCategory === 'SERVICE2-E3'
         
         
       );
-      console.log("filteredDataStaff:", filteredDataStaff);
-      console.log("Données JSON Employees filteredData:", filteredData);
+  
       setTemployees(filteredData)
       setTemployeesStaff(filteredDataStaff)
     
@@ -168,7 +168,6 @@ const items = [
       <StyledTabs defaultActiveKey='1' items={items} />
     </StyledBuyCellCard>
     </AppsContainer>
-
 
 
     

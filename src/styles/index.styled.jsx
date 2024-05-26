@@ -484,7 +484,7 @@ export const StyledAppRowContainer = styled.div`
 
 export const StyledContactModal = styled(Modal)`
   position: relative;
-  opacity:1;
+  
   
 
 

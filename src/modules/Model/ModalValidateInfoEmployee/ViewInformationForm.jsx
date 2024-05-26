@@ -152,7 +152,7 @@ const ViewInformationForm = (props) => {
         primeProductivity
       };
 
-      const response = await fetch(`http://localhost:8085/api/v1/empT/create`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

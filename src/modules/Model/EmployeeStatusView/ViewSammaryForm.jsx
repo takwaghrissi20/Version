@@ -17,12 +17,11 @@ import {
   StyledContactModalScrollbar,
 } from './index.styled';
 import FloatLabel from "./FloatLabel";
-import ViewTableTravelSammary from './ViewTableTravelSammary';
-import ViewTableMatrielsReceive from './ViewTableMatrielsReceive';
+
 
 import AppCard from '../../../@crema/components/AppCard';
 
-const SammaryForm = (props) => {
+const EmpViewForm = (props) => {
   const {
 
     setUserImage,
@@ -391,79 +390,7 @@ const SammaryForm = (props) => {
 
             </StyledContactFormContentField>
           </StyledContactFormContentItem>
-          <StyledContactFormContentItem>
-            <StyledContactFormItemTitle>
-              <p className='SousTitle'>Received Materials</p>
-
-            </StyledContactFormItemTitle>
-            <AppCard
-              className='no-card-space-ltr-rtl'
-              title={messages['dashboard.RECEIVEDMATRIALS']}
-            >
-              <ViewTableMatrielsReceive findIdDataMatriel={findIdDataMatriel} />
-            </AppCard>
-
-
-
-
-          </StyledContactFormContentItem>
-
-          <StyledContactFormContentItem>
-            <StyledContactFormItemTitle>
-              <p className='SousTitle'>Travel Date</p>
-
-            </StyledContactFormItemTitle>
-
-            {/**/}
-
-            <AppCard
-              className='no-card-space-ltr-rtl'
-              title={messages['dashboard.TravelDate']}
-            >
-              <ViewTableTravelSammary findIdDataTravel={findIdDataTravel} />
-            </AppCard>
-
-            {/* <Form.Item className='form-field'>
-              <FloatLabel name="traveldate">
-                <span className='modallabel'>Date Of Travel :</span>
-                <Input
-                  className='Input'
-                  placeholder="Date Of Travel "
-                  value={traveldate}
-                  classNames="ViewInput"
-                  readOnly={true}
-                />
-              </FloatLabel>
-            </Form.Item>
-            <Form.Item className='form-field'>
-              <FloatLabel name="destination">
-                <span className='modallabel'>From /To  :</span>
-                <Input
-                  className='Input'
-                  placeholder="From /To  "
-                  value={destination}
-                  classNames="ViewInput"
-                  readOnly={true}
-                />
-              </FloatLabel>
-            </Form.Item>
-            <Form.Item className='form-field'>
-              <FloatLabel name="Project Work">
-                <span className='modallabel'>Project Work :</span>
-                <Input
-                  className='Input'
-                  placeholder="Project Work "
-                  value={projName}
-                  classNames="ViewInput"
-                  readOnly={true}
-                />
-              </FloatLabel>
-            </Form.Item> */}
-
-
-
-
-          </StyledContactFormContentItem>
+      
 
           <StyledContactFormFooter>
             <StyledContactFormBtn
@@ -488,5 +415,5 @@ const SammaryForm = (props) => {
   );
 };
 
-export default SammaryForm;
+export default EmpViewForm;
 

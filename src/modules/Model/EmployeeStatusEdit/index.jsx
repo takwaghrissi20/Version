@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import ViewSammaryForm from './ViewSammaryForm';
+import ViewEmpForm from './EditEmpForm';
 import { StyledContactModal } from '../../../styles/index.styled';
 
 
 
 
 const ModalView = ({
-  isViewEmployee,
+  isEditEmployee,
   handleAddContactClose,
   getsId,
   nationality,
@@ -29,8 +29,7 @@ const ModalView = ({
   traveldate,
   projName,
   destination,
-  findIdDataMatriel,
-  findIdDataTravel
+ 
 
 }) => {
 
@@ -40,13 +39,13 @@ const ModalView = ({
 
     <StyledContactModal
      width={1050}
-      open={isViewEmployee}
-      onOk={ isViewEmployee}
+      open={isEditEmployee}
+      onOk={isEditEmployee}
       footer={false}
       onCancel={handleAddContactClose}
       bodyStyle={{ height:"auto" }}
     >
-      <ViewSammaryForm
+      <ViewEmpForm
         handleAddContactClose={handleAddContactClose}
         getsId={getsId}
         nationality={nationality}
@@ -68,8 +67,7 @@ const ModalView = ({
         traveldate={traveldate}
         projName={projName}
         destination={destination}
-        findIdDataMatriel={findIdDataMatriel}
-        findIdDataTravel={findIdDataTravel}
+     
      
 
       />
@@ -84,7 +82,7 @@ ModalView.defaultProps = {
 };
 
 ModalView.propTypes = {
-  isViewEmployee: PropTypes.bool.isRequired,
+  isEditEmployee: PropTypes.bool.isRequired,
   handleAddContactClose: PropTypes.func.isRequired,
   reCallAPI: PropTypes.func,
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useIntl } from 'react-intl';
 import IntlMessages from '@crema/helpers/IntlMessages';
@@ -17,12 +17,11 @@ import {
   StyledContactModalScrollbar,
 } from './index.styled';
 import FloatLabel from "./FloatLabel";
-import ViewTableTravelSammary from './ViewTableTravelSammary';
-import ViewTableMatrielsReceive from './ViewTableMatrielsReceive';
+
 
 import AppCard from '../../../@crema/components/AppCard';
 
-const SammaryForm = (props) => {
+const EmpEditForm = (props) => {
   const {
 
     setUserImage,
@@ -44,11 +43,7 @@ const SammaryForm = (props) => {
     contractNumb,
     cvCopy,
     passportCopy,
-    traveldate,
-    projName,
-    destination,
-    findIdDataMatriel,
-    findIdDataTravel
+  
 
   } = props;
 
@@ -64,8 +59,67 @@ const SammaryForm = (props) => {
   });
 
   const { messages } = useIntl();
+  const [maritalStatus,setNewMaritalStatus]=useState(familyStatus)
+  const [newTelNumber,setNewTelNumber]=useState(phoneNumber)
+  const [newFinishDate,setNewFinishDate]=useState(finishDate)
+  const [newactStatus,setNewactStatus]=useState(actStatus)
+  const [newposition,setNewposition]=useState(position)
+  const [dataEdit, setDataEdit] = useState([])
+  
+
+  const handleEdit = async (maritalStatus,newTelNumber,newFinishDate,newactStatus,newposition) => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/update`, {
+
+        method: 'PUT',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+          getsId:getsId,
+          name:name,
+          position:newposition,
+          nationality:nationality,
+          birthDate:birthDate,
+          familyStatus:maritalStatus,
+          phoneNumber:newTelNumber,
+          joinDate,
+          companyType,
+          finishDate:newFinishDate,
+          actStatus:newactStatus,
+          position:newposition,
+          getsEmail:getsEmail,
+          passportnumber:passportnumber,
+          cnss:cnss,
+          contractNumb: contractNumb,
+          cvCopy:cvCopy,
+          passportCopy:passportCopy,
+
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+
+        const responseData = await response.json();
+       
+        setDataEdit(responseData)
+        //handleAddContactClose(true)
+      }
+
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+    }
+  };
 
 
+  
   return (
     <StyledContactForm>
       <StyledContactFormHeader>
@@ -160,9 +214,10 @@ const SammaryForm = (props) => {
                       <Input
                         className='Input'
                         placeholder="Marital Status"
-                        value={familyStatus}
+                        value={maritalStatus}
                         classNames="ViewInput"
-                        readOnly={true}
+                        onChange={(e) => setNewMaritalStatus(e.target.value)}
+                      
                       />
                     </FloatLabel>
                   </Form.Item>
@@ -174,9 +229,11 @@ const SammaryForm = (props) => {
                       <Input
                         className='Input'
                         placeholder="Tel Number"
-                        value={phoneNumber}
                         classNames="ViewInput"
-                        readOnly={true}
+                        value={newTelNumber}
+                        onChange={(e) => setNewTelNumber(e.target.value)}
+                      
+                        
                       />
                     </FloatLabel>
                   </Form.Item>
@@ -219,9 +276,10 @@ const SammaryForm = (props) => {
                       <Input
                         className='Input'
                         placeholder="End Contract"
-                        value={finishDate}
                         classNames="ViewInput"
-                        readOnly={true}
+                        value={newFinishDate}
+                        onChange={(e) => setNewFinishDate(e.target.value)}
+                        
                       />
                     </FloatLabel>
                   </Form.Item>
@@ -236,9 +294,10 @@ const SammaryForm = (props) => {
                       <Input
                         className='Input'
                         placeholder="Actual Status"
-                        value={actStatus}
                         classNames="ViewInput"
-                        readOnly={true}
+                        value={newactStatus}
+                        onChange={(e) =>setNewactStatus(e.target.value)}
+                       
                       />
                     </FloatLabel>
                   </Form.Item>
@@ -250,9 +309,10 @@ const SammaryForm = (props) => {
                       <Input
                         className='Input'
                         placeholder="Position"
-                        value={position}
+                        value={newposition}
+                        onChange={(e) =>setNewposition(e.target.value)}
                         classNames="ViewInput"
-                        readOnly={true}
+                     
                       />
                     </FloatLabel>
                   </Form.Item>
@@ -391,79 +451,7 @@ const SammaryForm = (props) => {
 
             </StyledContactFormContentField>
           </StyledContactFormContentItem>
-          <StyledContactFormContentItem>
-            <StyledContactFormItemTitle>
-              <p className='SousTitle'>Received Materials</p>
-
-            </StyledContactFormItemTitle>
-            <AppCard
-              className='no-card-space-ltr-rtl'
-              title={messages['dashboard.RECEIVEDMATRIALS']}
-            >
-              <ViewTableMatrielsReceive findIdDataMatriel={findIdDataMatriel} />
-            </AppCard>
-
-
-
-
-          </StyledContactFormContentItem>
-
-          <StyledContactFormContentItem>
-            <StyledContactFormItemTitle>
-              <p className='SousTitle'>Travel Date</p>
-
-            </StyledContactFormItemTitle>
-
-            {/**/}
-
-            <AppCard
-              className='no-card-space-ltr-rtl'
-              title={messages['dashboard.TravelDate']}
-            >
-              <ViewTableTravelSammary findIdDataTravel={findIdDataTravel} />
-            </AppCard>
-
-            {/* <Form.Item className='form-field'>
-              <FloatLabel name="traveldate">
-                <span className='modallabel'>Date Of Travel :</span>
-                <Input
-                  className='Input'
-                  placeholder="Date Of Travel "
-                  value={traveldate}
-                  classNames="ViewInput"
-                  readOnly={true}
-                />
-              </FloatLabel>
-            </Form.Item>
-            <Form.Item className='form-field'>
-              <FloatLabel name="destination">
-                <span className='modallabel'>From /To  :</span>
-                <Input
-                  className='Input'
-                  placeholder="From /To  "
-                  value={destination}
-                  classNames="ViewInput"
-                  readOnly={true}
-                />
-              </FloatLabel>
-            </Form.Item>
-            <Form.Item className='form-field'>
-              <FloatLabel name="Project Work">
-                <span className='modallabel'>Project Work :</span>
-                <Input
-                  className='Input'
-                  placeholder="Project Work "
-                  value={projName}
-                  classNames="ViewInput"
-                  readOnly={true}
-                />
-              </FloatLabel>
-            </Form.Item> */}
-
-
-
-
-          </StyledContactFormContentItem>
+      
 
           <StyledContactFormFooter>
             <StyledContactFormBtn
@@ -472,6 +460,14 @@ const SammaryForm = (props) => {
               onClick={handleAddContactClose}
             >
               <IntlMessages id='common.cancel' />
+            </StyledContactFormBtn>
+            <StyledContactFormBtn
+              type='primary'
+              ghost
+           
+              onClick={() => handleEdit(newName, newfamilyStatus, newcontratCopy, newposition)}
+            >
+              <IntlMessages id='common.Edit' />
             </StyledContactFormBtn>
 
 
@@ -488,5 +484,5 @@ const SammaryForm = (props) => {
   );
 };
 
-export default SammaryForm;
+export default EmpEditForm;
 

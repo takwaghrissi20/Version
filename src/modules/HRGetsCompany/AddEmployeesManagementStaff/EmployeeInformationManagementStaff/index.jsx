@@ -85,8 +85,7 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
 
 
   ]
-  useEffect(() => {
-   
+  useEffect(() => {  
       if (selectedContractCategorie ==="CAT-B1") {
         console.log(" contractCategory", selectedContractCategorie)
         setSelectedContratType('CDD');
