@@ -1,61 +1,68 @@
-import React from 'react';
-
-import AppsHeader from '../../../../@crema/components/AppsContainer/AppsHeader';
-import { Input } from 'antd';
-
-import AppsContent from '../../../../@crema/components/AppsContainer/AppsContent';
-
+import React, { useEffect, useState } from 'react';
+import { Input, List } from 'antd';
+import AppsContainer from "../../../../@crema/components/AppsContainer"
+import OrderTable from '../DahbordsVisaExperedTable';
 import {
-  StyledOrderFooterPagination,
   StyledOrderHeader,
   StyledOrderHeaderInputView,
   StyledOrderHeaderRight,
-  StyledOrderHeaderPagination,
+  StyledOrderHeaderPagination
 } from '../../../../styles/index.styled';
-import OrderTable from '../../../../../src/modules/dashboards/Dashboards/DahbordsTable';
-import AppsContainer from "../../../../@crema/components/AppsContainer"
-import { useIntl } from 'react-intl';
+import AppsHeader from '../../../../@crema/components/AppsContainer/AppsHeader';
+import AppsContent from '../../../../@crema/components/AppsContainer/AppsContent';
 
-const TabsFormsVisa= () => {
-  const onChange = (page) => {
-    setPage(page);
+import Pagination from '../../../../@crema/components/AppsPagination';
+import clsx from 'clsx'; 
+import { useNavigate } from "react-router-dom";
+
+const VisaExpered = ({ expiredVisaData }) => {
+  const navigate = useNavigate();
+  const [searchValue, setSearchValue] = useState('');
+  const [filteredData, setFilteredData] = useState(expiredVisaData);
+
+
+  const handleSearch = (value) => {
+    setSearchValue(value);
+    // Filtrer les données selon la valeur de recherche
+    const filtered = expiredVisaData.filter(item =>
+      item.name.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredData(filtered);
+
   };
-  const onSearchOrder = (e) => {
-    setSearchQuery(e.target.value);
-    setPage(0);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
-  const { messages } = useIntl();
- 
+
   return (
- 
-      <>
-      <p>Visa Expired</p>
-      <AppsContainer
-       
-        type='bottom'
-        fullView>
-        <AppsHeader>
-          <StyledOrderHeader>
-            <StyledOrderHeaderInputView>
-              {/* <Input
-                id='user-name'
-                placeholder='Search'
-                type='search'
-                onChange={onSearchOrder}
-              /> */}
-            </StyledOrderHeaderInputView>
-            
-          </StyledOrderHeader>
-        </AppsHeader>
-
-      
-    
-       
-       
-      </AppsContainer>
-      </>
- 
+    <AppsContainer type='bottom' fullView>
+      <AppsHeader>
+        <StyledOrderHeader>
+          
+          <div style={{ marginRight: 20, boxShadow: "none !important" }}>
+            <Input.Search
+              placeholder='Search Here By Employees Name'
+              type="text"
+              onSearch={handleSearch}
+            />
+          </div>
+          <StyledOrderHeaderRight>
+         
+          </StyledOrderHeaderRight>
+        </StyledOrderHeader>
+      </AppsHeader>
+      <AppsContent
+        style={{
+          paddingTop: 10,
+          paddingBottom: 10,
+        }}>
+        <OrderTable 
+          expiredVisaData={filteredData}   
+        />
+      </AppsContent>
+    </AppsContainer>
   );
 };
 
-export default TabsFormsVisa;
+export default VisaExpered;

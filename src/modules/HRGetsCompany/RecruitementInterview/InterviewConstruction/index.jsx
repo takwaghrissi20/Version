@@ -146,7 +146,7 @@ const InterviewConstruction = ({ allinterviewConstructionTeam }) => {
                 <List
                 style={{zIndex:5, borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px",
                 background: "white", position: "absolute", top: "3.5rem", width: "15%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"}}
-                  dataSource={interviewStaffFiltrer} 
+                  dataSource={interviewConstructionTeamFiltrer} 
                   renderItem={(item) => (
                     <List.Item onClick={() => handleListItemClick(item)}>
                       {item.fullName}

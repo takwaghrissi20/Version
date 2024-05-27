@@ -19,7 +19,8 @@ const Dashboards = () => {
   const [{ apiData: crmData }] = useGetDataApi('/dashboard/crm');
   const { messages } = useIntl();
   const [datarecruitement, setDatarecruitement] = useState([]);
- 
+  const [visaExpered, setVisaExpered] = useState([]);
+  const [passportExpered, setPassportExpered] = useState([]);
   const fetchData = async () => {
     try {
       const endPoint =
@@ -49,9 +50,59 @@ const Dashboards = () => {
       console.error('Erreur lors de la récupération des données:', error);
     }
   };
+  const fetchExpiredVisa = async () => {
+  
+    try {
+     
+
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list`);
+
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch employees');
+      }
+
+      // Récupérer la date actuelle
+      const data = await response.json();
+     const currentDate = new Date();
+
+    // Filtrer les données pour ne conserver que celles dont la date de visa est expirée
+    const expiredVisaData = data.filter(employee => {
+      // Vérifier si la date de fin de visa est définie et non vide
+      if (employee.finishDateVisa) {
+        const visaDate = new Date(employee.finishDateVisa);
+        return visaDate < currentDate;
+      } else {
+        // Si la date de fin de visa n'est pas définie ou vide, exclure l'employé
+        return false;
+      }
+    });
+    /////Passport Finist Date
+    const passportfinishdate = data.filter(employee => {
+      // Vérifier si la date de fin de visa est définie et non vide
+      if (employee.passport_finish_date) {
+        const PassportDate = new Date(employee.passport_finish_date);
+        return PassportDate < currentDate;
+      } else {
+        // Si la date de fin de visa n'est pas définie ou vide, exclure l'employé
+        return false;
+      }
+    });
+    setPassportExpered(passportfinishdate)
+    setVisaExpered(expiredVisaData)
+    console.log("Données des visas expirés :", expiredVisaData);
+ 
+
+
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+    }
+
+}
   
   useEffect(() => {
     fetchData();
+    fetchExpiredVisa()
   }, [page]);
 
 
@@ -64,12 +115,12 @@ const Dashboards = () => {
     {
       label: 'Visa Expired',
       key: '2',
-      children: <TabsFormsVisa />,
+      children: <TabsFormsVisa expiredVisaData={visaExpered} />,
     },
     {
       label: 'Passport Expired',
       key: '3',
-      children: < TabsFormsPassport />,
+      children: < TabsFormsPassport passportExpered={passportExpered} />,
     },
   ];
 

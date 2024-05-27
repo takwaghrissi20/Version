@@ -1,58 +1,69 @@
-import React from 'react';
-
-import AppsHeader from '../../../../@crema/components/AppsContainer/AppsHeader';
-import { Input } from 'antd';
-
-import AppsContent from '../../../../@crema/components/AppsContainer/AppsContent';
-
+import React, { useEffect, useState } from 'react';
+import { Input, List } from 'antd';
+import AppsContainer from "../../../../@crema/components/AppsContainer"
+import OrderTable from '../DahbordsPassport Expired';
 import {
-  StyledOrderFooterPagination,
   StyledOrderHeader,
   StyledOrderHeaderInputView,
   StyledOrderHeaderRight,
-  StyledOrderHeaderPagination,
+  StyledOrderHeaderPagination
 } from '../../../../styles/index.styled';
-import OrderTable from '../../../../../src/modules/dashboards/Dashboards/DahbordsTable';
-import AppsContainer from "../../../../@crema/components/AppsContainer"
-import { useIntl } from 'react-intl';
+import AppsHeader from '../../../../@crema/components/AppsContainer/AppsHeader';
+import AppsContent from '../../../../@crema/components/AppsContainer/AppsContent';
 
-const TabsFormsPassport= () => {
-  const onChange = (page) => {
-    setPage(page);
+import Pagination from '../../../../@crema/components/AppsPagination';
+import clsx from 'clsx'; 
+import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
+import { useNavigate } from "react-router-dom";
+
+const PassportExpered = ({ passportExpered }) => {
+  const navigate = useNavigate();
+  const [searchValue, setSearchValue] = useState('');
+  const [filteredData, setFilteredData] = useState(passportExpered);
+
+
+  const handleSearch = (value) => {
+    setSearchValue(value);
+    // Filtrer les données selon la valeur de recherche
+    const filtered = passportExpered.filter(item =>
+      item.name.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredData(filtered);
+
   };
-  const onSearchOrder = (e) => {
-    setSearchQuery(e.target.value);
-    setPage(0);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
-  const { messages } = useIntl();
- 
+
   return (
- 
-      <>
-      <p>Visa Passport</p>
-      <AppsContainer      
-        type='bottom'
-        fullView>
-        <AppsHeader>
-          <StyledOrderHeader>
-            <StyledOrderHeaderInputView>
-              {/* <Input
-                id='user-name'
-                placeholder='Search'
-                type='search'
-                onChange={onSearchOrder}
-              /> */}
-            </StyledOrderHeaderInputView>
-           
-          </StyledOrderHeader>
-        </AppsHeader>
-
+    <AppsContainer type='bottom' fullView>
+      <AppsHeader>
+        <StyledOrderHeader>
           
-     
-      </AppsContainer>
-      </>
- 
+          <div style={{ marginRight: 20, boxShadow: "none !important" }}>
+            <Input.Search
+              placeholder='Search Here By Employees Name'
+              type="text"
+              onSearch={handleSearch}
+            />
+          </div>
+          <StyledOrderHeaderRight>
+         
+          </StyledOrderHeaderRight>
+        </StyledOrderHeader>
+      </AppsHeader>
+      <AppsContent
+        style={{
+          paddingTop: 10,
+          paddingBottom: 10,
+        }}>
+        <OrderTable 
+          passportExpered={filteredData}   
+        />
+      </AppsContent>
+    </AppsContainer>
   );
 };
 
-export default TabsFormsPassport;
+export default PassportExpered;
