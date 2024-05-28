@@ -315,7 +315,7 @@ console.log("selectedContratType",selectedContratType)
   const handleOpenAfter = () => {
     //e.preventDefault();
    
-    if (arName.value 
+    if (formData?.arName
       //  !CIN.value || !nationality.value || !phoneNumber.value || !selectedGenderType
       // || !residenceAdress.value || !arResidenceAdress.value || !passportnumber.value
       // || !passportSubmitdate.value || !passport_finish_date.value || !type_Emp.value
