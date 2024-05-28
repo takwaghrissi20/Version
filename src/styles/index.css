@@ -494,7 +494,9 @@ line-height:1rem;
   background: transparent;
   margin-Right: 8px;
    background-Color: transparent;
-   border-Color:transparent
+   border-Color:transparent;
+   margin-left: 8px;
+   
 
 }
 .NumberPagination{

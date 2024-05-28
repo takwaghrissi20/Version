@@ -26,6 +26,7 @@ import { useNavigate } from "react-router-dom";
 
 
 const ViewInformationForm = (props) => {
+
   const [showAlertError, setShowAlertError] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -39,7 +40,7 @@ const ViewInformationForm = (props) => {
   const [arDestinationpdf, setArDestinationpdf] = useState("");
   const [arPositionpdf, setArPositionpdf] = useState("");
 
-
+ 
   const [lastId, setLastId] = useState(0);
 
 
@@ -85,7 +86,9 @@ console.log("arPositionpdf",arPositionpdf)
     contractCategory,
     projName,
     duration,
-    cinDate
+    cinDate,
+    category,
+  
   } = props;
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -149,7 +152,8 @@ console.log("arPositionpdf",arPositionpdf)
         contractCategory,
         projName,
         duration,
-        cinDate
+        cinDate,
+        category
       };
 
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/create`, {
@@ -181,6 +185,8 @@ console.log("arPositionpdf",arPositionpdf)
       setArPositionpdf(data.arPosition)
       setLastId(data.id)
       setShowAlert(true);
+      handleAddContactClose()
+      
       // handleAddContactClose()
       // Traiter la réponse de l'API si nécessaire
     } catch (error) {
@@ -199,7 +205,7 @@ console.log("arPositionpdf",arPositionpdf)
   }, [generateBtnEnabled]);
 
   const LastIdIncremente = lastId + 1
-  console.log("arDestinationTestttt", arDestination)
+
 
   const ContratB1 = () => {
 
@@ -844,7 +850,7 @@ console.log("arPositionpdf",arPositionpdf)
                   />
                 </FloatLabel>
               </Form.Item>
-              <Form.Item className='form-field'>
+              {/* <Form.Item className='form-field'>
               <span className='modallabel'> Contrat Type :</span>
              
                 <FloatLabel name="contractType">
@@ -855,7 +861,7 @@ console.log("arPositionpdf",arPositionpdf)
                     readOnly={true}
                   />
                 </FloatLabel>
-              </Form.Item>
+              </Form.Item> */}
               <Form.Item className='form-field'>
               <span className='modallabel'> Duration:</span>
                 <FloatLabel  name="duration">
@@ -914,7 +920,7 @@ console.log("arPositionpdf",arPositionpdf)
 
             </StyledContactFormContentField>
           </StyledContactFormContentItem>
-          <StyledContactFormContentItem>
+          {/* <StyledContactFormContentItem>
             <StyledContactFormItemTitle>
               <IntlMessages id="Contract Categorie" />
             </StyledContactFormItemTitle>
@@ -934,10 +940,10 @@ console.log("arPositionpdf",arPositionpdf)
             </StyledContactFormContentField>
 
 
-          </StyledContactFormContentItem>
+          </StyledContactFormContentItem> */}
 
         </StyledContactFormContent>
-        <h2 style={{ textAlign: "center", fontWeight: "bold", paddingBottom: "25px", color: "#317AC1" }}>Please Review The employee Information For accuracy Before saving the contact</h2>
+        <h2 style={{ textAlign: "center", fontWeight: "bold", paddingBottom: "25px", color: "#317AC1" }}>Please Review The employee Information </h2>
 
 
         <StyledContactFormFooter style={{marginTop:"20px"}}>
@@ -963,13 +969,13 @@ console.log("arPositionpdf",arPositionpdf)
           >
             <IntlMessages id='common.Validate' />
           </StyledContactFormBtn> */}
-          <StyledContactGenerationFormBtn
+          {/* <StyledContactGenerationFormBtn
              type='Button'
             disabled={!generateBtnEnabled}
             onClick={SelectionnnerContrat}
           >
             Generate
-          </StyledContactGenerationFormBtn>
+          </StyledContactGenerationFormBtn> */}
           {/* <StyledContactFormBtn
             type='primary'
             ghost

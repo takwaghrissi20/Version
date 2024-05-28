@@ -33,6 +33,12 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
   const [selectedContractCategorie, setSelectedContractCategorie] = useState('');
   const [isReadOnly, setIsReadOnly] = useState(false);
 
+   const[category,setCategory]=useState("Management Staff")
+   useEffect(() => {
+    
+    console.log("categorykkkk",category)
+ 
+  }, []);
 
 
   const handleValidateEmployeeClose = () => {
@@ -125,7 +131,6 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
         console.log(" contractCategory  SERVICE2-E3")
        
        
-    
      
     };
   
@@ -309,23 +314,108 @@ console.log("selectedContratType",selectedContratType)
   };
   const handleOpenAfter = () => {
     //e.preventDefault();
+   
+    if (arName.value 
+      //  !CIN.value || !nationality.value || !phoneNumber.value || !selectedGenderType
+      // || !residenceAdress.value || !arResidenceAdress.value || !passportnumber.value
+      // || !passportSubmitdate.value || !passport_finish_date.value || !type_Emp.value
+      //  || !email.value || !finishDate.value || !selectedStatusTypeCompany
+      // || !traveldate.value || !duration.value
+      // || !emergencyName.value || !selectedRelationType || !phoneEmergency.value || !cinDate
 
-    if (!arName.value || !CIN.value || !nationality.value || !phoneNumber.value || !selectedGenderType
-      || !residenceAdress.value || !arResidenceAdress.value || !passportnumber.value
-      || !passportSubmitdate.value || !passport_finish_date.value || !type_Emp.value
-      || !email.value || !finishDate.value || !selectedStatusTypeCompany
-      || !traveldate.value || !endTravelDate.value || !destination.value
-      || !arDestination.value || !selectedContratType || !duration.value
-      || !emergencyName.value || !selectedRelationType || !phoneEmergency.value || !cinDate
-
-      || !selectedContractCategorie
+  
 
     ) {
       alert("Please complete all fields.");
       setIsModalVisible(false);
     } else {
       setIsModalVisible(true); // Affiche la modal
+      //Test Si Site Add table Visa 
+      console.log("rrrffggtyy",type_Emp.value)
+      if (type_Emp.value ==="site")
+        alert("Site.");
+      SaveVisa()
+
+    
+
+
+
+
     }
+  };
+  const SaveVisa = async () => {
+
+    try {
+
+      const endPoint =
+        process.env.NODE_ENV === "development"
+          ? "https://dev-gateway.gets-company.com"
+          : "";
+console.log("arDestination.value",formData?.arDestination)
+      const requestBody = {
+    
+       actStatus:findIdInterview?.familySituation,  
+       arDestination:formData?.arResidenceAdress,
+       arName:formData?.arName ,
+       arPosition:formData?.positionfieledarabe,
+       arResidenceAdress:formData?.arResidenceAdress,
+       birthDate:findIdInterview?.birthayDate,
+       category:"Management Staff",
+       cin:formData?.CIN,
+       cinDate:formData?.cinDate,
+       companyType:formData?.companyType,
+       dailyRate:findIdInterview?.dailyRate,
+       departement:findIdInterview?.department,
+       destination:formData?.destination,
+       duration:formData?.duration,
+       email:formData?.email,
+       emergencyName:formData?.emergencyName,
+       emergencyRelation:selectedRelationType,
+       endTravelDate:formData?.endTravelDate,
+       finishDate:formData?.finishDate?.format('YYYY-MM-DD'),
+       joinDate:findIdInterview?.expectedJoinDate,
+       name:findIdInterview?.fullName,
+       nationality:formData?.nationality,
+       passportnumber:formData?.passportnumber,
+       passportSubmitdate:formData?.passportSubmitdate,
+       passport_finish_date:formData?.passport_finish_date.format('YYYY-MM-DD'),
+       position:findIdInterview?.positionToBeFilled,
+       projName:findIdInterview?.projname,
+       residenceAdress:formData?.residenceAdress,
+       salary:findIdInterview?.propsedsalary,
+       traveldate:formData?.traveldate?.format('YYYY-MM-DD'),
+       type_Emp:formData?.type_Emp,
+      
+      };
+    console.log("bodyyyyyy",requestBody)
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/add`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      // Gérer la réponse du serveur
+      if (!response.ok) {
+       alert("Request failed")
+        throw new Error('La requête a échoué avec le code ' + response.status);
+
+      }
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
+      }
+      const data = await response.json();
+       console.log("datavisa",data)
+
+      // handleAddContactClose()
+      // Traiter la réponse de l'API si nécessaire
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données:', error);
+    }
+
   };
 
   const cancelInfo = () => {
@@ -493,7 +583,8 @@ console.log("selectedContratType",selectedContratType)
           <div>
             <Typography.Title level={4}>EMPLOYEE INFORMATION FORM</Typography.Title>
             <StyledSecondaryText>
-              Management Staff
+       
+            <p>{category}</p>
             </StyledSecondaryText>
           </div>
           {/* <div>
@@ -512,7 +603,7 @@ console.log("selectedContratType",selectedContratType)
           <Col xs={24} md={6}>
             <Typography.Title level={5}>Personal Employee <br></br> Information</Typography.Title>
             <StyledSecondaryText1>
-              View/Edit your Personal <br></br>Employee Information.
+             
             </StyledSecondaryText1>
           </Col>
           <Col xs={24} md={18}>
@@ -611,7 +702,7 @@ console.log("selectedContratType",selectedContratType)
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item
-                    label='Telephone'
+                    label='Phone Number'
                     name='phoneNumber'
                     rules={[
                       {
@@ -738,7 +829,7 @@ console.log("selectedContratType",selectedContratType)
         <AppRowContainer>
           <Col xs={24} md={6}>
             <Typography.Title level={5}>Job Information</Typography.Title>
-            <StyledSecondaryText1> View/Edit your Personal <br></br>Job Information.</StyledSecondaryText1>
+           
           </Col>
 
           <Col xs={24} md={18}>
@@ -1000,7 +1091,7 @@ console.log("selectedContratType",selectedContratType)
 
                 
 
-                <Col xs={24} md={12}>
+                {/* <Col xs={24} md={12}>
         <Form.Item label="Contrat Type" name="contractType">
           <Input 
            value={selectedContratType}
@@ -1008,7 +1099,7 @@ console.log("selectedContratType",selectedContratType)
             placeholder={selectedContratType}
             onChange={(value) => setSelectedContratType(value)} />
         </Form.Item>
-      </Col>
+      </Col> */}
 
                 {/* <Col xs={24} md={12}>
                   <Form.Item label='Contrat Type' name='contractType'
@@ -1070,7 +1161,7 @@ console.log("selectedContratType",selectedContratType)
         <AppRowContainer>
           <Col xs={24} md={6}>
             <Typography.Title level={5}>EMERGENCY Contact <br></br>Information </Typography.Title>
-            <StyledSecondaryText1> View/Edit your  EMERGENCY <br></br>  Contact Information.</StyledSecondaryText1>
+            
           </Col>
 
           <Col xs={24} md={18}>
@@ -1092,16 +1183,16 @@ console.log("selectedContratType",selectedContratType)
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label='RelationShip' name='emergencyRelation'
+                  <Form.Item label='Relationship' name='emergencyRelation'
                     rules={[
                       {
                         required: true,
-                        message: 'Please Select RelationShip',
+                        message: 'Please Select Relationship',
                       },
 
                     ]}>
                     <Select
-                      defaultValue="RelationShip"
+                      defaultValue="Relationship"
                       placeholder="type"
                       onChange={(value) => setSelectedRelationType(value)}
                       disabled={searchValue == ''}
@@ -1152,7 +1243,7 @@ console.log("selectedContratType",selectedContratType)
           </Col>
         </AppRowContainer>
         <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-        <AppRowContainer>
+        {/* <AppRowContainer>
           <Col xs={24} md={6}>
             <Typography.Title level={5}>Contract Categorie </Typography.Title>
             <StyledSecondaryText1> Download  Contrat <br></br> Type of Employees.</StyledSecondaryText1>
@@ -1160,8 +1251,8 @@ console.log("selectedContratType",selectedContratType)
 
           <Col xs={24} md={18}>
             <StyledShadowWrapper>
-              <AppRowContainer>
-                <Col xs={24} md={12}>
+              <AppRowContainer> */}
+                {/* <Col xs={24} md={12}>
                   <Form.Item label='Contract Category' name='contractCategory' rules={[{ required: true, message: 'Please Select contractCategory' }]}>
                     <Select
                       placeholder="Select Contract Type"
@@ -1176,7 +1267,7 @@ console.log("selectedContratType",selectedContratType)
                       ))}
                     </Select>
                   </Form.Item>
-                </Col>
+                </Col> */}
 
 
 
@@ -1196,11 +1287,11 @@ console.log("selectedContratType",selectedContratType)
                 </Col> */}
 
 
-
+{/* 
               </AppRowContainer>
             </StyledShadowWrapper>
           </Col>
-        </AppRowContainer>
+        </AppRowContainer> */}
 
 
         <Space
@@ -1271,6 +1362,7 @@ console.log("selectedContratType",selectedContratType)
         contractCategory={formData?.contractCategory}
         projName={findIdInterview?.projname}
         duration={formData?.duration}
+        category={category}
 
       />
 

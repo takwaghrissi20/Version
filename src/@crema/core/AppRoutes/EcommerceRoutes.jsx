@@ -42,6 +42,9 @@ const Sammuary = React.lazy(() =>
 const AddEmployees = React.lazy(() =>
   import('../../../modules/HRGetsCompany/AddEmployees/ScrumBoard'),
 );
+const AddEmployeesContratCategory = React.lazy(() =>
+  import('../../../modules/HRGetsCompany/ContratCategoryList'),
+);
 const ContartTypeC = React.lazy(() =>
   import('../../../modules/ContratConstructionTeam/ContratC'),
 );
@@ -215,6 +218,12 @@ export const ecommerceConfig = [
     path: ['/apps/scrum-board/:id', '/apps/scrum-board/ConstructionTeam','/Hr/AddEmployees'],
     element: <AddEmployees />,
   },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: ['/Hr/EmployeesCategoryContract'],
+    element: < AddEmployeesContratCategory/>,
+  },
+ 
 
   {
     permittedRole: RoutePermittedRole.User,

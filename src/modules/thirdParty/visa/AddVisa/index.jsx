@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Input, List, Col } from 'antd';
+import { Input, List, Col, Button, Flex } from 'antd';
 import OrderTable from './VisaTable';
 import Pagination from '../../../../@crema/components/AppsPagination';
 import AppPageMeta from "../../../../@crema/components/AppPageMeta";
@@ -14,6 +14,10 @@ import AppsHeader from '../../../../@crema/components/AppsContainer/AppsHeader';
 import AppCard from '../../../../@crema/components/AppCard';
 import { useIntl } from 'react-intl';
 import StatsDirCardStatics from './StatisticVisa';
+import { padding } from 'polished';
+import { GrTextAlignCenter } from 'react-icons/gr';
+import AddEmpVisa from "../../../Model/AddVisa"
+
 
 
 const AddVisa = () => {
@@ -29,8 +33,14 @@ const AddVisa = () => {
   const [requestSend, setRequestSend] = useState(0);
   const [passportSubmit, setPassportSubmit] = useState(0);
   const [numberFinalVisa, setNumberFinalVisa] = useState(0);
+  const [isAddVisa, onAddVisa] = useState(false);
+  const handleAddVisa = () => {
+    onAddVisa(true);
+  };
 
-
+  const handleCloseAddVisa = () => {
+    onAddVisa(false);
+  };
 
 
 
@@ -151,17 +161,80 @@ const AddVisa = () => {
     { title: 'Number of Passport Submitted', number: { passportSubmit }, subtitle: "Number of Passport Submitted" },
     { title: 'Number of Final Visa', number: { numberFinalVisa }, subtitle: "Number of Final Visa" },
   ];
+  const SaveVisa = async () => {
+
+    // try {
+
+    //   const endPoint =
+    //     process.env.NODE_ENV === "development"
+    //       ? "https://dev-gateway.gets-company.com"
+    //       : "";
+
+    //   const requestBody = {
+
+    //    visaReady
+    //   };
+
+    //   const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/add`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(requestBody)
+    //   });
+
+    //   // Gérer la réponse du serveur
+    //   if (!response.ok) {
+    //    alert("Request failed")
+    //     throw new Error('La requête a échoué avec le code ' + response.status);
+
+    //   }
+
+    //   const contentType = response.headers.get('content-type');
+    //   if (!contentType || !contentType.includes('application/json')) {
+    //     throw new TypeError("La réponse n'est pas au format JSON");
+    //   }
+    //   const data = await response.json();
+    //    console.log("datavisa",data)
+
+    //   // handleAddContactClose()
+    //   // Traiter la réponse de l'API si nécessaire
+    // } catch (error) {
+    //   console.error('Erreur lors de la récupération des données:', error);
+    // }
+
+
+
+  };
+
 
   return (
     <div>
       <AppPageMeta title='Visa Employees' />
+      <Button
+        style={{
+          display: "flex", flexDirection: "right", float: "right", marginLeft: "10px",
+          backgroundColor: "#2997ff", color: "white", paddingTop: "8px", paddingLeft: "2rem", paddingRight: "2rem",
+          TextAlign: "center", fontsize: "30px"
+        }}
+        onClick={handleAddVisa }
 
-      < StatsDirCardStatics
-        listVIsa={listVIsa} />
+      >
+        Add Visa
+      </Button>
+      <AddEmpVisa
+            isAddVisa={isAddVisa}        
+            handleAddContactClose={handleCloseAddVisa}
+          
+           
+          /> 
+      <div style={{ marginTop: "4rem" }}></div>
+      {/* < StatsDirCardStatics
+          listVIsa={listVIsa}/> */}
       <div style={{ backgroundColor: "white", borderRadius: "20px" }}>
         <AppsHeader>
           <StyledOrderHeader>
-            {/* <div style={{ marginRight: 20, boxShadow: "none !important",width:"20%"}}>
+            <div style={{ marginRight: 20, boxShadow: "none !important", width: "20%" }}>
               <Input.Search
                 placeholder='Search Here'
                 type="text"
@@ -177,7 +250,7 @@ const AddVisa = () => {
                 <List
                   style={{
                     zIndex: 5, borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px",
-                    background: "white", position: "absolute", top: "6rem", width:"18%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"
+                    background: "white", position: "absolute", top: "6rem", width: "18%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"
                   }}
                   dataSource={employeesFiltrer}
                   renderItem={(item) => (
@@ -187,8 +260,7 @@ const AddVisa = () => {
                   )}
                 />
               )}
-            </div> */}
-
+            </div>
 
           </StyledOrderHeader>
         </AppsHeader>
@@ -198,20 +270,22 @@ const AddVisa = () => {
         >
 
           <OrderTable className={clsx("item-hover")} dataemployeesVisa={employees} />
+          <div style={{marginTop:"10px"}}></div>
+          <StyledOrderHeaderRight>
+
+            <Pagination
+              currentPage={currentPage}
+              totalPages={Math.ceil(count / pageSize)}
+              handlePageChange={handlePageChange}
+            />
+
+
+
+          </StyledOrderHeaderRight>
         </AppCard>
-     <div style={{marginTop:"10px",marginBottom:"10px"}}>
-        <StyledOrderHeaderRight>
-
-          <Pagination
-            currentPage={currentPage}
-            totalPages={Math.ceil(count / pageSize)}
-            handlePageChange={handlePageChange}
-          />
 
 
 
-        </StyledOrderHeaderRight>
-        </div>
 
 
       </div>

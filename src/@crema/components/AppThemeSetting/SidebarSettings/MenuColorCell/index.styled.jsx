@@ -40,7 +40,7 @@ export const StyledMenuColorCellContent = styled.div`
 `;
 export const StyledMenuColorCellItem = styled.div`
   width: 100%;
-  min-height: 40px;
+  // min-height: 40px;
   padding: 10px 18px;
   white-space: nowrap;
   font-size: ${({ theme }) => theme.font.size.sm};

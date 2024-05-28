@@ -85,7 +85,8 @@ const ViewInformationForm = (props) => {
     contractCategory,
     projName,
     duration,
-    primeProductivity
+    primeProductivity,
+    category
   } = props;
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -102,6 +103,7 @@ const ViewInformationForm = (props) => {
 
 
   const SaveEmployees = async () => {
+    
     try {
       // if ( !arName || !CIN ||  !duration ||!nationality || !birthDate || !gender || !phoneNumber || !familyStatus || !residenceAdress || !arResidenceAdress || !passportnumber || !passportSubmitdate || !passport_finish_date || !position || !arPosition || !departement || !type_Emp || !projname || !email || !joinDate || !finishDate || !companyType || !traveldate || !endTravelDate || !destination || !arDestination || !salary || !dailyRate || !contractType || !emergencyName || !emergencyRelation || !phoneEmergency || !contractCategory) {
       //   alert("Please replace all the champs");
@@ -149,7 +151,8 @@ const ViewInformationForm = (props) => {
         contractCategory,
         projName,
         duration,
-        primeProductivity
+        primeProductivity,
+        category
       };
 
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/create`, {
@@ -813,7 +816,7 @@ const ViewInformationForm = (props) => {
           </StyledContactFormContentItem>
 
         </StyledContactFormContent>
-        <h2 style={{ textAlign: "center", fontWeight: "bold", paddingBottom: "25px", color: "#317AC1" }}>Please Review The employee Information For accuracy Before saving the contact</h2>
+        <h2 style={{ textAlign: "center", fontWeight: "bold", paddingBottom: "25px", color: "#317AC1" }}>Please Review The employee Information </h2> 
 
 
         <StyledContactFormFooter style={{marginTop:"20px"}}>
@@ -839,13 +842,13 @@ const ViewInformationForm = (props) => {
           >
             <IntlMessages id='common.Validate' />
           </StyledContactFormBtn> */}
-          <StyledContactGenerationFormBtn
+          {/* <StyledContactGenerationFormBtn
              type='Button'
             disabled={!generateBtnEnabled}
             onClick={SelectionnnerContrat}
           >
             Generate
-          </StyledContactGenerationFormBtn>
+          </StyledContactGenerationFormBtn> */}
           {/* <StyledContactFormBtn
             type='primary'
             ghost

@@ -313,7 +313,7 @@ export const StyledMenuBtn = styled(Button)`
 
 export const StyledAppContainer = styled.div`
   display: flex;
-  height: calc(100vh - 138px);
+  height: fit-content;
 
   .appMainFixedFooter & {
     height: calc(100vh - 184px) !important;
@@ -336,7 +336,7 @@ export const StyledAppContainer = styled.div`
   }
 
   @media screen and (min-width: ${({ theme }) => theme.breakpoints.xl}px) {
-    height: calc(100vh - 153px);
+    height: fit-content
 
     .appMainFixedFooter &,
     .appMainFooter & {

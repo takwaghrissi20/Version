@@ -16,7 +16,7 @@ const routesConfig = [
   {
     id: "dashboards",
     title: "Application",
-    messageId: "sidebar.application",
+    messageId: "",
     type: "group",
     children: [
       
@@ -33,7 +33,7 @@ const routesConfig = [
   {
     id: "HR Administrator",
     title: "HR Administrator",
-    messageId: "sidebar.apps",
+    messageId: "",
     type: "group",
     children: [
      
@@ -95,7 +95,13 @@ const routesConfig = [
             id: "AddEmployees",
             title: "AddEmployee",
             messageId: "sidebar.hr.AddEmployees",
-            url: "/Hr/AddEmployees",
+            url:"/Hr/AddEmployees",
+          },
+          {
+            id: "CategoryContract",
+            title: "Category Contract",
+            messageId: "sidebar.hr.CategoryContract",
+            url:"/Hr/EmployeesCategoryContract",
           },
           {
             id: "contractList",
@@ -120,7 +126,7 @@ const routesConfig = [
   {
     id: "HREmployeeRelation",
     title: "HREmployeeRelation",
-    messageId: "sidebar.HREmployeeRelationAttendance",
+    messageId: "",
     type: "group",
     children: [
     
@@ -198,7 +204,7 @@ const routesConfig = [
   {
     id: "HRCordinator",
     title: "HRCordinator",
-    messageId: "sidebar.HrCoordinator",
+    messageId: "",
     type: "group",
     children: [
     
@@ -232,6 +238,13 @@ const routesConfig = [
             title: "Travel",
             messageId: "sidebar.general.travel",
             url: "/Hr/Visa/Travel",
+          },
+           
+          {
+            id: "VisaHealth",
+            title: "VisaHealth",
+            messageId: "sidebar.general.ADDVisaHealth",
+            url: "/Hr/VisaHealth/AddVisa",
           },
         
           {

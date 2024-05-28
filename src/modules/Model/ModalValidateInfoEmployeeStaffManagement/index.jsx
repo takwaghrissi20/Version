@@ -43,7 +43,8 @@ const ModalView = ({
   projName,
   duration,
   dailyRate,
-  cinDate
+  cinDate,
+  category
 
 
 }) => {
@@ -97,6 +98,7 @@ const ModalView = ({
         duration={duration}
         dailyRate={dailyRate}
         cinDate={cinDate}
+        category={category}
       
       />
     </StyledContactModal>

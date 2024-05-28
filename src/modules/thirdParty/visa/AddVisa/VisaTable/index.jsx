@@ -60,13 +60,13 @@ const OrderTable = ({ dataemployeesVisa }) => {
       render: (text) => text === null || text === undefined ? 'null' : text
     },
     {
-      title: 'Position',
-      dataIndex: 'position',
-      key: 'position',
+      title: 'PASSPORT NUMBER',
+      dataIndex: 'passportnumber',
+      key: 'passportnumber',
       render: (text) => text === null || text === undefined ? 'null' : text
     },
     {
-      title: 'Passport Number',
+      title: 'Date VISA',
       dataIndex: 'dateVisa',
       key: 'dateVisa',
       render: (text) => text === null || text === undefined ? 'null' : text
@@ -78,73 +78,44 @@ const OrderTable = ({ dataemployeesVisa }) => {
       render: (text) => text === null || text === undefined ? 'null' : text
     },
     {
-      title: 'Projet ',
+      title: 'Visa Cable ',
       dataIndex: 'vCableReceive',
       key: 'vCableReceive',
       render: (text) => text === null || text === undefined ? 'null' : text
     },
     {
-      title: 'Fetness Certificate',
-      dataIndex: 'vCableReceive',
-      key: 'vCableReceive',
-      render: (text) => text === null || text === undefined ? 'null' : text
-    },
-    {
-      title: 'Hepatitie',
-      dataIndex: 'vCableReceive',
-      key: 'vCableReceive',
-      render: (text) => text === null || text === undefined ? 'null' : text
-    },
-    {
-      title: 'IDZ/HIV',
-      dataIndex: 'vCableReceive',
-      key: 'vCableReceive',
-      render: (text) => text === null || text === undefined ? 'null' : text
-    },
-    {
-      title: 'Visa Requested',
+      title: 'Date Visa Cable',
       dataIndex: 'vCabledate',
       key: 'vCabledate',
       render: (text) => text === null || text === undefined ? 'null' : text
     },
     {
-      title: 'Visa Cable Received ',
+      title: 'Visa Ready',
       dataIndex: ' visaReady',
       key: ' visaReady',
       render: (text) => text === null || text === undefined ? 'null' : text
     },
     {
-      title: 'Passport Submitted',
-      dataIndex: 'visaReady',
-      key: ' visaReady',
-      render: (text) => text === null || text === undefined ? 'null' : text
-    },
-    {
-      title: 'Visa Ready ',
-      dataIndex: 'finishDateVisa',
-      key: 'finishDateVisa',
-      render: (text) => text === null || text === undefined ? 'null' : text
-    },
-    {
-      title: 'Visa Finish Date ',
+      title: 'FINISH DATE',
       dataIndex: 'finishDateVisa',
       key: 'finishDateVisa',
       render: (text) => text === null || text === undefined ? 'null' : text
     },
    
+   
     
-    // {
-    //   title: 'Actions',
-    //   dataIndex: 'actions',
-    //   key: 'actions',
-    //   fixed: 'center',
-    //   className: 'customer-table-actions',
-    //   render: (text, record) => (
-    //     <StyledAction>
-    //       <AiFillEdit onClick={() => findId(record?.getsId)} className='iconeEdit' />
-    //     </StyledAction>
-    //   ),
-    // },
+    {
+      title: 'Actions',
+      dataIndex: 'actions',
+      key: 'actions',
+      fixed: 'center',
+      className: 'customer-table-actions',
+      render: (text, record) => (
+        <StyledAction>
+          <AiFillEdit onClick={() => findId(record?.getsId)} className='iconeEdit' />
+        </StyledAction>
+      ),
+    },
   ];
   const [tableHeight, setTableHeight] = useState('auto');
 

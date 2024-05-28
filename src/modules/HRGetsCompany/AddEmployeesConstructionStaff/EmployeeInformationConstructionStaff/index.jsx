@@ -30,6 +30,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
   const [isTargetproductivityVisible, setIsTargetproductivityVisible] = useState(false);
   const [contratType, setContratType] = useState("CDD");
   const [employeeType, setEmployeeType] = useState("Site");
+  const[category,setCategory]=useState("Construction Staff")
   console.log("setContratType",contratType)
   const handleValidateEmployeeClose = () => {
     setIsModalVisible(false);
@@ -302,23 +303,24 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
   };
   const handleOpenAfter = () => {
     //e.preventDefault();
+    setIsModalVisible(true)
 
-    if (!arName.value || !CIN.value || !nationality.value || !phoneNumber.value || !selectedGenderType
-         || !residenceAdress.value  || !arResidenceAdress.value || !passportnumber.value 
-         || !passportSubmitdate.value || !passport_finish_date.value 
-         || !email.value  || !finishDate.value || !selectedStatusTypeCompany
-         || !traveldate.value || !endTravelDate.value || !destination.value
-         || !arDestination.value || !duration.value
-         || !emergencyName.value || !selectedRelationType || !phoneEmergency.value 
+    //  if (!arName.value 
+    //   // !arName.value || !CIN.value || !nationality.value || !phoneNumber.value || !selectedGenderType
+    //     //  || !residenceAdress.value  || !arResidenceAdress.value || !passportnumber.value 
+    //     //  || !passportSubmitdate.value || !passport_finish_date.value 
+    //     //  || !email.value  || !finishDate.value || !selectedStatusTypeCompany
+    //     //  || !traveldate.value || !endTravelDate.value || !destination.value
+    //     //  || !arDestination.value || !duration.value
+    //     //  || !emergencyName.value || !selectedRelationType || !phoneEmergency.value 
 
-        || !selectedContractCategorie
 
-    ) {
-       alert("Please complete all fields.");
-       setIsModalVisible(false);
-    } else {
-       setIsModalVisible(true); // Affiche la modal
-    }
+    // ) {
+    //    alert("Please complete all fields.");
+    //    setIsModalVisible(false);
+    // } else {
+    //    setIsModalVisible(true); // Affiche la modal
+    // }
   };
   const cancelInfo = () => {
     form.setFieldsValue({
@@ -493,7 +495,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
           <div>
             <Typography.Title level={4}>EMPLOYEE INFORMATION FORM</Typography.Title>
             <StyledSecondaryText>
-              Construction Staff
+            <p>{category}</p>
             </StyledSecondaryText>
           </div>
           {/* <div>
@@ -511,9 +513,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
         <AppRowContainer>
           <Col xs={24} md={6}>
             <Typography.Title level={5}>Personal Employee <br></br> Information</Typography.Title>
-            <StyledSecondaryText1>
-              View/Edit your Personal <br></br>Employee Information.
-            </StyledSecondaryText1>
+           
           </Col>
           <Col xs={24} md={18}>
             <StyledShadowWrapper>
@@ -723,7 +723,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
         <AppRowContainer>
           <Col xs={24} md={6}>
             <Typography.Title level={5}>Job Information</Typography.Title>
-            <StyledSecondaryText1> View/Edit your Personal <br></br>Job Information.</StyledSecondaryText1>
+          
           </Col>
 
           <Col xs={24} md={18}>
@@ -785,7 +785,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
                  
                   </Form.Item>
                 </Col> */}
-                <Col xs={24} md={12}>
+                {/* <Col xs={24} md={12}>
   <Form.Item label='Employee Type' name='type_Emp'
    
   >
@@ -795,7 +795,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
       placeholder='Site/Site&&Office /Offic'
     />
   </Form.Item>
-</Col>
+</Col> */}
 
 
 
@@ -993,7 +993,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
                     <Input placeholder={findIdInterview?.dailyRate} readOnly={true} />
                   </Form.Item>
                 </Col>
-                <Col xs={24} md={12}>
+                {/* <Col xs={24} md={12}>
                   <Form.Item label='Contrat Type' name='contractType'
                   
                  
@@ -1005,7 +1005,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
                      placeholder='Contrat Type'
                   />
                   </Form.Item>
-                </Col>
+                </Col> */}
 
                 {/* <Col xs={24} md={12}>
                   <Form.Item label='Contrat Type' name='contractType'
@@ -1064,7 +1064,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
         <AppRowContainer>
           <Col xs={24} md={6}>
             <Typography.Title level={5}>EMERGENCY Contact <br></br>Information </Typography.Title>
-            <StyledSecondaryText1> View/Edit your  EMERGENCY <br></br>  Contact Information.</StyledSecondaryText1>
+           
           </Col>
 
           <Col xs={24} md={18}>
@@ -1086,16 +1086,16 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label='RelationShip' name='emergencyRelation'
+                  <Form.Item label='Relationship' name='emergencyRelation'
                     rules={[
                       {
                         required: true,
-                        message: 'Please Select RelationShip',
+                        message: 'Please Select Relationship',
                       },
 
                     ]}>
                     <Select
-                      defaultValue="RelationShip"
+                      defaultValue="Relationship"
                       placeholder="type"
                       onChange={(value) => setSelectedRelationType(value)}
                       disabled={searchValue == ''}
@@ -1144,7 +1144,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
           </Col>
         </AppRowContainer>
         <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-        <AppRowContainer>
+        {/* <AppRowContainer>
           <Col xs={24} md={6}>
             <Typography.Title level={5}>Contract Categorie </Typography.Title>
             <StyledSecondaryText1> Download  Contrat <br></br> Type of Employees.</StyledSecondaryText1>
@@ -1166,7 +1166,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
                   >
                     <Select
                       disabled={searchValue == ''}
-                      //defaultValue={ListContrat?.[0]?.type}
+      
                       placeholder="type"
                       onChange={(value) => setSelectedContractCategorie(value)}
                       style={{ minWidth: 150 }}
@@ -1207,29 +1207,10 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
 
 
 
-
-
-                {/* <Col xs={24} md={12}>
-                  {showAlert && (
-                    <Form.Item label='Download Contract For Employee:'>
-                      <Button onClick={SelectionnnerContrat}>Generate Contract</Button>
-                    </Form.Item>
-                  )}
-                </Col> */}
-                {/* <Col xs={24} md={12}>
-                  {showAlert && (
-                    <Form.Item label='Download Contract Type:'>
-                      <BsDownload style={{ fontSize: 20, color: "rgba(41,151,255,0.5)" }} />
-                    </Form.Item>
-                  )}
-                </Col> */}
-
-
-
               </AppRowContainer>
             </StyledShadowWrapper>
           </Col>
-        </AppRowContainer>
+        </AppRowContainer> */}
 
 
         <Space
@@ -1298,6 +1279,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
         projName={findIdInterview?.projname}
         duration={formData?.duration}
         primeProductivity={formData?.primeProductivity}
+        category={category}
 
       />
 

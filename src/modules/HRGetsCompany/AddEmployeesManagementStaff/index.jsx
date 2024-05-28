@@ -13,7 +13,7 @@ import AppCard from '../../../@crema/components/AppCard';
 import AppsHeader from '../../../@crema/components/AppsContainer/AppsHeader';
 import EmployeeInformation from './EmployeeInformationManagementStaff'
 
-const AddEmployeesConstructionStaff = () => {
+const AddEmployeesManagementStaff= () => {
   const [listInterview, setListInterview] = useState([]);
   const navigate = useNavigate();
   
@@ -62,13 +62,12 @@ const AddEmployeesConstructionStaff = () => {
         <AppPageMeta title='ConstructionStaff' />
     <div style={{marginBottom:"20"}}>
     
-       
+{/*        
           <StyledScrumBoardDetailTitle onClick={onGoToBoardList}>
            Add Employees Id 
           </StyledScrumBoardDetailTitle>
-          &gt; Add Employee Management Staff
+          &gt; Add Employee Management Staff */}
         
-      
       <AppAnimate animation='transition.slideUpIn' delay={200}>
     
       <AppRowContainer style={{marginTop:20}}>
@@ -113,4 +112,4 @@ const AddEmployeesConstructionStaff = () => {
   );
 };
 
-export default AddEmployeesConstructionStaff;
+export default AddEmployeesManagementStaff;

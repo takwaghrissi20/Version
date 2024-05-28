@@ -92,8 +92,7 @@ const fetchListEmployee = async () => {
         employee.contractCategory === 'CAT-E2'   ||
         employee.contractCategory === 'SERVICE1-E3' ||
         employee.contractCategory === 'SERVICE2-E3'
-        
-        
+              
       );
   
       setTemployees(filteredData)
@@ -123,7 +122,6 @@ const items = [
 ];
 
 
-  
   return (
     <>
     <AppPageMeta title='Orders' />

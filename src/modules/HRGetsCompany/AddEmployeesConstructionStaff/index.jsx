@@ -62,13 +62,13 @@ const AddEmployeesConstructionStaff = () => {
        <>
         <AppPageMeta title='ConstructionStaff' />
         <div style={{marginBottom:"20"}}>
-    
+{/*     
         <>
           <StyledScrumBoardDetailTitle onClick={onGoToBoardList}>
            Add Employees Id 
           </StyledScrumBoardDetailTitle>
           &gt; Add Employee Construction Staff
-       </>   
+       </>    */}
       
       <AppAnimate animation='transition.slideUpIn' delay={200}>
     

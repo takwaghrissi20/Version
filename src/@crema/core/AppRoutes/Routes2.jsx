@@ -1,5 +1,5 @@
 import React from 'react';
-import AreaChart from '../../../modules/thirdParty/visa/Area';
+
 import ComposedChart from '../../../modules/thirdParty/visa/Composed';
 import LineChart from '../../../modules/thirdParty/visa/Line';
 import PieChart from '../../../modules/thirdParty/visa/Pie';
@@ -12,11 +12,11 @@ import FunnelChart from '../../../modules/thirdParty/visa/Funnel';
 export const recharts2Configs = [
   {
     path: '/Hr/Attendances/SiteTimeSheet',
-    element: <AreaChart />,
+    element:<ComposedChart />,
   },
   {
     path: '/Hr/Attendances/OfficeTimeSheet',
-    element: <AreaChart />,
+    element: <ComposedChart />,
   },
   {
     path: '/third-party/recharts/composed',

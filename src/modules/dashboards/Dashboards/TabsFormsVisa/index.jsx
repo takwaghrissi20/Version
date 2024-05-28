@@ -10,9 +10,6 @@ import {
 } from '../../../../styles/index.styled';
 import AppsHeader from '../../../../@crema/components/AppsContainer/AppsHeader';
 import AppsContent from '../../../../@crema/components/AppsContainer/AppsContent';
-
-import Pagination from '../../../../@crema/components/AppsPagination';
-import clsx from 'clsx'; 
 import { useNavigate } from "react-router-dom";
 
 const VisaExpered = ({ expiredVisaData }) => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import AreaChart from '../../../modules/thirdParty/visa/Area';
+import AddVisa from '../../../modules/thirdParty/visa/AddVisa';
 import Visa from '../../../modules/thirdParty/visa/Visa';
 import ComposedChart from '../../../modules/thirdParty/visa/Composed';
 import LineChart from '../../../modules/thirdParty/visa/Line';
@@ -13,12 +13,18 @@ import FunnelChart from '../../../modules/thirdParty/visa/Funnel';
 export const recharts2Configs = [
   {
     path: '/Hr/Visa/Travel',
-    element: <AreaChart />,
+    element: <LineChart />,
   },
+  {
+    path: '/Hr/VisaHealth/AddVisa',
+    element: <AddVisa />,
+  },
+
   {
     path: '/Hr/VisaHealth/Visa',
     element: <Visa />,
   },
+  
   {
     path: '/Hr/VisaHealth/HealthCertification',
     element: <ComposedChart />,

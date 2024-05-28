@@ -1,12 +1,77 @@
-import AppScrollbar from '@crema/components/AppScrollbar';
+import AppScrollbar from '../../../@crema/components/AppScrollbar';
 import { Avatar, Button, Form, Modal } from 'antd';
 import styled from 'styled-components';
+import AppTableContainer from '../../../@crema/components/AppTableContainer';
 
+export const StyledContactGenerationFormBtn = styled(Button)`
+  min-width: 100px;
+  margin-left: 10px;
+  background-color: ${({ disabled }) => (disabled ? '#e5e7e6' : '#a8c5e6')}; 
+   color: ${({ disabled }) => (disabled ? '#000' : '#fff')}; 
+  border: none;
+  border-radius: ${({ theme }) => theme.sizes.borderRadius.base};
+  margin-right:30px;
+  padding: 8px 16px;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};  
+`;
 export const StyledContactModal = styled(Modal)`
   position: relative;
 
   & .ant-modal-body {
     padding: 0;
+  }
+`;
+export const StyledTravelTable = styled(AppTableContainer)`
+  & .ant-table-thead > tr > th {
+    border-bottom: 0 none;
+    font-size: 13px;
+    padding: 8px;
+    font-weight: ${({ theme }) => theme.font.weight.bold};
+    background-color: transparent;
+    color: ${({ theme }) => theme.palette.text.primary};
+
+    &:first-child {
+   
+
+      [dir='rtl'] & {
+       
+      }
+    }
+
+    &:last-child {
+   
+
+      [dir='rtl'] & {
+     
+      }
+    }
+  }
+
+  & .ant-table-tbody > tr > td {
+    border-bottom: 0 none;
+    
+    font-size: 13px;
+    padding: 6px 8px;
+
+    &:first-child {
+      padding-left: 20px;
+
+      [dir='rtl'] & {
+        padding-left: 0;
+        padding-right: 20px;
+       
+      }
+    }
+
+    &:last-child {
+      padding-right: 20px;
+
+      [dir='rtl'] & {
+        padding-right: 0;
+        padding-left: 20px;
+        background: #708090;
+      }
+    }
   }
 `;
 
@@ -133,7 +198,6 @@ export const StyledContactFormFooter = styled.div`
   border-radius: 0 0 ${({ theme }) => theme.sizes.borderRadius.base}
     ${({ theme }) => theme.sizes.borderRadius.base};
   text-align: right;
-  margin: 0 auto; /* Ajout de cette ligne */
 
   [dir='rtl'] & {
     text-align: left;
@@ -159,27 +223,12 @@ export const StyledContactFormBtn = styled(Button)`
   margin-right:30px
 
 `;
-export const StyledContactGenerationFormBtn = styled(Button)`
-  min-width: 100px;
-  margin-left: 10px;
-  background-color: ${({ disabled }) => (disabled ? '#e5e7e6' : '#a8c5e6')}; 
-  color: ${({ disabled }) => (disabled ? '#000' : '#fff')}; 
-  border: none;
-  border-radius: ${({ theme }) => theme.sizes.borderRadius.base};
+export const StyledValidateContactFormBtn = styled(Button)`
+  padding: 0 32px;
+  height: 36px;
   margin-right:30px;
-  padding: 8px 16px;
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')}; /* Curseur différent lorsque le bouton est désactivé */
-`;
-export const StyledContactValidationFormBtn= styled(Button)`
-  min-width: 150px;
-  padding:1rem;
-  margin-left: 10px;
-  background-color: #18534F; 
-  color: #fff;
-  margin-right:30px;
-  border: none;
-  border-radius: ${({ theme }) => theme.sizes.borderRadius.base};
-  padding: 8px 16px;
-  cursor:pointer,
-`;
+  background-color:#7AA95C;
+  border-color:white
+  
 
+`;

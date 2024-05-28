@@ -23,7 +23,7 @@ export const StyledVerticalNav = styled(Menu)`
     padding-right: 12px;
     color: inherit;
     font-weight: 500;
-    min-height: 40px;
+    // min-height: 40px;
     display: flex;
     flex-direction: column;
     justify-content: center;
