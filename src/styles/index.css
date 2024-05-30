@@ -379,7 +379,31 @@ line-height:1rem;
   transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   margin: 8px;
   opacity: 0.5;
-  align-items: center
+  align-items: center;
+  width:30px;
+  height: 30px;
+
+}
+.iconeEditSave{
+  border:solid 1px green;
+  padding: 15;
+  font-size: 24px;
+  border-radius: 100%;
+  color: green;
+  cursor: pointer;
+  justify-content:center;
+  /* transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; */
+  margin: 8px;
+  opacity: 0.5;
+  font-size: 20px;
+  align-items: center;
+  width:30px;
+  height: 30px;
+
+
+}
+.iconeEditSave:hover{
+  opacity: 1
 
 }
 .iconeEdit:hover{
@@ -527,9 +551,12 @@ font-weight: bold;
   padding-bottom: 15px;
 }
 
+.SelectModal{
 
-
-
+ width: 95% !important;
+ margin-right: 5px;
+ margin-left: 5px ;
+}
 
 
 

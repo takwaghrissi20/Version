@@ -1367,7 +1367,7 @@ console.log(" setIsNoCheckeddddFinnnaaaaaaaaaaaal",CheckedFinalGotest2)
                 
                 </Form.Item>
                 <Col xs={24} md={12}>
-                <Form.Item label='Proposed Salary' name='Proposed Salary'
+                <Form.Item label='Proposed Office Salary' name='Proposed Salary'
                   rules={[
                     { required: true, message: 'Please input your Proposed Salary!' },
                     { pattern: /^[0-9]+$/, message: 'Proposed Salary must be a number!' },
@@ -1379,11 +1379,11 @@ console.log(" setIsNoCheckeddddFinnnaaaaaaaaaaaal",CheckedFinalGotest2)
                     value={proposedSalary}
                     onChange={(e) => setProposedSalary(e.target.value)}
 
-                    placeholder='Proposed Salary' />
+                    placeholder='Proposed Office Salary' />
                 </Form.Item>
               </Col>
               <Col xs={24} md={12}>
-                <Form.Item label='Proposed Daily Rate' name='Proposed Daily Rate'
+                <Form.Item label='Proposed Site Daily Rate' name='Proposed Daily Rate'
                   rules={[
                     { required: true, message: 'Please input your Proposed Daily Rate!' },
                     { pattern: /^[0-9]+$/, message: 'Proposed Daily Rate must be a number!' },
@@ -1396,7 +1396,7 @@ console.log(" setIsNoCheckeddddFinnnaaaaaaaaaaaal",CheckedFinalGotest2)
                     value={proposedDailyRate}
                     onChange={(e) =>setProposedDailyRate(e.target.value)}
 
-                    placeholder='Proposed Salary' />
+                    placeholder='Proposed Site Daily Rate' />
                 </Form.Item>
               </Col>
             

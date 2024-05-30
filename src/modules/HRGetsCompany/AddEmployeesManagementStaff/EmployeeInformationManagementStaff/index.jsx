@@ -24,6 +24,7 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
   const [findIdInterview, setFindIdInterview] = useState(0);
 
   const [selectedGenderType, setSelectedGenderType] = useState('');
+  const [selectedEmpTypeType, setSelectedEmpTypeType] = useState('');
   const [selectedStatusTypeCompany, setSelectedStatusTypeCompany] = useState('');
   
   const [employeeType, setEmployeeType] = useState('');
@@ -38,7 +39,7 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
     
     console.log("categorykkkk",category)
  
-  }, []);
+  }, [selectedGenderType]);
 
 
   const handleValidateEmployeeClose = () => {
@@ -151,6 +152,23 @@ console.log("selectedContratType",selectedContratType)
 
     },
 
+
+
+
+  ]
+  const EmpType = [
+    {
+      type: "Office",
+
+    },
+    {
+      type: "Site",
+
+    },
+    {
+      type: "Office & Site",
+
+    },
 
 
 
@@ -314,11 +332,16 @@ console.log("selectedContratType",selectedContratType)
   };
   const handleOpenAfter = () => {
     //e.preventDefault();
-   
-    if (formData?.arName
-      //  !CIN.value || !nationality.value || !phoneNumber.value || !selectedGenderType
+   console.log("arName testttt",formData)
+    if (!formData?.arName ||
+       !formData?.CIN ||!formData?.nationality  || !formData?.phoneNumber
+       ||!formData?.cinDate ||!formData?.residenceAdress || !formData?.arResidenceAdress ||
+       !formData?.passportnumber || !formData?.passportSubmitdate || !formData?.passport_finish_date   
+      
+
       // || !residenceAdress.value || !arResidenceAdress.value || !passportnumber.value
-      // || !passportSubmitdate.value || !passport_finish_date.value || !type_Emp.value
+      // || !passportSubmitdate.value || !passport_finish_date.value || !type_Emp.valu
+
       //  || !email.value || !finishDate.value || !selectedStatusTypeCompany
       // || !traveldate.value || !duration.value
       // || !emergencyName.value || !selectedRelationType || !phoneEmergency.value || !cinDate
@@ -331,8 +354,8 @@ console.log("selectedContratType",selectedContratType)
     } else {
       setIsModalVisible(true); // Affiche la modal
       //Test Si Site Add table Visa 
-      console.log("rrrffggtyy",type_Emp.value)
-      if (type_Emp.value ==="site")
+      console.log("rrrffggtyy",selectedEmpTypeType)
+      if (selectedEmpTypeType ==="Site")
         alert("Site.");
       SaveVisa()
 
@@ -353,7 +376,7 @@ console.log("selectedContratType",selectedContratType)
           : "";
 console.log("arDestination.value",formData?.arDestination)
       const requestBody = {
-    
+        id:findIdInterview?.id,
        actStatus:findIdInterview?.familySituation,  
        arDestination:formData?.arResidenceAdress,
        arName:formData?.arName ,
@@ -905,15 +928,24 @@ console.log("arDestination.value",formData?.arDestination)
 
                     ]}
 
-
-
                   >
-                    <Input placeholder="Site/Site&&Office /Office"
-                      disabled={searchValue == ''}
-                      value={employeeType}
-                      onChange={(e) => setEmployeeType(e.target.value)}
+                    <Select
+                      defaultValue="Type Employees "
+                      placeholder="Type Employee"
+                      onChange={(value) => setSelectedEmpTypeType(value)} >
 
-                    />
+                      {EmpType .map((p) => {
+                        return (
+                          <Option value={p.type} key={p.type}>
+                            <div className='ant-row ant-row-middle'>
+
+                              <span>{p.type}</span>
+                            </div>
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                
                   </Form.Item>
                 </Col>
 
@@ -946,14 +978,14 @@ console.log("arDestination.value",formData?.arDestination)
                     />
                   </Form.Item>
                 </Col>
-                <Col xs={24} md={12}>
+                {/* <Col xs={24} md={12}>
                   <Form.Item label='Contract start date' name='joinDate'
                   >
                     <Input placeholder={findIdInterview?.expectedJoinDate}
                       readOnly={true} />
                   </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
+                </Col> */}
+                {/* <Col xs={24} md={12}>
                   <Form.Item label='Contract End date' name='finishDate'
                     rules={[
                       {
@@ -968,10 +1000,9 @@ console.log("arDestination.value",formData?.arDestination)
 
                   >
                     <StyledScrumBoardDatePicker disabled={searchValue == ''} />
-                    {/* <Input placeholder="Contract End date"
-                      readOnly={true} /> */}
+                  
                   </Form.Item>
-                </Col>
+                </Col> */}
                 <Col xs={24} md={12}>
                   <Form.Item label='Company Type' name='companyType'
                     rules={[
@@ -1076,18 +1107,18 @@ console.log("arDestination.value",formData?.arDestination)
                   </Form.Item>
                 </Col>
 
-                <Col xs={24} md={12}>
+                {/* <Col xs={24} md={12}>
                   <Form.Item label='Approved Office Salary ' name='salary'>
                     <Input.Password placeholder={findIdInterview?.propsedsalary} readOnly={true}
 
                     />
                   </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
+                </Col> */}
+                {/* <Col xs={24} md={12}>
                   <Form.Item label='Daily Rate' name='DailyRate'>
                     <Input.Password placeholder={findIdInterview?.dailyRate} readOnly={true} />
                   </Form.Item>
-                </Col>
+                </Col> */}
 
                 
 
@@ -1309,7 +1340,9 @@ console.log("arDestination.value",formData?.arDestination)
           {/* Your form fields */}
 
           <Button
-            onClick={handleOpenAfter} type='primary' htmlType='submit' disabled={searchValue === '' || !selectedInterviews}>
+            onClick={handleOpenAfter} type='primary' htmlType='submit' 
+            disabled={searchValue === '' || !selectedInterviews}
+            >
             Save
           </Button>
 
@@ -1340,7 +1373,7 @@ console.log("arDestination.value",formData?.arDestination)
         position={findIdInterview?.positionToBeFilled}
         arPosition={positionfieledarabe}
         departement={findIdInterview?.department}
-        type_Emp={employeeType}
+        type_Emp={selectedEmpTypeType}
 
         //type_Emp={formData?.type_Emp}
         projname={findIdInterview?.projname}

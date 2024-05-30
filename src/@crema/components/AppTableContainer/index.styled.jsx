@@ -7,6 +7,7 @@ export const StyledQueueAnim = styled(Table)`
   overflow-x: auto;
   overflow-y: auto;
   box-shadow:none;
+   min-width:100px
 
 
   thead > tr > th,
@@ -18,15 +19,14 @@ export const StyledQueueAnim = styled(Table)`
     
   }
   &.ant-table {
-    
+   
    
   }
 
 
   @media screen and (max-width: 767px) {
-    &.ant-table {
-   
-      background-color:red
+    &.ant-table {  
+  
     }
   }
 

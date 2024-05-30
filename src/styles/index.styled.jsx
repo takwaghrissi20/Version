@@ -3,12 +3,17 @@ import AppsPagination from '../@crema/components/AppsPagination';
 import AppTableContainer from '../@crema/components/AppTableContainer';
 import { rgba } from 'polished';
 
-import { Avatar,Button, Card, Drawer,Form, Modal,Col } from 'antd';
+import { Avatar,Button, Card, Drawer,Form, Modal,Col,DatePicker } from 'antd';
 import { Input, Layout } from 'antd';
 const { Search } = Input;
 import { InputNumber, Select, Tabs } from 'antd';
 import AppCard from '../@crema/components/AppCard';
 import AppScrollbar from '../@crema/components/AppsContainer/AppSidebar';
+export const StyledScrumBoardDatePicker = styled(DatePicker)`
+  position: relative;
+  width: 100%;
+  height:2rem
+`;
 export const StyledAppFooter = styled.div`
   padding: 8px 24px;
   border-top: 1px solid ${({ theme }) => theme.palette.borderColor};
@@ -415,6 +420,9 @@ export const StyledOrderHeaderRight = styled.div`
   flex-direction: row;
   align-items: center;
   margin-left: 10px;
+  display: flex;
+  justify-content: flex-end; /* Aligns the pagination to the right */
+  margin-top: 10px;
 
   [dir='rtl'] & {
     padding-left: 0;
@@ -508,7 +516,8 @@ export const StyledContactForm = styled(Form)`
   & .form-field {
     width: 100%;
     margin-bottom: 16px;
-    color:red
+    color:red;
+    display: flex;
 
     @media screen and (min-width: ${({ theme }) => theme.breakpoints.xxl}px) {
       margin-bottom: 24px;
@@ -1273,6 +1282,7 @@ export const StyledAnChar = styled.span`
   color: ${({ theme }) => theme.palette.primary.main};
   border-bottom: 1px solid ${({ theme }) => theme.palette.primary.main};
   display: inline-block;
+  padding:15px
 `;
 
 export const StyledBadgeRoot = styled.span`
@@ -1283,8 +1293,8 @@ export const StyledBadgeRoot = styled.span`
 
 export const StyledOrderTable = styled(AppTableContainer)`
 & .ant-table-wrapper {
-  background-color: red;
-  text-align: start;
+
+  text-align: center;
   border-radius: 8px 8px 0 0;
   border-collapse: separate;
   border-spacing: 0;
@@ -1296,8 +1306,8 @@ export const StyledOrderTable = styled(AppTableContainer)`
     font-size: 11px;  
     text-align:center;
     font-weight: ${({ theme }) => theme.font.weight.bold};
-    background-color: transparent;
     line-height: 1.5;
+   
 
     }
 
@@ -1307,6 +1317,8 @@ export const StyledOrderTable = styled(AppTableContainer)`
     font-size: 11px;
     text-align: center;
     line-height: 1.5;
+    min-width:85px;
+   
 
 
  
@@ -1740,3 +1752,4 @@ export const StyledUserCardUnlock = styled(StyledUserCardLg)`
     }
   }
 `;
+

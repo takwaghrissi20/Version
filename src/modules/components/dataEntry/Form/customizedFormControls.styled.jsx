@@ -16,8 +16,9 @@ export const StyledCustomizedFormControl = styled(Form)`
     }
 
     & .ant-select {
-      width: 100% !important;
+      width:100% !important;
       margin-bottom: 12px;
+   
     }
   }
 `;

@@ -176,6 +176,7 @@ const OrderTable = ({ orderData }) => {
           cinDate={findIdData?.cinDate}
           id={findIdData?.id}
           name={findIdData?.name}
+          
 
 
 

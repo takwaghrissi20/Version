@@ -1,9 +1,10 @@
 // ForJWT Auth
-import { getUserFromJwtAuth } from '@crema/helpers/AuthHelper';
+import { getUserFromJwtAuth } from '../../@crema/helpers/AuthHelper';
+
 import {
   useJWTAuth,
   useJWTAuthActions,
-} from "@crema/services/auth/jwt-auth/JWTAuthProvider";
+} from "../../@crema/services/auth/jwt-auth/JWTAuthProvider";
 
 export const useAuthUser = () => {
   const { user, isAuthenticated, isLoading } = useJWTAuth();

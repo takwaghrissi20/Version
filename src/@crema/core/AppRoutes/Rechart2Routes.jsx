@@ -1,5 +1,7 @@
 import React from 'react';
 import AddVisa from '../../../modules/thirdParty/visa/AddVisa';
+import AddVisaGetsEmployees from '../../../modules/HRGetsCompany/AddVisa';
+import EditVisa from '../../../modules/HRGetsCompany/EditVisa';
 import Visa from '../../../modules/thirdParty/visa/Visa';
 import ComposedChart from '../../../modules/thirdParty/visa/Composed';
 import LineChart from '../../../modules/thirdParty/visa/Line';
@@ -19,10 +21,18 @@ export const recharts2Configs = [
     path: '/Hr/VisaHealth/AddVisa',
     element: <AddVisa />,
   },
+  {
+    path: '/Hr/VisaHealth/AddVisa/GetsEmployee',
+    element: <AddVisaGetsEmployees />,
+  },
 
   {
     path: '/Hr/VisaHealth/Visa',
     element: <Visa />,
+  },
+  {
+    path: '/Hr/VisaHealth/UpdateVisa',
+    element: <EditVisa/>,
   },
   
   {

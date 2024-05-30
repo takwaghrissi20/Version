@@ -7,6 +7,7 @@
   "dashboard.Sammary":"Summary Employees",
   "dashboard.EmployeesCategoryContract":"Pending Contracts",
   "dashboard.Visa":"Visa Employees",
+ "dashboard.Sammary.Visa":"Visa Sammary Employees",
    "dashboard.RECEIVEDMATRIALS" :"RECEIVED MATRIALS",
   "dashboard.dashbord.RecruitementInterview": "Recruitement & Interview",
   "dashboard.crm.timesheet": "Timesheet",
@@ -46,6 +47,8 @@
   "common.name":"name",
   "common.contratctCopy":"Contrat Copy",
   "common.Edit":"Edit",
+
+  "common.AddVisa":"Add Visa",
   "common.save": "Save",
   "common.na": "NA",
   "common.no": "No",

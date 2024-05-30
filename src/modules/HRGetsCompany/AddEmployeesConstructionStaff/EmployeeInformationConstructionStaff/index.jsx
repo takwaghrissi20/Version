@@ -22,7 +22,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
   const [intCode, setIntCode] = useState("Code Interview Sheet");
   const [findIdInterview, setFindIdInterview] = useState(0);
   const [selectedContractCategorie, setSelectedContractCategorie] = useState('');
-  const [selectedGenderType, setSelectedGenderType] = useState('');
+  const [selectedEmpTypeType, setSelectedEmpTypeType] = useState('');
   const [selectedStatusTypeCompany, setSelectedStatusTypeCompany] = useState('');
   const [selectedContratType, setSelectedContratType] = useState('')
   const [selectedRelationType, setSelectedRelationType] = useState('')
@@ -48,6 +48,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
   const [showAlertError, setShowAlertError] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [positionfieledarabe, setPositionfieledarabe] = useState("");
+  const [selectedGenderType, setSelectedGenderType] = useState('');
   const [form] = Form.useForm();
 
 
@@ -83,6 +84,23 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
 
     },
 
+
+
+
+  ]
+  const EmpType = [
+    {
+      type: "Office",
+
+    },
+    {
+      type: "Site",
+
+    },
+    {
+      type: "Office & Site",
+
+    },
 
 
 
@@ -301,26 +319,43 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
   };
+
   const handleOpenAfter = () => {
     //e.preventDefault();
-    setIsModalVisible(true)
 
-    //  if (!arName.value 
-    //   // !arName.value || !CIN.value || !nationality.value || !phoneNumber.value || !selectedGenderType
-    //     //  || !residenceAdress.value  || !arResidenceAdress.value || !passportnumber.value 
-    //     //  || !passportSubmitdate.value || !passport_finish_date.value 
-    //     //  || !email.value  || !finishDate.value || !selectedStatusTypeCompany
-    //     //  || !traveldate.value || !endTravelDate.value || !destination.value
-    //     //  || !arDestination.value || !duration.value
-    //     //  || !emergencyName.value || !selectedRelationType || !phoneEmergency.value 
+    if (!formData?.arName 
+      // ||
+      //  !formData?.CIN ||!formData?.nationality  || !formData?.phoneNumber
+      //  ||!formData?.cinDate ||!formData?.residenceAdress || !formData?.arResidenceAdress ||
+      //  !formData?.passportnumber || !formData?.passportSubmitdate || !formData?.passport_finish_date   
+      
+
+      // || !residenceAdress.value || !arResidenceAdress.value || !passportnumber.value
+      // || !passportSubmitdate.value || !passport_finish_date.value || !type_Emp.valu
+
+      //  || !email.value || !finishDate.value || !selectedStatusTypeCompany
+      // || !traveldate.value || !duration.value
+      // || !emergencyName.value || !selectedRelationType || !phoneEmergency.value || !cinDate
+
+  
+
+    ) {
+      alert("Please complete all fields .");
+      setIsModalVisible(false);
+    } else {
+      setIsModalVisible(true); // Affiche la modal
+      //Test Si Site Add table Visa 
+      console.log("rrrffggtyy",selectedEmpTypeType)
+      if (selectedEmpTypeType ==="Site")
+        alert("Site.");
+      SaveVisa()
+
+    
 
 
-    // ) {
-    //    alert("Please complete all fields.");
-    //    setIsModalVisible(false);
-    // } else {
-    //    setIsModalVisible(true); // Affiche la modal
-    // }
+
+
+    }
   };
   const cancelInfo = () => {
     form.setFieldsValue({
@@ -342,6 +377,81 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
       setIsTargetproductivityVisible(true)
     }
   }, []);
+  const SaveVisa = async () => {
+
+    try {
+
+      const endPoint =
+        process.env.NODE_ENV === "development"
+          ? "https://dev-gateway.gets-company.com"
+          : "";
+
+      const requestBody = {
+        id:findIdInterview?.id,
+       actStatus:findIdInterview?.familySituation,  
+       arDestination:formData?.arResidenceAdress,
+       arName:formData?.arName ,
+       arPosition:formData?.positionfieledarabe,
+       arResidenceAdress:formData?.arResidenceAdress,
+       birthDate:findIdInterview?.birthayDate,
+       category:"Construction Staff",
+       cin:formData?.CIN,
+       cinDate:formData?.cinDate,
+       companyType:formData?.companyType,
+       dailyRate:findIdInterview?.dailyRate,
+       departement:findIdInterview?.department,
+       destination:formData?.destination,
+       duration:formData?.duration,
+       email:formData?.email,
+       emergencyName:formData?.emergencyName,
+       emergencyRelation:selectedRelationType,
+       endTravelDate:formData?.endTravelDate,
+       finishDate:formData?.finishDate?.format('YYYY-MM-DD'),
+       joinDate:findIdInterview?.expectedJoinDate,
+       name:findIdInterview?.fullName,
+       nationality:formData?.nationality,
+       passportnumber:formData?.passportnumber,
+       passportSubmitdate:formData?.passportSubmitdate,
+       passport_finish_date:formData?.passport_finish_date.format('YYYY-MM-DD'),
+       position:findIdInterview?.positionToBeFilled,
+       projName:findIdInterview?.projname,
+       residenceAdress:formData?.residenceAdress,
+       salary:findIdInterview?.propsedsalary,
+       traveldate:formData?.traveldate?.format('YYYY-MM-DD'),
+       type_Emp:formData?.type_Emp,
+      
+      };
+    console.log("bodyyyyyy",requestBody)
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/add`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      // Gérer la réponse du serveur
+      if (!response.ok) {
+       alert("Request failed")
+        throw new Error('La requête a échoué avec le code ' + response.status);
+
+      }
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
+      }
+      const data = await response.json();
+       console.log("datavisa",data)
+
+      // handleAddContactClose()
+      // Traiter la réponse de l'API si nécessaire
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données:', error);
+    }
+
+  };
+
 
 
   return (
@@ -558,6 +668,26 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
                     <Input placeholder='ID Card Number' disabled={searchValue == ''} />
                   </Form.Item>
                 </Col>
+                <Col xs={24} md={12}>
+                  <Form.Item label='Date ID Card Number' name='cinDate'
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please enter Date ID Card Number',
+                      },
+
+                    ]}
+
+
+                  >
+                    <StyledScrumBoardDatePicker disabled={searchValue == ''} />
+                    {/* <Input placeholder='Date of issue' readOnly={!isEdit} /> */}
+                  </Form.Item>
+                </Col>
+
+
+
+
 
 
                 <Col xs={24} md={12}>
@@ -752,6 +882,38 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
                     />
                   </Form.Item>
                 </Col>
+                
+                <Col xs={24} md={12}>
+                  <Form.Item label='Employee Type' name='type_Emp'
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please enter Employee Type',
+                      },
+
+
+                    ]}
+
+                  >
+                    <Select
+                      defaultValue="Type Employees "
+                      placeholder="Type Employee"
+                      onChange={(value) => setSelectedEmpTypeType(value)} >
+
+                      {EmpType .map((p) => {
+                        return (
+                          <Option value={p.type} key={p.type}>
+                            <div className='ant-row ant-row-middle'>
+
+                              <span>{p.type}</span>
+                            </div>
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                
+                  </Form.Item>
+                </Col>
 
 
                 {/* <Col xs={24} md={12}>
@@ -851,14 +1013,14 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
                     />
                   </Form.Item>
                 </Col>
-                <Col xs={24} md={12}>
+                {/* <Col xs={24} md={12}>
                   <Form.Item label='Contract start date' name='joinDate'
                   >
                     <Input placeholder={findIdInterview?.expectedJoinDate}
                       readOnly={true} />
                   </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
+                </Col> */}
+                {/* <Col xs={24} md={12}>
                   <Form.Item label='Contract End date' name='finishDate'
                     rules={[
                       {
@@ -873,10 +1035,9 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
 
                   >
                     <StyledScrumBoardDatePicker disabled={searchValue == ''} />
-                    {/* <Input placeholder="Contract End date"
-                      readOnly={true} /> */}
+                  
                   </Form.Item>
-                </Col>
+                </Col> */}
                 <Col xs={24} md={12}>
                   <Form.Item label='Company Type' name='companyType'
                     rules={[
@@ -981,7 +1142,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
                   </Form.Item>
                 </Col>
 
-                <Col xs={24} md={12}>
+                {/* <Col xs={24} md={12}>
                   <Form.Item label='Approved Office Salary ' name='salary'>
                     <Input.Password placeholder={findIdInterview?.propsedsalary} readOnly={true}
 
@@ -992,7 +1153,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
                   <Form.Item label='Daily Rate' name='DailyRate'>
                     <Input placeholder={findIdInterview?.dailyRate} readOnly={true} />
                   </Form.Item>
-                </Col>
+                </Col> */}
                 {/* <Col xs={24} md={12}>
                   <Form.Item label='Contrat Type' name='contractType'
                   
@@ -1258,7 +1419,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
         arPosition={positionfieledarabe}
         departement={findIdInterview?.department}
         //type_Emp={formData?.type_Emp}
-        type_Emp={employeeType}
+        type_Emp={selectedEmpTypeType}
         projname={findIdInterview?.projname}
         email={formData?.email}
         joinDate={findIdInterview?.expectedJoinDate}

@@ -765,7 +765,7 @@ const ViewInformationForm = (props) => {
                   />
                 </FloatLabel>
               </Form.Item>
-              <Form.Item className='form-field'>
+              {/* <Form.Item className='form-field'>
               <span className='modallabel'> Contract start date :</span>
                 <FloatLabel  name="joinDate">
                   <Input
@@ -775,8 +775,8 @@ const ViewInformationForm = (props) => {
                     readOnly={true}
                   />
                 </FloatLabel>
-              </Form.Item>
-              <Form.Item className='form-field'>
+              </Form.Item> */}
+              {/* <Form.Item className='form-field'>
               <span className='modallabel'> Contract End date :</span>
                 <FloatLabel  name="finishDate">
                   <Input
@@ -786,7 +786,7 @@ const ViewInformationForm = (props) => {
                     readOnly={true}
                   />
                 </FloatLabel>
-              </Form.Item>
+              </Form.Item> */}
               <Form.Item className='form-field'>
               <span className='modallabel'> Company Type :</span>
                 <FloatLabel  name="companyType">
@@ -846,7 +846,7 @@ const ViewInformationForm = (props) => {
                   />
                 </FloatLabel>
               </Form.Item>
-              <Form.Item className='form-field'>
+              {/* <Form.Item className='form-field'>
               <span className='modallabel'>Approved Office Salary :</span>
                 <FloatLabel  name="salary">
                   <Input
@@ -868,7 +868,7 @@ const ViewInformationForm = (props) => {
                     readOnly={true}
                   />
                 </FloatLabel>
-              </Form.Item>
+              </Form.Item> */}
               {/* <Form.Item className='form-field'>
               <span className='modallabel'> Contrat Type :</span>
              

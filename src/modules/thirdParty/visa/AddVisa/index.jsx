@@ -13,19 +13,20 @@ import {
 import AppsHeader from '../../../../@crema/components/AppsContainer/AppsHeader';
 import AppCard from '../../../../@crema/components/AppCard';
 import { useIntl } from 'react-intl';
-import StatsDirCardStatics from './StatisticVisa';
 import { padding } from 'polished';
 import { GrTextAlignCenter } from 'react-icons/gr';
 import AddEmpVisa from "../../../Model/AddVisa"
-
-
+import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
+import { useNavigate } from 'react-router-dom';
+import { isAllSelected } from '@testing-library/user-event/dist/cjs/event/index.js';
 
 const AddVisa = () => {
+  const navigate = useNavigate();
   const { messages } = useIntl();
   const [employees, setEmployees] = useState([]);
   const [employeesFiltrer, setEmployeesFiltrer] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(50);
+  const [pageSize, setPageSize] = useState(10);
   const [nameFilter, setNameFilter] = useState('');
   const [count, setCount] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -34,14 +35,15 @@ const AddVisa = () => {
   const [passportSubmit, setPassportSubmit] = useState(0);
   const [numberFinalVisa, setNumberFinalVisa] = useState(0);
   const [isAddVisa, onAddVisa] = useState(false);
+  const [findIdData, setFindIdData] = useState(null)
+
   const handleAddVisa = () => {
+    navigate('/Hr/VisaHealth/AddVisa/GetsEmployee');
+  };
+
+  const handleOpenAddVisa = () => {
     onAddVisa(true);
   };
-
-  const handleCloseAddVisa = () => {
-    onAddVisa(false);
-  };
-
 
 
   const fetchEmployees = async () => {
@@ -58,7 +60,7 @@ const AddVisa = () => {
       }
 
       const data = await response.json();
-
+      console.log("dattta",data)
       setEmployees(data);
 
     } catch (error) {
@@ -69,7 +71,7 @@ const AddVisa = () => {
   const handleSearch = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${nameFilter}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/filterByName?name=${nameFilter}`);
       if (!response.ok) {
         throw new Error('Failed to filter employees');
       }
@@ -102,7 +104,7 @@ const AddVisa = () => {
 
     if (filterValue !== '') {
       try {
-        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${filterValue}`);
+        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/filterByName?name=${filterValue}`);
         if (!response.ok) {
           throw new Error('Failed to filter employees');
         }
@@ -124,7 +126,7 @@ const AddVisa = () => {
     try {
 
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/list`);
 
 
       if (!response.ok) {
@@ -161,51 +163,7 @@ const AddVisa = () => {
     { title: 'Number of Passport Submitted', number: { passportSubmit }, subtitle: "Number of Passport Submitted" },
     { title: 'Number of Final Visa', number: { numberFinalVisa }, subtitle: "Number of Final Visa" },
   ];
-  const SaveVisa = async () => {
 
-    // try {
-
-    //   const endPoint =
-    //     process.env.NODE_ENV === "development"
-    //       ? "https://dev-gateway.gets-company.com"
-    //       : "";
-
-    //   const requestBody = {
-
-    //    visaReady
-    //   };
-
-    //   const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/add`, {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(requestBody)
-    //   });
-
-    //   // Gérer la réponse du serveur
-    //   if (!response.ok) {
-    //    alert("Request failed")
-    //     throw new Error('La requête a échoué avec le code ' + response.status);
-
-    //   }
-
-    //   const contentType = response.headers.get('content-type');
-    //   if (!contentType || !contentType.includes('application/json')) {
-    //     throw new TypeError("La réponse n'est pas au format JSON");
-    //   }
-    //   const data = await response.json();
-    //    console.log("datavisa",data)
-
-    //   // handleAddContactClose()
-    //   // Traiter la réponse de l'API si nécessaire
-    // } catch (error) {
-    //   console.error('Erreur lors de la récupération des données:', error);
-    // }
-
-
-
-  };
 
 
   return (
@@ -214,20 +172,17 @@ const AddVisa = () => {
       <Button
         style={{
           display: "flex", flexDirection: "right", float: "right", marginLeft: "10px",
-          backgroundColor: "#2997ff", color: "white", paddingTop: "8px", paddingLeft: "2rem", paddingRight: "2rem",
+          backgroundColor: "#2997ff", color: "white", paddingTop: "5px", paddingLeft: "2rem", paddingRight: "2rem",
           TextAlign: "center", fontsize: "30px"
         }}
-        onClick={handleAddVisa }
-
-      >
+        onClick={handleOpenAddVisa }>
         Add Visa
       </Button>
-      <AddEmpVisa
-            isAddVisa={isAddVisa}        
+      {/* <AddEmpVisa
+            isVisa={isAddVisa}        
             handleAddContactClose={handleCloseAddVisa}
-          
-           
-          /> 
+     
+          />  */}
       <div style={{ marginTop: "4rem" }}></div>
       {/* < StatsDirCardStatics
           listVIsa={listVIsa}/> */}
@@ -250,7 +205,7 @@ const AddVisa = () => {
                 <List
                   style={{
                     zIndex: 5, borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px",
-                    background: "white", position: "absolute", top: "6rem", width: "18%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"
+                    background: "white", position: "absolute", top: "9.5rem", width: "18%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"
                   }}
                   dataSource={employeesFiltrer}
                   renderItem={(item) => (
@@ -264,6 +219,7 @@ const AddVisa = () => {
 
           </StyledOrderHeader>
         </AppsHeader>
+      
         <AppCard
           className='no-card-space-ltr-rtl'
           title={messages['dashboard.Visa']}
@@ -271,6 +227,7 @@ const AddVisa = () => {
 
           <OrderTable className={clsx("item-hover")} dataemployeesVisa={employees} />
           <div style={{marginTop:"10px"}}></div>
+          
           <StyledOrderHeaderRight>
 
             <Pagination
@@ -285,7 +242,16 @@ const AddVisa = () => {
         </AppCard>
 
 
-
+        {isAddVisa? (
+        <ConfirmationModal
+          open={isAddVisa}
+          paragraph={'Are you sure you want to Add Visa For Gets Employee?'}
+          onDeny={onAddVisa}
+          onConfirm={handleAddVisa}
+          modalTitle="Add Visa "
+          handleInterview={handleOpenAddVisa}
+        />
+      ) : null}
 
 
       </div>

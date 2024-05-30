@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import AddVisa from './AddVisa';
+import VisaEmp from './EditVisa';
 import { StyledContactModal } from '../../../styles/index.styled';
 
 
 
 
 const ModalView = ({
-  isAddVisa,
+  isVisa,
   handleAddContactClose,
 
  
@@ -20,16 +20,15 @@ const ModalView = ({
 
     <StyledContactModal
      width={1050}
-      open={isAddVisa}
-      onOk={isAddVisa}
+      open={isVisa}
+      onOk={isVisa}
       footer={false}
       onCancel={handleAddContactClose}
       bodyStyle={{ height:"auto" }}
     >
-      <AddVisa
+      <VisaEmp 
         handleAddContactClose={handleAddContactClose}
        
-     
      
 
       />
@@ -39,12 +38,4 @@ const ModalView = ({
 
 export default ModalView;
 
-ModalView.defaultProps = {
 
-};
-
-ModalView.propTypes = {
-  isEditEmployee: PropTypes.bool.isRequired,
-  handleAddContactClose: PropTypes.func.isRequired,
-  reCallAPI: PropTypes.func,
-};

@@ -19,7 +19,7 @@ const ContratList = () => {
   const [employees, setEmployees] = useState([]);
   const [employeesFiltrer, setEmployeesFiltrer] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(50);
+  const [pageSize, setPageSize] = useState(10);
   const [nameFilter, setNameFilter] = useState('');
   const [count, setCount] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -30,25 +30,56 @@ const ContratList = () => {
 
   const fetchEmployees = async () => {
     try {
-      const countEmployees = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/countAll`);
-      const datacount = await countEmployees.json();
-      setCount(datacount);
-
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/getEmByCategory?page=${currentPage}&size=${pageSize}&category=Management Staff`);
-
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch employees');
+      const countEmployeesResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/countAll`);
+      
+      if (!countEmployeesResponse.ok) {
+        throw new Error('Failed to fetch employee count');
       }
+      
+      const countData = await countEmployeesResponse.json();
+      setCount(countData);
+  
+      try {
+        // const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/list`);
+        const response= await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/contract?page=${currentPage}&size=${pageSize}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch employees');
+        }
+  
+        const data = await response.json();
+        console.log("Original Data:", data);
+        /////////////////////////////////////////
 
-      const data = await response.json();
-      console.log("teeesssdattaaa", data)
-      setEmployees(data);
+
+        const filteredEmployees2 = data.filter(employee => {
+          const isManagementStaff = employee.category === "Management Staff";
+          const isConstructionStaffOnSite = employee.category === "Construction Staff" && employee.type_Emp === "site" && employee.dateVisa !== null;
+          const isSiteOrSiteOffice = employee.type_Emp === "site&office";
+          
+          return isManagementStaff || isConstructionStaffOnSite || isSiteOrSiteOffice;
+        });
+  
+  
+        const filteredEmployees = data.filter(employee => {
+          const isManagementOrConstruction = employee.category === "Management Staff" || employee.category === "Construction Staff";
+           
+        return isManagementOrConstruction;
+        });
+  
+        console.log("Filtered Data:", data);
+        // setEmployees(filteredEmployees);
+        setEmployees(data)
+  
+      } catch (error) {
+        console.error('Error fetching employees:', error);
+      }
     } catch (error) {
-      console.error('Error fetching employees:', error);
+      console.error('Error fetching employee count:', error);
     }
-  };
-
+  }
+  
+     
+    
   const handleSearch = async (event) => {
     event.preventDefault();
     try {

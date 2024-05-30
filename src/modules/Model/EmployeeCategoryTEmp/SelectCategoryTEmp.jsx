@@ -428,70 +428,73 @@ const ContratCategory = (props) => {
 
     });
   };
-  // const ContratB3 = () => {
-  //   navigate('/HRGetsCompany/ContartTypeB3', {
-  //     state: {
-  //       fullName: arName,
-  //       passportNumber: passportnumber,
-  //       passportSubmitdate: passportSubmitdate,
-  //       arResidenceAdress: arResidenceAdress,
-  //       companyType: companyTypepdf,
-  //       traveldate: traveldatepdf,
-  //       endTravelDate: endtraveldatepdf,
-  //       arDestination: arDestination,
-  //       arPosition: arPositionpdf,
-  //       lastId: LastIdIncremente,
-  //       salary: salary,
-  //       primeProductivity:primeProductivity
+ 
+  const ContratB3 = () => {
+    navigate('/HRGetsCompany/ContartTypeB3', {
+      state: {
+        fullName: arName,
+        passportNumber: passportnumber,
+        passportSubmitdate: passportSubmitdate,
+        arResidenceAdress: arResidenceAdress,
+        companyType:companyType,
+        traveldate:traveldate,
+        endTravelDate:endTravelDate,
+        arDestination: arDestination,
+        arPosition: arPosition,
+        lastId: LastIdIncremente,
+        salary: salary,
+        primeProductivity:primeProductivity
 
-  //     }
-
-
-  //   });
-  // };
-  // const ContratC = () => {
-  //   navigate('/HRGetsCompany/ContartTypeC', {
-  //     state: {
-  //       fullName: arName,
-  //       passportNumber: passportnumber,
-  //       passportSubmitdate: passpordDate,
-  //       arResidenceAdress: arResidenceAdress,
-  //       companyType: companyTypepdf,
-  //       traveldate: traveldatepdf,
-  //       endTravelDate: endtraveldatepdf,
-  //       arDestination: arDestination,
-  //       arPosition: arPositionpdf,
-  //       lastId: LastIdIncremente,
-  //       salary: salary,
-  //       primeProductivity:primeProductivity,
-  //       dailyRate:dailyRate
-
-  //     }
+      }
 
 
-  //   });
-  // };
-  // const ContratD = () => {
-  //   navigate('/HRGetsCompany/ContartTypeD', {
-  //     state: {
-  //       fullName: arName,
-  //       passportNumber: passportnumber,
-  //       passportSubmitdate: passpordDate,
-  //       arResidenceAdress: arResidenceAdress,
-  //       companyType: companyTypepdf,
-  //       traveldate: traveldatepdf,
-  //       endTravelDate: endtraveldatepdf,
-  //       arDestination: arDestination,
-  //       arPosition: arPositionpdf,
-  //       lastId: LastIdIncremente,
-  //       salary: salary,
-  //       primeProductivity:primeProductivity
+    });
+  };
+  const ContratC = () => {
+    navigate('/HRGetsCompany/ContartTypeC', {
+      state: {
+        fullName: arName,
+        passportNumber: passportnumber,
+        passportSubmitdate: passportSubmitdate,
+        arResidenceAdress: arResidenceAdress,
+        companyType:companyType,
+        traveldate:traveldate,
+        endTravelDate:endTravelDate,
+        arDestination: arDestination,
+        arPosition: arPosition,
+        lastId: LastIdIncremente,
+        salary: salary,
+        primeProductivity:primeProductivity,
+        dailyRate:dailyRate
 
-  //     }
+      }
 
 
-  //   });
-  // };
+    });
+  };
+  const ContratD = () => {
+    navigate('/HRGetsCompany/ContartTypeD', {
+      state: {
+        fullName: arName,
+        passportNumber: passportnumber,
+        passportSubmitdate: passportSubmitdate,
+        arResidenceAdress: arResidenceAdress,
+        companyType:companyType,
+        traveldate:traveldate,
+        endTravelDate:endTravelDate,
+        arDestination: arDestination,
+        arPosition: arPosition,
+        lastId: LastIdIncremente,
+        salary: salary,
+        primeProductivity:primeProductivity,
+        dailyRate:dailyRate
+
+      }
+
+
+    });
+  };
+
 
   const SelectionnnerContrat = () => {
 
@@ -543,16 +546,16 @@ const ContratCategory = (props) => {
       ContratB2()
     }
     else if (contractCategory === "CAT-B3") {
-      console.log(" contractCategory")
-      ContratB2()
+      console.log("contractCategory")
+      ContratB3()
     }
     else if (contractCategory === "CAT-C") {
       console.log(" contractCategory")
-      Contrat2()
+      ContratC()
     }
     else if (contractCategory === "CAT-D") {
       console.log(" contractCategory")
-      Contrat2()
+      ContratD()
     }
 
 
@@ -665,8 +668,74 @@ const ContratCategory = (props) => {
                 </Col>
               </Row>
               <Row gutter={16}>
+                <Col span={12}>
+                <Form.Item className='form-field'>
+              <span className='modallabel'> Contract start date :</span>
+                <FloatLabel  name="joinDate">
+                  <Input
+                    className='Input'
+                    value={joinDate}
+                    placeholder="Contract start date"
+                    readOnly={true}
+                  />
+                </FloatLabel>
+              </Form.Item>
+
+                </Col>
+                <Col span={12}>
+                <Form.Item className='form-field'>
+              <span className='modallabel'> Contract Finish date :</span>
+                <FloatLabel  name="joinDate">
+                  <Input
+                    className='Input'
+                    value={finishDate}
+                    placeholder="Contract Finish date"
+                    readOnly={true}
+                  />
+                </FloatLabel>
+              </Form.Item>
+
+                </Col>
+                </Row>
+                
+                <Row gutter={16}>
+                <Col span={12}>
+                <Form.Item className='form-field'>
+              <span className='modallabel'> Salary :</span>
+                <FloatLabel  name="joinDate">
+                  <Input
+                    className='Input'
+                     value={ salary}
+                    placeholder="Salary"
+                    readOnly
+                    
+                  />
+                </FloatLabel>
+              </Form.Item>
+
+                </Col>
+                <Col span={12}>
+                <Form.Item
+                
+                className='form-field'>
+              <span className='modallabel'> Daily Rate :</span>
+                <FloatLabel  name="Daily Rate">
+                  <Input
+                    className='Input'
+                     value={ dailyRate}
+                    placeholder="Daily Rate"
+                    readOnly
+                   
+                  />
+                </FloatLabel>
+              </Form.Item>
+
+                </Col>
+                </Row>
+             
+              <Row gutter={16}>
               {category === "Management Staff" ?
-                <Col xs={24} md={12}>
+             <Col span={12}>
                   <Form.Item label='Contract Category' name='contractCategory'
                   >
                     <Select

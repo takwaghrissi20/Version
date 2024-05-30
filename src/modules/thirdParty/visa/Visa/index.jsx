@@ -194,7 +194,7 @@ const AddVisa = () => {
         </AppsHeader>
         <AppCard
           className='no-card-space-ltr-rtl'
-          title={messages['dashboard.Visa']}
+          title={messages['dashboard.Sammary.Visa']}
         >
 
           <OrderTable className={clsx("item-hover")} dataemployeesVisa={employees} />
