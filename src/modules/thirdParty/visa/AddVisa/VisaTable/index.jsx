@@ -99,7 +99,7 @@ console.log("editingData",editingData)
   };
   const handleChange = (key, value) => {
     setEditingData({ ...editingData, [key]: value });
-    saveEdit(editingRow, { ...editingData, [key]: value });
+    // saveEdit(editingRow, { ...editingData, [key]: value });
   };
 
   useEffect(() => {
