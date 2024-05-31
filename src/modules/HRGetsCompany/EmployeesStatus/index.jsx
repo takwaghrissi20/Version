@@ -31,7 +31,7 @@ const EmployeesStatus = () => {
   const [employeessiteFiltrer, setEmployeessiteFiltrer] = useState([]);
   const [employeesmixtFiltrer, setEmployeesmixtFiltrer] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(50);
+  const [pageSize, setPageSize] = useState(10);
   const [nameFilter, setNameFilter] = useState('');
   const [nameSiteFilter, setNameSiteFilter] = useState('');
   const [nameMixtFilter, setNameMixtFilter] = useState('');
@@ -153,8 +153,10 @@ const EmployeesStatus = () => {
   useEffect(() => {
     AllEmployeesFilter();
   }, [currentPage, pageSize]);
+ 
 
   const fetchEmployeesByType = async (type) => {
+    
     try {
       const endPoint = process.env.NODE_ENV === 'development' ? 'https://dev-gateway.gets-company.com' : '';
       const url = `${endPoint}/api/v1/emp/getEmByType?type=${type}&page=${currentPage}&size=${pageSize}`;
@@ -162,14 +164,15 @@ const EmployeesStatus = () => {
   
       if (!response.ok) {
         throw new Error('Failed to fetch employees');
-      }
-  
+      } 
       const data = await response.json();
       return data;
-    } catch (error) {
+    } 
+    catch (error) {
       console.error(`Error fetching ${type} employees:`, error);
       return [];
     }
+
   };
   
   const AllEmployeesFilter = async () => {
@@ -182,10 +185,11 @@ const EmployeesStatus = () => {
       setEmployeessite(siteEmployees);
 
   
-      const mixtEmployees = await fetchEmployeesByType('mixt');
+      const mixtEmployees = await fetchEmployeesByType('office & site');
       setEmployeesmixt(mixtEmployees);
   
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Error in AllEmployeesFilter:', error);
     }
   };
@@ -198,7 +202,6 @@ const EmployeesStatus = () => {
         throw new Error('Failed to filter employees');
       }
       const data = await response.json();
-
       setEmployeesofficeFiltrer(data)
       setEmployeesoffice(data);
    
@@ -238,6 +241,7 @@ const EmployeesStatus = () => {
       console.error('Error filtering employees:', error);
     }
   };
+
 
   const items = [
     {
@@ -279,7 +283,8 @@ const EmployeesStatus = () => {
          
           <Pagination
             currentPage={currentPage}
-            totalPages={Math.ceil(countOffice / pageSize)}
+            //totalPages={Math.ceil(countOffice / pageSize)}
+            totalPages={Math.ceil(42 / pageSize)}
             handlePageChange={handlePageChangeOffice}
           />
          

@@ -357,17 +357,37 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
 
     }
   };
+  // const cancelInfo = () => {
+  //   form.setFieldsValue({
+  //     arName: '', CIN: '', nationality: '', phoneNumber: '', selectedGenderType: '',
+  //     residenceAdress: '', arResidenceAdress: '', passportnumber: '', passportSubmitdate: '', passport_finish_date: '',
+  //     email: '', finishDate: '', selectedStatusTypeCompany: '', traveldate: '', endTravelDate: '',
+  //     destination: '', arDestination: '',  duration: '', emergencyName: '', selectedRelationType: '',
+  //     phoneEmergency: '', selectedContractCategorie: '', primeProductivity: ''
+
+
+  //   });
+
+  // };
   const cancelInfo = () => {
-    form.setFieldsValue({
-      arName: '', CIN: '', nationality: '', phoneNumber: '', selectedGenderType: '',
-      residenceAdress: '', arResidenceAdress: '', passportnumber: '', passportSubmitdate: '', passport_finish_date: '',
-      email: '', finishDate: '', selectedStatusTypeCompany: '', traveldate: '', endTravelDate: '',
-      destination: '', arDestination: '',  duration: '', emergencyName: '', selectedRelationType: '',
-      phoneEmergency: '', selectedContractCategorie: '', primeProductivity: ''
+    form.validateFields(['CIN', 'cinDate', 'arName', 'nationality','gender','phoneNumber','residenceAdress',
+'arResidenceAdress','passportnumber','passportSubmitdate','passport_finish_date','type_Emp','email',
+'companyType','traveldate','endTravelDate','destination','arDestination','duration','emergencyName',
+'emergencyRelation','phoneEmergency'
 
 
+    ]).then(values => {
+      setIsModalVisible(true);
+      if (selectedEmpTypeType === "Site") {
+        alert("Emplotees Site.");
+      }
+      SaveVisa();
+    
+    }).catch(errorInfo => {
+      alert("Please complete all fields.");
+      setIsModalVisible(false);
+    
     });
-
   };
 
   useEffect(() => {

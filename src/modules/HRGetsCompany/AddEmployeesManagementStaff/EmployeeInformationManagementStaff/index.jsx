@@ -330,13 +330,16 @@ console.log("selectedContratType",selectedContratType)
   const handleSubmit = (e) => {
     e.preventDefault();
   };
-  const handleOpenAfter = () => {
+
+  
+  const handleOpenAfter2 = () => {
     //e.preventDefault();
-   console.log("arName testttt",formData)
-    if (!formData?.arName ||
-       !formData?.CIN ||!formData?.nationality  || !formData?.phoneNumber
-       ||!formData?.cinDate ||!formData?.residenceAdress || !formData?.arResidenceAdress ||
-       !formData?.passportnumber || !formData?.passportSubmitdate || !formData?.passport_finish_date   
+   console.log("arName testttt",formData?.cinDate?.format('YYYY-MM-DD'))
+    if (!arName?.value  || !CIN?.value || !formData?.cinDate?.format('YYYY-MM-DD')
+      //!||
+      //  !formData?.CIN ||!formData?.nationality  || !formData?.phoneNumber
+      //  ||!formData?.cinDate ||!formData?.residenceAdress || !formData?.arResidenceAdress ||
+      //  !formData?.passportnumber || !formData?.passportSubmitdate || !formData?.passport_finish_date   
       
 
       // || !residenceAdress.value || !arResidenceAdress.value || !passportnumber.value
@@ -366,6 +369,40 @@ console.log("selectedContratType",selectedContratType)
 
     }
   };
+  const handleOpenAfter = () => {
+   
+      //e.preventDefault();
+     
+      const fieldsToCheck = {
+        arName: '', CIN: '', nationality: '', phoneNumber: '', selectedGenderType: '',
+        residenceAdress: '', arResidenceAdress: '', passportnumber: '', passportSubmitdate: '', passport_finish_date: '',
+        type_Emp: '', email: '', finishDate: '', selectedStatusTypeCompany: '', traveldate: '', endTravelDate: '',
+        destination: '', arDestination: '', selectedContratType: '', duration: '', emergencyName: '', selectedRelationType: '',
+        phoneEmergency: '', selectedContractCategorie: '', cinDate: ''
+      };
+    
+      // Vérifier si tous les champs sont vides
+      console.log("fieldsToCheck", fieldsToCheck);
+      const allFieldsEmpty = Object.keys(fieldsToCheck).every(field => !formData[field]);
+      console.log("allFieldsEmpty fffffffff ", allFieldsEmpty );
+      if (allFieldsEmpty) {
+        alert("Please complete all fields.");
+        setIsModalVisible(false);
+      } else {
+        alert("All fields are not empty.");
+        setIsModalVisible(true); // Affiche la modal
+    
+        // Test Si Site Add table Visa 
+        console.log("rrrffggtyy", selectedEmpTypeType);
+        if (selectedEmpTypeType === "Site") {
+          alert("Site.");
+        }
+        SaveVisa();
+      }
+    };
+    
+ 
+  
   const SaveVisa = async () => {
 
     try {
@@ -441,7 +478,7 @@ console.log("arDestination.value",formData?.arDestination)
 
   };
 
-  const cancelInfo = () => {
+  const cancelInfotest = () => {
     form.setFieldsValue({
       arName: '', CIN: '', nationality: '', phoneNumber: '', selectedGenderType: '',
       residenceAdress: '', arResidenceAdress: '', passportnumber: '', passportSubmitdate: '', passport_finish_date: '',
@@ -454,7 +491,26 @@ console.log("arDestination.value",formData?.arDestination)
 
   };
   console.log("formData?.CIN", formData?.CIN)
+  const cancelInfo = () => {
+    form.validateFields(['CIN', 'cinDate', 'arName', 'nationality','gender','phoneNumber','residenceAdress',
+'arResidenceAdress','passportnumber','passportSubmitdate','passport_finish_date','type_Emp','email',
+'companyType','traveldate','endTravelDate','destination','arDestination','duration','emergencyName',
+'emergencyRelation','phoneEmergency'
 
+
+    ]).then(values => {
+      setIsModalVisible(true);
+      if (selectedEmpTypeType === "Site") {
+        alert("Emplotees Site.");
+      }
+      SaveVisa();
+    
+    }).catch(errorInfo => {
+      alert("Please complete all fields.");
+      setIsModalVisible(false);
+    
+    });
+  };
   return (
     <>
       <Form
@@ -467,6 +523,7 @@ console.log("arDestination.value",formData?.arDestination)
             e.preventDefault();
           }
         }}>
+           {/* <Button onClick={handleSubmit3}>Submit</Button> */}
         <Row style={{ justifyContent: "flex-end" }}>
           <Col xs={24} lg={6} style={{
             border: '1px solid red', paddingTop: "15px", paddingBottom: "15px", paddingLeft: "5px",
@@ -1340,7 +1397,7 @@ console.log("arDestination.value",formData?.arDestination)
           {/* Your form fields */}
 
           <Button
-            onClick={handleOpenAfter} type='primary' htmlType='submit' 
+            onClick={handleOpenAfter2} type='primary' htmlType='submit' 
             disabled={searchValue === '' || !selectedInterviews}
             >
             Save

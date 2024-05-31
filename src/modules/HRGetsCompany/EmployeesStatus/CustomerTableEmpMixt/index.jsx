@@ -82,30 +82,54 @@ const OrderTable = ({ employeesmixt, loading }) => {
       render: (text) => text === null || text === undefined ? 'null' : text
     },
     {
-      title: 'Departement',
-      dataIndex: 'departement',
-      key: 'departement',
+      title: 'position',
+      dataIndex: 'position',
+      key: 'position',
       render: (text) => text === null || text === undefined ? 'null' : text
     },
     {
-      title: 'Join Date',
-      dataIndex: 'joinDate',
-      key: 'joinDate',
+      title: 'Standby',
+      dataIndex: 'Standby',
+      key: 'Standby',
       render: (text) => text === null || text === undefined ? 'null' : text
     },
     {
-      title: 'Actuel Status',
-      dataIndex: 'actStatus',
-      key: 'actStatus',
-      render: (actStatus) => (
-        <>
-          <span className={`badge ${actStatus === "Resigned " ? 'red' : ''}`}>
-            {actStatus} {actStatus === "Active " && <StarFilled />}
+      title: 'Working Site',
+      dataIndex: 'Working Site',
+      key: 'Working Site',
+      render: (text) => text === null || text === undefined ? 'null' : text
+    },
+    {
+      title: 'Travel Back',
+      dataIndex: 'Travel Back',
+      key: 'Travel Back',
+      render: (text) => text === null || text === undefined ? 'null' : text
+    },
+    {
+      title: 'TravelGo',
+      dataIndex: 'TravelGo',
+      key: 'TravelGo',
+      render: (text) => text === null || text === undefined ? 'null' : text
+    },
+    {
+      title: 'Vacation',
+      dataIndex: 'Vacation',
+      key: 'Vacation',
+      render: (text) => text === null || text === undefined ? 'null' : text
+    },
+    {
+      title: 'Rest',
+      dataIndex: 'Rest',
+      key: 'Rest',
+      render: (text) => text === null || text === undefined ? 'null' : text
+    },
+    {
+      title: 'Return Office',
+      dataIndex: 'Return Office',
+      key: 'Return Office',
+      render: (text) => text === null || text === undefined ? 'null' : text
+    },
 
-          </span>
-        </>
-      ),
-    },
     {
       title: 'Actions',
       dataIndex: 'actions',

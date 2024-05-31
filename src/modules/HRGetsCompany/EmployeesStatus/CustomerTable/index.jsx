@@ -11,6 +11,7 @@ import { GrFormView } from "react-icons/gr";
 import { AiFillEdit } from "react-icons/ai";
 import { CiSaveDown2 } from "react-icons/ci";
 import { StyledOrderTable, StyledAction } from '../../../../styles/index.styled';
+import { all } from 'axios';
 
 const OrderTable = ({ employeesoffice, loading }) => {
 
@@ -20,6 +21,7 @@ const OrderTable = ({ employeesoffice, loading }) => {
   const [showModal, setShowModal] = useState(false);
   const [findIdDataMatriel, setFindIdDataMatriel] = useState(null);
   const [findIdDataTravel, setFindIdDataTravel] = useState(null);
+  const [allConge, setAllConge] = useState(0);
 
   const handleAddEmpOpen = () => {
 
@@ -37,6 +39,14 @@ const OrderTable = ({ employeesoffice, loading }) => {
   const handleEditEmpClose = () => {
     onEditEmp(false);
   };
+  // const calculateVacationDays = (vacations) => {
+  //   const congeVacations = vacations?.filter(vacation => vacation?.type === 'congé');
+    
+  
+  //   const totalDays = congeVacations?.reduce((sum, vacation) => sum + vacation.nuberdays, 0);
+  
+  //   return totalDays;
+  // };
 
   const findId = async (code) => {
     try {
@@ -50,11 +60,11 @@ const OrderTable = ({ employeesoffice, loading }) => {
 
       if (response.ok) {
         const responseData = await response.json();
+        console.log("getsId",responseData)
         setFindIdData(responseData);
-     
-
-
-
+        const totalVacationDays = calculateVacationDays(responseData.vacations);
+         console.log("Total vacation days of type 'congé':", totalVacationDays);
+        // setAllConge(totalVacationDays)
 
 
       }
@@ -68,6 +78,13 @@ const OrderTable = ({ employeesoffice, loading }) => {
 
 
   ];
+  // useEffect(() => {
+  //   const totalVacationDays = calculateVacationDays(findIdData?.vacations);
+  //   console.log("Total vacation days of type Congeee0000 'congé':", totalVacationDays);
+  //   setAllConge(totalVacationDays)
+  
+  // }, [allConge]);
+
 
   const columns = [
     {
@@ -82,29 +99,64 @@ const OrderTable = ({ employeesoffice, loading }) => {
       render: (text) => text === null || text === undefined ? 'null' : text
     },
     {
-      title: 'Departement',
-      dataIndex: 'departement',
-      key: 'departement',
+      title: 'Position',
+      dataIndex: 'position',
+      key: 'position',
       render: (text) => text === null || text === undefined ? 'null' : text
     },
     {
-      title: 'Join Date',
-      dataIndex: 'joinDate',
-      key: 'joinDate',
+      title: 'Working Office Day',
+      dataIndex: 'Working Office Day',
+      key: 'Working Office Day',
       render: (text) => text === null || text === undefined ? 'null' : text
     },
     {
-      title: 'Actuel Status',
-      dataIndex: 'actStatus',
-      key: 'actStatus',
-      render: (actStatus) => (
-        <>
-          <span className={`badge ${actStatus === "Resigned " ? 'red' : ''}`}>
-            {actStatus} {actStatus === "Active " && <StarFilled />}
+      title: 'Working From Home',
+      dataIndex: 'Working From Home',
+      key: 'Working From Home',
+      render: (text) => text === null || text === undefined ? 'null' : text
+      // render: (actStatus) => (
+      //   <>
+      //     <span className={`badge ${actStatus === "Resigned " ? 'red' : ''}`}>
+      //       {actStatus} {actStatus === "Active " && <StarFilled />}
 
-          </span>
-        </>
-      ),
+      //     </span>
+      //   </>
+      // ),
+    },
+    {
+      title: 'Absend Day',
+      dataIndex: 'Absend Day',
+      key: 'Absend Day',
+      render: (text) => text === null || text === undefined ? 'null' : text
+    },
+    {
+      title: 'Vacation',
+      key: 'Vacation',
+      render: (text, record) => (
+        <p>{record?.allConge}</p>
+    
+            
+    ),
+   
+    },
+    {
+      title: 'Rest',
+      dataIndex: 'Working Office Day',
+      key: 'Working Office Day',
+      render: (text) => text === null || text === undefined ? 'null' : text
+    },
+    {
+      title: 'JA',
+      dataIndex: 'Working Office Day',
+      key: 'Working Office Day',
+      render: (text) => text === null || text === undefined ? 'null' : text
+    },
+    {
+      title: 'WR',
+      dataIndex: 'Working Office Day',
+      key: 'Working Office Day',
+      render: (text) => text === null || text === undefined ? 'null' : text
     },
     {
       title: 'Actions',
