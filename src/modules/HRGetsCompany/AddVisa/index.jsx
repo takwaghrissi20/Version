@@ -141,7 +141,7 @@ const AddVisa = () => {
        passportSubmitdate,
        finalVisaReceive,
        finalVisaReceiveDate,
-       toApplyForVisa:"true"
+       toApplyForVisa:"true",
        finishDate:finishDateVisa
 
 
