@@ -4,6 +4,9 @@ import { Navigate } from "react-router-dom";
 const RecruitementInterview  = React.lazy(() =>
   import('../../../modules/HRGetsCompany/RecruitementInterview'),
 );
+const AddRecruitement = React.lazy(() =>
+  import('../../../modules/AddRecruitement'),
+);
 const InterviewStatistics = React.lazy(() =>
   import('../../../modules/HRGetsCompany/InterviewStatistics'),
 );
@@ -77,6 +80,11 @@ const ContratB2= React.lazy(() =>
 );
 
 export const ecommerceConfig = [
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/Hr/AddRecruitement',
+    element: <AddRecruitement />,
+  },
   {
     permittedRole: RoutePermittedRole.User,
     path: '/Hr/Recruitement&Interview',

@@ -41,6 +41,12 @@ const routesConfig = [
         type: "collapse",
         children: [
           {
+            id: "Add Recruitment",
+            title: "Add Recruitment",
+            messageId: "sidebar.Recruitement.AddRecruitement",
+            url: "/Hr/AddRecruitement",
+          },
+          {
             id: "Recruitement & Interview Sheet",
             title: "Recruitement & Interview Sheet",
             messageId: "sidebar.Recruitement.InterviewSheet",

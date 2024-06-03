@@ -561,6 +561,9 @@ font-weight: bold;
   font-size: 12px;
   margin-top: 10px;
 }
+.editing-row {
+  background-color: #ECF8F6 !important;
+}
 
 
 

@@ -1303,8 +1303,8 @@ export const StyledOrderTable = styled(AppTableContainer)`
 
 }
   & .ant-table-thead > tr > th {
-    font-size: 9px;  
-    text-align:left;
+    font-size: 10px;  
+    text-align:center;
     font-weight: ${({ theme }) => theme.font.weight.bold};
     line-height: 1.5;
    
@@ -1314,11 +1314,11 @@ export const StyledOrderTable = styled(AppTableContainer)`
   }
 
   & .ant-table-tbody > tr > td {
-    font-size: 9px;
+    font-size: 10px;
     text-align: center;
     line-height: 1.5;
-    min-width:50px;
-     //max-width:80px
+    min-width:57px;
+    max-width:70px
    
 
 
