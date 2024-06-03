@@ -9,7 +9,7 @@ import {
 import AppsHeader from '../../../../@crema/components/AppsContainer/AppsHeader';
 import AppsContent from '../../../../@crema/components/AppsContainer/AppsContent';
 import Pagination from '../../../../@crema/components/AppsPagination';
-import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';0
+import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
 import { useNavigate } from "react-router-dom";
 const RecruitementStaff = ({ allrecruitementabove }) => {
   const navigate = useNavigate();

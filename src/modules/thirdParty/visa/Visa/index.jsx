@@ -143,7 +143,7 @@ const AddVisa = () => {
   useEffect(() => {
     fetchEmployees();
     fetchCountVisa()
-  }, [currentPage, pageSize, nameFilter, totalVisa, requestSend]);
+  }, [currentPage, pageSize, nameFilter, totalVisa, requestSend,employees]);
 
   const listVIsa = [
     { title: 'Total Visa', number: { totalVisa }, subtitle: "Total Visa" },

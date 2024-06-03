@@ -133,14 +133,15 @@ const AddVisa = () => {
       passportnumber:passportnumber ,    
        position:position,
        projName:selectedProject,
-       requestSendVisa :selectedRequestVisa,
-       dateVisa:newDateRequestVisa,
-       vCableReceive:selectedVisaCableReceive,
+       requestSendVisa,
+       dateVisa,
+       vCableReceive,
        vCabledate:newvCabledate,
-       passportSubmit:selectedPASSPORTSUBMITTED,
-       passportSubmitdate:passportSubmitdate,
-       finalVisaReceive:selectedFinalVisa,
-       finalVisaReceiveDate:finalVisaReceiveDate,
+       passportSubmit,
+       passportSubmitdate,
+       finalVisaReceive,
+       finalVisaReceiveDate,
+       toApplyForVisa:"true"
        finishDate:finishDateVisa
 
 
@@ -308,7 +309,7 @@ const AddVisa = () => {
                     </FloatLabel>
                   </Form.Item>
                 </Col>
-                <Col xs={24} md={12}>
+                {/* <Col xs={24} md={12}>
                   <Form.Item className='form-field'>
                     <FloatLabel name="REQUESTVISA">
                       <span className='modallabel'>REQUEST VISA :</span>
@@ -328,8 +329,8 @@ const AddVisa = () => {
                     </FloatLabel>
                   </Form.Item>
                 </Col>              
-             
-                <Col xs={24} md={12}>
+              */}
+                {/* <Col xs={24} md={12}>
                   <span className='modallabel'> Date Request For Visa :</span>
                   <Form.Item
                     className='form-field'
@@ -341,9 +342,9 @@ const AddVisa = () => {
                     />
                   </Form.Item>
 
-                </Col>
+                </Col> */}
 
-                <Col xs={24} md={12}>
+                {/* <Col xs={24} md={12}>
                   <Form.Item className='form-field'>
                     <FloatLabel name="vCableReceive"
 
@@ -368,7 +369,7 @@ const AddVisa = () => {
 
                     </FloatLabel>
                   </Form.Item>
-                </Col>
+                </Col> */}
                 <Col xs={24} md={12}>
                   <Form.Item className='form-field'>
                     <FloatLabel name="vCabledate">
@@ -381,7 +382,7 @@ const AddVisa = () => {
                   </Form.Item>
                 </Col>
           
-                <Col xs={24} md={12}>
+                {/* <Col xs={24} md={12}>
                   <Form.Item className='form-field'>
                     <FloatLabel name="PASSPORT SUBMITTED TO EMBASSY">
                       <span className='modallabel'>PASSPORT SUBMITTED TO EMBASSY :</span>
@@ -402,8 +403,8 @@ const AddVisa = () => {
 
                     </FloatLabel>
                   </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
+                </Col> */}
+                {/* <Col xs={24} md={12}>
                   <Form.Item className='form-field'>
                     <FloatLabel name="passportSubmitdate">
                       <span className='modallabel'>Date PASSPORT SUBMITTED TO EMBASSY :</span>
@@ -413,8 +414,8 @@ const AddVisa = () => {
                       />
                     </FloatLabel>
                   </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
+                </Col> */}
+                {/* <Col xs={24} md={12}>
                   <Form.Item className='form-field'>
                     <FloatLabel name="FINAL VISA RECEIVED ">
                       <span className='modallabel'>VISA Ready :</span>
@@ -433,9 +434,9 @@ const AddVisa = () => {
                       </Select>
                     </FloatLabel>
                   </Form.Item>
-                </Col>
+                </Col> */}
        
-                <Col xs={24} md={12}>
+                {/* <Col xs={24} md={12}>
                   <Form.Item className='form-field'>
                     <FloatLabel name="finalVisaReceiveDate">
                       <span className='modallabel'>Date FINAL VISA Ready :</span>
@@ -445,7 +446,7 @@ const AddVisa = () => {
                       />
                     </FloatLabel>
                   </Form.Item>
-                </Col>
+                </Col> */}
 
                 <Col xs={24} md={12}> 
                   <Form.Item className='form-field'>
@@ -479,7 +480,7 @@ const AddVisa = () => {
         
         disabled={isSaveDisabled}
         onClick={handleAddVisa} type='primary' htmlType='submit'>
-         Visa  Save 
+           Save 
         </Button>
       </Space>
 

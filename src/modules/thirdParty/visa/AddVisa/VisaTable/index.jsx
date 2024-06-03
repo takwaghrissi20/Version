@@ -1,110 +1,69 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Input, Select, Table ,Row,Col} from 'antd';
+import { Button, Input, Select, Table, Row, Col,DatePicker } from 'antd';
 import AppAnimate from '../../../../../@crema/components/AppAnimate';
-import { StyledAnChar, StyledOrderTable, } from '../../../../../styles/index.styled';
+import { StyledAnChar, StyledOrderTable, StyledScrumBoardDatePicker  } from '../../../../../styles/index.styled';
 import { AiFillEdit } from "react-icons/ai";
 import { MdCancel } from "react-icons/md";
 import { CiSaveUp1 } from "react-icons/ci";
+import moment from 'moment';
 
-const OrderTable = ({ dataemployeesVisa }) => {
- 
+
+const OrderTable = ({ dataemployeesVisa ,fetchEmployees}) => {
+
+
   const [editingPasportRow, setEditingPassportRow] = useState(null);
 
   const [editingRow, setEditingRow] = useState(null);
   const [findIdData, setFindIdData] = useState(null);
   const [editingData, setEditingData] = useState({});
-  const [data, setData] = useState("");
+  const [initialEditingData, setInitialEditingData] = useState({});
+  const [editedRows, setEditedRows] = useState({});
+  const [editingRowIndex, setEditingRowIndex] = useState(null);
+
 
   const { Option } = Select;
- //Find By Id
- const findId = async (code) => {
-  try {
-    const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/getByIdv?id=${code}`, {
-      method: 'Get',
-    });
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    if (response.ok) {
-      const responseData = await response.text();
-      // navigate('/Hr/VisaHealth/UpdateVisa');
-    console.log("responseeeeeee",responseData )
-    
-      setFindIdData(responseData); 
-      // const projects = responseData?.projects?.flatMap(employee => employee.projName);     
-      // setProjects(projects)
-      // setId(responseData?.id)
-    
-    }
-  } catch (error) {
-    console.error("Erreur lors de la récupération du id eMPLOYEE:", error);
-  }
-};
-
-;
-const startEdit = (record) => {
-  findId(record.id);
-  setEditingRow(record.id);
-  setEditingData({ ...record });
-};
-
-const cancelEdit = () => {
-  setEditingRow(null);
-  setEditingData({});
-};
-console.log("editingData",editingData)
-  const saveEdit = async (id) => {
-    console.log("editingData",editingData)
-      try {
-        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/update?id=${id}`, {
-         
-          method: 'PUT',
-          headers: {
-            "Access-Control-Allow-Headers": "Content-Type",
-            "Access-Control-Allow-Origin": "*",
-            'Content-Type': 'application/json',
-            "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
-          },
-     
-          body: JSON.stringify(editingData)
-        });
   
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        if (response.ok) {
-  
-          const responseData = await response.json();
-          alert("Success Update Visa " + responseData.idVisa);
-          setData(responseData)
-         setEditingRow(null);
-         setEditingData({});
-         alert("Succes Update Visa ")
-         
-          //handleAddContactClose(true)
-        }
-  
-        // Handle responseData if needed
-      } catch (error) {
-        console.error("Erreur lors de la récupération du Id :", error);
-      }
+  ;
 
 
+  const startEdit = (record) => {
 
-    // Here you should handle saving the data, for example, sending it to a server
-    console.log("Saving data: ", editingData);
-    setEditingRow(null);
-    setEditingData({});
+    setEditingRow(record.id);
+    setEditingData({ ...record });
+
   };
+
   const handleChange = (key, value) => {
+    console.log("New value for", key, ":", value);
     setEditingData({ ...editingData, [key]: value });
-    // saveEdit(editingRow, { ...editingData, [key]: value });
-  };
 
-  useEffect(() => {
-    // saveEdit2(editingData.idVisa);
-  }, []);
+  };
+  const handleChangeDate = (date, dateString) => {
+    console.log("New value for dateVisa:", dateString);
+
+    setEditingData({ ...editingData, dateVisa: dateString });
+  };
+  const handleChangeDateVisaCable = (date, dateString) => {
+    console.log("New value for vCabledate:", dateString);
+
+    setEditingData({ ...editingData, vCabledate: dateString });
+  };
+  const handleChangeDatepassportSubmitdate= (date, dateString) => {
+    console.log("New value for  passportSubmitdate:", dateString);
+
+    setEditingData({ ...editingData,passportSubmitdate: dateString });
+  };
+  const handleChangeDatefinishDateVisa= (date, dateString) => {
+    console.log("New value for  finishDateVisa:", dateString);
+
+    setEditingData({ ...editingData,finishDateVisa: dateString });
+  };
+ 
+  
+ 
+console.log("setEditingData",editingData)
+  
   const saveEdit2 = async (id) => {
     console.log("editingData", editingData);
     try {
@@ -121,28 +80,34 @@ console.log("editingData",editingData)
 
       if (!response.ok) {
         throw new Error('Network response was not ok');
-      }
-
-      const responseData = await response.text();
-      console.log("eeeeee",responseData)
+      } 
+      const responseData = await response.json();
+      dataemployeesVisa[0] = responseData
+      setEditingRowIndex(null);
+      alert("Success Update Visa " + responseData.idVisa);      
       setEditingRow(null);
-      setEditingData({});       
-      console.log("rrrttttt",editingData)
-      alert(`Success Update Visa ${responseData.idVisa}`);
-
-     
+     setEditingData({})
     } catch (error) {
       console.error("Erreur lors de la récupération du Id :", error);
       alert('Erreur lors de la mise à jour du visa');
+
+
     }
   };
+  const cancelEdit = () => {
+    setEditingRow(null);
+    setEditingData({});
+
+
+  };
+
 
   // const handleChange = (key, value) => {
   //   setEditingData({ ...editingData, [key]: value });
   // };
 
 
-  const VisaRequest= [
+  const VisaRequest = [
     { type: 'SENT' },
     { type: 'Not SENT' },
 
@@ -150,30 +115,32 @@ console.log("editingData",editingData)
   const vCableReceive = [
     { type: 'RECEIVED' },
     { type: 'Not RECEIVED' },
-  
+
   ];
   const PASSPORTSUBMITTED = [
     { type: 'SUBMITTED' },
     { type: 'Not SUBMITTED' },
-  
+
   ];
-  const  visaReady = [
+  const visaReady = [
     { type: 'ready' },
     { type: 'Not ready' },
-  
+
   ];
- 
-  const  finalVisaReceive= [
+
+  const finalVisaReceive = [
     { type: 'FINAL RECEIVED' },
     { type: 'Not FINAL RECEIVED' },
-  
+
   ];
-  
+
   const columns = [
     {
       title: (
-        <div style={{ background: 'transparent', color: 'black',
-        fontWeight:"bold",fontSize:"10px" }}></div>
+        <div style={{
+          background: 'transparent', color: 'black',
+          fontWeight: "bold", fontSize: "10px"
+        }}></div>
       ),
 
       children: [
@@ -187,7 +154,7 @@ console.log("editingData",editingData)
           title: 'Name',
           dataIndex: 'name',
           key: 'name',
-       
+
         },
         {
           title: 'Position',
@@ -204,16 +171,19 @@ console.log("editingData",editingData)
         {
           title: 'PASSPORT',
           dataIndex: 'passportnumber',
-          key: 'passportnumber',        
-        },    
+          key: 'passportnumber',
+        },
         {
           title: 'COUNTRY',
           dataIndex: 'destination',
           key: 'destination',
           render: (text, record) => (
-            editingRow === record.id ? 
-              <Input value={editingData?.destination} 
-              onChange={(e) => handleChange('destination', e.target.value)} /> : 
+            editingRow === record.id ?
+              <Input
+                value={editingRow === record.id ? editingData?.destination : text}
+                onChange={(e) => handleChange('destination', e.target.value)}
+              />
+              :
               text
           ),
         },
@@ -222,16 +192,18 @@ console.log("editingData",editingData)
           dataIndex: 'projName',
           key: 'projName',
         },
-       
+
       ],
     },
-  
-   
+
+
 
     {
       title: (
-        <div style={{ background: '#B6D8F2', color: 'black',
-        fontWeight:"bold",paddingTop:"3px",paddingBottom:"3px",fontSize:"10px" }}>Request For Visa Country Of Origin</div>
+        <div style={{
+          background: '#B6D8F2', color: 'black',
+          fontWeight: "bold", paddingTop: "3px", paddingBottom: "3px", fontSize: "10px"
+        }}>Request For Visa Country Of Origin</div>
       ),
 
       children: [
@@ -240,35 +212,59 @@ console.log("editingData",editingData)
           dataIndex: 'requestSendVisa',
           key: 'requestSendVisa',
           render: (text, record) => (
-            editingRow === record.id ? 
-              <Select placeholder="Select Request For Visa Send"
-                      value={editingData.requestSendVisa}
-                      onChange={(value) => handleChange('requestSendVisa', value)} >
+            editingRow === record.id ?
+              <Select
+                placeholder="Visa Send"
+                value={editingData.requestSendVisa || 'Not SENT'}
+                style={{ fontSize: '9px' }}
+                onChange={(value) => handleChange('requestSendVisa', value)}
+              >
                 {VisaRequest.map(p => (
                   <Option key={p.type} value={p.type}>
                     {p.type}
                   </Option>
                 ))}
-              </Select> : 
-              text
+              </Select> :
+              text || 'Not SENT'
           ),
         },
+        
+
         {
           title: 'Date',
           dataIndex: 'dateVisa',
           key: 'dateVisa',
           render: (text, record) => (
-            editingRow === record.id ? 
-              <Input value={editingData.dateVisa} onChange={(e) => handleChange('dateVisa', e.target.value)} /> :
-              text
+            editingRow === record.id ?
+            <DatePicker 
+            style={{ width: "120px" }}
+            value={editingData.dateVisa ? moment(editingData.dateVisa) : null}
+            // value={editingRow === record.id ? editingData?.dateVisa : null}
+            onChange={(date, dateString) => handleChangeDate ('dateVisa', dateString)}
+        
+          
+          />
+          :
+          text
+
+              // <DatePicker 
+              //   placeholder='Date'
+              //   style={{ width: "120px" }}
+              //   value={editingData.dateVisa || null}
+              //   onChange={(value) => handleChange('dateVisa', value)}
+            
+              //   format='DD/M/YYYY'
+              // /> : text
           ),
         },
       ],
     },
     {
       title: (
-        <div style={{ background: '#B6D8F2', color: 'black',
-        fontWeight:"bold",paddingTop:"5px",paddingBottom:"5px",fontSize:"10px" }}>Visa Cable</div>
+        <div style={{
+          background: '#B6D8F2', color: 'black',
+          fontWeight: "bold", paddingTop: "5px", paddingBottom: "5px", fontSize: "10px"
+        }}>Visa Cable</div>
       ),
 
       children: [
@@ -277,17 +273,18 @@ console.log("editingData",editingData)
           dataIndex: 'vCableReceive',
           key: 'vCableReceive',
           render: (text, record) => (
-            editingRow === record.id ? 
+            editingRow === record.id ?
               <Select placeholder="Select Request For Visa Cable"
-                      value={editingData.vCableReceive}
-                      onChange={(value) => handleChange('vCableReceive', value)} >
+                value={editingData.vCableReceive || 'Not RECEIVED'}
+                onChange={(value) => handleChange('vCableReceive', value)} >
                 {vCableReceive.map(p => (
                   <Option key={p.type} value={p.type}>
                     {p.type}
                   </Option>
                 ))}
-              </Select> : 
-              text
+              </Select> :
+              text || 'Not RECEIVED'
+
           ),
         },
         {
@@ -295,9 +292,16 @@ console.log("editingData",editingData)
           dataIndex: 'vCabledate',
           key: 'vCabledate',
           render: (text, record) => (
-            editingRow === record.id ? 
-            <Input value={editingData.vCabledate} onChange={(date, dateString) => handleChange('vCabledate', dateString)} />:
-              // <StyledScrumBoardDatePicker
+            editingRow === record.id ?
+            <DatePicker 
+            style={{ width: "120px" }}
+            value={editingData.vCabledate ? moment(editingData.vCabledate) : null}
+            // value={editingRow === record.id ? editingData?.dateVisa : null}
+            onChange={(date, dateString) => handleChangeDateVisaCable('vCabledate', dateString)}
+        
+          
+          /> :
+
               //   placeholder='Date Visa Cable'
               //   value={editingData.vCabledate}
               //   onChange={(date, dateString) => handleChange('vCabledate', dateString)}
@@ -305,13 +309,15 @@ console.log("editingData",editingData)
               text
           ),
         },
-      
+
       ],
     },
     {
       title: (
-        <div style={{ background: '#B6D8F2', color: 'black',
-        fontWeight:"bold",paddingTop:"5px",paddingBottom:"5px",fontSize:"10px" }}>Passport Submitted To Embassy</div>
+        <div style={{
+          background: '#B6D8F2', color: 'black',
+          fontWeight: "bold", paddingTop: "5px", paddingBottom: "5px", fontSize: "10px"
+        }}>Passport Submitted To Embassy</div>
       ),
 
       children: [
@@ -320,17 +326,18 @@ console.log("editingData",editingData)
           dataIndex: 'passportSubmit',
           key: 'passportSubmit',
           render: (text, record) => (
-            editingRow === record.id ? 
+            editingRow === record.id ?
               <Select placeholder="Select Passport Submit To Embassy"
-                      value={editingData.passportSubmit}
-                      onChange={(value) => handleChange('passportSubmit', value)} >
+                value={editingData.passportSubmit || 'Not SUBMITTED'}
+
+                onChange={(value) => handleChange('passportSubmit', value)} >
                 {PASSPORTSUBMITTED.map(p => (
                   <Option key={p.type} value={p.type}>
                     {p.type}
                   </Option>
                 ))}
-              </Select> : 
-              text
+              </Select> :
+              text || 'Not SUBMITTED'
           ),
         },
         {
@@ -338,25 +345,32 @@ console.log("editingData",editingData)
           dataIndex: 'passportSubmitdate',
           key: 'passportSubmitdate',
           render: (text, record) => (
-            editingRow === record.id ? 
-            <Input value={editingData.passportSubmitdat} onChange={(date, dateString) => handleChange('vCabledate', dateString)} />:
+            editingRow === record.id ?
+            <DatePicker 
+            style={{ width: "120px" }}
+            value={editingData.passportSubmitdate ? moment(editingData.passportSubmitdate) : null}
+            onChange={(date, dateString) => handleChangeDatepassportSubmitdate('passportSubmitdate', dateString)}></DatePicker>:
+              
               // <StyledScrumBoardDatePicker
               //   placeholder='Date Passport Submit To Embassy'
               //   value={editingData.passportSubmitdate}
               //   onChange={(date, dateString) => handleChange('passportSubmitdate', dateString)}
               // /> : 
+
               text
           ),
         },
-       
-      
+
+
       ],
     },
- 
+
     {
       title: (
-        <div style={{ background: '#B6D8F2', color: 'black',
-        fontWeight:"bold",paddingTop:"5px",paddingBottom:"5px",fontSize:"10px" }}>Finaly Visa Received</div>
+        <div style={{
+          background: '#B6D8F2', color: 'black',
+          fontWeight: "bold", paddingTop: "5px", paddingBottom: "5px", fontSize: "10px"
+        }}>Finaly Visa Received</div>
       ),
 
       children: [
@@ -365,17 +379,18 @@ console.log("editingData",editingData)
           dataIndex: 'visaReady',
           key: 'visaReady',
           render: (text, record) => (
-            editingRow === record.id ? 
+            editingRow === record.id ?
               <Select placeholder="visaReady"
-                      value={editingData.visaReady}
-                      onChange={(value) => handleChange('visaReady', value)} >
+                value={editingData.visaReady || 'Not ready'}
+                onChange={(value) => handleChange('visaReady', value)} >
                 {visaReady.map(p => (
                   <Option key={p.type} value={p.type}>
                     {p.type}
                   </Option>
                 ))}
-              </Select> : 
-              text
+              </Select> :
+              text || 'Not ready'
+
           ),
         },
         {
@@ -383,53 +398,32 @@ console.log("editingData",editingData)
           dataIndex: 'finishDateVisa',
           key: 'finishDateVisa',
           render: (text, record) => (
-            editingRow === record.id ? 
-              <Select placeholder="FINISH DATE"
-                      value={editingData.finishDateVisa}
-                      onChange={(value) => handleChange('finishDateVisa', value)} >
-                {finalVisaReceive.map(p => (
-                  <Option key={p.type} value={p.type}>
-                    {p.type}
-                  </Option>
-                ))}
-              </Select> : 
-              text
-          ),
-        },
-       
-      
-      ],
-    },
-    {
-      title: (
-        <div style={{ background: 'transparent', color: 'black',
-        fontWeight:"bold",paddingTop:"5px",paddingBottom:"5px",fontSize:"12px" }}></div>
-      ),
-
-      children: [
-        {
-          title: 'FINISH DATE',
-          dataIndex: 'finishDateVisa',
-          key: 'finishDateVisa',
-          render: (text, record) => (
-            editingRow === record.id ? 
-           <Input placeholder='test'></Input>:
+            editingRow === record.id ?
+            <DatePicker 
+            style={{ width: "120px" }}
+            value={editingData.finishDateVisa? moment(editingData.finishDateVisa) : null}
+            // value={editingRow === record.id ? editingData?.dateVisa : null}
+            onChange={(date, dateString) => handleChangeDatefinishDateVisa('finishDateVisa', dateString)}
+        
+          
+          /> : 
               text
           ),
         },
 
-     
-       
-      
+
       ],
     },
-    
 
-   
+
+
+
     {
       title: (
-        <div style={{ background: 'transparent', color: 'black',
-        fontWeight:"bold",paddingTop:"5px",paddingBottom:"5px",fontSize:"12px" }}></div>
+        <div style={{
+          background: 'transparent', color: 'black',
+          fontWeight: "bold", paddingTop: "5px", paddingBottom: "5px", fontSize: "12px"
+        }}></div>
       ),
 
       children: [
@@ -440,38 +434,54 @@ console.log("editingData",editingData)
           render: (text, record) => (
             editingRow === record.id ? (
               <Row gutter={16}>
-              <Col xs={24} sm={12}>
-              < CiSaveUp1  className="iconeEditSave" onClick={() =>saveEdit2(record.idVisa)}>Save</CiSaveUp1 >
+                <Col xs={24} sm={12}>
+        
+  
+              
+                  <CiSaveUp1 className="iconeEditSave" onClick={() => saveEdit2(record.idVisa)}>Savetest</CiSaveUp1>
                 </Col>
                 <Col xs={24} sm={12}>
-                <MdCancel className="iconeEdit"
-                onClick={cancelEdit} >Cancel</MdCancel >
-                  </Col>
-                </Row>
-              // <Row>
-              //   <Button onClick={() =>saveEdit(record.id)}>Save</Button>
-              //   <Button onClick={cancelEdit}>Cancel</Button>
-              // </Row>
+                  <MdCancel className="iconeEdit" onClick={cancelEdit}>Cancel</MdCancel>
+                </Col>
+              </Row>
             ) : (
               <AiFillEdit onClick={() => startEdit(record)} className='iconeEdit' />
             )
           ),
         },
+        //   render: (text, record) => (
+        //     editingRow === record.id ? (
+        //       <Row gutter={16}>
+        //       <Col xs={24} sm={12}>
+        //       < CiSaveUp1  className="iconeEditSave" onClick={() =>saveEdit2(record.idVisa)}>Save</CiSaveUp1 >
+        //         </Col>
+        //         <Col xs={24} sm={12}>
+        //         <MdCancel className="iconeEdit"
+        //         onClick={cancelEdit} >Cancel</MdCancel >
+        //           </Col>
+        //         </Row>
+        //       // <Row>
 
-     
-       
-      
+        //     ) : (
+        //       <AiFillEdit onClick={() => startEdit(record)} className='iconeEdit' />
+        //     )
+        //   ),
+        // },
+
+
+
+
       ],
     },
-    
-    
-   
-  
+
+
+
+
   ];
 
   const [tableHeight, setTableHeight] = useState('auto');
-
   useEffect(() => {
+    fetchEmployees()
     const updateTableHeight = () => {
       const pageHeight = window.innerHeight;
       const tableHeight = pageHeight * 0.7;
@@ -483,7 +493,8 @@ console.log("editingData",editingData)
     return () => {
       window.removeEventListener('resize', updateTableHeight);
     };
-  }, []);
+  }, [dataemployeesVisa]);
+  console.log("dataemployeesVisarrrr",dataemployeesVisa)
 
   return (
     <AppAnimate animation='transition.slideUpIn' delay={200}>

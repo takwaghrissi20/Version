@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import AppRowContainer from '../../@crema/components/AppRowContainer';
+import AppRowContainer from '../../../@crema/components/AppRowContainer';
 import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox,  DatePicker, } from 'antd';
 import { MdEdit } from 'react-icons/md';
 import {
@@ -7,39 +7,33 @@ import {
   StyledSecondaryText1,
   StyledShadowWrapper,
   StyledTodoDetailDatePicker,
-  StyledSelectRow,
-  StyledTodoSelectName,
   StyledInput,
-  StyledSignLink
-} from './index.styled';
+
+} from '../index.styled';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 
 import dayjs from 'dayjs';
-import IntlMessages from '../../@crema/helpers/IntlMessages';
-import ConfirmationModal from '../../@crema/components/AppConfirmationModal';
+import IntlMessages from '../../../@crema/helpers/IntlMessages';
 
 
 
-const InterviewSheetById = () => {
+
+const TabsInterviewSheetConstructionId = ({isSaveDisabled,JobCode,totalNumber,level,projectName,position }) => {
   const location = useLocation();
-  const DesiredDate = location.state ? location.state.DesiredDate : null;
-  const JobCode = location.state ? location.state.JobCode : null;
-  const totalNumber = location.state ? location.state.totalNumber : null;
-  const level = location.state ? location.state.level : null;
-  const projectName = location.state ? location.state.projectName : null;
-  const position = location.state ? location.state.position : null;
+
+  console.log("isSaveDisabled1",isSaveDisabled)
   const experienceRequired = location.state ? location.state.experience : null;
   const [isConfirmationInterview, setIsConfirmationInterview] = useState(false);
   const [showAlertError, setShowAlertError] = useState(false);
   const [showAlertConfirmation, setShowAlertConfirmation] = useState(false);
   const [dataInterview, setDataInterview] = useState([]);
-
   const [interviewDate, setInterviewDate] = useState("");
   const [scheduleDate, setScheduleDate] = useState("");
   const [expectedJoinDate, setExpectedJoinDate] = useState("");
   const [datalastIdinterview, setDatalastIdinterview] = useState("")
   const [fullname, setFullName] = useState("");
+
   const [contactFullNumber, setContactFullNumber] = useState("");
   const [contactEmail, setcontactEmail] = useState("");
   const [departement, setDepartement] = useState("");
@@ -55,7 +49,6 @@ const InterviewSheetById = () => {
   const [selectedIntelligenceHR, setSelectedIntelligenceHR] = useState('');
   const [selectedLevelHR, setSelectedLevelHR] = useState('');
   const [selectedSkillls, setSelectedSkillls] = useState('');
-  const [selectedbodDescition, setSelectedbodDescition] = useState('');
   const [diploma, setDiploma] = useState("");
   const [educationLevel, setEducationLevel] = useState("");
   const [experience, setExperience] = useState("");
@@ -81,16 +74,50 @@ const InterviewSheetById = () => {
   const [isNoCheckedHRDecision, setIsNoCheckedHRDecision] = useState(false);
   const [isOkCheckedBod, setIsOkCheckedBod] = useState(false);
   const [isNoCheckedBOD, setIsNoCheckedBOD] = useState(false);
-  const [isHoldCheckedBOD, setIsHoldCheckedBOD] = useState(false);
-  const [officeSalaryMax, setOfficeSalaryMax] = useState(0);
-  const [dailyRateMax, setDailyRateMax] = useState(0);
-  const [totalMax, setTotalMax] = useState(0);
-  const [salaryError, setSalaryError] = useState('');
-  const [dailyError, setDailyError] = useState('');
-
-  
+  const [isHoldCheckedBOD, setIsHoldCheckedBOD] = useState(false); 
+  const [isOkcheckedHSE, setIsOkcheckedHSE] = useState(false);
+  const [isNocheckedHSE, setIsNocheckedHSE] = useState(false);
   const [evaluationDate, setEvaluationDate] = useState(dayjs().format('DD/MM/YYYY'));
-
+  const [selectedEducationTraining , setSelectedEducationTraining] = useState('');
+  const [selectedworkExperience  , setSelectedWorkExperience ] = useState('');
+  const [selectedDiversity  , setSelectedDiversity  ] = useState('');
+  const [selectedIntellectualCapability  , setSelectedIntellectualCapability] = useState('');
+  const [selectedEmotionalIntelligence , setSelectedEmotionalIntelligence ] = useState('');
+  const [selectedSelfconfidence , setSelectedSelfconfidence] = useState('');
+  const [selectedCommunicationSkills , setSelectedCommunicationSkills] = useState('');
+  const [selectedPassion , setSelectedPassion] = useState('');
+  const [selectedCreativity , setSelectedCreativity] = useState('');
+  const [selectedLeadershipQualities , setSelectedLeadershipQualities] = useState('');
+  const [selectedPhysicalpresentation, setSelectedPhysicalpresentation] = useState('');
+  const [selectedHSECertificates , setSelectedHSECertificates] = useState('');
+  const [selectedSitehazardscontrol , setSelectedSitehazardscontrol] = useState('');
+  const [selectedProperuse , setSelectedProperuse] = useState('');
+  const [selectedHazardousmaterials , setSelectedHazardousmaterials ] = useState('');
+  const [selectedEmergenceEvacuation , setSelectedEmergenceEvacuation ] = useState('');
+  const [selectedPTWknowledge, setSelectedPTWknowledge ] = useState('');
+  const [selectedHSEPolicies, setSelectedHSEPolicies ] = useState('');
+  const [selectedOthers, setSelectedOthers ] = useState('');
+  const currentYear = new Date().getFullYear();
+  const [salarylev1Error, setSalarylev1Error] = useState('');
+  const [dailylev1Error, setDailylev1Error] = useState('');
+  const [lev1SalaryMax, setLev1SalaryMax] = useState(0);
+  const [lev1dailyRateMax, setLev1DailyRateMax] = useState(0);
+  const [salarylev2Error, setSalarylev2Error] = useState('');
+  const [dailylev2Error, setDailylev2Error] = useState('');
+  const [lev2SalaryMax, setLev2SalaryMax] = useState(0);
+  const [lev2dailyRateMax, setLev2DailyRateMax] = useState(0);
+  const [salarylev3Error, setSalarylev3Error] = useState('');
+  const [dailylev3Error, setDailylev3Error] = useState('');
+  const [lev3SalaryMax, setLev3SalaryMax] = useState(0);
+  const [lev3dailyRateMax, setLev3DailyRateMax] = useState(0);
+  const [salarylev4Error, setSalarylev4Error] = useState('');
+  const [dailylev4Error, setDailylev4Error] = useState('');
+  const [lev4SalaryMax, setLev4SalaryMax] = useState(0);
+  const [lev4dailyRateMax, setLev4DailyRateMax] = useState(0);
+  const [salarylev5Error, setSalarylev5Error] = useState('');
+  const [dailylev5Error, setDailylev5Error] = useState('');
+  const [lev5SalaryMax, setLev5SalaryMax] = useState(0);
+  const [lev5dailyRateMax, setLev5DailyRateMax] = useState(0);
 
   const situation = [
     { st: 'Single' },
@@ -178,12 +205,6 @@ const InterviewSheetById = () => {
     { skill: 'Excellent' },
 
   ];
-  const descisionBod = [
-    { des: 'Accepted' },
-    { des: 'Not Accepted' },
-    { des: 'On Hold' },
- 
-  ];
   const fetchData = async () => {
     try {
       const endPoint =
@@ -191,7 +212,7 @@ const InterviewSheetById = () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/last`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/last`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -207,7 +228,7 @@ const InterviewSheetById = () => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
-      setDatalastIdinterview(data.interviewCode)
+      setDatalastIdinterview(data?.interviewCode)
 
     } catch (error) {
       console.error('Erreur lors de la récupération des données:', error);
@@ -220,7 +241,7 @@ const InterviewSheetById = () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/rateMnStaff/filterByPosition?position=${position}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/rateConst/filterByPosition?position=${position}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -236,19 +257,27 @@ const InterviewSheetById = () => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
-     if (level === 'junior') {
-      setOfficeSalaryMax(data?.[0]?.officeSalaryJun);
+      console.log("datttaajjjjj",data)
+     if (level === 'lev1') {
+      setOfficeSalaryMax(data?.[0]?.lev1);
+  
       setDailyRateMax(data?.[0]?.dailyrateJun);
       setTotalMax(data?.[0]?.totalJun);
-    } else if (level === 'Meduim') {
-      setOfficeSalaryMax(data?.[0]?.officeSalaryMid);
-      setDailyRateMax(data?.[0]?.dailyRateMid);
-      setTotalMax(data?.[0]?.totalMid);
-    } else if (level === 'senior') {
-      setOfficeSalaryMax(data?.[0]?.officeSalarySen);
-      setDailyRateMax(data?.[0]?.dailyRateSen);
-      setTotalMax(data?.[0]?.totalSen);
+     
+     
+      setTotalMax(data?.[0]?.totalJun);
+    } else if (level === 'lev2') {
+ 
+    } else if (level === 'lev3') {
+   
     }
+    else if (level === 'lev4') {
+    
+    }
+    else if (level === 'lev5') {
+
+    }
+   
    
 
     } catch (error) {
@@ -259,35 +288,14 @@ const InterviewSheetById = () => {
     fetchData()
     fetchMaxValues()
 
-  }, [officeSalaryMax]);
-
-  const handleSalaryChange = (e) => {
-    const value = e.target.value;
-    setProposedSalary(value);
-    if (parseFloat(value) > officeSalaryMax) {
-      setSalaryError(`Proposed Office Salary exceeds the maximum allowed value of ${officeSalaryMax}`);   
-    }else
-    setSalaryError("");   
-  };
-  const handleDailyChange= (e) => {
-    const value = e.target.value;
-    setProposedDailyRate(value);
-    if (parseFloat(value) > dailyRateMax) {
-      setDailyError(`Proposed Daily Rate exceeds the maximum allowed value of ${dailyRateMax}`);
-     
-    }
-    else{
-      setDailyError("")
-    }
-  };
-
+  }, []);
   const NewLastInterview = datalastIdinterview + 1
-  console.log("DatalastIdinterview",datalastIdinterview)
-  console.log("NewLastInterview",NewLastInterview)
   //Save InterViewSheet
   const navigate = useNavigate();
   const ShowAlertAfterSaveInterview = () => {
     setShowAlertConfirmation(true)
+
+
   }
   const Validation = [
     { vld: 'Valid for post' },
@@ -296,16 +304,23 @@ const InterviewSheetById = () => {
     { vld: 'File to complete' },
 
   ];
+  const Rating = [
+    { rate: 'Excellent' },
+    { rate: 'Average' },
+    { rate: 'Good' },
+    { rate: 'Below Average' },
+
+  ];
+  const Rating1 = [
+    { rate: 'Excellent' },
+    { rate: 'Average' },
+    { rate: 'Good' },
+    { rate: 'Below Average' },
+
+  ];
+
 
   const Save = async () => {
-    if (salaryError || dailyError) {
-      return;
-    }
-
-    if (parseFloat(proposedSalary) + parseFloat(proposedDailyRate) > totalMax) {
-    alert(`Total of Proposed Office Salary and Proposed Site Daily Rate exceeds the maximum allowed value of ${totalMax}`);
-      return;
-    }
     try {
       console.log("selectedValidation",selectedValidation)
       const endPoint =
@@ -313,7 +328,7 @@ const InterviewSheetById = () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/addintv?id=${JobCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/addintv?id=${JobCode}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -323,24 +338,41 @@ const InterviewSheetById = () => {
           interviewCode: NewLastInterview,
           jobcode1: JobCode,
           jobCode: JobCode,
-          interviwDate: interviewDate,
-          fullName: fullname,
           projname: projectName,
           department: departement,
-          diploma: diploma,
           requiredExperinece: requiredExperinece,
-          requiredQualification: requiredQualification,
-          birthayDate: scheduleDate,
-          familySituation: selectedSituation,
-          educationLevel: educationLevel,
-          requiredGrade: level,
-          experience: experience,
           positionToBeFilled: position,
+          fullName: fullname,
+          //interviwDate:interviwDate,//???? A faire
+      
+
+
+
+
+          // interviwDate: DesiredDate,
+          // fullName: fullname,
+          // projname: projectName,
+          // department: departement,
+          // diploma: diploma,
+          // requiredExperinece: requiredExperinece,
+          // requiredQualification: requiredQualification,
+          // birthayDate: scheduleDate,
+          // familySituation: selectedSituation,
+          // educationLevel: educationLevel,
+          // requiredGrade: level,
+          // experience: experience,
+          // positionToBeFilled: position,
+
+
+
           //telCondidate:contactFullNumber,
           // validatesFor:selectedValidation,
           // goTotest2: CheckedFinalGotest2
 
           
+
+
+
 
 
         })
@@ -366,13 +398,6 @@ const InterviewSheetById = () => {
       console.error('Erreur lors de la récupération des données:', error);
     }
   };
-  const isButtonDisabled = () => {
-    return (
-      salaryError ||
-      dailyError||
-      parseFloat(proposedSalary) + parseFloat(proposedDailyRate) > totalMax
-    );
-  };
 
   //End Interview Sheet
   const [isVisible, setIsVisible] = useState(false);
@@ -387,17 +412,18 @@ const InterviewSheetById = () => {
     setIsOkChecked(e.target.checked);
     setIsVisible(true);
     if (e.target.checked) {
-
       setIsNoChecked(false);
     }
-    else if (!(e.target.checked) ) {
+    if (!(e.target.checked) ) {
       setIsVisible(false);
     }
   }
-
+console.log("setIsOkChecked",isOkChecked)
+console.log(" setIsNoChecked",isNoChecked)
 const CheckedFinalGotest2=isOkChecked ?1 : 0;
+console.log(" setIsNoCheckeddddFinnnaaaaaaaaaaaal",CheckedFinalGotest2)
   function No(e) {
-
+    console.log(`checkedgggg = ${e.target.checked}`);
     setIsNoChecked(e.target.checked);
     setIsVisible(false);
     if (e.target.checked) {
@@ -407,30 +433,31 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
   }
   
   function Ok3(e) {
-    console.log(`checked = ${e.target.checked}`);
+
     setIsOkChecked3(e.target.checked);
     setIsVisibletest3(true);
     if (e.target.checked) {
 
       setIsNoChecked3(false);
     }
-    else if (!(e.target.checked) ) {
+    if (!(e.target.checked) ) {
       setIsVisibletest3(false);
     }
   }
 
   function No3(e) {
-    console.log(`checkedgggg = ${e.target.checked}`);
+   
     setIsNoChecked3(e.target.checked);
     setIsVisibletest3(false);
     if (e.target.checked) {
       setIsOkChecked3(false);
       setIsNoChecked3(true);
     }
+  
   }
   //OkProfile
   function OkProfile(e) {
-    console.log(`checked = ${e.target.checked}`);
+ 
     setIsOkCheckedProfile(e.target.checked);
     setIsVisibletestEvaluator(true)
   
@@ -438,13 +465,13 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
 
       setIsNoCheckedProfile(false);
     }
-    else if (!(e.target.checked) ) {
-      setIsVisibletestEvaluator(false);
+    if (!(e.target.checked) ) {
+      setIsVisibletestEvaluator(false)
     }
   }
 
   function NoProfile(e) {
-    console.log(`checkedgggg = ${e.target.checked}`);
+
     setIsNoChecked3(e.target.checked);
     setIsVisibletestEvaluator(false)
     if (e.target.checked) {
@@ -454,7 +481,7 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
   }
   //Ok or No Evaluator
   function  OkEvaluator(e) {
-    console.log(`checked = ${e.target.checked}`);
+   
     setIsOkCheckedEvaluator(e.target.checked);
     setIsVisibleEvaluatorDecision(true)
   
@@ -462,13 +489,13 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
 
       setIsNoCheckedEvaluator(false);
     }
-    else if (!(e.target.checked) ) {
-      setIsVisibleEvaluatorDecision(false);
+    if (!(e.target.checked) ) {
+      setIsVisibletestEvaluator(false)
     }
   }
 
   function NoEvaluator(e) {
-    console.log(`checkedgggg = ${e.target.checked}`);
+
     setIsNoCheckedEvaluator(e.target.checked);
     setIsVisibleEvaluatorDecision(false)
     if (e.target.checked) {
@@ -479,7 +506,7 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
 
   //Desicion Head 
   function  OkHead(e) {
-    console.log(`checked = ${e.target.checked}`);
+ 
     setIsOkCheckedHead(e.target.checked);
     setIsVisibleHeadDecision(true)
   
@@ -487,13 +514,13 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
 
       setIsNoCheckedHead(false);
     }
-    else if (!(e.target.checked) ) {
-      setIsVisibleHeadDecision(false);
+    if (!(e.target.checked) ) {
+      setIsVisibleHeadDecision(false)
     }
   }
 
   function NoHead(e) {
-    console.log(`checkedgggg = ${e.target.checked}`);
+
     setIsOkCheckedHead(e.target.checked);
     setIsVisibleHeadDecision(false)
     if (e.target.checked) {
@@ -502,7 +529,7 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
     }
   }
   function  OkHrDesicision(e) {
-    console.log(`checked = ${e.target.checked}`);
+    
     setIsOkCheckedHRDecision(e.target.checked);
     setIsVisibleHRDecision(true)
   
@@ -510,13 +537,13 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
 
       setIsNoCheckedHRDecision(false);
     }
-    else if (!(e.target.checked) ) {
-      setIsVisibleHRDecision(false);
+    if (!(e.target.checked) ) {
+      setIsVisibleHRDecision(false)
     }
   }
 
   function NoHrDesicision(e) {
-    console.log(`checkedgggg = ${e.target.checked}`);
+
     setIsOkCheckedHRDecision(e.target.checked);
     setIsVisibleHRDecision(false)
     if (e.target.checked) {
@@ -525,7 +552,9 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
     }
   }
 
+ 
   return (
+    <>
     <Form
       layout='vertical'
       style={{ backgroundColor: "white", marginBottom: "20px", padding: "10px", borderRadius: "20px" }}
@@ -534,9 +563,9 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
     >
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <div>
-          <Typography.Title level={4}>MANAGEMENT STAFF INTERVIEW SHEET</Typography.Title>
+          <Typography.Title level={4}>CONSTRUCTION TEAM INTERVIEW SHEET</Typography.Title>
           <StyledSecondaryText>
-            MANAGEMENT STAFF
+          CONSTRUCTION TEAM
           </StyledSecondaryText>
         </div>
 
@@ -545,14 +574,14 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
       <AppRowContainer>
         <Col xs={24} md={6}>
           <Typography.Title level={5}>InterView Information</Typography.Title>
-         
+        
         </Col>
         <Col xs={24} md={18}>
           <StyledShadowWrapper>
             <AppRowContainer>
               <Col xs={24} md={12}>
                 <Form.Item label='Reference' name='interviewCode'>
-                  <Input placeholder={"MSIS-" + NewLastInterview} readOnly={true} />
+                  <Input placeholder={"CIS-" + NewLastInterview} readOnly={true} />
                 </Form.Item>
               </Col>
               <Col xs={24} md={12}>
@@ -615,7 +644,7 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
       <AppRowContainer>
         <Col xs={24} md={6}>
           <Typography.Title level={5}> Required Position Information </Typography.Title>
-      
+        
         </Col>
         <Col xs={24} md={18}>
           <StyledShadowWrapper>
@@ -670,7 +699,7 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
       <AppRowContainer>
         <Col xs={24} md={6}>
           <Typography.Title level={5}>Candidate Personal Information</Typography.Title>
-    
+        
         </Col>
         <Col xs={24} md={18}>
           <StyledShadowWrapper>
@@ -679,9 +708,7 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
                 <Form.Item label='Full Name' name='fullName'
                   rules={[
                     { required: true, message: 'Please input your Full Name!' },
-                  ]}
-                
-                >
+                  ]}>
                   <Input placeholder='Full Name'
                     value={fullname}
                     onChange={(e) => setFullName(e.target.value)}
@@ -840,9 +867,7 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
       <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
         <Col xs={24} md={6}>
           <Typography.Title level={5}>Preliminary study of the application </Typography.Title>
-          <StyledSecondaryText1>
-          Go to test 2
-          </StyledSecondaryText1>
+        
         </Col>
         <Col xs={24} md={18}>
           <StyledShadowWrapper>
@@ -1035,7 +1060,7 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
          <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
          <Col xs={24} md={6}>
            <Typography.Title level={5}> Technical Evaluation</Typography.Title>
-         
+        
          </Col>
          <Col xs={24} md={18}>
           <StyledShadowWrapper>
@@ -1062,7 +1087,6 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
                       </Select.Option>
                     ))}
                   </Select>
-                  descisionBod
                 </Form.Item>
               </Col>
               <Col xs={24} md={12}>
@@ -1151,7 +1175,7 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
          <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
          <Col xs={24} md={6}>
            <Typography.Title level={5}> Evaluator Decision</Typography.Title>
-          
+         
          </Col>
          <Col xs={24} md={18}>
           <StyledShadowWrapper>
@@ -1178,7 +1202,9 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
                 rules={[
                   { required: true, message: 'Please input your Comments!' },
                  
-                ]}>
+                ]}
+                
+                >
                   <Input
                     value={comment}
                     onChange={(e) => setComments(e.target.value)}
@@ -1334,7 +1360,7 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
                     onChange={(value) => console.log('Selected Intelligence:', value)}
                     value={selectedIntelligenceHR}
                   >
-                    {intelligence.map((p, index) => (
+                    {intelligenceHR.map((p, index) => (
                       <Select.Option key={index} value={p.intlg}>
                         {p.intlg}
                       </Select.Option>
@@ -1376,6 +1402,7 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
               
               >
                
+
                     <DatePicker
                       //defaultValue={new Date()} 
                       defaultValue={dayjs(expectedJoinDate, '16 06,1990')}
@@ -1387,9 +1414,10 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
                 </Form.Item>
                 </Col>
      
-                 
+           
+           
                 <Col xs={24} md={12}>
-                <Form.Item label='Proposed Office Salary' name='Proposed Salary'
+                <Form.Item label='Proposed Salary' name='Proposed Salary'
                   rules={[
                     { required: true, message: 'Please input your Proposed Salary!' },
                     { pattern: /^[0-9]+$/, message: 'Proposed Salary must be a number!' },
@@ -1399,17 +1427,13 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
                 >
                   <Input
                     value={proposedSalary}
-                    onChange={handleSalaryChange}
-                    // onChange={(e) => setProposedSalary(e.target.value)}
-                    placeholder={`Proposed Office Salary does not exceed ${officeSalaryMax}`}
-                    
-                     />
-                   {salaryError && <Alert className="custom-alert" message={salaryError} type="error" showIcon />}
-                   
+                    onChange={(e) => setProposedSalary(e.target.value)}
+
+                    placeholder='Proposed Salary' />
                 </Form.Item>
               </Col>
               <Col xs={24} md={12}>
-                <Form.Item label='Proposed Site Daily Rate' name='Proposed Daily Rate'
+                <Form.Item label='Proposed Daily Rate' name='Proposed Daily Rate'
                   rules={[
                     { required: true, message: 'Please input your Proposed Daily Rate!' },
                     { pattern: /^[0-9]+$/, message: 'Proposed Daily Rate must be a number!' },
@@ -1420,11 +1444,9 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
                 >
                   <Input
                     value={proposedDailyRate}
-                    onChange={handleDailyChange}
-                    // onChange={(e) =>setProposedDailyRate(e.target.value)}
-                    placeholder={`Proposed Daily Rate does not exceed ${dailyRateMax}`}
-                     />
-                  {dailyError && <Alert className="custom-alert" message={dailyError} type="error" showIcon />}
+                    onChange={(e) =>setProposedDailyRate(e.target.value)}
+
+                    placeholder='Proposed Salary' />
                 </Form.Item>
               </Col>
               <Col xs={24} md={24}>
@@ -1447,10 +1469,7 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
                  rules={[
                   { required: true, message: 'Please Select  your Comments!' },
                  
-                ]}
-                
-                
-                >
+                ]}>
                   <Input
                     value={commentHr}
                     onChange={(e) => setCommentsHr(e.target.value)}
@@ -1469,88 +1488,6 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
        </>
       )}
 
-      {/*6. Head of Department Approval*/}
-     {isVisibleHRDecision  && (
-      <>
-          <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-         <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-         <Col xs={24} md={6}>
-           <Typography.Title level={5}>Board of directors Decision</Typography.Title>
-          
-         </Col>
-         <Col xs={24} md={18}>
-          <StyledShadowWrapper>
-            <AppRowContainer>
-            <Col xs={24} md={12}>
-                <Form.Item
-                  label='Final Descision:'
-                  name='Final Descision: '
-                  onChange={(value) =>setSelectedbodDescition(value)}
-                  rules={[
-                    { required: true, message: 'Please Select your Final Descision!' },
-                   
-                  ]}
-                  
-                >
-                  <Select
-                    placeholder='Final Descision'
-                    onChange={(value) => console.log('Final Descision ', value)}
-                    value={selectedbodDescition}
-                  >
-                    { descisionBod.map((p, index) => (
-                      <Select.Option key={index} value={p.des}>
-                        {p.des}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                 
-                </Form.Item>
-              </Col>
-            {/* <Col xs={24} md={12}>
-                <StyledInput>
-                <Form.Item
-                  label=' Final Descision:'
-                  name=' Final Descision'
-                  rules={[
-                    { validator: validateCheckboxesBOD  },
-                  ]}
-                  >
-                  <Checkbox  checked={isOkCheckedBod} onChange={OkBod}>
-               
-                    <IntlMessages id='validation.BOD' />
-                  </Checkbox>
-                  <Checkbox checked={isNoCheckedBOD} onClick={NoBod}>
-                    <IntlMessages id='Notvalidation.BOD' />
-                  </Checkbox>
-                  <Checkbox checked={isHoldCheckedBOD} onClick={HoldBod}>
-                    <IntlMessages id='Holdvalidation.BOD' />
-                  </Checkbox>
-                  </Form.Item>
-                </StyledInput>
-              </Col> */}
-              
-            
-           
-          
-             
-              </AppRowContainer>
-              </StyledShadowWrapper>
-              </Col>
-       </AppRowContainer>
-       </>
-        )}
-      
-
-      {/* {isConfirmationInterview? (
-        <ConfirmationModal
-          open={isConfirmationInterview}
-          paragraph={'Are you sure you want to Save this Interview?'}
-          onDeny={isConfirmationInterview}
-          onConfirm={isConfirmationInterview}
-          modalTitle={<IntlMessages id='common.savaInterview' />}
-        />
-      ) : null} */}
-
 
       <Space
         size={15}
@@ -1558,9 +1495,9 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
       >
         <Button >Cancel</Button>
         <Button onClick={Save}
-        disabled={isButtonDisabled()}
-         type='primary' 
-         htmlType='submit'>
+          disabled={isSaveDisabled === false}
+         type='primary'
+        htmlType='submit'>
           Save
         </Button>
       </Space>
@@ -1576,23 +1513,14 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
 
         />
       )}
-      {/* {showAlertConfirmation && (
-        <div className="modal-container">
-          <div className="modal-content">
-            <p>Do you want to save an interview ?</p>
-            <div className="button-container">
-              <button className="red-button" onClick={Save }>Yes</button>
-              <button className="green-button" onClick={() => setShowAlertConfirmation(dalse)}>Cancel</button>
-            </div>
-       
-          </div>
-        </div>
-      )} */}
+  
 
 
     </Form>
+
+    </>
   );
 };
 
 
-export default InterviewSheetById;
+export default TabsInterviewSheetConstructionId;

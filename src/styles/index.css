@@ -557,7 +557,10 @@ font-weight: bold;
  margin-right: 5px;
  margin-left: 5px ;
 }
-
+.custom-alert{
+  font-size: 12px;
+  margin-top: 10px;
+}
 
 
 

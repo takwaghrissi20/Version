@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Form } from 'antd';
-
+;
 export const StyledSecondaryText = styled.p`
   margin-top: 8px;
   color: ${({ theme }) => theme.palette.text.secondary};

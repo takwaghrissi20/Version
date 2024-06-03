@@ -60,7 +60,6 @@ const AddVisa = () => {
       }
 
       const data = await response.json();
-      console.log("dattta",data)
       setEmployees(data);
 
     } catch (error) {
@@ -124,8 +123,6 @@ const AddVisa = () => {
   const fetchCountVisa = async () => {
 
     try {
-
-
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/list`);
 
 
@@ -165,7 +162,7 @@ const AddVisa = () => {
   ];
 
 
-
+console.log("parents",employees)
   return (
     <div>
       <AppPageMeta title='Visa Employees' />
@@ -225,7 +222,7 @@ const AddVisa = () => {
           title={messages['dashboard.Visa']}
         >
 
-          <OrderTable className={clsx("item-hover")} dataemployeesVisa={employees} />
+          <OrderTable className={clsx("item-hover")} dataemployeesVisa={employees} fetchEmployees={fetchEmployees} />
           <div style={{marginTop:"10px"}}></div>
           
           <StyledOrderHeaderRight>
