@@ -30,8 +30,8 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
   const [isTargetproductivityVisible, setIsTargetproductivityVisible] = useState(false);
   const [contratType, setContratType] = useState("CDD");
   const [employeeType, setEmployeeType] = useState("Site");
-  const[category,setCategory]=useState("Construction Staff")
-  console.log("setContratType",contratType)
+  const [category, setCategory] = useState("Construction Staff")
+  console.log("setContratType", contratType)
   const handleValidateEmployeeClose = () => {
     setIsModalVisible(false);
   };
@@ -326,7 +326,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
       arName: '', CIN: '', nationality: '', phoneNumber: '', selectedGenderType: '',
       residenceAdress: '', arResidenceAdress: '', passportnumber: '', passportSubmitdate: '', passport_finish_date: '',
       email: '', finishDate: '', selectedStatusTypeCompany: '', traveldate: '', endTravelDate: '',
-      destination: '', arDestination: '',  duration: '', emergencyName: '', selectedRelationType: '',
+      destination: '', arDestination: '', duration: '', emergencyName: '', selectedRelationType: '',
       phoneEmergency: '', selectedContractCategorie: '', primeProductivity: ''
 
 
@@ -334,23 +334,20 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
 
   };
   const handleOpenAfter = () => {
-    form.validateFields(['CIN', 'cinDate', 'arName', 'nationality','gender','phoneNumber','residenceAdress',
-'arResidenceAdress','passportnumber','passportSubmitdate','passport_finish_date','type_Emp','email',
-'companyType','traveldate','endTravelDate','destination','arDestination','duration','emergencyName',
-'emergencyRelation','phoneEmergency'
-
+    form.validateFields(['CIN', 'cinDate', 'arName', 'nationality', 'gender', 'phoneNumber', 'residenceAdress',
+      'arResidenceAdress', 'passportnumber', 'passportSubmitdate', 'passport_finish_date', 'type_Emp', 'email',
+      'companyType', 'traveldate', 'endTravelDate', 'destination', 'arDestination', 'duration', 'emergencyName',
+      'emergencyRelation', 'phoneEmergency'
 
     ]).then(values => {
       setIsModalVisible(true);
-      if (selectedEmpTypeType === "Site") {
-        alert("Emplotees Site.");
-      }
-      SaveVisa();
-    
+   
+
+
     }).catch(errorInfo => {
       alert("Please complete all fields.");
       setIsModalVisible(false);
-    
+
     });
   };
 
@@ -361,79 +358,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
       setIsTargetproductivityVisible(true)
     }
   }, []);
-  const SaveVisa = async () => {
 
-    try {
-
-      const endPoint =
-        process.env.NODE_ENV === "development"
-          ? "https://dev-gateway.gets-company.com"
-          : "";
-
-      const requestBody = {
-        id:findIdInterview?.id,
-       actStatus:findIdInterview?.familySituation,  
-       arDestination:formData?.arResidenceAdress,
-       arName:formData?.arName ,
-       arPosition:formData?.positionfieledarabe,
-       arResidenceAdress:formData?.arResidenceAdress,
-       birthDate:findIdInterview?.birthayDate,
-       category:"Construction Staff",
-       cin:formData?.CIN,
-       cinDate:formData?.cinDate,
-       companyType:formData?.companyType,
-       dailyRate:findIdInterview?.dailyRate,
-       departement:findIdInterview?.department,
-       destination:formData?.destination,
-       duration:formData?.duration,
-       email:formData?.email,
-       emergencyName:formData?.emergencyName,
-       emergencyRelation:selectedRelationType,
-       endTravelDate:formData?.endTravelDate,
-       finishDate:formData?.finishDate?.format('YYYY-MM-DD'),
-       joinDate:findIdInterview?.expectedJoinDate,
-       name:findIdInterview?.fullName,
-       nationality:formData?.nationality,
-       passportnumber:formData?.passportnumber,
-       passportSubmitdate:formData?.passportSubmitdate,
-       passport_finish_date:formData?.passport_finish_date.format('YYYY-MM-DD'),
-       position:findIdInterview?.positionToBeFilled,
-       projName:findIdInterview?.projname,
-       residenceAdress:formData?.residenceAdress,
-       salary:findIdInterview?.propsedsalary,
-       traveldate:formData?.traveldate?.format('YYYY-MM-DD'),
-       type_Emp:formData?.type_Emp,
-      
-      };
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/add`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestBody)
-      });
-
-      // Gérer la réponse du serveur
-      if (!response.ok) {
-       alert("Request failed")
-        throw new Error('La requête a échoué avec le code ' + response.status);
-
-      }
-
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        throw new TypeError("La réponse n'est pas au format JSON");
-      }
-      const data = await response.json();
-       console.log("datavisa",data)
-
-      // handleAddContactClose()
-      // Traiter la réponse de l'API si nécessaire
-    } catch (error) {
-      console.error('Erreur lors de la récupération des données:', error);
-    }
-
-  };
 
 
 
@@ -588,7 +513,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
           <div>
             <Typography.Title level={4}>EMPLOYEE INFORMATION FORM</Typography.Title>
             <StyledSecondaryText>
-            <p>{category}</p>
+              <p>{category}</p>
             </StyledSecondaryText>
           </div>
           {/* <div>
@@ -606,7 +531,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
         <AppRowContainer>
           <Col xs={24} md={6}>
             <Typography.Title level={5}>Personal Employee <br></br> Information</Typography.Title>
-           
+
           </Col>
           <Col xs={24} md={18}>
             <StyledShadowWrapper>
@@ -836,7 +761,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
         <AppRowContainer>
           <Col xs={24} md={6}>
             <Typography.Title level={5}>Job Information</Typography.Title>
-          
+
           </Col>
 
           <Col xs={24} md={18}>
@@ -865,7 +790,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
                     />
                   </Form.Item>
                 </Col>
-                
+
                 <Col xs={24} md={12}>
                   <Form.Item label='Employee Type' name='type_Emp'
                     rules={[
@@ -883,7 +808,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
                       placeholder="Type Employee"
                       onChange={(value) => setSelectedEmpTypeType(value)} >
 
-                      {EmpType .map((p) => {
+                      {EmpType.map((p) => {
                         return (
                           <Option value={p.type} key={p.type}>
                             <div className='ant-row ant-row-middle'>
@@ -894,7 +819,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
                         );
                       })}
                     </Select>
-                
+
                   </Form.Item>
                 </Col>
 
@@ -944,7 +869,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
 
 
 
-{/* 
+                {/* 
                 <Col xs={24} md={12}>
                   <Form.Item label='Employee Type' name='type_Emp'
                     rules={[
@@ -1208,7 +1133,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
         <AppRowContainer>
           <Col xs={24} md={6}>
             <Typography.Title level={5}>EMERGENCY Contact <br></br>Information </Typography.Title>
-           
+
           </Col>
 
           <Col xs={24} md={18}>
@@ -1424,6 +1349,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
         duration={formData?.duration}
         primeProductivity={formData?.primeProductivity}
         category={category}
+
 
       />
 

@@ -38,6 +38,7 @@ const ViewInformationForm = (props) => {
   const [endtraveldatepdf, setEndTraveldatepdf] = useState("");
   const [arDestinationpdf, setArDestinationpdf] = useState("");
   const [arPositionpdf, setArPositionpdf] = useState("");
+  const [idT, setIdT] = useState(0);
 
 
   const [lastId, setLastId] = useState(0);
@@ -86,7 +87,8 @@ const ViewInformationForm = (props) => {
     projName,
     duration,
     primeProductivity,
-    category
+    category,
+
   } = props;
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -99,16 +101,68 @@ const ViewInformationForm = (props) => {
       setUserImage(URL.createObjectURL(acceptedFiles[0]));
     },
   });
+  const SaveVisa = async () => {
+  
+        try {
+    
+          const endPoint =
+            process.env.NODE_ENV === "development"
+              ? "https://dev-gateway.gets-company.com"
+              : "";
+    
+          const requestBody = {
+         
+           idVisa:LastIdIncremente,
+           category:"Construction Staff",     
+           departement:departement,
+           name:name,
+           passportnumber:passportnumber,
+           passportSubmitdate:passportSubmitdate,
+           position:position,
+           projName:projName,        
+           type_Emp:type_Emp,
+           toApplyForVisa:"true"
 
 
-
+    
+          
+          };
+          const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/add`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+          });
+    
+          // Gérer la réponse du serveur
+          if (!response.ok) {
+           alert("Request failed")
+            throw new Error('La requête a échoué avec le code ' + response.status);
+    
+          }
+    
+          const contentType = response.headers.get('content-type');
+          if (!contentType || !contentType.includes('application/json')) {
+            throw new TypeError("La réponse n'est pas au format JSON");
+          }
+          const data = await response.json();
+          
+          console.log("lastIdffffff",lastId)
+           console.log("datavisa",data)
+    
+          // handleAddContactClose()
+          // Traiter la réponse de l'API si nécessaire
+        } catch (error) {
+          console.error('Erreur lors de la récupération des données:', error);
+        }
+    
+      };
+ 
+      const LastIdIncremente = lastId + 1
   const SaveEmployees = async () => {
     
     try {
-      // if ( !arName || !CIN ||  !duration ||!nationality || !birthDate || !gender || !phoneNumber || !familyStatus || !residenceAdress || !arResidenceAdress || !passportnumber || !passportSubmitdate || !passport_finish_date || !position || !arPosition || !departement || !type_Emp || !projname || !email || !joinDate || !finishDate || !companyType || !traveldate || !endTravelDate || !destination || !arDestination || !salary || !dailyRate || !contractType || !emergencyName || !emergencyRelation || !phoneEmergency || !contractCategory) {
-      //   alert("Please replace all the champs");
-      //   return;
-      // }
       const endPoint =
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
@@ -175,6 +229,7 @@ const ViewInformationForm = (props) => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
+      console.log("tetsttttttsataempT",data)
       setData(data)
       setPasspordDate(data.passportSubmitdate)
       setCompanyTypepdf(data.companyType)
@@ -184,6 +239,11 @@ const ViewInformationForm = (props) => {
       setArPositionpdf(data.arPosition)
       setLastId(data.id)
       setShowAlert(true);
+      if(data.type_Emp==="Site"){
+        console.log("data.type_EmpConstruction",data.type_Emp)
+        SaveVisa()
+      }
+     
       // handleAddContactClose()
       // Traiter la réponse de l'API si nécessaire
     } catch (error) {
@@ -200,144 +260,11 @@ const ViewInformationForm = (props) => {
     // Set grayBackground to true when generateBtnEnabled is false
     setGrayBackground(!generateBtnEnabled);
   }, [generateBtnEnabled]);
-  console.log("lastId", lastId)
-  const LastIdIncremente = lastId + 1
-  console.log(" LastIdIncremente", LastIdIncremente)
-
-  const ContratB1 = () => {
-    navigate('/HRGetsCompany/ContartTypeB1', {
-      state: {
-        fullName: arName,
-        passportNumber: passportnumber,
-        passportSubmitdate: passpordDate,
-        arResidenceAdress: arResidenceAdress,
-        companyType: companyTypepdf,
-        traveldate: traveldatepdf,
-        endTravelDate: endtraveldatepdf,
-        arDestination: arDestination,
-        arPosition: arPositionpdf,
-        lastId: LastIdIncremente,
-        salary: salary
-
-
-      }
-
-
-    });
-  };
-  const ContratB2 = () => {
-    navigate('/HRGetsCompany/ContartTypeB2', {
-      state: {
-        fullName: arName,
-        passportNumber: passportnumber,
-        passportSubmitdate: passpordDate,
-        arResidenceAdress: arResidenceAdress,
-        companyType: companyTypepdf,
-        traveldate: traveldatepdf,
-        endTravelDate: endtraveldatepdf,
-        arDestination: arDestination,
-        arPosition: arPositionpdf,
-        lastId: LastIdIncremente,
-        salary: salary,
-        primeProductivity:primeProductivity
-
-   
-
-      }
-
-
-    });
-  };
-  const ContratB3 = () => {
-    navigate('/HRGetsCompany/ContartTypeB3', {
-      state: {
-        fullName: arName,
-        passportNumber: passportnumber,
-        passportSubmitdate: passpordDate,
-        arResidenceAdress: arResidenceAdress,
-        companyType: companyTypepdf,
-        traveldate: traveldatepdf,
-        endTravelDate: endtraveldatepdf,
-        arDestination: arDestination,
-        arPosition: arPositionpdf,
-        lastId: LastIdIncremente,
-        salary: salary,
-        primeProductivity:primeProductivity
-
-      }
-
-
-    });
-  };
-  const ContratC = () => {
-    navigate('/HRGetsCompany/ContartTypeC', {
-      state: {
-        fullName: arName,
-        passportNumber: passportnumber,
-        passportSubmitdate: passpordDate,
-        arResidenceAdress: arResidenceAdress,
-        companyType: companyTypepdf,
-        traveldate: traveldatepdf,
-        endTravelDate: endtraveldatepdf,
-        arDestination: arDestination,
-        arPosition: arPositionpdf,
-        lastId: LastIdIncremente,
-        salary: salary,
-        primeProductivity:primeProductivity,
-        dailyRate:dailyRate
-
-      }
-
-
-    });
-  };
-  const ContratD = () => {
-    navigate('/HRGetsCompany/ContartTypeD', {
-      state: {
-        fullName: arName,
-        passportNumber: passportnumber,
-        passportSubmitdate: passpordDate,
-        arResidenceAdress: arResidenceAdress,
-        companyType: companyTypepdf,
-        traveldate: traveldatepdf,
-        endTravelDate: endtraveldatepdf,
-        arDestination: arDestination,
-        arPosition: arPositionpdf,
-        lastId: LastIdIncremente,
-        salary: salary,
-        primeProductivity:primeProductivity
-
-      }
-
-
-    });
-  };
-
-
-  const SelectionnnerContrat = () => {
-    // Vérifier le type de contrat sélectionné
-    console.log("contractCategorysssssss", contractCategory)
-      if (contractCategory === "CAT-B2") {
-      console.log(" contractCategory")
-      ContratB2()
-    }else if (contractCategory === "CAT-B3") {
-      console.log(" contractCategory b3")
-      ContratB3()
-     
-    }
-    else if (contractCategory === "CAT-C") {
-      console.log(" contractCategory c")
-      ContratC()
-     
-    }
   
-    else if (contractCategory === "CAT-D") {
-      console.log(" contractCategory  D")
-      ContratD()
-     
-    }
-   
-  };
+
+
+
+
 
   return (
     <StyledContactForm>

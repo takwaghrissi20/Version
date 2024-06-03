@@ -43,7 +43,8 @@ const ModalView = ({
   projName,
   duration,
   primeProductivity,
-  category
+  category,
+  SaveVisa
 
 
 }) => {
@@ -98,6 +99,7 @@ const ModalView = ({
         duration={duration}
         primeProductivity={primeProductivity}
         category={ category}
+       
       
       />
     </StyledContactModal>

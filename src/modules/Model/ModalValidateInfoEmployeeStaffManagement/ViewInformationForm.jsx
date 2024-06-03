@@ -105,7 +105,63 @@ const ViewInformationForm = (props) => {
   });
 
 
+  const SaveVisa = async () => {
+  
+    try {
 
+      const endPoint =
+        process.env.NODE_ENV === "development"
+          ? "https://dev-gateway.gets-company.com"
+          : "";
+
+      const requestBody = {
+     
+       idVisa:LastIdIncremente,
+       category:"Construction Staff",     
+       departement:departement,
+       name:name,
+       passportnumber:passportnumber,
+       passportSubmitdate:passportSubmitdate,
+       position:position,
+       projName:projName,        
+       type_Emp:type_Emp,
+       toApplyForVisa:"true"
+
+      
+      };
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/add`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      // Gérer la réponse du serveur
+      if (!response.ok) {
+       alert("Request failed")
+        throw new Error('La requête a échoué avec le code ' + response.status);
+
+      }
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
+      }
+      const data = await response.json();
+      
+      console.log("lastStaff",lastId)
+       console.log("datavisa",data)
+
+      // handleAddContactClose()
+      // Traiter la réponse de l'API si nécessaire
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données:', error);
+    }
+
+  };
+
+  const LastIdIncremente = lastId + 1
   const SaveEmployees = async () => {
     try {
       // if ( !arName || !CIN || !cinDate || !duration ||!nationality || !birthDate || !gender || !phoneNumber || !familyStatus || !residenceAdress || !arResidenceAdress || !passportnumber || !passportSubmitdate || !passport_finish_date || !position || !arPosition || !departement || !type_Emp || !projname || !email || !joinDate || !finishDate || !companyType || !traveldate || !endTravelDate || !destination || !arDestination || !salary || !dailyRate || !contractType || !emergencyName || !emergencyRelation || !phoneEmergency || !contractCategory) {
@@ -188,6 +244,10 @@ const ViewInformationForm = (props) => {
       setLastId(data.id)
       setShowAlert(true);
       handleAddContactClose()
+      if(data.type_Emp==="Site"){
+        console.log("data.type_Emp",data.type_Emp)
+        SaveVisa()
+      }
       
       // handleAddContactClose()
       // Traiter la réponse de l'API si nécessaire
@@ -195,6 +255,7 @@ const ViewInformationForm = (props) => {
       console.error('Erreur lors de la récupération des données:', error);
     }
   };
+
   useEffect(() => {
     // Enable the "Generate" button when showAlert is true
     if (showAlert) {
@@ -206,7 +267,7 @@ const ViewInformationForm = (props) => {
     setGrayBackground(!generateBtnEnabled);
   }, [generateBtnEnabled]);
 
-  const LastIdIncremente = lastId + 1
+
 
 
   const ContratB1 = () => {

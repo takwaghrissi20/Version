@@ -26,7 +26,7 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
   const [selectedGenderType, setSelectedGenderType] = useState('');
   const [selectedEmpTypeType, setSelectedEmpTypeType] = useState('');
   const [selectedStatusTypeCompany, setSelectedStatusTypeCompany] = useState('');
-  
+
   const [employeeType, setEmployeeType] = useState('');
   const [selectedRelationType, setSelectedRelationType] = useState('')
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -34,11 +34,11 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
   const [selectedContractCategorie, setSelectedContractCategorie] = useState('');
   const [isReadOnly, setIsReadOnly] = useState(false);
 
-   const[category,setCategory]=useState("Management Staff")
-   useEffect(() => {
-    
-    console.log("categorykkkk",category)
- 
+  const [category, setCategory] = useState("Management Staff")
+  useEffect(() => {
+
+    console.log("categorykkkk", category)
+
   }, [selectedGenderType]);
 
 
@@ -92,51 +92,51 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
 
 
   ]
-  useEffect(() => {  
-      if (selectedContractCategorie ==="CAT-B1") {
-        console.log(" contractCategory", selectedContractCategorie)
-        setSelectedContratType('CDD');
-        setIsReadOnly(true);
-      } else if (selectedContractCategorie ==="CAT-A1") {
-        console.log(" contractCategory A1")
-        setSelectedContratType('CDI');
-        setIsReadOnly(true);
-       
-      }else if (selectedContractCategorie === "CAT-A2") {
-        console.log(" contractCategory A2")
-      
-       
-      }
-      else if (selectedContractCategorie ==="CAT-A3") {
-        console.log(" contractCategory  CAT- A3 ")
-       
-       
-      }
-    
-      else if (selectedContractCategorie === "CAT-E1") {
-        console.log(" contractCategory  CAT -E1")
-        
-       
-      }
-      else if (selectedContractCategorie === "CAT-E2") {
-        console.log(" contractCategory  CAT -E2")
-    
-       
-      }
-      else if (selectedContractCategorie === "SERVICE1-E3") {
-        console.log(" contractCategory  SERVICE 1-E3")
-        
-       
-      }
-      else if (selectedContractCategorie === "SERVICE2-E3") {
-        console.log(" contractCategory  SERVICE2-E3")
-       
-       
-     
+  useEffect(() => {
+    if (selectedContractCategorie === "CAT-B1") {
+      console.log(" contractCategory", selectedContractCategorie)
+      setSelectedContratType('CDD');
+      setIsReadOnly(true);
+    } else if (selectedContractCategorie === "CAT-A1") {
+      console.log(" contractCategory A1")
+      setSelectedContratType('CDI');
+      setIsReadOnly(true);
+
+    } else if (selectedContractCategorie === "CAT-A2") {
+      console.log(" contractCategory A2")
+
+
+    }
+    else if (selectedContractCategorie === "CAT-A3") {
+      console.log(" contractCategory  CAT- A3 ")
+
+
+    }
+
+    else if (selectedContractCategorie === "CAT-E1") {
+      console.log(" contractCategory  CAT -E1")
+
+
+    }
+    else if (selectedContractCategorie === "CAT-E2") {
+      console.log(" contractCategory  CAT -E2")
+
+
+    }
+    else if (selectedContractCategorie === "SERVICE1-E3") {
+      console.log(" contractCategory  SERVICE 1-E3")
+
+
+    }
+    else if (selectedContractCategorie === "SERVICE2-E3") {
+      console.log(" contractCategory  SERVICE2-E3")
+
+
+
     };
-  
-  }, [selectedContractCategorie,selectedContratType]);
-console.log("selectedContratType",selectedContratType)
+
+  }, [selectedContractCategorie, selectedContratType]);
+  console.log("selectedContratType", selectedContratType)
   const handleCategoryChange = (value) => {
     setSelectedContractCategorie(value);
   };
@@ -331,16 +331,16 @@ console.log("selectedContratType",selectedContratType)
     e.preventDefault();
   };
 
-  
+
   const handleOpenAfter2 = () => {
     //e.preventDefault();
-   console.log("arName testttt",formData?.cinDate?.format('YYYY-MM-DD'))
-    if (!arName?.value  || !CIN?.value || !formData?.cinDate?.format('YYYY-MM-DD')
+    console.log("arName testttt", formData?.cinDate?.format('YYYY-MM-DD'))
+    if (!arName?.value || !CIN?.value || !formData?.cinDate?.format('YYYY-MM-DD')
       //!||
       //  !formData?.CIN ||!formData?.nationality  || !formData?.phoneNumber
       //  ||!formData?.cinDate ||!formData?.residenceAdress || !formData?.arResidenceAdress ||
       //  !formData?.passportnumber || !formData?.passportSubmitdate || !formData?.passport_finish_date   
-      
+
 
       // || !residenceAdress.value || !arResidenceAdress.value || !passportnumber.value
       // || !passportSubmitdate.value || !passport_finish_date.value || !type_Emp.valu
@@ -349,7 +349,7 @@ console.log("selectedContratType",selectedContratType)
       // || !traveldate.value || !duration.value
       // || !emergencyName.value || !selectedRelationType || !phoneEmergency.value || !cinDate
 
-  
+
 
     ) {
       alert("Please complete all fields.");
@@ -357,128 +357,46 @@ console.log("selectedContratType",selectedContratType)
     } else {
       setIsModalVisible(true); // Affiche la modal
       //Test Si Site Add table Visa 
-      console.log("rrrffggtyy",selectedEmpTypeType)
-      if (selectedEmpTypeType ==="Site")
+      console.log("rrrffggtyy", selectedEmpTypeType)
+      if (selectedEmpTypeType === "Site")
         alert("Site.");
       SaveVisa()
 
-    
-
-
-
 
     }
   };
-  const handleOpenAfter = () => {
-   
-      //e.preventDefault();
-     
-      const fieldsToCheck = {
-        arName: '', CIN: '', nationality: '', phoneNumber: '', selectedGenderType: '',
-        residenceAdress: '', arResidenceAdress: '', passportnumber: '', passportSubmitdate: '', passport_finish_date: '',
-        type_Emp: '', email: '', finishDate: '', selectedStatusTypeCompany: '', traveldate: '', endTravelDate: '',
-        destination: '', arDestination: '', selectedContratType: '', duration: '', emergencyName: '', selectedRelationType: '',
-        phoneEmergency: '', selectedContractCategorie: '', cinDate: ''
-      };
-    
-      // Vérifier si tous les champs sont vides
-      console.log("fieldsToCheck", fieldsToCheck);
-      const allFieldsEmpty = Object.keys(fieldsToCheck).every(field => !formData[field]);
-      console.log("allFieldsEmpty fffffffff ", allFieldsEmpty );
-      if (allFieldsEmpty) {
-        alert("Please complete all fields.");
-        setIsModalVisible(false);
-      } else {
-        alert("All fields are not empty.");
-        setIsModalVisible(true); // Affiche la modal
-    
-        // Test Si Site Add table Visa 
-        console.log("rrrffggtyy", selectedEmpTypeType);
-        if (selectedEmpTypeType === "Site") {
-          alert("Site.");
-        }
-        SaveVisa();
-      }
+  const handleOpenAfter22 = () => {
+
+    //e.preventDefault();  
+    const fieldsToCheck = {
+      arName: '', CIN: '', nationality: '', phoneNumber: '', selectedGenderType: '',
+      residenceAdress: '', arResidenceAdress: '', passportnumber: '', passportSubmitdate: '', passport_finish_date: '',
+      type_Emp: '', email: '', finishDate: '', selectedStatusTypeCompany: '', traveldate: '', endTravelDate: '',
+      destination: '', arDestination: '', selectedContratType: '', duration: '', emergencyName: '', selectedRelationType: '',
+      phoneEmergency: '', selectedContractCategorie: '', cinDate: ''
     };
-    
- 
-  
-  const SaveVisa = async () => {
 
-    try {
+    // Vérifier si tous les champs sont vides
+    const allFieldsEmpty = Object.keys(fieldsToCheck).every(field => !formData[field]);
 
-      const endPoint =
-        process.env.NODE_ENV === "development"
-          ? "https://dev-gateway.gets-company.com"
-          : "";
-console.log("arDestination.value",formData?.arDestination)
-      const requestBody = {
-        id:findIdInterview?.id,
-       actStatus:findIdInterview?.familySituation,  
-       arDestination:formData?.arResidenceAdress,
-       arName:formData?.arName ,
-       arPosition:formData?.positionfieledarabe,
-       arResidenceAdress:formData?.arResidenceAdress,
-       birthDate:findIdInterview?.birthayDate,
-       category:"Management Staff",
-       cin:formData?.CIN,
-       cinDate:formData?.cinDate,
-       companyType:formData?.companyType,
-       dailyRate:findIdInterview?.dailyRate,
-       departement:findIdInterview?.department,
-       destination:formData?.destination,
-       duration:formData?.duration,
-       email:formData?.email,
-       emergencyName:formData?.emergencyName,
-       emergencyRelation:selectedRelationType,
-       endTravelDate:formData?.endTravelDate,
-       finishDate:formData?.finishDate?.format('YYYY-MM-DD'),
-       joinDate:findIdInterview?.expectedJoinDate,
-       name:findIdInterview?.fullName,
-       nationality:formData?.nationality,
-       passportnumber:formData?.passportnumber,
-       passportSubmitdate:formData?.passportSubmitdate,
-       passport_finish_date:formData?.passport_finish_date.format('YYYY-MM-DD'),
-       position:findIdInterview?.positionToBeFilled,
-       projName:findIdInterview?.projname,
-       residenceAdress:formData?.residenceAdress,
-       salary:findIdInterview?.propsedsalary,
-       traveldate:formData?.traveldate?.format('YYYY-MM-DD'),
-       type_Emp:formData?.type_Emp,
-      
-      };
-    console.log("bodyyyyyy",requestBody)
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/add`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestBody)
-      });
-
-      // Gérer la réponse du serveur
-      if (!response.ok) {
-       alert("Request failed")
-        throw new Error('La requête a échoué avec le code ' + response.status);
-
+    if (allFieldsEmpty) {
+      alert("Please complete all fields.");
+      setIsModalVisible(false);
+    } else {
+      alert("All fields are not empty.");
+      setIsModalVisible(true); // Affiche la modal
+      if (selectedEmpTypeType === "Site") {
+        alert("Site.");
       }
-
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        throw new TypeError("La réponse n'est pas au format JSON");
-      }
-      const data = await response.json();
-       console.log("datavisa",data)
-
-      // handleAddContactClose()
-      // Traiter la réponse de l'API si nécessaire
-    } catch (error) {
-      console.error('Erreur lors de la récupération des données:', error);
+      SaveVisa();
     }
-
   };
 
-  const cancelInfotest = () => {
+
+
+
+
+  const cancelInfo = () => {
     form.setFieldsValue({
       arName: '', CIN: '', nationality: '', phoneNumber: '', selectedGenderType: '',
       residenceAdress: '', arResidenceAdress: '', passportnumber: '', passportSubmitdate: '', passport_finish_date: '',
@@ -490,12 +408,12 @@ console.log("arDestination.value",formData?.arDestination)
     });
 
   };
-  console.log("formData?.CIN", formData?.CIN)
-  const cancelInfo = () => {
-    form.validateFields(['CIN', 'cinDate', 'arName', 'nationality','gender','phoneNumber','residenceAdress',
-'arResidenceAdress','passportnumber','passportSubmitdate','passport_finish_date','type_Emp','email',
-'companyType','traveldate','endTravelDate','destination','arDestination','duration','emergencyName',
-'emergencyRelation','phoneEmergency'
+
+  const handleOpenAfter = () => {
+    form.validateFields(['CIN', 'cinDate', 'arName', 'nationality', 'gender', 'phoneNumber', 'residenceAdress',
+      'arResidenceAdress', 'passportnumber', 'passportSubmitdate', 'passport_finish_date', 'type_Emp', 'email',
+      'companyType', 'traveldate', 'endTravelDate', 'destination', 'arDestination', 'duration', 'emergencyName',
+      'emergencyRelation', 'phoneEmergency'
 
 
     ]).then(values => {
@@ -503,12 +421,12 @@ console.log("arDestination.value",formData?.arDestination)
       if (selectedEmpTypeType === "Site") {
         alert("Emplotees Site.");
       }
-      SaveVisa();
-    
+      // SaveVisa();
+
     }).catch(errorInfo => {
       alert("Please complete all fields.");
       setIsModalVisible(false);
-    
+
     });
   };
   return (
@@ -523,7 +441,7 @@ console.log("arDestination.value",formData?.arDestination)
             e.preventDefault();
           }
         }}>
-           {/* <Button onClick={handleSubmit3}>Submit</Button> */}
+        {/* <Button onClick={handleSubmit3}>Submit</Button> */}
         <Row style={{ justifyContent: "flex-end" }}>
           <Col xs={24} lg={6} style={{
             border: '1px solid red', paddingTop: "15px", paddingBottom: "15px", paddingLeft: "5px",
@@ -663,8 +581,8 @@ console.log("arDestination.value",formData?.arDestination)
           <div>
             <Typography.Title level={4}>EMPLOYEE INFORMATION FORM</Typography.Title>
             <StyledSecondaryText>
-       
-            <p>{category}</p>
+
+              <p>{category}</p>
             </StyledSecondaryText>
           </div>
           {/* <div>
@@ -683,7 +601,7 @@ console.log("arDestination.value",formData?.arDestination)
           <Col xs={24} md={6}>
             <Typography.Title level={5}>Personal Employee <br></br> Information</Typography.Title>
             <StyledSecondaryText1>
-             
+
             </StyledSecondaryText1>
           </Col>
           <Col xs={24} md={18}>
@@ -909,7 +827,7 @@ console.log("arDestination.value",formData?.arDestination)
         <AppRowContainer>
           <Col xs={24} md={6}>
             <Typography.Title level={5}>Job Information</Typography.Title>
-           
+
           </Col>
 
           <Col xs={24} md={18}>
@@ -991,7 +909,7 @@ console.log("arDestination.value",formData?.arDestination)
                       placeholder="Type Employee"
                       onChange={(value) => setSelectedEmpTypeType(value)} >
 
-                      {EmpType .map((p) => {
+                      {EmpType.map((p) => {
                         return (
                           <Option value={p.type} key={p.type}>
                             <div className='ant-row ant-row-middle'>
@@ -1002,7 +920,7 @@ console.log("arDestination.value",formData?.arDestination)
                         );
                       })}
                     </Select>
-                
+
                   </Form.Item>
                 </Col>
 
@@ -1177,7 +1095,7 @@ console.log("arDestination.value",formData?.arDestination)
                   </Form.Item>
                 </Col> */}
 
-                
+
 
                 {/* <Col xs={24} md={12}>
         <Form.Item label="Contrat Type" name="contractType">
@@ -1249,7 +1167,7 @@ console.log("arDestination.value",formData?.arDestination)
         <AppRowContainer>
           <Col xs={24} md={6}>
             <Typography.Title level={5}>EMERGENCY Contact <br></br>Information </Typography.Title>
-            
+
           </Col>
 
           <Col xs={24} md={18}>
@@ -1340,7 +1258,7 @@ console.log("arDestination.value",formData?.arDestination)
           <Col xs={24} md={18}>
             <StyledShadowWrapper>
               <AppRowContainer> */}
-                {/* <Col xs={24} md={12}>
+        {/* <Col xs={24} md={12}>
                   <Form.Item label='Contract Category' name='contractCategory' rules={[{ required: true, message: 'Please Select contractCategory' }]}>
                     <Select
                       placeholder="Select Contract Type"
@@ -1359,14 +1277,14 @@ console.log("arDestination.value",formData?.arDestination)
 
 
 
-                {/* <Col xs={24} md={12}>
+        {/* <Col xs={24} md={12}>
                   {showAlert && (
                     <Form.Item label='Download Contract For Employee:'>
                       <Button onClick={SelectionnnerContrat}>Generate Contract</Button>
                     </Form.Item>
                   )}
                 </Col> */}
-                {/* <Col xs={24} md={12}>
+        {/* <Col xs={24} md={12}>
                   {showAlert && (
                     <Form.Item label='Download Contract Type:'>
                       <BsDownload style={{ fontSize: 20, color: "rgba(41,151,255,0.5)" }} />
@@ -1375,7 +1293,7 @@ console.log("arDestination.value",formData?.arDestination)
                 </Col> */}
 
 
-{/* 
+        {/* 
               </AppRowContainer>
             </StyledShadowWrapper>
           </Col>
@@ -1397,9 +1315,9 @@ console.log("arDestination.value",formData?.arDestination)
           {/* Your form fields */}
 
           <Button
-            onClick={handleOpenAfter2} type='primary' htmlType='submit' 
+            onClick={handleOpenAfter} type='primary' htmlType='submit'
             disabled={searchValue === '' || !selectedInterviews}
-            >
+          >
             Save
           </Button>
 
