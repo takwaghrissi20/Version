@@ -794,7 +794,7 @@ const ViewInformationForm = (props) => {
             </StyledContactFormContentField>
           </StyledContactFormContentItem>
           <StyledContactFormContentItem>
-            <StyledContactFormItemTitle>
+            {/* <StyledContactFormItemTitle>
               <IntlMessages id="Contract Categorie" />
             </StyledContactFormItemTitle>
             <StyledContactFormContentField>
@@ -810,7 +810,7 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item>
 
-            </StyledContactFormContentField>
+            </StyledContactFormContentField> */}
 
 
           </StyledContactFormContentItem>

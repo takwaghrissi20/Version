@@ -320,56 +320,20 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
     e.preventDefault();
   };
 
-  const handleOpenAfter = () => {
-    //e.preventDefault();
 
-    if (!formData?.arName 
-      // ||
-      //  !formData?.CIN ||!formData?.nationality  || !formData?.phoneNumber
-      //  ||!formData?.cinDate ||!formData?.residenceAdress || !formData?.arResidenceAdress ||
-      //  !formData?.passportnumber || !formData?.passportSubmitdate || !formData?.passport_finish_date   
-      
-
-      // || !residenceAdress.value || !arResidenceAdress.value || !passportnumber.value
-      // || !passportSubmitdate.value || !passport_finish_date.value || !type_Emp.valu
-
-      //  || !email.value || !finishDate.value || !selectedStatusTypeCompany
-      // || !traveldate.value || !duration.value
-      // || !emergencyName.value || !selectedRelationType || !phoneEmergency.value || !cinDate
-
-  
-
-    ) {
-      alert("Please complete all fields .");
-      setIsModalVisible(false);
-    } else {
-      setIsModalVisible(true); // Affiche la modal
-      //Test Si Site Add table Visa 
-      console.log("rrrffggtyy",selectedEmpTypeType)
-      if (selectedEmpTypeType ==="Site")
-        alert("Site.");
-      SaveVisa()
-
-    
-
-
-
-
-    }
-  };
-  // const cancelInfo = () => {
-  //   form.setFieldsValue({
-  //     arName: '', CIN: '', nationality: '', phoneNumber: '', selectedGenderType: '',
-  //     residenceAdress: '', arResidenceAdress: '', passportnumber: '', passportSubmitdate: '', passport_finish_date: '',
-  //     email: '', finishDate: '', selectedStatusTypeCompany: '', traveldate: '', endTravelDate: '',
-  //     destination: '', arDestination: '',  duration: '', emergencyName: '', selectedRelationType: '',
-  //     phoneEmergency: '', selectedContractCategorie: '', primeProductivity: ''
-
-
-  //   });
-
-  // };
   const cancelInfo = () => {
+    form.setFieldsValue({
+      arName: '', CIN: '', nationality: '', phoneNumber: '', selectedGenderType: '',
+      residenceAdress: '', arResidenceAdress: '', passportnumber: '', passportSubmitdate: '', passport_finish_date: '',
+      email: '', finishDate: '', selectedStatusTypeCompany: '', traveldate: '', endTravelDate: '',
+      destination: '', arDestination: '',  duration: '', emergencyName: '', selectedRelationType: '',
+      phoneEmergency: '', selectedContractCategorie: '', primeProductivity: ''
+
+
+    });
+
+  };
+  const handleOpenAfter = () => {
     form.validateFields(['CIN', 'cinDate', 'arName', 'nationality','gender','phoneNumber','residenceAdress',
 'arResidenceAdress','passportnumber','passportSubmitdate','passport_finish_date','type_Emp','email',
 'companyType','traveldate','endTravelDate','destination','arDestination','duration','emergencyName',
@@ -441,7 +405,6 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
        type_Emp:formData?.type_Emp,
       
       };
-    console.log("bodyyyyyy",requestBody)
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/add`, {
         method: 'POST',
         headers: {
