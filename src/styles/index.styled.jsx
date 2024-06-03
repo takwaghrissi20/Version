@@ -319,6 +319,7 @@ export const StyledMenuBtn = styled(Button)`
 export const StyledAppContainer = styled.div`
   display: flex;
   height: fit-content;
+  
 
   .appMainFixedFooter & {
     height: calc(100vh - 184px) !important;

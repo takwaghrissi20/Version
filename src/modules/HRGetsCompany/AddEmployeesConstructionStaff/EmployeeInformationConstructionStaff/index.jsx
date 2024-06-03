@@ -3,7 +3,6 @@ import AppRowContainer from '../../../../@crema/components/AppRowContainer';
 import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, List, Row } from 'antd';
 import {
   StyledSecondaryText,
-  StyledSecondaryText1,
   StyledShadowWrapper,
   StyledScrumBoardDatePicker,
 
@@ -36,11 +35,10 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
     setIsModalVisible(false);
   };
   const handleValidateEmployeOpen = () => {
-
     setIsModalVisible(true);
   };
 
-  //////////////////////////
+
   const infoViewActionsContext = useInfoViewActionsContext();
 
 

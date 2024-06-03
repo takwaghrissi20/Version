@@ -175,7 +175,7 @@ const OrderTable = ({ dataemployeesVisa }) => {
       />
        {isEditVisa && (
         <VisaStatusEdit
-        isEditVisa={isEditVisa}
+            isEditVisa={isEditVisa}
             handleAddContactClose={handleEditVisaClose}
             getsId={findIdData?.getsId}
             nationality={findIdData?.nationality}

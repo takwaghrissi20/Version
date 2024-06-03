@@ -24,31 +24,19 @@ const AddRecruitement = () => {
   ];
 
   return (
-
-    <>
-
-      <AppsContainer
-        title={messages['sidebar.app.AddRecruitement']}
-        cardStyle={{ backgroundColor: 'transparent', boxShadow: 'none' }}
-        fullView>
-
-
-        <AppsContainer
-          title={messages['sidebar.app.AddRecruitement']}
-          type='bottom'
-          fullView>
-          <StyledBuyCellCard style={{ paddingLeft: "10px" }} heightFull>
+     <div style={{marginBottom:"20px"}} >
+          <StyledBuyCellCard style={{ paddingLeft: "10px"}} heightFull>
             <StyledTabs defaultActiveKey='1' items={items} />
           </StyledBuyCellCard>
-        </AppsContainer>
+ 
 
         <AppInfoView />
 
-      </AppsContainer>
+    
 
+</div >
 
-
-    </>
+    
   );
 };
 

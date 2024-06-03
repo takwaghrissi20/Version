@@ -63,7 +63,7 @@ const RecruitementForm = (props) => {
 
   const { Option } = Select;
 
-  console.log("exDep", DesiredDate)
+ 
   const { RangePicker } = DatePicker;
 
   const dateFormat = 'YYYY/MM/DD';
