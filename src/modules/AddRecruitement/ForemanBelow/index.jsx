@@ -27,6 +27,7 @@ const AddRecruitementForemanBelow = () => {
   const [selectedLevel, setSelectedLevel] = useState('');
   const [vacancie, setVacancie] = useState(0);
   const [asper, setAsper] = useState(0);
+  const [certif, setCertif] = useState("");
   const [commentplanner, setCommentPlanner] = useState("");
   const [dep, setDep] = useState('');
   const [isOkHead, setIsOkHead] = useState(false);
@@ -34,6 +35,7 @@ const AddRecruitementForemanBelow = () => {
   const [isOkBod, setIsOkBod] = useState(false);
   const [isNoBod, setIsNoBod] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [type,setType]=useState("Foreman & Below")
   const [form] = Form.useForm();
   console.log("positionRecruitement",positionRecruitement)
   const handleValidateEmployeeClose = () => {
@@ -65,6 +67,7 @@ const AddRecruitementForemanBelow = () => {
       const data = await response.json();
       console.log("data profile", data)
       setDep(data.departement)
+     
       setProfile(data)
       setProjets(data.projects)
 
@@ -180,7 +183,7 @@ const AddRecruitementForemanBelow = () => {
     LastIndexRecruitement()
     GetProfileEmployess()
     GetPositions()
-  }, [dep]);
+  }, [dep,type]);
   const handleProjectChange = (value) => {
     setSelectedProject(value);
     const selectedProject = projets.find(project => project.projName === value);
@@ -220,21 +223,20 @@ const AddRecruitementForemanBelow = () => {
   }
  
   const BeforeSaveRecruitement = () => {
-    setIsModalVisible(true)
-    // form.validateFields(['DateRecruitement','DateRequestor','ProjectName','ProjectCode'
-    // ,'DateDesiredRecruitement','position','RequiredLevel','Desiredyearsexperience','Numbervacancies',
-    // 'Asper','PlannerComments'
+    //setIsModalVisible(true)
+    form.validateFields(['DateRecruitement','DateRequestor','ProjectName','ProjectCode'
+    ,'DateDesiredRecruitement','position','RequiredLevel','Desiredyearsexperience','Numbervacancies',
 
-    // ]).then(values => {
-    //    alert("all fields are complete.");
-    //    setIsModalVisible(true)
+    ]).then(values => {
+       alert("all fields are complete.");
+       setIsModalVisible(true)
 
 
-    // }).catch(errorInfo => {
-    //   alert("Please complete all fields");
-    //   setIsModalVisible(false);
+    }).catch(errorInfo => {
+      alert("Please complete all fields");
+      setIsModalVisible(false);
 
-    // });
+    });
   };
 console.log("isNOHead",isOkHead)
   return (
@@ -285,7 +287,7 @@ console.log("isNOHead",isOkHead)
                     defaultValue={dayjs(recruitementDate, '2024-01-01')}
 
                     style={{ width: "100%", height: "30px" }}
-                    onChange={(value) => setRecruitementDate(dayjs(value).format('YYYY/MM/DD'))}
+                    onChange={(value) => setRecruitementDate(dayjs(value).format('YYYY-MM-DD'))}
                   />
 
                 </Form.Item>
@@ -342,7 +344,7 @@ console.log("isNOHead",isOkHead)
                     defaultValue={dayjs(requestorDate, '2024-01-01')}
 
                     style={{ width: "100%", height: "30px" }}
-                    onChange={(value) => setRequestorDate(dayjs(value).format('YYYY/MM/DD'))}
+                    onChange={(value) => setRequestorDate(dayjs(value).format('YYYY-MM-DD'))}
                   />
 
                 </Form.Item>
@@ -498,7 +500,7 @@ console.log("isNOHead",isOkHead)
 
                 </Form.Item>
               </Col>
-              <Col xs={24} md={12}>
+              <Col style={{marginTop:"1.5rem"}}xs={24} md={12}>
                 <Form.Item
                   label='Number of vacancies '
                   name='Numbervacancies'
@@ -520,6 +522,7 @@ console.log("isNOHead",isOkHead)
                  
                 </Form.Item>
               </Col>
+              
               
 
             </AppRowContainer>
@@ -721,6 +724,8 @@ console.log("isNOHead",isOkHead)
        isOkHead={isOkHead}
        isOkBod={isOkBod}
        dep={dep}
+       certif={certif}
+       type={type}
        
        
        

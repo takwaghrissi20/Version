@@ -25,6 +25,7 @@ import RequiredProfile from './Required Profile/RecruitementForm'
 import PlannerInputs from './Planner Inputs/RecruitementForm'
 import HeadDepartment from './HeadDepartment/RecruitementForm'
 import DecisionBOD from './DecisionBOD/RecruitementForm'
+import RecruitementForMan from './RecruitemnetForMan/RecruitementForm'
 import { StyledBuyCellCard, StyledTabs } from '../../../styles/index.styled';
 
 
@@ -52,7 +53,11 @@ const RecruitementForm = (props) => {
     commentplanner,
     isOkHead,
     isOkBod,
-    dep
+    certif,
+    lieu,
+    type,
+    dep,
+    affectedTo
   } = props;
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -69,12 +74,13 @@ const RecruitementForm = (props) => {
 
   
   const { RangePicker } = DatePicker;
-
+console.log('type',type)
   const items = [
     {
       label: 'Recruitement Information',
       key: '1',
-      children: <TabsInformationRecruitement JobCode={JobCode} DateRecruitement={DateRecruitement} 
+      children: <TabsInformationRecruitement JobCode={JobCode} DateRecruitement={DateRecruitement}
+      certif={certif} 
       id={id} name={name} position={position}
       DateRequestor={DateRequestor}
       projname={projname}
@@ -90,12 +96,16 @@ const RecruitementForm = (props) => {
       isOkBod={isOkBod}
       dep={dep}
       handleAddContactClose={handleAddContactClose}
+      affectedTo={affectedTo}
+      
+
       
       
       
       ></TabsInformationRecruitement>,
     }, // remember to pass the key prop
     {
+
       label: 'Requestor',
       key: '2',
       children: <TabsRequestor 
@@ -114,6 +124,7 @@ const RecruitementForm = (props) => {
       isOkHead={isOkHead}
       isOkBod={isOkBod}
       dep={dep}
+      certif={certif}
       
       
       ></TabsRequestor>,
@@ -122,7 +133,7 @@ const RecruitementForm = (props) => {
       label: 'Required Profile',
       key: '3',
       children: <RequiredProfile
-      
+      certif={certif}
       JobCode={JobCode} DateRecruitement={DateRecruitement} 
       id={id} name={name} position={position}
       DateRequestor={DateRequestor}
@@ -142,6 +153,10 @@ const RecruitementForm = (props) => {
       
       ></RequiredProfile>,
     },
+  
+   
+   
+ 
     // {
     //   label: 'Planner Inputs',
     //   key: '4',
@@ -168,7 +183,7 @@ const RecruitementForm = (props) => {
     // },
     {
       label: 'Head of Department Inputs',
-      key: '5',
+      key: '6',
       children: <HeadDepartment
       JobCode={JobCode} DateRecruitement={DateRecruitement} 
       id={id} name={name} position={position}
@@ -193,7 +208,7 @@ const RecruitementForm = (props) => {
     },
     {
       label: 'Decision BOD',
-      key: '6',
+      key: '8',
       children: <DecisionBOD 
       JobCode={JobCode} DateRecruitement={DateRecruitement} 
       id={id} name={name} position={position}
@@ -222,7 +237,7 @@ const RecruitementForm = (props) => {
   if (dep === 'operation') {
     items.splice(3, 0, {
       label: 'Planner Inputs',
-      key: '4',
+      key: '7',
       children: (
         <PlannerInputs
           JobCode={JobCode}
@@ -247,6 +262,71 @@ const RecruitementForm = (props) => {
       ),
     });
   }
+  if (type === 'Foreman & Below') {
+    items.splice(3, 0, {
+      label: 'Foreman & Below',
+      key: '4',
+      children: (
+        <RecruitementForMan
+        certif={certif}
+        JobCode={JobCode} DateRecruitement={DateRecruitement} 
+        id={id} name={name} position={position}
+        DateRequestor={DateRequestor}
+        projname={projname}
+        projCode={projCode}
+        DateDesiredRecruitement={DateDesiredRecruitement}
+        positionRecruitement={positionRecruitement}
+        level={level}
+        desiredExperience={desiredExperience}
+        vacancie={vacancie}
+        asper={ asper}
+        commentplanner={ commentplanner}
+        isOkHead={isOkHead}
+        isOkBod={isOkBod}
+        dep={dep}
+        
+        
+        ></ RecruitementForMan>
+      ),
+    });
+  } else if (type === 'Above Foreman') {
+    items.splice(3, 0, {
+        label: 'Above Foreman',
+        key: '5',
+        children: <RecruitementForMan
+        certif={certif}
+        JobCode={JobCode} DateRecruitement={DateRecruitement} 
+        id={id} name={name} position={position}
+        DateRequestor={DateRequestor}
+        projname={projname}
+        projCode={projCode}
+        DateDesiredRecruitement={DateDesiredRecruitement}
+        positionRecruitement={positionRecruitement}
+        level={level}
+        desiredExperience={desiredExperience}
+        vacancie={vacancie}
+        asper={ asper}
+        commentplanner={ commentplanner}
+        isOkHead={isOkHead}
+        isOkBod={isOkBod}
+        dep={dep}
+        affectedTo={affectedTo}
+        
+        
+        ></ RecruitementForMan>,
+    });
+  }
+
+
+
+
+
+ 
+ 
+
+
+
+  
   
   return (
    
@@ -258,7 +338,7 @@ const RecruitementForm = (props) => {
             < StyledContactFormHeaderTitle  >
               {/* <IntlMessages id='Recruitement.Request' /> */}
       
-              <p className='TitleModal'>Add Recruitement.Request</p>
+              <p className='TitleModal'>Add Recruitement.Request:<span style={{fontFamily:"cursive"}}>{type}</span></p>
             </StyledContactFormHeaderTitle>
           </label>
         </Form.Item>

@@ -28,7 +28,6 @@ const AddRecruitement = () => {
           <StyledBuyCellCard style={{ paddingLeft: "10px"}} heightFull>
             <StyledTabs defaultActiveKey='1' items={items} />
           </StyledBuyCellCard>
- 
 
         <AppInfoView />
 

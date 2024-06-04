@@ -131,7 +131,7 @@ const TabsInformationRecruitement  = (props) => {
       </StyledContactFormContent>
     
 
-      <StyledContactFormFooter>
+      {/* <StyledContactFormFooter>
 
         <StyledContactFormBtn
           type='primary'
@@ -147,7 +147,7 @@ const TabsInformationRecruitement  = (props) => {
         </StyledContactFormBtn>
 
 
-      </StyledContactFormFooter>
+      </StyledContactFormFooter> */}
 
       </>
 

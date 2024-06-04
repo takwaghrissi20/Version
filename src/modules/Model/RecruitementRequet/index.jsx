@@ -26,7 +26,11 @@ const   ModalView = ({
   commentplanner,
   isOkHead,
   isOkBod,
-  dep
+  dep,
+  lieu,
+  certif,
+  type,
+  affectedTo
 
 }) => {
 
@@ -35,12 +39,12 @@ const   ModalView = ({
   return (
 
     <StyledContactModal
-      width={1050}
+      width={"auto"}
       open={isViewInfo}
       onOk={isViewInfo}
       footer={false}
       onCancel={handleAddContactClose}
-      bodyStyle={{ height: 100 }}
+      bodyStyle={{ height: 'auto'}}
     >
       <RecuitementForm
         handleAddContactClose={handleAddContactClose}
@@ -61,7 +65,11 @@ const   ModalView = ({
         commentplanner={commentplanner}
         isOkHead={isOkHead}
         isOkBod={isOkBod}
-        dep={ dep}
+        dep={dep}
+        certif={certif}
+        lieu={lieu}
+        type={type}
+        affectedTo={affectedTo}
         
  
 

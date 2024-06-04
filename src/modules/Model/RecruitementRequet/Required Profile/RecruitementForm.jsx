@@ -2,8 +2,9 @@ import React from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
+
+import { Form, Input, Select,Row } from 'antd';
 import IntlMessages from '@crema/helpers/IntlMessages';
-import { Form, Input, Select } from 'antd';
 import moment from 'moment';
 import {
   StyledContactForm,
@@ -21,31 +22,32 @@ import FloatLabel from "../FloatLabel";
 import { DatePicker,Space } from 'antd';
 
 
+const TabsInformationRecruitement  = (props) => {
 
-
-
-
-const RecruitementForm = (props) => {
   const {
 
     setUserImage,
+    isViewInfo,
     handleAddContactClose,
     JobCode,
-    idemp,
-    dep,
-    requestName,
+    DateRecruitement,
+    id,
+    name,
     position,
-
-    projectName,
-    projRef,
-    type,
-    affectedTo,
-    requestedDicipline,
-    Level,
-    exDep,
-    Numbervacancies,
-    certif,
-    nbExperience
+    DateRequestor,
+    projname,
+    projCode,
+    DateDesiredRecruitement,
+    positionRecruitement,
+    level,
+    desiredExperience,
+    vacancie,
+    asper,
+    commentplanner,
+    isOkHead,
+    isOkBod,
+    dep
+   
   } = props;
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -62,8 +64,6 @@ const RecruitementForm = (props) => {
   const { messages } = useIntl();
 
   const { Option } = Select;
-
-
   const { RangePicker } = DatePicker;
 
   const dateFormat = 'YYYY/MM/DD';
@@ -71,53 +71,67 @@ const RecruitementForm = (props) => {
   const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY'];
   
   return (
-    <StyledContactForm>
-      <StyledContactFormHeader>
-        <Form.Item >
-          <input {...getInputProps()} />
-          <label htmlFor='icon-button-file'>
-            < StyledContactFormHeaderTitle  >
-              {/* <IntlMessages id='Recruitement.Request' /> */}
-      
-              <p className='TitleModal'>Recruitement.Request</p>
-            </StyledContactFormHeaderTitle>
-          </label>
-        </Form.Item>
-
-        <StyledContactFormHeaderTitle>
-
-        </StyledContactFormHeaderTitle>
-
-      </StyledContactFormHeader>
-
-      <StyledContactModalScrollbar>
-        <StyledContactFormContent>
-          <StyledContactFormContentItem>
-            <StyledContactFormItemTitle>
-            <p className='SousTitle'>Recruitement.Requestor View Required Profile</p>
-          
-              {/* <IntlMessages id='Recruitement.RequestorandRequired Profile' /> */}
-            </StyledContactFormItemTitle>
-
-            <StyledContactFormContentField>
-              
-          
+  
+  
+  <>
+      <StyledContactFormContent>
+        <StyledContactFormContentItem>
+          <StyledContactFormContentField>
+          <Form.Item className='form-field'>
+              <FloatLabel name="Project Name">
+                <span className='modallabel'>Project Name :</span>
+                <Input
+                  className='Input'
+                  placeholder="Project Name"
+                  value={id}
+                  classNames="ViewInput"
+                  readOnly={true}
+                />
+              </FloatLabel>
+              </Form.Item>
+              <Form.Item className='form-field'>
+              <FloatLabel name="Project Code">
+                <span className='modallabel'>Project Code</span>
+                <Input
+                  className='Input'
+                  placeholder="Project Code"
+                  value={name}
+                  readOnly
+                />
+              </FloatLabel>
+              </Form.Item>
+           
              
 
-            </StyledContactFormContentField>
-          </StyledContactFormContentItem>
+        
 
-
-
-
-
-        </StyledContactFormContent>
-
+          </StyledContactFormContentField>
+        </StyledContactFormContentItem>
+      </StyledContactFormContent>
     
-      </StyledContactModalScrollbar>
-    </StyledContactForm>
+
+      {/* <StyledContactFormFooter>
+
+        <StyledContactFormBtn
+          type='primary'
+          ghost
+          onClick={handleAddContactClose}
+        >
+          <IntlMessages id='common.cancel' />
+        </StyledContactFormBtn>
+        <StyledContactFormBtn
+          type='primary'
+          ghost >
+          <IntlMessages id='Comfirm & save' />
+        </StyledContactFormBtn>
+
+
+      </StyledContactFormFooter> */}
+
+      </>
+
   );
 };
 
-export default RecruitementForm;
+export default TabsInformationRecruitement ;
 

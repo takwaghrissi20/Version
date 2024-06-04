@@ -2,8 +2,9 @@ import React from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
+
+import { Form, Input, Select,Row } from 'antd';
 import IntlMessages from '@crema/helpers/IntlMessages';
-import { Form, Input, Select } from 'antd';
 import moment from 'moment';
 import {
   StyledContactForm,
@@ -21,14 +22,32 @@ import FloatLabel from "../FloatLabel";
 import { DatePicker,Space } from 'antd';
 
 
+const TabsInformationRecruitement  = (props) => {
 
-
-const RecruitementForm = (props) => {
   const {
 
     setUserImage,
+    isViewInfo,
     handleAddContactClose,
- 
+    JobCode,
+    DateRecruitement,
+    id,
+    name,
+    position,
+    DateRequestor,
+    projname,
+    projCode,
+    DateDesiredRecruitement,
+    positionRecruitement,
+    level,
+    desiredExperience,
+    vacancie,
+    asper,
+    commentplanner,
+    isOkHead,
+    isOkBod,
+    dep
+   
   } = props;
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -45,8 +64,6 @@ const RecruitementForm = (props) => {
   const { messages } = useIntl();
 
   const { Option } = Select;
-
-
   const { RangePicker } = DatePicker;
 
   const dateFormat = 'YYYY/MM/DD';
@@ -54,28 +71,56 @@ const RecruitementForm = (props) => {
   const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY'];
   
   return (
-    <StyledContactForm>
-      <StyledContactFormHeader>
-        <Form.Item >
-          <input {...getInputProps()} />
-          <label htmlFor='icon-button-file'>
-            < StyledContactFormHeaderTitle  >
-              {/* <IntlMessages id='Recruitement.Request' /> */}
-      
-              <p className='TitleModal'>Recruitement.Request</p>
-            </StyledContactFormHeaderTitle>
-          </label>
-        </Form.Item>
+  
+  
+  <>
+      <StyledContactFormContent>
+        <StyledContactFormContentItem>
+          <StyledContactFormContentField>
+          <Form.Item className='form-field'>
+              <FloatLabel name="Decisionbod">
+                <span className='modallabel'>Executive Directors Approval</span>
+                <Input
+                  className='Input'
+                  placeholder="Executive Directors Approval"
+                  value={isOkBod}
+                  classNames="ViewInput"
+                  readOnly={true}
+                />
+              </FloatLabel>
+              </Form.Item>
+            
+          
+             
 
-        <StyledContactFormHeaderTitle>
+    
+          </StyledContactFormContentField>
+        </StyledContactFormContentItem>
+      </StyledContactFormContent>
+    
 
-        </StyledContactFormHeaderTitle>
+      {/* <StyledContactFormFooter>
 
-      </StyledContactFormHeader>
+        <StyledContactFormBtn
+          type='primary'
+          ghost
+          onClick={handleAddContactClose}
+        >
+          <IntlMessages id='common.cancel' />
+        </StyledContactFormBtn>
+        <StyledContactFormBtn
+          type='primary'
+          ghost >
+          <IntlMessages id='Comfirm & save' />
+        </StyledContactFormBtn>
 
-    </StyledContactForm>
+
+      </StyledContactFormFooter> */}
+
+      </>
+
   );
 };
 
-export default RecruitementForm;
+export default TabsInformationRecruitement ;
 
