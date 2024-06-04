@@ -98,7 +98,7 @@ const paginatedData = filteredData.slice(startIndex, startIndex + pageSize);
             paddingBottom: 10,
             boxShadow: "none",
             overflow: 'auto ',
-            overflowY: 'auto', // Assurez-vous que le contenu est scrollable
+            overflowY: 'auto', 
         
           }}
         >

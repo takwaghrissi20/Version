@@ -561,10 +561,7 @@ console.log("isNOHead",isOkHead)
                           
                 >
                 <Input
-                    placeholder="Academic Certificates/
-                    Comments (other
-                    required Knowledge /
-                    Recruitment objective)"
+                   
                     value={certif}
                     onChange={(e) => setCertif(e.target.value)}
 
@@ -584,7 +581,7 @@ console.log("isNOHead",isOkHead)
       {dep==="operation"?
       <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
        <Col xs={24} md={6}>
-        <Typography.Title level={5}>Planner Inputs </Typography.Title>
+        <Typography.Title level={5}>Planner Review </Typography.Title>
 
       </Col>
       <Col xs={24} md={18}>
@@ -634,6 +631,7 @@ console.log("isNOHead",isOkHead)
                   ]}
                 >
                 <Input
+                style={{paddingTop:"1rem",paddingBottom:"1rem"}}
                     placeholder="Planner Comments"
                     value={commentplanner}
                     onChange={(e) => setCommentPlanner(e.target.value)}
@@ -662,7 +660,7 @@ console.log("isNOHead",isOkHead)
       <Col xs={24} md={18}>
         <StyledShadowWrapper>
           <AppRowContainer>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={18}>
                 <StyledInput>
                 <Form.Item
                   label='Head Of Departement Decision'
@@ -700,10 +698,10 @@ console.log("isNOHead",isOkHead)
         <Typography.Title level={5}>Decision BOD</Typography.Title>
         
       </Col>
-           <Col xs={24} md={12}>
+           <Col xs={24} md={18}>
            <StyledShadowWrapper>
           <AppRowContainer>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={18}>
           <StyledInput>
                 <Form.Item
                   label='Executive Directors Approval'
@@ -715,8 +713,7 @@ console.log("isNOHead",isOkHead)
                   
                   
                   >
-                  <Checkbox  checked={isOkBod} onChange={OkBOD}>
-               
+                  <Checkbox  checked={isOkBod} onChange={OkBOD}>              
                     <IntlMessages id='accepted.BOD' />
                   </Checkbox>
                   <Checkbox checked={isNoBod} onClick={NoBOD}>

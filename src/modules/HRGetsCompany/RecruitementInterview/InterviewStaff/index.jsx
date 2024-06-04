@@ -20,7 +20,7 @@ const StaffInterview = ({ allinterviewStaffManagement }) => {
   const [interviewStaff , setInterviewStaff  ] = useState([]);
   const [interviewStaffFiltrer, setInterviewStaffFiltrer] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(50);
+  const [pageSize, setPageSize] = useState(10);
   const [nameFilter, setNameFilter] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [findIdData, setFindIdData] = useState(null);

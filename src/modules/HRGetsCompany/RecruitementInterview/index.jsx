@@ -149,7 +149,6 @@ const RecruitementInterview = () => {
               <StaticNumber totalNumberInterview={totalNumberInterview} totalNumber={totalNumber} />
             </Col>
 
-
             {/* <Col  xs={24} sm={12} lg={6}>
               <StaticsTotalRecruitement totalNumber={totalNumber}></StaticsTotalRecruitement>
               </Col>

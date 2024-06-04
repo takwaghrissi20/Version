@@ -24,6 +24,7 @@ const AddRecruitementForemanBelow = () => {
   const [position, setPosition] = useState('');
   const [positionRecruitement, setPositionRecruitement] = useState('');
   const [desiredExperience, setDesiredExperience] = useState('');
+  const [desiredExperienceLevel, setDesiredExperiencELevel] = useState('');
   const [selectedLevel, setSelectedLevel] = useState('');
   const [vacancie, setVacancie] = useState(0);
   const [asper, setAsper] = useState(0);
@@ -34,6 +35,8 @@ const AddRecruitementForemanBelow = () => {
   const [isNOHead, setIsNOHead] = useState(false);
   const [isOkBod, setIsOkBod] = useState(false);
   const [isNoBod, setIsNoBod] = useState(false);
+  const [isoriginDep, setIsoriginDep] = useState(false);
+  const [isExtraDep, setIsExtraDep] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [type,setType]=useState("Foreman & Below")
   const [form] = Form.useForm();
@@ -221,6 +224,76 @@ const AddRecruitementForemanBelow = () => {
     setIsNoBod(e.target.checked)
     
   }
+//   const Saverecrutement = async () => {
+//     try {
+//       const params = new URLSearchParams({ name: projname, id: id });
+
+//       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
+
+//         method: 'POST',
+//         headers: {
+//           "Access-Control-Allow-Headers": "Content-Type",
+//           "Access-Control-Allow-Origin": "*",
+//           'Content-Type': 'application/json',
+//           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+//         },
+//         body: JSON.stringify({
+//           //recruttrequestDate: DateRecruitement,
+//           requestName: name,
+//           approuvedRecrutRequestNumber: null,
+//           //jobCode: JobCode,
+//           certif: certif,
+//           experience: level,
+//           position: position,
+//           projectName: projname,
+//           recruttrequestDate: DateRequestor,
+//           requestedDicipline: positionRecruitement,
+//           totalNumber: vacancie,
+//           type: "For Foreman & Below",
+//           oDep: asper,
+//           // exDep: "",
+//           // status:"0",
+//           nbExperience: desiredExperience,
+//           projRef: projCode,
+//           bod: isOkBod,
+//           idemp: id,
+//           desiredDate: DateDesiredRecruitement,
+//           affectedTo: affectedTo
+
+//         })
+//       });
+
+//       if (!response.ok) {
+//         throw new Error('Network response was not ok');
+//         setShowAlertError(true)
+//       }
+//       if (response.ok) {
+
+//         const responseData = await response.json();
+//         setShowAlert(true)
+//         alert("Request Success and send Email");
+//         const email = 'rihemhassounanjim90@gmail.com';
+//         const secondApiResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/bodNotif?email=${encodeURIComponent(email)}`, {
+//           method: 'POST',
+//         });
+
+//         if (secondApiResponse.ok) {
+//           const secondResponseData = await secondApiResponse.json();
+//         } else {
+//           console.error("Failed to fetch data from the second API.");
+//         }
+
+//         alert('Recruitment request saved successfully.');
+        
+//       }
+
+//     }
+
+//  catch (error) {
+//       console.error("Erreur lors de la récupération du recrutement:", error);
+//     }
+//   };
+
  
   const BeforeSaveRecruitement = () => {
     //setIsModalVisible(true)
@@ -489,14 +562,17 @@ console.log("isNOHead",isOkHead)
               <Col xs={24} md={12}>
                 <Form.Item
                   label='Desired years of 
-                 experience'
+                  experience'
                   name='Desiredyearsexperience'
 
                   >
 
                     <Input
-                    placeholder={desiredExperience}
-                    readOnly={true}/>
+                    value={desiredExperienceLevel}
+                    onChange={(value) =>setDesiredExperiencELevel(value)}
+                    type="number"
+                    // placeholder={desiredExperience}
+                    />
 
                 </Form.Item>
               </Col>
@@ -534,12 +610,36 @@ console.log("isNOHead",isOkHead)
       {dep==="operation"?
       <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
        <Col xs={24} md={6}>
-        <Typography.Title level={5}>Planner Inputs </Typography.Title>
+        <Typography.Title level={5}>Planner Review </Typography.Title>
 
       </Col>
       <Col xs={24} md={18}>
         <StyledShadowWrapper>
           <AppRowContainer>
+          {/* <Col xs={24} md={12}>
+          <StyledInput>
+                <Form.Item
+                  label='As per : '
+                  name='Asper'
+                  // rules={[
+                  //   { required: true, message: 'Please Check your  Executive Directors Approval!' },
+
+                  // ]}
+>
+                  <Checkbox  checked={isOkBod} onChange={OkBOD}>
+               
+                    <IntlMessages id='accepted.BOD' />
+                  </Checkbox>
+                  <Checkbox checked={isNoBod} onClick={NoBOD}>
+                    <IntlMessages id='Refuse.BOD' />
+                  </Checkbox>
+                  </Form.Item>
+                </StyledInput>
+              </Col> */}
+
+
+
+          
           <Col xs={24} md={12}>
                 <Form.Item
                   label='As per : '
@@ -584,6 +684,7 @@ console.log("isNOHead",isOkHead)
                   ]}
                 >
                 <Input
+                style={{paddingTop:"1rem",paddingBottom:"1rem"}}
                     placeholder="Planner Comments"
                     value={commentplanner}
                     onChange={(e) => setCommentPlanner(e.target.value)}
@@ -650,7 +751,7 @@ console.log("isNOHead",isOkHead)
         <Typography.Title level={5}>Decision BOD</Typography.Title>
         
       </Col>
-           <Col xs={24} md={12}>
+           <Col xs={24} md={18}>
            <StyledShadowWrapper>
           <AppRowContainer>
           <Col xs={24} md={12}>
@@ -662,9 +763,7 @@ console.log("isNOHead",isOkHead)
                   //   { required: true, message: 'Please Check your  Executive Directors Approval!' },
 
                   // ]}
-                  
-                  
-                  >
+>
                   <Checkbox  checked={isOkBod} onChange={OkBOD}>
                
                     <IntlMessages id='accepted.BOD' />
@@ -717,7 +816,7 @@ console.log("isNOHead",isOkHead)
        DateDesiredRecruitement={desiredrecruitementDate}
        positionRecruitement={positionRecruitement}
        level={selectedLevel}
-       desiredExperience={desiredExperience}
+       desiredExperience={desiredExperienceLevel}
        vacancie={vacancie}
        asper={asper}
        commentplanner={commentplanner}

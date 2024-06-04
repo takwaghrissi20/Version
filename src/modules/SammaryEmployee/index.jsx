@@ -19,7 +19,7 @@ const Sammuary = () => {
   const [employees, setEmployees] = useState([]);
   const [employeesFiltrer, setEmployeesFiltrer] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(50);
+  const [pageSize, setPageSize] = useState(10);
   const [nameFilter, setNameFilter] = useState('');
   const [count, setCount] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

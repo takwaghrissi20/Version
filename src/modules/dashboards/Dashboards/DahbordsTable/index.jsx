@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-//import { StyledOrderTable, StyledAction } from '../index.styled';
-/// change 
 import {
   StyledAnChar,
   StyledOrderTable,
@@ -14,13 +12,14 @@ import { MoreOutlined } from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEye } from 'react-icons/ai';
 import { BiArchiveIn } from 'react-icons/bi';
+import { Space, Table } from 'antd';
 
-const getDesiredDateColor = (desiredDate) => {
-  const daysDifference = desiredDate ? Math.ceil((new Date(desiredDate) - new Date()) / (1000 * 60 * 60 * 24)) : '';
-  return daysDifference < 0 ? 'red' : 'green';
-};
 
-const OrderTable = ({ orderData, loading }) => {
+const FixHeader = ({ orderData, loading }) => {
+  const getDesiredDateColor = (desiredDate) => {
+    const daysDifference = desiredDate ? Math.ceil((new Date(desiredDate) - new Date()) / (1000 * 60 * 60 * 24)) : '';
+    return daysDifference < 0 ? 'red' : 'green';
+  };
 
   const [findIdData, setFindIdData] = useState(null);
   const [isViewRecruitement, onViewRecruitement] = useState(false);
@@ -80,23 +79,27 @@ const OrderTable = ({ orderData, loading }) => {
       title: 'Position',
       dataIndex: 'requestedDicipline',
       key: 'requestedDicipline',
+      width: 150,
       render: (id) => <StyledAnChar>{id}</StyledAnChar>,
     },
     {
       title: 'POSITION LEFT',
       dataIndex: 'totalNumber',
       key: 'totalNumber',
+      width: 150,
     },
     {
       title: 'Department',
       dataIndex: 'dep',
       key: 'dep',
+      width: 150,
      
     },
     {
       title: 'Project Reference',
       dataIndex: 'projRef',
       key: 'projRef',
+      width: 150,
 
 
     },
@@ -104,6 +107,7 @@ const OrderTable = ({ orderData, loading }) => {
       title: '#Experiences',
       dataIndex: 'nbExperience',
       key: 'nbExperience',
+      width: 150,
 
 
     },
@@ -111,6 +115,7 @@ const OrderTable = ({ orderData, loading }) => {
       title: 'Desired Date',
       dataIndex: 'desiredDate',
       key: 'desiredDate',
+      width: 150,
 
       render: (desiredDate) => (
         desiredDate ? new Date(desiredDate).toLocaleDateString() : ""
@@ -120,6 +125,7 @@ const OrderTable = ({ orderData, loading }) => {
     {
       title: 'OVERDUE DATE DAYS',
       dataIndex: 'desiredDate',
+      width: 150,
 
       key: 'overdueDateDays',
       render: (desiredDate) => (
@@ -200,29 +206,14 @@ const OrderTable = ({ orderData, loading }) => {
   ];
  
   return (
-    <>
-      <StyledOrderTable
-        hoverColor
-        data={orderData}
-        loading={loading}
-        columns={columns}
-        scroll={{ x: 'auto', y: 200 }}
-
-
+    <Space direction='vertical' style={{ width: '100%' }}>
+      <Table
+      columns={columns}
+      dataSource={orderData}
+        scroll={{ y: 250 }}
       />
-
-
-    </>
+    </Space>
   );
 };
 
-OrderTable.defaultProps = {
-  orderData: [],
-};
-
-OrderTable.propTypes = {
-  orderData: PropTypes.array,
-  loading: PropTypes.bool,
-};
-
-export default OrderTable;
+export default FixHeader;

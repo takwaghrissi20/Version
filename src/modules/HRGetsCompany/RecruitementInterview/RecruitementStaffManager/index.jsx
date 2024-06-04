@@ -16,7 +16,7 @@ const RecruitementStaff = ({ allrecruitementabove }) => {
   const [recruitementabove , setRecruitementabove ] = useState([]);
   const [recruitementaboveFiltrer, setRecruitementaboveFiltrer] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(50);
+  const [pageSize, setPageSize] = useState(10);
   const [nameFilter, setNameFilter] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isGenerateInterview, onGenerateInterview] = useState(false);
@@ -114,7 +114,6 @@ const RecruitementStaff = ({ allrecruitementabove }) => {
 
   
   } 
-  console.log("findIdData?.projectName",findIdData?.projectName)
   //Fin Bu Id 
   const findId = async (code) => {
     try {
@@ -128,7 +127,6 @@ const RecruitementStaff = ({ allrecruitementabove }) => {
 
       if (response.ok) {
         const responseData = await response.json();
-        console.log("ttttttttt",responseData)
         setFindIdData(responseData);
         setId(responseData.jobCode)
       
@@ -194,7 +192,9 @@ const RecruitementStaff = ({ allrecruitementabove }) => {
           paddingTop: 10,
           paddingBottom: 10,
         }}>
-          <OrderTable  allrecruitementabove={recruitementabove}   findIdData={findIdData}
+          <OrderTable  
+          allrecruitementabove={recruitementabove}  
+           findIdData={findIdData}
           id={id}
           findId={findId} 
           setFindIdData={setFindIdData}

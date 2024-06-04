@@ -4,6 +4,9 @@ import { Navigate } from "react-router-dom";
 const RecruitementInterview  = React.lazy(() =>
   import('../../../modules/HRGetsCompany/RecruitementInterview'),
 );
+const ViewRecruitementInterview  = React.lazy(() =>
+  import('../../../modules/ViewRequest/ViewRecruitement'),
+);
 const AddRecruitement = React.lazy(() =>
   import('../../../modules/AddRecruitement'),
 );
@@ -32,7 +35,20 @@ const AddEmployeesIdConstructionStaff = React.lazy(() =>
   import('../../../modules/HRGetsCompany/AddEmployeesIdConstructionStaff'),
 
 );
+const RequestDemobilation = React.lazy(() =>
+  import('../../../modules/RequestDemobilation'),
 
+);
+
+//Add Travel
+const RequestAddTravel = React.lazy(() =>
+  import('../../../modules/RequestAddTravel'),
+
+);
+
+
+
+//Travel 
 
 const ContartTypeB1 = React.lazy(() =>
   import('../../../modules/ContratPrint'),
@@ -100,6 +116,12 @@ export const ecommerceConfig = [
     path: '/Hr/Recruitement&Interview',
     element: <RecruitementInterview  />,
   },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/Hr/Recruitement&Interview/Recruitement/View/:id',
+    element: < ViewRecruitementInterview />,
+  },
+ 
   {
     permittedRole: RoutePermittedRole.User,
     path: [
@@ -220,12 +242,21 @@ export const ecommerceConfig = [
   path: '/HRGetsCompany/ConstructionStaff/ContartB2',
   element: <ContratB2/>,
 },
+{
 
+  permittedRole: RoutePermittedRole.User,
+  path: '/GetsCompany/AddTravel',
+  element: <RequestDemobilation/>,
+},
+{
+
+  permittedRole: RoutePermittedRole.User,
+  path: '/GetsCompany/AddTravel',
+  element: <RequestAddTravel/>,
+},
 
 
 //End Construction Team Contract
-
-
 
 
   {

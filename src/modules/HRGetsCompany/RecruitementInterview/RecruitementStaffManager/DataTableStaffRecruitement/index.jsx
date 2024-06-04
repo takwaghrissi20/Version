@@ -15,18 +15,36 @@ import {
 } from '../../index.styled'
 import ConfirmationModal from '../../../../../@crema/components/AppConfirmationModal';
 import IntlMessages from '../../../../../@crema/helpers/IntlMessages';
-
-const AllRecruitementStaff = ({allrecruitementabove,findIdData,id,  findId, setFindIdData,open,handleInterview}) => {
+import { useNavigate } from 'react-router-dom';
+const AllRecruitementStaff = ({allrecruitementabove,
+  findIdData,
+  id, 
+   findId,
+    setFindIdData
+    ,open,
+    handleInterview}) => {
 
   //const [findIdData, setFindIdData] = useState(null);
   const [isViewRecruitement, onViewRecruitement] = useState(false);
   const [isEditRecruitement, onEditRecruitement] = useState(false);
   const [isDelteRecruitement, onDeleteRecruitement] = useState(false);
-
+  const navigate = useNavigate();
 
   const handleAddRecruitementOpen = () => {
+    navigate(`/Hr/Recruitement&Interview/Recruitement/View/codeJob=${id}`, {
+      state: {
+        id:id,
+      
 
-    onViewRecruitement(true);
+      }
+
+    });
+
+  
+
+
+    
+    //onViewRecruitement(true);
   };
   const handleAddRecruitementClose = () => {
     setFindIdData(null);

@@ -184,7 +184,7 @@ const TableInterviewStaff = ({allinterviewStaffManagement,findIdData,id,
               fontFamily:"inherit"
             }}
           >
-            Accepter
+            Accepte
           </StyledRecentPatientBadge>
         ) : (
           <StyledRecentPatientBadge
@@ -209,19 +209,19 @@ const TableInterviewStaff = ({allinterviewStaffManagement,findIdData,id,
           <StyledRecentPatientBadge
             style={{
               color: record.color,
-              backgroundColor:"red",
+              backgroundColor:"green",
               color:"white",
               fontFamily:"inherit"
             }}
           >
-            Accepter
+            Accepted
           </StyledRecentPatientBadge>
         ) : (
           <StyledRecentPatientBadge
             style={{
               color: record.color,
-              backgroundColor:"green",
-              color:"white",
+              backgroundColor:"#FCFE19",
+              color:"black",
               fontFamily:"inherit"
             }}
           >
@@ -246,12 +246,7 @@ const TableInterviewStaff = ({allinterviewStaffManagement,findIdData,id,
       render: (text) => text === null || text === undefined ? 'null' : text
     },
    
-    {
-    
-      title: 'Max Salary',
-      dataIndex: 'maxSalary',
-      key: 'maxSalary',
-    },
+   
     {
       title: 'Actions',
       dataIndex: 'actions',

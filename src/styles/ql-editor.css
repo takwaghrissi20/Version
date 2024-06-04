@@ -1184,9 +1184,9 @@
 .ant-modal-root .ant-modal-mask {
     
     background-color: transparent !important; /* Ajoute un fond semi-transparent */
-    backdrop-filter: blur(1px); /* Ajoute l'effet de flou */
+    opacity: 0.05;
+    /* backdrop-filter: blur(1px);  */
   
-
   
   }
   .ant-modal .ant-modal-content{

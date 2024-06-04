@@ -20,7 +20,7 @@ const RecruitementConstruction = ({ allrecruitementbelow }) => {
   const [recruitementbelow , setRecruitementbelow ] = useState([]);
   const [recruitementbelowFiltrer, setRecruitementbelowFiltrer] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(50);
+  const [pageSize, setPageSize] = useState(10);
   const [nameFilter, setNameFilter] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isGenerateInterview, onGenerateInterview] = useState(false);
