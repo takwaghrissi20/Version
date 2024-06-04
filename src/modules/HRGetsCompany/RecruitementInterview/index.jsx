@@ -35,14 +35,14 @@ const RecruitementInterview = () => {
     {
       label: 'Staff Management Interview',
       key: '3',
-      children:<InterviewStaff allinterviewStaffManagement={allinterviewStaffManagement}></InterviewStaff>,
+      children: <InterviewStaff allinterviewStaffManagement={allinterviewStaffManagement}></InterviewStaff>,
     },
     {
       label: 'Construction Staff Interview',
       key: '4',
       children: <InterviewConstruction allinterviewConstructionTeam={allinterviewConstructionTeam}></InterviewConstruction>,
     },
-      
+
   ];
   useEffect(() => {
     const fetchDataStatiqueTotalInterviewRecruitement = async () => {
@@ -72,8 +72,8 @@ const RecruitementInterview = () => {
         const numberOfInterview = responseData.length.toString();
         setTotalNumberInterview(numberOfInterview)
         setAllinterviewStaffManagement(responseData)
-       
-      
+
+
         //Recruitement
         const responseRecruitement = await fetch("https://dev-gateway.gets-company.com/api/v1/re/list", {
           method: 'GET',
@@ -95,7 +95,7 @@ const RecruitementInterview = () => {
         /////////////////////////////////Type Recruitement
         const resulttypebelove = responseDataRecruitement.filter((p) => p.type === "Above Foreman");
         setAllrecruitementabove(resulttypebelove)
-    
+
         //Formen
         const resulttypebelow = responseDataRecruitement.filter((p) => p.type === "For Foreman & Below");
         setAllrecruitementbelow(resulttypebelow);
@@ -113,8 +113,8 @@ const RecruitementInterview = () => {
 
         const responseDataInterview = await responseInterviewConstruction.json();
         setAllinterviewConstructionTeam(responseDataInterview)
-        
-        
+
+
 
 
       } catch (error) {
@@ -129,28 +129,28 @@ const RecruitementInterview = () => {
 
     <>
 
-<AppsContainer
-     title={messages['sidebar.app.recruitementinterview']}
-      cardStyle={{ backgroundColor: 'transparent', boxShadow: 'none' }}
-      fullView
-    >
-      {/*Layout of dahbords*/}
-      <AppPageMeta title='InterviewRecruitement' />
-    
+      <AppsContainer
+        title={messages['sidebar.app.recruitementinterview']}
+        cardStyle={{ backgroundColor: 'transparent', boxShadow: 'none' }}
+        fullView
+      >
+        {/*Layout of dahbords*/}
+        <AppPageMeta title='InterviewRecruitement' />
+
         <div>
-            
+
           <AppRowContainer ease={'easeInSine'}>
 
-          <Col xs={24} md={10}>
-          <LastRequestor lastRecruitement={lastRecruitement}/>
-        </Col>
+            <Col xs={24} md={10}>
+              <LastRequestor lastRecruitement={lastRecruitement} />
+            </Col>
 
-        <Col xs={24} md={14}>
-          <StaticNumber totalNumberInterview={totalNumberInterview} totalNumber={totalNumber} />
-        </Col>
+            <Col xs={24} md={14}>
+              <StaticNumber totalNumberInterview={totalNumberInterview} totalNumber={totalNumber} />
+            </Col>
 
-   
-              {/* <Col  xs={24} sm={12} lg={6}>
+
+            {/* <Col  xs={24} sm={12} lg={6}>
               <StaticsTotalRecruitement totalNumber={totalNumber}></StaticsTotalRecruitement>
               </Col>
               <Col xs={24} sm={12} lg={6}>
@@ -159,22 +159,22 @@ const RecruitementInterview = () => {
               <Col xs={24} sm={12} lg={10}>
                 <LastRequestorRecruitement lastRecruitement={lastRecruitement} ></LastRequestorRecruitement>
               </Col> */}
-        
+
           </AppRowContainer>
         </div>
-    
-       <AppsContainer
-        title={messages['sidebar.app.recruitementinterview']}
-        type='bottom'
-        fullView>
-       <StyledBuyCellCard   style={{ paddingLeft: "10px" }} heightFull>
-      <StyledTabs defaultActiveKey='1' items={items} />
-    </StyledBuyCellCard>
-    </AppsContainer>
-     
-      <AppInfoView />
 
-    </AppsContainer>
+        <AppsContainer
+          title={messages['sidebar.app.recruitementinterview']}
+          type='bottom'
+          fullView>
+          <StyledBuyCellCard style={{ paddingLeft: "10px" }} heightFull>
+            <StyledTabs defaultActiveKey='1' items={items} />
+          </StyledBuyCellCard>
+        </AppsContainer>
+
+        <AppInfoView />
+
+      </AppsContainer>
 
 
       {/* <AppsContainer

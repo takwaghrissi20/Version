@@ -11,13 +11,27 @@ import AppRowContainer from '../../../@crema/components/AppRowContainer';
 import { Col } from 'antd';
 import AppCard from '../../../@crema/components/AppCard';
 import AppsHeader from '../../../@crema/components/AppsContainer/AppsHeader';
-import EmployeeInformation from './EmployeeInformationManagementStaff'
+import EmployeeInformationConstruction from './EmployeeInformationConstructionStaff'
+import { useLocation } from 'react-router-dom';
+const AddEmployeesIdConstructionStaff = ({
 
-const AddEmployeesManagementStaff= () => {
-  const [listInterview, setListInterview] = useState([]);
+
+}) => {
+  const location = useLocation();
+
   const navigate = useNavigate();
-  
-
+  const interviewCode= location.state ? location.state.interviewCode : null;
+  const fullName= location.state ? location.state.fullName : null;
+  const birthayDate= location.state ? location.state.birthayDate : null;
+  const familySituation =location.state ? location.state.familySituation : null;
+  const positionToBeFilled=location.state ? location.state.positionToBeFilled : null;
+  const department=location.state ? location.state.department : null;
+  const projname=location.state ? location.state.projname : null;
+  const  agreedJoinedDate=location.state ? location.state.agreedJoinedDate : null; 
+  const [listInterview, setListInterview] = useState([]);
+  const [findIdInterview, setFindIdInterview] = useState([]);
+;
+ 
 
   const fetchDataList = async () => {
     try {
@@ -26,7 +40,7 @@ const AddEmployeesManagementStaff= () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/list`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/list`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -49,23 +63,25 @@ const AddEmployeesManagementStaff= () => {
       console.error('Erreur lors de la récupération des données:', error);
     }
   };
-
+ 
   useEffect(() => {
-
+    console.log("Second useEffect");
     fetchDataList();
+   
+    // Your logic here
   }, []);
-
   return (
        <>
         <AppPageMeta title='ConstructionStaff' />
-    <div style={{marginBottom:"20"}}>
-    
-{/*        
+        <div style={{marginBottom:"20"}}>
+{/*     
+        <>
           <StyledScrumBoardDetailTitle onClick={onGoToBoardList}>
            Add Employees Id 
           </StyledScrumBoardDetailTitle>
-          &gt; Add Employee Management Staff */}
-        
+          &gt; Add Employee Construction Staff
+       </>    */}
+      
       <AppAnimate animation='transition.slideUpIn' delay={200}>
     
       <AppRowContainer style={{marginTop:20}}>
@@ -75,10 +91,21 @@ const AddEmployeesManagementStaff= () => {
               <AppsHeader>
                 <StyledOrderHeader>
                 <StyledFormAddWrapper >
-                <EmployeeInformation 
-                  listInterview={listInterview} >
-                  </EmployeeInformation>     
-               </StyledFormAddWrapper >
+                <EmployeeInformationConstruction 
+                 listInterview={listInterview} 
+                 fullName={fullName}
+                 birthayDate={birthayDate}
+                 familySituation={familySituation}
+                 positionToBeFilled={positionToBeFilled}
+                 department={department}
+                 projname={projname}
+                 agreedJoinedDate={agreedJoinedDate}
+                 interviewCode={interviewCode}
+                 
+                           
+                 ></EmployeeInformationConstruction>
+      
+              </StyledFormAddWrapper >
        
                 </StyledOrderHeader>
               </AppsHeader>
@@ -89,15 +116,7 @@ const AddEmployeesManagementStaff= () => {
 
 
         </Col>
-        {/* <Col xs={24} lg={6}>
-        <FilterItemInterviewSheet 
-        listInterview={listInterview} 
-        intCode={intCode}
-        findIdInterview={findIdInterview}
-        setInterviewCode={setInterviewCode}
-         
-        />
-        </Col> */}
+       
 
 
 
@@ -110,4 +129,4 @@ const AddEmployeesManagementStaff= () => {
   );
 };
 
-export default AddEmployeesManagementStaff;
+export default AddEmployeesIdConstructionStaff;

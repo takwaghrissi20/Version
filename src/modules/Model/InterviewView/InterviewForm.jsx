@@ -798,7 +798,7 @@ Technical Evaluation*/ }
           {/*BOD */}
           <StyledContactFormContentItem>
             <StyledContactFormItemTitle>
-              <p className='SousTitle'>Board of directors Decisionn</p>
+              <p className='SousTitle'>Board of directors Decision</p>
 
               {/* <IntlMessages id='Recruitement.RequestorandRequired Profile' /> */}
             </StyledContactFormItemTitle>

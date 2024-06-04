@@ -126,6 +126,7 @@
   "sidebar.apps": "HR Administrator",
  
   "common.deleteItem": "Delete Item(s)",
+  "common.confirmation": "Confirmation",
   "common.savaInterview": "Save Interview",
   "sidebar.hr.Employees": "Employees",
   "sidebar.hr.EmployeesSite": "Site  Status",

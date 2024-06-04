@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox,  DatePicker, } from 'antd';
+import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox, DatePicker, } from 'antd';
 import { MdEdit } from 'react-icons/md';
 
 import { StyledBuyCellCard, StyledTabs } from '../../styles/index.styled';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
-
 import dayjs from 'dayjs';
-
 import InterviewSheet from './TabsInterviewConstruction';
 import AssignementConstruction from './TabsAssignementConstruction';
 
@@ -28,12 +26,12 @@ const InterviewSheetById = () => {
     {
       label: 'INTERVIEW SHEET CONSTRUCTION TEAM ',
       key: '1',
-      children: <InterviewSheet JobCode={JobCode} 
+      children: <InterviewSheet JobCode={JobCode}
 
-      // isSaveDisabled={activeTabKey !== '1'}
-      totalNumber={totalNumber} level={level} projectName={projectName}  position={position}
-      isSaveDisabled={isSaveDisabled}
-    
+        // isSaveDisabled={activeTabKey !== '1'}
+        totalNumber={totalNumber} level={level} projectName={projectName} position={position}
+        isSaveDisabled={isSaveDisabled}
+
       ></InterviewSheet>,
     }, // remember to pass the key prop
     {
@@ -41,30 +39,29 @@ const InterviewSheetById = () => {
       key: '2',
       children: <AssignementConstruction isSaveDisabled={true}></AssignementConstruction>,
     },
-  
-      
+
+
   ];
   useEffect(() => {
-    if(activeTabKey === '2'){
+    if (activeTabKey === '2') {
       setIsSaveDisabled(true)
     }
     // setIsSaveDisabled(activeTabKey === '2'); 
-    
+
   }, [activeTabKey]);
-console.log("activeTabKey",activeTabKey)
-console.log("[isSaveDisabled",isSaveDisabled)
+
 
 
 
   return (
     <>
-     <StyledBuyCellCard   style={{ paddingLeft: "10px" }} heightFull>
-      <StyledTabs 
-   onChange={(key) => setActiveTabKey(key)} 
-   defaultActiveKey='1' 
-   items={items} 
-     />
-    </StyledBuyCellCard>
+      <StyledBuyCellCard style={{ paddingLeft: "10px" }} heightFull>
+        <StyledTabs
+          onChange={(key) => setActiveTabKey(key)}
+          defaultActiveKey='1'
+          items={items}
+        />
+      </StyledBuyCellCard>
 
     </>
   );

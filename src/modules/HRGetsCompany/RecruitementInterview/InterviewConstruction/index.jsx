@@ -26,6 +26,7 @@ const InterviewConstruction = ({ allinterviewConstructionTeam }) => {
   const [findIdData, setFindIdData] = useState(null);
   const [id, setId] = useState(0);
   const [codeJob, setCodeJob] = useState(0);
+  const [interviewCode, setInterviewCode] = useState(0);
   const count=allinterviewConstructionTeam.length
   useEffect(() => {
     fetchInterviewConstructionTeam();
@@ -114,6 +115,7 @@ const InterviewConstruction = ({ allinterviewConstructionTeam }) => {
         setFindIdData(responseData);
         setId(responseData.interviewCode)
         setCodeJob(responseData?.jobCode)
+        setInterviewCode(responseData.interviewCode)
 
 
       }
@@ -124,6 +126,7 @@ const InterviewConstruction = ({ allinterviewConstructionTeam }) => {
   const handleInterview = () => {
     onGenerateInterview(true);
   };
+ 
   return (
     <AppsContainer type='bottom' fullView>
 
@@ -185,6 +188,7 @@ const InterviewConstruction = ({ allinterviewConstructionTeam }) => {
           open={open}
           handleInterview={handleInterview}
           codeJob={codeJob}
+          interviewCode={interviewCode}
           
           />
 

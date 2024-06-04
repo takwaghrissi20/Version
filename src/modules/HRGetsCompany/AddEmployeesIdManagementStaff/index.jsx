@@ -12,11 +12,20 @@ import { Col } from 'antd';
 import AppCard from '../../../@crema/components/AppCard';
 import AppsHeader from '../../../@crema/components/AppsContainer/AppsHeader';
 import EmployeeInformation from './EmployeeInformationManagementStaff'
-
-const AddEmployeesManagementStaff= () => {
+import { useLocation } from 'react-router-dom';
+const AddEmployeesIdManagementStaff= () => {
+  const location = useLocation();
   const [listInterview, setListInterview] = useState([]);
   const navigate = useNavigate();
-  
+  const interviewCode= location.state ? location.state.interviewCode : null;
+  const fullName= location.state ? location.state.fullName : null;
+  const birthayDate= location.state ? location.state.birthayDate : null;
+  const familySituation =location.state ? location.state.familySituation : null;
+  const positionToBeFilled=location.state ? location.state.positionToBeFilled : null;
+  const department=location.state ? location.state.department : null;
+  const projname=location.state ? location.state.projname : null;
+  const  agreedJoinedDate=location.state ? location.state.agreedJoinedDate : null; 
+
 
 
   const fetchDataList = async () => {
@@ -40,7 +49,6 @@ const AddEmployeesManagementStaff= () => {
       if (!contentType || !contentType.includes('application/json')) {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
-
       const data = await response.json();
       setListInterview(data)
      
@@ -76,7 +84,19 @@ const AddEmployeesManagementStaff= () => {
                 <StyledOrderHeader>
                 <StyledFormAddWrapper >
                 <EmployeeInformation 
-                  listInterview={listInterview} >
+                  listInterview={listInterview}
+                  interviewCode={interviewCode}
+                  fullName={fullName}
+                  birthayDate={birthayDate}
+                  familySituation={familySituation}
+                  positionToBeFilled={positionToBeFilled}
+                  department={department}
+                  projname={projname}
+                  agreedJoinedDate={agreedJoinedDate}
+                  
+                  
+                  
+                  >
                   </EmployeeInformation>     
                </StyledFormAddWrapper >
        
@@ -110,4 +130,4 @@ const AddEmployeesManagementStaff= () => {
   );
 };
 
-export default AddEmployeesManagementStaff;
+export default AddEmployeesIdManagementStaff;

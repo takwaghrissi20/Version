@@ -26,6 +26,8 @@ const StaffInterview = ({ allinterviewStaffManagement }) => {
   const [findIdData, setFindIdData] = useState(null);
   const [id, setId] = useState(0);
   const [codeJob, setCodeJob] = useState(0);
+  const [interviewCode, setInterviewCode] = useState(0);
+ 
   const count=allinterviewStaffManagement.length
   useEffect(() => {
     fetchInterviewStaff();
@@ -43,6 +45,7 @@ const StaffInterview = ({ allinterviewStaffManagement }) => {
       }
 
       const data = await response.json();
+      console.log("dataaaaa",data)
       setInterviewStaff(data);
     } catch (error) {
       console.error('Error fetching Interview:', error);
@@ -114,6 +117,9 @@ const StaffInterview = ({ allinterviewStaffManagement }) => {
         setFindIdData(responseData);
         setId(responseData.interviewCode)
         setCodeJob(responseData?.jobCode)
+        setInterviewCode(responseData.interviewCode)
+
+
 
 
       }
@@ -185,6 +191,8 @@ const StaffInterview = ({ allinterviewStaffManagement }) => {
           open={open}
           handleInterview={handleInterview}
           codeJob={codeJob}
+          interviewCode={interviewCode}
+       
           
           />
 

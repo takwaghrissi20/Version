@@ -24,6 +24,16 @@ const AddEmployeesManagementStaff = React.lazy(() =>
   import('../../../modules/HRGetsCompany/AddEmployeesManagementStaff'),
 
 );
+const AddEmployeesIdManagementStaff = React.lazy(() =>
+  import('../../../modules/HRGetsCompany/AddEmployeesIdManagementStaff'),
+
+);
+const AddEmployeesIdConstructionStaff = React.lazy(() =>
+  import('../../../modules/HRGetsCompany/AddEmployeesIdConstructionStaff'),
+
+);
+
+
 const ContartTypeB1 = React.lazy(() =>
   import('../../../modules/ContratPrint'),
 );
@@ -125,7 +135,16 @@ export const ecommerceConfig = [
     path: '/HRGetsCompany/AddEmployees/AddEmployeesManagementStaff',
     element: <AddEmployeesManagementStaff />,
   },
- 
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/HRGetsCompany/AddEmployees/AddEmployeesManagementStaff/:id',
+    element: <AddEmployeesIdManagementStaff />,
+  },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/HRGetsCompany/AddEmployees/AddEmployeesConstructionTeam/:id',
+    element: <AddEmployeesIdConstructionStaff />,
+  },
   {
     permittedRole: RoutePermittedRole.User,
     path: '/HRGetsCompany/ContartTypeB1',

@@ -98,7 +98,6 @@ const RecruitementConstruction = ({ allrecruitementbelow }) => {
   };
   
   const InterviewGenerate= async () => {
-  
     navigate(`/dashboards/hr/InterviewSheetContructionStaff/codeJob=${id}`, {
       state: {
         DesiredDate:findIdData?.desiredDate,
