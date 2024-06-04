@@ -31,7 +31,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
   const [contratType, setContratType] = useState("CDD");
   const [employeeType, setEmployeeType] = useState("Site");
   const [category, setCategory] = useState("Construction Staff")
-  console.log("setContratType", contratType)
+  console.log("interviewCode", interviewCode)
   const handleValidateEmployeeClose = () => {
     setIsModalVisible(false);
   };
@@ -352,6 +352,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
             e.preventDefault();
           }
         }}>
+    
         <Row style={{ justifyContent: "flex-end" }}>
           <Col xs={24} lg={6} style={{
             border: '1px solid red', paddingTop: "15px", paddingBottom: "15px", paddingLeft: "5px",
@@ -368,7 +369,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
 
           }}>
             {/* <FaSearch></FaSearch> */}
-            <span>CIS- {interviewCode}</span>
+            <span>CIS-</span>
             <input
               style={{
                 borderRight: '1px solid grey',
@@ -380,9 +381,10 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
               }}
 
               placeholder="Interview Code"
-              onChange={(e) => handleSearch(e.target.value)}
-              //value={searchValue ? searchValue : 'CIS'}
-              value={searchValue}
+              value={interviewCode}
+              readOnly
+              
+             
             ></input>
          
          
@@ -431,14 +433,14 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
                 <Col xs={24} md={12}>
                   <Form.Item label='Full Name' name='name' >
                     {/* <Form.Item label='Full Name' name='fullName'> */}
-                    <Input placeholder={findIdInterview?.fullName} readOnly={true} />
+                    <Input placeholder={fullName} readOnly={true} />
                   </Form.Item>
                 </Col>
 
                 <Col xs={24} md={12}>
                   <Form.Item label='Arabic Full name' name='arName' rules={[{ required: true, message: 'Please enter full name' }]}>
                     <Input placeholder="الاسم كامل بالعربي" dir="rtl"
-                      disabled={searchValue == ''}
+                    
 
                     />
                   </Form.Item>
@@ -464,7 +466,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
                       },
                     ]}
                   >
-                    <Input placeholder='ID Card Number' disabled={searchValue == ''} />
+                    <Input placeholder='ID Card Number' />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
@@ -479,7 +481,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
 
 
                   >
-                    <StyledScrumBoardDatePicker disabled={searchValue == ''} />
+                    <StyledScrumBoardDatePicker/>
                     {/* <Input placeholder='Date of issue' readOnly={!isEdit} /> */}
                   </Form.Item>
                 </Col>
@@ -491,13 +493,14 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
 
                 <Col xs={24} md={12}>
                   <Form.Item label='Nationality' name='nationality' rules={[{ required: true, message: 'Please enter Nationality' }]}>
-                    <Input placeholder='Nationality ' disabled={searchValue == ''} />
+                    <Input placeholder='Nationality ' />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Date of Birth' name='birthDate'>
-                    <Input placeholder={findIdInterview?.birthayDate} readOnly={true} />
-                    {/* <StyledScrumBoardDatePicker /> */}
+                    <Input placeholder={birthayDate} 
+                    readOnly={true} />
+                   
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
@@ -542,7 +545,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
                   >
                     <Input
                       placeholder="Telephone"
-                      disabled={searchValue == ''}
+                    
                     />
                   </Form.Item>
                 </Col>
@@ -550,42 +553,24 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
 
                 <Col xs={24} md={12}>
                   <Form.Item label='Marital Status' name='familyStatus'>
-                    <Input placeholder={findIdInterview?.familySituation} readOnly={true}
-                      disabled={searchValue == ''}
-
+                    <Input placeholder={familySituation} 
+                    readOnly={true}
+                 
                     />
-                    {/* <Select
-                      defaultValue="Marital Status"
-                      placeholder="Marital Status"
-                      onChange={(value) => setSelectedStatusType(value)}
-
-                    >
-                      {MaritalStatus.map((p) => {
-                        return (
-                          <Option value={p.Status} key={p.Status}>
-                            <div className='ant-row ant-row-middle'>
-
-                              <span>{p.Status}</span>
-                            </div>
-                          </Option>
-                        );
-                      })}
-                    </Select> */}
+                   
                   </Form.Item>
                 </Col>
 
                 <Col xs={24} md={12}>
                   <Form.Item label='Residence Address' name='residenceAdress' rules={[{ required: true, message: 'Please enter Residence Address' }]}>
                     <Input placeholder='Residence Address'
-                      disabled={searchValue == ''}
-
-                    />
+                     />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Arabic Residence Address' name='arResidenceAdress' rules={[{ required: true, message: 'Please enter Residence Address Arabe' }]}>
                     <Input placeholder='عنوان السكني بالعربي' dir="rtl"
-                      disabled={searchValue == ''}
+                    
 
                     />
                   </Form.Item>
@@ -605,7 +590,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
 
                   >
                     <Input placeholder='Passport Number'
-                      disabled={searchValue == ''}
+                   
 
                     />
                   </Form.Item>
@@ -623,7 +608,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
 
 
                   >
-                    <StyledScrumBoardDatePicker disabled={searchValue == ''} />
+                    <StyledScrumBoardDatePicker/>
                     {/* <Input placeholder='Date of issue' readOnly={!isEdit} /> */}
                   </Form.Item>
                 </Col>
@@ -640,7 +625,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
 
 
                   >
-                    <StyledScrumBoardDatePicker disabled={searchValue == ''} />
+                    <StyledScrumBoardDatePicker  />
                     {/* <Input placeholder='Date of expiry' readOnly={!isEdit} /> */}
                   </Form.Item>
                 </Col>
@@ -660,7 +645,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
               <AppRowContainer>
                 <Col xs={24} md={12}>
                   <Form.Item label='Position To be filled' name='position'>
-                    <Input placeholder={findIdInterview?.positionToBeFilled}
+                    <Input placeholder={positionToBeFilled}
                       readOnly={true} />
                   </Form.Item>
                 </Col>
@@ -675,7 +660,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Departement' name='departement'>
-                    <Input placeholder={findIdInterview?.department}
+                    <Input placeholder={department}
                       readOnly={true}
 
                     />
@@ -715,78 +700,11 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
                 </Col>
 
 
-                {/* <Col xs={24} md={12}>
-                  <Form.Item label='Employee Type' name='type_Emp'
-                    rules={[
-                      {
-                        required: true,
-                        message: 'Please Select Employee Type',
-                      },
-                      
-                    ]}>
-                    <Select
-                      defaultValue="Employee Type"
-                      placeholder="Employee Type"
-                      onChange={(value) => setSelectedEmployeeType(value)}
-                      disabled={searchValue == ''}
-
-                      readOnly={!isEdit}>
-                      {EmployeeType.map((p) => {
-                        return (
-                          <Option value={p.type} key={p.type}>
-                            <div className='ant-row ant-row-middle'>
-
-                              <span>{p.type}</span>
-                            </div>
-                          </Option>
-                        );
-                      })}
-                    </Select>
-
-                 
-                  </Form.Item>
-                </Col> */}
-                {/* <Col xs={24} md={12}>
-  <Form.Item label='Employee Type' name='type_Emp'
-   
-  >
-    <Input 
-      defaultValue={employeeType}
-      readOnly
-      placeholder='Site/Site&&Office /Offic'
-    />
-  </Form.Item>
-</Col> */}
-
-
-
-                {/* 
-                <Col xs={24} md={12}>
-                  <Form.Item label='Employee Type' name='type_Emp'
-                    rules={[
-                      {
-                        required: true,
-                        message: 'Please enter Employee Type',
-                      },
-
-
-                    ]}
-
-
-
-                  >
-                    <Input placeholder="Site/Site&&Office /Office"
-                      disabled={searchValue == ''}
-
-
-                    />
-                  </Form.Item>
-                </Col> */}
-
                 <Col xs={24} md={12}>
                   <Form.Item label='Project Name' name='projName' >
                     {/* <Form.Item label='Full Name' name='fullName'> */}
-                    <Input placeholder={findIdInterview?.projname} readOnly={true} />
+                    <Input placeholder={projname}
+                     readOnly={true} />
                   </Form.Item>
                 </Col>
 
@@ -807,36 +725,12 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
 
                   >
                     <Input placeholder='E-mail Address'
-                      disabled={searchValue == ''}
+                
 
                     />
                   </Form.Item>
                 </Col>
-                {/* <Col xs={24} md={12}>
-                  <Form.Item label='Contract start date' name='joinDate'
-                  >
-                    <Input placeholder={findIdInterview?.expectedJoinDate}
-                      readOnly={true} />
-                  </Form.Item>
-                </Col> */}
-                {/* <Col xs={24} md={12}>
-                  <Form.Item label='Contract End date' name='finishDate'
-                    rules={[
-                      {
-                        required: true,
-                        message: 'Please enter Contract End date',
-                      },
-
-                    ]}
-
-
-
-
-                  >
-                    <StyledScrumBoardDatePicker disabled={searchValue == ''} />
-                  
-                  </Form.Item>
-                </Col> */}
+                
                 <Col xs={24} md={12}>
                   <Form.Item label='Company Type' name='companyType'
                     rules={[
@@ -850,7 +744,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
 
                   >
                     <Select
-                      disabled={searchValue == ''}
+                      
                       defaultValue="Company Type"
                       placeholder="Company Type"
                       onChange={(value) => setSelectedStatusTypeCompany(value)}
@@ -881,7 +775,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
 
 
                   >
-                    <StyledScrumBoardDatePicker disabled={searchValue == ''} />
+                    <StyledScrumBoardDatePicker />
                     {/* <Input placeholder="Date Travel"
                       readOnly={true} /> */}
                   </Form.Item>
@@ -900,7 +794,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
 
 
                   >
-                    <StyledScrumBoardDatePicker disabled={searchValue == ''} />
+                    <StyledScrumBoardDatePicker  />
                     {/* <Input placeholder="End Travel Date"
                       readOnly={true} /> */}
                   </Form.Item>
@@ -919,7 +813,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
 
                   >
                     <Input placeholder="Location"
-                      disabled={searchValue == ''}
+                      
                     />
                   </Form.Item>
                 </Col>
@@ -936,69 +830,11 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
 
                   >
                     <Input placeholder=" موقع العمل"
-                      disabled={searchValue == ''}
+                      
                     />
                   </Form.Item>
                 </Col>
 
-                {/* <Col xs={24} md={12}>
-                  <Form.Item label='Approved Office Salary ' name='salary'>
-                    <Input.Password placeholder={findIdInterview?.propsedsalary} readOnly={true}
-
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Daily Rate' name='DailyRate'>
-                    <Input placeholder={findIdInterview?.dailyRate} readOnly={true} />
-                  </Form.Item>
-                </Col> */}
-                {/* <Col xs={24} md={12}>
-                  <Form.Item label='Contrat Type' name='contractType'
-                  
-                 
-                  
-                  >
-                    <Input 
-                      defaultValue={contratType}
-                      readOnly
-                     placeholder='Contrat Type'
-                  />
-                  </Form.Item>
-                </Col> */}
-
-                {/* <Col xs={24} md={12}>
-                  <Form.Item label='Contrat Type' name='contractType'
-                    rules={[
-                      {
-                        required: true,
-                        message: 'Please enter Contrat Type',
-                      },
-
-                    ]}
-
-
-                  >
-                    <Select
-                      defaultValue="Contrat Type"
-                      placeholder="type"
-                      disabled={searchValue == ''}
-                      onChange={(value) => setSelectedContratType(value)}
-
-                    >
-                      {TypeContrat.map((p) => {
-                        return (
-                          <Option value={p.type} key={p.type}>
-                            <div className='ant-row ant-row-middle'>
-
-                              <span>{p.type}</span>
-                            </div>
-                          </Option>
-                        );
-                      })}
-                    </Select>
-                  </Form.Item>
-                </Col> */}
                 <Col xs={24} md={12}>
                   <Form.Item label='Duration' name='duration'
                     rules={[
@@ -1042,7 +878,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
 
 
                   >
-                    <Input placeholder='Full Name' disabled={searchValue == ''} />
+                    <Input placeholder='Full Name' />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
@@ -1058,7 +894,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
                       defaultValue="Relationship"
                       placeholder="type"
                       onChange={(value) => setSelectedRelationType(value)}
-                      disabled={searchValue == ''}
+                  
 
                     >
                       {RelationShip.map((p) => {
@@ -1095,7 +931,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
                     ]}
 
                   >
-                    <Input placeholder='Telephone' disabled={searchValue == ''} />
+                    <Input placeholder='Telephone'/>
                   </Form.Item>
                 </Col>
 
@@ -1104,73 +940,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
           </Col>
         </AppRowContainer>
         <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-        {/* <AppRowContainer>
-          <Col xs={24} md={6}>
-            <Typography.Title level={5}>Contract Categorie </Typography.Title>
-            <StyledSecondaryText1> Download  Contrat <br></br> Type of Employees.</StyledSecondaryText1>
-          </Col>
-
-          <Col xs={24} md={18}>
-            <StyledShadowWrapper>
-              <AppRowContainer>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Contract Category' name='contractCategory'
-                    rules={[
-                      {
-                        required: true,
-                        message: 'Please Select contract Category',
-                      },
-
-                    ]}
-
-                  >
-                    <Select
-                      disabled={searchValue == ''}
       
-                      placeholder="type"
-                      onChange={(value) => setSelectedContractCategorie(value)}
-                      style={{ minWidth: 150 }}
-                    >
-                      <Option value=""> Select Contract Type </Option>
-                      {ListContrat.map((staff) => {
-                        return (
-                          <Option value={staff.type} key={staff.type}>
-                            <div className='ant-row ant-row-middle'>
-
-                              <span>{staff.type}</span>
-                            </div>
-                          </Option>
-                        );
-                      })}
-                    </Select>
-                  </Form.Item>
-                </Col>
-                {selectedContractCategorie === 'CAT-B2' && (
-                  < Col xs={24} md={12}>
-                    <Form.Item label='Target productivity' name='primeProductivity'
-                      rules={[
-                        {
-                          required: true,
-                          message: 'Please enter Target productivity',
-                        },
-
-                      ]}
-
-
-                    >
-                      <Input placeholder='Target productivity' />
-                    </Form.Item>
-                  </Col>
-
-                )}
-
-
-
-
-              </AppRowContainer>
-            </StyledShadowWrapper>
-          </Col>
-        </AppRowContainer> */}
 
 
         <Space
@@ -1188,7 +958,8 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
           {/* Your form fields */}
 
           <Button
-            onClick={handleOpenAfter} type='primary' htmlType='submit' disabled={searchValue === '' || !selectedInterviews}>
+            onClick={handleOpenAfter} type='primary' htmlType='submit' 
+            >
             Save
           </Button>
 
@@ -1201,27 +972,27 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
       <ValidateEmployees
         isViewInfo={isModalVisible}
         handleAddContactClose={handleValidateEmployeeClose}
-        name={findIdInterview?.fullName}
+        name={fullName}
         arName={formData?.arName}
         CIN={formData?.CIN}
         nationality={formData?.nationality}
-        birthDate={findIdInterview?.birthayDate}
+        birthDate={birthayDate}
         gender={selectedGenderType}
         phoneNumber={formData?.phoneNumber}
-        familyStatus={findIdInterview?.familySituation}
+        familyStatus={familySituation}
         residenceAdress={formData?.residenceAdress}
         arResidenceAdress={formData?.arResidenceAdress}
         passportnumber={formData?.passportnumber}
         passportSubmitdate={formData?.passportSubmitdate?.format('YYYY-MM-DD')}
         passport_finish_date={formData?.passport_finish_date?.format('YYYY-MM-DD')}
-        position={findIdInterview?.positionToBeFilled}
+        position={ positionToBeFilled}
         arPosition={positionfieledarabe}
-        departement={findIdInterview?.department}
+        departement={department}
         //type_Emp={formData?.type_Emp}
         type_Emp={selectedEmpTypeType}
-        projname={findIdInterview?.projname}
+        projname={projname}
         email={formData?.email}
-        joinDate={findIdInterview?.expectedJoinDate}
+        joinDate={agreedJoinedDate}
         finishDate={formData?.finishDate?.format('YYYY-MM-DD')}
         companyType={formData?.companyType}
         traveldate={formData?.traveldate?.format('YYYY-MM-DD')}
@@ -1230,7 +1001,6 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
         arDestination={formData?.arDestination}
         salary={findIdInterview?.propsedsalary}
         dailyRate={findIdInterview?.dailyRate}
-        //contractType={formData.contractType}
         contractType={contratType}
         emergencyName={formData?.emergencyName}
         emergencyRelation={formData.emergencyRelation}

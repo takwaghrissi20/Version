@@ -102,7 +102,7 @@ const InterviewConstruction = ({ allinterviewConstructionTeam }) => {
   const findId = async (code) => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${code}`, {
-        method: 'GET',
+        method: 'Post',
 
       });
       if (!response.ok) {
