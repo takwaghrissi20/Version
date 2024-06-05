@@ -238,15 +238,21 @@ const InterviewSheetById = () => {
       const data = await response.json();
      if (level === 'junior') {
       setOfficeSalaryMax(data?.[0]?.officeSalaryJun);
-      setDailyRateMax(data?.[0]?.dailyrateJun);
+      const dalyrate = data[0].dailyrateJun;
+      const dailyRateMonth = dalyrate  / 30;
+      setDailyRateMax(dailyRateMonth);
       setTotalMax(data?.[0]?.totalJun);
     } else if (level === 'Meduim') {
       setOfficeSalaryMax(data?.[0]?.officeSalaryMid);
-      setDailyRateMax(data?.[0]?.dailyRateMid);
+      const dalyrate = data[0].dailyRateMid;
+      const dailyRateMonth = dalyrate  / 30;
+      setDailyRateMax(dailyRateMonth);
       setTotalMax(data?.[0]?.totalMid);
     } else if (level === 'senior') {
       setOfficeSalaryMax(data?.[0]?.officeSalarySen);
-      setDailyRateMax(data?.[0]?.dailyRateSen);
+      const dalyrate = data[0].dailyRateSen;
+      const dailyRateMonth = dalyrate  / 30;
+      setDailyRateMax(dailyRateMonth);
       setTotalMax(data?.[0]?.totalSen);
     }
    
@@ -874,6 +880,7 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
               <Col xs={24} md={12}>
                 <StyledInput>
                 <Form.Item
+                style={{marginTop:"10px"}}
                   label='Go to test 2 :'
                   name='Gototest2' >
                   <Checkbox  checked={isOkChecked} onChange={Ok}>

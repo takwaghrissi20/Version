@@ -21,8 +21,6 @@ import IntlMessages from '../../../@crema/helpers/IntlMessages';
 
 const TabsInterviewSheetConstructionId = ({isSaveDisabled,JobCode,totalNumber,level,projectName,position }) => {
   const location = useLocation();
-
-
   const experienceRequired = location.state ? location.state.experience : null;
   const [isConfirmationInterview, setIsConfirmationInterview] = useState(false);
   const [showAlertError, setShowAlertError] = useState(false);
@@ -118,8 +116,37 @@ const TabsInterviewSheetConstructionId = ({isSaveDisabled,JobCode,totalNumber,le
   const [dailylev5Error, setDailylev5Error] = useState('');
   const [lev5SalaryMax, setLev5SalaryMax] = useState(0);
   const [lev5dailyRateMax, setLev5DailyRateMax] = useState(0);
- 
+  const [salaryError, setSalaryError] = useState('');
+  const [dailyError, setDailyError] = useState('');
+  const fetchData = async () => {
+    try {
+      const endPoint =
+        process.env.NODE_ENV === "development"
+          ? "https://dev-gateway.gets-company.com"
+          : "";
 
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/last`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('La requête a échoué avec le code ' + response.status);
+      }
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
+      }
+      const data = await response.json();
+      setDatalastIdinterview(data.interviewCode)
+
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données:', error);
+    }
+  };
   const situation = [
     { st: 'Single' },
     { st: 'Maried' },
@@ -247,26 +274,40 @@ const TabsInterviewSheetConstructionId = ({isSaveDisabled,JobCode,totalNumber,le
    // Additional logic based on normalized level
    switch (normalizedLevel) {
      case 'Level I':
-       console.log("testtttt",data?.[0]?.lev1);
+       
        setLev1SalaryMax(data?.[0]?.lev1);
-      //  setLev1DailyRateMax
-      //  setDailyRateMax(data?.[0]?.dailyrateJun);
-       //setTotalMax(data?.[0]?.totalJun);
-  
-
-
+       const lev1SalaryMax = data[0].lev1;
+       const dailyMax = lev1SalaryMax / 30;  
+       setLev1DailyRateMax(dailyMax)
+   
        break;
      case 'Level II':
        console.log("Level II");
+       setLev1SalaryMax(data?.[0]?.lev2);
+       const lev2SalaryMax = data[0].lev2;
+       const daily2Max = lev2SalaryMax / 30;   
+       setLev1DailyRateMax(daily2Max)
        break;
-     case 'Level III':
+     case 'levelIII':
        console.log("Level III");
+       setLev1SalaryMax(data?.[0]?.lev3);
+       const lev3SalaryMax = data[0].lev3;
+       const daily3Max = lev3SalaryMax / 30;   
+       setLev1DailyRateMax(daily3Max)
        break;
-     case 'Level IV':
+     case 'LEVEL IV':
        console.log("Level IV");
+       setLev1SalaryMax(data?.[0]?.lev4);
+       const lev4SalaryMax = data[0].lev4;
+       const daily4Max = lev4SalaryMax / 30;   
+       setLev1DailyRateMax(daily4Max)
        break;
      case 'Level V':
-       console.log("Level V");
+      console.log("Level IV");
+       setLev1SalaryMax(data?.[0]?.lev5);
+       const lev5SalaryMax = data[0].lev5;
+       const daily5Max = lev5SalaryMax / 30;   
+       setLev1DailyRateMax(daily5Max)
        break;
      default:
        console.log("Unknown level");
@@ -409,9 +450,7 @@ const TabsInterviewSheetConstructionId = ({isSaveDisabled,JobCode,totalNumber,le
 console.log("setIsOkChecked",isOkChecked)
 console.log(" setIsNoChecked",isNoChecked)
 const CheckedFinalGotest2=isOkChecked ?1 : 0;
-console.log(" setIsNoCheckeddddFinnnaaaaaaaaaaaal",CheckedFinalGotest2)
   function No(e) {
-    console.log(`checkedgggg = ${e.target.checked}`);
     setIsNoChecked(e.target.checked);
     setIsVisible(false);
     if (e.target.checked) {
@@ -541,30 +580,29 @@ console.log(" setIsNoCheckeddddFinnnaaaaaaaaaaaal",CheckedFinalGotest2)
   }
   
   useEffect(() => {
-
+    fetchData()
     fetchMaxValues()
 
   }, []);
-    const handleSalaryChange = (e) => { 
-    //   const value = e.target.value;
-    //   setProposedSalary(value);
-    //   if (parseFloat(value) > officeSalaryMax) {
-    //     setSalaryError(`Proposed Office Salary exceeds the maximum allowed value of ${officeSalaryMax}`);   
-    //   }else
-    //   setSalaryError("");   
-    // };
-    // const handleDailyChange= (e) => {
-    //   const value = e.target.value;
-    //   setProposedDailyRate(value);
-    //   if (parseFloat(value) > dailyRateMax) {
-    //     setDailyError(`Proposed Daily Rate exceeds the maximum allowed value of ${dailyRateMax}`);
-       
-    //   }
-    //   else{
-    //     setDailyError("")
-    //   }
-    // };
+  const handleSalaryChange = (e) => {
+    const value = e.target.value;
+    setProposedSalary(value);
+    if (parseFloat(value) > lev1SalaryMax) {
+      setSalaryError(`Proposed  Salary exceeds the maximum allowed value of ${lev1SalaryMax}`);   
+    }else
+    setSalaryError("");   
+  };
+  const handleDailyChange= (e) => {
+    const value = e.target.value;
+    setProposedDailyRate(value);
+    if (parseFloat(value) > lev1dailyRateMax) {
+      setDailyError(`Proposed Daily Rate exceeds the maximum allowed value of ${lev1dailyRateMax}`);
+     
     }
+    else{
+      setDailyError("")
+    }
+  };
   
  
   return (
@@ -1444,9 +1482,9 @@ console.log(" setIsNoCheckeddddFinnnaaaaaaaaaaaal",CheckedFinalGotest2)
                 >
                   <Input
                    value={proposedSalary}
-                   onChange={handleSalaryChange}
-             
+                   onChange={handleSalaryChange}           
                     placeholder='Proposed Salary' />
+              {salaryError && <Alert className="custom-alert" message={salaryError} type="error" showIcon />}
                 </Form.Item>
               </Col>
               <Col xs={24} md={12}>
@@ -1455,15 +1493,12 @@ console.log(" setIsNoCheckeddddFinnnaaaaaaaaaaaal",CheckedFinalGotest2)
                     { required: true, message: 'Please input your Proposed Daily Rate!' },
                     { pattern: /^[0-9]+$/, message: 'Proposed Daily Rate must be a number!' },
                    
-                  ]}
-                
-                
-                >
-                  <Input
+                  ]}>
+                  <Input               
                     value={proposedDailyRate}
-                    onChange={(e) =>setProposedDailyRate(e.target.value)}
-
-                    placeholder='Proposed Salary' />
+                    onChange={handleDailyChange}
+                    placeholder='Proposed Daily Rate' />
+                 {dailyError && <Alert className="custom-alert" message={dailyError} type="error" showIcon />}
                 </Form.Item>
               </Col>
               <Col xs={24} md={24}>

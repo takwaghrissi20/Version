@@ -73,10 +73,10 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
     setBackgroundColor('transparent');
   };
 
-  const VisaRequest = [{ type: 'SENT' }, { type: 'Not SENT' }];
-  const vCableReceive = [{ type: 'RECEIVED' }, { type: 'Not RECEIVED' }];
-  const PASSPORTSUBMITTED = [{ type: 'SUBMITTED' }, { type: 'Not SUBMITTED' }];
-  const visaReady = [{ type: 'ready' }, { type: 'Not ready' }];
+  const VisaRequest = [{ type: 'Yes' }, { type: 'No' }];
+  const vCableReceive = [{ type: 'Yes' }, { type: 'No' }];
+  const PASSPORTSUBMITTED = [{ type: 'Yes' }, { type: 'No' }];
+  const visaReady = [{ type: 'Yes' }, { type: 'No' }];
   const finalVisaReceive = [{ type: 'FINAL RECEIVED' }, { type: 'Not FINAL RECEIVED' }];
 
   const columns = [
@@ -89,17 +89,20 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
           title: 'APP #',
           dataIndex: 'idVisa',
           key: 'idVisa',
+          width: 150,
           render: (text) => <StyledAnChar>V-{text}</StyledAnChar>,
         },
         {
           title: 'Name',
           dataIndex: 'name',
           key: 'name',
+          width: 150,
         },
         {
           title: 'Position',
           dataIndex: 'position',
           key: 'position',
+          width: 150,
         },
         {
           title: 'PASSPORT',
@@ -110,13 +113,16 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
           title: 'COUNTRY',
           dataIndex: 'destination',
           key: 'destination',
+          width: 150,
           render: (text, record) => (
             editingRow === record.id ? (
-              <Input
-               style={{height:"25px",width:"90px",fontSize:"10px"}}
-                value={editingRow === record.id ? editingData?.destination : text}
-                onChange={(e) => handleChange('destination', e.target.value)}
-              />
+              <div className="table-cell-center">
+                <Input
+                  className="input-center"
+                  value={editingRow === record.id ? editingData?.destination : text}
+                  onChange={(e) => handleChange('destination', e.target.value)}
+                />
+              </div>
             ) : (
               text
             )
@@ -126,6 +132,7 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
           title: 'Project Name',
           dataIndex: 'projName',
           key: 'projName',
+          width: 150,
         },
       ],
     },
@@ -138,7 +145,8 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
             fontWeight: 'bold',
             paddingTop: '3px',
             paddingBottom: '3px',
-            fontSize: '10px',
+            fontSize: '14px',
+            width: 150,
           }}
         >
           Request For Visa Country Of Origin
@@ -149,28 +157,24 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
           title: 'Send',
           dataIndex: 'requestSendVisa',
           key: 'requestSendVisa',
+          width: 150,
           render: (text, record) => (
             editingRow === record.id ? (
-              <Select
-                placeholder="Visa Send"
-                value={editingData.requestSendVisa || 'Not SENT'}
-                style={{height:"25px",width:"90px",
-                fontSize:"10px"
-                
-              
-              
-              }}
-                onChange={(value) => handleChange('requestSendVisa', value)}
-                
-              >
-                {VisaRequest.map((p) => (
-                  <Option  style={{fontSize:"10px"}} key={p.type} value={p.type}>
-                    {p.type}
-                  </Option>
-                ))}
-              </Select>
+              <div className="table-cell-center">
+                <Select
+                  placeholder="Visa Send"
+                  value={editingData.requestSendVisa || 'No'}
+                  onChange={(value) => handleChange('requestSendVisa', value)}
+                >
+                  {VisaRequest.map((p) => (
+                    <Option className="input-center" key={p.type} value={p.type}>
+                      {p.type}
+                    </Option>
+                  ))}
+                </Select>
+              </div>
             ) : (
-              text || 'Not SENT'
+              text || 'No'
             )
           ),
         },
@@ -178,13 +182,15 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
           title: 'Date',
           dataIndex: 'dateVisa',
           key: 'dateVisa',
+          width: 150,
           render: (text, record) => (
             editingRow === record.id ? (
-              <DatePicker
-              style={{height:"25px",width:"90px"}}
-                value={editingData.dateVisa ? moment(editingData.dateVisa) : null}
-                onChange={(date, dateString) => handleChangeDate('dateVisa', dateString)}
-              />
+              <div className="table-cell-center">
+                <DatePicker
+                  value={editingData.dateVisa ? moment(editingData.dateVisa) : null}
+                  onChange={(date, dateString) => handleChangeDate('dateVisa', dateString)}
+                />
+              </div>
             ) : (
               text
             )
@@ -201,7 +207,7 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
             fontWeight: 'bold',
             paddingTop: '5px',
             paddingBottom: '5px',
-            fontSize: '10px',
+            fontSize: '14px',
           }}
         >
           Visa Cable
@@ -212,23 +218,24 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
           title: 'Visa Cable ',
           dataIndex: 'vCableReceive',
           key: 'vCableReceive',
+          width: 150,
           render: (text, record) => (
             editingRow === record.id ? (
-              <Select
-              style={{height:"25px",width:"90px",fontSize:"10px"}}
-                placeholder="Select Request For Visa Cable"
-                value={editingData.vCableReceive || 'Not RECEIVED'}
-                onChange={(value) => handleChange('vCableReceive', value)}
-            
-              >
-                {vCableReceive.map((p) => (
-                  <Option style={{fontSize:"10px"}} key={p.type} value={p.type}>
-                    {p.type}
-                  </Option>
-                ))}
-              </Select>
+              <div className="table-cell-center">
+                <Select
+                  placeholder="Select Request For Visa Cable"
+                  value={editingData.vCableReceive || 'No'}
+                  onChange={(value) => handleChange('vCableReceive', value)}
+                >
+                  {vCableReceive.map((p) => (
+                    <Option className="input-center" key={p.type} value={p.type}>
+                      {p.type}
+                    </Option>
+                  ))}
+                </Select>
+              </div>
             ) : (
-              text || 'Not RECEIVED'
+              text || 'No'
             )
           ),
         },
@@ -236,13 +243,15 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
           title: 'Date Visa Cable',
           dataIndex: 'vCabledate',
           key: 'vCabledate',
+          width: 150,
           render: (text, record) => (
             editingRow === record.id ? (
-              <DatePicker
-              style={{height:"25px",width:"90px",fontSize:"10px" }}
-                value={editingData.vCabledate ? moment(editingData.vCabledate) : null}
-                onChange={(date, dateString) => handleChangeDateVisaCable('vCabledate', dateString)}
-              />
+              <div className="table-cell-center">
+                <DatePicker
+                  value={editingData.vCabledate ? moment(editingData.vCabledate) : null}
+                  onChange={(date, dateString) => handleChangeDateVisaCable('vCabledate', dateString)}
+                />
+              </div>
             ) : (
               text
             )
@@ -259,7 +268,7 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
             fontWeight: 'bold',
             paddingTop: '5px',
             paddingBottom: '5px',
-            fontSize: '10px',
+            fontSize: '14px',
           }}
         >
           Passport Submitted To Embassy
@@ -270,21 +279,23 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
           title: 'Passport Submit To Embassy',
           dataIndex: 'passportSubmit',
           key: 'passportSubmit',
+          width: 150,
           render: (text, record) => (
             editingRow === record.id ? (
-              <Select
-              style={{height:"25px",width:"90px",fontSize:"10px"}}
-                value={editingData.passportSubmit || 'Not SUBMITTED'}
-                onChange={(value) => handleChange('passportSubmit', value)}
-              >
-                {PASSPORTSUBMITTED.map((p) => (
-                  <Option style={{fontSize:"10px"}} key={p.type} value={p.type}>
-                    {p.type}
-                  </Option>
-                ))}
-              </Select>
+              <div className="table-cell-center">
+                <Select
+                  value={editingData.passportSubmit || 'No'}
+                  onChange={(value) => handleChange('passportSubmit', value)}
+                >
+                  {PASSPORTSUBMITTED.map((p) => (
+                    <Option className="input-center" key={p.type} value={p.type}>
+                      {p.type}
+                    </Option>
+                  ))}
+                </Select>
+              </div>
             ) : (
-              text || 'Not SUBMITTED'
+              text || 'No'
             )
           ),
         },
@@ -292,13 +303,15 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
           title: 'Date Passport Submit To Embassy',
           dataIndex: 'passportSubmitdate',
           key: 'passportSubmitdate',
+          width: 150,
           render: (text, record) => (
             editingRow === record.id ? (
-              <DatePicker
-              style={{height:"25px",width:"90px",fontSize:"10px"}}
-                value={editingData.passportSubmitdate ? moment(editingData.passportSubmitdate) : null}
-                onChange={(date, dateString) => handleChangeDatepassportSubmitdate('passportSubmitdate', dateString)}
-              />
+              <div className="table-cell-center">
+                <DatePicker
+                  value={editingData.passportSubmitdate ? moment(editingData.passportSubmitdate) : null}
+                  onChange={(date, dateString) => handleChangeDatepassportSubmitdate('passportSubmitdate', dateString)}
+                />
+              </div>
             ) : (
               text
             )
@@ -315,7 +328,7 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
             fontWeight: 'bold',
             paddingTop: '5px',
             paddingBottom: '5px',
-            fontSize: '10px',
+            fontSize: '14px',
           }}
         >
           Finaly Visa Received
@@ -326,22 +339,24 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
           title: 'Visa Ready',
           dataIndex: 'visaReady',
           key: 'visaReady',
+          width: 150,
           render: (text, record) => (
             editingRow === record.id ? (
-              <Select
-              style={{height:"25px",width:"90px",fontSize:"10px"}}
-                placeholder="visaReady"
-                value={editingData.visaReady || 'Not ready'}
-                onChange={(value) => handleChange('visaReady', value)}
-              >
-                {visaReady.map((p) => (
-                  <Option  style={{fontSize:"10px"}}key={p.type} value={p.type}>
-                    {p.type}
-                  </Option>
-                ))}
-              </Select>
+              <div className="table-cell-center">
+                <Select
+                  placeholder="visaReady"
+                  value={editingData.visaReady || 'No'}
+                  onChange={(value) => handleChange('visaReady', value)}
+                >
+                  {visaReady.map((p) => (
+                    <Option className="input-center" key={p.type} value={p.type}>
+                      {p.type}
+                    </Option>
+                  ))}
+                </Select>
+              </div>
             ) : (
-              text || 'Not ready'
+              text || 'No'
             )
           ),
         },
@@ -349,13 +364,15 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
           title: 'FINISH DATE',
           dataIndex: 'finishDateVisa',
           key: 'finishDateVisa',
+          width: 150,
           render: (text, record) => (
             editingRow === record.id ? (
-              <DatePicker
-              style={{height:"25px",width:"90px",fontSize:"10px"}}
-                value={editingData.finishDateVisa ? moment(editingData.finishDateVisa) : null}
-                onChange={(date, dateString) => handleChangeDatefinishDateVisa('finishDateVisa', dateString)}
-              />
+              <div className="table-cell-center">
+                <DatePicker
+                  value={editingData.finishDateVisa ? moment(editingData.finishDateVisa) : null}
+                  onChange={(date, dateString) => handleChangeDatefinishDateVisa('finishDateVisa', dateString)}
+                />
+              </div>
             ) : (
               text
             )

@@ -577,7 +577,18 @@ font-weight: bold;
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
+.table-cell-center {
 
+
+  height: 100%;
+}
+
+.input-center {
+  height: 25px;
+  width: 90px;
+  font-size: 14px;
+  text-align: center;
+}
 
 
 
