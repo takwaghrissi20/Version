@@ -56,7 +56,6 @@ const RecruitementEditForm = (props) => {
     },
   });
 
-
   const [newdesiredDate, setNewDesiredDate] = useState(DesiredDate);
   const [newdep, setNewdep] = useState(dep);
   const [newidemp, setNewidemp] = useState(idemp);

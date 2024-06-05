@@ -564,7 +564,19 @@ font-weight: bold;
 .editing-row {
   background-color: #ECF8F6 !important;
 }
+/* .ant-select-single .ant-select-selector{
+  font-size: unset !important;
+  font-size: 10px !important;
+}
+.ant-picker .ant-picker-input{
+  font-size: unset !important;
+  font-size: 10px !important;
 
+} */*
+.InputComment{
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
 
 
 

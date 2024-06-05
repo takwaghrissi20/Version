@@ -11,8 +11,10 @@ import {
 import IntlMessages from '../../../@crema/helpers/IntlMessages';
 import dayjs from 'dayjs';
 import RecruitementRequest from "../../Model/RecruitementRequet"
-
+import { useNavigate } from 'react-router-dom';
+import ConfirmationModal from '../../../@crema/components/AppConfirmationModal';
 const AddRecruitementAbove = () => {
+  const navigate = useNavigate();
   const [requestorDate, setRequestorDate] = useState("");
   const [recruitementDate, setRecruitementDate] = useState("");
   const [desiredrecruitementDate, setDesiredrecruitementDate] = useState("");
@@ -28,14 +30,20 @@ const AddRecruitementAbove = () => {
   const [selectedLieu, setSelectedLieu] = useState('');
   const [vacancie, setVacancie] = useState(0);
   const [asper, setAsper] = useState(0);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [certif, setCertif] = useState("");
   const [commentplanner, setCommentPlanner] = useState("");
   const [dep, setDep] = useState('');
   const [isOkHead, setIsOkHead] = useState(false);
   const [isNOHead, setIsNOHead] = useState(false);
+  const [isExDep, setIsExDep] = useState(false);
+  const [isOrDep, setIsOrDep] = useState(false);
   const [isOkBod, setIsOkBod] = useState(false);
   const [isNoBod, setIsNoBod] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isoriginDep, setIsoriginDep] = useState(false);
+  const [isExtraDep, setIsExtraDep] = useState(false);
+  const [isSave, onSave] = useState(false);
+  const [isCancel, onCancel] = useState(false);
   const [type,setType]=useState("Above Foreman")
   const [form] = Form.useForm();
 
@@ -233,23 +241,141 @@ const AddRecruitementAbove = () => {
  
   const BeforeSaveRecruitement = () => {
     //setIsModalVisible(true)
-    //setIsModalVisible(true)
     form.validateFields(['DateRecruitement','DateRequestor','ProjectName','ProjectCode'
     ,'DateDesiredRecruitement','position','RequiredLevel','Desiredyearsexperience','Numbervacancies',
-  
 
     ]).then(values => {
        alert("all fields are complete.");
-       setIsModalVisible(true)
+       onSave(true)
+      //  setIsModalVisible(true)
 
 
     }).catch(errorInfo => {
       alert("Please complete all fields");
-      setIsModalVisible(false);
+      // setIsModalVisible(false);
 
     });
   };
-console.log("isNOHead",isOkHead)
+  function  OkHead(e) {
+    console.log(`checkedHead = ${e.target.checked}`);
+    setIsOkHead(e.target.checked)
+  
+  }
+  function ExDep(e) {
+    console.log(`checkedHead = ${e.target.checked}`);
+    setIsExDep(e.target.checked)
+  
+  }
+  function OrDep(e) {
+    console.log(`checkedHead = ${e.target.checked}`);
+    setIsOrDep(e.target.checked)
+  
+  }
+  
+ 
+  function NoHead(e) {
+    console.log(`NoHead = ${e.target.checked}`);
+    setIsNOHead(e.target.checked)
+    
+  }
+  function  OkBOD(e) {
+    console.log(`checkedHead = ${e.target.checked}`);
+    setIsOkBod(e.target.checked)
+  
+  }
+
+  function NoBOD(e) {
+    console.log(`NoHead = ${e.target.checked}`);
+    setIsNoBod(e.target.checked)
+    
+  }
+  const handleSaveRecruitement = () => {
+    onSave(true);
+  };
+  const handleCancelRecruitement = () => {
+    onCancel(true);
+  }
+  const Saverecrutement = async () => {
+    try {
+      
+      const params = new URLSearchParams({ name:selectedProject, id:profile?.getsId });
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
+  
+        method: 'POST',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+  
+          //recruttrequestDate: DateRecruitement,
+          requestName: profile?.name,
+          approuvedRecrutRequestNumber: null,
+          //jobCode: JobCode,
+          certif: profile?.certif,
+          experience: selectedLevel,
+          type:type,
+          position:positionRecruitement,
+          projectName:selectedProject,
+          recruttrequestDate:requestorDate,
+          requestedDicipline:profile?.position,
+           totalNumber:vacancie,
+           oDep:isOrDep,
+           exDep:isExDep,
+          // type: "For Foreman & Below",
+          // oDep: asper,
+          // // exDep: "",
+          // // status:"0",
+           nbExperience: desiredExperience,
+            projRef:projectCode,
+          // bod: isOkBod,
+           idemp:profile?.getsId,
+           desiredDate:desiredrecruitementDate,
+          affectedTo:selectedLieu,
+          signatureHod:isOkHead,
+          signatureBod:isOkBod
+  
+        
+  
+        })
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+  
+        const responseData = await response.json();
+        alert("Request Success and send Email");
+        isSave(false)
+        const email = 'rihemhassounanjim90@gmail.com';
+        const secondApiResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/bodNotif?email=${encodeURIComponent(email)}`, {
+          method: 'POST',
+        });
+  
+        if (secondApiResponse.ok) {
+          const secondResponseData = await secondApiResponse.json();
+        } else {
+          console.error("Failed to fetch data from the second API.");
+        }
+  
+        // alert('Recruitment request saved successfully.');
+        
+      }
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+    }
+  };
+  
+
+const goBack = () => {
+  navigate(-1)
+
+
+}
   return (
     <>
     <Form
@@ -292,10 +418,11 @@ console.log("isNOHead",isOkHead)
                   ]}
 
 
-                >{/*Date et temp de Interview bu Hr*/}
+                >
                   <DatePicker
                     //defaultValue={new Date()} 
-                    defaultValue={dayjs(recruitementDate, '2024-01-01')}
+                    // defaultValue="YYYY-MM-DD"
+                    placeholder='YYYY-MM-DD'
 
                     style={{ width: "100%", height: "30px" }}
                     onChange={(value) => setRecruitementDate(dayjs(value).format('YYYY-MM-DD'))}
@@ -343,7 +470,7 @@ console.log("isNOHead",isOkHead)
                 </Form.Item>
               </Col>
               <Col xs={24} md={12}>
-                <Form.Item label='Requestor Date' name='DateRequestor'
+                <Form.Item label='Request Date' name='DateRequestor'
                   rules={[
                     { required: true, message: 'Please input your Requestor Date!' },
                   ]}
@@ -352,8 +479,8 @@ console.log("isNOHead",isOkHead)
                 >{/*Date et temp de Interview bu Hr*/}
                   <DatePicker
                     //defaultValue={new Date()} 
-                    defaultValue={dayjs(requestorDate, '2024-01-01')}
-
+                    // defaultValue={dayjs(requestorDate, '2024-01-01')}
+                   placeholder='YYYY-MM-DD'
                     style={{ width: "100%", height: "30px" }}
                     onChange={(value) => setRequestorDate(dayjs(value).format('YYYY-MM-DD'))}
                   />
@@ -438,10 +565,10 @@ console.log("isNOHead",isOkHead)
                 >{/*Date et temp de Interview bu Hr*/}
                   <DatePicker
                     //defaultValue={new Date()} 
-                    defaultValue={dayjs(desiredrecruitementDate, '2024-01-01')}
+                    placeholder="YYYY-MM-DD"
 
                     style={{ width: "100%", height: "30px" }}
-                    onChange={(value) => setDesiredrecruitementDate(dayjs(value).format('YYYY/MM/DD'))}
+                    onChange={(value) => setDesiredrecruitementDate(dayjs(value).format('YYYY-MM-DD'))}
                   />
 
                 </Form.Item>
@@ -587,6 +714,40 @@ console.log("isNOHead",isOkHead)
       <Col xs={24} md={18}>
         <StyledShadowWrapper>
           <AppRowContainer>
+
+        
+                  <Col xs={24} md={24}>
+                <StyledInput>
+                <Form.Item
+                  label='As per :'
+                  name='As per' 
+                  
+                       
+                  >
+                  <Checkbox  checked={isExDep} onChange={ExDep}>
+          
+                    <IntlMessages id='Exdep.planner' />
+                  </Checkbox>
+                  <Checkbox checked={isOrDep} onClick={OrDep}>
+                    <IntlMessages id='Ordep.planner' />
+                  </Checkbox>
+                  </Form.Item>
+                </StyledInput>
+              </Col>
+
+
+         
+                
+         
+              
+      
+
+          </AppRowContainer>
+        </StyledShadowWrapper>
+      </Col>
+      {/* <Col xs={24} md={18}>
+        <StyledShadowWrapper>
+          <AppRowContainer>
           <Col xs={24} md={12}>
                 <Form.Item
                   label='As per : '
@@ -646,7 +807,7 @@ console.log("isNOHead",isOkHead)
 
           </AppRowContainer>
         </StyledShadowWrapper>
-      </Col>
+      </Col> */}
     </AppRowContainer>
       
     
@@ -738,9 +899,9 @@ console.log("isNOHead",isOkHead)
         size={15}
         style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
       >
-        <Button >Cancel</Button>
+         <Button  onClick={handleCancelRecruitement} >Cancel</Button>
         <Button
-        onClick={BeforeSaveRecruitement}
+         onClick={BeforeSaveRecruitement}
 
           type='primary'
           htmlType='submit'>
@@ -785,7 +946,26 @@ console.log("isNOHead",isOkHead)
 
      </RecruitementRequest>
   
-
+     {isSave? (
+        <ConfirmationModal
+          open={isSave}
+          paragraph={'Are you sure you want to Save Recruitement?'}
+          onDeny={onSave}
+          onConfirm={Saverecrutement}
+          modalTitle="Save Recruitement "
+          handleInterview={handleSaveRecruitement}
+        />
+      ) : null}
+         {isCancel? (
+        <ConfirmationModal
+          open={isCancel}
+          paragraph={'Are you sure you canceled All data is lost?'}
+          onDeny={onCancel}
+          onConfirm={goBack}
+          modalTitle="Cancel Recruitement "
+          handleInterview={handleCancelRecruitement}
+        />
+      ) : null}
      </>
   
   );

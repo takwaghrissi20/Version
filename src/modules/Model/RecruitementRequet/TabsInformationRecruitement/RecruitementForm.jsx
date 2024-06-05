@@ -96,7 +96,7 @@ const TabsInformationRecruitement = (props) => {
           recruttrequestDate: DateRequestor,
           requestedDicipline: positionRecruitement,
           totalNumber: vacancie,
-          type: "For Foreman & Below",
+          type: "Foreman & Below",
           oDep: asper,
           // exDep: "",
           // status:"0",

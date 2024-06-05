@@ -11,8 +11,13 @@ import Treemap from '../../../modules/thirdParty/visa/Treemap';
 import Scatter from '../../../modules/thirdParty/visa/Scatter';
 import Radar from '../../../modules/thirdParty/visa/Radar';
 import FunnelChart from '../../../modules/thirdParty/visa/Funnel';
+import Mission from '../../../modules/thirdParty/visa/Mission';
 
 export const recharts2Configs = [
+  {
+    path: '/Hr/Visa/Mission',
+    element: <Mission/>,
+  },
   {
     path: '/Hr/Visa/Travel',
     element: <LineChart />,

@@ -236,6 +236,12 @@ const routesConfig = [
         type: "collapse",
         children: [
           {
+            id: "Add Mission",
+            title: "Mission",
+            messageId: "sidebar.general.Mission",
+            url: "/Hr/Visa/Mission",
+          },
+          {
             id: "Travel",
             title: "Travel",
             messageId: "sidebar.general.travel",

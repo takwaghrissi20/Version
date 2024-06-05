@@ -15,6 +15,7 @@ import {
 } from '../../index.styled'
 import ConfirmationModal from '../../../../../@crema/components/AppConfirmationModal';
 import IntlMessages from '../../../../../@crema/helpers/IntlMessages';
+import { useNavigate } from "react-router-dom";
 
 const AllRecruitementStaff = ({allrecruitementbelow,findIdData,id,  findId, setFindIdData,open,handleInterview}) => {
 
@@ -23,19 +24,87 @@ const AllRecruitementStaff = ({allrecruitementbelow,findIdData,id,  findId, setF
   const [isEditRecruitement, onEditRecruitement] = useState(false);
   const [isDelteRecruitement, onDeleteRecruitement] = useState(false);
 
+  const navigate = useNavigate();
+  // const handleAddRecruitementOpen = () => {
 
+  //   onViewRecruitement(true);
+  // };
   const handleAddRecruitementOpen = () => {
+    navigate(`/Hr/Recruitement&Interview/Recruitement/View/codeJob=${id}`, {
+      state: {
+        id:id,
+        dep:findIdData?.dep,
+        idemp:findIdData?.idemp,
+        requestName:findIdData?.requestName,
+        position:findIdData?.position,
+        DesiredDate:findIdData?.desiredDate,
+        projectName:findIdData?.projectName,
+        projRef:findIdData?.projRef,
+        type:findIdData?.type,
+        affectedTo:findIdData?.affectedTo,
+        requestedDicipline:findIdData?.requestedDicipline,
+        Level:findIdData?.experience,
+        Numbervacancies:findIdData?.totalNumber,
+        certif:findIdData?.certif,
+        nbExperience:findIdData?.nbExperience,
+        recruttrequestDate:findIdData?.recruttrequestDate,
+        projCode:findIdData?.projRef,
+        type:findIdData?.type,
+        exDep:findIdData?.exDep,
+        oDep:findIdData?.oDep,
+        comentPlaner:findIdData?.comentPlaner,
+        signatureBod:findIdData?.signatureBod,
+        signatureHod:findIdData?.signatureHod,
+      
 
-    onViewRecruitement(true);
+      }
+
+    });
+    const   handleEditRecruitementOpen= () => {
+      navigate(`/Hr/Recruitement&Interview/Recruitement/Update/codeJob=${id}`, {
+        state: {
+          id:id,
+          dep:findIdData?.dep,
+          idemp:findIdData?.idemp,
+          requestName:findIdData?.requestName,
+          position:findIdData?.position,
+          DesiredDate:findIdData?.desiredDate,
+          projectName:findIdData?.projectName,
+          projRef:findIdData?.projRef,
+          type:findIdData?.type,
+          affectedTo:findIdData?.affectedTo,
+          requestedDicipline:findIdData?.requestedDicipline,
+          Level:findIdData?.experience,
+          Numbervacancies:findIdData?.totalNumber,
+          certif:findIdData?.certif,
+          nbExperience:findIdData?.nbExperience,
+          recruttrequestDate:findIdData?.recruttrequestDate,
+          projCode:findIdData?.projRef,
+          exDep:findIdData?.exDep,
+          oDep:findIdData?.oDep,
+          comentPlaner:findIdData?.comentPlaner,
+          signatureBod:findIdData?.signatureBod,
+          signatureHod:findIdData?.signatureHod,
+          
+  
+        }
+  
+      });
+    }
+  
+
+
+    
+    //onViewRecruitement(true);
   };
   const handleAddRecruitementClose = () => {
     setFindIdData(null);
     onViewRecruitement(false);
   };
 
-  const handleEditRecruitementOpen = () => {
-    onEditRecruitement(true);
-  };
+  // const handleEditRecruitementOpen = () => {
+  //   onEditRecruitement(true);
+  // };
 
   const handleEditRecruitementClose = () => {
     onEditRecruitement(false);
@@ -45,7 +114,37 @@ const AllRecruitementStaff = ({allrecruitementbelow,findIdData,id,  findId, setF
 
     onDeleteRecruitement(true);
   };
+  const   handleEditRecruitementOpen= () => {
+    navigate(`/Hr/Recruitement&Interview/Recruitement/Update/codeJob=${id}`, {
+      state: {
+        id:id,
+        dep:findIdData?.dep,
+        idemp:findIdData?.idemp,
+        requestName:findIdData?.requestName,
+        position:findIdData?.position,
+        DesiredDate:findIdData?.desiredDate,
+        projectName:findIdData?.projectName,
+        projRef:findIdData?.projRef,
+        type:findIdData?.type,
+        affectedTo:findIdData?.affectedTo,
+        requestedDicipline:findIdData?.requestedDicipline,
+        Level:findIdData?.experience,
+        Numbervacancies:findIdData?.totalNumber,
+        certif:findIdData?.certif,
+        nbExperience:findIdData?.nbExperience,
+        recruttrequestDate:findIdData?.recruttrequestDate,
+        projCode:findIdData?.projRef,
+        exDep:findIdData?.exDep,
+        oDep:findIdData?.oDep,
+        comentPlaner:findIdData?.comentPlaner,
+        signatureBod:findIdData?.signatureBod,
+        signatureHod:findIdData?.signatureHod,
+        
 
+      }
+
+    });
+  }
   const DeleteRecruitement = async () => {
  
     try {
@@ -84,8 +183,8 @@ const AllRecruitementStaff = ({allrecruitementbelow,findIdData,id,  findId, setF
 }
 
   const items = [
-    { key: 1, label: <span style={{ fontSize: 14 }}>View </span>, onClick: handleAddRecruitementOpen },
-    { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditRecruitementOpen },
+    { key: 1, label: <span style={{ fontSize: 14 }}>View </span>, onClick:handleAddRecruitementOpen },
+    { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick:  handleEditRecruitementOpen },
     { key: 2, label: <span style={{ fontSize: 14 }}>Delete</span> ,onClick: handleDeleteRecruitement},
     { key: 3, label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, onClick: handleInterview },
   ];
@@ -157,7 +256,7 @@ const AllRecruitementStaff = ({allrecruitementbelow,findIdData,id,  findId, setF
               <MoreOutlined />
             </Button>
           </Dropdown>
-            {isViewRecruitement && (
+            {/* {isViewRecruitement && (
             <RecruitementView
               isViewRecruitement={isViewRecruitement}
               handleAddContactClose={handleAddRecruitementClose}
@@ -202,7 +301,7 @@ const AllRecruitementStaff = ({allrecruitementbelow,findIdData,id,  findId, setF
               nbExperience={findIdData?.nbExperience}
             
             />
-          )}
+          )} */}
   
         </div>
   

@@ -22,7 +22,7 @@ import IntlMessages from '../../../@crema/helpers/IntlMessages';
 const TabsInterviewSheetConstructionId = ({isSaveDisabled,JobCode,totalNumber,level,projectName,position }) => {
   const location = useLocation();
 
-  console.log("isSaveDisabled1",isSaveDisabled)
+
   const experienceRequired = location.state ? location.state.experience : null;
   const [isConfirmationInterview, setIsConfirmationInterview] = useState(false);
   const [showAlertError, setShowAlertError] = useState(false);
@@ -118,6 +118,7 @@ const TabsInterviewSheetConstructionId = ({isSaveDisabled,JobCode,totalNumber,le
   const [dailylev5Error, setDailylev5Error] = useState('');
   const [lev5SalaryMax, setLev5SalaryMax] = useState(0);
   const [lev5dailyRateMax, setLev5DailyRateMax] = useState(0);
+ 
 
   const situation = [
     { st: 'Single' },
@@ -205,35 +206,7 @@ const TabsInterviewSheetConstructionId = ({isSaveDisabled,JobCode,totalNumber,le
     { skill: 'Excellent' },
 
   ];
-  const fetchData = async () => {
-    try {
-      const endPoint =
-        process.env.NODE_ENV === "development"
-          ? "https://dev-gateway.gets-company.com"
-          : "";
-
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/last`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('La requête a échoué avec le code ' + response.status);
-      }
-
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        throw new TypeError("La réponse n'est pas au format JSON");
-      }
-      const data = await response.json();
-      setDatalastIdinterview(data?.interviewCode)
-
-    } catch (error) {
-      console.error('Erreur lors de la récupération des données:', error);
-    }
-  };
+ 
   const fetchMaxValues = async () => {
     try {
       const endPoint =
@@ -257,38 +230,54 @@ const TabsInterviewSheetConstructionId = ({isSaveDisabled,JobCode,totalNumber,le
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
-      console.log("datttaajjjjj",data)
-     if (level === 'lev1') {
-      setOfficeSalaryMax(data?.[0]?.lev1);
-  
-      setDailyRateMax(data?.[0]?.dailyrateJun);
-      setTotalMax(data?.[0]?.totalJun);
-     
-     
-      setTotalMax(data?.[0]?.totalJun);
-    } else if (level === 'lev2') {
- 
-    } else if (level === 'lev3') {
-   
-    }
-    else if (level === 'lev4') {
-    
-    }
-    else if (level === 'lev5') {
+      console.log("ratteeee",level)
+      // case 'Level I':
+      //   return '1-5 years';
+      // case 'Level II':
+      //   return '7-8 years';
+      // case 'levelIII':
+      //   return 'More than 10 years';
+      // case 'LEVEL IV':
+      //   return 'More than 10 years';
+      // case 'Level V':
+   // Normalize the level variable
+   const normalizedLevel = level.trim();
+   console.log("Normalized level:", normalizedLevel);
 
-    }
-   
-   
+   // Additional logic based on normalized level
+   switch (normalizedLevel) {
+     case 'Level I':
+       console.log("testtttt",data?.[0]?.lev1);
+       setLev1SalaryMax(data?.[0]?.lev1);
+      //  setLev1DailyRateMax
+      //  setDailyRateMax(data?.[0]?.dailyrateJun);
+       //setTotalMax(data?.[0]?.totalJun);
+  
+
+
+       break;
+     case 'Level II':
+       console.log("Level II");
+       break;
+     case 'Level III':
+       console.log("Level III");
+       break;
+     case 'Level IV':
+       console.log("Level IV");
+       break;
+     case 'Level V':
+       console.log("Level V");
+       break;
+     default:
+       console.log("Unknown level");
+   }
+    
 
     } catch (error) {
       console.error('Erreur lors de la récupération des données Salary:', error);
     }
   };
-  useEffect(() => {
-    fetchData()
-    fetchMaxValues()
 
-  }, []);
   const NewLastInterview = datalastIdinterview + 1
   //Save InterViewSheet
   const navigate = useNavigate();
@@ -389,9 +378,8 @@ const TabsInterviewSheetConstructionId = ({isSaveDisabled,JobCode,totalNumber,le
       }
       if (response.ok) {
         const data = await response.json();
-        console.log("Saeeeeee", data)
         setDataInterview(data)
-       // navigate(-1);
+     
       }
 
     } catch (error) {
@@ -551,7 +539,33 @@ console.log(" setIsNoCheckeddddFinnnaaaaaaaaaaaal",CheckedFinalGotest2)
       setIsNoCheckedHRDecision(true);
     }
   }
+  
+  useEffect(() => {
 
+    fetchMaxValues()
+
+  }, []);
+    const handleSalaryChange = (e) => { 
+    //   const value = e.target.value;
+    //   setProposedSalary(value);
+    //   if (parseFloat(value) > officeSalaryMax) {
+    //     setSalaryError(`Proposed Office Salary exceeds the maximum allowed value of ${officeSalaryMax}`);   
+    //   }else
+    //   setSalaryError("");   
+    // };
+    // const handleDailyChange= (e) => {
+    //   const value = e.target.value;
+    //   setProposedDailyRate(value);
+    //   if (parseFloat(value) > dailyRateMax) {
+    //     setDailyError(`Proposed Daily Rate exceeds the maximum allowed value of ${dailyRateMax}`);
+       
+    //   }
+    //   else{
+    //     setDailyError("")
+    //   }
+    // };
+    }
+  
  
   return (
     <>
@@ -1197,7 +1211,9 @@ console.log(" setIsNoCheckeddddFinnnaaaaaaaaaaaal",CheckedFinalGotest2)
                 </StyledInput>
               </Col>
               <Col xs={24} md={24}>
-                <Form.Item label='Comments' name='Comments'
+                <Form.Item 
+                label='Comments' name='Comments'
+  
                 
                 rules={[
                   { required: true, message: 'Please input your Comments!' },
@@ -1206,6 +1222,7 @@ console.log(" setIsNoCheckeddddFinnnaaaaaaaaaaaal",CheckedFinalGotest2)
                 
                 >
                   <Input
+                    className='InputComment'
                     value={comment}
                     onChange={(e) => setComments(e.target.value)}
 
@@ -1426,9 +1443,9 @@ console.log(" setIsNoCheckeddddFinnnaaaaaaaaaaaal",CheckedFinalGotest2)
                               
                 >
                   <Input
-                    value={proposedSalary}
-                    onChange={(e) => setProposedSalary(e.target.value)}
-
+                   value={proposedSalary}
+                   onChange={handleSalaryChange}
+             
                     placeholder='Proposed Salary' />
                 </Form.Item>
               </Col>
@@ -1471,6 +1488,7 @@ console.log(" setIsNoCheckeddddFinnnaaaaaaaaaaaal",CheckedFinalGotest2)
                  
                 ]}>
                   <Input
+                   className='InputComment'
                     value={commentHr}
                     onChange={(e) => setCommentsHr(e.target.value)}
 

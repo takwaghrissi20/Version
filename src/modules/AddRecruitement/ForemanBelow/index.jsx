@@ -11,8 +11,10 @@ import {
 import IntlMessages from '../../../@crema/helpers/IntlMessages';
 import dayjs from 'dayjs';
 import RecruitementRequest from "../../Model/RecruitementRequet"
-
+import ConfirmationModal from '../../../@crema/components/AppConfirmationModal';
+import { useNavigate } from 'react-router-dom';
 const AddRecruitementForemanBelow = () => {
+  const navigate = useNavigate();
   const [requestorDate, setRequestorDate] = useState("");
   const [recruitementDate, setRecruitementDate] = useState("");
   const [desiredrecruitementDate, setDesiredrecruitementDate] = useState("");
@@ -33,10 +35,15 @@ const AddRecruitementForemanBelow = () => {
   const [dep, setDep] = useState('');
   const [isOkHead, setIsOkHead] = useState(false);
   const [isNOHead, setIsNOHead] = useState(false);
+  const [isExDep, setIsExDep] = useState(false);
+  const [isOrDep, setIsOrDep] = useState(false);
   const [isOkBod, setIsOkBod] = useState(false);
   const [isNoBod, setIsNoBod] = useState(false);
   const [isoriginDep, setIsoriginDep] = useState(false);
   const [isExtraDep, setIsExtraDep] = useState(false);
+  const [isSave, onSave] = useState(false);
+  const [isCancel, onCancel] = useState(false);
+  
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [type,setType]=useState("Foreman & Below")
   const [form] = Form.useForm();
@@ -129,6 +136,11 @@ const AddRecruitementForemanBelow = () => {
     setSelectedLevel(value);
     setDesiredExperience(calculateDesiredExperience(value));
   };
+  const   handlePositionRecruitement = (value) => {
+       setPositionRecruitement(value)
+  
+  };
+
   const handleAsper = (value) => {
     setAsper(value)
   };
@@ -207,7 +219,18 @@ const AddRecruitementForemanBelow = () => {
     setIsOkHead(e.target.checked)
   
   }
-
+  function ExDep(e) {
+    console.log(`checkedHead = ${e.target.checked}`);
+    setIsExDep(e.target.checked)
+  
+  }
+  function OrDep(e) {
+    console.log(`checkedHead = ${e.target.checked}`);
+    setIsOrDep(e.target.checked)
+  
+  }
+  
+ 
   function NoHead(e) {
     console.log(`NoHead = ${e.target.checked}`);
     setIsNOHead(e.target.checked)
@@ -224,76 +247,105 @@ const AddRecruitementForemanBelow = () => {
     setIsNoBod(e.target.checked)
     
   }
-//   const Saverecrutement = async () => {
-//     try {
-//       const params = new URLSearchParams({ name: projname, id: id });
+  const handleSaveRecruitement = () => {
+    onSave(true);
+  };
+  const handleCancelRecruitement = () => {
+    onCancel(true);
+  };
+///AAAAAAAAAAAAAAAAAAAAAAAAA
+const Saverecrutement = async () => {
+  try {
+    
+    const params = new URLSearchParams({ name:selectedProject, id:profile?.getsId });
+    const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
 
-//       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
+      method: 'POST',
+      headers: {
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Allow-Origin": "*",
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+      },
+      body: JSON.stringify({
 
-//         method: 'POST',
-//         headers: {
-//           "Access-Control-Allow-Headers": "Content-Type",
-//           "Access-Control-Allow-Origin": "*",
-//           'Content-Type': 'application/json',
-//           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
-//         },
-//         body: JSON.stringify({
-//           //recruttrequestDate: DateRecruitement,
-//           requestName: name,
-//           approuvedRecrutRequestNumber: null,
-//           //jobCode: JobCode,
-//           certif: certif,
-//           experience: level,
-//           position: position,
-//           projectName: projname,
-//           recruttrequestDate: DateRequestor,
-//           requestedDicipline: positionRecruitement,
-//           totalNumber: vacancie,
-//           type: "For Foreman & Below",
-//           oDep: asper,
-//           // exDep: "",
-//           // status:"0",
-//           nbExperience: desiredExperience,
-//           projRef: projCode,
-//           bod: isOkBod,
-//           idemp: id,
-//           desiredDate: DateDesiredRecruitement,
-//           affectedTo: affectedTo
+        //recruttrequestDate: DateRecruitement,
+        requestName: profile?.name,
+        approuvedRecrutRequestNumber: null,
+        //jobCode: JobCode,
+        certif: profile?.certif,
+        experience: selectedLevel,
+        type:type,
+        position:positionRecruitement,
+        projectName:selectedProject,
+        recruttrequestDate:requestorDate,
+        requestedDicipline:profile?.position,
+         totalNumber:vacancie,
+         oDep:isOrDep,
+         exDep:isExDep,
+        // type: "For Foreman & Below",
+        // oDep: asper,
+        // // exDep: "",
+        // // status:"0",
+         nbExperience: desiredExperience,
+          projRef:projectCode,
+        // bod: isOkBod,
+         idemp:profile?.getsId,
+         desiredDate:desiredrecruitementDate,
+        affectedTo:"Site",
+        signatureHod:isOkHead,
+        signatureBod:isOkBod
 
-//         })
-//       });
+      
 
-//       if (!response.ok) {
-//         throw new Error('Network response was not ok');
-//         setShowAlertError(true)
-//       }
-//       if (response.ok) {
+      })
+    });
 
-//         const responseData = await response.json();
-//         setShowAlert(true)
-//         alert("Request Success and send Email");
-//         const email = 'rihemhassounanjim90@gmail.com';
-//         const secondApiResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/bodNotif?email=${encodeURIComponent(email)}`, {
-//           method: 'POST',
-//         });
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    if (response.ok) {
 
-//         if (secondApiResponse.ok) {
-//           const secondResponseData = await secondApiResponse.json();
-//         } else {
-//           console.error("Failed to fetch data from the second API.");
-//         }
+      const responseData = await response.json();
+      alert("Request Success and send Email");
+      isSave(false)
+      const email = 'rihemhassounanjim90@gmail.com';
+      const secondApiResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/bodNotif?email=${encodeURIComponent(email)}`, {
+        method: 'POST',
+      });
 
-//         alert('Recruitment request saved successfully.');
-        
-//       }
+      if (secondApiResponse.ok) {
+        const secondResponseData = await secondApiResponse.json();
+      } else {
+        console.error("Failed to fetch data from the second API.");
+      }
 
-//     }
+      // alert('Recruitment request saved successfully.');
+      
+    }
+    // Handle responseData if needed
+  } catch (error) {
+    console.error("Erreur lors de la récupération du Id :", error);
+  }
+};
 
-//  catch (error) {
-//       console.error("Erreur lors de la récupération du recrutement:", error);
-//     }
-//   };
 
+
+
+
+
+
+
+
+
+
+
+
+const goBack = () => {
+  navigate(-1)
+
+
+}
  
   const BeforeSaveRecruitement = () => {
     //setIsModalVisible(true)
@@ -302,12 +354,13 @@ const AddRecruitementForemanBelow = () => {
 
     ]).then(values => {
        alert("all fields are complete.");
-       setIsModalVisible(true)
+       onSave(true)
+      //  setIsModalVisible(true)
 
 
     }).catch(errorInfo => {
       alert("Please complete all fields");
-      setIsModalVisible(false);
+      // setIsModalVisible(false);
 
     });
   };
@@ -353,12 +406,11 @@ console.log("isNOHead",isOkHead)
                     { required: true, message: 'Please input your Recruitement Date!' },
                   ]}
 
-
                 >{/*Date et temp de Interview bu Hr*/}
                   <DatePicker
                     //defaultValue={new Date()} 
-                    defaultValue={dayjs(recruitementDate, '2024-01-01')}
-
+                    // defaultValue={dayjs(recruitementDate, '2024-01-01')}
+                    placeholder='YYYY-MM-DD'
                     style={{ width: "100%", height: "30px" }}
                     onChange={(value) => setRecruitementDate(dayjs(value).format('YYYY-MM-DD'))}
                   />
@@ -383,7 +435,6 @@ console.log("isNOHead",isOkHead)
                 <Form.Item label='ID Number ' name='id'>
                   <Input
                     placeholder={profile?.getsId}
-
                     readOnly={true}
                   />
                 </Form.Item>
@@ -405,7 +456,7 @@ console.log("isNOHead",isOkHead)
                 </Form.Item>
               </Col>
               <Col xs={24} md={12}>
-                <Form.Item label='Requestor Date' name='DateRequestor'
+                <Form.Item label='Request Date' name='DateRequestor'
                   rules={[
                     { required: true, message: 'Please input your Requestor Date!' },
                   ]}
@@ -414,7 +465,8 @@ console.log("isNOHead",isOkHead)
                 >{/*Date et temp de Interview bu Hr*/}
                   <DatePicker
                     //defaultValue={new Date()} 
-                    defaultValue={dayjs(requestorDate, '2024-01-01')}
+                    placeholder='YYYY-MM-DD'
+                    //defaultValue={dayjs(requestorDate, '2024-01-01')}
 
                     style={{ width: "100%", height: "30px" }}
                     onChange={(value) => setRequestorDate(dayjs(value).format('YYYY-MM-DD'))}
@@ -491,7 +543,9 @@ console.log("isNOHead",isOkHead)
           <StyledShadowWrapper>
             <AppRowContainer>
               <Col xs={24} md={12}>
-                <Form.Item label='Desired Date of Recruitment' name='DateDesiredRecruitement'
+                <Form.Item 
+                label='Desired Date of Recruitment'
+                 name='DateDesiredRecruitement'
                   rules={[
                     { required: true, message: 'Please input your Desired Date of Recruitment!' },
                   ]}
@@ -500,10 +554,11 @@ console.log("isNOHead",isOkHead)
                 >{/*Date et temp de Interview bu Hr*/}
                   <DatePicker
                     //defaultValue={new Date()} 
-                    defaultValue={dayjs(desiredrecruitementDate, '2024-01-01')}
+                    // defaultValue={dayjs(desiredrecruitementDate, '2024-01-01')}
+                    placeholder="YYYY-MM-DD"
 
                     style={{ width: "100%", height: "30px" }}
-                    onChange={(value) => setDesiredrecruitementDate(dayjs(value).format('YYYY/MM/DD'))}
+                    onChange={(value) => setDesiredrecruitementDate(dayjs(value).format('YYYY-MM-DD'))}
                   />
 
                 </Form.Item>
@@ -513,15 +568,13 @@ console.log("isNOHead",isOkHead)
               <Col xs={24} md={12}>
                 <Form.Item label='Position' name='Position'
                    onChange={(value) =>setPositionRecruitement(value)}
-
                   rules={[
-                    { required: true, message: 'Please input your Position!' },
-
-                  ]} >
+                    { required: true, message: 'Please input your Position!' }]}>
                   <Select
                     placeholder='Select Position'
                    value={positionRecruitement}
-                    onChange={(value) => console.log('Select Position:', value)}
+                   onChange={handlePositionRecruitement}
+              
 
                   >
 
@@ -616,84 +669,31 @@ console.log("isNOHead",isOkHead)
       <Col xs={24} md={18}>
         <StyledShadowWrapper>
           <AppRowContainer>
-          {/* <Col xs={24} md={12}>
-          <StyledInput>
-                <Form.Item
-                  label='As per : '
-                  name='Asper'
-                  // rules={[
-                  //   { required: true, message: 'Please Check your  Executive Directors Approval!' },
 
-                  // ]}
->
-                  <Checkbox  checked={isOkBod} onChange={OkBOD}>
-               
-                    <IntlMessages id='accepted.BOD' />
+        
+                  <Col xs={24} md={24}>
+                <StyledInput>
+                <Form.Item
+                  label='As per :'
+                  name='As per' 
+                  
+                       
+                  >
+                  <Checkbox  checked={isExDep} onChange={ExDep}>
+          
+                    <IntlMessages id='Exdep.planner' />
                   </Checkbox>
-                  <Checkbox checked={isNoBod} onClick={NoBOD}>
-                    <IntlMessages id='Refuse.BOD' />
+                  <Checkbox checked={isOrDep} onClick={OrDep}>
+                    <IntlMessages id='Ordep.planner' />
                   </Checkbox>
                   </Form.Item>
                 </StyledInput>
-              </Col> */}
+              </Col>
 
 
-
-          
-          <Col xs={24} md={12}>
-                <Form.Item
-                  label='As per : '
-                  name='Asper'
-               
-
-                  rules={[
-                    { required: true, message: 'Please Select your Select As per :!' },
-
-                  ]}
-                >
-                   <Select
-                    placeholder='As Per'
-                    onChange={handleAsper }
-                    value={asper}
+         
                 
-                  >
-                    { AsPer.map((p, index) => (
-                      <Select.Option key={index} value={p.per}>
-                        {p.per}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                 
-
-                 
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={24}
-
-              >
-                <Form.Item
-                  label='Planner Comments'
-                  name='PlannerComments'
-                 
-                 
-               
-
-                  rules={[
-                    { required: true, message: 'Please Select your Select Planner Comments!' },
-
-                  ]}
-                >
-                <Input
-                style={{paddingTop:"1rem",paddingBottom:"1rem"}}
-                    placeholder="Planner Comments"
-                    value={commentplanner}
-                    onChange={(e) => setCommentPlanner(e.target.value)}
-                 
-                    />
-
-                 
-                </Form.Item>
-              </Col>
+         
               
       
 
@@ -705,7 +705,7 @@ console.log("isNOHead",isOkHead)
     
     
     
-   :null }   
+     :null }   
         <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
        <Col xs={24} md={6}>
         <Typography.Title level={5}> Head of Department Inputs</Typography.Title>
@@ -789,8 +789,9 @@ console.log("isNOHead",isOkHead)
       <Space
         size={15}
         style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
+       
       >
-        <Button >Cancel</Button>
+        <Button  onClick={handleCancelRecruitement} >Cancel</Button>
         <Button
         onClick={BeforeSaveRecruitement}
 
@@ -835,7 +836,27 @@ console.log("isNOHead",isOkHead)
 
 
      </RecruitementRequest>
-  
+     {isSave? (
+        <ConfirmationModal
+          open={isSave}
+          paragraph={'Are you sure you want to Save Recruitement?'}
+          onDeny={onSave}
+          onConfirm={Saverecrutement}
+          modalTitle="Save Recruitement "
+          handleInterview={handleSaveRecruitement}
+        />
+      ) : null}
+         {isCancel? (
+        <ConfirmationModal
+          open={isCancel}
+          paragraph={'Are you sure you canceled All data is lost?'}
+          onDeny={onCancel}
+          onConfirm={goBack}
+          modalTitle="Cancel Recruitement "
+          handleInterview={handleCancelRecruitement}
+        />
+      ) : null}
+
 
      </>
   

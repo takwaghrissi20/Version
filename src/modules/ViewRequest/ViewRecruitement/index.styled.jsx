@@ -4,7 +4,13 @@ import styled from 'styled-components';
 import { Button,Form } from 'antd';
 
 
-//Construction Staff 
+export const StyledInput = styled.div`
+  position: relative;
+
+  & label {
+    margin-bottom: 10px;
+  }
+`;
 
 export const StyledScrumBoardDetailTitle = styled.span`
   cursor: pointer;

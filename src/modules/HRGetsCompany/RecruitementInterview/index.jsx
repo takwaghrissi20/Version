@@ -97,7 +97,7 @@ const RecruitementInterview = () => {
         setAllrecruitementabove(resulttypebelove)
 
         //Formen
-        const resulttypebelow = responseDataRecruitement.filter((p) => p.type === "For Foreman & Below");
+        const resulttypebelow = responseDataRecruitement.filter((p) => p.type === "Foreman & Below");
         setAllrecruitementbelow(resulttypebelow);
         ////////////////////////Interview Construction //////////////////
         const responseInterviewConstruction = await fetch("https://dev-gateway.gets-company.com/api/v1/intc/list", {

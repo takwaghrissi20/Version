@@ -7,6 +7,9 @@ const RecruitementInterview  = React.lazy(() =>
 const ViewRecruitementInterview  = React.lazy(() =>
   import('../../../modules/ViewRequest/ViewRecruitement'),
 );
+const EditRecruitementInterview  = React.lazy(() =>
+  import('../../../modules/ViewRequest/EditRecruitement')
+);
 const AddRecruitement = React.lazy(() =>
   import('../../../modules/AddRecruitement'),
 );
@@ -121,6 +124,12 @@ export const ecommerceConfig = [
     path: '/Hr/Recruitement&Interview/Recruitement/View/:id',
     element: < ViewRecruitementInterview />,
   },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/Hr/Recruitement&Interview/Recruitement/Update/:id',
+    element: < EditRecruitementInterview />,
+  },
+  
  
   {
     permittedRole: RoutePermittedRole.User,

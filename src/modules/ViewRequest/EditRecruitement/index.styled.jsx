@@ -1,10 +1,20 @@
 
 import AppCard from '../../../@crema/components/AppCard';
 import styled from 'styled-components';
-import { Button,Form } from 'antd';
+import { Button,Form,DatePicker} from 'antd';
 
+export const StyledScrumBoardDatePicker = styled(DatePicker)`
+  position: relative;
+  width: 100%;
+  height:2rem
+`;
+export const StyledInput = styled.div`
+  position: relative;
 
-//Construction Staff 
+  & label {
+    margin-bottom: 10px;
+  }
+`;
 
 export const StyledScrumBoardDetailTitle = styled.span`
   cursor: pointer;

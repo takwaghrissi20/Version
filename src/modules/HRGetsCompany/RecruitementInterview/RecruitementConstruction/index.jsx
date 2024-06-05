@@ -34,7 +34,7 @@ const RecruitementConstruction = ({ allrecruitementbelow }) => {
   const fetchRecruitementbelow = async () => {
     try {
 
-      const url = `https://dev-gateway.gets-company.com/api/v1/re/getRecByType?size=${pageSize}&page=${currentPage}&type=For Foreman & Below&sortBy=desiredDate`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/re/getRecByType?size=${pageSize}&page=${currentPage}&type=Foreman & Below&sortBy=desiredDate`;
       const response = await fetch(url);
      
 

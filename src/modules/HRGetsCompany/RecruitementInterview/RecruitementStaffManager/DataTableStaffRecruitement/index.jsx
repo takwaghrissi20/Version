@@ -23,6 +23,7 @@ const AllRecruitementStaff = ({allrecruitementabove,
     setFindIdData
     ,open,
     handleInterview}) => {
+      console.log(" findIdData", findIdData)
 
   //const [findIdData, setFindIdData] = useState(null);
   const [isViewRecruitement, onViewRecruitement] = useState(false);
@@ -34,6 +35,34 @@ const AllRecruitementStaff = ({allrecruitementabove,
     navigate(`/Hr/Recruitement&Interview/Recruitement/View/codeJob=${id}`, {
       state: {
         id:id,
+        dep:findIdData?.dep,
+        idemp:findIdData?.idemp,
+        requestName:findIdData?.requestName,
+        position:findIdData?.position,
+        DesiredDate:findIdData?.desiredDate,
+        projectName:findIdData?.projectName,
+        projRef:findIdData?.projRef,
+        type:findIdData?.type,
+        affectedTo:findIdData?.affectedTo,
+        requestedDicipline:findIdData?.requestedDicipline,
+        Level:findIdData?.experience,
+        Numbervacancies:findIdData?.totalNumber,
+        certif:findIdData?.certif,
+        nbExperience:findIdData?.nbExperience,
+        recruttrequestDate:findIdData?.recruttrequestDate,
+        projCode:findIdData?.projRef,
+        type:findIdData?.type,
+        exDep:findIdData?.exDep,
+        oDep:findIdData?.oDep,
+        comentPlaner:findIdData?.comentPlaner,
+        signatureBod:findIdData?.signatureBod,
+        signatureHod:findIdData?.signatureHod,
+      
+
+
+
+
+
       
 
       }
@@ -51,9 +80,38 @@ const AllRecruitementStaff = ({allrecruitementabove,
     onViewRecruitement(false);
   };
 
-  const handleEditRecruitementOpen = () => {
-    onEditRecruitement(true);
-  };
+  const   handleEditRecruitementOpen= () => {
+    navigate(`/Hr/Recruitement&Interview/Recruitement/Update/codeJob=${id}`, {
+      state: {
+        id:id,
+        dep:findIdData?.dep,
+        idemp:findIdData?.idemp,
+        requestName:findIdData?.requestName,
+        position:findIdData?.position,
+        DesiredDate:findIdData?.desiredDate,
+        projectName:findIdData?.projectName,
+        projRef:findIdData?.projRef,
+        type:findIdData?.type,
+        affectedTo:findIdData?.affectedTo,
+        requestedDicipline:findIdData?.requestedDicipline,
+        Level:findIdData?.experience,
+        Numbervacancies:findIdData?.totalNumber,
+        certif:findIdData?.certif,
+        nbExperience:findIdData?.nbExperience,
+        recruttrequestDate:findIdData?.recruttrequestDate,
+        projCode:findIdData?.projRef,
+        exDep:findIdData?.exDep,
+        oDep:findIdData?.oDep,
+        comentPlaner:findIdData?.comentPlaner,
+        signatureBod:findIdData?.signatureBod,
+        signatureHod:findIdData?.signatureHod,
+        
+
+      }
+
+    });
+  }
+
 
   const handleEditRecruitementClose = () => {
     onEditRecruitement(false);
@@ -175,7 +233,7 @@ const AllRecruitementStaff = ({allrecruitementabove,
               <MoreOutlined />
             </Button>
           </Dropdown>
-            {isViewRecruitement && (
+            {/* {isViewRecruitement && (
             <RecruitementView
               isViewRecruitement={isViewRecruitement}
               handleAddContactClose={handleAddRecruitementClose}
@@ -220,7 +278,7 @@ const AllRecruitementStaff = ({allrecruitementabove,
               nbExperience={findIdData?.nbExperience}
             
             />
-          )}
+          )} */}
   
         </div>
   

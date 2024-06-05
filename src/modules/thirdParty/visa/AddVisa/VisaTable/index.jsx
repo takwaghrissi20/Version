@@ -154,7 +154,12 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
               <Select
                 placeholder="Visa Send"
                 value={editingData.requestSendVisa || 'Not SENT'}
-                style={{height:"25px",width:"90px",fontSize:"10px"}}
+                style={{height:"25px",width:"90px",
+                fontSize:"10px"
+                
+              
+              
+              }}
                 onChange={(value) => handleChange('requestSendVisa', value)}
                 
               >
@@ -176,7 +181,7 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
           render: (text, record) => (
             editingRow === record.id ? (
               <DatePicker
-              style={{height:"25px",width:"90px",fontSize:"10px"}}
+              style={{height:"25px",width:"90px"}}
                 value={editingData.dateVisa ? moment(editingData.dateVisa) : null}
                 onChange={(date, dateString) => handleChangeDate('dateVisa', dateString)}
               />

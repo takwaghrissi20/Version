@@ -84,6 +84,8 @@
   "Refuse.BOD": "No",
   "accepted.Head":"Yes",
   "Refuse.head":"No",
+  "Exdep.planner":"Extra Deployment Schedule ",
+  "Ordep.planner":"Original Deployment Schedule",
   "common.forgetPassword": "Forget Your Password?",
   "common.orLoginWith": "Or Login With",
   "common.dontHaveAccount": "Don't have account?",
@@ -141,8 +143,8 @@
   "sidebar.components": "Components",
   "sidebar.HrCoordinator": "Hr Coordinator", 
   "sidebar.components.ManpowerEvaluatinRecord":"Manpower Evaluation",
-  
   "sidebar.general.travel": "Travel",
+  "sidebar.general.Mission": "Add Mission",
   "sidebar.VisaHealth":"Visa & Health",
   "sidebar.general.VisaHealth":"Visa Summary",
   "sidebar.general.ADDVisaHealth":"Add Visa",

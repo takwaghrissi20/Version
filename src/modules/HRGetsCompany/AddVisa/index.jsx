@@ -117,12 +117,11 @@ const AddVisa = () => {
 
       }
     } catch (error) {
-      console.error("Erreur lors de la récupération du jobcode:", error);
+      console.error("Erreur lors de la récupération du employees:", error);
     }
   };
   const handleAddVisa = async () => {
     try {
-
       const endPoint =
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
@@ -130,22 +129,10 @@ const AddVisa = () => {
       const requestBody = {
 
        name:name ,
-      passportnumber:passportnumber ,    
+       passportnumber:passportnumber ,    
        position:position,
-       projName:selectedProject,
-       requestSendVisa,
-       dateVisa,
-       vCableReceive,
-       vCabledate:newvCabledate,
-       passportSubmit,
-       passportSubmitdate,
-       finalVisaReceive,
-       finalVisaReceiveDate,
+       projName:selectedProject,      
        toApplyForVisa:"true",
-       finishDate:finishDateVisa
-
-
-
 
 
 
@@ -180,24 +167,24 @@ const AddVisa = () => {
 
   };
   const handleCancel = () => {
-    setGetsId("");
-    setName("");
-    setPosition("");
-    setPassportnumber("");
-    setCountry("");
-    setSelectedProject("");
-    setProjects([]);
-    setSelectedRequestVisa("");
-    setNewDateRequestVisa(null);
-    setSelectedVisaCableReceive("");
-    setNewvCabledate(null);
-    setSelectedPASSPORTSUBMITTED("");
-    setPassportSubmitdate(null);
-    setSelectedFinalVisa("");
-    setFinalVisaReceiveDate(null);
-    setFinishDateVisa(null);
+    navigate(-1)
+    // setGetsId("");
+    // setName("");
+    // setPosition("");
+    // setPassportnumber("");
+    // setCountry("");
+    // setSelectedProject("");
+    // setProjects([]);
+    // setSelectedRequestVisa("");
+    // setNewDateRequestVisa(null);
+    // setSelectedVisaCableReceive("");
+    // setNewvCabledate(null);
+    // setSelectedPASSPORTSUBMITTED("");
+    // setPassportSubmitdate(null);
+    // setSelectedFinalVisa("");
+    // setFinalVisaReceiveDate(null);
+    // setFinishDateVisa(null);
   };
-
 
 
   useEffect(() => {
@@ -234,7 +221,7 @@ const AddVisa = () => {
             <Col xs={24} md={12}>
                 <Form.Item className='form-field'>
                   <FloatLabel name="GetsId">
-                    <span className='modallabel'>Gets Id :</span>
+                    <span className='modallabel'>Employee Id :</span>
                     <Input
                       className='Input'
                       placeholder="Gets Id"
@@ -370,7 +357,7 @@ const AddVisa = () => {
                     </FloatLabel>
                   </Form.Item>
                 </Col> */}
-                <Col xs={24} md={12}>
+                {/* <Col xs={24} md={12}>
                   <Form.Item className='form-field'>
                     <FloatLabel name="vCabledate">
                       <span className='modallabel'>Date Visa Cable :</span>
@@ -380,7 +367,7 @@ const AddVisa = () => {
                       />
                     </FloatLabel>
                   </Form.Item>
-                </Col>
+                </Col> */}
           
                 {/* <Col xs={24} md={12}>
                   <Form.Item className='form-field'>
@@ -448,7 +435,7 @@ const AddVisa = () => {
                   </Form.Item>
                 </Col> */}
 
-                <Col xs={24} md={12}> 
+                {/* <Col xs={24} md={12}> 
                   <Form.Item className='form-field'>
                     <FloatLabel
 
@@ -462,7 +449,7 @@ const AddVisa = () => {
                       />
                     </FloatLabel>
                   </Form.Item>
-                </Col>
+                </Col> */}
 
 
             </AppRowContainer>
@@ -477,7 +464,7 @@ const AddVisa = () => {
       >
         <Button onClick={handleCancel}>Cancel</Button>
         <Button   
-        
+      
         disabled={isSaveDisabled}
         onClick={handleAddVisa} type='primary' htmlType='submit'>
            Save 

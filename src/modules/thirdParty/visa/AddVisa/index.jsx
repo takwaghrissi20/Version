@@ -172,7 +172,7 @@ console.log("parents",employees)
           backgroundColor: "#2997ff", color: "white", paddingTop: "5px", paddingLeft: "2rem", paddingRight: "2rem",
           TextAlign: "center", fontsize: "30px"
         }}
-        onClick={handleOpenAddVisa }>
+        onClick={handleAddVisa }>
         Add Visa
       </Button>
       {/* <AddEmpVisa
