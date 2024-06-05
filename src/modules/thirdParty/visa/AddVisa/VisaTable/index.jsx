@@ -276,7 +276,7 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
       ),
       children: [
         {
-          title: 'Passport Submit To Embassy',
+          title: 'Passport Submit',
           dataIndex: 'passportSubmit',
           key: 'passportSubmit',
           width: 150,
@@ -300,7 +300,7 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
           ),
         },
         {
-          title: 'Date Passport Submit To Embassy',
+          title: 'Date Passport Submit',
           dataIndex: 'passportSubmitdate',
           key: 'passportSubmitdate',
           width: 150,
@@ -401,12 +401,13 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
           render: (text, record) => (
             editingRow === record.id ? (
               <Row gutter={16}>
-                <Col xs={24} sm={12}>
+                <Col xs={24} sm={8}>
                   <CiSaveUp1 className="iconeEditSave" onClick={() => saveEdit2(record.idVisa)}>
                     Save
                   </CiSaveUp1>
                 </Col>
-                <Col xs={24} sm={12}>
+                <div className='Separateur'></div>
+                <Col  xs={24} sm={8}>
                   <MdCancel className="iconeEdit" onClick={cancelEdit}>
                     Cancel
                   </MdCancel>
