@@ -500,7 +500,7 @@ export const StyledContactModal = styled(Modal)`
 
   & .ant-modal-body {
     padding: 0;
-     opacity:1;
+  
  
 
 

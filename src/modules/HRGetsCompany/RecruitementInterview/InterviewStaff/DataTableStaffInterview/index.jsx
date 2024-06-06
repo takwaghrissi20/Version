@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 //import { StyledOrderTable, StyledAction } from '../index.styled';
 /// change 
-import { StyledOrderTable} from '../../../../../styles/index.styled';
+import { StyledOrderTable } from '../../../../../styles/index.styled';
 
-import { Button,Alert} from 'antd';
+import { Button, Alert } from 'antd';
 import InterviewView from "../../../../Model/InterviewView"
+import FeddbackEmployeesStaff from "../../../../Model/FeddbackEmployeesStaff"
 import InterviewEdit from "../../../../Model/InterviewEdit"
-import { Dropdown,Select } from 'antd';
+import { Dropdown, Select } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import {
   StyledRecentPatientBadge,
@@ -17,13 +18,14 @@ import ConfirmationModal from '../../../../../@crema/components/AppConfirmationM
 import IntlMessages from '../../../../../@crema/helpers/IntlMessages';
 import { useNavigate } from "react-router-dom";
 
-const TableInterviewStaff = ({allinterviewStaffManagement,findIdData,id,  
-  findId, setFindIdData,open,handleInterview,codeJob, interviewCode}) => {
+const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
+  findId, setFindIdData, open, handleInterview, codeJob, interviewCode }) => {
   //const [findIdData, setFindIdData] = useState(null);
   const [isViewInterviewStaff, onViewInterviewStaff] = useState(false);
   const [isEditInterviewStaff, onEditInterviewStaff] = useState(false);
   const [isDelteInterviewStaff, onDeleteInterviewStaff] = useState(false);
   const [isAddEmployees, onAddEmployees] = useState(false);
+  const [isFeddbackEmployee, onFeddbackEmployee] = useState(false);
   const navigate = useNavigate();
 
   const handleAddInterviewStaffOpen = () => {
@@ -38,6 +40,14 @@ const TableInterviewStaff = ({allinterviewStaffManagement,findIdData,id,
     setFindIdData(null);
     onEditInterviewStaff(false);
   };
+  const handleFeedbackEmployeesClose = () => {
+    setFindIdData(null);
+    onFeddbackEmployee(false);
+  };
+  const handleFeedbackEmployeesOpen = () => {
+    console.log("Feddback Close")
+    onFeddbackEmployee(true);
+  };
 
   const handleEditInterviewStaffOpen = () => {
     onEditInterviewStaff(true);
@@ -51,24 +61,24 @@ const TableInterviewStaff = ({allinterviewStaffManagement,findIdData,id,
 
     onDeleteInterviewStaff(true);
   };
- 
+
   const handleAddEmployees = () => {
     onAddEmployees(true)
-  
+
     //navigate(`/HRGetsCompany/AddEmployees/AddEmployeesManagementStaff/reference=${id}`);
-  } 
+  }
   const AddEmployeesAfterConfirmation = async () => {
 
     navigate(`/HRGetsCompany/AddEmployees/AddEmployeesManagementStaff/reference=${interviewCode}`, {
       state: {
-        interviewCode:interviewCode,
-        fullName:findIdData?.fullName,
-        birthayDate:findIdData?.birthayDate,
-        familySituation:findIdData?.familySituation,
-        positionToBeFilled:findIdData?.positionToBeFilled,
-        department:findIdData?.department,
-        projname:findIdData?.projname,
-        agreedJoinedDate:findIdData?.agreedJoinedDate
+        interviewCode: interviewCode,
+        fullName: findIdData?.fullName,
+        birthayDate: findIdData?.birthayDate,
+        familySituation: findIdData?.familySituation,
+        positionToBeFilled: findIdData?.positionToBeFilled,
+        department: findIdData?.department,
+        projname: findIdData?.projname,
+        agreedJoinedDate: findIdData?.agreedJoinedDate
 
       }
 
@@ -79,42 +89,42 @@ const TableInterviewStaff = ({allinterviewStaffManagement,findIdData,id,
   const DeleteInterviewStaff = async () => {
 
     try {
-        const endPoint =
-            process.env.NODE_ENV === "development"
-                ? "https://dev-gateway.gets-company.com"
-                : "";
-                const response = await fetch(`${endPoint}/api/v1/int/delete?code=${codeJob}&id=${id}`, {
-                  method: 'DELETE',
-              });
+      const endPoint =
+        process.env.NODE_ENV === "development"
+          ? "https://dev-gateway.gets-company.com"
+          : "";
+      const response = await fetch(`${endPoint}/api/v1/int/delete?code=${codeJob}&id=${id}`, {
+        method: 'DELETE',
+      });
 
-        // Handle server response
-        if (!response.ok) {
-            console.log("Error: Response not OK", response.status);
-            alert("Error Not Interview Delete");
-            throw new Error('La requête a échoué avec le code ' + response.status);
-        }
+      // Handle server response
+      if (!response.ok) {
+        console.log("Error: Response not OK", response.status);
+        alert("Error Not Interview Delete");
+        throw new Error('La requête a échoué avec le code ' + response.status);
+      }
 
-        if (response.ok) {
-              
-            const data = await response.text();       
-            alert(data);
-            onDeleteInterviewStaff(false);
-        }
+      if (response.ok) {
 
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-            throw new TypeError("La réponse n'est pas au format JSON");
-        }
+        const data = await response.text();
+        alert(data);
+        onDeleteInterviewStaff(false);
+      }
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
+      }
     } catch (error) {
-        console.error('Erreur lors de la récupération des données:', error);
+      console.error('Erreur lors de la récupération des données:', error);
     }
-}
+  }
 
   const items = [
     { key: 1, label: <span style={{ fontSize: 14 }}>View </span>, onClick: handleAddInterviewStaffOpen },
     { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditInterviewStaffOpen },
-    { key: 2, label: <span style={{ fontSize: 14 }}>Delete</span> ,onClick: handleDeleteInterviewStaff},
-    
+    { key: 2, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteInterviewStaff },
+
   ];
   const handleFeedbackChange = (e, record) => {
     const updatedData = data.map(item => {
@@ -125,17 +135,19 @@ const TableInterviewStaff = ({allinterviewStaffManagement,findIdData,id,
     });
     setData(updatedData);
   };
+  console.log("hhhhh",isFeddbackEmployee)
+  
 
   const columns = [
     {
       title: 'Reference',
       dataIndex: 'interviewCode',
       key: 'interviewCode',
-    
+
     },
     {
       title: 'Evalutor Name ',
-      dataIndex: 'fullName',//????????????????//
+      dataIndex: 'fullName',
       key: 'fullName',
     },
     {
@@ -158,8 +170,8 @@ const TableInterviewStaff = ({allinterviewStaffManagement,findIdData,id,
     //   dataIndex: 'projname',
     //   key: 'projname',
     // },
-  
-   
+
+
     // {
     //   title: 'Expected Join Date',
     //   dataIndex: 'expectedJoinDate',
@@ -175,13 +187,13 @@ const TableInterviewStaff = ({allinterviewStaffManagement,findIdData,id,
       dataIndex: 'notif',
       key: 'notif',
       render: (text, record) => (
-        record.notif === 2 ? (
+        (record.notif === 2 || record.notif === 3) ? (
           <StyledRecentPatientBadge
             style={{
               color: record.color,
-              backgroundColor:"red",
-              color:"white",
-              fontFamily:"inherit"
+              backgroundColor: "red",
+              color: "white",
+              fontFamily: "inherit"
             }}
           >
             Accepte
@@ -190,9 +202,9 @@ const TableInterviewStaff = ({allinterviewStaffManagement,findIdData,id,
           <StyledRecentPatientBadge
             style={{
               color: record.color,
-              backgroundColor:"green",
-              color:"white",
-              fontFamily:"inherit"
+              backgroundColor: "green",
+              color: "white",
+              fontFamily: "inherit"
             }}
           >
             waiting
@@ -209,9 +221,9 @@ const TableInterviewStaff = ({allinterviewStaffManagement,findIdData,id,
           <StyledRecentPatientBadge
             style={{
               color: record.color,
-              backgroundColor:"green",
-              color:"white",
-              fontFamily:"inherit"
+              backgroundColor: "green",
+              color: "white",
+              fontFamily: "inherit"
             }}
           >
             Accepted
@@ -220,9 +232,9 @@ const TableInterviewStaff = ({allinterviewStaffManagement,findIdData,id,
           <StyledRecentPatientBadge
             style={{
               color: record.color,
-              backgroundColor:"#FCFE19",
-              color:"black",
-              fontFamily:"inherit"
+              backgroundColor: "#FCFE19",
+              color: "black",
+              fontFamily: "inherit"
             }}
           >
             waiting
@@ -230,23 +242,23 @@ const TableInterviewStaff = ({allinterviewStaffManagement,findIdData,id,
         )
       ),
     },
-    
-      {
-        title: 'Candidate Feedback',
-        dataIndex: 'feedback',
-        key: 'feedback',
-        render: (text) => text === null || text === undefined ? ' null ' : text
-      
-      },
+
     {
-    
+      title: 'Candidate Feedback',
+      dataIndex: 'feedback',
+      key: 'feedback',
+      render: (text) => text === null || text === undefined ? ' null ' : text
+
+    },
+    {
+
       title: 'Agreed Join Date',
       dataIndex: 'agreedJoinedDat',
       key: 'agreedJoinedDat',
       render: (text) => text === null || text === undefined ? 'null' : text
     },
-   
-   
+
+
     {
       title: 'Actions',
       dataIndex: 'actions',
@@ -258,12 +270,18 @@ const TableInterviewStaff = ({allinterviewStaffManagement,findIdData,id,
           { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleAddInterviewStaffOpen },
           { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditInterviewStaffOpen },
           { key: 3, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteInterviewStaff },
-        ];  
+        ];
         if (record.notif === 3) {
-          items.push({ key: 4, label: <span style={{ fontSize: 14 }}>Add Employees</span>, 
-          onClick:handleAddEmployees });
+          items.push({
+            key: 4, label: <span style={{ fontSize: 14 }}>Add Employees</span>,
+            onClick: handleAddEmployees
+          });
+          items.push({
+            key: 5, label: <span style={{ fontSize: 14 }}>Feddback Employees</span>,
+            onClick: handleFeedbackEmployeesOpen
+          });
         }
-    
+
         return (
           <div onClick={() => findId(record?.interviewCode)}>
             <Dropdown menu={{ items }} trigger={['click']}>
@@ -271,6 +289,14 @@ const TableInterviewStaff = ({allinterviewStaffManagement,findIdData,id,
                 <MoreOutlined />
               </Button>
             </Dropdown>
+            {isFeddbackEmployee && (
+              <FeddbackEmployeesStaff
+                isFeedbackEmployee={isFeddbackEmployee}
+                handleFeedbackContactClose={handleFeedbackEmployeesClose}
+             
+              
+              />
+            )}
             {isViewInterviewStaff && (
               <InterviewView
                 isViewInterviewStaff={isViewInterviewStaff}
@@ -375,13 +401,14 @@ const TableInterviewStaff = ({allinterviewStaffManagement,findIdData,id,
                 time={findIdData?.time}
               />
             )}
+         
           </div>
         );
       },
     },
-    
-    
-   
+
+
+
     // {
     //   title: 'Actions',
     //   dataIndex: 'actions',
@@ -498,17 +525,17 @@ const TableInterviewStaff = ({allinterviewStaffManagement,findIdData,id,
     //          time={findIdData?.time}
     //         ></InterviewEdit>
     //       )}
-     
-  
+
+
     //     </div>
-  
+
     //   ),
-  
-  
+
+
     // },
-   
+
   ];
- 
+
 
 
   return (
@@ -521,8 +548,8 @@ const TableInterviewStaff = ({allinterviewStaffManagement,findIdData,id,
 
 
       />
-    
-      {isDelteInterviewStaff? (
+
+      {isDelteInterviewStaff ? (
         <ConfirmationModal
           open={isDelteInterviewStaff}
           paragraph={'Are you sure you want to delete this?'}
@@ -531,7 +558,7 @@ const TableInterviewStaff = ({allinterviewStaffManagement,findIdData,id,
           modalTitle={<IntlMessages id='common.deleteItem' />}
         />
       ) : null}
-        {isAddEmployees? (
+      {isAddEmployees ? (
         <ConfirmationModal
           open={isAddEmployees}
           paragraph={'Are you sure you want to Add Employees?'}
@@ -540,7 +567,7 @@ const TableInterviewStaff = ({allinterviewStaffManagement,findIdData,id,
           modalTitle={<IntlMessages id='common.confirmation' />}
         />
       ) : null}
-   
+
 
     </>
   );
