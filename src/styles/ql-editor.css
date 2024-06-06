@@ -1182,15 +1182,17 @@
     border: 1px solid #ccc;
 }
 .ant-modal-root .ant-modal-mask {
-    
-    background-color: transparent !important; /* Ajoute un fond semi-transparent */
-    opacity: 0.05;
+   background-color: rgba(184, 181, 181, 0.2);;
+
+  /* 75% opacity for the mask */
+    backdrop-filter: blur(1x);
+    /* transform: translate(-50%, -50%) */
     /* backdrop-filter: blur(1px);  */
   
   
   }
   .ant-modal .ant-modal-content{
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.08), 
+    box-shadow: 0 0.5px 0.5px 0 rgba(0, 0, 0, 0.03), 
     0 1px 1px 1px rgba(0, 0, 0, 0.12), 0 1px 1px 1px rgba(0, 0, 0, 0.05)
     
   }

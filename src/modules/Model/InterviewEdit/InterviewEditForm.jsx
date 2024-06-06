@@ -218,8 +218,6 @@ const InterviewForm = (props) => {
             <StyledContactFormContentField>
 
 
-
-
               <Form.Item className='form-field'>
                 <FloatLabel name="Reference">
                   <span className='modallabel'> Reference :</span>
@@ -232,10 +230,6 @@ const InterviewForm = (props) => {
                   />
                 </FloatLabel>
               </Form.Item>
-
-
-
-
 
               <Form.Item className='form-field'>
                 <FloatLabel name="Interview Date">

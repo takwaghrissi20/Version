@@ -14,16 +14,15 @@ const ModalView = ({
 }) => {
 
 
-
   return (
 
     <StyledContactModal
-      width={350}
+      width={500}
       open={isFeedbackEmployee}
       onOk={isFeedbackEmployee}
       footer={false}
       onCancel={handleFeedbackContactClose}
-      bodyStyle={{ height:"auto" }}
+      bodyStyle={{ height:250 }}
     >
       <Feedback
         handleFeedbackContactClose={handleFeedbackContactClose}

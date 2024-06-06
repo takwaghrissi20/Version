@@ -320,7 +320,6 @@ const TabsAssignement = ({isSaveDisabled}) => {
       }
       if (response.ok) {
         const data = await response.json();
-        console.log("Saeeeeee", data)
         setDataInterview(data)
        // navigate(-1);
       }

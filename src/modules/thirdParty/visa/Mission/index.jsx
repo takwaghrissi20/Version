@@ -8,8 +8,11 @@ import {
 import FloatLabel from "./FloatLabel";
 
 const { Option } = Select;
-
+import dayjs from 'dayjs';
+import { useNavigate } from 'react-router-dom';
+import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
 const Mission = () => {
+  const navigate = useNavigate();
   const [lastIdMission, setLastIdMission] = useState(0);
   const [getsId, setGetsId] = useState("");
   const [name, setName] = useState("");
@@ -18,9 +21,27 @@ const Mission = () => {
   const [projects, setProjects] = useState([]);
   const [projectsCountry, setProjectsCountry] = useState([]);
   const [selectedProject, setSelectedProject] = useState("");
-  const [selectedProjectId, setSelectedProjectId] = useState("");
   const [selectedProjectCountry, setSelectedProjectCountry] = useState("");
   const [comments, setComments] = useState("");
+  const [idProject, setIdProject] = useState("");
+  const [missionDate, setMissionDate] = useState("");
+  const [missionEndDate, setMissionEndDate] = useState("");
+  const [projRef, setProjRef] = useState("");
+  const [duration, setDuration] = useState(0);
+  const [confirmationMission, setConfirmationMission] = useState(false);
+  const [isCancel, onCancel] = useState(false);
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (missionDate && missionEndDate) {
+      const start = dayjs(missionDate, 'YYYY-MM-DD');
+      const end = dayjs(missionEndDate, 'YYYY-MM-DD');
+      const diffInDays = end.diff(start, 'day');
+      setDuration(diffInDays);
+    } else {
+      setDuration(null);
+    }
+  }, [missionDate, missionEndDate]);
 
   const handleCommentsChange = (event) => {
     setComments(event.target.value);
@@ -55,7 +76,6 @@ const Mission = () => {
 
   const findId = async () => {
     try {
-      console.log("getsIdtestttt", getsId);
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}`, {
         method: 'GET',
       });
@@ -75,45 +95,75 @@ const Mission = () => {
       }));
 
       const projectscountry = responseData?.projects?.flatMap(project => project.country);
-     
-      const projectstesttt = responseData?.projects?.flatMap(project => project);
       setProjectsCountry(projectscountry);
       setProjects(projectsData);
-      console.log("Projects Data:", projectstesttt);
-      
+
+
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
     }
   };
-
-  const handleAddMission = async () => {
+  const GetIdProject = async () => {
     try {
-      const requestBody = {
-        name: name,
-        passportnumber: passportnumber,
-        position: position,
-        projName: selectedProject,
-        projId: selectedProjectId,
-        toApplyForVisa: "true",
-      };
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/add?id=${searchValue}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestBody)
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/getByname?name=${selectedProject}`, {
+        method: 'GET',
       });
 
       if (!response.ok) {
-        alert("Request failed");
-        throw new Error('La requête a échoué avec le code ' + response.status);
+        throw new Error('Network response was not ok');
+      }
+      const responseData = await response.json();
+      setIdProject(responseData?.[0]?.idProject)
+      setProjRef(responseData?.[0]?.projRef)
+
+
+
+    } catch (error) {
+      console.error("Erreur lors de la récupération du jobcode:", error);
+    }
+  };
+  console.log("dateFirst", missionDate)
+  console.log("dateFirst", missionEndDate)
+  const handleAddMission = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/add?id=${idProject}`, {
+
+        method: 'POST',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+
+          empName: name,
+          getsId: getsId,
+          fonct: position,
+          destination: country,
+          location: selectedProjectCountry,
+          projRef: projRef,
+          projName: selectedProject,
+          starTDateMiss: missionDate,
+          endDateMiss: missionEndDate,
+          dureMiss: duration,
+          refMiss: LastMission
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+
+        const responseData = await response.json();
+        console.log("reuuuu", responseData)
+
+
       }
 
-      const data = await response.json();
-      alert("Success Visa");
-      navigate(-1);
     } catch (error) {
-      console.error('Erreur lors de la récupération des données:', error);
+      console.error("Erreur lors de la récupération du Id Mission:", error);
     }
   };
 
@@ -122,23 +172,45 @@ const Mission = () => {
     if (getsId) {
       findId();
     }
-  }, [getsId]);
+    GetIdProject()
+  }, [getsId, selectedProject, idProject]);
 
   const handleProjectChange = (value, option) => {
-    console.log('Select project :', value);
+
     setSelectedProject(value);
-    setSelectedProjectId(option.key); 
+
   };
 
   const handleProjectLocationChange = (value) => {
     console.log('Select project :', value);
     setSelectedProjectCountry(value);
   };
+  const goBack = () => {
+    navigate(-1)
+  }
+  const BeforeSaveMission = () => {
+    form.validateFields(['Destination', 'missionStartDate', 'missionEndDate'])
+      .then(values => {
+        alert("all fields are complete.");
+        setConfirmationMission(true)
+      })
+      .catch(errorInfo => {
+        alert("Please complete all fields");
 
-  console.log("selectedProject",selectedProjectId);
+
+      });
+  };
+
+  const handleConfirmationAddMission = () => {
+    setConfirmationMission(true)
+  }
+  const handleCancelMission = () => {
+    onCancel(true);
+  }
   return (
     <>
       <Form
+        form={form}
         layout='vertical'
         style={{ backgroundColor: "white", marginBottom: "20px", padding: "10px", borderRadius: "20px" }}
         onSubmit={e => { e.preventDefault() }}
@@ -168,11 +240,12 @@ const Mission = () => {
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Date' name='Date :'
-                    rules={[
-                      { required: true, message: 'Please input your Mission Date!' },
-                    ]}>
+                  >
                     <DatePicker
                       style={{ width: "100%", height: "30px" }}
+
+
+
                     />
                   </Form.Item>
                 </Col>
@@ -204,24 +277,65 @@ const Mission = () => {
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item
-                    label='Destination' name='Destination'>
+                    label='Destination ' name='Destination'
+
+                    rules={[
+                      { required: true, message: 'Please input your Destination!' },
+                    ]}
+
+
+                  >
                     <Input
                       className='Input'
                       placeholder={country}
                       name='Destination'
-                      readOnly={true} />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Mission Date' name='Date :'
-                    rules={[
-                      { required: true, message: 'Please input your Mission Date!' },
-                    ]}>
-                    <DatePicker
-                      style={{ width: "100%", height: "30px" }}
                     />
                   </Form.Item>
                 </Col>
+
+
+                <Col xs={24} md={12}>
+                  <Form.Item
+                    label='Mission Start Date'
+                    name='missionStartDate'
+                    rules={[
+                      { required: true, message: 'Please input your Mission Start Date!' },
+                    ]}
+                  >
+                    <DatePicker
+                      style={{ width: "100%", height: "30px" }}
+                      placeholder='YYYY-MM-DD'
+                      value={missionDate ? dayjs(missionDate, 'YYYY-MM-DD') : null}
+                      onChange={(value) => setMissionDate(value ? dayjs(value).format('YYYY-MM-DD') : '')}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} md={12}>
+                  <Form.Item
+                    label='Mission End Date'
+                    name='missionEndDate'
+                    rules={[
+                      { required: true, message: 'Please input your Mission End Date!' },
+                    ]}
+                  >
+                    <DatePicker
+                      style={{ width: "100%", height: "30px" }}
+                      placeholder='YYYY-MM-DD'
+                      value={missionEndDate ? dayjs(missionEndDate, 'YYYY-MM-DD') : null}
+                      onChange={(value) => setMissionEndDate(value ? dayjs(value).format('YYYY-MM-DD') : '')}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} md={12}>
+                  <Form.Item label='Duration' name='Duration'>
+                    <Input
+                      placeholder={duration + "Days"}
+                      readOnly={true} />
+                  </Form.Item>
+                </Col>
+
+
+
               </AppRowContainer>
             </StyledShadowWrapper>
           </Col>
@@ -234,13 +348,22 @@ const Mission = () => {
           <Col xs={24} md={18}>
             <StyledShadowWrapper>
               <AppRowContainer>
+
                 <Col xs={24} md={12}>
-                  <Form.Item className='form-field'>
-                    <FloatLabel name="Location">
+                  <Form.Item className='form-field'
+                    name='projectName'
+                  //  rules={[
+                  //   { required: true, message: 'Please input your Project Name' },
+                  // ]}
+
+
+                  >
+                    <FloatLabel >
                       <span className='modallabel'>Project Name:</span>
                       <Select
                         style={{ marginTop: "10px" }}
-                        placeholder="Select Location Projects"
+                        placeholder="Select Your Project Name"
+
                         onChange={handleProjectChange}
                         value={selectedProject}
                       >
@@ -254,8 +377,15 @@ const Mission = () => {
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item className='form-field'>
-                    <FloatLabel name="Project">
+                  <Form.Item className='form-field'
+                    name="location"
+                  //  rules={[
+                  //   { required: true, message: 'Please input your  Location' },
+                  // ]}
+
+
+                  >
+                    <FloatLabel name="Location">
                       <span className='modallabel'>Location:</span>
                       <Select
                         style={{ marginTop: "10px" }}
@@ -290,7 +420,7 @@ const Mission = () => {
                       value={comments}
                       onChange={handleCommentsChange}
                       placeholder="Comments"
-                      readOnly={true} />
+                    />
                   </Form.Item>
                 </Col>
               </AppRowContainer>
@@ -301,15 +431,36 @@ const Mission = () => {
           size={15}
           style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
         >
-          <Button>Cancel</Button>
+          <Button onClick={handleCancelMission}>Cancel</Button>
           <Button
-            // onClick={handleAddMission}
+            onClick={BeforeSaveMission}
             type='primary'
+            disabled={!selectedProjectCountry || !selectedProject}
             htmlType='submit'>
             Save
           </Button>
         </Space>
       </Form>
+      {confirmationMission ? (
+        <ConfirmationModal
+          open={confirmationMission}
+          paragraph={'Are you sure you Add Mission Assignment Order'}
+          onDeny={setConfirmationMission}
+          onConfirm={handleAddMission}
+          modalTitle="Add Mission "
+          handleConfirmationAddMission={handleConfirmationAddMission}
+        />
+      ) : null}
+        {isCancel? (
+        <ConfirmationModal
+          open={isCancel}
+          paragraph={'Are you sure you canceled All data is lost?'}
+          onDeny={onCancel}
+          onConfirm={goBack}
+          modalTitle="Cancel Recruitement "
+          handleMission={handleCancelMission}
+        />
+      ) : null}
     </>
   );
 };
