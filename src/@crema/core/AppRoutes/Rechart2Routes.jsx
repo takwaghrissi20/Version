@@ -1,18 +1,18 @@
 import React from 'react';
-import AddVisa from '../../../modules/thirdParty/visa/AddVisa';
+import AddVisa from '../../../modules/VisaAndTravel/visa/AddVisa';
 import AddVisaGetsEmployees from '../../../modules/HRGetsCompany/AddVisa';
 import EditVisa from '../../../modules/HRGetsCompany/EditVisa';
-import Visa from '../../../modules/thirdParty/visa/Visa';
-import ComposedChart from '../../../modules/thirdParty/visa/Composed';
-import LineChart from '../../../modules/thirdParty/visa/Line';
-import PieChart from '../../../modules/thirdParty/visa/Pie';
-import Radial from '../../../modules/thirdParty/visa/Radial';
-import Treemap from '../../../modules/thirdParty/visa/Treemap';
-import Scatter from '../../../modules/thirdParty/visa/Scatter';
-import Radar from '../../../modules/thirdParty/visa/Radar';
-import FunnelChart from '../../../modules/thirdParty/visa/Funnel';
-import Mission from '../../../modules/thirdParty/visa/Mission';
+import Visa from '../../../modules/VisaAndTravel/visa/Visa';
+import ComposedChart from '../../../modules/VisaAndTravel/visa/Composed';
 
+import PieChart from '../../../modules/VisaAndTravel/visa/Pie';
+import Radial from '../../../modules/VisaAndTravel/visa/Radial';
+import Treemap from '../../../modules/VisaAndTravel/visa/Treemap';
+import Scatter from '../../../modules/VisaAndTravel/visa/Scatter';
+import Radar from '../../../modules/VisaAndTravel/visa/Radar';
+import FunnelChart from '../../../modules/VisaAndTravel/visa/Funnel';
+import Mission from '../../../modules/VisaAndTravel/visa/Mission';
+import AddTravel from '../../../modules/VisaAndTravel/visa/Travel';
 export const recharts2Configs = [
   {
     path: '/Hr/Visa/Mission',
@@ -20,7 +20,7 @@ export const recharts2Configs = [
   },
   {
     path: '/Hr/Visa/Travel',
-    element: <LineChart />,
+    element: <AddTravel  />,
   },
   {
     path: '/Hr/VisaHealth/AddVisa',
@@ -46,7 +46,7 @@ export const recharts2Configs = [
   },
   {
     path: '/Hr/VisaHealth/CoronaTest',
-    element: <LineChart />,
+    element: <ComposedChart />,
   },
   {
     path: '/ManpowerLocation/ManpowerLocationTrackRecord',

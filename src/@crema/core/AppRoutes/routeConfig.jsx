@@ -242,8 +242,8 @@ const routesConfig = [
             url: "/Hr/Visa/Mission",
           },
           {
-            id: "Travel",
-            title: "Travel",
+            id: "Add Travel",
+            title: "Add Travel",
             messageId: "sidebar.general.travel",
             url: "/Hr/Visa/Travel",
           },

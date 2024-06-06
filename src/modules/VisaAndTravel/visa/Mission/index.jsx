@@ -122,8 +122,7 @@ const Mission = () => {
       console.error("Erreur lors de la récupération du jobcode:", error);
     }
   };
-  console.log("dateFirst", missionDate)
-  console.log("dateFirst", missionEndDate)
+
   const handleAddMission = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/add?id=${idProject}`, {
@@ -457,7 +456,7 @@ const Mission = () => {
           paragraph={'Are you sure you canceled All data is lost?'}
           onDeny={onCancel}
           onConfirm={goBack}
-          modalTitle="Cancel Recruitement "
+          modalTitle="Cancel Mission "
           handleMission={handleCancelMission}
         />
       ) : null}

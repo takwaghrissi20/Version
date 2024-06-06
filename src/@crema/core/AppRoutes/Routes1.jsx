@@ -1,13 +1,12 @@
 import React from 'react';
 
-import ComposedChart from '../../../modules/thirdParty/visa/Composed';
-import LineChart from '../../../modules/thirdParty/visa/Line';
-import PieChart from '../../../modules/thirdParty/visa/Pie';
-import Radial from '../../../modules/thirdParty/visa/Radial';
-import Treemap from '../../../modules/thirdParty/visa/Treemap';
-import Scatter from '../../../modules/thirdParty/visa/Scatter';
-import Radar from '../../../modules/thirdParty/visa/Radar';
-import FunnelChart from '../../../modules/thirdParty/visa/Funnel';
+import ComposedChart from '../../../modules/VisaAndTravel/visa/Composed';
+import PieChart from '../../../modules/VisaAndTravel/visa/Pie';
+import Radial from '../../../modules/VisaAndTravel/visa/Radial';
+import Treemap from '../../../modules/VisaAndTravel/visa/Treemap';
+import Scatter from '../../../modules/VisaAndTravel/visa/Scatter';
+import Radar from '../../../modules/VisaAndTravel/visa/Radar';
+import FunnelChart from '../../../modules/VisaAndTravel/visa/Funnel';
 
 export const recharts1Configs = [
   {
@@ -24,7 +23,7 @@ export const recharts1Configs = [
   },
   {
     path: '/Hr/Vacation&Leave/MaternityPaternity',
-    element: <LineChart />,
+    element: <PieChart />,
   },
   {
     path: '/Hr/Vacation&Leave/ReportedReports',
