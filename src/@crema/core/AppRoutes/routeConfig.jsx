@@ -292,6 +292,12 @@ const routesConfig = [
             url: "/ManpowerLocation/AddDemobilization",
           },
           {
+            id: "DemobPermissionSite",
+            title: "DemobPermissionSite",
+            messageId: "sidebar.general.demonpermissionSite",
+            url: "/ManpowerLocation/DemobPermissionSite",
+          },
+          {
             id: "ManpowerLocationTrackRecord",
             title: "ManpowerLocationTrackRecord",
             messageId: "sidebar.general.ManpowerLocationTrackRecord",

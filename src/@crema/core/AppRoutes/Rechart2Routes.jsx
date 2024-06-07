@@ -13,6 +13,8 @@ import FunnelChart from '../../../modules/VisaAndTravel/visa/Funnel';
 import Mission from '../../../modules/VisaAndTravel/visa/Mission';
 import AddTravel from '../../../modules/VisaAndTravel/visa/Travel';
 import AddDemobization from '../../../modules/TripTrackRecord/AddDemobilization';
+import DemoPermissionSite from '../../../modules/TripTrackRecord/DemobPermissionSite';
+
 
 export const recharts2Configs = [
   {
@@ -40,6 +42,11 @@ export const recharts2Configs = [
     path: '/ManpowerLocation/AddDemobilization',
     element: <AddDemobization />,
   },
+  {
+    path: '/ManpowerLocation/DemobPermissionSite',
+    element: <DemoPermissionSite />,
+  },
+
   {
     path: '/Hr/VisaHealth/UpdateVisa',
     element: <EditVisa/>,

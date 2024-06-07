@@ -1,33 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Input,List } from 'antd';
-import AppsContainer from "../../../../@crema/components/AppsContainer"
-import OrderTable from './DataTableStaffRecruitement';
+import AppsContainer from "../../../@crema/components/AppsContainer"
+import OrderTable from './DemobPermissionSite';
 import {
   StyledOrderHeader,
   StyledOrderHeaderRight,
-} from '../../../../styles/index.styled';
-import AppsHeader from '../../../../@crema/components/AppsContainer/AppsHeader';
-import AppsContent from '../../../../@crema/components/AppsContainer/AppsContent';
-import Pagination from '../../../../@crema/components/AppsPagination';
-import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
+} from '../../../styles/index.styled';
+import AppsHeader from '../../../@crema/components/AppsContainer/AppsHeader';
+import AppsContent from '../../../@crema/components/AppsContainer/AppsContent';
+import Pagination from '../../../@crema/components/AppsPagination';
+import ConfirmationModal from '../../../@crema/components/AppConfirmationModal';
 import { useNavigate } from "react-router-dom";
-const RecruitementStaff = ({ allrecruitementabove }) => {
+const DemobPermission = () => {
   const navigate = useNavigate();
-  const [recruitementabove , setRecruitementabove ] = useState([]);
-  const [recruitementaboveFiltrer, setRecruitementaboveFiltrer] = useState([]);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
-  const [nameFilter, setNameFilter] = useState('');
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isGenerateInterview, onGenerateInterview] = useState(false);
-  const [findIdData, setFindIdData] = useState(null);
-  const [id, setId] = useState(0);
-  const count=allrecruitementabove.length
-  useEffect(() => {
-    fetchRecruitementabove();
-  }, [currentPage, pageSize, nameFilter,count,id]);
 
-  const fetchRecruitementabove = async () => {
+
+  const FetchIdEmployee = async () => {
     try {
 
       const url = `https://dev-gateway.gets-company.com/api/v1/re/getRecByType?size=${pageSize}&page=${currentPage}&type=Above Foreman&sortBy=desiredDate`;
@@ -80,7 +68,7 @@ const RecruitementStaff = ({ allrecruitementabove }) => {
       } catch (error) {
         console.error('Error filtering Recruitement:', error);
       }
-      if (filterValue.length > 0) {
+      if (filterValue?.length > 0) {
         setIsDropdownOpen(true);
         // Filtrer les données en fonction de la valeur de l'entrée
         const filteredData = // votre logique de filtrage ici
@@ -221,4 +209,4 @@ const RecruitementStaff = ({ allrecruitementabove }) => {
   );
 };
 
-export default RecruitementStaff;
+export default DemobPermission;

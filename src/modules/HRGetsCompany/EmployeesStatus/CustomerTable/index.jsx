@@ -194,9 +194,7 @@ const OrderTable = ({ employeesoffice, loading }) => {
               destination={findIdData?.destination}
               projName={findIdData?.projName}
              
-
             />
-
               <AiFillEdit
               onClick={handleEditEmpOpen}
          
