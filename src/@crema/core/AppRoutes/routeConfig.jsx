@@ -286,6 +286,12 @@ const routesConfig = [
         type: "collapse",
         children: [
           {
+            id: "AddDemobInput",
+            title: "AddDemobInput",
+            messageId: "sidebar.general.AddDemobInput",
+            url: "/ManpowerLocation/AddDemobilization",
+          },
+          {
             id: "ManpowerLocationTrackRecord",
             title: "ManpowerLocationTrackRecord",
             messageId: "sidebar.general.ManpowerLocationTrackRecord",

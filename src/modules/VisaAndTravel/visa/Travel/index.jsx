@@ -315,6 +315,8 @@ const AddTravel = () => {
       if (response.ok) {
 
         const responseData = await response.json();
+        alert("Success Travel Add")
+        confirmationTravel(false)
         
 
 
@@ -817,10 +819,10 @@ const AddTravel = () => {
      {confirmationTravel ? (
         <ConfirmationModal
           open={confirmationTravel}
-          paragraph={'Are you sure you Add Mission Assignment Order'}
+          paragraph={'Are you sure you Add Travel Ticket'}
           onDeny={setConfirmationTravel}
          onConfirm={handleAddTravel}
-          modalTitle="Add Mission "
+          modalTitle="Add Travel"
           handleConfirmationAddTravel={handleConfirmationAddTravel}
         />
       ) : null}

@@ -4,7 +4,6 @@ import AddVisaGetsEmployees from '../../../modules/HRGetsCompany/AddVisa';
 import EditVisa from '../../../modules/HRGetsCompany/EditVisa';
 import Visa from '../../../modules/VisaAndTravel/visa/Visa';
 import ComposedChart from '../../../modules/VisaAndTravel/visa/Composed';
-
 import PieChart from '../../../modules/VisaAndTravel/visa/Pie';
 import Radial from '../../../modules/VisaAndTravel/visa/Radial';
 import Treemap from '../../../modules/VisaAndTravel/visa/Treemap';
@@ -13,6 +12,8 @@ import Radar from '../../../modules/VisaAndTravel/visa/Radar';
 import FunnelChart from '../../../modules/VisaAndTravel/visa/Funnel';
 import Mission from '../../../modules/VisaAndTravel/visa/Mission';
 import AddTravel from '../../../modules/VisaAndTravel/visa/Travel';
+import AddDemobization from '../../../modules/TripTrackRecord/AddDemobilization';
+
 export const recharts2Configs = [
   {
     path: '/Hr/Visa/Mission',
@@ -34,6 +35,10 @@ export const recharts2Configs = [
   {
     path: '/Hr/VisaHealth/Visa',
     element: <Visa />,
+  },
+  {
+    path: '/ManpowerLocation/AddDemobilization',
+    element: <AddDemobization />,
   },
   {
     path: '/Hr/VisaHealth/UpdateVisa',
