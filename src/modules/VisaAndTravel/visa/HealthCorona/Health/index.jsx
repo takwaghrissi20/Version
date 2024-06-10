@@ -9,13 +9,39 @@ import {
 
 
 const HealthCertification = () => {
+  const [totalVaccin, setTotalVaccin] = useState(0);
+  const [totalVaccinFetness, setTotalVaccinFetness] = useState(0);
+  const [totalVaccinHepatite, setTotalVaccinHepatite] = useState(0);
+  const [totalVaccinIdz, setTotalVaccinIdz] = useState(0);
+  
+  const fetchVaccin = async () => {
+    try {
+      const countVaccin = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/list`);
+      const data = await countVaccin.json();
+      setTotalVaccin(data.length)
+      const filteredDataFetness = data.filter(item => item.typeVccin === "Fetness Certificate");
+      setTotalVaccinFetness(filteredDataFetness .length)
+      const filteredDataHepatite = data.filter(item => item.typeVccin === "Hepatitie");
+      setTotalVaccinHepatite(filteredDataHepatite.length)
+      const filteredDataIDZ = data.filter(item => item.typeVccin === "IDZ/HIV");
+      setTotalVaccinIdz(filteredDataIDZ .length)
+      const filteredDataCovid = data.filter(item => item.typeVccin === "COVID VACCINE");
+   
 
+    } catch (error) {
+      console.error('Error fetching Vaccin employees:', error);
+    }
+  };
+  useEffect(() => {
+    fetchVaccin()
+  }, []);
  
   const HeatlStatics = [
-    { title: 'Total Vaccination', number: 20, subtitle: "as of 01-December 2024" },
-    { title: 'Number Of Fitness to work', number: 20, subtitle: "as of 01-December 2024" },
-    { title: 'Number of Hepatite', number:20, subtitle: "as of 01-December 2024" },
-    { title: 'Number of IDZ/HIV tEST', number:20, subtitle: "as of 01-December 2024" },
+    { title: 'Total Vaccination', number: totalVaccin, subtitle: "as of 01-December 2024" },
+    { title: 'Number Of Fetness to work', number: totalVaccinFetness, subtitle: "as of 01-December 2024" },
+    { title: 'Number of Hepatite', number:totalVaccinHepatite, subtitle: "as of 01-December 2024" },
+    { title: 'Number of IDZ/HIV tEST', number:totalVaccinIdz, subtitle: "as of 01-December 2024" },
+
   ];
 
   return (

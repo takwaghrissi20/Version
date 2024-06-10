@@ -6,6 +6,8 @@ import Visa from '../../../modules/VisaAndTravel/visa/Visa';
 import ComposedChart from '../../../modules/VisaAndTravel/visa/Composed';
 import Health from '../../../modules/VisaAndTravel/visa/HealthCorona/Health';
 import AddHealth from '../../../modules/VisaAndTravel/visa/HealthCorona/AddHealth';
+import ViewHealth from '../../../modules/VisaAndTravel/visa/HealthCorona/Health/ViewHealth';
+import EditHealth from '../../../modules/VisaAndTravel/visa/HealthCorona/Health/EditHealth';
 import PieChart from '../../../modules/VisaAndTravel/visa/Pie';
 import Radial from '../../../modules/VisaAndTravel/visa/Radial';
 import Treemap from '../../../modules/VisaAndTravel/visa/Treemap';
@@ -17,8 +19,8 @@ import AddTravel from '../../../modules/VisaAndTravel/visa/Travel';
 import AddDemobization from '../../../modules/TripTrackRecord/AddDemobilization';
 import DemoPermissionSite from '../../../modules/TripTrackRecord/DemobPermissionSite';
 import DemobTripTrackRecorde from '../../../modules/TripTrackRecord/DeMOBTRIPTRACKRECORD';
-
-
+import SammaryDemobTrips from '../../../modules/TripTrackRecord/SAMMARYDEMOBTRIPS';
+import SammaryMobTrips from '../../../modules/TripTrackRecord/SAMMARYMOBTRIPS';
 export const recharts2Configs = [
   {
     path: '/Hr/Visa/Mission',
@@ -53,6 +55,15 @@ export const recharts2Configs = [
     path: '/ManpowerLocation/DemobTripTrackRecorde',
     element: <DemobTripTrackRecorde/>,
   },
+  {
+    path: '/ManpowerLocation/SummaryDemobTrip',
+    element: <SammaryDemobTrips/>,
+  },
+  {
+    path: '/ManpowerLocation/SummaryMobTrip',
+    element: < SammaryMobTrips/>,
+  },
+  
 
   {
     path: '/Hr/VisaHealth/UpdateVisa',
@@ -62,6 +73,15 @@ export const recharts2Configs = [
     path: '/Hr/VisaHealth/AddHealthCertification',
     element: <AddHealth/>,
   },
+  {
+    path: '/Hr/VisaHealth/ViewHealthCertification/:id',
+    element: <  ViewHealth/>,
+  },
+  {
+    path: '/Hr/VisaHealth/EditHealthCertification/:id',
+    element: <EditHealth/>,
+  },
+
   
   {
     path: '/Hr/VisaHealth/HealthCertification',

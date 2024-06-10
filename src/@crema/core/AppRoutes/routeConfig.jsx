@@ -311,6 +311,21 @@ const routesConfig = [
             messageId: "sidebar.general.DemobTripTrackRecorde",
             url: "/ManpowerLocation/DemobTripTrackRecorde",
           },
+          {
+            id: "SummaryDemobTrip",
+            title: "SummaryDemobTrip",
+            messageId: "sidebar.general.SummaryDemobTrip",
+            url: "/ManpowerLocation/SummaryDemobTrip",
+          },
+          {
+            id: "SummarymobTrip",
+            title: "SummarymobTrip",
+            messageId: "sidebar.general.SummaryMobTrip",
+            url: "/ManpowerLocation/SummaryMobTrip",
+          },
+
+
+         
           // {
           //   id: "manpowerenxtension",
           //   title: "manpowerenxtension",

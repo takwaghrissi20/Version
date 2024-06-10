@@ -4,10 +4,9 @@ import { useIntl } from 'react-intl';
 import AppsHeader from '../../../@crema/components/AppsContainer/AppsHeader';
 import AppsContent from '../../../@crema/components/AppsContainer/AppsContent';
 import AppInfoView from '../../../@crema/components/AppInfoView';
-import { Input, List } from 'antd';
 import AppPageMeta from '../../../@crema/components/AppPageMeta';
 import Pagination from '../../../@crema/components/AppsPagination';
-import CustomerTableSite from './DemobPermissionSite';
+import CustomerTableSite from './TripTrakRecord';
 
 import { StyledBuyCellCard, StyledTabs } from '../../../styles/index.styled';
 import {
@@ -20,168 +19,44 @@ import {
 
 const DemobTripTrack = () => {
   const { messages } = useIntl();
-
-  const [employeesoffice, setEmployeesoffice] = useState([]);
   const [employeessite, setEmployeessite] = useState([]);
-  const [employeesmixt, setEmployeesmixt] = useState([]); 
-
-  const [employeessiteFiltrer, setEmployeessiteFiltrer] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [nameFilter, setNameFilter] = useState('');
-  const [nameSiteFilter, setNameSiteFilter] = useState('');
-  const [nameMixtFilter, setNameMixtFilter] = useState('');
   const [count, setCount] = useState(0);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [typingTimeout, setTypingTimeout] = useState(0);
+  const [demopTrips, setDemopTrips] = useState([]);
+
 
   const handlePageChangeSite = (page) => {
     setCurrentPage(page);
   };
 
-  const handleNameFilterChange = (event) => {
-    const filterValue = event.target.value.trim();
-    
-    setNameFilter(filterValue);
-    setNameSiteFilter(filterValue);
-    if (filterValue !== '') {
 
-      clearTimeout(typingTimeout);
-      const timeoutId = setTimeout(() => {
-        fetchFilteredEmployees(filterValue);
-        setIsDropdownOpen(true);
-      }, 300); // Attendre 300 ms après la fin de la saisie pour déclencher la recherche
-      setTypingTimeout(timeoutId);
-
-      
-    }else{
-      setIsDropdownOpen(false);
-    }
-
-   
-  };
-  const handleNameSiteFilterChange = (event) => {
-    const filterValue = event.target.value.trim();
-    
-    setNameSiteFilter(filterValue);
-    if (filterValue !== '') {
-
-      clearTimeout(typingTimeout);
-      const timeoutId = setTimeout(() => {
-        fetchFilteredEmployees(filterValue);
-        setIsDropdownOpen(true);
-      }, 300); // Attendre 300 ms après la fin de la saisie pour déclencher la recherche
-      setTypingTimeout(timeoutId);
-
-      
-    }else{
-      setIsDropdownOpen(false);
-    }
-
-   
-  };
-  const handleNameMixtFilterChange = (event) => {
-    const filterValue = event.target.value.trim();
-    
-    setNameMixtFilter(filterValue);
-    if (filterValue !== '') {
-
-      clearTimeout(typingTimeout);
-      const timeoutId = setTimeout(() => {
-        fetchFilteredEmployees(filterValue);
-        setIsDropdownOpen(true);
-      }, 300); // Attendre 300 ms après la fin de la saisie pour déclencher la recherche
-      setTypingTimeout(timeoutId);
-
-      
-    }else{
-      setIsDropdownOpen(false);
-    }
-
-   
-  };
-
-  const fetchFilteredEmployees = async (filterValue) => {
-    try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${filterValue}`);
-      if (!response.ok) {
-        throw new Error('Failed to filter employees');
-      }
-      const data = await response.json();
-     
-      setEmployeessiteFiltrer(data)     
-      setIsDropdownOpen(true);
-    } catch (error) {
-      console.error('Error filtering employees:', error);
-    }
-  };
-
-  const handleListItemClick = (item) => {
- 
-    setNameSiteFilter(item.name)
-  
-    setIsDropdownOpen(false);
-  };
 
   useEffect(() => {
-    AllEmployeesFilter();
+    fetchTravel()
   }, [currentPage, pageSize]);
  
-
-  const fetchEmployeesByType = async (type) => {
-    
+  const fetchTravel = async () => {
     try {
-      const countEmployees = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/countAll?type=site`);
-      const datacount = await countEmployees.json();
-      console.log("datacount ",datacount )
-      setCount(datacount);
+      let url = `https://dev-gateway.gets-company.com/api/v1/mobDemob/list?page=${currentPage}&size=${pageSize}`;
 
-      const endPoint = process.env.NODE_ENV === 'development' ? 'https://dev-gateway.gets-company.com' : '';
-      const url = `${endPoint}/api/v1/emp/getEmByType?type=${type}&page=${currentPage}&size=${pageSize}`;
+
+
       const response = await fetch(url);
-  
+
       if (!response.ok) {
-        throw new Error('Failed to fetch employees');
-      } 
-      const data = await response.json();
-      return data;
-    } 
-    catch (error) {
-      console.error(`Error fetching ${type} employees:`, error);
-      return [];
-    }
-
-  };
-  
-  const AllEmployeesFilter = async () => {
-    try {
-      const siteEmployees = await fetchEmployeesByType('site');
-      setEmployeessite(siteEmployees);
-
-    } 
-    catch (error) {
-      console.error('Error in AllEmployeesFilter:', error);
-    }
-  };
-   
-
-  const handleSiteSearch = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${nameSiteFilter}`);
-      if (!response.ok) {
-        throw new Error('Failed to filter employees');
+        throw new Error('Failed to fetch Demob Trips');
       }
-      const data = await response.json();
 
-      setEmployeessiteFiltrer(data)
-  
-      setEmployeessite(data)
+      const data = await response.json(); 
+      setDemopTrips(data);
+      setCount(data.length); 
     } catch (error) {
-      console.error('Error filtering employees:', error);
+      console.error('Error fetching Demob Trips:', error);
     }
   };
+  
 
 
 
@@ -194,32 +69,7 @@ const DemobTripTrack = () => {
           <AppsHeader key={'wrap'}>
           <StyledCustomerHeader>
           <StyledCustomerInputView>
-            <Input.Search
-                placeholder='Search Here'
-                type="text"
-                value={nameFilter}
-                onChange={handleNameFilterChange}
-                onKeyPress={(event) => {
-                  if (event.key === 'Enter') {
-                    handleSiteSearch (event);
-                  }
-                }}
-              />
           
-            {isDropdownOpen && (
-              <List
-                style={{
-                  zIndex: 5, borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px",
-                  background: "white", position: "absolute", top: "6rem", width:"18%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"
-                }}
-                dataSource={employeessiteFiltrer}
-                renderItem={(item) => (
-                  <List.Item onClick={() => handleListItemClick(item)}>
-                    {item.name}
-                  </List.Item>
-                )}
-              />
-            )}
             </StyledCustomerInputView>
             <StyledCustomerHeaderRight>
          
@@ -229,11 +79,11 @@ const DemobTripTrack = () => {
             totalPages={Math.ceil(count / pageSize)}
             handlePageChange={handlePageChangeSite}
           />
-         
+  
           </StyledCustomerHeaderRight>
          </StyledCustomerHeader>
          </AppsHeader>
-          <CustomerTableSite loading={loading} employeessite={employeessite} />
+          <CustomerTableSite loading={loading} orderData ={demopTrips} />
         
         </>
       ),
@@ -242,7 +92,6 @@ const DemobTripTrack = () => {
   ];
   return (
     <>
-  
       <AppPageMeta title='Demobilization Trip Track Record' />
       <AppsContainer
         title={messages['sidebar.hr.DemobTripTrack']}

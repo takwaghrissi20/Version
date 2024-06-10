@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { useIntl } from 'react-intl';
 import { Col,Row } from 'antd';
@@ -19,7 +19,32 @@ import {
 import AppRowContainer from '@crema/components/AppRowContainer';
 const HealthInformation = ({HeatlStatics}) => {
   const { messages } = useIntl();
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+  const [vaccin, setVaccin] = useState("");
+  useEffect(() => {
+    fetchDataVaciin();
+  }, [currentPage, pageSize]);
+  const fetchDataVaciin = async () => {
+    try {
 
+      const url = `https://dev-gateway.gets-company.com/api/v1/vacin/list?size=${pageSize}&page=${currentPage}&sortBy=dateTestWork`;
+      const response = await fetch(url);
+     
+      if (!response.ok) {
+        throw new Error('Failed to fetch employees');
+      }
+
+      const data = await response.json();
+      console.log("datavacin",data)
+      setVaccin(data);
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+    }
+  };
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
   return (
   <>
 
@@ -52,7 +77,7 @@ const HealthInformation = ({HeatlStatics}) => {
               title={messages['dashboard.Health']}
             >
 
-              <OrderTable  />
+              <OrderTable vaccin={vaccin}  />
             </AppCard>
       
             </StyledCoinsWrapper>

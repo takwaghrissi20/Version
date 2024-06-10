@@ -16,14 +16,11 @@ import { useIntl } from 'react-intl';
 
 const DemobPermissionSite = () => {
   const { messages } = useIntl();
-  const [employees, setEmployees] = useState([]);
   const [mob, setMob] = useState([]);
-  const [employeesFiltrer, setEmployeesFiltrer] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [nameFilter, setNameFilter] = useState('');
-  const [count, setCount] = useState(0);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
 
   useEffect(() => {
     fetchMobilization();
@@ -50,7 +47,6 @@ const DemobPermissionSite = () => {
       console.error('Error fetching Mob employees:', error);
     }
   };
-
 
 
   const handlePageChange = (page) => {
@@ -91,8 +87,6 @@ const DemobPermissionSite = () => {
             </AppCard>
     
        
-
-
 
       </div>
     </div>

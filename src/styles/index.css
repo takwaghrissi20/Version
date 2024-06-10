@@ -579,6 +579,11 @@ font-weight: bold;
   font-size: 14px;
   text-align: center;
 }
+.ant-card{
+  box-shadow: none !important;
+  margin-bottom: 20px;
+
+}
 
 
 
