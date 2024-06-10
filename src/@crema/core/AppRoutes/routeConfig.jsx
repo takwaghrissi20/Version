@@ -305,6 +305,12 @@ const routesConfig = [
             messageId: "sidebar.general.demonpermissionSite",
             url: "/ManpowerLocation/DemobPermissionSite",
           },
+          {
+            id: "DemobTripTrackRecord",
+            title: "DemobTripTrackRecord",
+            messageId: "sidebar.general.DemobTripTrackRecorde",
+            url: "/ManpowerLocation/DemobTripTrackRecorde",
+          },
           // {
           //   id: "manpowerenxtension",
           //   title: "manpowerenxtension",

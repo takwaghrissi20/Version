@@ -165,7 +165,6 @@ const AddTravel = () => {
   
 
 
-
   const handleInputGetsIdChange = (event) => {
     setGetsId(event.target.value);
   };

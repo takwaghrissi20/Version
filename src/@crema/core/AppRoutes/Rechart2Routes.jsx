@@ -16,6 +16,7 @@ import Mission from '../../../modules/VisaAndTravel/visa/Mission';
 import AddTravel from '../../../modules/VisaAndTravel/visa/Travel';
 import AddDemobization from '../../../modules/TripTrackRecord/AddDemobilization';
 import DemoPermissionSite from '../../../modules/TripTrackRecord/DemobPermissionSite';
+import DemobTripTrackRecorde from '../../../modules/TripTrackRecord/DeMOBTRIPTRACKRECORD';
 
 
 export const recharts2Configs = [
@@ -47,6 +48,10 @@ export const recharts2Configs = [
   {
     path: '/ManpowerLocation/DemobPermissionSite',
     element: <DemoPermissionSite />,
+  },
+  {
+    path: '/ManpowerLocation/DemobTripTrackRecorde',
+    element: <DemobTripTrackRecorde/>,
   },
 
   {

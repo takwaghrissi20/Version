@@ -379,6 +379,7 @@ const AddDemobilization = () => {
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
         body: JSON.stringify({
+       
           commentaire: comments,
           desiredDate: DesiredDate,
           visaType: visatype,
@@ -393,6 +394,11 @@ const AddDemobilization = () => {
           backToBackType: isNeedsite,
           newRecruitment: isNewRecruitement,
           inputDate: dateInput,
+          backToBackNeed:isBackNeed,
+          backToBackType:isNoBackNeed,
+        
+
+   
           
 
 
@@ -452,12 +458,10 @@ const AddDemobilization = () => {
   };
 
 
-  const handleSelectDemobdescition = (event) => {
-    const value = event.target.value;
-    setSelectdemobdecision(value);
-    console.log(value);
 
-  }
+  const handleSelectDemobdescition = (value) => {
+    setSelectdemobdecision((value))
+  };
 
   const handleTotalworking = (event) => {
     const newValue = parseInt(event.target.value);
@@ -525,17 +529,12 @@ const AddDemobilization = () => {
     onCancel(true);
   }
 
-
-  const handleTypeVisa = (event) => {
-    const value = event.target.value;
-    setVisatype(value);
-    console.log(value);
+  const handleTypeVisa = (value) => {
+    setVisatype((value))
   };
- 
 
 
   function BackNeed(e) {
-    console.log(`checkedNeedBack = ${e.target.checked}`);
     setIsBackNeed(e.target.checked)
 
   }
