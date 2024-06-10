@@ -15,6 +15,7 @@ import {
 import PropsTypes from 'prop-types';
 
 const BitBucket = ({ routes, routesConfig }) => {
+  console.log("routesConfig",routesConfig)
   const [isVisible, setVisible] = useState(false);
   const { footer, footerType } = useLayoutContext();
 

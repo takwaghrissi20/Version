@@ -5,7 +5,7 @@ import { useGetDataApi } from '@crema/hooks/APIHooks';
 import LastRequestor from "../../Planificationhr/Planification"
 import AppComponentHeader from "../../../@crema/components/AppComponentHeader";
 import AppComponentCard from "../../../@crema/components/AppComponentCard";
-import InterviewCalendar from "../../thirdParty/calendar/InterviewCalendar";
+import InterviewCalendar from "../../VisaAndTravel/calendar/InterviewCalendar";
 import StaticsTotalRecruitement from '../RecruitementInterview/StaticsTotalRecruitement';
 import StaticsTotalInterview from '../RecruitementInterview/StaticsTotalInterview';
 import LastRequestorRecruitement from '../RecruitementInterview/LastRequestorRecruitement';

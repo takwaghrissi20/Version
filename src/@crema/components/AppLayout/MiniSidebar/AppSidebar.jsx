@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 
 const AppSidebar = ({ routesConfig }) => {
   const { allowSidebarBgImage } = useSidebarContext();
+  console.log("gggggggg")
 
   return (
     <StyledMiniSidebar

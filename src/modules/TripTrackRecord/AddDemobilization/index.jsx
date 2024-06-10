@@ -381,7 +381,6 @@ const AddDemobilization = () => {
         body: JSON.stringify({
           commentaire: comments,
           desiredDate: DesiredDate,
-          //backToBackType, et backtoback
           visaType: visatype,
           demobDesision: selectdemobdecision,
           reason: reason,
@@ -393,7 +392,8 @@ const AddDemobilization = () => {
           officeBackToback: isNeedoffice,
           backToBackType: isNeedsite,
           newRecruitment: isNewRecruitement,
-          inputDate: dateInput
+          inputDate: dateInput,
+          
 
 
 

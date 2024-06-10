@@ -1,212 +1,270 @@
 import React, { useEffect, useState } from 'react';
-import { Input,List } from 'antd';
-import AppsContainer from "../../../@crema/components/AppsContainer"
-import OrderTable from './DemobPermissionSite';
-import {
-  StyledOrderHeader,
-  StyledOrderHeaderRight,
-} from '../../../styles/index.styled';
+import AppsContainer from '../../../@crema/components/AppsContainer';
+import { useIntl } from 'react-intl';
 import AppsHeader from '../../../@crema/components/AppsContainer/AppsHeader';
 import AppsContent from '../../../@crema/components/AppsContainer/AppsContent';
+import AppInfoView from '../../../@crema/components/AppInfoView';
+import { Input, List } from 'antd';
+import AppPageMeta from '../../../@crema/components/AppPageMeta';
 import Pagination from '../../../@crema/components/AppsPagination';
-import ConfirmationModal from '../../../@crema/components/AppConfirmationModal';
-import { useNavigate } from "react-router-dom";
-const DemobPermission = () => {
-  const navigate = useNavigate();
+import CustomerTableSite from './DemobPermissionSite';
 
+import { StyledBuyCellCard, StyledTabs } from '../../../styles/index.styled';
+import {
 
-  const FetchIdEmployee = async () => {
-    try {
+  StyledCustomerHeader,
+  StyledCustomerHeaderRight,
+  StyledCustomerInputView,
 
-      const url = `https://dev-gateway.gets-company.com/api/v1/re/getRecByType?size=${pageSize}&page=${currentPage}&type=Above Foreman&sortBy=desiredDate`;
-      const response = await fetch(url);
-     
+} from './index.styled';
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch employees');
-      }
+const DemobSite = () => {
+  const { messages } = useIntl();
 
-      const data = await response.json();
-      setRecruitementabove(data);
-    } catch (error) {
-      console.error('Error fetching employees:', error);
-    }
-  };
+  const [employeesoffice, setEmployeesoffice] = useState([]);
+  const [employeessite, setEmployeessite] = useState([]);
+  const [employeesmixt, setEmployeesmixt] = useState([]); 
 
-  const handleSearch = async (event) => {
-    event.preventDefault();
-   
-  };
-  // const handleNameFilterChange = (event) => {
-  //   setNameFilter(event.target.value);
-  //   handleSearch(event.target.value)
-  //   setIsDropdownOpen(event.target.value.trim() !== '');
+  const [employeessiteFiltrer, setEmployeessiteFiltrer] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+  const [nameFilter, setNameFilter] = useState('');
+  const [nameSiteFilter, setNameSiteFilter] = useState('');
+  const [nameMixtFilter, setNameMixtFilter] = useState('');
+  const [count, setCount] = useState(0);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [typingTimeout, setTypingTimeout] = useState(0);
 
-  // };
-  const handlePageChange = (page) => {
+  const handlePageChangeSite = (page) => {
     setCurrentPage(page);
   };
 
-  const handleListItemClick = (item) => {
-    setNameFilter(item.position ); 
-    handleSearch({ target: { value: item.position } }); 
-    setIsDropdownOpen(false)
-  };
-  const handleNameFilterChange = async (event) => {
-    const filterValue = event.target.value.trim(); // Trim whitespace from input value
-    setNameFilter(filterValue);  
+  const handleNameFilterChange = (event) => {
+    const filterValue = event.target.value.trim();
+    
+    setNameFilter(filterValue);
+    setNameSiteFilter(filterValue);
     if (filterValue !== '') {
-      try {
-        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/filterByPosition?position=$${filterValue}`);
-        if (!response.ok) {
-          throw new Error('Failed to filter Recruitement');
-        }
-        const data = await response.json();
-        setRecruitementaboveFiltrer(data)
-        setRecruitementabove(data);
+
+      clearTimeout(typingTimeout);
+      const timeoutId = setTimeout(() => {
+        fetchFilteredEmployees(filterValue);
         setIsDropdownOpen(true);
-      } catch (error) {
-        console.error('Error filtering Recruitement:', error);
-      }
-      if (filterValue?.length > 0) {
-        setIsDropdownOpen(true);
-        // Filtrer les données en fonction de la valeur de l'entrée
-        const filteredData = // votre logique de filtrage ici
-        setRecruitementaboveFiltrer(filteredData);
-      } else {
-        setIsDropdownOpen(false);
-      }
-    } else {
-      setIsDropdownOpen(false); // Close dropdown if filter is empty
-    }
-  };
-  
-  const InterviewGenerate= async () => {
-  
-    navigate(`/dashboards/hr/${id}`, {
-      state: {
-        DesiredDate:findIdData?.desiredDate,
-        JobCode:findIdData?.jobCode,
-        totalNumber:findIdData?.totalNumber,
-        level:findIdData?.experience,
-        projectName:findIdData?.projectName,
-        position:findIdData?.position,
-        experience:findIdData?.experience,
-     
-               
-      }
+      }, 300); // Attendre 300 ms après la fin de la saisie pour déclencher la recherche
+      setTypingTimeout(timeoutId);
 
-
-    });
-
-  
-  } 
-  //Fin Bu Id 
-  const findId = async (code) => {
-    try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/findId?code=${code}`, {
-        method: 'POST',
-
-      });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      if (response.ok) {
-        const responseData = await response.json();
-        setFindIdData(responseData);
-        setId(responseData.jobCode)
       
+    }else{
+      setIsDropdownOpen(false);
+    }
 
+   
+  };
+  const handleNameSiteFilterChange = (event) => {
+    const filterValue = event.target.value.trim();
+    
+    setNameSiteFilter(filterValue);
+    if (filterValue !== '') {
 
+      clearTimeout(typingTimeout);
+      const timeoutId = setTimeout(() => {
+        fetchFilteredEmployees(filterValue);
+        setIsDropdownOpen(true);
+      }, 300); // Attendre 300 ms après la fin de la saisie pour déclencher la recherche
+      setTypingTimeout(timeoutId);
+
+      
+    }else{
+      setIsDropdownOpen(false);
+    }
+
+   
+  };
+  const handleNameMixtFilterChange = (event) => {
+    const filterValue = event.target.value.trim();
+    
+    setNameMixtFilter(filterValue);
+    if (filterValue !== '') {
+
+      clearTimeout(typingTimeout);
+      const timeoutId = setTimeout(() => {
+        fetchFilteredEmployees(filterValue);
+        setIsDropdownOpen(true);
+      }, 300); // Attendre 300 ms après la fin de la saisie pour déclencher la recherche
+      setTypingTimeout(timeoutId);
+
+      
+    }else{
+      setIsDropdownOpen(false);
+    }
+
+   
+  };
+
+  const fetchFilteredEmployees = async (filterValue) => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${filterValue}`);
+      if (!response.ok) {
+        throw new Error('Failed to filter employees');
       }
+      const data = await response.json();
+     
+      setEmployeessiteFiltrer(data)     
+      setIsDropdownOpen(true);
     } catch (error) {
-      console.error("Erreur lors de la récupération du jobcode:", error);
+      console.error('Error filtering employees:', error);
     }
   };
-  const handleInterview = () => {
-    onGenerateInterview(true);
+
+  const handleListItemClick = (item) => {
+ 
+    setNameSiteFilter(item.name)
+  
+    setIsDropdownOpen(false);
   };
-  return (
-    <AppsContainer type='bottom' fullView>
 
-        <AppsHeader>
-          <StyledOrderHeader>
-            <div style={{ marginRight: 20, boxShadow: "none !important" }}>
+  useEffect(() => {
+    AllEmployeesFilter();
+  }, [currentPage, pageSize]);
+ 
 
-              <Input.Search
-                placeholder='Search Here By Position'
+  const fetchEmployeesByType = async (type) => {
+    
+    try {
+      const countEmployees = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/countAll?type=site`);
+      const datacount = await countEmployees.json();
+      console.log("datacount ",datacount )
+      setCount(datacount);
+
+      const endPoint = process.env.NODE_ENV === 'development' ? 'https://dev-gateway.gets-company.com' : '';
+      const url = `${endPoint}/api/v1/emp/getEmByType?type=${type}&page=${currentPage}&size=${pageSize}`;
+      const response = await fetch(url);
+  
+      if (!response.ok) {
+        throw new Error('Failed to fetch employees');
+      } 
+      const data = await response.json();
+      return data;
+    } 
+    catch (error) {
+      console.error(`Error fetching ${type} employees:`, error);
+      return [];
+    }
+
+  };
+  
+  const AllEmployeesFilter = async () => {
+    try {
+      const siteEmployees = await fetchEmployeesByType('site');
+      setEmployeessite(siteEmployees);
+
+    } 
+    catch (error) {
+      console.error('Error in AllEmployeesFilter:', error);
+    }
+  };
+   
+
+  const handleSiteSearch = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${nameSiteFilter}`);
+      if (!response.ok) {
+        throw new Error('Failed to filter employees');
+      }
+      const data = await response.json();
+
+      setEmployeessiteFiltrer(data)
+  
+      setEmployeessite(data)
+    } catch (error) {
+      console.error('Error filtering employees:', error);
+    }
+  };
+
+
+
+  const items = [
+    {
+      label: 'Demobilization Permission Site',
+      key: '1',
+      children: (
+        <>
+          <AppsHeader key={'wrap'}>
+          <StyledCustomerHeader>
+          <StyledCustomerInputView>
+            <Input.Search
+                placeholder='Search Here'
                 type="text"
                 value={nameFilter}
                 onChange={handleNameFilterChange}
                 onKeyPress={(event) => {
                   if (event.key === 'Enter') {
-                    handleSearch(event);
+                    handleSiteSearch (event);
                   }
                 }}
               />
-              {isDropdownOpen && (
-                <List
-                style={{zIndex:5, borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px",
-                background: "white", position: "absolute", top: "3.5rem", width: "15%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"}}
-                  dataSource={recruitementaboveFiltrer} 
-                  renderItem={(item) => (
-                    <List.Item onClick={() => handleListItemClick(item)}>
-                      {item.position}
-                    </List.Item>
-                  )}
-                />
-              )}
-            </div>
-
-
-            <StyledOrderHeaderRight>
-
-
-              <Pagination
-                currentPage={currentPage}
-                totalPages={Math.ceil(count / pageSize)}
-                handlePageChange={handlePageChange}
-              />
-
-
-
-            </StyledOrderHeaderRight>
-          </StyledOrderHeader>
-        </AppsHeader>
-        <AppsContent
-        style={{
-          paddingTop: 10,
-          paddingBottom: 10,
-        }}>
-          <OrderTable  
-          allrecruitementabove={recruitementabove}  
-           findIdData={findIdData}
-          id={id}
-          findId={findId} 
-          setFindIdData={setFindIdData}
-          open={open}
-          handleInterview={handleInterview}
           
+            {isDropdownOpen && (
+              <List
+                style={{
+                  zIndex: 5, borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px",
+                  background: "white", position: "absolute", top: "6rem", width:"18%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"
+                }}
+                dataSource={employeessiteFiltrer}
+                renderItem={(item) => (
+                  <List.Item onClick={() => handleListItemClick(item)}>
+                    {item.name}
+                  </List.Item>
+                )}
+              />
+            )}
+            </StyledCustomerInputView>
+            <StyledCustomerHeaderRight>
+         
+          <Pagination
+            currentPage={currentPage}
+            //totalPages={Math.ceil(countOffice / pageSize)}
+            totalPages={Math.ceil(count / pageSize)}
+            handlePageChange={handlePageChangeSite}
           />
-        {/* <OrderTable 
-         allrecruitementabove={filteredData}
-         /> */}
-      </AppsContent>
-      {isGenerateInterview? (
-        <ConfirmationModal
-          open={isGenerateInterview}
-          paragraph={'Are you sure you want to Gernerate  this?'}
-          onDeny={onGenerateInterview}
-          onConfirm={InterviewGenerate}
-          modalTitle="Generate Interview"
-          handleInterview={handleInterview}
-        />
-      ) : null}
-       
-      </AppsContainer>
+         
+          </StyledCustomerHeaderRight>
+         </StyledCustomerHeader>
+         </AppsHeader>
+          <CustomerTableSite loading={loading} employeessite={employeessite} />
+        
+        </>
+      ),
+    },
    
+  ];
+  return (
+    <>
+      <AppPageMeta title='Demobilization Permission Site' />
+      <AppsContainer
+        title={messages['sidebar.hr.DemobSite']}
+        fullView
+        type='bottom'
+      >
+        <AppsContent
+          key={'wrap1'}
+          style={{
+            paddingTop: 10,
+            paddingBottom: 10,
+          }}
+        >
+          <StyledBuyCellCard style={{ paddingLeft: '10px' }} heightFull>
+            <StyledTabs defaultActiveKey='1' items={items} />
+          </StyledBuyCellCard>
+        </AppsContent>
+      </AppsContainer>
+
+      <AppInfoView />
+    </>
   );
 };
 
-export default DemobPermission;
+
+export default DemobSite ;

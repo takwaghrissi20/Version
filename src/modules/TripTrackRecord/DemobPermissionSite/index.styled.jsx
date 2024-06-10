@@ -3,7 +3,31 @@ import AppCard from '../../../@crema/components/AppCard';
 import { InputNumber, Select, Tabs } from 'antd';
 import AppTableContainer from '../../../@crema/components/AppTableContainer';
 import { Avatar } from 'antd';
+export const StyledCustomerHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+`;
+export const StyledCustomerHeaderRight = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+ 
 
+  [dir='rtl'] & {
+    padding-left: 0;
+    padding-right: 10px;
+  }
+`;
+export const StyledCustomerInputView = styled.div`
+  max-width: 120px;
+
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints.sm}px) {
+    max-width: 150px;
+  }
+`;
 
 export const StyledGeneralStats = styled.div`
 display: flex;

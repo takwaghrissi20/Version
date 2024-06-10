@@ -23,6 +23,7 @@ import { useSidebarActionsContext } from '../../../@crema/context/AppContextProv
 
 const AppLayout = () => {
   const { navStyle } = useLayoutContext();
+  
 
   const { user, isAuthenticated } = useAuthUser();
   const { updateNavStyle } = useLayoutActionsContext();

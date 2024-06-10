@@ -18,6 +18,7 @@ import {
 } from './index.styled';
 
 const AppSidebar = ({ visible, onClose, routesConfig }) => {
+  console.log("routesConfig",routesConfig)
   const { allowSidebarBgImage } = useSidebarContext();
   const { direction } = useLayoutContext();
   const { pathname } = useLocation();

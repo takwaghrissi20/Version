@@ -47,12 +47,6 @@ console.log("filteredData ",filteredData )
           </Col>
         ))}
   
-
-        {/* {listInerview?.map((data) => (
-          <Col key={data.id} xs={24} md={12} lg={12} >
-            <StaticInterviewandRecruitement data={data} />
-          </Col>
-        ))} */}
         <Col xs={24} md={16} lg={24} xl={24} style={{marginTop:"3rem"}}>
           
           {/*Trainf Style*/}

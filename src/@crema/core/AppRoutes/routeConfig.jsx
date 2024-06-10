@@ -22,6 +22,8 @@ const routesConfig = [
         messageId: "sidebar.app.dashboards",
         icon: <HiOutlineChartSquareBar />,
         url: "/dashboards/hr",
+        permittedRole: "Hr",
+
       },
       
     ],
@@ -262,6 +264,12 @@ const routesConfig = [
             url: "/Hr/VisaHealth/Visa",
           },
           {
+            id: "AddHealthCertification",
+            title: "AddHealthCertification",
+            messageId: "sidebar.general.AddHealthCertification",
+            url: "/Hr/VisaHealth/AddHealthCertification",
+          },
+          {
             id: "HealthCertification",
             title: "HealthCertification",
             messageId: "sidebar.general.HealthCertification",
@@ -297,6 +305,12 @@ const routesConfig = [
             messageId: "sidebar.general.demonpermissionSite",
             url: "/ManpowerLocation/DemobPermissionSite",
           },
+          // {
+          //   id: "manpowerenxtension",
+          //   title: "manpowerenxtension",
+          //   messageId: "sidebar.general.demonpermissionSite",
+          //   url: "/ManpowerLocation/DemobPermissionSite",
+          // },
           {
             id: "ManpowerLocationTrackRecord",
             title: "ManpowerLocationTrackRecord",

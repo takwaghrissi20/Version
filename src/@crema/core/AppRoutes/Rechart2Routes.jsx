@@ -4,6 +4,8 @@ import AddVisaGetsEmployees from '../../../modules/HRGetsCompany/AddVisa';
 import EditVisa from '../../../modules/HRGetsCompany/EditVisa';
 import Visa from '../../../modules/VisaAndTravel/visa/Visa';
 import ComposedChart from '../../../modules/VisaAndTravel/visa/Composed';
+import Health from '../../../modules/VisaAndTravel/visa/HealthCorona/Health';
+import AddHealth from '../../../modules/VisaAndTravel/visa/HealthCorona/AddHealth';
 import PieChart from '../../../modules/VisaAndTravel/visa/Pie';
 import Radial from '../../../modules/VisaAndTravel/visa/Radial';
 import Treemap from '../../../modules/VisaAndTravel/visa/Treemap';
@@ -51,10 +53,14 @@ export const recharts2Configs = [
     path: '/Hr/VisaHealth/UpdateVisa',
     element: <EditVisa/>,
   },
+  {
+    path: '/Hr/VisaHealth/AddHealthCertification',
+    element: <AddHealth/>,
+  },
   
   {
     path: '/Hr/VisaHealth/HealthCertification',
-    element: <ComposedChart />,
+    element: <Health />,
   },
   {
     path: '/Hr/VisaHealth/CoronaTest',

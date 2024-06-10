@@ -157,6 +157,7 @@ const Mission = () => {
 
         const responseData = await response.json();
         console.log("reuuuu", responseData)
+        alert("Mission Success")
 
 
       }
@@ -381,9 +382,7 @@ const Mission = () => {
                   //  rules={[
                   //   { required: true, message: 'Please input your  Location' },
                   // ]}
-
-
-                  >
+>
                     <FloatLabel name="Location">
                       <span className='modallabel'>Location:</span>
                       <Select
@@ -412,7 +411,7 @@ const Mission = () => {
           <Col xs={24} md={18}>
             <StyledShadowWrapper>
               <AppRowContainer>
-                <Col xs={24} md={12}>
+                <Col xs={24} md={24}>
                   <Form.Item label='Comments' name='Comments'>
                     <Input
                       className='InputComment'

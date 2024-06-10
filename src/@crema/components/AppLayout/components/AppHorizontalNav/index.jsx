@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { getRouteHorMenus } from './HorizontalMenuUtils';
 
 const AppHorizontalNav = ({ className, routesConfig }) => {
+  console.log("routesConfig",routesConfig)
   const { pathname } = useLocation();
 
   const selectedKeys = pathname.substr(1);

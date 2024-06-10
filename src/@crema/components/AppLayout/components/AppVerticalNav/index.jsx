@@ -33,6 +33,8 @@ const AppVerticalNav = ({ routesConfig }) => {
     const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
     setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
   };
+  console.log(' routesConfigssss', routesConfig)
+  const userRole = localStorage.getItem("role");
   return (
     <StyledVerticalNav
       theme={sidebarColorSet.mode}
