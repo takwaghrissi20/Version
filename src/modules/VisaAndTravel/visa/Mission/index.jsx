@@ -156,7 +156,7 @@ const Mission = () => {
       if (response.ok) {
 
         const responseData = await response.json();
-        console.log("reuuuu", responseData)
+   
         alert("Mission Success")
 
 

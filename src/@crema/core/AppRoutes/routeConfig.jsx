@@ -270,17 +270,24 @@ const routesConfig = [
             url: "/Hr/VisaHealth/AddHealthCertification",
           },
           {
+            id: "AddCorona",
+            title: "AddCovidVaccine",
+            messageId: "sidebar.general.AddCorone",
+            url: "/Hr/VisaHealth/AddCoronaVacine",
+          },
+          {
             id: "HealthCertification",
             title: "HealthCertification",
             messageId: "sidebar.general.HealthCertification",
             url: "/Hr/VisaHealth/HealthCertification",
           },
           {
-            id: "Corona Test",
-            title: "Corona Test",
-            messageId: "sidebar.general.CoronaTest",
-            url: "/Hr/VisaHealth/CoronaTest",
+            id: "CovidVaccin",
+            title: "CovidVaccin",
+            messageId: "sidebar.general.Covid",
+            url: "/Hr/VisaHealth/CovidVaccine",
           },
+         
        
           
         ],

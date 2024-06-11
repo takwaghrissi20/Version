@@ -21,22 +21,18 @@ const TableHealth = ({vaccin}) => {
 
   const navigate = useNavigate();
 
-
-
   const   handleEditHealth= () => {
-    navigate(`/Hr/VisaHealth/EditHealthCertification/idV=${idv}`, {
+    navigate(`/Hr/VisaHealth/EditCovid/idV=${idv}`, {
       state: {
         idv:data?.idv,
         getsid:data?.getsId,
         name:data?.name,
         projName:data?.projName,
         vaccinType:data?.typeVccin,
-        DateFetness:data?.dateTestWork,
-        resultFitness:data?.resultFitness,
-        hypatitDare:data?.hypatitDare,
-        hepatitResult:data?.hepatitResult,
-        idzresult:data?.idzresult,
-        idzdate:data?.idzdate
+        corona1Date: data?.corona1Date,
+        typeCorona:  data?.typeCorona,
+        corona2Date:data?.corona2Date,
+       
   
   
       }
@@ -59,7 +55,7 @@ const TableHealth = ({vaccin}) => {
             process.env.NODE_ENV === "development"
                 ? "https://dev-gateway.gets-company.com"
                 : "";
-
+//Ajouter delete par type
         const response = await fetch(`${endPoint}/api/v1/vacin/delete?code=${idv}`, {
             method: 'DELETE',
         });
@@ -111,20 +107,16 @@ const findId = async (code) => {
 };
 const  handleViewHealth = () => {
    
-  navigate(`/Hr/VisaHealth/ViewHealthCertification/idV=${idv}`, {
+  navigate(`/Hr/VisaHealth/ViewCovid/idV=${idv}`, {
     state: {
-      id:data?.idv,
-      getsid:data?.getsId,
-      name:data?.name,
-      projName:data?.projName,
-      vaccinType:data?.typeVccin,
-      DateFetness:data?.dateTestWork,
-      resultFitness:data?.resultFitness,
-      hypatitDare:data?.hypatitDare,
-      hepatitResult:data?.hepatitResult,
-      idzresult:data?.idzresult,
-      idzdate:data?.idzdate
-
+      idv:data?.idv,
+        getsid:data?.getsId,
+        name:data?.name,
+        projName:data?.projName,
+        vaccinType:data?.typeVccin,
+        corona1Date: data?.corona1Date,
+        typeCorona:  data?.typeCorona,
+        corona2Date:data?.corona2Date,
  
 
     }
@@ -172,39 +164,21 @@ const  handleViewHealth = () => {
       render: (text) => text === null || text === undefined ? 'null' : text
     },
     {
-      title: 'Result Fetness',
-      dataIndex: 'resultFitness',
-      key: 'resultFitness',
+      title: 'type Covid',
+      dataIndex: 'typeCorona',
+      key: 'typeCorona',
       render: (text) => text === null || text === undefined ? 'null' : text
     },
     {
-      title: 'Date Fetness Certificate',
-      dataIndex: 'dateTestWork',
-      key: 'dateTestWork',
+      title: 'Date First Dose',
+      dataIndex: 'corona1Date',
+      key: 'corona1Date',
       render: (text) => text === null || text === undefined ? 'null' : text
     },
     {
-      title: 'Result Hepatite Certificate',
-      dataIndex: 'hepatitResult',
-      key: 'hepatitResult',
-      render: (text) => text === null || text === undefined ? 'null' : text
-    },
-    {
-      title: 'Date Hepatite Certificate',
-      dataIndex: 'hypatitDare',
-      key: 'hypatitDare',
-      render: (text) => text === null || text === undefined ? 'null' : text
-    },
-    {
-      title: 'Result IDZ/HIV tEST',
-      dataIndex: 'idzresult',
-      key: 'idzresult',
-      render: (text) => text === null || text === undefined ? 'null' : text
-    },
-    {
-      title: 'Date IDZ/HIV tEST',
-      dataIndex: 'idzdate',
-      key: 'idzdate',
+      title: 'Date Second Dose',
+      dataIndex: 'corona2Date',
+      key: 'corona2Date',
       render: (text) => text === null || text === undefined ? 'null' : text
     },
    

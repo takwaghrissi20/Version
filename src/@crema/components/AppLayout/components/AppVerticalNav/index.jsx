@@ -13,8 +13,8 @@ const AppVerticalNav = ({ routesConfig }) => {
   const { pathname } = useLocation();
   const selectedKeys = pathname.substr(1);
   const [openKeys, setOpenKeys] = useState([selectedKeys[0]]);
+  const userRole = localStorage.getItem("role");
 
-  const defaultOpenKeys = selectedKeys.split("/")[1];
   useEffect(() => {
     setOpenKeys([selectedKeys[selectedKeys.length - 2]]);
   }, []);
@@ -33,8 +33,47 @@ const AppVerticalNav = ({ routesConfig }) => {
     const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
     setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
   };
-  console.log(' routesConfigssss', routesConfig)
-  const userRole = localStorage.getItem("role");
+
+  const filterMenuItems = (items) => {
+    return items.filter(item => {
+      console.log("roless",item)
+      if (userRole.includes("Manager")) {
+        if (item.id === "VisaHealth"||
+            item.id === "ManpowerLocation"||
+            item.id === "Employees"  ||
+            item.id === "attendance" ||
+            item.id === "VacationLeave" ||
+            item.id === "ManpowerEvaluation" 
+          
+                
+          
+          )
+           {
+          return false; 
+        }
+      }
+      if (item.children && item.children.length > 0) {
+
+        item.children = filterMenuItems(item.children);
+      }     
+      if (userRole.includes("Manager")) {
+        if (item.id === "Interview Statistics" ||
+            item.id === "Integration" ||
+            item.id === "IntegrationStatistics" ||
+            item.id === "VisaHealth" )
+           
+             {
+          return false; 
+        }
+      }
+  
+      return true;
+    });
+  };
+  
+
+  const filteredRoutesConfig = filterMenuItems(routesConfig);
+
   return (
     <StyledVerticalNav
       theme={sidebarColorSet.mode}
@@ -54,15 +93,14 @@ const AppVerticalNav = ({ routesConfig }) => {
       openKeys={openKeys}
       onOpenChange={onOpenChange}
       selectedKeys={selectedKeys.split("/")}
-      defaultOpenKeys={[defaultOpenKeys]} /*
-      selectedKeys={[selectedKeys[selectedKeys.length - 1]]}
-      defaultSelectedKeys={[selectedKeys[selectedKeys.length - 1]]}*/
-      items={getRouteMenus(routesConfig)}
+      // defaultOpenKeys={[defaultOpenKeys]}
+      items={getRouteMenus(filteredRoutesConfig)}
     />
   );
 };
 
 export default AppVerticalNav;
+
 AppVerticalNav.propTypes = {
   routesConfig: PropTypes.array.isRequired,
 };

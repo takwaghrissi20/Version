@@ -5,9 +5,13 @@ import EditVisa from '../../../modules/HRGetsCompany/EditVisa';
 import Visa from '../../../modules/VisaAndTravel/visa/Visa';
 import ComposedChart from '../../../modules/VisaAndTravel/visa/Composed';
 import Health from '../../../modules/VisaAndTravel/visa/HealthCorona/Health';
+import Covid from '../../../modules/VisaAndTravel/visa/HealthCorona/Covid';
 import AddHealth from '../../../modules/VisaAndTravel/visa/HealthCorona/AddHealth';
+import AddCorona from '../../../modules/VisaAndTravel/visa/HealthCorona/AddCorona';
 import ViewHealth from '../../../modules/VisaAndTravel/visa/HealthCorona/Health/ViewHealth';
+import ViewCovid from '../../../modules/VisaAndTravel/visa/HealthCorona/Covid/ViewCovid';
 import EditHealth from '../../../modules/VisaAndTravel/visa/HealthCorona/Health/EditHealth';
+import EditCovid from '../../../modules/VisaAndTravel/visa/HealthCorona/Covid/EditCovid';
 import PieChart from '../../../modules/VisaAndTravel/visa/Pie';
 import Radial from '../../../modules/VisaAndTravel/visa/Radial';
 import Treemap from '../../../modules/VisaAndTravel/visa/Treemap';
@@ -74,12 +78,25 @@ export const recharts2Configs = [
     element: <AddHealth/>,
   },
   {
+    path: '/Hr/VisaHealth/AddCoronaVacine',
+    element: <AddCorona/>,
+  },
+
+  {
     path: '/Hr/VisaHealth/ViewHealthCertification/:id',
     element: <  ViewHealth/>,
   },
   {
+    path: '/Hr/VisaHealth/ViewCovid/:id',
+    element: <ViewCovid/>,
+  },
+  {
     path: '/Hr/VisaHealth/EditHealthCertification/:id',
     element: <EditHealth/>,
+  },
+  {
+    path: '/Hr/VisaHealth/EditCovid/:id',
+    element: <EditCovid/>,
   },
 
   
@@ -87,6 +104,11 @@ export const recharts2Configs = [
     path: '/Hr/VisaHealth/HealthCertification',
     element: <Health />,
   },
+  {
+    path: '/Hr/VisaHealth/CovidVaccine',
+    element: <Covid />,
+  },
+
   {
     path: '/Hr/VisaHealth/CoronaTest',
     element: <ComposedChart />,

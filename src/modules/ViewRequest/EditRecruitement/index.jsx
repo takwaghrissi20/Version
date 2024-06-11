@@ -331,8 +331,6 @@ const ViewRecruitementAbove = () => {
               <AppRowContainer>
                 <Col xs={24} md={12}>
                   <Form.Item label='Desired Date of Recruitment' name='DateDesiredRecruitement'
-
-
                   >
                     <StyledScrumBoardDatePicker
                       value={newdesiredDate}

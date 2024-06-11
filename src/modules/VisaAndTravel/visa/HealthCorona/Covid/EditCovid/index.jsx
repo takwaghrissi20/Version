@@ -12,7 +12,7 @@ import ConfirmationModal from '../../../../../../@crema/components/AppConfirmati
 import AppPageMeta from '../../../../../../@crema/components/AppPageMeta';
 import { useLocation } from 'react-router-dom';
 
-const EditHeath = () => {
+const EditCovid = () => {
   const location = useLocation();
   const [form] = Form.useForm();
   const idv = location.state ? location.state.idv : null;
@@ -20,20 +20,16 @@ const EditHeath = () => {
   const name = location.state ? location.state.name : null;
   const projName = location.state ? location.state.projName : null;
   const vaccinType = location.state ? location.state.vaccinType : null;
-  const DateFetness = location.state ? location.state.DateFetness : null;
-  const resultFitness = location.state ? location.state.resultFitness : null;
-  const hypatitDare = location.state ? location.state.hypatitDare : null;
-  const hepatitResult = location.state ? location.state.hepatitResult : null;
-  const idzresult = location.state ? location.state.idzresult : null;
-  const idzdate = location.state ? location.state.idzdate : null;
+  const   typeCorona = location.state ? location.state. typeCorona : null;
+  const   corona1Date = location.state ? location.state.corona1Date : null;
+  const   corona2Date = location.state ? location.state. corona2Date : null;
 
-  const [newDateFetness, setnewDateFetness] = useState(DateFetness);
-  const [newresultFitness, setnewresultFitness] = useState(resultFitness);
-  const [newDateHepatitie, setnewDateHepatitie] = useState(hypatitDare);
-  const [newresultHepatitie, setnewresultHepatitie] = useState(hepatitResult);
-  const [newDateidz, setnewDateidz] = useState(idzdate);
-  const [newresultidz, setnewresultidz] = useState(idzresult);
-  const [confirmationUpdate, setConfirmationUpdate] = useState(false);
+  const [newtypeCorona, setnewtypeCorona] = useState(typeCorona);
+  const [newcorona1Date, setnewcorona1Date] = useState(corona1Date);
+  const [newcorona2Date, setnewcorona2Date] = useState(corona2Date);
+  const [ confirmationUpdate, setConfirmationUpdate] = useState(false);
+
+ 
   const navigate = useNavigate();
   
   const goBack = () => {
@@ -59,12 +55,11 @@ const EditHeath = () => {
           getsId: getsid,
           name: name,
           projName: projName,
-          dateTestWork: newDateFetness,
-          resultFitness: newresultFitness,
-          hypatitDare: newDateHepatitie,
-          hepatitResult: newresultHepatitie,
-          idzresult: newresultidz,
-          idzdate: newDateidz
+          typeVccin:vaccinType,
+          ypeCorona:newtypeCorona,
+          corona1Date:newcorona1Date,
+          corona2Date:newcorona2Date
+         
         })
       });
 
@@ -94,7 +89,7 @@ const EditHeath = () => {
       >
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
-            <Typography.Title level={4}>Edit Health For Mobilization</Typography.Title>
+            <Typography.Title level={4}>Edit Covid Vaccine</Typography.Title>
           </div>
         </div>
         <Divider style={{ marginTop: 16, marginBottom: 16 }} />
@@ -143,7 +138,7 @@ const EditHeath = () => {
         <Divider style={{ marginTop: 16, marginBottom: 16 }} />
         <AppRowContainer>
           <Col xs={24} md={6}>
-            <Typography.Title level={5}>Health Details</Typography.Title>
+            <Typography.Title level={5}>Covid Details</Typography.Title>
           </Col>
           <Col xs={24} md={18}>
             <StyledShadowWrapper>
@@ -165,59 +160,34 @@ const EditHeath = () => {
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label='Date Of Health Fetness Test:' name='Date Of Health Fetness Test:'>
-                    <DatePicker
-                      style={{ width: "100%", height: "30px" }}
-                      value={newDateFetness ? dayjs(newDateFetness) : null}
-                      onChange={(date, dateString) => setnewDateFetness(dateString)}
+                  <Form.Item label='Type Covid:' name='Type Covid:'>
+                    <Input
+                      placeholder="Type Covid"
+                      value={newtypeCorona}
+                      onChange={(e) => setnewtypeCorona(e.target.value)}
                     />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label='Result Fetness Test:' name='Result Fetness Test:'>
-                    <Input
-                      placeholder="Result Fetness Test"
-                      value={newresultFitness}
-                      onChange={(e) => setnewresultFitness(e.target.value)}
+                  <Form.Item label='Date Of Health Fetness Test:' name='Date Of Health Fetness Test:'>
+                    <DatePicker
+                      style={{ width: "100%", height: "30px" }}
+                      value={newcorona1Date? dayjs(newcorona1Date) : null}
+                      onChange={(date, dateString) => setnewcorona1Date(dateString)}
                     />
                   </Form.Item>
                 </Col>
+               
                 <Col xs={24} md={12}>
                   <Form.Item label='Date Of Hepatitie Test:' name='Date Of Hepatitie Test:'>
                     <DatePicker
                       style={{ width: "100%", height: "30px" }}
-                      value={newDateHepatitie ? dayjs(newDateHepatitie) : null}
-                      onChange={(date, dateString) => setnewDateHepatitie(dateString)}
+                      value={newcorona2Date ? dayjs(newcorona2Date) : null}
+                      onChange={(date, dateString) => setnewcorona2Date(dateString)}
                     />
                   </Form.Item>
                 </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Result Hepatitie Test:' name='Result Hepatitie Test:'>
-                    <Input
-                      placeholder="Result Hepatitie Test"
-                      value={newresultHepatitie}
-                      onChange={(e) => setnewresultHepatitie(e.target.value)}
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Date Of IDZ/HIV Test:' name='Date Of IDZ/HIV Test:'>
-                    <DatePicker
-                      style={{ width: "100%", height: "30px" }}
-                      value={newDateidz ? dayjs(newDateidz) : null}
-                      onChange={(date, dateString) => setnewDateidz(dateString)}
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Result IDZ/HIV Test:' name='Result IDZ/HIV Test:'>
-                    <Input
-                      placeholder="Result IDZ/HIV Test"
-                      value={newresultidz}
-                      onChange={(e) => setnewresultidz(e.target.value)}
-                    />
-                  </Form.Item>
-                </Col>
+             
               </AppRowContainer>
             </StyledShadowWrapper>
           </Col>
@@ -248,4 +218,4 @@ const EditHeath = () => {
   );
 };
 
-export default EditHeath;
+export default EditCovid;

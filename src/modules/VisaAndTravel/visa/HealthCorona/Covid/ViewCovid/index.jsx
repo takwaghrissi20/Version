@@ -23,12 +23,10 @@ const ViewHeath = () => {
   const  name = location.state ? location.state.name : null;
   const   projName = location.state ? location.state. projName : null;
   const   vaccinType = location.state ? location.state. vaccinType : null;
-  const   DateFetness = location.state ? location.state. DateFetness : null;
-  const   resultFitness = location.state ? location.state.  resultFitness : null;
-  const   hypatitDare = location.state ? location.state.  hypatitDare : null;
-  const   hepatitResult = location.state ? location.state.    hepatitResult: null;
-  const   idzresult = location.state ? location.state.idzresult: null;
-  const    idzdate = location.state ? location.state.  idzdate: null;
+  const   typeCorona = location.state ? location.state. typeCorona : null;
+  const   corona1Date = location.state ? location.state.corona1Date : null;
+  const   corona2Date = location.state ? location.state. corona2Date : null;
+ 
   const navigate = useNavigate();
   const goBack = () => {
     navigate(-1)
@@ -38,7 +36,7 @@ const ViewHeath = () => {
 
   return (
     <>  
-      <AppPageMeta title='Add Heath' />
+      <AppPageMeta title='Add Covid Vaccin' />
       <Form
         form={form}
         layout='vertical'
@@ -48,7 +46,7 @@ const ViewHeath = () => {
       >
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
-            <Typography.Title level={4}>View Health For Mobilization</Typography.Title>
+            <Typography.Title level={4}>View Covi Vaccin</Typography.Title>
           </div>
         </div>
         <Divider style={{ marginTop: 16, marginBottom: 16 }} />
@@ -107,7 +105,7 @@ const ViewHeath = () => {
        <Divider style={{ marginTop: 16, marginBottom: 16 }} />
         <AppRowContainer>
           <Col xs={24} md={6}>
-            <Typography.Title level={5}>Health Details</Typography.Title>
+            <Typography.Title level={5}>Covid Details</Typography.Title>
           </Col>
           <Col xs={24} md={18}>
             <StyledShadowWrapper>
@@ -129,56 +127,33 @@ const ViewHeath = () => {
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label='Date Of Health Fetness Test:' name='Date Of Health Fetness Test:'>
+                  <Form.Item label='Corona Type:' name='Corona Type:'>
                     <Input
                       className='Input'
-                      placeholder={DateFetness}
+                      placeholder={typeCorona}
                       readOnly />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label='Result Fetness Test:' name='Result Fetness Test:'>
+                  <Form.Item label='First Dose Covid Date :' name='First Dose Covid Date:'>
                     <Input
                       className='Input'
-                      placeholder={resultFitness}
+                      placeholder={corona1Date}
                       readOnly />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label='Date Of Hepatitie Test:' name='Date Of Hepatitie Test:'>
+                  <Form.Item label='Second Dose Covid Date:' name='Date Of Second Test:'>
                     <Input
                       className='Input'
-                      placeholder={hypatitDare}
+                      placeholder={corona2Date}
                       readOnly />
                   </Form.Item>
                 </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Result Hepatitie Test:' name='Result Hepatitie Test:'>
-                    <Input
-                      className='Input'
-                      placeholder={hepatitResult}
-                      readOnly />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Date Of IDZ/HIV Test:' name='Date Of IDZ/HIV Test:'>
-                    <Input
-                      className='Input'
-                      placeholder={idzdate }
-                      readOnly />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Result IDZ/HIV Test:' name='Result IDZ/HIV Test:'>
-                    <Input
-                      className='Input'
-                      placeholder={ idzresult}
-                      readOnly />
-                  </Form.Item>
-                </Col>
-                
               
-       
+               
+                
+          
       
               </AppRowContainer>
             </StyledShadowWrapper>

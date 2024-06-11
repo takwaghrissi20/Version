@@ -73,7 +73,7 @@ const SignInJwtAuth = () => {
                     name='basic'
                     initialValues={{
                       remember: true,
-                      username: 'admin',
+                      username: 'moklos',
                       password: '123456789',
                     }}
                     onFinish={signInUser}
