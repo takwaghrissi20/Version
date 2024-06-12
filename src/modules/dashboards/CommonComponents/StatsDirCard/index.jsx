@@ -18,7 +18,6 @@ const { Link } = Anchor;
 const StatsDirCard = ({ data }) => {
   return (
   
-  
     <AppCard className='card-hover no-card-space'>
       <StyledFlexWrapper>
         <StyledFlexContainer>

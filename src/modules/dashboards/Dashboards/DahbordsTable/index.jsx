@@ -15,7 +15,7 @@ import { BiArchiveIn } from 'react-icons/bi';
 import { Space, Table } from 'antd';
 
 
-const FixHeader = ({ orderData, loading }) => {
+const FixHeader = ({ orderData, loading,listDep }) => {
   const getDesiredDateColor = (desiredDate) => {
     const daysDifference = desiredDate ? Math.ceil((new Date(desiredDate) - new Date()) / (1000 * 60 * 60 * 24)) : '';
     return daysDifference < 0 ? 'red' : 'green';
@@ -201,18 +201,48 @@ const FixHeader = ({ orderData, loading }) => {
 
       ),
 
-
     }
   ];
- 
-  return (
+  const user = localStorage.getItem("role");
+  return ( 
     <Space direction='vertical' style={{ width: '100%' }}>
-      <Table
+  {user.includes('It') && (
+    <Table
+      columns={columns}
+      dataSource={listDep}
+      scroll={{ y: 250 }}
+    />
+  )}
+  {user.includes('admin') && (
+    <Table
       columns={columns}
       dataSource={orderData}
-        scroll={{ y: 250 }}
-      />
-    </Space>
+      scroll={{ y: 250 }}
+    />
+  )}
+</Space>
+    
+    // <Space direction='vertical' style={{ width: '100%' }}>
+    //   {user.includes('It')? 
+    //      <Table
+    //      columns={columns}
+    //       dataSource={listDep}
+    //       scroll={{ y: 250 }}
+    //      />
+        
+    //   :null}
+    //    {user.includes('admin')? 
+    //      <Table
+    //      columns={columns}
+    //      dataSource={orderData}
+    //        scroll={{ y: 250 }}
+    //      />
+      
+      
+     
+    //   :null}
+   
+    // </Space>
   );
 };
 

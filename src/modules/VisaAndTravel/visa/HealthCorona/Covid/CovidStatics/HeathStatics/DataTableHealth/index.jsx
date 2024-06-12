@@ -11,12 +11,13 @@ import { MoreOutlined } from '@ant-design/icons';
 import ConfirmationModal from '../../../../../../../../@crema/components/AppConfirmationModal';
 import IntlMessages from '../../../../../../../../@crema/helpers/IntlMessages';
 import { useNavigate } from 'react-router-dom';
-const TableHealth = ({vaccin}) => {
+const TableCovidHealth = ({vaccin}) => {
     
   //const [findIdData, setFindIdData] = useState(null);
 
   const [isDelteVaccin, onDeleteVaccin] = useState(false);
   const [idv, setIdv] = useState("");
+  const [getsId, setGetsId] = useState("");
   const [data, setData] = useState("");
 
   const navigate = useNavigate();
@@ -56,7 +57,7 @@ const TableHealth = ({vaccin}) => {
                 ? "https://dev-gateway.gets-company.com"
                 : "";
 //Ajouter delete par type
-        const response = await fetch(`${endPoint}/api/v1/vacin/delete?code=${idv}`, {
+        const response = await fetch(`${endPoint}/api/v1/vacin/delete?code=${idv}&id=${getsId}`, {
             method: 'DELETE',
         });
 
@@ -96,6 +97,8 @@ const findId = async (code) => {
     if (response.ok) {
       const responseData = await response.json();
       setData(responseData)
+      setGetsId(data?.getsId)
+      
       setIdv(responseData?.idv)
     
 
@@ -122,8 +125,6 @@ const  handleViewHealth = () => {
     }
 
   });
-
-
 
 
   
@@ -239,4 +240,4 @@ const  handleViewHealth = () => {
 
 
 
-export default TableHealth;
+export default TableCovidHealth;

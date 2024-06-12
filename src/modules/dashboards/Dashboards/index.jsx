@@ -12,15 +12,17 @@ import TabsForms from './TabsForms';
 import TabsFormsVisa from './TabsFormsVisa';
 import TabsFormsPassport from './TabsFormsPassport';
 import { StyledBuyCellCard, StyledTabs } from '../../../styles/index.styled';
-
 const Dashboards = () => {
   const [page, setPage] = useState(0);
   const [{ apiData: metricsData }] = useGetDataApi('/dashboard/metrics');
   const [{ apiData: crmData }] = useGetDataApi('/dashboard/crm');
   const { messages } = useIntl();
   const [datarecruitement, setDatarecruitement] = useState([]);
+  const [datarecruitementEmail, setDatarecruitementEmail] = useState([]);
   const [visaExpered, setVisaExpered] = useState([]);
   const [passportExpered, setPassportExpered] = useState([]);
+  const [listDep,setListDep] = useState([]);
+  const [type,setType]=useState("")
   const fetchData = async () => {
     try {
       const endPoint =
@@ -50,11 +52,38 @@ const Dashboards = () => {
       console.error('Erreur lors de la récupération des données:', error);
     }
   };
-  const fetchExpiredVisa = async () => {
-  
+  const fetchDataParEmail = async () => {
     try {
-     
+      const endPoint =
+        process.env.NODE_ENV === "development"
+          ? "https://dev-gateway.gets-company.com"
+          : "";
 
+       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/getRecByType?page=${page}&size=10&sortBy=recruttrequestDate`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('La requête a échoué avec le code ' + response.status);
+      }
+      
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
+      }
+      const data = await response.json();
+    
+      setDatarecruitement(data);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données:', error);
+    }
+  };
+  const fetchExpiredVisa = async () => {
+     try {
+    
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list`);
 
 
@@ -103,29 +132,77 @@ const Dashboards = () => {
   useEffect(() => {
     fetchData();
     fetchExpiredVisa()
+    fetchDataParPosition()
   }, [page]);
 
 
+  const user = localStorage.getItem("role");
+  console.log("user",user)
   const items = [
     {
-      label: 'Recruitement',
+      label: 'Recruitment',
       key: '1',
-      children: <TabsForms datarecruitement={datarecruitement} page={page} />,
+      children: <TabsForms      
+      listDep={listDep}
+      datarecruitement={datarecruitement} page={page} />,
     },
-    {
+    // {
+    //   label: 'Visa Expired',
+    //   key: '2',
+    //   children: <TabsFormsVisa expiredVisaData={visaExpered} />,
+    // },
+    // {
+    //   label: 'Passport Expired',
+    //   key: '3',
+    //   children: <TabsFormsPassport passportExpered={passportExpered} />,
+    // },
+    ...(user.includes('Manager') ? [] : [{
+      label: 'Passport Expired',
+      key: '3',
+      children: <TabsFormsPassport passportExpered={passportExpered} />,
+    }]
+
+  ),
+    ...(user.includes('Manager') ? [] : [{
       label: 'Visa Expired',
       key: '2',
       children: <TabsFormsVisa expiredVisaData={visaExpered} />,
-    },
-    {
-      label: 'Passport Expired',
-      key: '3',
-      children: < TabsFormsPassport passportExpered={passportExpered} />,
-    },
-  ];
+    }]
 
-   
+  ),
+  ];
+//Filter Par Position
+const fetchDataParPosition = async () => {
   
+  try {
+    const endPoint =
+      process.env.NODE_ENV === "development"
+        ? "https://dev-gateway.gets-company.com"
+        : "";
+
+     const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('La requête a échoué avec le code ' + response.status);
+    }
+    
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      throw new TypeError("La réponse n'est pas au format JSON");
+    }
+    const data = await response.json();
+    const dataFilter = data.filter(p => p.dep && p.dep.includes('IT'));
+    setListDep(dataFilter)
+    // console.log('dataFilter',dataFilter)
+  } catch (error) {
+    console.error('Erreur lors de la récupération des données:', error);
+  }
+};
   return (
     <AppsContainer
       title={messages['sidebar.app.dashboards']}
@@ -136,7 +213,6 @@ const Dashboards = () => {
       <AppPageMeta title='Dashboards' />
       {metricsData ? (        
          <AppRowContainer ease={'easeInSine'}>
-
             {crmData?.stateData?.map((data) => (
               <Col key={data.id} xs={24} sm={12} lg={6}>
                 <StatsDirCard data={data} />
@@ -145,7 +221,6 @@ const Dashboards = () => {
           </AppRowContainer>
        
       ) : null}
-
        <AppsContainer
         style={{boxShadow: "none",
         overflow: 'auto ',

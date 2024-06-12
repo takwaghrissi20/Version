@@ -16,7 +16,7 @@ import {
   StyledOrderHeaderRight,
 } from '../../../../../../../styles/index.styled';
 import AppRowContainer from '@crema/components/AppRowContainer';
-const HealthInformation = ({ CovidStatics}) => {
+const HealthCovidInformation = ({ CovidStatics}) => {
   const { messages } = useIntl();
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -27,7 +27,7 @@ const HealthInformation = ({ CovidStatics}) => {
   const fetchDataVaciin = async () => {
     try {
 
-      const url = `https://dev-gateway.gets-company.com/api/v1/vacin/list?size=${pageSize}&page=${currentPage}&sortBy=dateTestWork`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/vacin/filterByType?size=${pageSize}&page=${currentPage}&type=COVID VACCINE`;
       const response = await fetch(url);
      
       if (!response.ok) {
@@ -103,4 +103,4 @@ const HealthInformation = ({ CovidStatics}) => {
 
 };
 
-export default HealthInformation ;
+export default HealthCovidInformation ;

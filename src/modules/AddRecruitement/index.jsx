@@ -8,6 +8,7 @@ import { useIntl } from 'react-intl';
 
 const AddRecruitement = () => {
   const { messages } = useIntl();
+
   const items = [
     {
       label: 'Recruitement Construction Team',
@@ -19,7 +20,6 @@ const AddRecruitement = () => {
       key: '2',
       children: <RecruitementBelow ></RecruitementBelow>,
     },
-
 
   ];
 

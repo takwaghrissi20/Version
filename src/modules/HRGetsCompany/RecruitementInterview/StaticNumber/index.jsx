@@ -7,8 +7,11 @@ import { Col } from 'antd';
 import {  purple, red } from '@ant-design/colors';
 
 
-const StaticNumber = ({ totalNumberInterview,totalNumber }) => {
-  console.log("totalNumber",totalNumber)
+const StaticNumber = ({ user,totalNumberInterview,totalNumber,allrecruitementaboveItRecruitement }) => {
+  console.log("totalNumber",allrecruitementaboveItRecruitement)
+  console.log("user",user)
+  const containsItAndManager = user.toLowerCase().includes('It') && user.toLowerCase().includes('Manager');
+  const finalTotalNumber = containsItAndManager ? allrecruitementaboveItRecruitement : totalNumber;
   return (
     <>
      
@@ -17,12 +20,11 @@ const StaticNumber = ({ totalNumberInterview,totalNumber }) => {
           <NumberRecruitement
             icon={'/assets/images/TotalRecruitement.svg'}
             bgColor={purple[4]}
-            totalNumber={totalNumber}
+            totalNumber={finalTotalNumber}
             heading={<IntlMessages id='Total Recruitement' />}
           />
         </Col>
-
-      
+ 
         <Col xs={24} sm={12}>
           <NumberInterview
             icon={'/assets/images/InterviewTotal.png'}

@@ -13,6 +13,11 @@ import { useLocation } from 'react-router-dom';
 const ViewRecruitementAbove = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [ischecked1, setIschecked1] = useState(false);
+  const [ischecked2, setIschecked2] = useState(false);
+  const [isNochecked, setIsNochecked] = useState(false);
+  const [isNochecked2, setIsNochecked2] = useState(false);
+
   const id = location.state ? location.state.id : null;
   const dep = location.state ? location.state.dep : null;
   const idemp = location.state ? location.state.idemp : null;
@@ -34,13 +39,118 @@ const ViewRecruitementAbove = () => {
   const signatureBod = location.state ? location.state.signatureBod : null
   const requestedDicipline = location.state ? location.state.requestedDicipline : null
   const affectedTo = location.state ? location.state.affectedTo : null
-
+  const notif1 = location.state ? location.state.notif1 : null
+  const notif = location.state ? location.state.notif : null
 
   const Back = () => {
     navigate(-1)
 
   };
+  function Validatebod(e) {
+    console.log(`checkedHead = ${e.target.checked}`);
+    setIschecked1(e.target.checked)
+    if (e.target.checked) {
+      setIsNochecked(false)
+      setIschecked2(false)
+      setIsNochecked2(false)
 
+    }
+
+
+  }
+
+  function ValidateNobod(e) {
+    console.log(`checkedHead = ${e.target.checked}`);
+    setIsNochecked(e.target.checked)
+    if (e.target.checked) {
+      setIschecked2(false)
+      setIsNochecked2(false)
+      setIschecked1(false)
+
+    }
+
+  }
+  function Validatebod2(e) {
+    console.log(`checkedHead = ${e.target.checked}`);
+    setIschecked2(e.target.checked)
+    if (e.target.checked) {
+      setIsNochecked2(false)
+      setIsNochecked(false)
+      setIschecked1(false)
+    
+    }
+  }
+  function ValidateNobod2(e) {
+    console.log(`checkedHead = ${e.target.checked}`);
+    setIsNochecked2(e.target.checked)
+    if (e.target.checked) {
+      setIsNochecked(false)
+      setIsNochecked(false)
+      setIschecked1(false)
+     
+    
+    }
+  }
+
+ 
+  const Update = async () => {
+    console.log("EisChe", ischecked1)
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update`, {
+
+        method: 'PUT',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+
+        body: JSON.stringify({
+          jobCode: id,
+          // desiredDate,
+          dep: dep,
+          idemp: idemp,
+          position: position,
+          requestName: requestName,
+          requestedDicipline: requestedDicipline,
+          approuvedRecrutRequestNumber: 1,
+          projectName: projectName,
+          totalNumber: Numbervacancies,
+          experience: Level,
+          nbExperience: nbExperience,
+          type: type,
+          affectedTo: affectedTo,
+          certif: certif,
+          bod: null, //Bod1
+          oDep: oDep,
+          exDep: exDep,
+          // signatureHod: newCheckedHod, 
+          signatureBod: ischecked1,//Bod1
+          signatureBod2:ischecked2,//Bod2
+          projRef: projCode,
+          notif:3
+
+
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+        const responseData = await response.text();
+        alert("Update Recruitement succeed")
+
+        console.log("responseData ", responseData);
+        //handleAddContactClose(true)
+      }
+
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+    }
+  };
 
   return (
     <>
@@ -379,7 +489,7 @@ const ViewRecruitementAbove = () => {
 
 
           : null}
-        <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+        {/* <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
           <Col xs={24} md={6}>
             <Typography.Title level={5}> Head of Department Inputs</Typography.Title>
           </Col>
@@ -408,7 +518,7 @@ const ViewRecruitementAbove = () => {
               </AppRowContainer>
             </StyledShadowWrapper>
           </Col>
-        </AppRowContainer>
+        </AppRowContainer> */}
 
 
         <Divider style={{ marginTop: 16, marginBottom: 16 }} />
@@ -424,19 +534,35 @@ const ViewRecruitementAbove = () => {
                 <Col xs={24} md={18}>
                   <StyledInput>
                     <Form.Item
-                      label='Executive Directors Approval'
+                      label='Executive Directors Approval BOD'
                       name='DirectorsApproval'>
-                      <Checkbox checked={signatureBod !== null}>
-                        Yes
-                      </Checkbox>
-                      <Checkbox checked={signatureBod == null}>
+                      <Checkbox checked={ischecked1} onChange={Validatebod}></Checkbox>
+
+                      Yes
+
+                      <Checkbox checked={isNochecked} onChange={ValidateNobod}>
                         No
                       </Checkbox>
 
                     </Form.Item>
                   </StyledInput>
                 </Col>
+                <Col xs={24} md={18}>
+                  <StyledInput>
+                    <Form.Item
+                      label='Executive Directors Approval BOD2'
+                      name='DirectorsApproval'>
+                      <Checkbox checked={ischecked2} onChange={Validatebod2}></Checkbox>
 
+                      Yes
+
+                      <Checkbox checked={isNochecked2} onChange={ValidateNobod2}>
+                        No
+                      </Checkbox>
+
+                    </Form.Item>
+                  </StyledInput>
+                </Col>
 
 
               </AppRowContainer>
@@ -453,8 +579,17 @@ const ViewRecruitementAbove = () => {
           style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
         >
           <Button onClick={Back}>Cancel</Button>
+          <Button
+            disabled={!ischecked1 || isNochecked}
+             onClick={Update}
+
+          >Validate</Button>
 
         </Space>
+
+
+
+
 
       </Form>
 

@@ -18,6 +18,8 @@ const RecruitementInterview = () => {
   const [totalNumber, setTotalNumber] = useState(0);
   const [lastRecruitement, setLastRecruitement] = useState("");
   const [allrecruitementabove, setAllrecruitementabove] = useState([]);
+  const [allrecruitementaboveItRecruitement, setAllrecruitementaboveItRecruitement] = useState([]);
+ 
   const [allrecruitementbelow, setAllrecruitementbelow] = useState([]);
   const [allinterviewStaffManagement, setAllinterviewStaffManagement] = useState([]);
   const [allinterviewConstructionTeam, setAllinterviewConstructionTeam] = useState([]);
@@ -67,11 +69,12 @@ const RecruitementInterview = () => {
         if (!contentType || !contentType.includes('application/json')) {
           throw new TypeError("La réponse n'est pas au format JSON");
         }
-
         const responseData = await response.json();
         const numberOfInterview = responseData.length.toString();
         setTotalNumberInterview(numberOfInterview)
         setAllinterviewStaffManagement(responseData)
+        
+
 
 
         //Recruitement
@@ -85,8 +88,6 @@ const RecruitementInterview = () => {
         if (!responseRecruitement.ok) {
           throw new Error('La requête a échoué avec le code ' + responseRecruitement.status);
         }
-
-
         const responseDataRecruitement = await responseRecruitement.json();
         const numberOfRecruitement = responseDataRecruitement.length.toString();
         setTotalNumber(numberOfRecruitement)
@@ -95,7 +96,10 @@ const RecruitementInterview = () => {
         /////////////////////////////////Type Recruitement
         const resulttypebelove = responseDataRecruitement.filter((p) => p.type === "Above Foreman");
         setAllrecruitementabove(resulttypebelove)
-
+         ////////Count Recruitement of It Manager of Type Above Foreman
+         const ItRecruitement=resulttypebelove.filter(p => p.dep && p.dep.includes('IT'));
+           console.log("ttttuuuu",ItRecruitement)
+           setAllrecruitementaboveItRecruitement(ItRecruitement.length)
         //Formen
         const resulttypebelow = responseDataRecruitement.filter((p) => p.type === "Foreman & Below");
         setAllrecruitementbelow(resulttypebelow);
@@ -124,11 +128,10 @@ const RecruitementInterview = () => {
 
     fetchDataStatiqueTotalInterviewRecruitement();
   }, []);
-
+  const user = localStorage.getItem("role");
   return (
 
     <>
-
       <AppsContainer
         title={messages['sidebar.app.recruitementinterview']}
         cardStyle={{ backgroundColor: 'transparent', boxShadow: 'none' }}
@@ -136,17 +139,22 @@ const RecruitementInterview = () => {
       >
         {/*Layout of dahbords*/}
         <AppPageMeta title='InterviewRecruitement' />
-
         <div>
-
           <AppRowContainer ease={'easeInSine'}>
-
-            <Col xs={24} md={10}>
-              <LastRequestor lastRecruitement={lastRecruitement} />
+            {user==="admin" ?
+              <Col xs={24} md={10}>
+              <LastRequestor
+              
+              lastRecruitement={lastRecruitement} />
             </Col>
-
+            :null
+                         
+          }
+          
             <Col xs={24} md={14}>
-              <StaticNumber totalNumberInterview={totalNumberInterview} totalNumber={totalNumber} />
+              <StaticNumber 
+              allrecruitementaboveItRecruitement={allrecruitementaboveItRecruitement}          
+              totalNumberInterview={totalNumberInterview} totalNumber={totalNumber} user={user}/>
             </Col>
 
             {/* <Col  xs={24} sm={12} lg={6}>

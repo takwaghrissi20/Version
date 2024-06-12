@@ -29,6 +29,7 @@ export const dashboardConfig = [
     path: '/dashboards/hr/:CodeJob',
     element: <InterviewSheet />,
   },
+
   {
     permittedRole: RoutePermittedRole.User,
     path: '/dashboards/hr/InterviewSheetContructionStaff/:CodeJob',

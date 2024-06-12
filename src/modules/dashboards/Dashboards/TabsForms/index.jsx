@@ -16,7 +16,7 @@ import AppsContainer from "../../../../@crema/components/AppsContainer"
 import { useIntl } from 'react-intl';
 import { useGetDataApi } from '../../../../@crema/hooks/APIHooks';
 
-const TabsForms = ({ datarecruitement }) => {
+const TabsForms = ({ datarecruitement,listDep }) => {
   const [page, setPage] = useState(1);
   const [search, setSearchQuery] = useState('');
   const pageSize = 10;
@@ -26,7 +26,6 @@ const TabsForms = ({ datarecruitement }) => {
      {},
      false,
    );
-
   const onChange = (page) => {
     setPage(page);
   };
@@ -49,6 +48,7 @@ const TabsForms = ({ datarecruitement }) => {
   const onSearchOrder = (e) => {
     setSearchQuery(e.target.value);
     setPage(1); 
+
   };
  // Filtrer les données en fonction de la recherche
  const filteredData = datarecruitement?.filter(item =>
@@ -73,10 +73,8 @@ const paginatedData = filteredData.slice(startIndex, startIndex + pageSize);
                 iconPosition='right'
                 id='user-name'
                 onChange={onSearchOrder}
-                placeholder={messages['common.searchHere']}/>
-              
+                placeholder={messages['common.searchHere']}/>            
               </div>
-
             <StyledOrderHeaderRight>
             <StyledOrderHeaderPagination
                   pageSize={pageSize}
@@ -84,11 +82,8 @@ const paginatedData = filteredData.slice(startIndex, startIndex + pageSize);
                   page={page}
                   onChange={onPageChange}
               />
-            </StyledOrderHeaderRight>
-
-
-          
-          </StyledOrderHeader>
+            </StyledOrderHeaderRight>       
+            </StyledOrderHeader>
         </AppsHeader>
 
         <AppsContent
@@ -103,8 +98,8 @@ const paginatedData = filteredData.slice(startIndex, startIndex + pageSize);
           }}
         >
           <OrderTable 
-           loading={loading} orderData={paginatedData}
-
+           loading={loading} orderData={paginatedData} 
+           listDep={listDep}
           />
        
         </AppsContent>

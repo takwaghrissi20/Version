@@ -33,30 +33,54 @@ const AppVerticalNav = ({ routesConfig }) => {
     const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
     setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
   };
-
   const filterMenuItems = (items) => {
     return items.filter(item => {
-      console.log("roless",item)
+      
       if (userRole.includes("Manager")) {
         if (item.id === "VisaHealth"||
             item.id === "ManpowerLocation"||
             item.id === "Employees"  ||
             item.id === "attendance" ||
             item.id === "VacationLeave" ||
-            item.id === "ManpowerEvaluation" 
-          
-                
-          
+            item.id === "ManpowerEvaluation"                                
           )
            {
           return false; 
         }
       }
-      if (item.children && item.children.length > 0) {
+      else if (userRole.includes("bod")) {
+        if (item.id === "VisaHealth"||
+            item.id === "ManpowerLocation"||
+            item.id === "Employees"  ||
+            item.id === "attendance" ||
+            item.id === "VacationLeave" ||
+            item.id === "ManpowerEvaluation" ||
+            item.id === "Add Recruitment" 
+                                    
+          )
+           {
+          return false; 
+        }
+      }
+      else if (userRole.includes("Administrator" )) {
+        if (
+            item.id === "VisaHealth"  || 
+            item.id === "ManpowerEvaluation" ||
+            item.id === "ManpowerLocation"
+          
+          
+          )
+           
+             {
+          return false; 
+        }
+      }
+   
 
+      if (item.children && item.children.length > 0) { 
         item.children = filterMenuItems(item.children);
       }     
-      if (userRole.includes("Manager")) {
+      else if (userRole.includes("Manager")) {
         if (item.id === "Interview Statistics" ||
             item.id === "Integration" ||
             item.id === "IntegrationStatistics" ||
@@ -66,6 +90,7 @@ const AppVerticalNav = ({ routesConfig }) => {
           return false; 
         }
       }
+ 
   
       return true;
     });

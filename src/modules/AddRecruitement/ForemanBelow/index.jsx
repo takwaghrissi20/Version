@@ -43,7 +43,7 @@ const AddRecruitementForemanBelow = () => {
   const [isExtraDep, setIsExtraDep] = useState(false);
   const [isSave, onSave] = useState(false);
   const [isCancel, onCancel] = useState(false);
-  
+  const user = localStorage.getItem("role");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [type,setType]=useState("Foreman & Below")
   const [form] = Form.useForm();
@@ -288,7 +288,7 @@ const Saverecrutement = async () => {
         // // exDep: "",
         // // status:"0",
          nbExperience: desiredExperience,
-          projRef:projectCode,
+        projRef:projectCode,
         // bod: isOkBod,
          idemp:profile?.getsId,
          desiredDate:desiredrecruitementDate,
@@ -742,48 +742,56 @@ console.log("isNOHead",isOkHead)
         </StyledShadowWrapper>
       </Col>
     </AppRowContainer>
+    {user.includes('bod') ?
+          <>
+            <Divider style={{ marginTop: 16, marginBottom: 16 }} />
 
-      
-      <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+            <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+              <Col xs={24} md={6}>
+                <Typography.Title level={5}>Decision BOD</Typography.Title>
 
-      <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-       <Col xs={24} md={6}>
-        <Typography.Title level={5}>Decision BOD</Typography.Title>
-        
-      </Col>
-           <Col xs={24} md={18}>
-           <StyledShadowWrapper>
-          <AppRowContainer>
-          <Col xs={24} md={12}>
-          <StyledInput>
-                <Form.Item
-                  label='Executive Directors Approval'
-                  name='DirectorsApproval'
-                  // rules={[
-                  //   { required: true, message: 'Please Check your  Executive Directors Approval!' },
-
-                  // ]}
->
-                  <Checkbox  checked={isOkBod} onChange={OkBOD}>
-               
-                    <IntlMessages id='accepted.BOD' />
-                  </Checkbox>
-                  <Checkbox checked={isNoBod} onClick={NoBOD}>
-                    <IntlMessages id='Refuse.BOD' />
-                  </Checkbox>
-                  </Form.Item>
-                </StyledInput>
               </Col>
-              
-      
+              <Col xs={24} md={18}>
+                <StyledShadowWrapper>
+                  <AppRowContainer>
+                    <Col xs={24} md={18}>
+                      <StyledInput>
+                        <Form.Item
+                          label='Executive Directors Approval'
+                          name='DirectorsApproval'
+                        // rules={[
+                        //   { required: true, message: 'Please Check your  Executive Directors Approval!' },
 
-          </AppRowContainer>
-        </StyledShadowWrapper>
-          
-                
+                        // ]}
+
+                        >
+                          <Checkbox checked={isOkBod} onChange={OkBOD}>
+                            <IntlMessages id='accepted.BOD' />
+                          </Checkbox>
+                          <Checkbox checked={isNoBod} onClick={NoBOD}>
+                            <IntlMessages id='Refuse.BOD' />
+                          </Checkbox>
+                        </Form.Item>
+                      </StyledInput>
+                    </Col>
+
+
+
+                  </AppRowContainer>
+                </StyledShadowWrapper>
+
+
               </Col>
-     
-    </AppRowContainer>
+
+            </AppRowContainer>
+          </>
+
+
+
+          : null}
+
+    
+   
 
 
       <Space

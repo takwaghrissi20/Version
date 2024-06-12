@@ -18,6 +18,7 @@ const TableHealth = ({vaccin}) => {
   const [isDelteVaccin, onDeleteVaccin] = useState(false);
   const [idv, setIdv] = useState("");
   const [data, setData] = useState("");
+  const [getsId, setGetsId] = useState("");
 
   const navigate = useNavigate();
 
@@ -60,7 +61,7 @@ const TableHealth = ({vaccin}) => {
                 ? "https://dev-gateway.gets-company.com"
                 : "";
 
-        const response = await fetch(`${endPoint}/api/v1/vacin/delete?code=${idv}`, {
+        const response = await fetch(`${endPoint}/api/v1/vacin/delete?code=${idv}&id=${getsId}`, {
             method: 'DELETE',
         });
 
@@ -101,6 +102,7 @@ const findId = async (code) => {
       const responseData = await response.json();
       setData(responseData)
       setIdv(responseData?.idv)
+      setGetsId(data?.getsId)
     
 
 
