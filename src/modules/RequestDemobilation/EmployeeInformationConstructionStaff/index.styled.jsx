@@ -1,4 +1,4 @@
-import AppCard from '../../../../@crema/components/AppCard';
+import AppCard from '../../../@crema/components/AppCard';
 import { Button,Form,DatePicker } from 'antd';
 import styled from 'styled-components';
 

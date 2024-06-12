@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import AppRowContainer from '../../../../@crema/components/AppRowContainer';
+import AppRowContainer from '../../../@crema/components/AppRowContainer';
 import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, List, Row } from 'antd';
 import {
   StyledSecondaryText,
@@ -8,11 +8,11 @@ import {
 
 } from './index.styled';
 import { MdEdit } from 'react-icons/md';
-import { useInfoViewActionsContext } from "../../../../@crema/context/AppContextProvider/InfoViewContextProvider";
+import { useInfoViewActionsContext } from "../../../@crema/context/AppContextProvider/InfoViewContextProvider";
 import { useNavigate } from "react-router-dom";
 import { useIntl } from 'react-intl';
 import { FaSearch } from "react-icons/fa";
-import ValidateEmployees from "../../../Model/ModalValidateInfoEmployee"
+import ValidateEmployees from "../../Model/ModalValidateInfoEmployee"
 import moment from 'moment';
 const { Option } = Select;
 const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,

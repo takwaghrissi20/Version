@@ -34,6 +34,7 @@ const AppVerticalNav = ({ routesConfig }) => {
     setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
   };
   const filterMenuItems = (items) => {
+    console.log("filterMenuItems",items)
     return items.filter(item => {
       
       if (userRole.includes("Manager")) {
@@ -41,8 +42,24 @@ const AppVerticalNav = ({ routesConfig }) => {
             item.id === "ManpowerLocation"||
             item.id === "Employees"  ||
             item.id === "attendance" ||
+            item.id === "VacationLeave"  ||
+            item.id === "ManpowerEvaluation"                                  
+          )
+
+           {
+          return false; 
+        }
+      }
+      if (userRole.includes("Planner")) {
+        if (item.id === "VisaHealth"||
+            item.id === "ManpowerLocation"||
+            item.id === "Employees"  ||
+            item.id === "attendance" ||
             item.id === "VacationLeave" ||
-            item.id === "ManpowerEvaluation"                                
+            item.id === "ManpowerEvaluation"  ||
+            item.id === "Dashboards"  ||
+            item.id === "recruitement" 
+
           )
            {
           return false; 

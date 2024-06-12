@@ -103,10 +103,9 @@ const findId = async (code) => {
       setData(responseData)
       setIdv(responseData?.idv)
       setGetsId(data?.getsId)
-    
+  
 
-
-    }
+    }  
   } catch (error) {
     console.error("Erreur lors de la récupération du vaccin:", error);
   }

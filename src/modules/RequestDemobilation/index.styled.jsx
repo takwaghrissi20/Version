@@ -1,5 +1,5 @@
 
-import AppCard from '../../../@crema/components/AppCard';
+import AppCard from '../../@crema/components/AppCard';
 import styled from 'styled-components';
 import { Button,Form } from 'antd';
 

@@ -1,16 +1,16 @@
 import React,{useEffect,useState} from 'react';
 import { useNavigate} from "react-router-dom";
-import AppPageMeta from '../../../@crema/components/AppPageMeta';
+import AppPageMeta from '../../@crema/components/AppPageMeta';
 import {
   StyledScrumBoardDetailTitle,
   StyledOrderHeader,
   StyledFormAddWrapper
 } from './index.styled';
-import AppAnimate from '../../../@crema/components/AppAnimate';
-import AppRowContainer from '../../../@crema/components/AppRowContainer';
+import AppAnimate from '../../@crema/components/AppAnimate';
+import AppRowContainer from '../../@crema/components/AppRowContainer';
 import { Col } from 'antd';
-import AppCard from '../../../@crema/components/AppCard';
-import AppsHeader from '../../../@crema/components/AppsContainer/AppsHeader';
+import AppCard from '../../@crema/components/AppCard';
+import AppsHeader from '../../@crema/components/AppsContainer/AppsHeader';
 import EmployeeInformationConstruction from './EmployeeInformationConstructionStaff'
 import { useLocation } from 'react-router-dom';
 const AddEmployeesIdConstructionStaff = ({
