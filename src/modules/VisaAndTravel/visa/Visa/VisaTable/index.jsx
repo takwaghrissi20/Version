@@ -5,6 +5,8 @@ import AppAnimate from '../../../../../@crema/components/AppAnimate'
 import { StyledAnChar, StyledOrderTable,StyledAction } from '../../../../../styles/index.styled';
 import VisaStatusEdit from "../../../../../modules/Model/VisaStatusEdit";
 import { AiFillEdit } from "react-icons/ai";
+import { Badge,  Space, Table } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 const OrderTable = ({ dataemployeesVisa }) => {
 
   const [findIdData, setFindIdData] = useState(null);
@@ -18,7 +20,10 @@ const OrderTable = ({ dataemployeesVisa }) => {
     setFindIdData(null)
     onEditVisa(false)
   }
-
+  const items = [
+    { key: 1, label: 'Action 1' },
+    { key: 2, label: 'Action 2' },
+  ];
   //Find By Id
   const findId = async (code) => {
     try {
@@ -170,8 +175,7 @@ const OrderTable = ({ dataemployeesVisa }) => {
         hoverColor
         data={dataemployeesVisa}
         columns={columns}
-        scroll={{ x: 'auto',  y: tableHeight }}
-      
+        scroll={{ x: 'auto',  y: tableHeight }}      
       />
        {isEditVisa && (
         <VisaStatusEdit

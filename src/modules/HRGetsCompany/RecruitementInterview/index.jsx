@@ -98,7 +98,6 @@ const RecruitementInterview = () => {
         setAllrecruitementabove(resulttypebelove)
          ////////Count Recruitement of It Manager of Type Above Foreman
          const ItRecruitement=resulttypebelove.filter(p => p.dep && p.dep.includes('IT'));
-           console.log("ttttuuuu",ItRecruitement)
            setAllrecruitementaboveItRecruitement(ItRecruitement.length)
         //Formen
         const resulttypebelow = responseDataRecruitement.filter((p) => p.type === "Foreman & Below");
@@ -113,14 +112,8 @@ const RecruitementInterview = () => {
         if (!responseInterviewConstruction.ok) {
           throw new Error('La requête a échoué avec le code ' + responseInterviewConstruction.status);
         }
-
-
         const responseDataInterview = await responseInterviewConstruction.json();
         setAllinterviewConstructionTeam(responseDataInterview)
-
-
-
-
       } catch (error) {
         console.error("Erreur lors de la récupération des données:", error);
       }

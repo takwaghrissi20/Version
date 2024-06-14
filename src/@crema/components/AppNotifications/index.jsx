@@ -32,12 +32,12 @@ const AppNotifications = () => {
       }
 
       const data = await response.json();
-      console.log("eeeeedata",data)
+      
       const filteredData= data.filter(item => item.notfi === 0);
       //Filtert Notif ==0 de bod 
-      console.log("FilterDateNotif0222",filteredData)
+   
     
-      setCount(FilterDateNotif.length)
+      //setCount(FilterDateNotif.length)
       setNotif(filteredData)
     
     } catch (error) {
@@ -72,7 +72,7 @@ const AppNotifications = () => {
       key: 2,
       label: (
         <StyledNotifyScrollSubmenu>
-          <NotificationItem  />
+          <NotificationItem  user={user} />
           {/* <StyledNotifyList
             dataSource={notification}
             renderItem={(item) => {

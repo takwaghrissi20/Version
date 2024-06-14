@@ -23,7 +23,6 @@ import {
 
 const EmployeesStatus = () => {
   const { messages } = useIntl();
-
   const [employeesoffice, setEmployeesoffice] = useState([]);
   const [employeessite, setEmployeessite] = useState([]);
   const [employeesmixt, setEmployeesmixt] = useState([]); 
@@ -291,7 +290,9 @@ const EmployeesStatus = () => {
           </StyledCustomerHeaderRight>
          </StyledCustomerHeader>
          </AppsHeader>
-          <CustomerTableOffice loading={loading} employeesoffice={employeesoffice} />
+          <CustomerTableOffice 
+          loading={loading}
+          employeesoffice={employeesoffice} />
         
         </>
       ),

@@ -71,7 +71,7 @@ const RecruitementEditForm = (props) => {
   const [newcertif, setNewcertif] = useState(certif);
   const { messages } = useIntl();
   
-console.log("desired date",newdesiredDate)
+
   //const [newdesiredDate, setNewDesiredDate] = useState(DesiredDate);
   const [dataEdit, setDataEdit] = useState(props.name)
 

@@ -9,6 +9,32 @@ const { Search } = Input;
 import { InputNumber, Select, Tabs } from 'antd';
 import AppCard from '../@crema/components/AppCard';
 import AppScrollbar from '../@crema/components/AppsContainer/AppSidebar';
+export const StyledCustomerInputView = styled.div`
+  max-width: 120px;
+
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints.sm}px) {
+    max-width: 150px;
+  }
+`;
+export const StyledCustomerHeaderRight = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+ 
+
+  [dir='rtl'] & {
+    padding-left: 0;
+    padding-right: 10px;
+  }
+`;
+
+export const StyledCustomerHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+`;
 export const StyledScrumBoardDatePicker = styled(DatePicker)`
   position: relative;
   width: 100%;
@@ -279,9 +305,9 @@ export const StyledAppWrapHeader = styled.div`
   }
 
   & h2 {
-    color: ${({ theme }) => theme.palette.text.primary};
-    font-weight: ${({ theme }) => theme.font.weight.bold};
-    font-size: ${({ theme }) => theme.font.size.lg};
+    color:#40494D;
+     font-weight: bold;
+    font-size: 1.2rem;
     margin-bottom: 0;
   }
 `;
@@ -463,18 +489,15 @@ export const StyledOrderId = styled.span`
 export const StyledAppRowContainer = styled.div`
   & .ant-row {
     & > .ant-col {
-      margin-bottom: 16px;
+
 
       & .card-outer-title {
         font-size: ${({ theme }) => theme.font.size.lg};
-        margin-bottom: 16px;
+      
         font-weight: ${({ theme }) => theme.font.weight.bold};
         color: ${({ theme }) => theme.palette.text.primary};
       }
 
-      @media screen and (min-width: ${({ theme }) => theme.breakpoints.md}px) {
-        margin-bottom: 32px;
-      }
 
       .ant-form & {
         margin-bottom: 0;

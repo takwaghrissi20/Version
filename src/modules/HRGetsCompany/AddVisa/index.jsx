@@ -465,7 +465,7 @@ const AddVisa = () => {
         <Button onClick={handleCancel}>Cancel</Button>
         <Button   
       
-        disabled={isSaveDisabled}
+        // disabled={isSaveDisabled}
         onClick={handleAddVisa} type='primary' htmlType='submit'>
            Save 
         </Button>

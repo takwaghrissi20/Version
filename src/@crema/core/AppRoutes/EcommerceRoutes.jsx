@@ -4,11 +4,17 @@ import { Navigate } from "react-router-dom";
 const RecruitementInterview  = React.lazy(() =>
   import('../../../modules/HRGetsCompany/RecruitementInterview'),
 );
+const ViewInterview  = React.lazy(() =>
+  import('../../../modules/HRGetsCompany/RecruitementInterview/ViewInterviewStaffManager'),
+);
 const ViewRecruitementInterview  = React.lazy(() =>
   import('../../../modules/ViewRequest/ViewRecruitement'),
 );
 const EditRecruitementInterview  = React.lazy(() =>
   import('../../../modules/ViewRequest/EditRecruitement')
+);
+const EditAllRecruitementInterview  = React.lazy(() =>
+  import('../../../modules/ViewRequest/EditAllRecruitement')
 );
 const AddRecruitement = React.lazy(() =>
   import('../../../modules/AddRecruitement'),
@@ -121,13 +127,24 @@ export const ecommerceConfig = [
   },
   {
     permittedRole: RoutePermittedRole.User,
+    path: '/Hr/Recruitement&Interview/View/:id',
+    element: <ViewInterview />,
+  },
+  {
+    permittedRole: RoutePermittedRole.User,
     path: '/Hr/Recruitement&Interview/Recruitement/View/:id',
     element: < ViewRecruitementInterview />,
   },
   {
     permittedRole: RoutePermittedRole.User,
     path: '/Hr/Recruitement&Interview/Recruitement/Update/:id',
-    element: < EditRecruitementInterview />,
+    element: < EditRecruitementInterview/>,
+  },
+ 
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/Hr/Recruitement&Interview/AllRecruitement/Update/:id',
+    element: < EditAllRecruitementInterview />,
   },
   
  

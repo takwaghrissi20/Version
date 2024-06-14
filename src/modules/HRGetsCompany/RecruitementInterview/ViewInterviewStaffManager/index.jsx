@@ -12,7 +12,47 @@ import AppsContent from '../../../../@crema/components/AppsContainer/AppsContent
 import Pagination from '../../../../@crema/components/AppsPagination';
 import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
 import { useNavigate } from "react-router-dom";
-const RecruitementStaff = ({ allrecruitementabove }) => {
+import { useLocation } from 'react-router-dom';
+const ViewInterviewStaff = ({ allrecruitementabove }) => {
+/////////////////////////////////////////////////////
+  const location = useLocation();
+
+  const interviewCode = location.state ? location.state.interviewCode : null;
+  const jobCode = location.state ? location.state.jobCode : null;
+  const interviwDate = location.state ? location.state.interviwDate : null;
+  const totalAccept = location.state ? location.state.totalAccept: null;
+  const totalInterv = location.state ? location.state.totalInterv : null;
+  const totalReqPos = location.state ? location.state.totalReqPos : null;
+  const totalRequiredGrade = location.state ? location.state.totalRequiredGrade: null;
+  const idNumb = location.state ? location.state.idNumb : null
+  const department = location.state ? location.state.  department: null
+  const projname = location.state ? location.state.projname : null
+  const requiredGrade= location.state ? location.state.requiredGrade : null
+  const requiredQualification= location.state ? location.state.requiredQualification : null
+  const positionToBeFilled = location.state ? location.state.positionToBeFilled: null
+  const fullName = location.state ? location.state.fullName : null
+  const birthayDate = location.state ? location.state.birthayDate : null
+  const  familySituation = location.state ? location.state.familySituation : null
+  const  experience = location.state ? location.state. experience : null
+  const educationLevel = location.state ? location.state.educationLevel : null
+  const  diploma = location.state ? location.state. diploma: null
+  const telCondidate = location.state ? location.state.telCondidate : null
+  const urlCv= location.state ? location.state.urlCv: null
+  const validatesFor= location.state ? location.state.validatesFor: null
+  const goTotest2 = location.state ? location.state.goTotest2 : null
+
+
+
+
+
+
+
+
+
+
+
+
+  ////////////////////////////
   const navigate = useNavigate();
   const [recruitementabove , setRecruitementabove ] = useState([]);
   const [recruitementaboveFiltrer, setRecruitementaboveFiltrer] = useState([]);
@@ -223,4 +263,4 @@ const RecruitementStaff = ({ allrecruitementabove }) => {
   );
 };
 
-export default RecruitementStaff;
+export default ViewInterviewStaff ;

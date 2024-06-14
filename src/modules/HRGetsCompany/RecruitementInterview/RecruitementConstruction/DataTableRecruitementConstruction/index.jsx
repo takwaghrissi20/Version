@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import PropTypes from 'prop-types';
 //import { StyledOrderTable, StyledAction } from '../index.styled';
 /// change 
 import { StyledOrderTable} from '../../../../../styles/index.styled';
-
-import { Button,Alert} from 'antd';
 import RecruitementView from "../../../../Model/RecruitementView"
 import RecruitementEdit from "../../../../Model/RecruitementEdit"
-import { Dropdown } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import {
   StyledRecentPatientBadge,
@@ -16,14 +13,26 @@ import {
 import ConfirmationModal from '../../../../../@crema/components/AppConfirmationModal';
 import IntlMessages from '../../../../../@crema/helpers/IntlMessages';
 import { useNavigate } from "react-router-dom";
-
+import { Button,Tooltip,Dropdown} from 'antd';
 const AllRecruitementStaff = ({allrecruitementbelow,findIdData,id,  findId, setFindIdData,open,handleInterview}) => {
 
   //const [findIdData, setFindIdData] = useState(null);
   const [isViewRecruitement, onViewRecruitement] = useState(false);
   const [isEditRecruitement, onEditRecruitement] = useState(false);
   const [isDelteRecruitement, onDeleteRecruitement] = useState(false);
-
+  const [tableHeight, setTableHeight] = useState('auto');
+  useEffect(() => {
+    const updateTableHeight = () => {
+      const pageHeight = window.innerHeight;
+      const tableHeight = pageHeight * 0.3; 
+      setTableHeight(tableHeight);
+    };
+    window.addEventListener('resize', updateTableHeight);
+    updateTableHeight();
+    return () => {
+      window.removeEventListener('resize', updateTableHeight);
+    };
+  }, []);
   const navigate = useNavigate();
   // const handleAddRecruitementOpen = () => {
 
@@ -188,7 +197,7 @@ const AllRecruitementStaff = ({allrecruitementbelow,findIdData,id,  findId, setF
     { key: 2, label: <span style={{ fontSize: 14 }}>Delete</span> ,onClick: handleDeleteRecruitement},
     { key: 3, label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, onClick: handleInterview },
   ];
-  const columns = [
+  const columns0 = [
     {
       title: 'Recruitement Reference',
       dataIndex: 'jobCode',
@@ -241,8 +250,7 @@ const AllRecruitementStaff = ({allrecruitementbelow,findIdData,id,  findId, setF
           {record.notif}
         </StyledRecentPatientBadge>
       ),
-    },
-   
+    },   
     {
       title: 'Actions',
       dataIndex: 'actions',
@@ -256,52 +264,7 @@ const AllRecruitementStaff = ({allrecruitementbelow,findIdData,id,  findId, setF
               <MoreOutlined />
             </Button>
           </Dropdown>
-            {/* {isViewRecruitement && (
-            <RecruitementView
-              isViewRecruitement={isViewRecruitement}
-              handleAddContactClose={handleAddRecruitementClose}
-              JobCode={findIdData?.jobCode}
-              idemp={findIdData?.idemp}
-              dep={findIdData?.dep}
-              requestName={findIdData?.requestName}
-              position={findIdData?.position}
-              DesiredDate={findIdData?.desiredDate}
-              projectName={findIdData?.projectName}
-              projRef={findIdData?.projRef}
-              type={findIdData?.type}
-              affectedTo={findIdData?.affectedTo}
-              requestedDicipline={findIdData?.requestedDicipline}
-              Level={findIdData?.experience}
-              exDep={findIdData?.exDep}
-              Numbervacancies={findIdData?.totalNumber}
-              certif={findIdData?.certif}
-              nbExperience={findIdData?.nbExperience}
-            />
-          )}
-          {isEditRecruitement && (
-  
-            <RecruitementEdit
-              isEditRecruitement={isEditRecruitement}
-              handleAddContactClose={handleEditRecruitementClose}
-              JobCode={findIdData?.jobCode}
-              idemp={findIdData?.idemp}
-              dep={findIdData?.dep}
-              requestName={findIdData?.requestName}
-              position={findIdData?.position}
-              DesiredDate={findIdData?.desiredDate}
-              projectName={findIdData?.projectName}
-              projRef={findIdData?.projRef}
-              type={findIdData?.type}
-              affectedTo={findIdData?.affectedTo}
-              requestedDicipline={findIdData?.requestedDicipline}
-              Level={findIdData?.experience}
-              exDep={findIdData?.exDep}
-              Numbervacancies={findIdData?.totalNumber}
-              certif={findIdData?.certif}
-              nbExperience={findIdData?.nbExperience}
-            
-            />
-          )} */}
+          
   
         </div>
   
@@ -311,7 +274,110 @@ const AllRecruitementStaff = ({allrecruitementbelow,findIdData,id,  findId, setF
     },
    
   ];
- 
+  const columns = [
+    {
+      title: 'Recruitement Reference',
+      dataIndex: 'jobCode',
+      key: 'jobCode',
+      width: 150,
+  
+    },
+    {
+      title: 'Requested Discipline',
+      dataIndex: 'requestedDicipline',
+      key: 'requestedDicipline',
+      render: (text) => <a>{text}</a>,
+      width: 150,
+    },
+   
+    {
+      title: 'Requested Discipline',
+      dataIndex: 'requestedDicipline',
+      key: 'requestedDicipline',
+      width: 150,
+    },
+    {
+      title: 'Project Code',
+      dataIndex: 'projRef',
+      key: 'projRef',
+      width: 80,
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (Project) => (
+        <Tooltip placement='topLeft' title={Project}>
+          {Project}
+        </Tooltip>
+      ),
+    
+    },
+    {
+      title: 'Desired Date',
+      dataIndex: 'desiredDate',
+      key: 'desiredDate',
+      width: 150,
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (date) => (
+        <Tooltip placement='topLeft' title={date}>
+          {date}
+        </Tooltip>
+      ),
+    },
+    {
+      title: 'Total Number',
+      dataIndex: 'totalNumber',
+      key: 'totalNumber',
+      width: 80,
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (number) => (
+        <Tooltip placement='topLeft' title={number}>
+          {number}
+        </Tooltip>
+      ),
+    },
+    {
+      title: 'Status',
+      dataIndex: 'notif',
+      key: 'notif',
+      width: 80,
+      render: (text, record) => (
+        <StyledRecentPatientBadge
+          style={{
+            color: record.color,
+            backgroundColor: record.color + '44',
+          }}
+        >
+          {record.notif}
+        </StyledRecentPatientBadge>
+      ),
+    },
+   
+    {
+      title: 'Actions',
+      dataIndex: 'actions',
+      key: 'actions',
+      width: 88,
+      fixed: 'right',
+      className: 'customer-table-actions',
+      render: (text, record) => (
+        <div onClick={() => findId(record?.jobCode)}>
+          <Dropdown menu={{ items }} trigger={['click']}  >
+            <Button type='circle'>
+              <MoreOutlined />
+            </Button>
+          </Dropdown>
+     
+  
+        </div>
+  
+      ),
+  
+    }
+  ];
 
 
   return (
@@ -320,7 +386,8 @@ const AllRecruitementStaff = ({allrecruitementbelow,findIdData,id,  findId, setF
         hoverColor
         data={allrecruitementbelow}
         columns={columns}
-        scroll={{ x: 'auto', y: 200 }}
+        scroll={{ x: 'auto',  y: tableHeight }}
+        //scroll={{ x: 'auto', y: 200 }}
 
 
       />

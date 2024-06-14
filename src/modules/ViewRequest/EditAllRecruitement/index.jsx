@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../../@crema/components/AppRowContainer';
-import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox, DatePicker, InputNumber } from 'antd';
+import {
+  Button, Col, Divider, Form, Input, Space, Typography,
+  Select, Alert, Checkbox, DatePicker, InputNumber,notification
+} from 'antd';
 import {
 
   StyledShadowWrapper,
   StyledInput,
+  StyledScrumBoardDatePicker
 
 } from './index.styled';
-import AppsHeader from '../../../@crema/components/AppsContainer/AppsHeader';
 import { useNavigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
-const ViewRecruitementAbove = () => {
+
+const EditRecruitement = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [ischecked1, setIschecked1] = useState(false);
-  const [ischecked2, setIschecked2] = useState(false);
-  const [isNochecked, setIsNochecked] = useState(false);
-  const [isNochecked2, setIsNochecked2] = useState(false);
-
   const id = location.state ? location.state.id : null;
   const dep = location.state ? location.state.dep : null;
   const idemp = location.state ? location.state.idemp : null;
@@ -39,60 +38,86 @@ const ViewRecruitementAbove = () => {
   const signatureBod = location.state ? location.state.signatureBod : null
   const requestedDicipline = location.state ? location.state.requestedDicipline : null
   const affectedTo = location.state ? location.state.affectedTo : null
-  const notif1 = location.state ? location.state.notif1 : null
-  const notif = location.state ? location.state.notif : null
+
 
   const Back = () => {
     navigate(-1)
+
   };
-  function Validatebod(e) {
-    console.log(`checkedHead = ${e.target.checked}`);
-    setIschecked1(e.target.checked)
-    if (e.target.checked) {
-      setIsNochecked(false)
-      setIschecked2(false)
-      setIsNochecked2(false)
+  //Succes Update 
+  const openNotification = () => {
+    notification.open({
+      description:
+        'Update Recruitement Success',
+        style: {
+          backgroundColor: '#f6ffed',  
+          border: '1px solid #f6ffed', 
+          borderRadius:"1rem" ,
+          color: '#FFFFF',  
+        },
+        placement: 'bottomRight',
+    });
+  };
+  const [newdesiredDate, setNewDesiredDate] = useState(DesiredDate);
+  const [newdep, setNewdep] = useState(dep);
+  const [newidemp, setNewidemp] = useState(idemp);
+  const [newrequestName, setNewrequestName] = useState(requestName);
+  const [newposition, setNewposition] = useState(position);
+  const [newprojectName, setNewprojectName] = useState(projectName);
+  const [newprojRef, setNewprojRef] = useState(projCode);
+  const [newaffectedTo, setNewAffectedTo] = useState(affectedTo);
+  const [newrequestedDicipline, setNewrequestedDicipline] = useState(requestedDicipline);
+  const [newLevel, setNewLevel] = useState(Level);
+  const [newnbExperience, setNewnbExperience] = useState(nbExperience);
+  const [newNumbervacancies, setNewNumbervacancies] = useState(Numbervacancies);
+  const [newcertif, setNewcertif] = useState(certif);
+  const [newexDep, setNewexDep] = useState(exDep);
+  const [newoDep, setNewoDep] = useState(oDep);
+  const [newCheckedHod, setNewCheckedHod] = useState(signatureHod);
+  const [newCheckedBod, setNewCheckedBod] = useState(signatureBod);
 
-    }
+  const [selectedLieu, setSelectedLieu] = useState(affectedTo);
+  const [dataEdit, setDataEdit] = useState("")
+  const [newcomentPlaner, setNewcomentPlaner] = useState(comentPlaner);
+
+  const lieu = [
+    { place: 'Office' },
+    { place: 'Site ' },
+    { place: 'Office & Site' },
+  ];
+
+  const handlePlaceSelect = (value) => {
+    setSelectedLieu(value);
+
+  };
+  function HandleexDep(e) {
+
+    setNewexDep(e.target.checked)
 
   }
+  function HandleoDep(e) {
 
-  function ValidateNobod(e) {
-    console.log(`checkedHead = ${e.target.checked}`);
-    setIsNochecked(e.target.checked)
-    if (e.target.checked) {
-      setIschecked2(false)
-      setIsNochecked2(false)
-      setIschecked1(false)
-
-    }
+    setNewoDep(e.target.checked)
 
   }
-  function Validatebod2(e) {
-    console.log(`checkedHead = ${e.target.checked}`);
-    setIschecked2(e.target.checked)
-    if (e.target.checked) {
-      setIsNochecked2(false)
-      setIsNochecked(false)
-      setIschecked1(false)
-    
-    }
-  }
-  function ValidateNobod2(e) {
-    console.log(`checkedHead = ${e.target.checked}`);
-    setIsNochecked2(e.target.checked)
-    if (e.target.checked) {
-      setIsNochecked(false)
-      setIsNochecked(false)
-      setIschecked1(false)
-     
-    
-    }
-  }
+  function HandleHOD(e) {
 
- 
-  const Update = async () => {
+    setNewCheckedHod(e.target.checked)
 
+  }
+  function HandleBOD(e) {
+
+    setNewCheckedBod(e.target.checked)
+
+  }
+  newCheckedBod
+
+
+  // Helper function to remove circular references
+  const Update = async (newdesiredDate, newdep, newidemp, newrequestName, newposition, newprojectName,
+    newprojRef, newaffectedTo, newLevel, newrequestedDicipline,
+    newexDep, newoDep, newCheckedHod,
+    newnbExperience, newNumbervacancies, newcertif) => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update`, {
 
@@ -103,32 +128,29 @@ const ViewRecruitementAbove = () => {
           'Content-Type': 'application/json',
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
-
         body: JSON.stringify({
-          jobCode: id,
-          // desiredDate,
-          dep: dep,
-          idemp: idemp,
-          position: position,
-          requestName: requestName,
-          requestedDicipline: requestedDicipline,
-          approuvedRecrutRequestNumber: 1,
-          projectName: projectName,
-          totalNumber: Numbervacancies,
-          experience: Level,
-          nbExperience: nbExperience,
-          type: type,
-          affectedTo: affectedTo,
-          certif: certif,
-          bod: null, //Bod1
-          oDep: oDep,
-          exDep: exDep,
-          // signatureHod: newCheckedHod, 
-          signatureBod: ischecked1,//Bod1
-          signatureBod2:ischecked2,//Bod2
-          projRef: projCode,
-          notif:3
 
+          jobCode: id,
+          desiredDate: newdesiredDate,
+          dep: newdep,
+          idemp: newidemp,
+          position: newposition,
+          requestName: newrequestName,
+          requestedDicipline: newrequestedDicipline,
+          approuvedRecrutRequestNumber: 1,
+          projectName: newprojectName,
+          totalNumber: newNumbervacancies,
+          experience: newLevel,
+          nbExperience: newnbExperience,
+          type: type,
+          affectedTo: newaffectedTo,
+          certif: newcertif,
+          bod: null,
+          oDep: newoDep,
+          exDep: newexDep,
+          signatureHod: newCheckedHod,
+          signatureBod: null,
+          projRef: newprojRef,
 
         })
       });
@@ -137,9 +159,10 @@ const ViewRecruitementAbove = () => {
         throw new Error('Network response was not ok');
       }
       if (response.ok) {
-        const responseData = await response.text();
-        alert("Update Recruitement succeed")
 
+        const responseData = await response.text();
+        // alert(" Update Recruitement succeed")
+        openNotification('bottomRight')
         console.log("responseData ", responseData);
         //handleAddContactClose(true)
       }
@@ -150,9 +173,13 @@ const ViewRecruitementAbove = () => {
     }
   };
 
+
+
+
   return (
-    <AppsHeader key={'wrap'}>
+    <div style={{paddingLeft:"1rem",paddingRight:"1rem"}}>
       <Form
+
         layout='vertical'
         style={{ backgroundColor: "white", marginBottom: "20px", padding: "10px", borderRadius: "20px" }}
         onSubmit={e => { e.preventDefault() }}
@@ -161,14 +188,15 @@ const ViewRecruitementAbove = () => {
             e.preventDefault();
           }
         }}
+
       >
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
             <Typography.Title level={4}>RECRUITMENT REQUEST FORM</Typography.Title>
 
           </div>
-
         </div>
+     
         <Divider style={{ marginTop: 16, marginBottom: 16 }} />
         <AppRowContainer>
           <Col xs={24} md={6}>
@@ -179,26 +207,20 @@ const ViewRecruitementAbove = () => {
             <StyledShadowWrapper>
               <AppRowContainer>
                 <Col xs={24} md={12}>
-                  <Form.Item 
-                  label='Job Code' name='JobCode'>
-                    <Input 
-                    className='StyleInput'
-                    placeholder={"RRS-" + id} readOnly={true} />
+                  <Form.Item label='Job Code' name='JobCode'>
+                    <Input placeholder={"RRS-" + id} readOnly={true} />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Recruitement Date' name='DateRecruitement'
-                    rules={[
-                      { required: true, message: 'Please input your Recruitement Date!' },
-                    ]}
 
 
                   >{/*Date et temp de Interview bu Hr*/}
                     <DatePicker
-                    className='StyleInputDate'
                       //defaultValue={new Date()} 
                       defaultValue=""
-                     
+
+                      style={{ width: "100%", height: "30px" }}
                       readOnly
 
                     />
@@ -223,7 +245,6 @@ const ViewRecruitementAbove = () => {
                   <Form.Item label='ID Number ' name='id'>
                     <Input
                       placeholder={idemp}
-
                       readOnly={true}
                     />
                   </Form.Item>
@@ -238,11 +259,10 @@ const ViewRecruitementAbove = () => {
                 </Col>
 
 
-
-
                 <Col xs={24} md={12}>
                   <Form.Item label='Position' name='position'>
                     <Input
+
                       placeholder={requestedDicipline}
                       readOnly={true} />
                   </Form.Item>
@@ -284,8 +304,9 @@ const ViewRecruitementAbove = () => {
 
                   >
                     <Input
-                      placeholder={projectName}
-                      readOnly={true} />
+                      value={newprojectName}
+                      onChange={(e) => setNewprojectName(e.target.value)}
+                    />
                   </Form.Item>
                 </Col>
 
@@ -296,8 +317,10 @@ const ViewRecruitementAbove = () => {
 
                   >
                     <Input
-                      placeholder={projCode}
-                      readOnly={true}
+                      placeholder='Code Project'
+                      value={newprojRef}
+                      onChange={(e) => setNewprojRef(e.target.value)}
+
                     />
                   </Form.Item>
                 </Col>
@@ -320,13 +343,28 @@ const ViewRecruitementAbove = () => {
               <AppRowContainer>
                 <Col xs={24} md={12}>
                   <Form.Item label='Desired Date of Recruitment' name='DateDesiredRecruitement'
+                  >
+                    <StyledScrumBoardDatePicker
+                      value={newdesiredDate}
+                      onChange={() => setNewDesiredDate()}
+                    />
 
 
-                  >{/*Date et temp de Interview bu Hr*/}
-                    <Input
-                      placeholder={DesiredDate}
-                      readOnly={true} />
-
+                  </Form.Item>
+                </Col>
+                <Col xs={24} md={12}>
+                  <Form.Item label='Recruitment For' name='Recruitment For'>
+                    <Select
+                      placeholder='Recruitment For'
+                      onChange={handlePlaceSelect}
+                      value={selectedLieu}
+                    >
+                      {lieu.map((p, index) => (
+                        <Select.Option key={index} value={p.place}>
+                          {p.place}
+                        </Select.Option>
+                      ))}
+                    </Select>
                   </Form.Item>
                 </Col>
                 {type === "Above Foreman" ?
@@ -349,8 +387,10 @@ const ViewRecruitementAbove = () => {
                 <Col xs={24} md={12}>
                   <Form.Item label='Position' name='Position'>
                     <Input
-                      placeholder={position}
-                      readOnly={true} />
+                      value={newposition}
+                      onChange={() => setNewposition()}
+                      placeholder="Position"
+                    />
 
 
 
@@ -361,41 +401,36 @@ const ViewRecruitementAbove = () => {
                   <Form.Item
                     label='Required Level' name='RequiredLevel'
 
-
                   >
                     <Input
-                      placeholder={Level}
-                      readOnly={true} />
+                      value={newLevel}
+                      onChange={() => setNewLevel()}
+                      placeholder="Required Level"
+                    />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item
                     label='Desired years of experience'
-                    name='Desiredyearsexperience'
-
-                  >
+                    name='Desiredyearsexperience'>
 
                     <Input
-                      placeholder={nbExperience}
-                      readOnly={true} />
+                      value={newnbExperience}
+                      onChange={() => setNewnbExperience()}
+                      placeholder="Desired years of experience"
+                    />
 
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item
-                    label='Number of vacancies '
-                    name='Numbervacancies'
-
-
-
+                    label='Number of vacancies'
                   >
                     <Input
-                      placeholder={Numbervacancies}
-                      type="number"
-
-
-
-                    />
+                      value={newNumbervacancies}
+                      onChange={() => setNewNumbervacancies()}
+                      placeholder="Number of vacancies"
+                      type="number" />
 
 
                   </Form.Item>
@@ -407,9 +442,9 @@ const ViewRecruitementAbove = () => {
 
                   >
                     <Input
-
-                      value="certif"
-                      placeholder={certif} />
+                      value={certif}
+                      onChange={() => setNewcertif()}
+                      placeholder="Academic Certificates" />
 
 
                   </Form.Item>
@@ -437,21 +472,20 @@ const ViewRecruitementAbove = () => {
                       name='Asper'
 
                     >
-                      <Checkbox checked={exDep !== null}>
+
+                      <Checkbox checked={newexDep} onChange={HandleexDep}>
                         Extra Deployment Schedule
                       </Checkbox>
-
-
-
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
                     <Form.Item
-                      label='As per : '
+                      label=' '
                       name='Asper'
 
                     >
-                      <Checkbox checked={oDep !== null}>
+
+                      <Checkbox checked={newoDep} onChange={HandleoDep}>
                         Original Deployment Schedule
                       </Checkbox>
 
@@ -470,8 +504,12 @@ const ViewRecruitementAbove = () => {
                     >
                       <Input
                         style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
-                        placeholder={comentPlaner}
-                        value="commentplanner" />
+                        placeholder="Planner Comments"
+                        value={newcomentPlaner}
+                        onChange={() => setNewcomentPlaner()}
+
+
+                      />
 
 
                     </Form.Item>
@@ -488,7 +526,7 @@ const ViewRecruitementAbove = () => {
 
 
           : null}
-        {/* <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+        <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
           <Col xs={24} md={6}>
             <Typography.Title level={5}> Head of Department Inputs</Typography.Title>
           </Col>
@@ -500,11 +538,14 @@ const ViewRecruitementAbove = () => {
                     <Form.Item
                       label='Head Of Departement Decision'
                       name='HeadInputs'>
-                      <Checkbox checked={signatureHod !== null}>
+                      <Checkbox checked={newCheckedHod} onChange={HandleHOD}>
+
                         Yes
                       </Checkbox>
 
-                      <Checkbox checked={signatureHod == null}>
+                      <Checkbox
+
+                      >
                         No
                       </Checkbox>
 
@@ -517,7 +558,7 @@ const ViewRecruitementAbove = () => {
               </AppRowContainer>
             </StyledShadowWrapper>
           </Col>
-        </AppRowContainer> */}
+        </AppRowContainer>
 
 
         <Divider style={{ marginTop: 16, marginBottom: 16 }} />
@@ -533,35 +574,22 @@ const ViewRecruitementAbove = () => {
                 <Col xs={24} md={18}>
                   <StyledInput>
                     <Form.Item
-                      label='Executive Directors Approval BOD'
+                      label='Executive Directors Approval'
                       name='DirectorsApproval'>
-                      <Checkbox checked={ischecked1} onChange={Validatebod}></Checkbox>
+                      <Checkbox checked={newCheckedBod} onChange={HandleBOD}>
 
-                      Yes
-
-                      <Checkbox style={{marginLeft:"2rem"}}checked={isNochecked} onChange={ValidateNobod}>
+                        Yes
+                      </Checkbox>
+                      <Checkbox
+                      // checked={newCheckedBod} onChange={HandleBOD}
+                      >
                         No
                       </Checkbox>
 
                     </Form.Item>
                   </StyledInput>
                 </Col>
-                <Col xs={24} md={18}>
-                  <StyledInput>
-                    <Form.Item
-                      label='Executive Directors Approval BOD2'
-                      name='DirectorsApproval'>
-                      <Checkbox checked={ischecked2} onChange={Validatebod2}></Checkbox>
 
-                      Yes
-
-                      <Checkbox style={{marginLeft:"2rem"}}checked={isNochecked2} onChange={ValidateNobod2}>
-                        No
-                      </Checkbox>
-
-                    </Form.Item>
-                  </StyledInput>
-                </Col>
 
 
               </AppRowContainer>
@@ -578,26 +606,30 @@ const ViewRecruitementAbove = () => {
           style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
         >
           <Button onClick={Back}>Cancel</Button>
+          <Button onClick={() => Update(newdesiredDate, newdep, newidemp, newrequestName, newposition, newprojectName,
+            newprojRef, newexDep, newaffectedTo, newLevel, newrequestedDicipline, newnbExperience, newNumbervacancies, newcertif)}>
+            Update
+          </Button>
           {/* <Button
-            disabled={!ischecked1 || isNochecked}
-             onClick={Update}
+            type='primary'
+            ghost
+            onClick={() => Update(newdesiredDate, newdep, newidemp, newrequestName, newposition, newprojectName,
+              newprojRef, newaffectedTo, newLevel, newrequestedDicipline, newnbExperience, newNumbervacancies, newcertif)}>
 
-          >Validate</Button> */}
+            <p style={{ textAlign: "center", paddingTop: "9px" }}>Update</p>
+
+          </Button> */}
 
         </Space>
-
-
-
-
 
       </Form>
 
 
 
-    </AppsHeader>
+    </div>
 
   );
 };
 
 
-export default ViewRecruitementAbove;
+export default EditRecruitement;

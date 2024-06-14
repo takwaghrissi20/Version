@@ -584,6 +584,21 @@ font-weight: bold;
   margin-bottom: 20px;
 
 }
+.Pagination{
+  display: flex;
+   justify-Content: flex-end;
+   margin:1rem
+}
+.StyleInput{
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.StyleInputDate{
+  height: 2.5rem;
+  width: 100%;
+
+
+}
 
 
 

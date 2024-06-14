@@ -137,9 +137,6 @@ const ViewRecruitementAbove = () => {
           signatureBod: null,
           projRef: newprojRef,
 
-
-
-
         })
       });
 
@@ -410,7 +407,7 @@ const ViewRecruitementAbove = () => {
 
                   </Form.Item>
                 </Col>
-                <Col xs={24} md={12}>
+                <Col style={{marginTop:'1.3rem'}} xs={24} md={12}>
                   <Form.Item
                     label='Number of vacancies'
                   >

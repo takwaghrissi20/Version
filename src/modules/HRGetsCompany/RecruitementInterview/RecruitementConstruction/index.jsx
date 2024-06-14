@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Input,List } from 'antd';
+import { Input, List } from 'antd';
 import AppsContainer from "../../../../@crema/components/AppsContainer"
 import OrderTable from './DataTableRecruitementConstruction';
 import {
@@ -12,12 +12,12 @@ import AppsHeader from '../../../../@crema/components/AppsContainer/AppsHeader';
 import AppsContent from '../../../../@crema/components/AppsContainer/AppsContent';
 import { useGetDataApi } from '../../../../@crema/hooks/APIHooks';
 import Pagination from '../../../../@crema/components/AppsPagination';
-import clsx from 'clsx'; 
+import clsx from 'clsx';
 import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
 import { useNavigate } from "react-router-dom";
 const RecruitementConstruction = ({ allrecruitementbelow }) => {
   const navigate = useNavigate();
-  const [recruitementbelow , setRecruitementbelow ] = useState([]);
+  const [recruitementbelow, setRecruitementbelow] = useState([]);
   const [recruitementbelowFiltrer, setRecruitementbelowFiltrer] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -26,17 +26,17 @@ const RecruitementConstruction = ({ allrecruitementbelow }) => {
   const [isGenerateInterview, onGenerateInterview] = useState(false);
   const [findIdData, setFindIdData] = useState(null);
   const [id, setId] = useState(0);
-  const count=allrecruitementbelow.length
+  const count = allrecruitementbelow.length
   useEffect(() => {
     fetchRecruitementbelow();
-  }, [currentPage, pageSize, nameFilter,count,id]);
+  }, [currentPage, pageSize, nameFilter, count, id]);
 
   const fetchRecruitementbelow = async () => {
     try {
 
       const url = `https://dev-gateway.gets-company.com/api/v1/re/getRecByType?size=${pageSize}&page=${currentPage}&type=Foreman & Below&sortBy=desiredDate`;
       const response = await fetch(url);
-     
+
 
       if (!response.ok) {
         throw new Error('Failed to fetch employees');
@@ -51,7 +51,7 @@ const RecruitementConstruction = ({ allrecruitementbelow }) => {
 
   const handleSearch = async (event) => {
     event.preventDefault();
-   
+
   };
   // const handleNameFilterChange = (event) => {
   //   setNameFilter(event.target.value);
@@ -64,13 +64,13 @@ const RecruitementConstruction = ({ allrecruitementbelow }) => {
   };
 
   const handleListItemClick = (item) => {
-    setNameFilter(item.position ); 
-    handleSearch({ target: { value: item.position } }); 
+    setNameFilter(item.position);
+    handleSearch({ target: { value: item.position } });
     setIsDropdownOpen(false)
   };
   const handleNameFilterChange = async (event) => {
     const filterValue = event.target.value.trim(); // Trim whitespace from input value
-    setNameFilter(filterValue);  
+    setNameFilter(filterValue);
     if (filterValue !== '') {
       try {
         const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/filterByPosition?position=$${filterValue}`);
@@ -88,7 +88,7 @@ const RecruitementConstruction = ({ allrecruitementbelow }) => {
         setIsDropdownOpen(true);
         // Filtrer les données en fonction de la valeur de l'entrée
         const filteredData = // votre logique de filtrage ici
-        setRecruitementbelowFiltrer(filteredData);
+          setRecruitementbelowFiltrer(filteredData);
       } else {
         setIsDropdownOpen(false);
       }
@@ -96,25 +96,25 @@ const RecruitementConstruction = ({ allrecruitementbelow }) => {
       setIsDropdownOpen(false); // Close dropdown if filter is empty
     }
   };
-  
-  const InterviewGenerate= async () => {
+
+  const InterviewGenerate = async () => {
     navigate(`/dashboards/hr/InterviewSheetContructionStaff/codeJob=${id}`, {
       state: {
-        DesiredDate:findIdData?.desiredDate,
-        JobCode:findIdData?.jobCode,
-        totalNumber:findIdData?.totalNumber,
-        level:findIdData?.experience,
-        projectName:findIdData?.projectName,
-        position:findIdData?.position,
-        experience:findIdData?.experience
-               
-    
+        DesiredDate: findIdData?.desiredDate,
+        JobCode: findIdData?.jobCode,
+        totalNumber: findIdData?.totalNumber,
+        level: findIdData?.experience,
+        projectName: findIdData?.projectName,
+        position: findIdData?.position,
+        experience: findIdData?.experience
+
+
       }
 
 
     });
- 
-  } 
+
+  }
   //Fin Bu Id 
   const findId = async (code) => {
     try {
@@ -128,10 +128,10 @@ const RecruitementConstruction = ({ allrecruitementbelow }) => {
 
       if (response.ok) {
         const responseData = await response.json();
-    
+
         setFindIdData(responseData);
         setId(responseData.jobCode)
-      
+
 
 
       }
@@ -145,69 +145,71 @@ const RecruitementConstruction = ({ allrecruitementbelow }) => {
   return (
     <AppsContainer type='bottom' fullView>
 
-        <AppsHeader>
-          <StyledOrderHeader>
-            <div style={{ marginRight: 20, boxShadow: "none !important" }}>
+      <AppsHeader>
+        <StyledOrderHeader>
+          <div style={{ marginRight: 20, boxShadow: "none !important" }}>
 
-              <Input.Search
-                placeholder='Search Here By Position'
-                type="text"
-                value={nameFilter}
-                onChange={handleNameFilterChange}
-                onKeyPress={(event) => {
-                  if (event.key === 'Enter') {
-                    handleSearch(event);
-                  }
+            <Input.Search
+              placeholder='Search Here By Position'
+              type="text"
+              value={nameFilter}
+              onChange={handleNameFilterChange}
+              onKeyPress={(event) => {
+                if (event.key === 'Enter') {
+                  handleSearch(event);
+                }
+              }}
+            />
+            {isDropdownOpen && (
+              <List
+                style={{
+                  zIndex: 5, borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px",
+                  background: "white", position: "absolute", top: "3.5rem", width: "15%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"
                 }}
+                dataSource={recruitementbelowFiltrer}
+                renderItem={(item) => (
+                  <List.Item onClick={() => handleListItemClick(item)}>
+                    {item.position}
+                  </List.Item>
+                )}
               />
-              {isDropdownOpen && (
-                <List
-                style={{zIndex:5, borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px",
-                background: "white", position: "absolute", top: "3.5rem", width: "15%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"}}
-                  dataSource={recruitementbelowFiltrer} 
-                  renderItem={(item) => (
-                    <List.Item onClick={() => handleListItemClick(item)}>
-                      {item.position}
-                    </List.Item>
-                  )}
-                />
-              )}
-            </div>
-
-
-            <StyledOrderHeaderRight>
-
-
-              <Pagination
-                currentPage={currentPage}
-                totalPages={Math.ceil(count / pageSize)}
-                handlePageChange={handlePageChange}
-              />
+            )}
+          </div>
 
 
 
-            </StyledOrderHeaderRight>
-          </StyledOrderHeader>
-        </AppsHeader>
-        <AppsContent
+        </StyledOrderHeader>
+      </AppsHeader>
+      <AppsContent
         style={{
           paddingTop: 10,
           paddingBottom: 10,
         }}
       >
-          <OrderTable  allrecruitementbelow={recruitementbelow}   findIdData={findIdData}
+        <OrderTable allrecruitementbelow={recruitementbelow} findIdData={findIdData}
           id={id}
-          findId={findId} 
+          findId={findId}
           setFindIdData={setFindIdData}
           open={open}
           handleInterview={handleInterview}
-          
-          />
+
+        />
+         <div className='Pagination' >
+        <StyledOrderHeaderRight>
+
+
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(count / pageSize)}
+            handlePageChange={handlePageChange}/>
+
+        </StyledOrderHeaderRight>
+        </div>
         {/* <OrderTable 
          allrecruitementabove={filteredData}
          /> */}
       </AppsContent>
-      {isGenerateInterview? (
+      {isGenerateInterview ? (
         <ConfirmationModal
           open={isGenerateInterview}
           paragraph={'Are you sure you want to Gernerate  this Interview?'}
@@ -217,9 +219,9 @@ const RecruitementConstruction = ({ allrecruitementbelow }) => {
           handleInterview={handleInterview}
         />
       ) : null}
-       
-      </AppsContainer>
-   
+
+    </AppsContainer>
+
   );
 };
 

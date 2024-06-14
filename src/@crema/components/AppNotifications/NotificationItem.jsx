@@ -7,15 +7,40 @@ import {
   StyledNotifyMsgAvatar,
 } from './NotificationItem.styled';
 import { useNavigate } from "react-router-dom";
-const NotificationItem = () => {
+const NotificationItem = ({ user }) => {
   const navigate = useNavigate();
   const [notif1, setNotif1] = useState([])
   const [notifHR, setNotifHR] = useState([])
   const [notifOperation, setNotifOperation] = useState([])
-  const [notifPlanner ,setNotifPlanner] = useState([])
+  const [notifPlanner, setNotifPlanner] = useState([])
   const [findIdCodeJob, setFindIdCodeJob] = useState("")
   const [codeJob, setCodeJob] = useState("")
-  const user = localStorage.getItem("role");
+  const userEmail = localStorage.getItem("email");
+  const [project, setProject] = useState([])
+  const [listOperationproject, setListOperationproject] = useState([])
+  console.log("userEmail ", userEmail)
+
+  //Projevt By email
+  const fetchProjectEmail = async () => {
+    try {
+      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getProjectByMail?mail=${userEmail}`;
+      const response = await fetch(url, {
+        method: "GET",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        const ProjectName = data.map(project => project.projName)
+        setProject(ProjectName)
+
+
+      } else {
+        console.error("Erreur lors de la récupération du email:", response.status);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la récupération du email:", error);
+    }
+  };
+
   const AllNotif = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/notif/list`, {
@@ -25,26 +50,51 @@ const NotificationItem = () => {
         },
       });
 
+
+
       if (!response.ok) {
         throw new Error('La requête a échoué avec le code ' + response.status);
       }
 
       const data = await response.json();
+      console.log("testtttt", data)
+      const FilterDataDepOperation = data.filter(list => list.dep === "operation")
+      console.log("eeervvggg", FilterDataDepOperation)
+      // Adding projname to each object in FilterDataDepOperation
+      const updatedFilterDataDepOperation = FilterDataDepOperation.map(item => ({
+        ...item,
+        //   projname: 'CONSTRUCTION OF PIPING MATERIAL'
+      }));
+
+
+      console.log("Updated eeervvggg", updatedFilterDataDepOperation);
+      const FilterProject = FilterDataDepOperation.filter(project =>
+         console.log("eeervvggg Testtttt",project)     
+       )
+
+      console.log("eeervvggg 11111", FilterProject)
       const filteredData = data.filter(item => (item.notfi === 0 && item.dep !== "operation")
         || (item.p === 7 && item.dep === "operation"));
-        setNotif1(filteredData)
+      setNotif1(filteredData)
       //Notif de HR 
       const filteredDataHr = data.filter(item => (item.notfi === 3));
       setNotifHR(filteredDataHr)
       //Notif Operationn
-      const filteredNotificationOperatipnData = data.filter(item => (item.notfi === 0 
-        && item.dep.includes("Engineering"))||
-        (notif=== 4 && item.dep.includes("operation")));
-        setNotifOperation(filteredNotificationOperatipnData)
-        //Notif PLanner 
-        const filteredNotificationPlannerData = data.filter(item => (item.notfi === 0 
-          && item.dep.includes("Engineering")));
-          setNotifOperation(filteredNotificationOperatipnData)
+      const filteredNotificationOperatipnData = data.filter(item => (item.notfi === 0
+        && item.dep.includes("Engineering")) ||
+        (item.notfi === 4 && item.dep.includes("operation")));
+      setNotifOperation(filteredNotificationOperatipnData)
+      //Notif PLanner 
+
+      const filteredNotificationPlannerData = data.filter(item => (item.notfi === 7
+        || item.notfi === 5));
+      ///Project Name
+      //    if (project.includes(projectname)) {
+      //     console.log(`${projectname} est dans la liste.`);
+      // } else {
+      //     console.log(`${projectname} n'est pas dans la liste.`);
+      // }
+      //   setNotifOperation(filteredNotificationOperatipnData)
 
     } catch (error) {
       console.error('Erreur lors de la récupération Last Recruitement', error);
@@ -119,6 +169,7 @@ const NotificationItem = () => {
   };
   useEffect(() => {
     AllNotif()
+    fetchProjectEmail()
   }, [codeJob]);
 
   return (
@@ -142,7 +193,7 @@ const NotificationItem = () => {
         : null
 
       }
-       {user.includes("Administrator") ?
+      {user.includes("Administrator") ?
         <StyledNotifyListItem className='item-hover'>
           <p>Number All Notification </p>
           {notifHR.map((p, index) => (
@@ -161,7 +212,7 @@ const NotificationItem = () => {
         : null
 
       }
-         {user == "Operation  Manager"?
+      {user == "Operation  Manager" ?
         <StyledNotifyListItem className='item-hover'>
           <p>Number All Notification </p>
           {notifOperation.map((p, index) => (

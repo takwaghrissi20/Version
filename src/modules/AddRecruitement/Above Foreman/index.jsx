@@ -13,6 +13,7 @@ import dayjs from 'dayjs';
 import RecruitementRequest from "../../Model/RecruitementRequet"
 import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../../../@crema/components/AppConfirmationModal';
+
 const AddRecruitementAbove = () => {
   const navigate = useNavigate();
   const [requestorDate, setRequestorDate] = useState("");
@@ -44,6 +45,8 @@ const AddRecruitementAbove = () => {
   const [isExtraDep, setIsExtraDep] = useState(false);
   const [isSave, onSave] = useState(false);
   const [isCancel, onCancel] = useState(false);
+  const [modalWarning, setModalWarning] = useState(false);
+  const [modalError, setModalError] = useState(false);
   const [type, setType] = useState("Above Foreman")
   const [form] = Form.useForm();
 
@@ -64,7 +67,6 @@ const AddRecruitementAbove = () => {
           'Content-Type': 'application/json'
         },
       });
-
       if (!response.ok) {
         throw new Error('La requête a échoué avec le code ' + response.status);
       }
@@ -74,9 +76,8 @@ const AddRecruitementAbove = () => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
-      console.log("data profile", data)
+      console.log("dataprofile", data)
       setDep(data.departement)
-
       setProfile(data)
       setProjets(data.projects)
 
@@ -245,13 +246,12 @@ const AddRecruitementAbove = () => {
       , 'DateDesiredRecruitement', 'position', 'RequiredLevel', 'Desiredyearsexperience', 'Numbervacancies',
 
     ]).then(values => {
-      alert("all fields are complete.");
       onSave(true)
-      //  setIsModalVisible(true)
+      Saverecrutement()
 
 
     }).catch(errorInfo => {
-      alert("Please complete all fields");
+      setModalWarning(true)
       // setIsModalVisible(false);
 
     });
@@ -295,6 +295,19 @@ const AddRecruitementAbove = () => {
   const handleCancelRecruitement = () => {
     onCancel(true);
   }
+  const openNotification = () => {
+    notification.open({
+      description:
+      'Success Recruitement && Send Email',
+        style: {
+          backgroundColor: '#f6ffed',  
+          border: '1px solid #f6ffed', 
+          borderRadius:"1rem" ,
+          color: '#FFFFF',  
+        },
+        placement: 'bottomRight',
+    });
+  };
   const Saverecrutement = async () => {
     try {
 
@@ -339,19 +352,20 @@ const AddRecruitementAbove = () => {
           notif:0,
           dep:profile?.departement
 
-
-
         })
       });
 
       if (!response.ok) {
         throw new Error('Network response was not ok');
+       
+      
       }
       if (response.ok) {
 
         const responseData = await response.json();
-        alert("Request Success and send Email");
-        isSave(false)
+        openNotification('bottomRight')
+        // alert("Request Success and send Email");
+        openNotification('bottomRight')
         const email = 'rihemhassounanjim90@gmail.com';
         const secondApiResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/bodNotif?email=${encodeURIComponent(email)}`, {
           method: 'POST',
@@ -359,7 +373,10 @@ const AddRecruitementAbove = () => {
 
         if (secondApiResponse.ok) {
           const secondResponseData = await secondApiResponse.json();
+          form.resetFields();
+          window.location.reload();
         } else {
+          setModalError(true)
           console.error("Failed to fetch data from the second API.");
         }
 
@@ -381,7 +398,10 @@ const AddRecruitementAbove = () => {
   const user = localStorage.getItem("role");
   console.log("user", user)
   return (
-    <>
+    <div style={{paddingLeft:"0.5rem",paddingRight:"0.5rem"}}>
+      {/**All Fied not empty */}
+   
+     
       <Form
         form={form}
         layout='vertical'
@@ -717,7 +737,7 @@ const AddRecruitementAbove = () => {
         </AppRowContainer>
 
 
-        {dep === "operation" ?
+        {dep === "operation" && user.includes('Planner')  ?
           <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
             <Col xs={24} md={6}>
               <Typography.Title level={5}>Planner Review </Typography.Title>
@@ -984,7 +1004,32 @@ const AddRecruitementAbove = () => {
           handleInterview={handleCancelRecruitement}
         />
       ) : null}
-    </>
+      {modalWarning && (
+        <div style={{ position: 'relative', height: '10vh' }}>
+        <Space direction='vertical' style={{ width: '90%', margin: 20, position: 'absolute', bottom: 0 }}>
+          <Alert      
+            description='All Fields Not Complete'
+            type='warning'
+            showIcon
+          />
+        </Space>
+      </div>
+        )}
+         {modalError && (
+        <div style={{ position: 'relative', height: '10vh' }}>
+        <Space direction='vertical' style={{ width: '90%', margin: 20, position: 'absolute', bottom: 0 }}>
+          <Alert      
+            message='Error'
+            description='Failed Recruitement.'
+            type='error'
+            showIcon
+           
+          />
+        </Space>
+      </div>
+        )}
+      
+    </div>
 
   );
 };

@@ -1548,7 +1548,7 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
       >
         <Button >Cancel</Button>
         <Button onClick={Save}
-          disabled={isSaveDisabled === false}
+     
          type='primary'
         htmlType='submit'>
           Save

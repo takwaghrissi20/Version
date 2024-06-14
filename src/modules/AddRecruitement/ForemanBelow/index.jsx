@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../../@crema/components/AppRowContainer';
-import {Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox, DatePicker,InputNumber  } from 'antd';
+import {Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, notification,Checkbox, DatePicker,InputNumber  } from 'antd';
 import {
 
   StyledShadowWrapper,
@@ -13,6 +13,7 @@ import dayjs from 'dayjs';
 import RecruitementRequest from "../../Model/RecruitementRequet"
 import ConfirmationModal from '../../../@crema/components/AppConfirmationModal';
 import { useNavigate } from 'react-router-dom';
+
 const AddRecruitementForemanBelow = () => {
   const navigate = useNavigate();
   const [requestorDate, setRequestorDate] = useState("");
@@ -47,7 +48,9 @@ const AddRecruitementForemanBelow = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [type,setType]=useState("Foreman & Below")
   const [form] = Form.useForm();
-  console.log("positionRecruitement",positionRecruitement)
+  const [modalError, setModalError] = useState(false);
+  const [modalWarning, setModalWarning] = useState(false);
+
   const handleValidateEmployeeClose = () => {
     setIsModalVisible(false);
   };
@@ -251,7 +254,61 @@ const AddRecruitementForemanBelow = () => {
     onSave(true);
   };
   const handleCancelRecruitement = () => {
-    onCancel(true);
+    const fieldsFilled = [
+   
+     
+      vacancie,
+     
+    ].some(field => field && field !== "");
+
+    if (fieldsFilled) {
+      onCancel(true)
+
+    } else {
+      onCancel(true);
+     
+    }
+
+  
+  };
+  const handleCancelRecruitement0 = () => {
+    const fieldsFilled = [
+      requestorDate,
+      recruitementDate,
+      desiredrecruitementDate,
+      lastJobCode,
+      profile,
+      projets,
+      selectedProject,
+      projectCode,
+      position,
+      positionRecruitement,
+      desiredExperience,
+      selectedLevel,
+      selectedLieu,
+      vacancie,
+      asper,
+    ].some(field => field && field !== "");
+
+    if (fieldsFilled) {
+      onCancel(true);
+     
+    
+   
+  };
+}
+  const openNotification = () => {
+    notification.open({
+      description:
+        'Success Recruitement && Send Email',
+        style: {
+          backgroundColor: '#f6ffed',  
+          border: '1px solid #f6ffed',    
+          color: '#FFFFF',  
+        
+        },
+        placement: 'topRight',
+    });
   };
 ///AAAAAAAAAAAAAAAAAAAAAAAAA
 const Saverecrutement = async () => {
@@ -283,6 +340,7 @@ const Saverecrutement = async () => {
          totalNumber:vacancie,
          oDep:isOrDep,
          exDep:isExDep,
+         jobCode:LastIndexRecruitementIncremente,
         // type: "For Foreman & Below",
         // oDep: asper,
         // // exDep: "",
@@ -294,9 +352,8 @@ const Saverecrutement = async () => {
          desiredDate:desiredrecruitementDate,
         affectedTo:"Site",
         signatureHod:isOkHead,
-        signatureBod:isOkBod
-
-      
+        signatureBod:isOkBod,
+        dep:profile?.departement
 
       })
     });
@@ -307,8 +364,10 @@ const Saverecrutement = async () => {
     if (response.ok) {
 
       const responseData = await response.json();
-      alert("Request Success and send Email");
-      isSave(false)
+      openNotification('bottomRight')
+      form.resetFields();
+      //window.location.reload();
+      //onSave(false)
       const email = 'rihemhassounanjim90@gmail.com';
       const secondApiResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/bodNotif?email=${encodeURIComponent(email)}`, {
         method: 'POST',
@@ -316,6 +375,7 @@ const Saverecrutement = async () => {
 
       if (secondApiResponse.ok) {
         const secondResponseData = await secondApiResponse.json();
+        
       } else {
         console.error("Failed to fetch data from the second API.");
       }
@@ -335,38 +395,32 @@ const Saverecrutement = async () => {
 
 
 
-
-
-
-
-
-
 const goBack = () => {
   navigate(-1)
 
-
 }
- 
+
+
   const BeforeSaveRecruitement = () => {
     //setIsModalVisible(true)
     form.validateFields(['DateRecruitement','DateRequestor','ProjectName','ProjectCode'
     ,'DateDesiredRecruitement','position','RequiredLevel','Desiredyearsexperience','Numbervacancies',
 
     ]).then(values => {
-       alert("all fields are complete.");
-       onSave(true)
-      //  setIsModalVisible(true)
-
+      Saverecrutement()
 
     }).catch(errorInfo => {
-      alert("Please complete all fields");
+      setModalWarning(true);
+      setTimeout(() => {
+        setModalWarning(false);
+      }, 500); 
       // setIsModalVisible(false);
 
     });
   };
 console.log("isNOHead",isOkHead)
   return (
-    <>
+    <div style={{paddingLeft:"0.5rem",paddingRight:"0.5rem"}}>
     <Form
      form={form}
       layout='vertical'
@@ -447,6 +501,15 @@ console.log("isNOHead",isOkHead)
                   />
                 </Form.Item>
               </Col>
+              <Col xs={24} md={12}>
+                  <Form.Item label='Departement' name='departement'>
+                    <Input
+                      placeholder={profile?.departement}
+                      readOnly={true}
+                    />
+                  </Form.Item>
+                </Col>
+
 
               <Col xs={24} md={12}>
                 <Form.Item label='Position' name='position'>
@@ -659,8 +722,7 @@ console.log("isNOHead",isOkHead)
         </Col>
       </AppRowContainer>
 
-
-      {dep==="operation"?
+      {dep === "operation" && user.includes('Planner')  ?
       <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
        <Col xs={24} md={6}>
         <Typography.Title level={5}>Planner Review </Typography.Title>
@@ -864,9 +926,33 @@ console.log("isNOHead",isOkHead)
           handleInterview={handleCancelRecruitement}
         />
       ) : null}
+        {modalWarning && (
+        <div style={{ position: 'relative', height: '10vh' }}>
+        <Space direction='vertical' style={{ width: '90%', margin: 20, position: 'absolute', bottom: 0 }}>
+          <Alert      
+            description='All Fields Not Complete'
+            type='warning'
+            showIcon
+          />
+        </Space>
+      </div>
+        )}
+         {modalError && (
+        <div style={{ position: 'relative', height: '10vh' }}>
+        <Space direction='vertical' style={{ width: '90%', margin: 20, position: 'absolute', bottom: 0 }}>
+          <Alert      
+            message='Error'
+            description='Failed Recruitement.'
+            type='error'
+            showIcon
+           
+          />
+        </Space>
+      </div>
+        )}
 
 
-     </>
+</div>
   
   );
 };

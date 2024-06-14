@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Input,List } from 'antd';
+import { Input, List } from 'antd';
 import AppsContainer from "../../../../@crema/components/AppsContainer"
 import OrderTable from './DataTableStaffInterview';
 import {
@@ -12,12 +12,12 @@ import AppsHeader from '../../../../@crema/components/AppsContainer/AppsHeader';
 import AppsContent from '../../../../@crema/components/AppsContainer/AppsContent';
 import { useGetDataApi } from '../../../../@crema/hooks/APIHooks';
 import Pagination from '../../../../@crema/components/AppsPagination';
-import clsx from 'clsx'; 
-import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';0
+import clsx from 'clsx';
+import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal'; 0
 import { useNavigate } from "react-router-dom";
 const StaffInterview = ({ allinterviewStaffManagement }) => {
   const navigate = useNavigate();
-  const [interviewStaff , setInterviewStaff  ] = useState([]);
+  const [interviewStaff, setInterviewStaff] = useState([]);
   const [interviewStaffFiltrer, setInterviewStaffFiltrer] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -27,25 +27,25 @@ const StaffInterview = ({ allinterviewStaffManagement }) => {
   const [id, setId] = useState(0);
   const [codeJob, setCodeJob] = useState(0);
   const [interviewCode, setInterviewCode] = useState(0);
- 
-  const count=allinterviewStaffManagement.length
+
+  const count = allinterviewStaffManagement.length
   useEffect(() => {
     fetchInterviewStaff();
-  }, [currentPage, pageSize, nameFilter,count,id]);
+  }, [currentPage, pageSize, nameFilter, count, id]);
 
   const fetchInterviewStaff = async () => {
     try {
 
       const url = `https://dev-gateway.gets-company.com/api/v1/int/listBypage?size=${pageSize}&page=${currentPage}&sortBy=interviwDate`;
       const response = await fetch(url);
-     
+
 
       if (!response.ok) {
         throw new Error('Failed to fetch employees');
       }
 
       const data = await response.json();
-      console.log("dataaaaa",data)
+      console.log("dataaaaa", data)
       setInterviewStaff(data);
     } catch (error) {
       console.error('Error fetching Interview:', error);
@@ -54,7 +54,7 @@ const StaffInterview = ({ allinterviewStaffManagement }) => {
 
   const handleSearch = async (event) => {
     event.preventDefault();
-   
+
   };
   // const handleNameFilterChange = (event) => {
   //   setNameFilter(event.target.value);
@@ -67,13 +67,13 @@ const StaffInterview = ({ allinterviewStaffManagement }) => {
   };
 
   const handleListItemClick = (item) => {
-    setNameFilter(item.projname ); 
-    handleSearch({ target: { value: item.projname } }); 
+    setNameFilter(item.projname);
+    handleSearch({ target: { value: item.projname } });
     setIsDropdownOpen(false)
   };
   const handleNameFilterChange = async (event) => {
     const filterValue = event.target.value.trim(); // Trim whitespace from input value
-    setNameFilter(filterValue);  
+    setNameFilter(filterValue);
     if (filterValue !== '') {
       try {
         const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/filterByName?projname=$${filterValue}`);
@@ -91,7 +91,7 @@ const StaffInterview = ({ allinterviewStaffManagement }) => {
         setIsDropdownOpen(true);
         // Filtrer les données en fonction de la valeur de l'entrée
         const filteredData = // votre logique de filtrage ici
-        setInterviewStaffFiltrer(filteredData);
+          setInterviewStaffFiltrer(filteredData);
       } else {
         setIsDropdownOpen(false);
       }
@@ -99,7 +99,7 @@ const StaffInterview = ({ allinterviewStaffManagement }) => {
       setIsDropdownOpen(false); // Close dropdown if filter is empty
     }
   };
-  
+
   //Fin Bu Id 
   const findId = async (code) => {
     try {
@@ -113,7 +113,7 @@ const StaffInterview = ({ allinterviewStaffManagement }) => {
 
       if (response.ok) {
         const responseData = await response.json();
-         console.log("responseData",responseData)
+        console.log("responseData", responseData)
         setFindIdData(responseData);
         setId(responseData.interviewCode)
         setCodeJob(responseData?.jobCode)
@@ -132,75 +132,70 @@ const StaffInterview = ({ allinterviewStaffManagement }) => {
   };
   return (
     <AppsContainer type='bottom' fullView>
-
-        <AppsHeader>
-          <StyledOrderHeader>
-            <div style={{ marginRight: 20, boxShadow: "none !important" }}>
-
-              <Input.Search
-                placeholder='Search Here By projet Name'
-                type="text"
-                value={nameFilter}
-                onChange={handleNameFilterChange}
-                onKeyPress={(event) => {
-                  if (event.key === 'Enter') {
-                    handleSearch(event);
-                  }
+      <AppsHeader>
+        <StyledOrderHeader>
+          <div style={{ marginRight: 20, boxShadow: "none !important" }}>
+            <Input.Search
+              placeholder='Search Here By projet Name'
+              type="text"
+              value={nameFilter}
+              onChange={handleNameFilterChange}
+              onKeyPress={(event) => {
+                if (event.key === 'Enter') {
+                  handleSearch(event);
+                }
+              }}
+            />
+            {isDropdownOpen && (
+              <List
+                style={{
+                  zIndex: 5, borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px",
+                  background: "white", position: "absolute", top: "3.5rem", width: "15%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"
                 }}
+                dataSource={interviewStaffFiltrer}
+                renderItem={(item) => (
+                  <List.Item onClick={() => handleListItemClick(item)}>
+                    {item.projname}
+                  </List.Item>
+                )}
               />
-              {isDropdownOpen && (
-                <List
-                style={{zIndex:5, borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px",
-                background: "white", position: "absolute", top: "3.5rem", width: "15%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"}}
-                  dataSource={interviewStaffFiltrer} 
-                  renderItem={(item) => (
-                    <List.Item onClick={() => handleListItemClick(item)}>
-                      {item.projname}
-                    </List.Item>
-                  )}
-                />
-              )}
-            </div>
+            )}
+          </div>
 
-
-            <StyledOrderHeaderRight>
-
-
-              <Pagination
-                currentPage={currentPage}
-                totalPages={Math.ceil(count / pageSize)}
-                handlePageChange={handlePageChange}
-              />
-
-
-
-            </StyledOrderHeaderRight>
-          </StyledOrderHeader>
-        </AppsHeader>
-        <AppsContent
+        </StyledOrderHeader>
+      </AppsHeader>
+      <AppsContent
         style={{
           paddingTop: 10,
           paddingBottom: 10,
         }}>
-          <OrderTable 
-          allinterviewStaffManagement={allinterviewStaffManagement}   
+        <OrderTable
+          allinterviewStaffManagement={allinterviewStaffManagement}
           findIdData={findIdData}
           id={id}
-          findId={findId} 
+          findId={findId}
           setFindIdData={setFindIdData}
           open={open}
           handleInterview={handleInterview}
           codeJob={codeJob}
           interviewCode={interviewCode}
-       
-          
+
+        />
+          <div className='Pagination' >
+        <StyledOrderHeaderRight>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(count / pageSize)}
+            handlePageChange={handlePageChange}
           />
 
+        </StyledOrderHeaderRight>
+        </div>
       </AppsContent>
-    
-       
-      </AppsContainer>
-   
+
+
+    </AppsContainer>
+
   );
 };
 

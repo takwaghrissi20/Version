@@ -27,7 +27,6 @@ function App() {
         if (response.ok) {
           const data = await response.json();
           setEmail(data.email)       
-          console.log("sataaaa",data)
           localStorage.setItem('email',data.email);
 
           
