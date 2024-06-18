@@ -6,6 +6,9 @@ import { CiTimer,CiLogout } from "react-icons/ci";
 import { FaAvianex } from "react-icons/fa";
 import { LiaCcVisa } from "react-icons/lia";
 import { MdLocationOn } from "react-icons/md";
+import { MdChangeCircle } from "react-icons/md";
+import { MdOutlineChangeCircle } from "react-icons/md";
+
 
 
 const routesConfig = [
@@ -293,13 +296,19 @@ const routesConfig = [
         ],
       },
       {
-        id: "ManpowerLocation",
-        title: "ManpowerLocation",
-        messageId: "sidebar.ManpowerLocation",
-        icon: <MdLocationOn  />,
+        id: "PROJECTS TRIP TRACK RECORD ",
+        title: "PROJECTS TRIP TRACK RECORD ",
+        messageId: "sidebar.Trip",
+        icon: <MdOutlineChangeCircle  />,
         url: "recharts",
         type: "collapse",
         children: [
+          {
+            id: "AddExtensoinMission",
+            title: "Add Mission Extension Request",
+            messageId: "sidebar.general.AddmissionExtention",
+            url: "/ManpowerLocation/AddMissionExtensionRequest",
+          },
           {
             id: "AddDemobInput",
             title: "AddDemobInput",
@@ -339,6 +348,21 @@ const routesConfig = [
           //   messageId: "sidebar.general.demonpermissionSite",
           //   url: "/ManpowerLocation/DemobPermissionSite",
           // },
+  
+    
+    
+       
+        ],
+      },
+      {
+        id: "ManpowerLocation",
+        title: "ManpowerLocation",
+        messageId: "sidebar.ManpowerLocation",
+        icon: <MdLocationOn  />,
+        url: "recharts",
+        type: "collapse",
+        children: [
+          
           {
             id: "ManpowerLocationTrackRecord",
             title: "ManpowerLocationTrackRecord",

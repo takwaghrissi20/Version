@@ -22,6 +22,7 @@ import Mission from '../../../modules/VisaAndTravel/visa/Mission';
 import AddTravel from '../../../modules/VisaAndTravel/visa/Travel';
 import AddDemobization from '../../../modules/TripTrackRecord/AddDemobilization';
 import DemoPermissionSite from '../../../modules/TripTrackRecord/DemobPermissionSite';
+import AddMissionExtensoin from '../../../modules/TripTrackRecord/AddExtensionMission';
 import DemobTripTrackRecorde from '../../../modules/TripTrackRecord/DeMOBTRIPTRACKRECORD';
 import SammaryDemobTrips from '../../../modules/TripTrackRecord/SAMMARYDEMOBTRIPS';
 import SammaryMobTrips from '../../../modules/TripTrackRecord/SAMMARYMOBTRIPS';
@@ -47,6 +48,11 @@ export const recharts2Configs = [
     path: '/Hr/VisaHealth/Visa',
     element: <Visa />,
   },
+  {
+    path: '/ManpowerLocation/AddMissionExtensionRequest',
+    element: <AddMissionExtensoin />,
+  },
+
   {
     path: '/ManpowerLocation/AddDemobilization',
     element: <AddDemobization />,

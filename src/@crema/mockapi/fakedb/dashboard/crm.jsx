@@ -137,8 +137,15 @@ const crmData = {
       link:"/Hr/Visa/Travel"
     },
     {
-      id: 8,
-      name: 'Manpower Location',
+      id: 7,
+      name: 'Visa & Health',
+      iconImg: 'dashboard/wallet_yellow.svg',
+      color: '#FF5252',
+      link:"/Hr/Visa/Travel"
+    },
+    {
+      id: 9,
+      name: 'PROJECTS TRIP TRACK RECORD',
       iconImg: 'dashboard/wallet_yellow.svg',
       color: '#FF5252',
       link:"/ManpowerLocation/ManpowerLocationTrackRecord"
