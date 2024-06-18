@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, InputNumber, Popconfirm, Table, Typography } from 'antd';
 import PropTypes from 'prop-types';
-
+import { StyledAnChar, StyledOrderTable, StyledScrumBoardDatePicker } from '../../../../../styles/index.styled';
 const EditableCell = ({
   editing,
   dataIndex,
@@ -19,12 +19,7 @@ const EditableCell = ({
           style={{
             margin: 0,
           }}
-          rules={[
-            {
-              required: true,
-              message: `Please Input ${title}!`,
-            },
-          ]}
+       
         >
           {inputNode}
         </Form.Item>
@@ -50,13 +45,6 @@ const EditableTable = ({ dataemployeesVisa }) => {
   useEffect(() => {
     if (dataemployeesVisa && dataemployeesVisa.length > 0) {
       setData(dataemployeesVisa);
-    } else {
-      // Default data for testing purposes
-      setData([
-        { key: '0', name: 'Edward 0', age: 32, address: 'London Park no. 0' },
-        { key: '1', name: 'Edward 1', age: 33, address: 'London Park no. 1' },
-        // Add more default data as needed
-      ]);
     }
   }, [dataemployeesVisa]);
 
@@ -100,24 +88,111 @@ const EditableTable = ({ dataemployeesVisa }) => {
   };
 
   const columns = [
+
+        {
+          title: 'APP #',
+          dataIndex: 'idVisa',
+          key: 'idVisa',
+          width: 150,
+          render: (text) => <StyledAnChar>V-{text}</StyledAnChar>,
+        },
+        {
+          title: 'name',
+          dataIndex: 'name',
+          width: '15%',
+          
+        },
+        {
+          title: 'Position',
+          dataIndex: 'position',
+          key: 'position',
+          width: '15%',
+         
+        },
+        {
+          title: 'PASSPORT',
+          dataIndex: 'passportnumber',
+          key: 'passportnumber',
+          width: '15%',
+          
+        },
+        {
+          title: 'COUNTRY',
+          dataIndex: 'destination',
+          key: 'destination',
+          width: '15%',
+        
+        },
+        {
+          title: 'Project Name',
+          dataIndex: 'projName',
+          key: 'projName',
+          width: '15%',
+          editable: true,
+        
+        },
+   
+  
     {
-      title: 'name',
-      dataIndex: 'name',
-      width: '25%',
-      editable: true,
-    },
-    {
-      title: 'age',
-      dataIndex: 'age',
-      width: '15%',
-      editable: true,
-    },
-    {
-      title: 'address',
-      dataIndex: 'address',
-      width: '40%',
-      editable: true,
-    },
+     
+    
+          title: 'Send',
+          dataIndex: 'requestSendVisa',
+          key: 'requestSendVisa',
+          width: '15%',
+          editable: true,
+        
+        },
+        {
+          title: 'Date',
+          dataIndex: 'dateVisa',
+          key: 'dateVisa',
+          width: '15%',
+          editable: true,
+        
+        },
+
+       
+     
+        {
+          title: 'Date',
+          dataIndex: 'dateVisa',
+          key: 'dateVisa',
+          width: '15%',
+          editable: true,
+        
+          
+        },
+        {
+          title: 'Date Passport Submit',
+          dataIndex: 'passportSubmitdate',
+          key: 'passportSubmitdate',
+          width: '15%',
+          editable: true,
+         
+          
+        },
+    
+      
+        {
+          title: 'Visa Ready',
+          dataIndex: 'visaReady',
+          key: 'visaReady',
+          width: '15%',
+          editable: true,
+     
+       
+        },
+        {
+          title: 'FINISH DATE',
+          dataIndex: 'finishDateVisa',
+          key: 'finishDateVisa',
+          width: '15%',
+          editable: true,
+        
+        },
+    
+  
     {
       title: 'operation',
       dataIndex: 'operation',
@@ -178,9 +253,7 @@ const EditableTable = ({ dataemployeesVisa }) => {
         dataSource={data}
         columns={mergedColumns}
         rowClassName='editable-row'
-        pagination={{
-          onChange: cancel,
-        }}
+        
       />
     </Form>
   );

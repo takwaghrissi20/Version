@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../../../@crema/components/AppRowContainer';
-import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox, DatePicker, } from 'antd';
+import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox, DatePicker,notification } from 'antd';
 import { MdEdit } from 'react-icons/md';
 import {
   StyledShadowWrapper,
@@ -73,7 +73,84 @@ const Mission = () => {
   };
 
   const LastMission = lastIdMission + 1;
-
+  const openNotification = () => {
+    notification.open({
+      message: 'Success',
+      description: 'Success Add Mission',
+      style: {
+        backgroundColor: '#28a745',
+        border: '1px solid #28a745',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #1f8838',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
+  const openNotificationWarning = () => {
+    notification.open({
+      message: 'Warning',
+      description: 'All Fields Not Complete',
+      style: {
+        backgroundColor: '#eab000',
+        border: '1px solid #eab000',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #ce9c09',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
+  const openNotificationError = () => {
+    notification.open({
+      message: 'Error',
+      description: 'Error Add Mission',
+      style: {
+        backgroundColor: '#dc35450',
+        border: '1px solid #dc3545',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #bd1120',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
   const findId = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}`, {
@@ -151,13 +228,16 @@ const Mission = () => {
       });
 
       if (!response.ok) {
+        openNotificationError('bottomRight')
         throw new Error('Network response was not ok');
       }
       if (response.ok) {
 
         const responseData = await response.json();
+        form.resetFields();
+        openNotification('bottomRight')
    
-        alert("Mission Success")
+      
 
 
       }
@@ -191,11 +271,11 @@ const Mission = () => {
   const BeforeSaveMission = () => {
     form.validateFields(['Destination', 'missionStartDate', 'missionEndDate'])
       .then(values => {
-        alert("all fields are complete.");
-        setConfirmationMission(true)
+        handleAddMission()
       })
       .catch(errorInfo => {
-        alert("Please complete all fields");
+        
+        openNotificationWarning('bottomRight')
 
 
       });
