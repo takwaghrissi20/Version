@@ -1,464 +1,193 @@
 import React, { useState, useEffect } from 'react';
+import { Form, Input, InputNumber, Popconfirm, Table, Typography } from 'antd';
 import PropTypes from 'prop-types';
-import { Button, Input, Select, Table, Row, Col, DatePicker } from 'antd';
-import AppAnimate from '../../../../../@crema/components/AppAnimate';
-import { StyledAnChar, StyledOrderTable, StyledScrumBoardDatePicker } from '../../../../../styles/index.styled';
-import { AiFillEdit } from "react-icons/ai";
-import { MdCancel } from "react-icons/md";
-import { CiSaveUp1 } from "react-icons/ci";
-import moment from 'moment';
 
-const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
-  const [editingRow, setEditingRow] = useState(null);
-  const [editingData, setEditingData] = useState({});
-  const [backgroundColor, setBackgroundColor] = useState('transparent');
-
-  const { Option } = Select;
-
-  const startEdit = (record) => {
-    setBackgroundColor('#ECF8F6');
-    setEditingRow(record.id);
-    setEditingData({ ...record });
-  };
-
-  const handleChange = (key, value) => {
-    setEditingData({ ...editingData, [key]: value });
-  };
-
-  const handleChangeDate = (date, dateString) => {
-    setEditingData({ ...editingData, dateVisa: dateString });
-  };
-
-  const handleChangeDateVisaCable = (date, dateString) => {
-    setEditingData({ ...editingData, vCabledate: dateString });
-  };
-
-  const handleChangeDatepassportSubmitdate = (date, dateString) => {
-    setEditingData({ ...editingData, passportSubmitdate: dateString });
-  };
-
-  const handleChangeDatefinishDateVisa = (date, dateString) => {
-    setEditingData({ ...editingData, finishDateVisa: dateString });
-  };
-
-  const saveEdit2 = async (id) => {
-    try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/update?id=${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(editingData),
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const responseData = await response.json();
-      // Update your data here
-      setEditingRow(null);
-      setEditingData({});
-      setBackgroundColor('transparent');
-      alert("Success Update Visa " + responseData.idVisa);
-    } catch (error) {
-      console.error("Erreur lors de la récupération du Id :", error);
-      alert('Erreur lors de la mise à jour du visa');
-    }
-  };
-
-  const cancelEdit = () => {
-    setEditingRow(null);
-    setEditingData({});
-    setBackgroundColor('transparent');
-  };
-
-  const VisaRequest = [{ type: 'Yes' }, { type: 'No' }];
-  const vCableReceive = [{ type: 'Yes' }, { type: 'No' }];
-  const PASSPORTSUBMITTED = [{ type: 'Yes' }, { type: 'No' }];
-  const visaReady = [{ type: 'Yes' }, { type: 'No' }];
-  const finalVisaReceive = [{ type: 'FINAL RECEIVED' }, { type: 'Not FINAL RECEIVED' }];
-
-  const columns = [
-    {
-      title: (
-        <div style={{ background: 'transparent', color: 'black', fontWeight: 'bold', fontSize: '10px' }}></div>
-      ),
-      children: [
-        {
-          title: 'APP #',
-          dataIndex: 'idVisa',
-          key: 'idVisa',
-          width: 150,
-          render: (text) => <StyledAnChar>V-{text}</StyledAnChar>,
-        },
-        {
-          title: 'Name',
-          dataIndex: 'name',
-          key: 'name',
-          width: 150,
-        },
-        {
-          title: 'Position',
-          dataIndex: 'position',
-          key: 'position',
-          width: 150,
-        },
-        {
-          title: 'PASSPORT',
-          dataIndex: 'passportnumber',
-          key: 'passportnumber',
-        },
-        {
-          title: 'COUNTRY',
-          dataIndex: 'destination',
-          key: 'destination',
-          width: 150,
-          render: (text, record) => (
-            editingRow === record.id ? (
-              <div className="table-cell-center">
-                <Input
-                  className="input-center"
-                  value={editingRow === record.id ? editingData?.destination : text}
-                  onChange={(e) => handleChange('destination', e.target.value)}
-                />
-              </div>
-            ) : (
-              text
-            )
-          ),
-        },
-        {
-          title: 'Project Name',
-          dataIndex: 'projName',
-          key: 'projName',
-          width: 150,
-        },
-      ],
-    },
-    {
-      title: (
-        <div
-          style={{
-            background: '#B6D8F2',
-            color: 'black',
-            fontWeight: 'bold',
-            paddingTop: '3px',
-            paddingBottom: '3px',
-            fontSize: '14px',
-            width: 150,
-          }}
-        >
-          Request For Visa Country Of Origin
-        </div>
-      ),
-      children: [
-        {
-          title: 'Send',
-          dataIndex: 'requestSendVisa',
-          key: 'requestSendVisa',
-          width: 150,
-          render: (text, record) => (
-            editingRow === record.id ? (
-              <div className="table-cell-center">
-                <Select
-                  placeholder="Visa Send"
-                  value={editingData.requestSendVisa || 'No'}
-                  onChange={(value) => handleChange('requestSendVisa', value)}
-                >
-                  {VisaRequest.map((p) => (
-                    <Option className="input-center" key={p.type} value={p.type}>
-                      {p.type}
-                    </Option>
-                  ))}
-                </Select>
-              </div>
-            ) : (
-              text || 'No'
-            )
-          ),
-        },
-        {
-          title: 'Date',
-          dataIndex: 'dateVisa',
-          key: 'dateVisa',
-          width: 150,
-          render: (text, record) => (
-            editingRow === record.id ? (
-              <div className="table-cell-center">
-                <DatePicker
-                  value={editingData.dateVisa ? moment(editingData.dateVisa) : null}
-                  onChange={(date, dateString) => handleChangeDate('dateVisa', dateString)}
-                />
-              </div>
-            ) : (
-              text
-            )
-          ),
-        },
-      ],
-    },
-    {
-      title: (
-        <div
-          style={{
-            background: '#B6D8F2',
-            color: 'black',
-            fontWeight: 'bold',
-            paddingTop: '5px',
-            paddingBottom: '5px',
-            fontSize: '14px',
-          }}
-        >
-          Visa Cable
-        </div>
-      ),
-      children: [
-        {
-          title: 'Visa Cable ',
-          dataIndex: 'vCableReceive',
-          key: 'vCableReceive',
-          width: 150,
-          render: (text, record) => (
-            editingRow === record.id ? (
-              <div className="table-cell-center">
-                <Select
-                  placeholder="Select Request For Visa Cable"
-                  value={editingData.vCableReceive || 'No'}
-                  onChange={(value) => handleChange('vCableReceive', value)}
-                >
-                  {vCableReceive.map((p) => (
-                    <Option className="input-center" key={p.type} value={p.type}>
-                      {p.type}
-                    </Option>
-                  ))}
-                </Select>
-              </div>
-            ) : (
-              text || 'No'
-            )
-          ),
-        },
-        {
-          title: 'Date Visa Cable',
-          dataIndex: 'vCabledate',
-          key: 'vCabledate',
-          width: 150,
-          render: (text, record) => (
-            editingRow === record.id ? (
-              <div className="table-cell-center">
-                <DatePicker
-                  value={editingData.vCabledate ? moment(editingData.vCabledate) : null}
-                  onChange={(date, dateString) => handleChangeDateVisaCable('vCabledate', dateString)}
-                />
-              </div>
-            ) : (
-              text
-            )
-          ),
-        },
-      ],
-    },
-    {
-      title: (
-        <div
-          style={{
-            background: '#B6D8F2',
-            color: 'black',
-            fontWeight: 'bold',
-            paddingTop: '5px',
-            paddingBottom: '5px',
-            fontSize: '14px',
-          }}
-        >
-          Passport Submitted To Embassy
-        </div>
-      ),
-      children: [
-        {
-          title: 'Passport Submit',
-          dataIndex: 'passportSubmit',
-          key: 'passportSubmit',
-          width: 150,
-          render: (text, record) => (
-            editingRow === record.id ? (
-              <div className="table-cell-center">
-                <Select
-                  value={editingData.passportSubmit || 'No'}
-                  onChange={(value) => handleChange('passportSubmit', value)}
-                >
-                  {PASSPORTSUBMITTED.map((p) => (
-                    <Option className="input-center" key={p.type} value={p.type}>
-                      {p.type}
-                    </Option>
-                  ))}
-                </Select>
-              </div>
-            ) : (
-              text || 'No'
-            )
-          ),
-        },
-        {
-          title: 'Date Passport Submit',
-          dataIndex: 'passportSubmitdate',
-          key: 'passportSubmitdate',
-          width: 150,
-          render: (text, record) => (
-            editingRow === record.id ? (
-              <div className="table-cell-center">
-                <DatePicker
-                  value={editingData.passportSubmitdate ? moment(editingData.passportSubmitdate) : null}
-                  onChange={(date, dateString) => handleChangeDatepassportSubmitdate('passportSubmitdate', dateString)}
-                />
-              </div>
-            ) : (
-              text
-            )
-          ),
-        },
-      ],
-    },
-    {
-      title: (
-        <div
-          style={{
-            background: '#B6D8F2',
-            color: 'black',
-            fontWeight: 'bold',
-            paddingTop: '5px',
-            paddingBottom: '5px',
-            fontSize: '14px',
-          }}
-        >
-          Finaly Visa Received
-        </div>
-      ),
-      children: [
-        {
-          title: 'Visa Ready',
-          dataIndex: 'visaReady',
-          key: 'visaReady',
-          width: 150,
-          render: (text, record) => (
-            editingRow === record.id ? (
-              <div className="table-cell-center">
-                <Select
-                  placeholder="visaReady"
-                  value={editingData.visaReady || 'No'}
-                  onChange={(value) => handleChange('visaReady', value)}
-                >
-                  {visaReady.map((p) => (
-                    <Option className="input-center" key={p.type} value={p.type}>
-                      {p.type}
-                    </Option>
-                  ))}
-                </Select>
-              </div>
-            ) : (
-              text || 'No'
-            )
-          ),
-        },
-        {
-          title: 'FINISH DATE',
-          dataIndex: 'finishDateVisa',
-          key: 'finishDateVisa',
-          width: 150,
-          render: (text, record) => (
-            editingRow === record.id ? (
-              <div className="table-cell-center">
-                <DatePicker
-                  value={editingData.finishDateVisa ? moment(editingData.finishDateVisa) : null}
-                  onChange={(date, dateString) => handleChangeDatefinishDateVisa('finishDateVisa', dateString)}
-                />
-              </div>
-            ) : (
-              text
-            )
-          ),
-        },
-      ],
-    },
-    {
-      title: (
-        <div
-          style={{
-            background: 'transparent',
-            color: 'black',
-            fontWeight: 'bold',
-            paddingTop: '5px',
-            paddingBottom: '5px',
-            fontSize: '12px',
-          }}
-        ></div>
-      ),
-      children: [
-        {
-          title: 'Actions',
-          dataIndex: 'actions',
-          key: 'actions',
-          render: (text, record) => (
-            editingRow === record.id ? (
-              <Row gutter={16}>
-                <Col xs={24} sm={8}>
-                  <CiSaveUp1 className="iconeEditSave" onClick={() => saveEdit2(record.idVisa)}>
-                    Save
-                  </CiSaveUp1>
-                </Col>
-                <div className='Separateur'></div>
-                <Col  xs={24} sm={8}>
-                  <MdCancel className="iconeEdit" onClick={cancelEdit}>
-                    Cancel
-                  </MdCancel>
-                </Col>
-              </Row>
-            ) : (
-              <AiFillEdit onClick={() => startEdit(record)} className="iconeEdit" />
-            )
-          ),
-        },
-      ],
-    },
-  ];
-
-  const [tableHeight, setTableHeight] = useState('auto');
-  useEffect(() => {
-    fetchEmployees();
-    const updateTableHeight = () => {
-      const pageHeight = window.innerHeight;
-      const tableHeight = pageHeight * 0.7;
-      setTableHeight(tableHeight);
-    };
-
-    window.addEventListener('resize', updateTableHeight);
-    updateTableHeight();
-    return () => {
-      window.removeEventListener('resize', updateTableHeight);
-    };
-  }, [dataemployeesVisa]);
-
+const EditableCell = ({
+  editing,
+  dataIndex,
+  title,
+  inputType,
+  children,
+  ...restProps
+}) => {
+  const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
   return (
-    <AppAnimate animation="transition.slideUpIn" delay={200}>
-      <StyledOrderTable
-        hoverColor
-        data={dataemployeesVisa}
-        columns={columns}
-        scroll={{ x: 'auto', y: tableHeight }}
-        className="order-table"
-        rowKey="id"
-        rowClassName={(record) => (record.id === editingRow ? 'editing-row' : '')}
-      />
-    </AppAnimate>
+    <td {...restProps}>
+      {editing ? (
+        <Form.Item
+          name={dataIndex}
+          style={{
+            margin: 0,
+          }}
+          rules={[
+            {
+              required: true,
+              message: `Please Input ${title}!`,
+            },
+          ]}
+        >
+          {inputNode}
+        </Form.Item>
+      ) : (
+        children
+      )}
+    </td>
   );
 };
 
-OrderTable.defaultProps = {
-  dataemployeesVisa: [],
+EditableCell.propTypes = {
+  editing: PropTypes.bool,
+  dataIndex: PropTypes.string,
+  title: PropTypes.string,
+  inputType: PropTypes.string,
+  children: PropTypes.node,
 };
 
-OrderTable.propTypes = {
-  dataemployeesVisa: PropTypes.array,
+const EditableTable = ({ dataemployeesVisa }) => {
+  const [form] = Form.useForm();
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    if (dataemployeesVisa && dataemployeesVisa.length > 0) {
+      setData(dataemployeesVisa);
+    } else {
+      // Default data for testing purposes
+      setData([
+        { key: '0', name: 'Edward 0', age: 32, address: 'London Park no. 0' },
+        { key: '1', name: 'Edward 1', age: 33, address: 'London Park no. 1' },
+        // Add more default data as needed
+      ]);
+    }
+  }, [dataemployeesVisa]);
+
+  const [editingKey, setEditingKey] = useState('');
+
+  const isEditing = (record) => record.key === editingKey;
+
+  const edit = (record) => {
+    form.setFieldsValue({
+      name: '',
+      age: '',
+      address: '',
+      ...record,
+    });
+    setEditingKey(record.key);
+  };
+
+  const cancel = () => {
+    setEditingKey('');
+  };
+
+  const save = async (key) => {
+    try {
+      const row = await form.validateFields();
+      const newData = [...data];
+      const index = newData.findIndex((item) => key === item.key);
+
+      if (index > -1) {
+        const item = newData[index];
+        newData.splice(index, 1, { ...item, ...row });
+        setData(newData);
+        setEditingKey('');
+      } else {
+        newData.push(row);
+        setData(newData);
+        setEditingKey('');
+      }
+    } catch (errInfo) {
+      console.log('Validate Failed:', errInfo);
+    }
+  };
+
+  const columns = [
+    {
+      title: 'name',
+      dataIndex: 'name',
+      width: '25%',
+      editable: true,
+    },
+    {
+      title: 'age',
+      dataIndex: 'age',
+      width: '15%',
+      editable: true,
+    },
+    {
+      title: 'address',
+      dataIndex: 'address',
+      width: '40%',
+      editable: true,
+    },
+    {
+      title: 'operation',
+      dataIndex: 'operation',
+      render: (_, record) => {
+        const editable = isEditing(record);
+        return editable ? (
+          <span>
+            <Typography.Link
+              onClick={() => save(record.key)}
+              style={{
+                marginRight: 8,
+              }}
+            >
+              Save
+            </Typography.Link>
+            <Popconfirm title='Sure to cancel?' onConfirm={cancel}>
+              <a>Cancel</a>
+            </Popconfirm>
+          </span>
+        ) : (
+          <Typography.Link
+            disabled={editingKey !== ''}
+            onClick={() => edit(record)}
+          >
+            Edit
+          </Typography.Link>
+        );
+      },
+    },
+  ];
+
+  const mergedColumns = columns.map((col) => {
+    if (!col.editable) {
+      return col;
+    }
+
+    return {
+      ...col,
+      onCell: (record) => ({
+        record,
+        inputType: col.dataIndex === 'age' ? 'number' : 'text',
+        dataIndex: col.dataIndex,
+        title: col.title,
+        editing: isEditing(record),
+      }),
+    };
+  });
+
+  return (
+    <Form form={form} component={false}>
+      <Table
+        components={{
+          body: {
+            cell: EditableCell,
+          },
+        }}
+        bordered
+        dataSource={data}
+        columns={mergedColumns}
+        rowClassName='editable-row'
+        pagination={{
+          onChange: cancel,
+        }}
+      />
+    </Form>
+  );
 };
 
-export default OrderTable;
+const EdiTableRow = ({ dataemployeesVisa }) => {
+  return <EditableTable dataemployeesVisa={dataemployeesVisa} />;
+};
+
+export default EdiTableRow;

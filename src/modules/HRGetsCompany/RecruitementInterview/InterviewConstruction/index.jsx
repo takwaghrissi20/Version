@@ -188,8 +188,7 @@ const InterviewConstruction = ({ allinterviewConstructionTeam }) => {
           open={open}
           handleInterview={handleInterview}
           codeJob={codeJob}
-          interviewCode={interviewCode}
-          
+          interviewCode={interviewCode}         
           />
 
       </AppsContent>

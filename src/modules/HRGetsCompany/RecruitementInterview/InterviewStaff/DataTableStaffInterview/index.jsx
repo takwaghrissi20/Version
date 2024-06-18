@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import PropTypes from 'prop-types';
 //import { StyledOrderTable, StyledAction } from '../index.styled';
 /// change 
@@ -26,9 +26,23 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
   const [isDelteInterviewStaff, onDeleteInterviewStaff] = useState(false);
   const [isAddEmployees, onAddEmployees] = useState(false);
   const [isFeddbackEmployee, onFeddbackEmployee] = useState(false);
+  const [tableHeight, setTableHeight] = useState('auto');
+  useEffect(() => {
+    const updateTableHeight = () => {
+      const pageHeight = window.innerHeight;
+      const tableHeight = pageHeight * 0.1; 
+      setTableHeight(tableHeight);
+    };
+    window.addEventListener('resize', updateTableHeight);
+    updateTableHeight();
+    return () => {
+      window.removeEventListener('resize', updateTableHeight);
+    };
+  }, []);
   const navigate = useNavigate();
   const handleAddInterviewStaffOpen = () => {
     //onViewInterviewStaff(true);
+    console.log("findIdData",findIdData?.interviewCode)
       navigate(`/Hr/Recruitement&Interview/View/${interviewCode}`, {
         state: {
           interviewCode:findIdData?.interviewCode,
@@ -77,9 +91,7 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
           propsedsalary:findIdData?.propsedsalary,
           finaldesision:findIdData?.finaldesision,
           time:findIdData?.time,
-
-
-
+          hrComentaire:findIdData?.hrComentaire
      
                 
         }
@@ -106,7 +118,65 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
   };
 
   const handleEditInterviewStaffOpen = () => {
-    onEditInterviewStaff(true);
+      console.log("findIdData",findIdData?.interviewCode)
+        navigate(`/Hr/Recruitement&Interview/Update/${interviewCode}`, {
+          state: {
+            interviewCode:findIdData?.interviewCode,
+            jobCode:findIdData?.jobCode,
+            interviwDate:findIdData?.interviwDate,
+            totalAccept:findIdData?.totalAccept,
+            totalInterv:findId.totalInterv,
+            totalReqPos:findIdData?.totalReqPos,
+            totalRequiredGrade:findIdData?.totalRequiredGrade,
+            idNumb:findIdData?.idNumb,
+            department:findIdData?.department,
+            projname:findIdData?.projname,
+            requiredGrade:findIdData?.requiredGrade,
+            requiredQualification:findIdData?.requiredQualification,
+            positionToBeFilled:findIdData?.positionToBeFilled,
+            fullName:findIdData?.fullName,
+            birthayDate:findIdData?.birthayDate,
+            familySituation:findIdData?.familySituation,
+            experience:findIdData?.experience,
+            educationLevel:findIdData?.educationLevel,
+            diploma:findIdData?.diploma,
+            telCondidate:findIdData?.telCondidate,
+            urlCv:findIdData?.urlCv,
+            validatesFor:findIdData?.validatesFor,
+            goTotest2:findIdData?.goTotest2,
+            psy_Person:findIdData?.psy_Person,
+            psy_HumQuality:findIdData?.psy_HumQuality,
+            psy_motivation:findIdData?.psy_motivation,
+            psy_Intellig:findIdData?.psy_Intellig,
+            goToTest3:findIdData?.goToTest3,
+            techEnglishSkills:findIdData?.techEnglishSkills,
+            evalDesision:findIdData?.evalDesision,
+            techcommentaire:findIdData?.techcommentaire,
+            techDate:findIdData?.techDate,
+            hr_Person:findIdData?.hr_Person,
+            hr_HumQuality:findIdData?.hr_HumQuality,
+            hr_motivation:findIdData?.hr_motivation,
+            hr_Intellig:findIdData?.hr_Intellig,
+            level:findIdData?.level,
+            headOfDepAprouv:findIdData?.headOfDepAprouv,
+            agreedJoinedDate:findIdData?.agreedJoinedDate,
+            expectedJoinDate:findIdData?.expectedJoinDate,
+            dailyRate:findIdData?.dailyRate,
+            hrDesion:findIdData?.hrDesion,
+            feedback:findIdData?.feedback,
+            propsedsalary:findIdData?.propsedsalary,
+            finaldesision:findIdData?.finaldesision,
+            time:findIdData?.time,
+            hrComentaire:findIdData?.hrComentaire
+       
+                  
+          }
+     
+        });
+       
+  
+   
+    //onEditInterviewStaff(true);
   };
 
   const handleEditInterviewStaffClose = () => {
@@ -318,27 +388,61 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
       title: 'Reference',
       dataIndex: 'interviewCode',
       key: 'interviewCode',
+      width: 80,
 
     },
     {
       title: 'Evalutor Name ',
       dataIndex: 'fullName',
       key: 'fullName',
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (name) => (
+        <Tooltip placement='topLeft' title={name}>
+          {name}
+        </Tooltip>
+      ),
+   
     },
     {
       title: 'Interview Date  ',
       dataIndex: 'interviwDate',
       key: 'interviwDate',
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (name) => (
+        <Tooltip placement='topLeft' title={name}>
+          {name}
+        </Tooltip>
+      ),
     },
     {
       title: 'Canditate Name',
       dataIndex: 'fullName',
       key: 'fullName',
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (name) => (
+        <Tooltip placement='topLeft' title={name}>
+          {name}
+        </Tooltip>
+      ),
     },
     {
       title: 'Descpline',
       dataIndex: 'positionToBeFilled',
       key: 'positionToBeFilled',
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (name) => (
+        <Tooltip placement='topLeft' title={name}>
+          {name}
+        </Tooltip>
+      ),
     },
     // {
     //   title: 'Project Name',
@@ -422,7 +526,14 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
       title: 'Candidate Feedback',
       dataIndex: 'feedback',
       key: 'feedback',
-      render: (text) => text === null || text === undefined ? ' null ' : text
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (name) => (
+        <Tooltip placement='topLeft' title={name}>
+          {name}
+        </Tooltip>
+      ),
 
     },
     {
@@ -430,7 +541,15 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
       title: 'Agreed Join Date',
       dataIndex: 'agreedJoinedDat',
       key: 'agreedJoinedDat',
-      render: (text) => text === null || text === undefined ? 'null' : text
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (name) => (
+        <Tooltip placement='topLeft' title={name}>
+          {name}
+        </Tooltip>
+      ),
+
     },
 
 
@@ -440,146 +559,146 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
       key: 'actions',
       fixed: 'right',
       className: 'customer-table-actions',
-      // render: (text, record) => {
-      //   const items = [
-      //     { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleAddInterviewStaffOpen },
-      //     { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditInterviewStaffOpen },
-      //     { key: 3, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteInterviewStaff },
-      //   ];
-      //   if (record.notif === 3) {
-      //     items.push({
-      //       key: 4, label: <span style={{ fontSize: 14 }}>Add Employees</span>,
-      //       onClick: handleAddEmployees
-      //     });
-      //     items.push({
-      //       key: 5, label: <span style={{ fontSize: 14 }}>Feddback Employees</span>,
-      //       onClick: handleFeedbackEmployeesOpen
-      //     });
-      //   }
+      render: (text, record) => {
+        const items = [
+          { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleAddInterviewStaffOpen },
+          { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditInterviewStaffOpen },
+          { key: 3, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteInterviewStaff },
+        ];
+        if (record.notif === 3) {
+          items.push({
+            key: 4, label: <span style={{ fontSize: 14 }}>Add Employees</span>,
+            onClick: handleAddEmployees
+          });
+          items.push({
+            key: 5, label: <span style={{ fontSize: 14 }}>Feddback Employees</span>,
+            onClick: handleFeedbackEmployeesOpen
+          });
+        }
 
-      //   return (
-      //     <div onClick={() => findId(record?.interviewCode)}>
-      //       <Dropdown menu={{ items }} trigger={['click']}>
-      //         <Button type='circle'>
-      //           <MoreOutlined />
-      //         </Button>
-      //       </Dropdown>
-      //       {isFeddbackEmployee && (
-      //         <FeddbackEmployeesStaff
-      //           isFeedbackEmployee={isFeddbackEmployee}
-      //           handleFeedbackContactClose={handleFeedbackEmployeesClose}
+        return (
+          <div onClick={() => findId(record?.interviewCode)}>
+            <Dropdown menu={{ items }} trigger={['click']}>
+              <Button type='circle'>
+                <MoreOutlined />
+              </Button>
+            </Dropdown>
+            {isFeddbackEmployee && (
+              <FeddbackEmployeesStaff
+                isFeedbackEmployee={isFeddbackEmployee}
+                handleFeedbackContactClose={handleFeedbackEmployeesClose}
              
               
-      //         />
-      //       )}
-      //       {isViewInterviewStaff && (
-      //         <InterviewView
-      //           isViewInterviewStaff={isViewInterviewStaff}
-      //           handleAddContactClose={handleAddInterviewStaffClose}
-      //           interviewCode={findIdData?.interviewCode}
-      //           jobCode={findIdData?.jobCode}
-      //           interviwDate={findIdData?.interviwDate}
-      //           totalAccept={findIdData?.totalAccept}
-      //           totalInterv={findId.totalInterv}
-      //           totalReqPos={findIdData?.totalReqPos}
-      //           totalRequiredGrade={findIdData?.totalRequiredGrade}
-      //           idNumb={findIdData?.idNumb}
-      //           department={findIdData?.department}
-      //           projname={findIdData?.projname}
-      //           requiredGrade={findIdData?.requiredGrade}
-      //           requiredQualification={findIdData?.requiredQualification}
-      //           positionToBeFilled={findIdData?.positionToBeFilled}
-      //           fullName={findIdData?.fullName}
-      //           birthayDate={findIdData?.birthayDate}
-      //           familySituation={findIdData?.familySituation}
-      //           experience={findIdData?.experience}
-      //           educationLevel={findIdData?.educationLevel}
-      //           diploma={findIdData?.diploma}
-      //           telCondidate={findIdData?.telCondidate}
-      //           urlCv={findIdData?.urlCv}
-      //           validatesFor={findIdData?.validatesFor}
-      //           goTotest2={findIdData?.goTotest2}
-      //           psy_Person={findIdData?.psy_Person}
-      //           psy_HumQuality={findIdData?.psy_HumQuality}
-      //           psy_motivation={findIdData?.psy_motivation}
-      //           psy_Intellig={findIdData?.psy_Intellig}
-      //           goToTest3={findIdData?.goToTest3}
-      //           techEnglishSkills={findIdData?.techEnglishSkills}
-      //           evalDesision={findIdData?.evalDesision}
-      //           techcommentaire={findIdData?.techcommentaire}
-      //           techDate={findIdData?.techDate}
-      //           hr_Person={findIdData?.hr_Person}
-      //           hr_HumQuality={findIdData?.hr_HumQuality}
-      //           hr_motivation={findIdData?.hr_motivation}
-      //           hr_Intellig={findIdData?.hr_Intellig}
-      //           level={findIdData?.level}
-      //           headOfDepAprouv={findIdData?.headOfDepAprouv}
-      //           agreedJoinedDate={findIdData?.agreedJoinedDate}
-      //           expectedJoinDate={findIdData?.expectedJoinDate}
-      //           dailyRate={findIdData?.dailyRate}
-      //           hrDesion={findIdData?.hrDesion}
-      //           feedback={findIdData?.feedback}
-      //           propsedsalary={findIdData?.propsedsalary}
-      //           finaldesision={findIdData?.finaldesision}
-      //           time={findIdData?.time}
-      //         />
-      //       )}
-      //       {isEditInterviewStaff && (
-      //         <InterviewEdit
-      //           isEditInterviewStaff={isEditInterviewStaff}
-      //           handleAddContactClose={handleAddEditInterviewStaffClose}
-      //           interviewCode={findIdData?.interviewCode}
-      //           jobCode={findIdData?.jobCode}
-      //           interviwDate={findIdData?.interviwDate}
-      //           totalAccept={findIdData?.totalAccept}
-      //           totalInterv={findId.totalInterv}
-      //           totalReqPos={findIdData?.totalReqPos}
-      //           totalRequiredGrade={findIdData?.totalRequiredGrade}
-      //           idNumb={findIdData?.idNumb}
-      //           department={findIdData?.department}
-      //           projname={findIdData?.projname}
-      //           requiredGrade={findIdData?.requiredGrade}
-      //           requiredQualification={findIdData?.requiredQualification}
-      //           positionToBeFilled={findIdData?.positionToBeFilled}
-      //           fullName={findIdData?.fullName}
-      //           birthayDate={findIdData?.birthayDate}
-      //           familySituation={findIdData?.familySituation}
-      //           experience={findIdData?.experience}
-      //           educationLevel={findIdData?.educationLevel}
-      //           diploma={findIdData?.diploma}
-      //           telCondidate={findIdData?.telCondidate}
-      //           urlCv={findIdData?.urlCv}
-      //           validatesFor={findIdData?.validatesFor}
-      //           goTotest2={findIdData?.goTotest2}
-      //           psy_Person={findIdData?.psy_Person}
-      //           psy_HumQuality={findIdData?.psy_HumQuality}
-      //           psy_motivation={findIdData?.psy_motivation}
-      //           psy_Intellig={findIdData?.psy_Intellig}
-      //           goToTest3={findIdData?.goToTest3}
-      //           techEnglishSkills={findIdData?.techEnglishSkills}
-      //           evalDesision={findIdData?.evalDesision}
-      //           techcommentaire={findIdData?.techcommentaire}
-      //           techDate={findIdData?.techDate}
-      //           hr_Person={findIdData?.hr_Person}
-      //           hr_HumQuality={findIdData?.hr_HumQuality}
-      //           hr_motivation={findIdData?.hr_motivation}
-      //           hr_Intellig={findIdData?.hr_Intellig}
-      //           level={findIdData?.level}
-      //           headOfDepAprouv={findIdData?.headOfDepAprouv}
-      //           agreedJoinedDate={findIdData?.agreedJoinedDate}
-      //           expectedJoinDate={findIdData?.expectedJoinDate}
-      //           dailyRate={findIdData?.dailyRate}
-      //           hrDesion={findIdData?.hrDesion}
-      //           feedback={findIdData?.feedback}
-      //           propsedsalary={findIdData?.propsedsalary}
-      //           finaldesision={findIdData?.finaldesision}
-      //           time={findIdData?.time}
-      //         />
-      //       )}
+              />
+            )}
+            {isViewInterviewStaff && (
+              <InterviewView
+                isViewInterviewStaff={isViewInterviewStaff}
+                handleAddContactClose={handleAddInterviewStaffClose}
+                interviewCode={findIdData?.interviewCode}
+                jobCode={findIdData?.jobCode}
+                interviwDate={findIdData?.interviwDate}
+                totalAccept={findIdData?.totalAccept}
+                totalInterv={findId.totalInterv}
+                totalReqPos={findIdData?.totalReqPos}
+                totalRequiredGrade={findIdData?.totalRequiredGrade}
+                idNumb={findIdData?.idNumb}
+                department={findIdData?.department}
+                projname={findIdData?.projname}
+                requiredGrade={findIdData?.requiredGrade}
+                requiredQualification={findIdData?.requiredQualification}
+                positionToBeFilled={findIdData?.positionToBeFilled}
+                fullName={findIdData?.fullName}
+                birthayDate={findIdData?.birthayDate}
+                familySituation={findIdData?.familySituation}
+                experience={findIdData?.experience}
+                educationLevel={findIdData?.educationLevel}
+                diploma={findIdData?.diploma}
+                telCondidate={findIdData?.telCondidate}
+                urlCv={findIdData?.urlCv}
+                validatesFor={findIdData?.validatesFor}
+                goTotest2={findIdData?.goTotest2}
+                psy_Person={findIdData?.psy_Person}
+                psy_HumQuality={findIdData?.psy_HumQuality}
+                psy_motivation={findIdData?.psy_motivation}
+                psy_Intellig={findIdData?.psy_Intellig}
+                goToTest3={findIdData?.goToTest3}
+                techEnglishSkills={findIdData?.techEnglishSkills}
+                evalDesision={findIdData?.evalDesision}
+                techcommentaire={findIdData?.techcommentaire}
+                techDate={findIdData?.techDate}
+                hr_Person={findIdData?.hr_Person}
+                hr_HumQuality={findIdData?.hr_HumQuality}
+                hr_motivation={findIdData?.hr_motivation}
+                hr_Intellig={findIdData?.hr_Intellig}
+                level={findIdData?.level}
+                headOfDepAprouv={findIdData?.headOfDepAprouv}
+                agreedJoinedDate={findIdData?.agreedJoinedDate}
+                expectedJoinDate={findIdData?.expectedJoinDate}
+                dailyRate={findIdData?.dailyRate}
+                hrDesion={findIdData?.hrDesion}
+                feedback={findIdData?.feedback}
+                propsedsalary={findIdData?.propsedsalary}
+                finaldesision={findIdData?.finaldesision}
+                time={findIdData?.time}
+              />
+            )}
+            {isEditInterviewStaff && (
+              <InterviewEdit
+                isEditInterviewStaff={isEditInterviewStaff}
+                handleAddContactClose={handleAddEditInterviewStaffClose}
+                interviewCode={findIdData?.interviewCode}
+                jobCode={findIdData?.jobCode}
+                interviwDate={findIdData?.interviwDate}
+                totalAccept={findIdData?.totalAccept}
+                totalInterv={findId.totalInterv}
+                totalReqPos={findIdData?.totalReqPos}
+                totalRequiredGrade={findIdData?.totalRequiredGrade}
+                idNumb={findIdData?.idNumb}
+                department={findIdData?.department}
+                projname={findIdData?.projname}
+                requiredGrade={findIdData?.requiredGrade}
+                requiredQualification={findIdData?.requiredQualification}
+                positionToBeFilled={findIdData?.positionToBeFilled}
+                fullName={findIdData?.fullName}
+                birthayDate={findIdData?.birthayDate}
+                familySituation={findIdData?.familySituation}
+                experience={findIdData?.experience}
+                educationLevel={findIdData?.educationLevel}
+                diploma={findIdData?.diploma}
+                telCondidate={findIdData?.telCondidate}
+                urlCv={findIdData?.urlCv}
+                validatesFor={findIdData?.validatesFor}
+                goTotest2={findIdData?.goTotest2}
+                psy_Person={findIdData?.psy_Person}
+                psy_HumQuality={findIdData?.psy_HumQuality}
+                psy_motivation={findIdData?.psy_motivation}
+                psy_Intellig={findIdData?.psy_Intellig}
+                goToTest3={findIdData?.goToTest3}
+                techEnglishSkills={findIdData?.techEnglishSkills}
+                evalDesision={findIdData?.evalDesision}
+                techcommentaire={findIdData?.techcommentaire}
+                techDate={findIdData?.techDate}
+                hr_Person={findIdData?.hr_Person}
+                hr_HumQuality={findIdData?.hr_HumQuality}
+                hr_motivation={findIdData?.hr_motivation}
+                hr_Intellig={findIdData?.hr_Intellig}
+                level={findIdData?.level}
+                headOfDepAprouv={findIdData?.headOfDepAprouv}
+                agreedJoinedDate={findIdData?.agreedJoinedDate}
+                expectedJoinDate={findIdData?.expectedJoinDate}
+                dailyRate={findIdData?.dailyRate}
+                hrDesion={findIdData?.hrDesion}
+                feedback={findIdData?.feedback}
+                propsedsalary={findIdData?.propsedsalary}
+                finaldesision={findIdData?.finaldesision}
+                time={findIdData?.time}
+              />
+            )}
          
-      //     </div>
-      //   );
-      // },
+          </div>
+        );
+      },
     },
 
 
@@ -716,9 +835,7 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
         hoverColor
         data={allinterviewStaffManagement}
         columns={columns}
-        scroll={{ x: 'auto', y: 200 }}
-
-
+        scroll={{ x: 'auto', y: tableHeight }}
       />
 
       {isDelteInterviewStaff ? (

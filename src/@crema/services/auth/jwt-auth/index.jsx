@@ -7,26 +7,26 @@ const jwtAxios = axios.create({
     'Content-Type': 'application/json',
   },
 });
-jwtAxios.interceptors.response.use(
-  (res) => res,
-  (err) => {
-    if (err.response && err.response.data.msg === 'Token is not valid') {
-      console.log('Need to logout user');
-      // store.dispatch({type: LOGOUT});
-    }
-    return Promise.reject(err);
-  },
-);
-jwtAxios.interceptors.response.use(
-  (res) => res,
-  (err) => {
-    if (err.response && err.response.status === 403) {
-      console.log('Forbidden error occurred');
-      // Déconnecter l'utilisateur ou afficher un message d'erreur
-    }
-    return Promise.reject(err);
-  },
-);
+// jwtAxios.interceptors.response.use(
+//   (res) => res,
+//   (err) => {
+//     if (err.response && err.response.data.msg === 'Token is not valid') {
+//       console.log('Need to logout user');
+//       // store.dispatch({type: LOGOUT});
+//     }
+//     return Promise.reject(err);
+//   },
+// );
+// jwtAxios.interceptors.response.use(
+//   (res) => res,
+//   (err) => {
+//     if (err.response && err.response.status === 403) {
+//       console.log('Forbidden error occurred');
+//       // Déconnecter l'utilisateur ou afficher un message d'erreur
+//     }
+//     return Promise.reject(err);
+//   },
+// );
 
 export const setAuthToken = (token) => {
   if (token) {

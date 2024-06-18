@@ -80,7 +80,7 @@ const AllRecruitementStaff = ({allrecruitementabove,
   useEffect(() => {
     const updateTableHeight = () => {
       const pageHeight = window.innerHeight;
-      const tableHeight = pageHeight * 0.3; 
+      const tableHeight = pageHeight * 0.1; 
       setTableHeight(tableHeight);
     };
     window.addEventListener('resize', updateTableHeight);

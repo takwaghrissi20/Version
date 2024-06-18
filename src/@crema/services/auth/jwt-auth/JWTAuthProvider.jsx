@@ -1,30 +1,45 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useInfoViewActionsContext } from '@crema/context/AppContextProvider/InfoViewContextProvider';
-import jwtAxios, { setAuthToken } from './index';
+import axios from 'axios';
+import { useInfoViewActionsContext } from '../../../../@crema/context/AppContextProvider/InfoViewContextProvider';
+
+const jwtAxios = axios.create({
+  baseURL: 'https://dev-gateway.gets-company.com', // Your base API URL
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+export const setAuthToken = (token) => {
+  if (token) {
+    jwtAxios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+    localStorage.setItem('token', token);
+  } else {
+    delete jwtAxios.defaults.headers.common['Authorization'];
+    localStorage.removeItem('token');
+  }
+};
 
 const JWTAuthContext = createContext();
 const JWTAuthActionsContext = createContext();
 
 export const useJWTAuth = () => useContext(JWTAuthContext);
-
 export const useJWTAuthActions = () => useContext(JWTAuthActionsContext);
 
-const JWTAuthAuthProvider = ({ children }) => {
-  const [firebaseData, setJWTAuthData] = useState({
+const JWTAuthProvider = ({ children }) => {
+  const [authData, setAuthData] = useState({
     user: null,
     isAuthenticated: false,
     isLoading: true,
   });
 
-  const infoViewActionsContext = useInfoViewActionsContext();
+  const { fetchStart, fetchSuccess, fetchError } = useInfoViewActionsContext();
 
   useEffect(() => {
-    const getAuthUser = () => {
+    const getAuthUser = async () => {
       const token = localStorage.getItem('token');
-  
       if (!token) {
-        setJWTAuthData({
+        setAuthData({
           user: undefined,
           isLoading: false,
           isAuthenticated: false,
@@ -32,91 +47,86 @@ const JWTAuthAuthProvider = ({ children }) => {
         return;
       }
       setAuthToken(token);
-      jwtAxios.post('generateToken') // Correction de la typo ici
-        .then(({ data }) =>
-          setJWTAuthData({
-            user: data,
-            isLoading: false,
-            isAuthenticated: true,
-          }),
-        )
-        .catch(() =>
-          setJWTAuthData({
-            user: undefined,
-            isLoading: false,
-            isAuthenticated: false,
-          }),
-        );
+
+      try {
+        const { data } = await axios.get(`https://dev-gateway.gets-company.com/api/v1/auth/editProfileByToken?token=${token}`);
+        console.log("dattttaaa",data)
+         // Ensure this is the correct endpoint
+        setAuthData({
+          user: data,
+          isLoading: false,
+          isAuthenticated: true,
+        });
+      } catch (error) {
+        console.error('Error during token validation:', error);
+        setAuthData({
+          user: undefined,
+          isLoading: false,
+          isAuthenticated: false,
+        });
+      }
     };
-  
+
     getAuthUser();
   }, []);
 
   const signInUser = async ({ username, password }) => {
-    infoViewActionsContext.fetchStart();
+    fetchStart();
     try {
-      const response = await fetch('https://dev-gateway.gets-company.com/api/v1/auth/generateToken', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username, password })
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
+      const response = await jwtAxios.post('/api/v1/auth/generateToken', { username, password });
+      if (response.status === 200) {
+  
+        const data = response.data;
         localStorage.setItem('token', data.token);
         localStorage.setItem('role', data.roles);
         setAuthToken(data.token);
-        setJWTAuthData({
+        setAuthData({
           user: data,
           isAuthenticated: true,
           isLoading: false,
         });
-        infoViewActionsContext.fetchSuccess();
+        fetchSuccess();
       }
     } catch (error) {
-      setJWTAuthData({
-        ...firebaseData,
+      console.error('Sign-in error:', error);
+      setAuthData({
+        ...authData,
         isAuthenticated: false,
         isLoading: false,
       });
-      infoViewActionsContext.fetchError(
-        error?.response?.data?.error || 'Something went wrong',
-      );
+      fetchError(error?.response?.data?.error || 'Something went wrong');
     }
   };
 
   const signUpUser = async ({ name, email, password }) => {
-    infoViewActionsContext.fetchStart();
+    fetchStart();
     try {
-      const { data } = await jwtAxios.post('users', { name, email, password });
-      localStorage.setItem('token', data.token);
-      setAuthToken(data.token);
-      const res = await jwtAxios.get('/auth');
-      setJWTAuthData({
-        user: res.data,
-        isAuthenticated: true,
-        isLoading: false,
-      });
-      infoViewActionsContext.fetchSuccess();
+      const response = await jwtAxios.post('/api/v1/auth/register', { name, email, password });
+      if (response.status === 200) {
+        const data = response.data;
+        setAuthToken(data.token);
+        setAuthData({
+          user: data,
+          isAuthenticated: true,
+          isLoading: false,
+        });
+        fetchSuccess();
+      }
     } catch (error) {
-      setJWTAuthData({
-        ...firebaseData,
+      console.error('Sign-up error:', error);
+      setAuthData({
+        ...authData,
         isAuthenticated: false,
         isLoading: false,
       });
-      console.log('error:', error.response.data.error);
-      infoViewActionsContext.fetchError(
-        error?.response?.data?.error || 'Something went wrong',
-      );
+      fetchError(error?.response?.data?.error || 'Something went wrong');
     }
   };
 
-  const logout = async () => {
+  const logout = () => {
     localStorage.removeItem('token');
-    setAuthToken();
-    setJWTAuthData({
+    setAuthToken(null);
+    setAuthData({
       user: null,
       isLoading: false,
       isAuthenticated: false,
@@ -124,25 +134,16 @@ const JWTAuthAuthProvider = ({ children }) => {
   };
 
   return (
-    <JWTAuthContext.Provider
-      value={{
-        ...firebaseData,
-      }}
-    >
-      <JWTAuthActionsContext.Provider
-        value={{
-          signUpUser,
-          signInUser,
-          logout,
-        }}
-      >
+    <JWTAuthContext.Provider value={authData}>
+      <JWTAuthActionsContext.Provider value={{ signUpUser, signInUser, logout }}>
         {children}
       </JWTAuthActionsContext.Provider>
     </JWTAuthContext.Provider>
   );
 };
-export default JWTAuthAuthProvider;
 
-JWTAuthAuthProvider.propTypes = {
+export default JWTAuthProvider;
+
+JWTAuthProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };

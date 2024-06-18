@@ -1,30 +1,68 @@
-import React, { useState,useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { Button, Dropdown,Select } from 'antd';
-import AppAnimate from '../../../../../@crema/components/AppAnimate'
-import { StyledAnChar, StyledOrderTable,StyledAction } from '../../../../../styles/index.styled';
-import VisaStatusEdit from "../../../../../modules/Model/VisaStatusEdit";
-import { AiFillEdit } from "react-icons/ai";
-import { Badge,  Space, Table } from 'antd';
+import { Badge, Dropdown, Space, Table } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
-const OrderTable = ({ dataemployeesVisa }) => {
+import React,{useState} from 'react';
+import { StyledAnChar } from '../../../../../styles/index.styled';
 
-  const [findIdData, setFindIdData] = useState(null);
-  const [isEditVisa, onEditVisa] = useState(false);
-  const [projects, setProjects] = useState([]);
-  const { Option } = Select;
-  const  handleEditVisa =() => {
-    onEditVisa(true)
-  }
-  const  handleEditVisaClose =() => { 
-    setFindIdData(null)
-    onEditVisa(false)
-  }
-  const items = [
-    { key: 1, label: 'Action 1' },
-    { key: 2, label: 'Action 2' },
+const items = [
+  { key: 1, label: 'Action 1' },
+  { key: 2, label: 'Action 2' },
+];
+
+function NestedTable({ dataemployeesVisa }) {
+  const [expandedData, setExpandedData] = useState();
+  console.log("dataemployeesVisa  testt", dataemployeesVisa)
+  const expandedRowRender = () => {
+    const columns = [
+      { title: 'Fetness Certificate', dataIndex: 'resultFitness', key: 'resultFitness' },
+      { title: 'Hepatitie', dataIndex: 'Hepatitie', key: 'Hepatitie' },
+      {
+        title: 'IDZ/HIV',
+        dataIndex: 'hepatitResult',
+        key: 'hepatitResult',
+      },
+
+      {
+        title: 'Visa Requested',
+        dataIndex: 'vCabledate',
+        key: 'vCabledate',
+      },
+      {
+        title: 'Visa Cable Received ',
+        dataIndex: ' visaReady',
+        key: ' visaReady'
+      },
+      {
+        title: 'Passport Submitted',
+        dataIndex: 'visaReady',
+        key: 'visaReady',
+
+      },
+    ];
+
+
+    return <Table columns={columns} dataSource={expandedData} pagination={false} />;
+  };
+
+  const columns = [
+    {
+      title: 'APPLICATION NUMBER',
+      dataIndex: 'idVisa',
+      key: 'idVisa',
+      render: (id) => <StyledAnChar>V-{id}</StyledAnChar>,
+    },
+    { title: 'Full Name', dataIndex: 'name', key: 'name' },
+    { title: 'Position', dataIndex: 'position', key: 'position' },
+    { title: 'Passport Number', dataIndex: 'passportnumber', key: 'passportnumber' },
+    { title: 'COUNTRY', dataIndex: 'destination', key: 'destination' },
+    { title: 'Projet', dataIndex: 'projName', key: 'projName' },
+    { title: 'Visa Ready ', dataIndex: 'finishDateVisa', key: 'finishDateVisa', },
+    {
+      title: 'Visa Finish Date ',
+      dataIndex: 'finishDateVisa',
+      key: 'finishDateVisa'
+    },
+
   ];
-  //Find By Id
   const findId = async (code) => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${code}`, {
@@ -35,190 +73,38 @@ const OrderTable = ({ dataemployeesVisa }) => {
       }
       if (response.ok) {
         const responseData = await response.json();
- 
-        setFindIdData(responseData); 
-        const projects = responseData?.projects?.flatMap(employee => employee.projName);
-      
-        setProjects(projects)
-        onEditVisa(true)
+
+        //setFindIdData(responseData); 
+        console.log('ttttggg', responseData?.vaccins)
+        setExpandedData(responseData?.vaccins)
+
+        //setProjects(projects)
+        //onEditVisa(true)
       }
     } catch (error) {
       console.error("Erreur lors de la récupération du id eMPLOYEE:", error);
     }
+  }
+    return (
+      <Table      
+        className="components-table-demo-nested"
+        columns={columns}
+      
+        expandable={{
+          expandedRowRender,
+          onExpand: (expanded, record) => {
+            if (expanded) {
+              findId(record.idVisa);
+            }
+          },
+        }}
+        dataSource={dataemployeesVisa}
+      />
+    );
+  }
+
+  const VisaSammary = ({ dataemployeesVisa }) => {
+    return <NestedTable dataemployeesVisa={dataemployeesVisa} />;
   };
 
-;
-
-
-
-  const columns = [
-    {
-      title: 'APPLICATION NUMBER',
-      dataIndex: 'idVisa',
-      key: 'idVisa',
-      render: (id) => <StyledAnChar>V{id}</StyledAnChar>,
-    },
-    {
-      title: 'Full Name',
-      dataIndex: 'name',
-      key: 'name',
-      render: (text) => text === null || text === undefined ? 'null' : text
-    },
-    {
-      title: 'Position',
-      dataIndex: 'position',
-      key: 'position',
-      render: (text) => text === null || text === undefined ? 'null' : text
-    },
-    {
-      title: 'Passport Number',
-      dataIndex: 'dateVisa',
-      key: 'dateVisa',
-      render: (text) => text === null || text === undefined ? 'null' : text
-    },
-    {
-      title: 'COUNTRY',
-      dataIndex: 'destination',
-      key: 'destination',
-      render: (text) => text === null || text === undefined ? 'null' : text
-    },
-    {
-      title: 'Projet ',
-      dataIndex: 'vCableReceive',
-      key: 'vCableReceive',
-      render: (text) => text === null || text === undefined ? 'null' : text
-    },
-    {
-      title: 'Fetness Certificate',
-      dataIndex: 'vCableReceive',
-      key: 'vCableReceive',
-      render: (text) => text === null || text === undefined ? 'null' : text
-    },
-    {
-      title: 'Hepatitie',
-      dataIndex: 'vCableReceive',
-      key: 'vCableReceive',
-      render: (text) => text === null || text === undefined ? 'null' : text
-    },
-    {
-      title: 'IDZ/HIV',
-      dataIndex: 'vCableReceive',
-      key: 'vCableReceive',
-      render: (text) => text === null || text === undefined ? 'null' : text
-    },
-    {
-      title: 'Visa Requested',
-      dataIndex: 'vCabledate',
-      key: 'vCabledate',
-      render: (text) => text === null || text === undefined ? 'null' : text
-    },
-    {
-      title: 'Visa Cable Received ',
-      dataIndex: ' visaReady',
-      key: ' visaReady',
-      render: (text) => text === null || text === undefined ? 'null' : text
-    },
-    {
-      title: 'Passport Submitted',
-      dataIndex: 'visaReady',
-      key: ' visaReady',
-      render: (text) => text === null || text === undefined ? 'null' : text
-    },
-    {
-      title: 'Visa Ready ',
-      dataIndex: 'finishDateVisa',
-      key: 'finishDateVisa',
-      render: (text) => text === null || text === undefined ? 'null' : text
-    },
-    {
-      title: 'Visa Finish Date ',
-      dataIndex: 'finishDateVisa',
-      key: 'finishDateVisa',
-      render: (text) => text === null || text === undefined ? 'null' : text
-    },
-   
-    
-    // {
-    //   title: 'Actions',
-    //   dataIndex: 'actions',
-    //   key: 'actions',
-    //   fixed: 'center',
-    //   className: 'customer-table-actions',
-    //   render: (text, record) => (
-    //     <StyledAction>
-    //       <AiFillEdit onClick={() => findId(record?.getsId)} className='iconeEdit' />
-    //     </StyledAction>
-    //   ),
-    // },
-  ];
-  const [tableHeight, setTableHeight] = useState('auto');
-
-  useEffect(() => {
-    const updateTableHeight = () => {
-      const pageHeight = window.innerHeight;
-      const tableHeight = pageHeight * 0.7; 
-      setTableHeight(tableHeight);
-    };
-
-    window.addEventListener('resize', updateTableHeight);
-    updateTableHeight();
-    return () => {
-      window.removeEventListener('resize', updateTableHeight);
-    };
-  }, []); 
-
-  return (
-    <AppAnimate animation='transition.slideUpIn' delay={200}   
-    >
-     
-      <StyledOrderTable
-        hoverColor
-        data={dataemployeesVisa}
-        columns={columns}
-        scroll={{ x: 'auto',  y: tableHeight }}      
-      />
-       {isEditVisa && (
-        <VisaStatusEdit
-            isEditVisa={isEditVisa}
-            handleAddContactClose={handleEditVisaClose}
-            getsId={findIdData?.getsId}
-            nationality={findIdData?.nationality}
-            birthDate={findIdData?.birthDate}
-            phoneNumber={findIdData?.phoneNumber}
-            joinDate={findIdData?.joinDate}
-            companyType={findIdData?.companyType}
-            finishDate={findIdData?.finishDate}
-            actStatus={findIdData?.actStatus}
-            position={findIdData?.position}
-            getsEmail={findIdData?.getsEmail}
-            name={findIdData?.name}
-            passportnumber={findIdData?.passportnumber}
-            cnss={findIdData?.cnss}
-            contractNumb={findIdData?.contractNumb}
-            cvCopy={findIdData?.cvCopy}
-            passportCopy={findIdData?.passportCopy}
-            //corona1Date={findIdData?.vaccins}
-            traveldate={findIdData?.traveldate}
-            destination={findIdData?.destination}
-            projName={findIdData?.projName}            
-            idVisa={findIdData?.idVisa}
-            dateVisa={findIdData?.dateVisa}
-            toApplyForVisa={findIdData?.toApplyForVisa}
-            projects={projects}
-       
-        />
-      )}
- 
-    </AppAnimate>
-  );
-};
-
-OrderTable.defaultProps = {
-  orderData: [],
-};
-
-OrderTable.propTypes = {
-  orderData: PropTypes.array,
-};
-
-export default OrderTable;
+  export default VisaSammary;

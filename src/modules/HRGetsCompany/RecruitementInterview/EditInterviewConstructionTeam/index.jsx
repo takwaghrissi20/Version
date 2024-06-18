@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../../../@crema/components/AppRowContainer';
-import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox, DatePicker, InputNumber } from 'antd';
+import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert,notification, Checkbox, DatePicker, InputNumber } from 'antd';
 import {
   StyledShadowWrapper,
   StyledInput,
@@ -13,7 +13,7 @@ import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
 import { useLocation } from 'react-router-dom';
-const ViewInterviewStaff = () => {
+const EditInterviewConstruction = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [form] = Form.useForm();
@@ -66,9 +66,172 @@ const ViewInterviewStaff = () => {
   console.log("goTotest2", goTotest2)
 
   const goBack = () => {
+    window.location.reload();
     navigate(-1)
   }
+  const [newinterviwDate, setNewinterviwDate] = useState(interviwDate);
+  const [newdep, setNewdep] = useState(department);
+  const [newprojname, setNewprojname] = useState(projname);
+  const [newrequiredGrade, setNewrequiredGrade] = useState(requiredGrade);
+  const [newrequiredQualification, setNewrequiredQualification] = useState(requiredQualification);
+  const openNotification = () => {
+    notification.open({
+      message: 'Success',
+      description: 'Success Construction STAFF INTERVIEW SHEET',
+      style: {
+        backgroundColor: '#28a745',
+        border: '1px solid #28a745',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #1f8838',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
+  const openNotificationWarning = () => {
+    notification.open({
+      message: 'Warning',
+      description: 'All Fields Not Complete',
+      style: {
+        backgroundColor: '#eab000',
+        border: '1px solid #eab000',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #ce9c09',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
+  const openNotificationError = () => {
+    notification.open({
+      message: 'Error',
+      description: 'Error Construction STAFF INTERVIEW SHEET',
+      style: {
+        backgroundColor: '#dc35450',
+        border: '1px solid #dc3545',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #bd1120',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
+  ///Update
+  const Update = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
 
+        method: 'PUT',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+          interviewCode:interviewCode,
+          jobCode:jobCode,
+          interviwDate: newinterviwDate,
+          totalAccept:totalAccept,
+          totalInterv:totalInterv,
+          totalReqPos:totalReqPos,
+          totalRequiredGrade: totalRequiredGrade,
+          idNumb:idNumb,
+          department:newdep,
+          projname:newprojname,
+          requiredGrade: newrequiredGrade,
+          requiredQualification:newrequiredQualification,
+          positionToBeFilled:positionToBeFilled,
+          fullName:fullName,
+          birthayDate:birthayDate,
+          familySituation:familySituation,
+          experience:experience,
+          educationLevel:educationLevel,
+          diploma: diploma,
+          telCondidate: telCondidate,
+          urlCv,
+          validatesFor,
+          goTotest2,
+          psy_Person,
+          psy_HumQuality,
+          psy_motivation,
+          psy_Intellig,
+          goToTest3,
+          techEnglishSkills,
+          evalDesision,
+          techcommentaire,
+          techDate,
+          hr_Person,
+          hr_HumQuality,
+          hr_motivation,
+          hr_Intellig,
+          level,
+          headOfDepAprouv,
+          // agreedJoinedDate,
+          expectedJoinDate,
+          dailyRate,
+          hrDesion,
+          // feedback,
+          propsedsalary,
+        
+
+
+        })
+      });
+
+      if (!response.ok) {
+        openNotificationError('bottomRight')
+      
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+
+        const responseData = await response.json(); 
+        form.resetFields();
+        openNotification('bottomRight')
+      }
+
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+    }
+  };
 
   return (
     <div style={{ paddingLeft: "0.5rem", paddingRight: "0.5rem" }}>
@@ -89,7 +252,7 @@ const ViewInterviewStaff = () => {
       >
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
-            <Typography.Title level={4}>MANAGEMENT STAFF INTERVIEW SHEET</Typography.Title>
+            <Typography.Title level={4}>Construction STAFF INTERVIEW SHEET</Typography.Title>
 
           </div>
 
@@ -117,9 +280,11 @@ const ViewInterviewStaff = () => {
                   <Form.Item label='Interview Date' name='Interview Date'>
                     <Input
                       className='Input'
-                      placeholder={interviwDate}
-                      classNames="ViewInput"
-                      readOnly={true} />
+                      placeholder={newinterviwDate}
+                      value={newinterviwDate}
+                      onChange={() => setNewinterviwDate()} 
+                   
+                     />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
@@ -189,9 +354,12 @@ const ViewInterviewStaff = () => {
                   <Form.Item label='Project Name' name='projname'>
                     <Input
                       className='Input'
-                      placeholder={projname}
+                      placeholder={newprojname}
                       classNames="ViewInput"
-                      readOnly={true}
+                      value={newprojname}
+                      onChange={() => setNewprojname()} 
+                      
+                     
 
                     />
                   </Form.Item>
@@ -210,9 +378,11 @@ const ViewInterviewStaff = () => {
                   <Form.Item label='Department ' name='department '>
                     <Input
                       className='Input'
+                      value={newdep}
+      
+                    onChange={(e) => setNewdep(e.target.value)}
                       placeholder={department}
-                      classNames="ViewInput"
-                      readOnly={true}
+               
 
 
                     />
@@ -223,9 +393,9 @@ const ViewInterviewStaff = () => {
                   <Form.Item label='Requested Qualification' name='requiredQualification'>
                     <Input
                       className='Input'
-                      placeholder={requiredQualification}
-                      classNames="ViewInput"
-                      readOnly={true}
+                      onChange={(e) => setNewrequiredQualification(e.target.value)}
+                      placeholder={newrequiredQualification}
+                      
 
                     />
                   </Form.Item>
@@ -234,9 +404,9 @@ const ViewInterviewStaff = () => {
                   <Form.Item label='Requested Experience' name='requiredExperinece'>
                     <Input
                       className='Input'
-                      placeholder={requiredGrade}
-                      classNames="ViewInput"
-                      readOnly={true}
+                      placeholder={newrequiredGrade}
+                      onChange={(e) => setNewrequiredGrade(e.target.value)}
+                    
                     />
                   </Form.Item>
                 </Col>
@@ -256,11 +426,7 @@ const ViewInterviewStaff = () => {
               <AppRowContainer>
                 <Col xs={24} md={12}>
                   <Form.Item label='Diploma /Speciality' name='diploma'
-                    rules={[
-                      { required: true, message: 'Please input your Diploma /Speciality!' },
-
-                    ]}
-
+                
 
                   >
                     <Input
@@ -597,7 +763,7 @@ const ViewInterviewStaff = () => {
                     label='Personnality'
                     name='Personnality' >
                     <Input
-                      readOnly
+                     
                       placeholder={hr_Person} />
                   </Form.Item>
                 </Col>
@@ -607,7 +773,7 @@ const ViewInterviewStaff = () => {
                     name='Humain quality'
                   >
                     <Input
-                    readOnly
+                  
                       placeholder={hr_HumQuality} />
                   </Form.Item>
                 </Col>
@@ -619,7 +785,7 @@ const ViewInterviewStaff = () => {
 
                   >
                     <Input
-                     readOnly
+                    
                       placeholder={hr_motivation} />
 
                   </Form.Item>
@@ -631,7 +797,7 @@ const ViewInterviewStaff = () => {
 
                   >
                     <Input
-                      readOnly
+                  
                       placeholder={hr_Intellig} />
                   </Form.Item>
                 </Col>
@@ -649,7 +815,7 @@ const ViewInterviewStaff = () => {
                 <Col xs={24} md={12}>
                   <Form.Item label='Expected Join Date' name='Expected Join Date'>
                     <Input
-                      readOnly
+                 
                       placeholder={expectedJoinDate} />
 
                   </Form.Item>
@@ -662,7 +828,7 @@ const ViewInterviewStaff = () => {
 
                   >
                     <Input
-                     readOnly
+                    
                       placeholder={propsedsalary} />
 
 
@@ -675,7 +841,7 @@ const ViewInterviewStaff = () => {
 
                   >
                     <Input
-                      readOnly
+                     
                       placeholder={dailyRate} />
 
                   </Form.Item>
@@ -703,7 +869,6 @@ const ViewInterviewStaff = () => {
                   >
                     <Input
                       className='InputComment'
-                      readOnly
                      placeholder={hrComentaire} />
                   </Form.Item>
                 </Col>
@@ -715,50 +880,17 @@ const ViewInterviewStaff = () => {
             </StyledShadowWrapper>
           </Col>
         </AppRowContainer>
-        <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-         <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-         <Col xs={24} md={6}>
-           <Typography.Title level={5}>Board of directors Decision</Typography.Title>
-          
-         </Col>
-         <Col xs={24} md={18}>
-          <StyledShadowWrapper>
-            <AppRowContainer>
-            <Col xs={24} md={12}>
-                <Form.Item
-                  label='Final Descision:'
-                  name='Final Descision: '
-                
-                  
-                >
-                      <Input
-                   
-                     placeholder={finaldesision} 
-                     readOnly/>
-                 
-                 
-                </Form.Item>
-              </Col>
-        
-              
-            
-           
-          
-             
-              </AppRowContainer>
-              </StyledShadowWrapper>
-              </Col>
-       </AppRowContainer>
+       
 
 
         <Space
           size={15}
           style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
         >
-          <Button
-          onClick={goBack}
+          <Button onClick={goBack}
           >Cancel</Button>
-
+          <Button onClick={Update}
+          >Save</Button>
         </Space>
 
       </Form>
@@ -772,4 +904,4 @@ const ViewInterviewStaff = () => {
 };
 
 
-export default ViewInterviewStaff;
+export default EditInterviewConstruction ;

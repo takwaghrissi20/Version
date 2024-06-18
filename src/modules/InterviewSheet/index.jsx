@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../@crema/components/AppRowContainer';
-import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox,  DatePicker, } from 'antd';
+import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox,notification,  DatePicker, } from 'antd';
 import { MdEdit } from 'react-icons/md';
 import {
   StyledSecondaryText,
@@ -13,13 +13,10 @@ import {
   StyledSignLink
 } from './index.styled';
 import { useLocation } from 'react-router-dom';
-import { useNavigate } from "react-router-dom";
-
 import dayjs from 'dayjs';
 import IntlMessages from '../../@crema/helpers/IntlMessages';
 import ConfirmationModal from '../../@crema/components/AppConfirmationModal';
-
-
+import { useNavigate } from 'react-router-dom';
 
 const InterviewSheetById = () => {
   const location = useLocation();
@@ -34,7 +31,6 @@ const InterviewSheetById = () => {
   const [showAlertError, setShowAlertError] = useState(false);
   const [showAlertConfirmation, setShowAlertConfirmation] = useState(false);
   const [dataInterview, setDataInterview] = useState([]);
-
   const [interviewDate, setInterviewDate] = useState("");
   const [scheduleDate, setScheduleDate] = useState("");
   const [expectedJoinDate, setExpectedJoinDate] = useState("");
@@ -87,7 +83,7 @@ const InterviewSheetById = () => {
   const [totalMax, setTotalMax] = useState(0);
   const [salaryError, setSalaryError] = useState('');
   const [dailyError, setDailyError] = useState('');
-
+  const [form] = Form.useForm();
   
   const [evaluationDate, setEvaluationDate] = useState(dayjs().format('DD/MM/YYYY'));
 
@@ -302,6 +298,85 @@ const InterviewSheetById = () => {
     { vld: 'File to complete' },
 
   ];
+  const openNotification = () => {
+    notification.open({
+      message: 'Success',
+      description: 'Success MANAGEMENT STAFF INTERVIEW SHEET',
+      style: {
+        backgroundColor: '#28a745',
+        border: '1px solid #28a745',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #1f8838',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
+  const openNotificationWarning = () => {
+    notification.open({
+      message: 'Warning',
+      description: 'All Fields Not Complete',
+      style: {
+        backgroundColor: '#eab000',
+        border: '1px solid #eab000',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #ce9c09',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
+  const openNotificationError = () => {
+    notification.open({
+      message: 'Error',
+      description: 'Error MANAGEMENT STAFF INTERVIEW SHEET',
+      style: {
+        backgroundColor: '#dc3545',
+        border: '1px solid #dc3545',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #bd1120',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
+
 
   const Save = async () => {
     if (salaryError || dailyError) {
@@ -329,19 +404,19 @@ const InterviewSheetById = () => {
           interviewCode: NewLastInterview,
           jobcode1: JobCode,
           jobCode: JobCode,
-          interviwDate: interviewDate,
-          fullName: fullname,
-          projname: projectName,
-          department: departement,
-          diploma: diploma,
-          requiredExperinece: requiredExperinece,
-          requiredQualification: requiredQualification,
-          birthayDate: scheduleDate,
-          familySituation: selectedSituation,
-          educationLevel: educationLevel,
-          requiredGrade: level,
-          experience: experience,
-          positionToBeFilled: position,
+          // interviwDate: interviewDate,
+          // fullName: fullname,
+          // projname: projectName,
+          // department: departement,
+          // diploma: diploma,
+          // requiredExperinece: requiredExperinece,
+          // requiredQualification: requiredQualification,
+          // birthayDate: scheduleDate,
+          // familySituation: selectedSituation,
+          // educationLevel: educationLevel,
+          // requiredGrade: level,
+          // experience: experience,
+          // positionToBeFilled: position,
           //telCondidate:contactFullNumber,
           // validatesFor:selectedValidation,
           // goTotest2: CheckedFinalGotest2
@@ -353,7 +428,7 @@ const InterviewSheetById = () => {
       });
 
       if (!response.ok) {
-        setShowAlertError(true)
+        openNotificationError('bottomRight')
         throw new Error('La requête a échoué avec le code ' + response.status);
       }
 
@@ -363,8 +438,9 @@ const InterviewSheetById = () => {
       }
       if (response.ok) {
         const data = await response.json();
-        console.log("Saeeeeee", data)
         setDataInterview(data)
+        form.resetFields();
+        openNotification('bottomRight')
        // navigate(-1);
       }
 
@@ -530,6 +606,13 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
       setIsNoCheckedHRDecision(true);
     }
   }
+  const goBack = () => {
+    navigate(-1)
+  }
+  const handleDecisionChange = (value) => {
+    setSelectedbodDescition(value);
+    console.log('Final Descision ', value);
+  };
 
   return (
     <Form
@@ -571,7 +654,7 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
                 >{/*Date et temp de Interview bu Hr*/}
                 <DatePicker
                       //defaultValue={new Date()} 
-                      defaultValue={dayjs(interviewDate, '2024-01-01')}
+                      //defaultValue={dayjs(interviewDate, '2024-01-01')}
 
                       style={{ width: "100%", height: "30px" }}
                       onChange={(value) =>setInterviewDate(dayjs(value).format('YYYY/MM/DD'))}
@@ -1069,7 +1152,7 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
                       </Select.Option>
                     ))}
                   </Select>
-                  descisionBod
+              
                 </Form.Item>
               </Col>
               <Col xs={24} md={12}>
@@ -1187,6 +1270,7 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
                  
                 ]}>
                   <Input
+                  className='InputComment'
                     value={comment}
                     onChange={(e) => setComments(e.target.value)}
 
@@ -1387,7 +1471,7 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
                       //defaultValue={new Date()} 
                       defaultValue={dayjs(expectedJoinDate, '16 06,1990')}
 
-                      style={{ width: "260%", height: "30px" }}
+                      style={{ width: "100%", height: "30px" }}
                       onChange={(value) =>setExpectedJoinDate(dayjs(value).format('YYYY/MM/DD'))}
                     />
                 
@@ -1459,6 +1543,7 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
                 
                 >
                   <Input
+                  className='InputComment'
                     value={commentHr}
                     onChange={(e) => setCommentsHr(e.target.value)}
 
@@ -1492,7 +1577,7 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
                 <Form.Item
                   label='Final Descision:'
                   name='Final Descision: '
-                  onChange={(value) =>setSelectedbodDescition(value)}
+                 
                   rules={[
                     { required: true, message: 'Please Select your Final Descision!' },
                    
@@ -1501,10 +1586,11 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
                 >
                   <Select
                     placeholder='Final Descision'
-                    onChange={(value) => console.log('Final Descision ', value)}
+                    onChange={handleDecisionChange}
                     value={selectedbodDescition}
+                  
                   >
-                    { descisionBod.map((p, index) => (
+                    {descisionBod.map((p, index) => (
                       <Select.Option key={index} value={p.des}>
                         {p.des}
                       </Select.Option>
@@ -1512,7 +1598,46 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
                   </Select>
                  
                 </Form.Item>
+     
               </Col>
+              {selectedbodDescition === 'Accepted' && (
+                <>
+       
+          <Col xs={24} md={12}>
+            <Form.Item
+              label='Salary'
+              name='salary'
+              
+            >
+              <Input placeholder='Salary' />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12}>
+            <Form.Item
+              label='Daily'
+              name='daily'
+             
+            >
+              <Input placeholder='Daily' />
+            </Form.Item>
+          </Col>
+          </>
+      )}
+
+      {(selectedbodDescition === 'Not Accepted' || selectedbodDescition === 'On Hold') && (
+        
+          <Col xs={24} md={12}>
+            <Form.Item
+              label='Comment'
+              name='comment'>
+              <Input 
+              
+              placeholder='Comment' />
+            </Form.Item>
+          </Col>
+        
+      )}
+      
             {/* <Col xs={24} md={12}>
                 <StyledInput>
                 <Form.Item
@@ -1563,7 +1688,7 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
         size={15}
         style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
       >
-        <Button >Cancel</Button>
+        <Button onClick={goBack} >Cancel</Button>
         <Button onClick={Save}
         disabled={isButtonDisabled()}
          type='primary' 

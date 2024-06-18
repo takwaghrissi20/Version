@@ -13,7 +13,7 @@ import AppsContent from '../../../../@crema/components/AppsContainer/AppsContent
 import { useGetDataApi } from '../../../../@crema/hooks/APIHooks';
 import Pagination from '../../../../@crema/components/AppsPagination';
 import clsx from 'clsx';
-import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal'; 0
+import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal'; 
 import { useNavigate } from "react-router-dom";
 const StaffInterview = ({ allinterviewStaffManagement }) => {
   const navigate = useNavigate();
@@ -27,7 +27,6 @@ const StaffInterview = ({ allinterviewStaffManagement }) => {
   const [id, setId] = useState(0);
   const [codeJob, setCodeJob] = useState(0);
   const [interviewCode, setInterviewCode] = useState(0);
-
   const count = allinterviewStaffManagement.length
   useEffect(() => {
     fetchInterviewStaff();

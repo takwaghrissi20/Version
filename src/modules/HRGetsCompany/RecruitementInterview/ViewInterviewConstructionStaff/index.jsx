@@ -13,7 +13,7 @@ import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
 import { useLocation } from 'react-router-dom';
-const ViewInterviewStaff = () => {
+const ViewInterviewConstructionTeam = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [form] = Form.useForm();
@@ -89,7 +89,7 @@ const ViewInterviewStaff = () => {
       >
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
-            <Typography.Title level={4}>MANAGEMENT STAFF INTERVIEW SHEET</Typography.Title>
+            <Typography.Title level={4}>Construction STAFF INTERVIEW SHEET</Typography.Title>
 
           </div>
 
@@ -715,41 +715,7 @@ const ViewInterviewStaff = () => {
             </StyledShadowWrapper>
           </Col>
         </AppRowContainer>
-        <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-         <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-         <Col xs={24} md={6}>
-           <Typography.Title level={5}>Board of directors Decision</Typography.Title>
-          
-         </Col>
-         <Col xs={24} md={18}>
-          <StyledShadowWrapper>
-            <AppRowContainer>
-            <Col xs={24} md={12}>
-                <Form.Item
-                  label='Final Descision:'
-                  name='Final Descision: '
-                
-                  
-                >
-                      <Input
-                   
-                     placeholder={finaldesision} 
-                     readOnly/>
-                 
-                 
-                </Form.Item>
-              </Col>
-        
-              
-            
-           
-          
-             
-              </AppRowContainer>
-              </StyledShadowWrapper>
-              </Col>
-       </AppRowContainer>
-
+      
 
         <Space
           size={15}
@@ -772,4 +738,4 @@ const ViewInterviewStaff = () => {
 };
 
 
-export default ViewInterviewStaff;
+export default ViewInterviewConstructionTeam ;

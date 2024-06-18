@@ -4,10 +4,21 @@ import { InputNumber, Select, Tabs } from 'antd';
 import AppTableContainer from '../../../@crema/components/AppTableContainer';
 import { Avatar } from 'antd';
 
-
+export const StyledSecondaryText1 = styled.p`
+  margin-top: 4px;
+  color: ${({ theme }) => theme.palette.text.secondary};
+`;
 export const StyledGeneralStats = styled.div`
 display: flex;
 align-items: center;
+`;
+export const StyledShadowWrapper = styled.div`
+  border: 1px solid #eaecf0;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow:
+    0px 1px 3px rgba(16, 24, 40, 0.1),
+    0px 1px 2px rgba(16, 24, 40, 0.06);
 `;
 
 export const StyledGeneralStatsAvatar = styled(Avatar)`

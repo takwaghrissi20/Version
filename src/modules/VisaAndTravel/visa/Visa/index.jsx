@@ -32,8 +32,6 @@ const AddVisa = () => {
 
 
 
-
-
   const fetchEmployees = async () => {
     try {
       const countEmployees = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/list`);
