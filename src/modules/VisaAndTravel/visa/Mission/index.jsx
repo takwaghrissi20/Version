@@ -285,7 +285,10 @@ const Mission = () => {
     setConfirmationMission(true)
   }
   const handleCancelMission = () => {
-    onCancel(true);
+    //onCancel(true);
+ 
+      navigate(-1)
+  
   }
   return (
     <>
