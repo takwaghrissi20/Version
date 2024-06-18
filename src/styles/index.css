@@ -380,7 +380,7 @@ line-height:1rem;
 
 }
 .Separateur{
-  width:9px;
+  width:10px;
 }
 .iconeEditSave{
   border:solid 1px green;
@@ -569,15 +569,14 @@ font-weight: bold;
 }
 .table-cell-center {
 
-
-  height: 100%;
+}
+.InputDate{
+  height: 2rem !important;
+  max-width: 100%;
 }
 
 .input-center {
-  height: 25px;
-  width: 90px;
-  font-size: 14px;
-  text-align: center;
+ 
 }
 .ant-card{
   box-shadow: none !important;
@@ -598,6 +597,9 @@ font-weight: bold;
   width: 100%;
 
 
+}
+.ant-select-single.ant-select-show-arrow .ant-select-selection-item{
+  padding-inline-end: 0px !important;
 }
 
 
