@@ -244,7 +244,7 @@ const OrderTable = ({ employeessite, loading }) => {
         data={employeessite}
         loading={loading}
         columns={columns}
-        scroll={{ x: 'auto', y: 350 }}
+        scroll={{ x: 'auto', y: 200 }}
 
 
       />

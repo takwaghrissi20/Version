@@ -1,6 +1,5 @@
 import React from 'react';
 import ComposedChart from '../../../modules/VisaAndTravel/visa/Composed';
-import PieChart from '../../../modules/VisaAndTravel/visa/Pie';
 import Treemap from '../../../modules/VisaAndTravel/visa/Treemap';
 import Scatter from '../../../modules/VisaAndTravel/visa/Scatter';
 import Radar from '../../../modules/VisaAndTravel/visa/Radar';
@@ -25,7 +24,7 @@ export const recharts1Configs = [
   },
   {
     path: '/Hr/Vacation&Leave/ReportedReports',
-    element: <PieChart />,
+    element: <Radar />,
   },
   {
     path: '/third-party1/recharts1/radar',

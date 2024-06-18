@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Dropdown } from 'antd';
+import { Button, Dropdown,Tooltip } from 'antd';
 import AppAnimate from '../../../@crema/components/AppAnimate';
 import { StyledAnChar, StyledOrderTable } from '../../../styles/index.styled';
 import EmployeeView from "../../Model/EmployeeView";
@@ -8,6 +8,7 @@ import AppIconButton from "../../../@crema/components/AppIconButton";
 import { MdLabelOutline } from "react-icons/md";
 
 const OrderTable = ({ orderData }) => {
+  console.log("OrderTable",orderData )
   const [hoveredRow, setHoveredRow] = useState(null);
   const [findIdData, setFindIdData] = useState(null);
   const [idEmployee, setIdEmployee] = useState(null);
@@ -104,39 +105,95 @@ const OrderTable = ({ orderData }) => {
 
   const columns = [
     {
+      title: 'idMd',
+      dataIndex: 'idMd',
+      key: 'idMd',
+      width: 80,
+  
+    },
+    {
       title: 'Gets Id',
       dataIndex: 'getsId',
       key: 'getsId',
+      width: 80,
       render: (id) => <StyledAnChar>{id}</StyledAnChar>,
     },
     {
       title: 'Full Name',
       dataIndex: 'name',
       key: 'name',
+      width: 100,
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (name) => (
+        <Tooltip placement='topLeft' title={name}>
+          {name}
+        </Tooltip>
+      ),
     },
     {
-      title: 'Department',
-      dataIndex: 'departement',
-      key: 'departement',
+      title: 'Position',
+      dataIndex: 'position',
+      key: 'position',
+      width: 100,
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (name) => (
+        <Tooltip placement='topLeft' title={name}>
+          {name}
+        </Tooltip>
+      ),
     },
     {
-      title: 'Join Date',
-      dataIndex: 'joinDate',
-      key: 'joinDate',
+      title: 'project Name',
+      dataIndex: 'projName',
+      key: 'projName',
+      width: 100,
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (name) => (
+        <Tooltip placement='topLeft' title={name}>
+          {name}
+        </Tooltip>
+      ),
     },
     {
-      title: 'End Contract',
-      dataIndex: 'finishDate',
-      key: 'finishDate',
+      title: 'Location',
+      dataIndex: 'toLocation',
+      key: 'toLocation',
+      width: 100,
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (name) => (
+        <Tooltip placement='topLeft' title={name}>
+          {name}
+        </Tooltip>
+      ),
     },
     {
-      title: 'Actions',
-      dataIndex: 'actions',
-      key: 'actions',
-      fixed: 'center',
-      className: 'customer-table-actions',
-      render: renderActions,
-    }
+      title: 'Mob Date',
+      dataIndex: 'dateMob',
+      key: 'dateMob',
+      width: 100,
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (name) => (
+        <Tooltip placement='topLeft' title={name}>
+          {name}
+        </Tooltip>
+      ),
+    },
+   
+   
+  
+   
+  
+ 
   ];
   const [tableHeight, setTableHeight] = useState('auto');
 

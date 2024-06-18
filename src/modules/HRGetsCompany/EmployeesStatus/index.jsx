@@ -280,12 +280,7 @@ const EmployeesStatus = () => {
             </StyledCustomerInputView>
             <StyledCustomerHeaderRight>
          
-          <Pagination
-            currentPage={currentPage}
-            //totalPages={Math.ceil(countOffice / pageSize)}
-            totalPages={Math.ceil(42 / pageSize)}
-            handlePageChange={handlePageChangeOffice}
-          />
+        
          
           </StyledCustomerHeaderRight>
          </StyledCustomerHeader>
@@ -293,6 +288,14 @@ const EmployeesStatus = () => {
           <CustomerTableOffice 
           loading={loading}
           employeesoffice={employeesoffice} />
+                  <div className='Pagination' >
+            <Pagination
+            currentPage={currentPage}
+            //totalPages={Math.ceil(countOffice / pageSize)}
+            totalPages={Math.ceil(42 / pageSize)}
+            handlePageChange={handlePageChangeOffice}
+          />
+          </div>
         
         </>
       ),
@@ -334,16 +337,19 @@ const EmployeesStatus = () => {
         </StyledCustomerInputView>
         <StyledCustomerHeaderRight>
      
-      <Pagination
-        currentPage={currentPage}
-        totalPages={Math.ceil(289 / pageSize)}
-        handlePageChange={handlePageChangeOffice}
-      />
+    
      
       </StyledCustomerHeaderRight>
      </StyledCustomerHeader>
      </AppsHeader>
       <CustomerTableSite loading={loading} employeessite={employeessite} />
+      <div className='Pagination' >
+      <Pagination
+        currentPage={currentPage}
+        totalPages={Math.ceil(289 / pageSize)}
+        handlePageChange={handlePageChangeOffice}
+      />
+        </div>
     
     </>,
     },
@@ -383,16 +389,19 @@ const EmployeesStatus = () => {
         </StyledCustomerInputView>
         <StyledCustomerHeaderRight>
      
-      <Pagination
-        currentPage={currentPage}
-        totalPages={Math.ceil(79 / pageSize)}
-        handlePageChange={handlePageChangeOffice}
-      />
+    
      
       </StyledCustomerHeaderRight>
      </StyledCustomerHeader>
      </AppsHeader>
       <CustomerTableMixt loading={loading} employeesmixt={employeesmixt} />
+      <div className='Pagination' >
+      <Pagination
+        currentPage={currentPage}
+        totalPages={Math.ceil(79 / pageSize)}
+        handlePageChange={handlePageChangeOffice}
+      />
+        </div>
     
     </>,
     },

@@ -103,10 +103,10 @@ const Sammuary = () => {
   return (
     <div>
       <AppPageMeta title='Sammary' />
-      <div style={{backgroundColor:"white",borderRadius:"20px"}}>
+      <div style={{ backgroundColor: "white", borderRadius: "20px" }}>
         <AppsHeader>
           <StyledOrderHeader>
-        <div style={{ marginRight: 20, boxShadow: "none !important",width:"20%"}}>
+            <div style={{ marginRight: 20, boxShadow: "none !important", width: "20%" }}>
               <Input.Search
                 placeholder='Search Here'
                 type="text"
@@ -122,7 +122,7 @@ const Sammuary = () => {
                 <List
                   style={{
                     zIndex: 5, borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px",
-                    background: "white", position: "absolute", top: "6rem", width:"18%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"
+                    background: "white", position: "absolute", top: "6rem", width: "18%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"
                   }}
                   dataSource={employeesFiltrer}
                   renderItem={(item) => (
@@ -134,28 +134,28 @@ const Sammuary = () => {
               )}
             </div>
 
-            <StyledOrderHeaderRight>
 
-              <Pagination
-                currentPage={currentPage}
-                totalPages={Math.ceil(count / pageSize)}
-                handlePageChange={handlePageChange}
-              />
-
-
-
-            </StyledOrderHeaderRight>
           </StyledOrderHeader>
         </AppsHeader>
-            <AppCard
-              className='no-card-space-ltr-rtl'
-              title={messages['dashboard.Sammary']}
-            >
+        <AppCard
+          className='no-card-space-ltr-rtl'
+          title={messages['dashboard.Sammary']}
+        >
 
-              <OrderTable className={clsx("item-hover")} dataemployees={employees} />
-            </AppCard>
-    
-       
+          <OrderTable className={clsx("item-hover")} dataemployees={employees} />
+        </AppCard>
+
+        <StyledOrderHeaderRight>
+
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(count / pageSize)}
+            handlePageChange={handlePageChange}
+          />
+
+
+
+        </StyledOrderHeaderRight>
 
 
 

@@ -12,7 +12,7 @@ import ViewHealth from '../../../modules/VisaAndTravel/visa/HealthCorona/Health/
 import ViewCovid from '../../../modules/VisaAndTravel/visa/HealthCorona/Covid/ViewCovid';
 import EditHealth from '../../../modules/VisaAndTravel/visa/HealthCorona/Health/EditHealth';
 import EditCovid from '../../../modules/VisaAndTravel/visa/HealthCorona/Covid/EditCovid';
-import PieChart from '../../../modules/VisaAndTravel/visa/Pie';
+import LocationTripTrack from '../../../modules/VisaAndTravel/visa/LocationTripTrack';
 import Radial from '../../../modules/VisaAndTravel/visa/Radial';
 import Treemap from '../../../modules/VisaAndTravel/visa/Treemap';
 import Scatter from '../../../modules/VisaAndTravel/visa/Scatter';
@@ -121,7 +121,7 @@ export const recharts2Configs = [
   },
   {
     path: '/ManpowerLocation/ManpowerLocationTrackRecord',
-    element: <PieChart />,
+    element: <LocationTripTrack />,
   },
   {
     path: '/ManpowerLocation/PersononBoard',

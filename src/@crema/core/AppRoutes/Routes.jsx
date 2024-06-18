@@ -1,6 +1,5 @@
 import React from 'react';
 import ComposedChart from '../../../modules/VisaAndTravel/visa/Composed';
-import PieChart from '../../../modules/VisaAndTravel/visa/Pie';
 import Radial from '../../../modules/VisaAndTravel/visa/Radial';
 import Treemap from '../../../modules/VisaAndTravel/visa/Treemap';
 import Scatter from '../../../modules/VisaAndTravel/visa/Scatter';
@@ -26,7 +25,7 @@ export const rechartsConfigs = [
   },
   {
     path: '/third-party/recharts/pie',
-    element: <PieChart />,
+    element: <ComposedChart />,
   },
   {
     path: '/third-party/recharts/radar',
