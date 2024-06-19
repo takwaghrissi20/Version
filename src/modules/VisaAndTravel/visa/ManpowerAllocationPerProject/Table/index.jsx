@@ -1,10 +1,9 @@
 import React, { useState,useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Dropdown,Tooltip } from 'antd';
-import AppAnimate from '../../../@crema/components/AppAnimate';
-import { StyledAnChar, StyledOrderTable } from '../../../styles/index.styled';
-import EmployeeView from "../../Model/EmployeeView";
-import AppIconButton from "../../../@crema/components/AppIconButton";
+import AppAnimate from '../../../../../@crema/components/AppAnimate';
+import { StyledAnChar, StyledOrderTable } from '../../../../../styles/index.styled';
+import AppIconButton from "../../../../../@crema/components/AppIconButton";
 import { MdLabelOutline } from "react-icons/md";
 
 const OrderTable = ({ orderData }) => {
@@ -105,14 +104,21 @@ const OrderTable = ({ orderData }) => {
 
   const columns = [
     {
-      title: 'idMd',
-      dataIndex: 'idMd',
-      key: 'idMd',
+      title: 'Id Travel',
+      dataIndex: 'idTravel',
+      key: 'idTravel',
       width: 80,
   
     },
     {
       title: 'Gets Id',
+      dataIndex: 'getsId',
+      key: 'getsId',
+      width: 80,
+      render: (id) => <StyledAnChar>{id}</StyledAnChar>,
+    },
+    {
+      title: 'jOS Id',
       dataIndex: 'getsId',
       key: 'getsId',
       width: 80,
@@ -188,7 +194,27 @@ const OrderTable = ({ orderData }) => {
         </Tooltip>
       ),
     },
-   
+    {
+      title: 'Days Since Mob',
+      dataIndex: 'daySinceMob',
+      key: 'daySinceMob',
+      width: 50,
+    
+    },
+    {
+      title: 'End Mission Date',
+      dataIndex: 'dateMob',
+      key: 'dateMob',
+      width: 100,
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (name) => (
+        <Tooltip placement='topLeft' title={name}>
+          {name}
+        </Tooltip>
+      ),
+    },
    
   
    
@@ -228,19 +254,13 @@ const OrderTable = ({ orderData }) => {
         data={orderData}
         columns={columns}
         scroll={{ x: 'auto',  y: tableHeight }}
-     
+       
       />
-         
+        
     </AppAnimate>
   );
 };
 
-OrderTable.defaultProps = {
-  orderData: [],
-};
 
-OrderTable.propTypes = {
-  orderData: PropTypes.array,
-};
 
 export default OrderTable;

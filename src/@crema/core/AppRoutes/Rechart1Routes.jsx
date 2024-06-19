@@ -1,7 +1,6 @@
 import React from 'react';
 import ComposedChart from '../../../modules/VisaAndTravel/visa/Composed';
-import Treemap from '../../../modules/VisaAndTravel/visa/Treemap';
-import Scatter from '../../../modules/VisaAndTravel/visa/Scatter';
+import Treemap from '../../../modules/VisaAndTravel/visa/Treemap';;
 import Radar from '../../../modules/VisaAndTravel/visa/Radar';
 import FunnelChart from '../../../modules/VisaAndTravel/visa/Funnel';
 
@@ -40,7 +39,7 @@ export const recharts1Configs = [
   },
   {
     path: '/third-party1/recharts1/scatter',
-    element: <Scatter />,
+    element: <Treemap />,
   },
   {
     path: '/third-party1/recharts1/funnel',

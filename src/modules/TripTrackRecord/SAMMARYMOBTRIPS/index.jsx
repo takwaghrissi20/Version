@@ -53,7 +53,6 @@ const SummarymobTrip = () => {
 
       const data = await response.json();
       const filteredData = data.filter(item => item.goBack === true);
-      console.log("tttttrrrrrrr",filteredData)
       setDemopTrips(filteredData);
       setCount(data.length); // Update the count with the total data length
     } catch (error) {

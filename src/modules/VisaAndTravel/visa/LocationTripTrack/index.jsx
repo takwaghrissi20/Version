@@ -16,12 +16,13 @@ const LocationTripTrack = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [count, setCount] = useState(0);
-  const [selectedProject, setSelectedProject] = useState('');
+  const [selectedProject, setSelectedProject] = useState('All Projects');
+  const [allProjects, setAllProjects] = useState([]);
 
   const openNotificationError = () => {
     notification.open({
       message: 'Error',
-      description: 'Failed to fetch employees',
+      description: 'Error',
       style: {
         backgroundColor: '#dc3545',
         border: '1px solid #dc3545',
@@ -37,24 +38,20 @@ const LocationTripTrack = () => {
     });
   };
 
-  const projects = [
-    { proj: 'All Projects' },
-    { proj: 'ERP' },
-    { proj: 'TK2' },
-    { proj: 'ERPFLOW' },
-  ];
+
 
   useEffect(() => {
     fetchEmployees();
+    fetchAllProjects()
   }, [currentPage, pageSize, selectedProject]);
 
   const fetchEmployees = async () => {
     try {
-      const countEmployeesResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/countByType?type=DeMobilization`);
+      const countEmployeesResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/countGoBack?type=DeMobilization`);
       const datacount = await countEmployeesResponse.json();
       setCount(datacount);
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/list?page=${currentPage - 1}&size=${pageSize}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/list?page=${currentPage}&size=${pageSize}`);
       if (!response.ok) {
         openNotificationError();
         throw new Error('Failed to fetch employees');
@@ -62,42 +59,68 @@ const LocationTripTrack = () => {
 
       const data = await response.json();
       setEmployees(data);
-      setFilteredEmployees(selectedProject && selectedProject !== 'All Projects' 
-        ? data.filter(emp => emp.projName === selectedProject) 
+      setFilteredEmployees(selectedProject !== 'All Projects'
+        ? data.filter(emp => emp.projName === selectedProject)
         : data);
     } catch (error) {
       console.error('Error fetching employees:', error);
+      openNotificationError();
     }
   };
+  const fetchAllProjects = async () => {
+    try {
 
+
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/list`);
+      if (!response.ok) {
+
+        throw new Error('Failed to fetch Projects');
+      }
+
+      const data = await response.json();
+      const projectNames = [...new Set(data.map(project => project.projName))];
+      console.log("Project Names:", projectNames);
+      setAllProjects(projectNames.map(projName => ({ proj: projName })));
+      setAllProjects(projectNames)
+
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+      openNotificationError();
+    }
+  };
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
   const handleProjectChange = (value) => {
     setSelectedProject(value);
-    setFilteredEmployees(value && value !== 'All Projects' 
-      ? employees.filter(emp => emp.projName === value) 
+    setFilteredEmployees(value !== 'All Projects'
+      ? employees.filter(emp => emp.projName === value)
       : employees);
   };
-
   return (
     <div>
       <AppPageMeta title='LocationTrackRecord' />
       <div style={{ backgroundColor: "white", borderRadius: "20px" }}>
         <AppsHeader>
           <StyledOrderHeader>
+
+
             <Select
               placeholder='Project Name'
               onChange={handleProjectChange}
               value={selectedProject}
               style={{ width: 200 }}
             >
-              {projects.map((p, index) => (
-                <Select.Option key={index} value={p.proj}>
-                  {p.proj}
+              {allProjects.length > 0 ? allProjects.map((p, index) => (
+                <Select.Option key={index} value={p}>
+                  {p}
                 </Select.Option>
-              ))}
+              )) : (
+                <Select.Option key="no-data" disabled>
+                  No Projects Available
+                </Select.Option>
+              )}
             </Select>
           </StyledOrderHeader>
         </AppsHeader>

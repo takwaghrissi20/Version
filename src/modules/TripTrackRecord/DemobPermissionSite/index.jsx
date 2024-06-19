@@ -41,7 +41,6 @@ const DemobPermissionSite = () => {
 
       const data = await response.json();
     const filteredData = data.filter(item => item.type === "DeMobilization");
-      console.log("ggghhh",filteredData)
       setMob(filteredData)
     } catch (error) {
       console.error('Error fetching Mob employees:', error);

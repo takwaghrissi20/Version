@@ -15,7 +15,7 @@ import EditCovid from '../../../modules/VisaAndTravel/visa/HealthCorona/Covid/Ed
 import LocationTripTrack from '../../../modules/VisaAndTravel/visa/LocationTripTrack';
 import Radial from '../../../modules/VisaAndTravel/visa/Radial';
 import Treemap from '../../../modules/VisaAndTravel/visa/Treemap';
-import Scatter from '../../../modules/VisaAndTravel/visa/Scatter';
+import ManpowerAllocationPerProject from '../../../modules/VisaAndTravel/visa/ManpowerAllocationPerProject';
 import Radar from '../../../modules/VisaAndTravel/visa/Radar';
 import FunnelChart from '../../../modules/VisaAndTravel/visa/Funnel';
 import Mission from '../../../modules/VisaAndTravel/visa/Mission';
@@ -137,7 +137,7 @@ export const recharts2Configs = [
   },
   {
     path: '/ManpowerLocation/ManpowerAllocationPerProject',
-    element: <Scatter />,
+    element: <ManpowerAllocationPerProject />,
   },
   {
     path: '/ManpowerLocation/DemobilizationDirectEmployeesSite',

@@ -601,6 +601,33 @@ font-weight: bold;
 .ant-select-single.ant-select-show-arrow .ant-select-selection-item{
   padding-inline-end: 0px !important;
 }
+/* Styles pour les événements spécifiques */
+.event-red {
+  background-color: #C0B198!important;
+  color: white !important;
+}
+
+.event-yellow {
+  background-color: #2DA8E0 !important;
+  color: black !important;
+}
+
+/* Styles supplémentaires pour garantir l'application dans toutes les vues */
+.rbc-event {
+  border-radius: 5px;
+  opacity: 0.8;
+  display: block;
+}
+
+/* Styles pour les vues du calendrier */
+.rbc-month-view .rbc-event {
+  background-color: inherit;
+}
+
+.rbc-day-slot .rbc-event {
+  background-color: inherit;
+}
+
 
 
 

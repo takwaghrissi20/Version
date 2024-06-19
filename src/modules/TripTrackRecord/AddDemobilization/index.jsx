@@ -584,10 +584,8 @@ const AddDemobilization = () => {
     const Reason = form.getFieldValue('Reason');
     const demobMonth = form.getFieldValue('demobMonth');
     const visatype = form.getFieldValue('visatype');
-    const DesiredDate = form.getFieldValue('  DesiredDate');
+    const DesiredDate = form.getFieldValue('DesiredDate');
   
-
-
     if (!TotalWorkingDays || !demobDate || !DemobDecision || !Reason || !demobMonth || !visatype ) {
       openNotificationWarning('bottomRight')
     
@@ -1039,7 +1037,6 @@ const AddDemobilization = () => {
           <Button
             onClick={BeforeSaveDemob}
             disabled={!selectedMission || !selectedProject || !getsId}
-
             type='primary'
             htmlType='submit'>
             Save

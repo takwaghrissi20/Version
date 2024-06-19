@@ -357,7 +357,7 @@ const AddTravel = () => {
 
     if (value === 'Mobilzation') {
       setSelectTypeValue(0);
-    } else if (value === 'Demobilization') {
+    } else if (value === 'DeMobilization') {
       setSelectTypeValue(1);
     }
   };
