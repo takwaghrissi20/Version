@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Input, Select, Table, Row, Col, DatePicker, Popconfirm,notification } from 'antd';
+import { Button, Input, Select, Table, Row, Col, DatePicker, Popconfirm,notification,Space } from 'antd';
 import AppAnimate from '../../../../../@crema/components/AppAnimate';
 import { StyledAnChar, StyledOrderTable, StyledScrumBoardDatePicker } from '../../../../../styles/index.styled';
 import { AiFillEdit } from "react-icons/ai";
@@ -134,9 +134,8 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
 
   const columns = [
     {
-      title: (
-        <div style={{ background: 'transparent', color: 'black', fontWeight: 'bold', fontSize: '10px' }}></div>
-      ),
+      title: '',
+     
       children: [
         {
           title: 'APP #',
@@ -161,7 +160,7 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
           title: 'PASSPORT',
           dataIndex: 'passportnumber',
           key: 'passportnumber',
-          width: '10%',
+          width: '15%',
         },
         {
           title: 'COUNTRY',
@@ -190,20 +189,8 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
       ],
     },
     {
-      title: (
-        <div
-          style={{
-            background: '#B6D8F2',
-            color: 'black',
-            fontWeight: 'bold',
-            paddingTop: '3px',
-            paddingBottom: '3px',
-            fontSize: '14px',
-          }}
-        >
-          Request For Visa Country Of Origin
-        </div>
-      ),
+      title: 'Request For Visa Country Of Origin',
+     
       children: [
         {
           title: 'Send',
@@ -259,20 +246,8 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
       ],
     },
     {
-      title: (
-        <div
-          style={{
-            background: '#B6D8F2',
-            color: 'black',
-            fontWeight: 'bold',
-            paddingTop: '5px',
-            paddingBottom: '5px',
-            fontSize: '14px',
-          }}
-        >
-          Visa Cable
-        </div>
-      ),
+      title: ' Visa Cable',
+    
       children: [
         {
           title: 'Visa Cable ',
@@ -321,20 +296,8 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
       ],
     },
     {
-      title: (
-        <div
-          style={{
-            background: '#B6D8F2',
-            color: 'black',
-            fontWeight: 'bold',
-            paddingTop: '5px',
-            paddingBottom: '5px',
-            fontSize: '14px',
-          }}
-        >
-          Passport Submitted To Embassy
-        </div>
-      ),
+      title: ' Passport Submitted To Embassy',
+      
       children: [
         {
           title: 'Passport Submit',
@@ -382,20 +345,8 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
       ],
     },
     {
-      title: (
-        <div
-          style={{
-            background: '#B6D8F2',
-            color: 'black',
-            fontWeight: 'bold',
-            paddingTop: '5px',
-            paddingBottom: '5px',
-            fontSize: '14px',
-          }}
-        >
-          Finaly Visa Received
-        </div>
-      ),
+      title: '  Finaly Visa Received',
+      
       children: [
         {
           title: 'Visa Ready',
@@ -443,20 +394,9 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
         },
       ],
     },
-    {
-      title: (
-        <div
-          style={{
-            background: 'transparent',
-            color: 'black',
-            fontWeight: 'bold',
-            paddingTop: '5px',
-            paddingBottom: '5px',
-            fontSize: '12px',
-          }}
-        ></div>
-      ),
-      children: [
+    
+    
+   
         {
           title: 'Actions',
           dataIndex: 'actions',
@@ -483,8 +423,8 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
             )
           ),
         },
-      ],
-    },
+     
+    
   ];
 
   const [tableHeight, setTableHeight] = useState('auto');
@@ -505,7 +445,17 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
 
   return (
     <AppAnimate animation="transition.slideUpIn" delay={200}>
-      <StyledOrderTable
+        <Space direction='vertical' style={{ width: '100%' }}>
+      <Table
+         hoverColor
+        columns={columns}
+        dataSource={dataemployeesVisa}
+        bordered
+        size='middle'
+        scroll={{ x: '130%', y: 240 }}
+      />
+    </Space>
+      {/* <StyledOrderTable
         hoverColor
         data={dataemployeesVisa}
         columns={columns}
@@ -513,7 +463,7 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
         className="order-table"
         rowKey="id"
         rowClassName={(record) => (record.id === editingRow ? 'editing-row' : '')}
-      />
+      /> */}
     </AppAnimate>
   );
 };
