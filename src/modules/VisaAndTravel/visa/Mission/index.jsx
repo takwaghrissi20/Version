@@ -31,6 +31,11 @@ const Mission = () => {
   const [confirmationMission, setConfirmationMission] = useState(false);
   const [isCancel, onCancel] = useState(false);
   const [form] = Form.useForm();
+  const [dateInput, setDateInput] = useState(new Date());
+  const formattedDate = dayjs(dateInput).format('YYYY-MM-DD');
+  
+  
+
 
   useEffect(() => {
     if (missionDate && missionEndDate) {
@@ -357,12 +362,13 @@ const Mission = () => {
                 <Col xs={24} md={12}>
                   <Form.Item label='Date' name='Date :'
                   >
-                    <DatePicker
+                     <DatePicker
                       style={{ width: "100%", height: "30px" }}
-
-
-
+                      defaultValue={dateInput ? dayjs(formattedDate, 'YYYY-MM-DD') : null}
+                      value={formattedDate ? dayjs(formattedDate, 'YYYY-MM-DD') : null}
+                      onChange={(value) => setDateInput(value ? dayjs(value).format('YYYY-MM-DD') : '')}
                     />
+                  
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>

@@ -51,7 +51,8 @@ const AddTravel = () => {
   const [tolocation, setTolocation] = useState("");
   const [exitrentry, setExitrentry] = useState("");
   const [url, setUrl] = useState("");
-  const [currentDate, setCurrentDate] = useState(null);
+  const [dateInput, setDateInput] = useState(new Date());
+  const formattedDate = dayjs(dateInput).format('YYYY-MM-DD');
   const [endDateMiss, setEndDateMiss] = useState(null);
 
   // Handle URL selection
@@ -303,7 +304,7 @@ const AddTravel = () => {
           dateTravelDesert: travelDesert,
           tripTypeDesert: typetripdessert,
           idendityCopy: urlCopy,
-          inputDate:currentDate,
+          inputDate:dateInput,
           endDateMiss:endDateMiss
           // exitrentry //Ajouter
 
@@ -520,11 +521,11 @@ const AddTravel = () => {
   }
 
 
-  useEffect(() => {
-    // Get the current date and format it as YYYY-MM-DD
-    const today = dayjs().format('YYYY-MM-DD');
-    setCurrentDate(today);
-  }, []);
+  // useEffect(() => {
+  //   // Get the current date and format it as YYYY-MM-DD
+  //   const today = dayjs().format('YYYY-MM-DD');
+  //   setCurrentDate(today);
+  // }, []);
   /////Fin apy Id Mission 
   
   const findMisssionId = async () => {
@@ -586,12 +587,18 @@ const AddTravel = () => {
                 <Col xs={24} md={12}>
                   <Form.Item label='Date' name='Date :'
                   >
-                    <DatePicker
+                     <DatePicker
+                      style={{ width: "100%", height: "30px" }}
+                      defaultValue={dateInput ? dayjs(formattedDate, 'YYYY-MM-DD') : null}
+                      value={formattedDate ? dayjs(formattedDate, 'YYYY-MM-DD') : null}
+                      onChange={(value) => setDateInput(value ? dayjs(value).format('YYYY-MM-DD') : '')}
+                    />
+                    {/* <DatePicker
                       style={{ width: "100%", height: "30px" }}
                       placeholder='YYYY-MM-DD'
                       value={currentDate ? dayjs(currentDate, 'YYYY-MM-DD') : null}
                       onChange={(value) => setCurrentDate(value ? dayjs(value).format('YYYY-MM-DD') : '')}
-                    />
+                    /> */}
                    
                   </Form.Item>
                 </Col>

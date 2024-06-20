@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../../@crema/components/AppRowContainer';
 import {
   Button, Col, Divider, Form, Input, Space, Typography, Select,
-  Alert, Checkbox, DatePicker,notification
+  Alert, Checkbox, DatePicker, notification
 } from 'antd';
 import { MdEdit } from 'react-icons/md';
 import {
@@ -29,17 +29,16 @@ const AddExtensionMission = () => {
   const [projref, setProjref] = useState("");
   const [name, setName] = useState("");
   const [position, setPosition] = useState("");
-  const [ location, setLocation] = useState("");
+  const [location, setLocation] = useState("");
   const [endMission, setEndMission] = useState("");
   const [newMission, setNewMission] = useState("");
   const [reason, setReason] = useState("");
   const [comments, setComments] = useState("");
-  
-
   const [confirmationDemob, setConfirmationDemob] = useState(false);
   const [isCancel, onCancel] = useState(false);
-
-  const [dateInput, setDateInput] = useState("");
+  const [dateInput, setDateInput] = useState(new Date());
+  const formattedDate = dayjs(dateInput).format('YYYY-MM-DD');
+  console.log("newDate", dateInput)
   const [dateoldMission, setDateoldMission] = useState("");
   const [isExDep, setIsExDep] = useState(false);
   const [isOrDep, setIsOrDep] = useState(false);
@@ -53,46 +52,23 @@ const AddExtensionMission = () => {
     setIsOrDep(e.target.checked)
 
   }
-  useEffect(() => {
-  setProjname("")
-    setProjname("")
-  
-    // setName("");
-    // setPosition("");
-    // setPassportnumber("");
-    // setCountry("");
-    // setProjects([]);
-    // setMissionOrder([]);
-    // setSelectedProject("");
-    // setSelectedMission("");
-    // setSelectedType("");
-    // setSelectedTrip("");
-    // setSelectedRound("");
-    // setSelectTypeValue(null);
-    // setMobDate("");
-    // setTravelDesert("");
-    // setDemobDate("");
-    // setDateTravel("");
-    // setProjRef("");
-    // setTypetripdessert("");
-    // setUrlCopy("");
-  }, [missionId])
+
 
 
   const handleReason = (event) => {
     setReason(event.target.value);
   };
-  
+
   const handleComments = (event) => {
     setComments(event.target.value);
   };
- 
+
   const [form] = Form.useForm();
   const handleInputMissionIdChange = (event) => {
     setMissionId(event.target.value);
   };
- 
-console.log("MissionId",missionId)
+
+  console.log("MissionId", missionId)
 
   const LastIndexmissionEx = async () => {
     try {
@@ -126,16 +102,17 @@ console.log("MissionId",missionId)
       }
 
       const responseData = await response.json();
-     
-      setProjname(responseData?.projName )
+
+      setProjname(responseData?.projName)
+      console.log("projname", projname)
       setProjref(responseData?.projRef)
       setName(responseData?.empName)
       setPosition(responseData?.fonct)
       setLocation(responseData?.location)
       setEndMission(responseData?.endDateMiss)
-      
 
-     
+
+
 
 
     } catch (error) {
@@ -221,7 +198,7 @@ console.log("MissionId",missionId)
     });
   };
 
-  const handleAddMisssionExtention= async () => {
+  const handleAddMisssionExtention = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/add?id=${missionId}`, {
 
@@ -233,29 +210,29 @@ console.log("MissionId",missionId)
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
         body: JSON.stringify({
-          ref:LastMissionExtentionId,
-          actualLocation:location,
-          comments:comments,
-          position:position,
-          projRef:projref,
-          projectTitle:projname,
-          reasonForExtension:reason,
-          refMiss:missionId,
-          name:name,
-          old_mission:endMission,
-          new_mission:newMission,
-          plannerInput:isOrDep,
-          extraProject:isExDep,
-          dateinput:dateInput
+          ref: LastMissionExtentionId,
+          actualLocation: location,
+          comments: comments,
+          position: position,
+          projRef: projref,
+          projectTitle: projname,
+          reasonForExtension: reason,
+          refMiss: missionId,
+          name: name,
+          old_mission: endMission,
+          new_mission: newMission,
+          plannerInput: isOrDep,
+          extraProject: isExDep,
+          dateinput: dateInput
 
 
-  
+
 
         })
       });
 
       if (!response.ok) {
-        openNotificationError('bottomRight')
+        // openNotificationError('bottomRight')
         throw new Error('Network response was not ok');
 
       }
@@ -281,7 +258,7 @@ console.log("MissionId",missionId)
 
 
 
-  }, []);
+  }, [missionId,projname,projref,name]);
 
 
   const LastMissionExtentionId = missionExtentionId + 1;
@@ -292,10 +269,10 @@ console.log("MissionId",missionId)
     //const comment = form.getFieldValue('comments');
     const NewEndMissionDate = form.getFieldValue('NewEndMissionDate');
     const ReasonExtention = form.getFieldValue('Reason');
- 
-  
-    if (!NewEndMissionDate || !ReasonExtention  ) {
-    openNotificationWarning('bottomRight')
+
+
+    if (!NewEndMissionDate || !ReasonExtention) {
+      openNotificationWarning('bottomRight')
       return;
     }
 
@@ -304,7 +281,7 @@ console.log("MissionId",missionId)
         handleAddMisssionExtention()
       })
       .catch(errorInfo => {
-    openNotificationWarning('bottomRight')
+        openNotificationWarning('bottomRight')
       });
   };
 
@@ -346,28 +323,28 @@ console.log("MissionId",missionId)
               <AppRowContainer>
                 <Col xs={24} md={12}>
                   <Form.Item label='Reference' name='refdemob'>
-                    <Input placeholder={"MER -" +LastMissionExtentionId } readOnly={true} />
+                    <Input placeholder={"MER -" + LastMissionExtentionId} readOnly={true} />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Date' name='Date'
-                   rules={[
-                    { required: true, message: 'Please input your Date!' },
-                  ]}
+                    rules={[
+                      { required: true, message: 'Please input your Date!' },
+                    ]}
                   >
                     <DatePicker
                       style={{ width: "100%", height: "30px" }}
-                      placeholder='YYYY-MM-DD'
-                      value={dateInput ? dayjs(dateInput, 'YYYY-MM-DD') : null}
+                      defaultValue={dateInput ? dayjs(formattedDate, 'YYYY-MM-DD') : null}
+                      value={formattedDate ? dayjs(formattedDate, 'YYYY-MM-DD') : null}
                       onChange={(value) => setDateInput(value ? dayjs(value).format('YYYY-MM-DD') : '')}
-
                     />
+
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Numero Mission' name='NumeroMission '>
                     <Input
-                    type="number"
+                      type="number"
                       className='Input'
                       placeholder="Numero Mission"
                       value={missionId}
@@ -387,8 +364,8 @@ console.log("MissionId",missionId)
                     <Input
                       className='Input'
                       placeholder={projref}
-                      
-                     readOnly/>
+
+                      readOnly />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
@@ -396,8 +373,8 @@ console.log("MissionId",missionId)
                     <Input
                       className='Input'
                       placeholder={name}
-                      
-                     readOnly/>
+
+                      readOnly />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
@@ -405,8 +382,8 @@ console.log("MissionId",missionId)
                     <Input
                       className='Input'
                       placeholder={position}
-                      
-                     readOnly/>
+
+                      readOnly />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
@@ -414,15 +391,10 @@ console.log("MissionId",missionId)
                     <Input
                       className='Input'
                       placeholder={location}
-                      
-                     readOnly/>
+
+                      readOnly />
                   </Form.Item>
                 </Col>
-              
-          
-            
-             
-
 
               </AppRowContainer>
             </StyledShadowWrapper>
@@ -437,22 +409,22 @@ console.log("MissionId",missionId)
           <Col xs={24} md={18}>
             <StyledShadowWrapper>
               <AppRowContainer>
-              
-              <Col xs={24} md={12}>
+
+                <Col xs={24} md={12}>
                   <Form.Item label='Old End Mission Date' name='Old End Mission Date'>
                     <Input
-                    
+
                       className='Input'
                       placeholder={endMission}
                       value={dateoldMission ? dayjs(dateoldMission, 'YYYY-MM-DD') : null}
-                     readOnly/>
+                      readOnly />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='New End Mission Date' name='NewEndMissionDate'
-                   rules={[
-                    { required: true, message: 'Please input your New End Mission Date!' },
-                  ]}
+                    rules={[
+                      { required: true, message: 'Please input your New End Mission Date!' },
+                    ]}
                   >
                     <DatePicker
                       style={{ width: "100%", height: "30px" }}
@@ -465,9 +437,9 @@ console.log("MissionId",missionId)
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Reason For Extention' name='Reason'
-                   rules={[
-                    { required: true, message: 'Please input your Reason For Extention!' },
-                  ]}
+                    rules={[
+                      { required: true, message: 'Please input your Reason For Extention!' },
+                    ]}
                   >
                     <Input
                       className='Input'
@@ -503,7 +475,7 @@ console.log("MissionId",missionId)
               </AppRowContainer>
             </StyledShadowWrapper>
           </Col>
-        </AppRowContainer> 
+        </AppRowContainer>
         <Divider style={{ marginTop: 16, marginBottom: 16 }} />
         <AppRowContainer>
           <Col xs={24} md={6}>
@@ -511,41 +483,41 @@ console.log("MissionId",missionId)
           </Col>
 
           <Col xs={24} md={18}>
-              <StyledShadowWrapper>
-                <AppRowContainer>
+            <StyledShadowWrapper>
+              <AppRowContainer>
 
 
-                  <Col xs={24} md={24}>
-                    <StyledInput>
-                      <Form.Item
-                        label='As per :'
-                        name='As per'
+                <Col xs={24} md={24}>
+                  <StyledInput>
+                    <Form.Item
+                      label='As per :'
+                      name='As per'
 
 
-                      >
-                        <Checkbox checked={isExDep} onChange={ExDep}>
+                    >
+                      <Checkbox checked={isExDep} onChange={ExDep}>
 
-                          <IntlMessages id='Exdep.plannerExtention' />
-                        </Checkbox>
-                        <Checkbox checked={isOrDep} onClick={OrDep}>
-                          <IntlMessages id='Ordep.plannerExtention' />
-                        </Checkbox>
-                      </Form.Item>
-                    </StyledInput>
-                  </Col>
-
-
-
+                        <IntlMessages id='Exdep.plannerExtention' />
+                      </Checkbox>
+                      <Checkbox checked={isOrDep} onClick={OrDep}>
+                        <IntlMessages id='Ordep.plannerExtention' />
+                      </Checkbox>
+                    </Form.Item>
+                  </StyledInput>
+                </Col>
 
 
 
 
 
-                </AppRowContainer>
-              </StyledShadowWrapper>
-            </Col>
-        </AppRowContainer> 
-      
+
+
+
+              </AppRowContainer>
+            </StyledShadowWrapper>
+          </Col>
+        </AppRowContainer>
+
 
         <Space
           size={15}
@@ -553,7 +525,7 @@ console.log("MissionId",missionId)
         >
           <Button onClick={goBack}>Cancel</Button>
           <Button
-            onClick={BeforeSaveExtention }
+            onClick={BeforeSaveExtention}
             disabled={!missionId}
 
             type='primary'
@@ -562,7 +534,7 @@ console.log("MissionId",missionId)
           </Button>
         </Space>
       </Form>
-     
+
       {isCancel ? (
         <ConfirmationModal
           open={isCancel}
