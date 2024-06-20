@@ -19,6 +19,8 @@
   "dashboard.crm.report": "Report",
   "dashboard.LastRequestor": "Last Requestor", 
  "dashboard.InfoLastRequestor":"View",
+ "dashboard.HystogramManpiwerLocation":"Manpower Actual Location Hystogram ",
+ "dashboard.HystogramManpiwerTable":"Manpower Actual Location Table ",
   "Recruitement.Request":"Recuitement Request",
   "Recruitement.RequestorandRequired Profile":"Requestor && Required Profile",
   "error.404Error": "404 Error",

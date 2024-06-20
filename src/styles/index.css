@@ -627,7 +627,15 @@ font-weight: bold;
 .rbc-day-slot .rbc-event {
   background-color: inherit;
 }
+.ant-notification-notice-description{
+  color: white !important;
+  font-size: 1rem !important;
+}
+.ant-notification-notice-message{
+  color: white !important;
+  font-size: 1rem !important;
 
+}
 
 
 

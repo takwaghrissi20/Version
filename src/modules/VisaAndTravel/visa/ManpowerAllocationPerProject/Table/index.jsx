@@ -5,7 +5,8 @@ import AppAnimate from '../../../../../@crema/components/AppAnimate';
 import { StyledAnChar, StyledOrderTable } from '../../../../../styles/index.styled';
 import AppIconButton from "../../../../../@crema/components/AppIconButton";
 import { MdLabelOutline } from "react-icons/md";
-
+import Hystorique from "../../../../Model/HystoriqueMobilization";
+import moment from 'moment';
 const OrderTable = ({ orderData }) => {
   console.log("OrderTable",orderData )
   const [hoveredRow, setHoveredRow] = useState(null);
@@ -34,42 +35,56 @@ const OrderTable = ({ orderData }) => {
       }
       if (response.ok) {
         const responseData = await response.json();
-        console.log("responseData ",responseData);
-        setFindIdData(responseData);
-        setFindIdDataMatriel(responseData?.materials)
-        console.log("responseData?.projects ",responseData?.projects);
-        const projects = responseData?.projects || [];
-    // Initialize an array to store all travels
-    let allTravels = [];
-
-    // Iterate over each project
-    projects.forEach(project => {
-      // Check if the project has missions
-      if (project.miss) {
-        // Iterate over each mission
-        project.miss.forEach(mission => {
-          // Check if the mission has travels
-          if (mission.travels) {
-            // Add all travels of the mission to the allTravels array
-            allTravels = allTravels.concat(mission.travels);
-          }
-        });
-      }
-    });
-
-    // Now you can set the state or process the allTravels array as needed
-    console.log("All Travels: ", allTravels);
+        console.log("responseData1111", responseData);
+        const travels = responseData?.projects?.flatMap(project => 
+          project.miss?.flatMap(mission => 
+              mission.travels.map(travel => ({
+                  idTravel: travel.idTravel,
+                  dateOfTravel: travel.dateOfTravel,
+                  travelFromTo: travel.travelFromTo,
+                  projName: travel.projName,
+                  ticketRef: travel.ticketRef,
+                  dateMob:travel.dateMob
 
 
-   
-        setFindIdDataTravel(allTravels)
+
+              }))
+          ) || []
+      );
+      
+      console.log("Travel Data:", travels);
+      setFindIdDataTravel(travels)
+      //   const mobilization = responseData?.projects?.map(project => {
+      //     console.log("Project:", project);
+      
+      //     // Check if the project has missions
+      //     if (project.miss && Array.isArray(project.miss)) {
+      //         project.miss.forEach(mission => {
+      //             console.log("Mission:", mission);
+      
+      //             // Check if the mission has travels
+      //             if (mission.travels && Array.isArray(mission.travels)) {
+      //                 mission.travels.forEach(travel => {
+      //                    setFindIdData(travel);
+      //                     console.log("Travel:", travel);
+      //                 });
+      //             }
+      //         });
+      //     }
+      // });
+      
+ 
+      //   //const Mobilization=responseData?.projects?.map(p=>console.log("gghhhhhh",p))
+      //  // console.log("responseData ",Mobilization);
+
+       
+    
      
       }
     } catch (error) {
       console.error("Erreur lors de la récupération du id eMPLOYEE:", error);
     }
   };
-
   const handleRowClick = (index) => {
     findId(index)
     onViewEmployee(true)
@@ -196,10 +211,13 @@ const OrderTable = ({ orderData }) => {
     },
     {
       title: 'Days Since Mob',
-      dataIndex: 'daySinceMob',
+      dataIndex: 'dateMob',
       key: 'daySinceMob',
       width: 50,
-    
+      render: (dateMob) => {
+        const daysSinceMob = moment().diff(moment(dateMob), 'days');
+        return <span>{daysSinceMob}</span>;
+      },
     },
     {
       title: 'End Mission Date',
@@ -245,6 +263,8 @@ const OrderTable = ({ orderData }) => {
     setFindIdData(null);
     onViewEmployee(false);
   };
+
+
   return (
     <AppAnimate animation='transition.slideUpIn' delay={200}   
     >
@@ -254,8 +274,23 @@ const OrderTable = ({ orderData }) => {
         data={orderData}
         columns={columns}
         scroll={{ x: 'auto',  y: tableHeight }}
+        onRow={(record, index) => ({        
+          onClick: () => handleRowClick(record.getsId),
+          onMouseEnter: () => handleRowHover(record.getsId),
+          onMouseLeave: handleRowLeave,
+        })}
        
       />
+       {isViewEmployee && (
+            <Hystorique
+              isViewEmployee={isViewEmployee}
+              handleAddContactClose={handleAddEmployeeClose}
+              findIdData={findIdDataTravel}
+             
+
+              
+            />
+          )}
         
     </AppAnimate>
   );

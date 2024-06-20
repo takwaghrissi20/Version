@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Dropdown,Tooltip } from 'antd';
+import { Button, Dropdown } from 'antd';
 import AppAnimate from '../../../@crema/components/AppAnimate';
 import { StyledAnChar, StyledOrderTable } from '../../../styles/index.styled';
 import EmployeeView from "../../Model/EmployeeView";
@@ -8,7 +8,6 @@ import AppIconButton from "../../../@crema/components/AppIconButton";
 import { MdLabelOutline } from "react-icons/md";
 
 const OrderTable = ({ orderData }) => {
-  console.log("OrderTable",orderData )
   const [hoveredRow, setHoveredRow] = useState(null);
   const [findIdData, setFindIdData] = useState(null);
   const [idEmployee, setIdEmployee] = useState(null);
@@ -105,95 +104,40 @@ const OrderTable = ({ orderData }) => {
 
   const columns = [
     {
-      title: 'idMd',
-      dataIndex: 'idMd',
-      key: 'idMd',
-      width: 80,
-  
-    },
-    {
       title: 'Gets Id',
       dataIndex: 'getsId',
       key: 'getsId',
-      width: 80,
+      width: 150,
       render: (id) => <StyledAnChar>{id}</StyledAnChar>,
     },
     {
       title: 'Full Name',
       dataIndex: 'name',
       key: 'name',
-      width: 100,
-      ellipsis: {
-        showTitle: false,
-      },
-      render: (name) => (
-        <Tooltip placement='topLeft' title={name}>
-          {name}
-        </Tooltip>
-      ),
     },
     {
-      title: 'Position',
-      dataIndex: 'position',
-      key: 'position',
-      width: 100,
-      ellipsis: {
-        showTitle: false,
-      },
-      render: (name) => (
-        <Tooltip placement='topLeft' title={name}>
-          {name}
-        </Tooltip>
-      ),
+      title: 'Department',
+      dataIndex: 'departement',
+      key: 'departement',
     },
     {
-      title: 'project Name',
-      dataIndex: 'projName',
-      key: 'projName',
-      width: 100,
-      ellipsis: {
-        showTitle: false,
-      },
-      render: (name) => (
-        <Tooltip placement='topLeft' title={name}>
-          {name}
-        </Tooltip>
-      ),
+      title: 'Join Date',
+      dataIndex: 'joinDate',
+      key: 'joinDate',
     },
     {
-      title: 'Location',
-      dataIndex: 'toLocation',
-      key: 'toLocation',
-      width: 100,
-      ellipsis: {
-        showTitle: false,
-      },
-      render: (name) => (
-        <Tooltip placement='topLeft' title={name}>
-          {name}
-        </Tooltip>
-      ),
+      title: 'End Contract',
+      dataIndex: 'finishDate',
+      key: 'finishDate',
     },
     {
-      title: 'Mob Date',
-      dataIndex: 'dateMob',
-      key: 'dateMob',
-      width: 100,
-      ellipsis: {
-        showTitle: false,
-      },
-      render: (name) => (
-        <Tooltip placement='topLeft' title={name}>
-          {name}
-        </Tooltip>
-      ),
-    },
-   
-   
-  
-   
-  
- 
+      title: 'Actions',
+      dataIndex: 'actions',
+      key: 'actions',
+      fixed: 'center',
+      className: 'customer-table-actions',
+      render: renderActions,
+    }
   ];
   const [tableHeight, setTableHeight] = useState('auto');
 
@@ -228,9 +172,42 @@ const OrderTable = ({ orderData }) => {
         data={orderData}
         columns={columns}
         scroll={{ x: 'auto',  y: tableHeight }}
-     
+        onRow={(record, index) => ({        
+          onClick: () => handleRowClick(record.getsId),
+          onMouseEnter: () => handleRowHover(record.getsId),
+          onMouseLeave: handleRowLeave,
+        })}
       />
-         
+          {isViewEmployee && (
+            <EmployeeView 
+              isViewEmployee={isViewEmployee}
+              handleAddContactClose={handleAddEmployeeClose}
+              getsId={findIdData?.getsId}
+              nationality={findIdData?.nationality}
+              birthDate={findIdData?.birthDate}
+              phoneNumber={findIdData?.phoneNumber }
+              joinDate={findIdData?.joinDate}
+              companyType={findIdData?.companyType}
+              finishDate={findIdData?.finishDate}
+              actStatus={findIdData?.actStatus }
+              position={findIdData?.position}
+              getsEmail={findIdData?.getsEmail}
+              name={findIdData?.name}
+              passportnumber={findIdData?.passportnumber}
+              cnss={findIdData?.cnss}
+              contractNumb={findIdData?.contractNumb}
+              cvCopy={findIdData?.cvCopy}
+              passportCopy={findIdData?.passportCopy}
+              //corona1Date={findIdData?.vaccins}
+              traveldate={findIdData?.traveldate}
+              destination={findIdData?.destination}
+              projName={findIdData?.projName}
+              findIdDataMatriel={findIdDataMatriel }
+              findIdDataTravel={findIdDataTravel}
+
+              
+            />
+          )}
     </AppAnimate>
   );
 };

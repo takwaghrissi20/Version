@@ -47,14 +47,14 @@ const LocationTripTrack = () => {
 
   const fetchEmployees = async () => {
     try {
-      const countEmployeesResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/countGoBack?type=DeMobilization`);
+      const countEmployeesResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/list`);
       const datacount = await countEmployeesResponse.json();
-      setCount(datacount);
+      setCount(datacount.length);
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/list?page=${currentPage}&size=${pageSize}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/list?page=${currentPage}&size=${pageSize}`);
       if (!response.ok) {
         openNotificationError();
-        throw new Error('Failed to fetch employees');
+        throw new Error('Failed to fetch travel');
       }
 
       const data = await response.json();
@@ -63,7 +63,7 @@ const LocationTripTrack = () => {
         ? data.filter(emp => emp.projName === selectedProject)
         : data);
     } catch (error) {
-      console.error('Error fetching employees:', error);
+      console.error('Error fetching travel', error);
       openNotificationError();
     }
   };
@@ -133,7 +133,7 @@ const LocationTripTrack = () => {
         <StyledOrderHeaderRight>
           <Pagination
             currentPage={currentPage}
-            totalPages={Math.ceil(count / pageSize)}
+            totalPages={Math.ceil(30/ pageSize)}
             handlePageChange={handlePageChange}
           />
         </StyledOrderHeaderRight>

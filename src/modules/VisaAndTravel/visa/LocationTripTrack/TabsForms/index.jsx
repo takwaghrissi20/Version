@@ -1,6 +1,6 @@
 import React from 'react';
 import AppsContainer from "../../../../../@crema/components/AppsContainer";
-import OrderTable from '../../../../../../src/modules/SammaryEmployee/DahbordsTable';
+import OrderTable from './TravelTable';
 
 const TabsForms = ({ dataemployees }) => {
   return (

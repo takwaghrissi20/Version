@@ -240,12 +240,7 @@ const routesConfig = [
         url: "VisaHealth",
         type: "collapse",
         children: [
-          {
-            id: "Add Mission",
-            title: "Mission",
-            messageId: "sidebar.general.Mission",
-            url: "/Hr/Visa/Mission",
-          },
+          
           {
             id: "Add Travel",
             title: "Add Travel",
@@ -303,6 +298,12 @@ const routesConfig = [
         url: "recharts",
         type: "collapse",
         children: [
+          {
+            id: "Add Mission",
+            title: "Mission",
+            messageId: "sidebar.general.Mission",
+            url: "/Hr/Visa/Mission",
+          },
           {
             id: "AddExtensoinMission",
             title: "Add Mission Extension Request",

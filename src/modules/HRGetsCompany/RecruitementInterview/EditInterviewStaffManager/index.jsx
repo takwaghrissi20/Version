@@ -223,8 +223,9 @@ const EditInterviewStaff = () => {
       if (response.ok) {
 
         const responseData = await response.json(); 
-        form.resetFields();
+        // form.resetFields();
         openNotification('bottomRight')
+        navigate(-1)
       }
 
       // Handle responseData if needed

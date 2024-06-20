@@ -47,9 +47,13 @@ const Mission = () => {
     setComments(event.target.value);
   };
 
-  const handleInputGetsIdChange = (event) => {
+
+  const handleInputGetsIdChange  = (event) => {
+    const value = event.target.value;
     setGetsId(event.target.value);
+    console.log(value); // Log the input value to the console
   };
+ 
 
   const LastIndexMission = async () => {
     try {
@@ -153,6 +157,7 @@ const Mission = () => {
   };
   const findId = async () => {
     try {
+      console.log("testttttt",getsId)
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}`, {
         method: 'GET',
       });
@@ -160,26 +165,60 @@ const Mission = () => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
+      if (response.ok) {
+        const responseData = await response.json();
+        setName(responseData?.name);
+        setPosition(responseData?.position);
+        setCountry(responseData?.destination);
+  
+        const projectsData = responseData?.projects?.map(project => ({
+          projName: project.projName,
+          projId: project.projId
+        }));
+  
+        const projectscountry = responseData?.projects?.flatMap(project => project.country);
+        setProjectsCountry(projectscountry);
+        setProjects(projectsData);
 
-      const responseData = await response.json();
-      setName(responseData?.name);
-      setPosition(responseData?.position);
-      setCountry(responseData?.destination);
 
-      const projectsData = responseData?.projects?.map(project => ({
-        projName: project.projName,
-        projId: project.projId
-      }));
-
-      const projectscountry = responseData?.projects?.flatMap(project => project.country);
-      setProjectsCountry(projectscountry);
-      setProjects(projectsData);
+      }
+     
 
 
     } catch (error) {
-      console.error("Erreur lors de la récupération du jobcode:", error);
+      console.error("Erreur lors de la récupération du employess:", error);
     }
   };
+  const findIdrrr = async () => {
+    try {
+
+      console.log("rrrrtrrr",getsId)
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}`, {
+        method: 'GET',
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+        const responseData = await response.json();
+       console.log("ggggggggg",responseData )
+
+
+      }
+     
+    } catch (error) {
+      console.error("Erreur lors de la récupération du employess", error);
+    }
+  };
+  useEffect(() => {
+    LastIndexMission();
+   
+      findId();
+      findIdrrr()
+    
+    GetIdProject()
+  }, [getsId, selectedProject, idProject,name]);
   const GetIdProject = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/getByname?name=${selectedProject}`, {
@@ -247,13 +286,7 @@ const Mission = () => {
     }
   };
 
-  useEffect(() => {
-    LastIndexMission();
-    if (getsId) {
-      findId();
-    }
-    GetIdProject()
-  }, [getsId, selectedProject, idProject]);
+ 
 
   const handleProjectChange = (value, option) => {
 

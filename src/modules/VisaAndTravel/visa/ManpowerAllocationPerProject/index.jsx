@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Col, Row, Statistic, Divider, Space, Table, Select } from 'antd';
-import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
+import { Card, Col, Row, Select } from 'antd';
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { BiRectangle } from "react-icons/bi";
 import Pagination from '../../../../@crema/components/AppsPagination';
 import AppPageMeta from "../../../../@crema/components/AppPageMeta";
 import AppsHeader from '../../../../@crema/components/AppsContainer/AppsHeader';
 import AppCard from '../../../../@crema/components/AppCard';
 import { StyledOrderHeader, StyledOrderHeaderRight } from '../../../../styles/index.styled';
-import OrderTable from './Table'
+import OrderTable from './Table';
 import { useIntl } from 'react-intl';
 import clsx from 'clsx';
+import Total from "./TotalPerson";
+import HystogramManpiwerLocation from './TotalPerson/HystogramManpiwerLocation';
+
 const localizer = momentLocalizer(moment);
 
 const AllocationPerProject = () => {
@@ -25,8 +26,9 @@ const AllocationPerProject = () => {
   const [selectedProject, setSelectedProject] = useState('All Projects');
   const [count, setCount] = useState(0);
   const [allProjects, setAllProjects] = useState([]);
-  const [lastmob, setLastmob] = useState("");
-  const [lastdemob, setLastdemob] = useState("");
+  const [locationCounts, setLocationCounts] = useState({});
+  const [totalTravels, setTotalTravels] = useState(0);
+
   const openNotificationError = () => {
     notification.open({
       message: 'Error',
@@ -45,26 +47,30 @@ const AllocationPerProject = () => {
       placement: 'topRight',
     });
   };
+
   useEffect(() => {
     fetchFiveDemobilization();
-    fetchMob()
-    fetchAllProjects()
-    fetchLasMobDemob()
+    fetchAllProjects();
   }, []);
-  const fetchMob = async () => {
+
+  useEffect(() => {
+    fetchMob();
+    fetchTravel();
+  }, [currentPage, pageSize, selectedProject]);
+
+  const fetchMobTest = async () => {
     try {
-      const countResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/countByType?type=DeMobilization`);
+      const countResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/countGoBack?type=0`);
       const datacount = await countResponse.json();
       setCount(datacount);
-      const response2 = await fetch(` https://dev-gateway.gets-company.com/api/v1/travel/list?page=${currentPage}&size=${pageSize}`);
-      const data2 = await response2.json();
-      console.log('jjjjjj',data2)
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/list?page=${currentPage}&size=${pageSize}`);
+
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/listByPage?page=${currentPage}&size=${pageSize}`);
       if (!response.ok) {
         openNotificationError();
         throw new Error('Failed to fetch mob');
       }
       const data = await response.json();
+      console.log("dattttaa",data)
       setMob(data);
       setFilteredMob(selectedProject !== 'All Projects'
         ? data.filter(p => p.projName === selectedProject)
@@ -72,68 +78,48 @@ const AllocationPerProject = () => {
     } catch (error) {
       console.error('Error fetching mob:', error);
       openNotificationError();
-
     }
   };
-  //Api Last Mobilisation ET Last 
-  const fetchLasMobDemob = async () => {
+  const fetchMob = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/getAll`);
+      const countResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/countGoBack?type=0`);
+      const datacount = await countResponse.json();
+      setCount(datacount);
+  
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/list`);
       if (!response.ok) {
-        throw new Error('Failed to fetch MobDemob');
+        openNotificationError();
+        throw new Error('Failed to fetch mob');
       }
-
       const data = await response.json();
-      console.log("GetAll", data);
-
-      // Assuming data is an array of objects with dateDemob and dateMob properties
-      let lastDateDemobEntry = null;
-      let lastDateMobEntry = null;
-
-      data.forEach(entry => {
-        if (!lastDateDemobEntry || new Date(entry.dateDemob) > new Date(lastDateDemobEntry.dateDemob)) {
-          lastDateDemobEntry = entry;
-        }
-        if (!lastDateMobEntry || new Date(entry.dateMob) > new Date(lastDateMobEntry.dateMob)) {
-          lastDateMobEntry = entry;
+      
+  
+      // Créer un objet pour stocker la dernière mobilisation pour chaque getsId
+      const latestMobPerEmployee = {};
+  
+      data.forEach(mob => {
+        const existing = latestMobPerEmployee[mob.getsId];
+        if (!existing || new Date(mob.dateMob) > new Date(existing.dateMob)) {
+          latestMobPerEmployee[mob.getsId] = mob;
         }
       });
-
-      console.log("Last dateDemob Entry:", lastDateDemobEntry.dateDemob);
-
-      console.log("Last dateMob Entry:", lastDateMobEntry.dateMob);
-      setLastmob(lastDateMobEntry.dateMob)
-      setLastdemob(lastDateDemobEntry.dateDemob)
+  
+      // Convertir l'objet en tableau
+      const latestMobList = Object.values(latestMobPerEmployee);
+  
+      setMob(latestMobList);
+      setCount(latestMobList.length)
+      setFilteredMob(selectedProject !== 'All Projects'
+        ? latestMobList.filter(p => p.projName === selectedProject)
+        : latestMobList);
     } catch (error) {
-      console.error('Error fetching MobDemob:', error);
+      console.error('Error fetching mob:', error);
       openNotificationError();
     }
   };
+  
+  
 
-
-
-  const myEventsList = [
-    {
-      title: 'Last Mob',
-      start: lastmob,
-      end: lastmob,
-      className: 'event-yellow'
-    },
-    {
-      title: 'Last Demob',
-      start: lastdemob,
-      end: lastdemob,
-      className: 'event-red'
-    }
-  ];
-
-  const eventStyleGetter = (event, start, end, isSelected) => {
-    return {
-      className: event.className
-    };
-  };
-
-  // API call to fetch the last five demobilizations
   const fetchFiveDemobilization = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/fiveLast?type=DeMobilization`);
@@ -141,135 +127,87 @@ const AllocationPerProject = () => {
         throw new Error('Failed to fetch MobDemob');
       }
       const data = await response.json();
-     
       setLastFivedata(data);
     } catch (error) {
       console.error('Error fetching MobDemob:', error);
     }
   };
-  //Api count By type
-
-
-
-
-  const columns = [
-    {
-      title: 'Gets Id',
-      dataIndex: 'getsId',
-      key: 'getsId',
-      render: (text) => <a>{text}</a>,
-    },
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: 'Project Name',
-      dataIndex: 'projName',
-      key: 'projName',
-    },
-    {
-      title: 'DeMobilization Date',
-      dataIndex: 'dateDemob',
-      key: 'dateDemob',
-    },
-    {
-      title: 'Mobilization Date',
-      dataIndex: 'dateMob',
-      key: 'dateMob',
-    },
-  ];
 
   const handleProjectChange = (value) => {
     setSelectedProject(value);
-    setFilteredMob(value !== 'All Projects'
-      ? mob.filter(mob => mob.projName === value)
-      : mob);
   };
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
+
   const fetchAllProjects = async () => {
     try {
-
-
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/list`);
       if (!response.ok) {
-
         throw new Error('Failed to fetch Projects');
       }
-
       const data = await response.json();
       const projectNames = [...new Set(data.map(project => project.projName))];
-      console.log("Project Names:", projectNames);
-      setAllProjects(projectNames.map(projName => ({ proj: projName })));
-      setAllProjects(projectNames)
-
+      setAllProjects(projectNames);
     } catch (error) {
       console.error('Error fetching mob:', error);
       openNotificationError();
     }
   };
+
+  const fetchTravel = async () => {
+    try {
+      const countEmployeesResponse = await fetch('https://dev-gateway.gets-company.com/api/v1/travel/list');
+      const data = await countEmployeesResponse.json();
+
+      const counts = {};
+      let total = 0; 
+      data.forEach(travel => {
+        const { actualLocationFrom, rich_DateToSite } = travel;
+
+        if (!actualLocationFrom) return;
+
+        if (!counts[actualLocationFrom]) {
+          counts[actualLocationFrom] = 0;
+        }
+
+        if (rich_DateToSite) {
+          counts[actualLocationFrom]++;
+          total++; // Increment total count
+        }
+      });
+
+      setLocationCounts(counts);
+      setTotalTravels(total); // Set total count
+
+    } catch (error) {
+      console.error('Error fetching travel', error);
+    }
+  };
+
   return (
     <div className='site-statistic-demo-card'>
       <AppPageMeta title='ManpowerAllocationPerProject' />
+
       <Row gutter={16}>
         <Col span={14}>
           <Card>
-            <Statistic
-              title='DeMobilization Number'
-              value={count}
-              precision={2}
-              valueStyle={{ color: '#3f8600' }}
-              prefix={<ArrowUpOutlined />}
-              suffix='Person'
-            />
+            <HystogramManpiwerLocation totalVisitors={locationCounts} totalTravels={totalTravels} />
           </Card>
-          <Space direction='vertical' style={{ width: '100%' }}>
-            <AppCard
-              className='no-card-space-ltr-rtl'
-              title={messages['sidebar.hr.fiveDemob']}
-            >
-              <Table columns={columns} dataSource={lastFivedata} />
-            </AppCard>
-          </Space>
         </Col>
         <Col span={10}>
           <Card>
-            <Space direction='vertical'>
-              <Divider orientation='left'>Last Demobilzation</Divider>
-              <div>
-                <h6>Last Demobilzation</h6>
-                <Calendar
-                  localizer={localizer}
-                  events={myEventsList}
-                  startAccessor="start"
-                  endAccessor="end"
-                  style={{ height: 340, borderRadius: 10 }}
-                  eventPropGetter={eventStyleGetter}
-                />
-                <Row style={{ marginTop: "1rem" }}>
-                  <BiRectangle style={{ color: "#2DA8E0", marginTop: "0.2rem" }}></BiRectangle>
-                  <p style={{ fontWeight: "bold" }}> Last Mobilization</p>
-                  <BiRectangle style={{ color: "#C0B198", marginTop: "0.2rem" }}></BiRectangle>
-                  <p style={{ fontWeight: "bold" }}> Last Demo</p>
-                </Row>
-              </div>
-              <Divider dashed />
-            </Space>
+            <Total totalVisitors={locationCounts} totalTravels={totalTravels} />
           </Card>
         </Col>
       </Row>
-
 
       <AppCard
         className='no-card-space-ltr-rtl'
         title={messages['sidebar.hr.ManpowerLocationTrackPerProject']}
       >
         <AppsHeader>
-
           <StyledOrderHeader>
             <Select
               placeholder='Project Name'
@@ -294,7 +232,6 @@ const AllocationPerProject = () => {
           handlePageChange={handlePageChange}
         />
       </StyledOrderHeaderRight>
-
     </div>
   );
 };

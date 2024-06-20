@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../../../@crema/components/AppRowContainer';
-import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox, DatePicker, } from 'antd';
+import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox, DatePicker,notification } from 'antd';
 import { MdEdit } from 'react-icons/md';
 import {
   StyledShadowWrapper,
@@ -40,10 +40,10 @@ const AddTravel = () => {
   const [DateTravel, setDateTravel] = useState("");
 
   const [projRef, setProjRef] = useState("");
-  const [ typetripdessert, setTypetripdessert] = useState("");
-  const [  urlCopy, setUrlCopy] = useState("");
- 
- 
+  const [typetripdessert, setTypetripdessert] = useState("");
+  const [urlCopy, setUrlCopy] = useState("");
+
+
   const [confirmationTravel, setConfirmationTravel] = useState(false);
   const [isCancel, onCancel] = useState(false);
   const [actualLocation, setActualLocation] = useState("");
@@ -51,6 +51,8 @@ const AddTravel = () => {
   const [tolocation, setTolocation] = useState("");
   const [exitrentry, setExitrentry] = useState("");
   const [url, setUrl] = useState("");
+  const [currentDate, setCurrentDate] = useState(null);
+  const [endDateMiss, setEndDateMiss] = useState(null);
 
   // Handle URL selection
   const handleUrlSelection = () => {
@@ -65,7 +67,7 @@ const AddTravel = () => {
     flexWrap: 'wrap',
     marginTop: 16,
   };
-  
+
   const thumb = {
     display: 'inline-flex',
     borderRadius: 2,
@@ -77,13 +79,13 @@ const AddTravel = () => {
     padding: 4,
     boxSizing: 'border-box',
   };
-  
+
   const thumbInner = {
     display: 'flex',
     minWidth: 0,
     overflow: 'hidden',
   };
-  
+
   const img = {
     display: 'block',
     width: 'auto',
@@ -120,7 +122,7 @@ const AddTravel = () => {
           </div>
         </div>
       )
-     } else {
+    } else {
       return (
         <div style={thumb} key={file.name}>
           <div style={thumbInner}>
@@ -139,7 +141,7 @@ const AddTravel = () => {
     [files]
   );
 
-    ////End dowload file 
+  ////End dowload file 
   const [form] = Form.useForm();
 
   const Type = [
@@ -162,7 +164,7 @@ const AddTravel = () => {
     { type: 'Final Exit' },
 
   ];
-  
+
 
 
   const handleInputGetsIdChange = (event) => {
@@ -174,15 +176,13 @@ const AddTravel = () => {
   const handleTicketReference = (event) => {
     setTicketReference(event.target.value);
   };
-  const  handletypetripdessert = (event) => {
+  const handletypetripdessert = (event) => {
     setTypetripdessert(event.target.value);
   };
-  const  handleScanurl = (event) => {
+  const handleScanurl = (event) => {
     setUrlCopy(event.target.value);
   };
 
-
- 
   const LastIndexTravel = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/last`, {
@@ -204,7 +204,6 @@ const AddTravel = () => {
   };
 
   const LastTravel = lastIdTravel + 1;
-
   const findId = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}`, {
@@ -267,7 +266,7 @@ const AddTravel = () => {
       }));
 
       setMissionOrder(MissionData)
-   
+
 
 
 
@@ -288,21 +287,26 @@ const AddTravel = () => {
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
         body: JSON.stringify({
-          goBack:selectTypeValue,
-          projName:selectedProject,
-          dateMob:mobDate,
-          dateDemob:demobDate,
-          dateOfTravel:DateTravel,
-          ticketRef:ticketReference,
-           type:selectedTrip,
-          round:selectedRound,
-          actualLocationTo:actualLocation,
-          actualLocationFrom:tolocation,
-          dateTravelDesert:travelDesert,
-          tripTypeDesert:typetripdessert,
-          idendityCopy: urlCopy
+          idTravel:LastTravel,
+          getsId:getsId,
+          name:name,
+          goBack: selectTypeValue,
+          projName: selectedProject,
+          dateMob: mobDate,
+          dateDemob: demobDate,
+          dateOfTravel: DateTravel,
+          ticketRef: ticketReference,
+          type: selectedTrip,
+          round: selectedRound,
+          actualLocationTo: actualLocation,
+          actualLocationFrom: tolocation,
+          dateTravelDesert: travelDesert,
+          tripTypeDesert: typetripdessert,
+          idendityCopy: urlCopy,
+          inputDate:currentDate,
+          endDateMiss:endDateMiss
           // exitrentry //Ajouter
-          
+
 
 
         })
@@ -314,10 +318,11 @@ const AddTravel = () => {
       if (response.ok) {
 
         const responseData = await response.json();
-        alert("Success Travel Add")
-        confirmationTravel(false)
-        
+        form.resetFields();
+        openNotification('bottomRight')
 
+        //alert("Success Travel Add")
+        //confirmationTravel(false
 
       }
 
@@ -333,6 +338,7 @@ const AddTravel = () => {
     }
     GetIdProject()
     GetMissionByProjName()
+    findMisssionId()
   }, [getsId, selectedProject
   ]);
 
@@ -361,16 +367,16 @@ const AddTravel = () => {
       setSelectTypeValue(1);
     }
   };
-  console.log("setSelectTypeValue",selectTypeValue)
+  console.log("setSelectTypeValue", selectTypeValue)
   const handleTravelRound = (value) => {
     setSelectedRound(value);
   };
- 
 
-  const handleActualLocation  = (event) => {
+
+  const handleActualLocation = (event) => {
     const value = event.target.value;
     setActualLocation(value);
-    console.log(value); 
+    console.log(value);
   };
 
   const handleExist = (value) => {
@@ -379,15 +385,15 @@ const AddTravel = () => {
   const handleExistRentry = (event) => {
     const value = event.target.value;
     setExitrentry(value);
-    console.log(value); 
-    
+    console.log(value);
+
   }
   const handleLocation = (event) => {
     const value = event.target.value;
     setTolocation(value);
     console.log(value); // Log the input value to the console
   };
- 
+
 
 
   const handleTraveltrip = (value) => {
@@ -397,49 +403,153 @@ const AddTravel = () => {
   const goBack = () => {
     navigate(-1)
   }
+  const openNotificationError = () => {
+    notification.open({
+      message: 'Error',
+      description: 'Error',
+      style: {
+        backgroundColor: '#dc3545',
+        border: '1px solid #dc3545',
+        color: '#FFFFFF',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #bd1120',
+      },
+      placement: 'topRight',
+    });
+  };
+  const openNotification = () => {
+    notification.open({
+      message: 'Success',
+      description: 'Success Travel Request',
+      style: {
+        backgroundColor: '#28a745',
+        border: '1px solid #28a745',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #1f8838',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
+  const openNotificationWarning = () => {
+    notification.open({
+      message: 'Warning',
+      description: 'All Fields Not Complete',
+      style: {
+        backgroundColor: '#eab000',
+        border: '1px solid #eab000',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #ce9c09',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
   const BeforeSaveTravel = () => {
-    const mobDemobValue = form.getFieldValue('MobDemob'); 
-    const mobDateValue = form.getFieldValue('mobDate'); 
-    const demobDateValue = form.getFieldValue('demobDate'); 
-    const DateTravelValue = form.getFieldValue('DateTravel'); 
-    const TicketReferenceValue = form.getFieldValue('TicketReference'); 
-    const TRIPTypeValue= form.getFieldValue('TRIPType'); 
+    const mobDemobValue = form.getFieldValue('MobDemob');
+    const mobDateValue = form.getFieldValue('mobDate');
+    const demobDateValue = form.getFieldValue('demobDate');
+    const DateTravelValue = form.getFieldValue('DateTravel');
+    const TicketReferenceValue = form.getFieldValue('TicketReference');
+    const TRIPTypeValue = form.getFieldValue('TRIPType');
     const RoundValue = form.getFieldValue('RoundTrip');
-    const  ActualLocationValue= form.getFieldValue('ActualLocation');
-    const  ToLocationValue= form.getFieldValue('ToLocation');
-    const   DateTravelDesertValue= form.getFieldValue('DateTravelDesert');
-    const   TripTypeDesertValue= form.getFieldValue('TripTypeDesert');
-    
-   
-  
-  
-    if (!mobDemobValue || !mobDateValue ||!demobDateValue ||!DateTravelValue ||!TicketReferenceValue
-          ||!TRIPTypeValue || !RoundValue || !ActualLocationValue || !ExitReentry || !ToLocationValue
-          ||!DateTravelDesertValue || !TripTypeDesertValue
+    const ActualLocationValue = form.getFieldValue('ActualLocation');
+    const ToLocationValue = form.getFieldValue('ToLocation');
+    const DateTravelDesertValue = form.getFieldValue('DateTravelDesert');
+    const TripTypeDesertValue = form.getFieldValue('TripTypeDesert');
 
 
-    ) { 
-      alert("Please complete all fields");
-      return; 
+
+
+    if (!mobDemobValue || !mobDateValue || !demobDateValue || !DateTravelValue || !TicketReferenceValue
+      || !TRIPTypeValue || !RoundValue || !ActualLocationValue || !ExitReentry || !ToLocationValue
+      || !DateTravelDesertValue || !TripTypeDesertValue
+
+
+    ) {
+      openNotificationWarning('bottomRight')
+      // alert("Please complete all fields");
+      return;
     }
-  
-    form.validateFields(['MobDemob', 'mobDate','demobDate','DateTravel',
-    'TicketReference','TRIPType','RoundTrip','ActualLocation','ToLocation','DateTravelDesert','TripTypeDesert'])
+
+    form.validateFields(['MobDemob', 'mobDate', 'demobDate', 'DateTravel',
+      'TicketReference', 'TRIPType', 'RoundTrip', 'ActualLocation', 'ToLocation', 'DateTravelDesert', 'TripTypeDesert'])
       .then(values => {
-        alert("All fields are complete.");
-        setConfirmationTravel(true);
+        handleAddTravel()
+        //setConfirmationTravel(true);
       })
       .catch(errorInfo => {
-        alert("Please complete all fields");
+        openNotificationWarning('bottomRight')
       });
   };
 
-  
+
   const handleConfirmationAddTravel = () => {
     setConfirmationTravel(true)
   }
   const handleCancelTravel = () => {
     onCancel(true);
+  }
+
+
+  useEffect(() => {
+    // Get the current date and format it as YYYY-MM-DD
+    const today = dayjs().format('YYYY-MM-DD');
+    setCurrentDate(today);
+  }, []);
+  /////Fin apy Id Mission 
+  
+  const findMisssionId = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getById?id=${selectedMission}`, {
+        method: 'Get',
+
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+        const responseData = await response.json();
+        setEndDateMiss(responseData.endDateMiss)
+        
+
+
+       
+
+
+
+      }
+    } catch (error) {
+      console.error("Erreur lors de la récupération du findMisssionId :", error);
+    }
   }
 
   return (
@@ -479,12 +589,10 @@ const AddTravel = () => {
                     <DatePicker
                       style={{ width: "100%", height: "30px" }}
                       placeholder='YYYY-MM-DD'
-                    // value={missionDate ? dayjs(travelDate, 'YYYY-MM-DD') : null}
-                    // onChange={(value) => setTravelDate(value ? dayjs(value).format('YYYY-MM-DD') : '')}
-
-
-
+                      value={currentDate ? dayjs(currentDate, 'YYYY-MM-DD') : null}
+                      onChange={(value) => setCurrentDate(value ? dayjs(value).format('YYYY-MM-DD') : '')}
                     />
+                   
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
@@ -569,7 +677,7 @@ const AddTravel = () => {
                       >
                         {missionOrder.map(p => (
                           <Option key={p.missionId} value={p.missionId}>
-                            {"MAO -"+p.missionId}
+                            {"MAO -" + p.missionId}
                           </Option>
                         ))}
                       </Select>
@@ -591,24 +699,24 @@ const AddTravel = () => {
           <Col xs={24} md={18}>
             <StyledShadowWrapper>
               <AppRowContainer>
-              <Col xs={24} md={12}>
-              <Form.Item
-              name="MobDemob"
-              label="Mobilization / Demobilization"
-              rules={[{ required: true, message: 'Please select mobilization or demobilization' }]}
-            >
-              <Select onChange={handleTravelType} placeholder="Mobilization / Demobilization" allowClear>
-                {Type.map(type => (
-                  <Option key={type.type} value={type.type}>
-                    {type.type}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-            </Col>
+                <Col xs={24} md={12}>
+                  <Form.Item
+                    name="MobDemob"
+                    label="Mobilization / Demobilization"
+                    rules={[{ required: true, message: 'Please select mobilization or demobilization' }]}
+                  >
+                    <Select onChange={handleTravelType} placeholder="Mobilization / Demobilization" allowClear>
+                      {Type.map(type => (
+                        <Option key={type.type} value={type.type}>
+                          {type.type}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Date Mobilization' name='mobDate'
-                   rules={[{ required: true, message: 'Please select Date Mobilization' }]}>
+                    rules={[{ required: true, message: 'Please select Date Mobilization' }]}>
                     <DatePicker
                       style={{ width: "100%", height: "30px" }}
                       value={mobDate ? dayjs(mobDate, 'YYYY-MM-DD') : null}
@@ -620,8 +728,8 @@ const AddTravel = () => {
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Date DeMobilization' name='demobDate'
-                   rules={[{ required: true, message: 'Please select Date Demobilization' }]}>
-                  
+                    rules={[{ required: true, message: 'Please select Date Demobilization' }]}>
+
                     <DatePicker
                       style={{ width: "100%", height: "30px" }}
                       value={demobDate ? dayjs(demobDate, 'YYYY-MM-DD') : null}
@@ -632,8 +740,8 @@ const AddTravel = () => {
 
                 <Col xs={24} md={12}>
                   <Form.Item label='Desert Flight' name='DateTravel'
-                     rules={[{ required: true, message: 'Please select Desert Flight' }]}>
-                  
+                    rules={[{ required: true, message: 'Please select Desert Flight' }]}>
+
                     <DatePicker
                       style={{ width: "100%", height: "30px" }}
                       value={DateTravel ? dayjs(DateTravel, 'YYYY-MM-DD') : null}
@@ -645,9 +753,9 @@ const AddTravel = () => {
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Ticket Reference'
-                  name='TicketReference'
-                  rules={[{ required: true, message: 'Please select Ticket Reference' }]}>
-                  
+                    name='TicketReference'
+                    rules={[{ required: true, message: 'Please select Ticket Reference' }]}>
+
                     <Input
                       className='Input'
                       placeholder="Ticket Reference"
@@ -660,48 +768,48 @@ const AddTravel = () => {
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-              <Form.Item
-              name="TRIPType"
-              label="LAND /FLIGHT"
-              rules={[{ required: true, message: 'Please select TRIP BY LAND /FLIGHT' }]}
-            >
-              <Select
-                onChange={handleTraveltrip}
-                placeholder="TRIP BY LAND /FLIGHT" allowClear>
-                {trip.map(type => (
-                  <Option key={type.type} value={type.type}>
-                    {type.type}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-            </Col>
-               
+                  <Form.Item
+                    name="TRIPType"
+                    label="LAND /FLIGHT"
+                    rules={[{ required: true, message: 'Please select TRIP BY LAND /FLIGHT' }]}
+                  >
+                    <Select
+                      onChange={handleTraveltrip}
+                      placeholder="TRIP BY LAND /FLIGHT" allowClear>
+                      {trip.map(type => (
+                        <Option key={type.type} value={type.type}>
+                          {type.type}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </Col>
+
                 <Col xs={24} md={12}>
-              <Form.Item
-              name="RoundTrip"
-              label="Round Trip/One Tript"
-              rules={[{ required: true, message: 'Please select Round Trip/One Trip' }]}
-            >
-              <Select
-               onChange={handleTravelRound }
-                placeholder="Round Trip/One Trip" allowClear>
-                {round.map(type => (
-                  <Option key={type.type} value={type.type}>
-                    {type.type}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-            </Col>
+                  <Form.Item
+                    name="RoundTrip"
+                    label="Round Trip/One Tript"
+                    rules={[{ required: true, message: 'Please select Round Trip/One Trip' }]}
+                  >
+                    <Select
+                      onChange={handleTravelRound}
+                      placeholder="Round Trip/One Trip" allowClear>
+                      {round.map(type => (
+                        <Option key={type.type} value={type.type}>
+                          {type.type}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </Col>
 
 
                 <Col xs={24} md={12}>
                   <Form.Item
                     label='Actual Location' name='ActualLocation'
                     rules={[{ required: true, message: 'Please select Actual Location ' }]}>
-                    
-                    
+
+
                     <Input
                       className='Input'
                       placeholder="Actual Location"
@@ -711,29 +819,29 @@ const AddTravel = () => {
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-              <Form.Item
-              name="ExitReentry"
-              label="Exit Reentry /Final Exit"
-              rules={[{ required: true, message: 'Please select Exit Reentry /Final Exit' }]}
-            >
-              <Select
-               onChange={handleExistRentry }
-                placeholder="Exit Reentry /Final Exit" allowClear>
-                {ExitType.map(type => (
-                  <Option key={type.type} value={type.type}>
-                    {type.type}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-            </Col>
-                
+                  <Form.Item
+                    name="ExitReentry"
+                    label="Exit Reentry /Final Exit"
+                    rules={[{ required: true, message: 'Please select Exit Reentry /Final Exit' }]}
+                  >
+                    <Select
+                      onChange={handleExistRentry}
+                      placeholder="Exit Reentry /Final Exit" allowClear>
+                      {ExitType.map(type => (
+                        <Option key={type.type} value={type.type}>
+                          {type.type}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </Col>
+
                 <Col xs={24} md={12}>
                   <Form.Item
                     label='To Location' name='ToLocation'
                     rules={[{ required: true, message: 'Please select To Location ' }]}>
-                    
-                    
+
+
                     <Input
                       className='Input'
                       placeholder="To Location"
@@ -747,8 +855,8 @@ const AddTravel = () => {
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Date Travel Desert' name='DateTravelDesert'
-                     rules={[{ required: true, message: 'Please select Date Travel Desert' }]}>
-                  
+                    rules={[{ required: true, message: 'Please select Date Travel Desert' }]}>
+
                     <DatePicker
                       style={{ width: "100%", height: "30px" }}
                       value={travelDesert ? dayjs(travelDesert, 'YYYY-MM-DD') : null}
@@ -760,18 +868,18 @@ const AddTravel = () => {
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Trip Type Desert' name='TripTypeDesert'
-                  rules={[{ required: true, message: 'Please select Trip Type Desert' }]}>
+                    rules={[{ required: true, message: 'Please select Trip Type Desert' }]}>
                     <Input
                       className='Input'
                       placeholder="Trip Type Desert"
-                    // value={exit}
-                    value={typetripdessert}
-                    onChange={handletypetripdessert}
+                      // value={exit}
+                      value={typetripdessert}
+                      onChange={handletypetripdessert}
 
                     />
                   </Form.Item>
                 </Col>
-          
+
                 {/* <section className='container'>
       <div {...getRootProps({ className: 'dropzone' })}>
         <input {...getInputProps()} />
@@ -785,8 +893,8 @@ const AddTravel = () => {
                     <Input
                       className='Input'
                       placeholder="Url Idendity Copy Ticket"
-                    value={urlCopy}
-                    onChange={ handleScanurl}
+                      value={urlCopy}
+                      onChange={handleScanurl}
 
 
 
@@ -807,20 +915,20 @@ const AddTravel = () => {
         >
           <Button onClick={handleCancelTravel}>Cancel</Button>
           <Button
-             onClick={BeforeSaveTravel}
-             disabled={!selectedMission || !selectedProject ||!getsId}
+            onClick={BeforeSaveTravel}
+            disabled={!selectedMission || !selectedProject || !getsId}
             type='primary'
             htmlType='submit'>
             Save
           </Button>
         </Space>
       </Form>
-     {confirmationTravel ? (
+      {confirmationTravel ? (
         <ConfirmationModal
           open={confirmationTravel}
           paragraph={'Are you sure you Add Travel Ticket'}
           onDeny={setConfirmationTravel}
-         onConfirm={handleAddTravel}
+          onConfirm={handleAddTravel}
           modalTitle="Add Travel"
           handleConfirmationAddTravel={handleConfirmationAddTravel}
         />
@@ -834,7 +942,7 @@ const AddTravel = () => {
           modalTitle="Cancel Travel "
           handleTravel={handleCancelTravel}
         />
-      ) : null} 
+      ) : null}
     </>
   );
 };
