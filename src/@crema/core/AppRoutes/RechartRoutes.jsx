@@ -1,6 +1,7 @@
 import React from 'react';
 import ComposedChart from '../../../modules/VisaAndTravel/visa/Composed';
- import OfficeTimeSheet from '../../../modules/TimeSheet/TimeSheetoffice';
+import OfficeTimeSheet from '../../../modules/TimeSheet/TimeSheetoffice';
+import SiteTimeSheet from '../../../modules/TimeSheet/TimeSheetsite';
 import Radial from '../../../modules/VisaAndTravel/visa/Radial';
 import Treemap from '../../../modules/VisaAndTravel/visa/Treemap';
 import Radar from '../../../modules/VisaAndTravel/visa/Radar';
@@ -9,7 +10,7 @@ import FunnelChart from '../../../modules/VisaAndTravel/visa/Funnel';
 export const rechartsConfigs = [
   {
     path: '/Hr/Attendances/SiteTimeSheet',
-    element: <ComposedChart />,
+    element: <SiteTimeSheet />,
   },
   {
     path: '/Hr/Attendances/OfficeTimeSheet',
