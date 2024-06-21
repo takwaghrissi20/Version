@@ -28,6 +28,7 @@ const AddExtensionMission = () => {
   const [missionId, setMissionId] = useState("");
 
   const [projname, setProjname] = useState("");
+  const [idRef, setIdRef] = useState("");
   const [projref, setProjref] = useState("");
   const [name, setName] = useState("");
   const [position, setPosition] = useState("");
@@ -95,34 +96,6 @@ const AddExtensionMission = () => {
     }
   };
 
-  const findId = async () => {
-    try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getById?id=${missionId}`, {
-        method: 'GET',
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const responseData = await response.json();
-
-      setProjname(responseData?.projName)
-      console.log("projname", projname)
-      setProjref(responseData?.projRef)
-      setName(responseData?.empName)
-      setPosition(responseData?.fonct)
-      setLocation(responseData?.location)
-      setEndMission(responseData?.endDateMiss)
-
-
-
-
-
-    } catch (error) {
-      console.error("Erreur lors de la récupération du Id:", error);
-    }
-  };
   const openNotification = () => {
     notification.open({
       message: 'Success',
@@ -253,14 +226,21 @@ const AddExtensionMission = () => {
 
   useEffect(() => {
     LastIndexmissionEx();
-    if (missionId) {
-      findId();
+    if(searchValue===""){  
+      setProjname("")
+      setProjref("")
+      setName("")
+      setPosition("")
+      setLocation("")
+      setEndMission("")
+
     }
+  
     GetALLMission()
 
 
 
-  }, [missionId, projname, projref, name]);
+  }, [missionId, projname, projref, name,idRef]);
 
 
   const LastMissionExtentionId = missionExtentionId + 1;
@@ -292,18 +272,10 @@ const AddExtensionMission = () => {
   const handleCancelExtention = () => {
     onCancel(true);
   }
-  ////////////////
-  const handleSearch = value => {
-    setSearchValue(value);
-    setIsDropdownOpen(value.trim() !== '');
-  };
-  // const filteredInterviews = searchValue.trim() === '' ? listInterview : listInterview.filter(interview => {
-  //   return interview.interviewCode.toString().startsWith(searchValue);
-  // });
-  ///GetAllMission
+  
   const GetALLMission = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getAll`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getAll`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -323,26 +295,26 @@ const AddExtensionMission = () => {
     }
   };
   //////////////
-  const [findIdInterview, setFindIdInterview] = useState(0);
-  const filteredInterviews = searchValue.trim() === '' ? list : list.filter(interview => {
-    return interview.refMiss.toString().startsWith(searchValue);
+  const [findIdMission, setFindIdMission] = useState(0);
+  const filteredMission = searchValue === '' ? list : list.filter(p => {
+    return p?.idMiss?.toString().startsWith(searchValue);
   });
-  const [selectedInterviews, setSelectedInterviews] = useState([]);
+ 
+  const [selectedMission, setSelectedMission] = useState([]);
 
-  const handleItemClick = (interview) => {
+  const handleItemClick = (mission) => {
 
-     
 
-    const isSelected = selectedInterviews.some(item => item.refMiss === interview.refMiss);
+    const isSelected = selectedMission.some(item => item.idMiss === mission.idMiss);
 
     if (!isSelected) {
-      setSelectedInterviews([...selectedInterviews, interview]);
-      setSelectedMission(interview);
-      setSearchValue(interview.refMiss.toString());
+      setSelectedMission([...selectedMission, mission]);
+      setSearchValue(mission.idMiss);
       setIsDropdownOpen(false);
     }
-    setSelectedMission(interview);
-      setSearchValue(interview.refMiss.toString());
+  
+  
+    setSearchValue(mission.idMiss);
       setIsDropdownOpen(false);
   };
 
@@ -354,13 +326,13 @@ const AddExtensionMission = () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getById?code=${searchValue}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getById?id=${searchValue}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
         },
       });
-
+      console.log("gggggg3333",searchValue)
       if (!response.ok) {
         throw new Error('La requête a échoué avec le code ' + response.status);
       }
@@ -369,10 +341,16 @@ const AddExtensionMission = () => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
 
-      const data = await response.json();
-      setFindIdInterview(data)
-
-
+      const responseData = await response.json();
+      
+      setFindIdMission(responseData)
+      setIdRef(responseData?.idMiss)
+      setProjname(responseData?.projName)
+      setProjref(responseData?.projRef)
+      setName(responseData?.empName)
+      setPosition(responseData?.fonct)
+      setLocation(responseData?.location)
+      setEndMission(responseData?.endDateMiss)
 
 
 
@@ -396,9 +374,24 @@ const AddExtensionMission = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+  const handleSearch = async (event) => {
+    const value = event.target.value;
+    setSearchValue(idRef);
+    setIsDropdownOpen(value.trim() !== '');
 
-
-
+ 
+  };
+  console.log("fffhyyyy",searchValue)
+  const  handleSearch1 = (event) => {
+    setSearchValue(event.target.value);
+    console.log("event.target.value",)
+    setIsDropdownOpen(event.target.value.trim() !== '');
+  };
+  // const handleSearch = value => {
+  //   setSearchValue(value);
+  //   setIsDropdownOpen(value.trim() !== '');
+  // };
+console.log("setIdRef",idRef)
   return (
     <>
       <Form
@@ -461,33 +454,27 @@ const AddExtensionMission = () => {
       
 
                 <Col xs={24} md={12}>
-                  
-
-                
-                
-                      <Form.Item label='Mission Reference' name='NumeroMission '>
-
-                        <Input
-
+                               
+                      <Form.Item  onClick={()=>setIsDropdownOpen(true)} label='Mission Reference' name='NumeroMission '>
+                        <Input                                         
+                          placeholder={searchValue}
                           
-                          placeholder="Numero Mission"
-
-                          value={"MAO-" + searchValue}
-                          onChange={(e) => handleSearch(e.target.value)} />
+                      
+                          // onChange={handleSearch}
+                         />
                       </Form.Item>
                      
-
-
                       {isDropdownOpen && (
                         <div style={{
                           borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px", zIndex: 1,
                           background: "white", position: "absolute", top: "4rem", width: "90%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"
                         }}>
                           <List
-                            dataSource={filteredInterviews}
+                            dataSource={filteredMission}
                             renderItem={item => (
-                              <List.Item onClick={() => { handleItemClick(item); fetchDataId(searchValue); }}>
-                                MOA-{item.refMiss}</List.Item>
+      
+                              <List.Item onClick={() => { handleItemClick(item); fetchDataId(item.idMiss); }}>
+                                MAO-{item.idMiss}</List.Item>
                             )}
                           />
                         </div>
@@ -496,10 +483,10 @@ const AddExtensionMission = () => {
                       <div>
 
                       </div>
-                
+                    
                   </Col>
                
-
+{/* 
 
                 <Col xs={24} md={12}>
                   <Form.Item label='Mission Reference' name='NumeroMission '>
@@ -510,7 +497,7 @@ const AddExtensionMission = () => {
                       value={missionId}
                       onChange={handleInputMissionIdChange} />
                   </Form.Item>
-                </Col>
+                </Col> */}
                 <Col xs={24} md={12}>
                   <Form.Item label='Project Name' name='Project Name '>
                     <Input

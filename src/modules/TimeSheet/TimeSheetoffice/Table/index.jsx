@@ -4,8 +4,11 @@ import { Table, Tooltip } from 'antd';
 import moment from 'moment';
 
 const OrderTable = ({ orderData }) => {
-  const currentMonthDays = Array.from({ length: moment().daysInMonth() }, (v, k) => k + 1);
 
+  const currentDate = moment();
+  const currentMonthDays = Array.from({ length: currentDate.daysInMonth() }, (v, k) => k + 1);
+  const currentMonthName = currentDate.format('MMMM').toUpperCase();
+ 
   const columns = [
     {
       title: 'Gets Id',
@@ -22,16 +25,20 @@ const OrderTable = ({ orderData }) => {
       width: 150,
       render: (name) => <Tooltip title={name}>{name}</Tooltip>,
     },
-    ...currentMonthDays.map(day => ({
-      title: day,
-      dataIndex: `day${day}`,
-      key: `day${day}`,
-      width: 50,
-      render: (text, record) => {
-        const pointage = record.officepointages.find(p => moment(p.date).date() === day)?.pointage || '';
-        return <span>{pointage}</span>;
-      }
-    })),
+    ...currentMonthDays.map(day => {
+      const date = moment({ year: currentDate.year(), month: currentDate.month(), day });
+      const dayName = date.format('dddd');
+      return {
+        title: `${day} -${dayName}`,
+        dataIndex: `day${day}`,
+        key: `day${day}`,
+        width: 150,
+        render: (text, record) => {
+          const pointage = record.officepointages.find(p => moment(p.date).date() === day)?.pointage || '';
+          return <span>{pointage}</span>;
+        }
+      };
+    }),
   ];
 
   const data = orderData.map(employee => {
@@ -47,7 +54,7 @@ const OrderTable = ({ orderData }) => {
     <Table
       columns={columns}
       dataSource={data}
-      scroll={{ x: 1500, y: 500 }}
+      scroll={{ x:500, y: 1000 }}
       pagination={false}
       rowKey="getsId"
     />

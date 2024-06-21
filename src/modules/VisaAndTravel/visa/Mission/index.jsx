@@ -174,7 +174,7 @@ const Mission = () => {
         const responseData = await response.json();
         setName(responseData?.name);
         setPosition(responseData?.position);
-        setCountry(responseData?.destination);
+        // setCountry(responseData?.destination);
   
         const projectsData = responseData?.projects?.map(project => ({
           projName: project.projName,
@@ -194,6 +194,23 @@ const Mission = () => {
       console.error("Erreur lors de la récupération du employess:", error);
     }
   };
+  const Destination = [
+    {
+      des: "Tunis",
+
+    },
+    {
+      des: "Gfsa",
+
+    },
+    {
+      des: "Libya",
+
+    },
+
+
+
+  ]
 
   useEffect(() => {
     LastIndexMission();
@@ -259,6 +276,7 @@ const Mission = () => {
         const responseData = await response.json();
         form.resetFields();
         openNotification('bottomRight')
+        navigate(-1)
    
       
 
@@ -382,20 +400,39 @@ const Mission = () => {
                       placeholder={position} />
                   </Form.Item>
                 </Col>
+  
                 <Col xs={24} md={12}>
-                  <Form.Item
-                    label='Destination ' name='Destination'
+                  <Form.Item label='Destination' name='Destination'
                     rules={[
-                      { required: true, message: 'Please input your Destination!' },
+                      {
+                        required: true,
+                        message: 'Please enter Destination',
+                      },
+
+
                     ]}
+
                   >
-                    <Input
-                      className='Input'
-                      placeholder={country}
-                      name='Destination'
-                    />
+                    <Select
+                      defaultValue="Destination"
+                      placeholder="Destination"
+                      onChange={(value) => setCountry(value)} >
+
+                      {Destination.map((p) => {
+                        return (
+                          <Option value={p.des} key={p.des}>
+                            <div className='ant-row ant-row-middle'>
+
+                              <span>{p.des}</span>
+                            </div>
+                          </Option>
+                        );
+                      })}
+                    </Select>
+
                   </Form.Item>
                 </Col>
+             
 
 
                 <Col xs={24} md={12}>
@@ -456,6 +493,7 @@ const Mission = () => {
                 <Col xs={24} md={12}>
                   <Form.Item className='form-field'
                     name='projectName'
+                    
                   //  rules={[
                   //   { required: true, message: 'Please input your Project Name' },
                   // ]}

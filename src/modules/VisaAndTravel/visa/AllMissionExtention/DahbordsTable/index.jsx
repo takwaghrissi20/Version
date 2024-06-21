@@ -18,7 +18,7 @@ const OrderTable = ({ orderData }) => {
   // Find By Id
   const findId = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getById?id=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getById?id=${code}`, {
         method: 'GET',
       });
       if (!response.ok) {
@@ -26,7 +26,7 @@ const OrderTable = ({ orderData }) => {
       }
       const responseData = await response.json();
       console.log("responseData Mission", responseData?.getsId);
-      setId(responseData?.idMiss);
+      setId(responseData?.ref);
       setFindIdData(responseData);
     } catch (error) {
       console.error("Erreur lors de la récupération du id Mission:", error);
@@ -40,26 +40,18 @@ const OrderTable = ({ orderData }) => {
   }, [id]);
 
   const handleViewMission = () => {
-    navigate(`/Hr/Visa/ViewMissionOrder/MOA=${id}`, { 
+    navigate(`/Hr/Visa/ViewMissionOrderExtention/MER=${id}`, { 
       state: { id }
     });
   };
 
   const handleEditMission = () => {
-    navigate(`/Hr/Visa/UpdateMissionOrder/MOA=${id}`, { 
+    navigate(`/Hr/Visa/UpdateMissionOrderExtention/MER=${id}`, { 
       state: { id }
     });
   };
 
-  const generatePDF = () => {
-    const doc = new jsPDF();
-    doc.text(`Mission Order: MOA-${findIdData?.idMiss}`, 10, 10);
-    doc.text(`Gets Id: ${findIdData?.getsId}`, 10, 20);
-    doc.text(`Full Name: ${findIdData?.empName}`, 10, 30);
-    doc.text(`Location: ${findIdData?.location}`, 10, 40);
-    doc.text(`Fonction: ${findIdData?.fonct}`, 10, 50);
-    doc.save(`MissionOrder_MOA-${findIdData?.idMiss}.pdf`);
-  };
+
 
   const items = [
     { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleViewMission },
@@ -70,10 +62,10 @@ const OrderTable = ({ orderData }) => {
   const columns = [
     {
       title: 'ID Mission',
-      dataIndex: 'idMiss',
-      key: 'idMiss',
+      dataIndex: 'ref',
+      key: 'ref',
       width: 150,
-      render: (id) => <StyledAnChar>MOA-{id}</StyledAnChar>,
+      render: (id) => <StyledAnChar>MER-{id}</StyledAnChar>,
     },
     {
       title: 'Gets Id',
@@ -84,19 +76,23 @@ const OrderTable = ({ orderData }) => {
     },
     {
       title: 'Full Name',
-      dataIndex: 'empName',
-      key: 'empName',
-    },
-   
-    {
-      title: 'Location',
-      dataIndex: 'location',
-      key: 'location',
+      dataIndex: 'name',
+      key: 'name',
     },
     {
-      title: 'Fonction',
-      dataIndex: 'fonct',
-      key: 'fonct',
+      title: 'gets Id',
+      dataIndex: 'getsId',
+      key: 'getsId',
+    },
+    {
+      title: 'Actual Location',
+      dataIndex: 'actualLocation',
+      key: 'actualLocation',
+    },
+    {
+      title: 'New Mission',
+      dataIndex: 'new_mission',
+      key: 'new_mission',
     },
     {
       title: 'Actions',
@@ -106,7 +102,7 @@ const OrderTable = ({ orderData }) => {
       fixed: 'right',
       className: 'customer-table-actions',
       render: (text, record) => (
-        <div onClick={() => findId(record?.idMiss)}>
+        <div onClick={() => findId(record?.ref)}>
           <Dropdown menu={{ items }} trigger={['click']}>
             <Button type='circle'>
               <MoreOutlined />

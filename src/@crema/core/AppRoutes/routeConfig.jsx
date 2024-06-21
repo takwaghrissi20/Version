@@ -317,6 +317,12 @@ const routesConfig = [
             url: "/Hr/Visa/MissionOrder",
           },
           {
+            id: "MissionExtention",
+            title: "Mission Extention",
+            messageId: "sidebar.general.AllMissionExtention",
+            url: "/Hr/Visa/MissionOrderExtention",
+          },
+          {
             id: "AddExtensoinMission",
             title: "Add Mission Extension Request",
             messageId: "sidebar.general.AddmissionExtention",

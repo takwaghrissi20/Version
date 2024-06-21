@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../../../@crema/components/AppRowContainer';
-import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox, DatePicker,notification } from 'antd';
+import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox, DatePicker,notification} from 'antd';
 import { MdEdit } from 'react-icons/md';
 import {
   StyledShadowWrapper,
@@ -27,7 +27,7 @@ const ViewMission = () => {
   const [getsId, setGetsId] = useState("");
   const findIdMission = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getById?id=${id}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getById?id=${id}`, {
         method: 'Get',
       });
       if (!response.ok) {
@@ -36,9 +36,9 @@ const ViewMission = () => {
       if (response.ok) {
         const responseData = await response.json();
         setMission(responseData)
-        console.log('ffffff',mission?.starTDateMiss)
+       
       
-        setGetsId(responseData?.getsId )
+        setGetsId(responseData?.getsId)
   
        
       }
@@ -109,27 +109,29 @@ const ViewMission = () => {
            <div  ref={targetRef} id="pdf-content">
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
-            <Typography.Title level={4}>Mission Assignment Order</Typography.Title>
+            <Typography.Title level={4}>Mission Extention</Typography.Title>
           </div>
         </div>
         <Divider style={{ marginTop: 16, marginBottom: 16 }} />
         <AppRowContainer>
           <Col xs={24} md={6}>
-            <Typography.Title level={5}>Assigned Person Details</Typography.Title>
+            <Typography.Title level={5}>Information Extension</Typography.Title>
           </Col>
           <Col xs={24} md={18}>
             <StyledShadowWrapper>
               <AppRowContainer>
                 <Col xs={24} md={12} >
                   <Form.Item  label='Reference' name='MAO'>
-                    <Input placeholder={"MAO-" + id} readOnly={true} />
+                    <Input 
+                    className='Input'
+                    placeholder={"MER-" + id} readOnly={true} />
                   </Form.Item>
                 </Col>
                 <Col  xs={24} md={12}>
                   <Form.Item label='Date' name='Date'  >
                   <Input
-                      
-                      placeholder={formattedDate}
+                      className='Input'
+                      placeholder={mission?.dateinput}
                       readOnly
                      
                      />         
@@ -137,40 +139,42 @@ const ViewMission = () => {
                 </Col>
                 
                 <Col xs={24} md={12}>
-                  <Form.Item label='Gets Id' name='Gets Id '>
+                  <Form.Item label='Mission Reference' name='Mission Reference '>
                     <Input
                       className='Input'
-                      placeholder={getsId}                  
+                      placeholder={mission?.refMiss} 
+                                     
                       readOnly
                       />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label='Person Name' name='Person Name'>
+                  <Form.Item label='Project Name' name='Project Name'>
                     <Input
                       className='Input'
-                      placeholder={profile?.name}
+                      placeholder={mission?.projectTitle}
                       readOnly />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item
-                    label='Function' name='Function'>
+                    label='Project Reference' name='Project Reference'>
                     <Input
                       readOnly={true}
                       className='Input'
-                      placeholder={profile?.position} />
+                      placeholder={mission?.projRef}
+                       />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item
-                    label='Destination ' name='Destination'
+                    label='Name ' name='Name'
                    
                   >
                     <Input
                       className='Input'
-                      placeholder={mission?.location}
-                      name='Destination'
+                      placeholder={profile?.name}
+                      name='Name'
                       readOnly={true}
                     />
                   </Form.Item>
@@ -179,39 +183,24 @@ const ViewMission = () => {
 
                 <Col xs={24} md={12}>
                   <Form.Item
-                    label='Mission Start Date'
-                    name='missionStartDate'
+                    label='Position'
+                    name='Position'
                   >
                      <Input
                      
                       className='Input'
-                      placeholder={mission?.starTDateMiss}                   
+                      placeholder={profile?.position}                   
                       readOnly={true}
                     />
                     
 
                   </Form.Item>
                 </Col>
+            
                 <Col xs={24} md={12}>
-                  <Form.Item
-                    label='Mission End Date'
-                    name='missionEndDate'
-                  
-                  >
-                         <Input
-                      className='Input'
-                      placeholder={mission?.endDateMiss}
-                      name='Mission End Date'
-                      readOnly={true}
-                    />
-                   
-                   
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Duration' name='Duration'>
+                  <Form.Item label='Actual Location' name='Actual Location'>
                     <Input
-                      placeholder={mission?.dureMiss}
+                      placeholder={mission?.actualLocation}
                       readOnly={true} />
                   </Form.Item>
                 </Col>
@@ -225,28 +214,34 @@ const ViewMission = () => {
         <Divider style={{ marginTop: 16, marginBottom: 16 }} />
         <AppRowContainer>
           <Col xs={24} md={6}>
-            <Typography.Title level={5}>Project Details</Typography.Title>
+            <Typography.Title level={5}>New Information Mission Extension</Typography.Title>
           </Col>
           <Col xs={24} md={18}>
             <StyledShadowWrapper>
               <AppRowContainer>
               <Col xs={24} md={12}>
-                  <Form.Item label='projectName' name='projectName'>
+                  <Form.Item label='Old End Mission Date' name='Old End Mission Date'>
                     <Input
-                      placeholder={mission?.projName}
+                      placeholder={mission?.old_mission}
                       readOnly={true} />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label='Location' name='Location'>
+                  <Form.Item label='New End Mission Date' name='New End Mission Date'>
                     <Input
-                      placeholder={mission?.location}
+                      placeholder={mission?.new_mission}
                       readOnly={true} />
                   </Form.Item>
                 </Col>
-
+                <Col xs={24} md={12}>
+                  <Form.Item label='Reason For Extention' name='Reason For Extention'>
+                    <Input
+                      placeholder={mission?.reasonForExtension}
+                      readOnly={true} />
+                  </Form.Item>
+                </Col>
              
-              
+                
               </AppRowContainer>
             </StyledShadowWrapper>
           </Col>
@@ -264,13 +259,61 @@ const ViewMission = () => {
                     <Input
                       className='InputComment'
                       // placeholder={mission?.location}             
-                      placeholder={mission?.comentaire}
+                      placeholder={mission?.comments}
                       
                     
                       readOnly
                     />
                   </Form.Item>
                 </Col>
+              </AppRowContainer>
+            </StyledShadowWrapper>
+          </Col>
+        </AppRowContainer>
+        <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+        <AppRowContainer>
+          <Col xs={24} md={6}>
+            <Typography.Title level={5}>Planner Input</Typography.Title>
+          </Col>
+          <Col xs={24} md={18}>
+            <StyledShadowWrapper>
+              <AppRowContainer>
+              <AppRowContainer>
+                  <Col xs={24} md={12}>
+                    <Form.Item
+                      label='As per : '
+                      name='As per'
+
+                    >
+                      <Checkbox checked={(mission?.extraProject) !== null}>
+                      Extra Project Time Shedule
+                      </Checkbox>
+
+
+
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item
+                      label=' '
+                      name='Asper'
+
+                    >
+                      <Checkbox checked={(mission?.plannerInput)  !== null}>
+                         As per Project Time Schedule
+                      </Checkbox>
+
+
+
+                    </Form.Item>
+                  </Col>
+                
+
+
+
+                </AppRowContainer>
+             
+                
               </AppRowContainer>
             </StyledShadowWrapper>
           </Col>

@@ -28,11 +28,11 @@ const AllMission = () => {
 
   const fetchMission = async () => {
     try {
-      const countMission = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getAll`);
+      const countMission = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getAll`);
       const datacount = await countMission.json();
       setCount(datacount.length);
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/list?page=${currentPage}&size=${pageSize}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/list?page=${currentPage}&size=${pageSize}`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch Mission');
@@ -59,7 +59,7 @@ const AllMission = () => {
 
     if (filterValue !== '') {
       try {
-        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getByName?name=${filterValue}`);
+        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getByName?name=${filterValue}`);
         if (!response.ok) {
           throw new Error('Failed to filter employees');
         }
@@ -78,7 +78,7 @@ const AllMission = () => {
   const handleSearch = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/filterByName?name=${nameFilter}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getByName?name=${nameFilter}`);
       if (!response.ok) {
         throw new Error('Failed to filter employees');
       }
