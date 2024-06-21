@@ -3,7 +3,7 @@ import VisitorGraph from './VisitorGraph';
 import { List } from 'antd';
 import PropTypes from 'prop-types';
 import Categories from './Categories';
-import AppCard from '../../../../../../@crema/components/AppCard';
+import AppCard from '../../../../../@crema/components/AppCard';
 import { useIntl } from 'react-intl';
 import { StyledEarningGraphWrapper } from './index.styled';
 

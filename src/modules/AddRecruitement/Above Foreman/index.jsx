@@ -355,7 +355,7 @@ const AddRecruitementAbove = () => {
       message: 'Error',
       description: 'Error Recuitement',
       style: {
-        backgroundColor: '#dc35450',
+        backgroundColor: 'red',
         border: '1px solid #dc3545',
         color: '#FFFFFF !important',
         borderRadius: '3px',

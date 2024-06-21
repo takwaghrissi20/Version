@@ -305,6 +305,18 @@ const routesConfig = [
             url: "/Hr/Visa/Mission",
           },
           {
+            id: "Add Internal  Mission",
+            title: "Mission",
+            messageId: "sidebar.general.InternalMission",
+            url: "/Hr/Visa/InternalMission",
+          },
+          {
+            id: "Add Mission",
+            title: "Mission Order",
+            messageId: "sidebar.general.AllMission",
+            url: "/Hr/Visa/MissionOrder",
+          },
+          {
             id: "AddExtensoinMission",
             title: "Add Mission Extension Request",
             messageId: "sidebar.general.AddmissionExtention",

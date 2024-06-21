@@ -355,7 +355,7 @@ const InterviewSheetById = () => {
       message: 'Error',
       description: 'Error MANAGEMENT STAFF INTERVIEW SHEET',
       style: {
-        backgroundColor: '#dc3545',
+        backgroundColor: 'red',
         border: '1px solid #dc3545',
         color: '#FFFFFF !important',
         borderRadius: '3px',

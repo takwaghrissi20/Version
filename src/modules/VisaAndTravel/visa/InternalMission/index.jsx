@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../../../@crema/components/AppRowContainer';
-import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox, DatePicker,notification } from 'antd';
+import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox, DatePicker, notification } from 'antd';
 import { MdEdit } from 'react-icons/md';
 import {
   StyledShadowWrapper,
@@ -11,58 +11,87 @@ const { Option } = Select;
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
-const Mission = () => {
+const InternalMission = () => {
   const navigate = useNavigate();
   const [lastIdMission, setLastIdMission] = useState(0);
   const [getsId, setGetsId] = useState("");
+  const [costCenter, setCostCenter] = useState("");
+  const [requestRef, setRequestRef] = useState("");
+  const [totalAmount, setTotalAmount] = useState(0);
+
+
   const [name, setName] = useState("");
   const [position, setPosition] = useState("");
   const [country, setCountry] = useState("");
-  const [projects, setProjects] = useState([]);
-  const [projectsCountry, setProjectsCountry] = useState([]);
-  const [selectedProject, setSelectedProject] = useState("");
-  const [selectedProjectCountry, setSelectedProjectCountry] = useState("");
-  const [comments, setComments] = useState("");
-  const [idProject, setIdProject] = useState("");
-  const [missionDate, setMissionDate] = useState("");
-  const [missionEndDate, setMissionEndDate] = useState("");
-  const [projRef, setProjRef] = useState("");
-  const [duration, setDuration] = useState(0);
+  const [missionObject, setMissionObject] = useState("");
+  const [expence, setExpence] = useState("");
+  const [amount, setAmount] = useState("");
+
+  const [remaining, setRemaining] = useState(0);
   const [confirmationMission, setConfirmationMission] = useState(false);
   const [isCancel, onCancel] = useState(false);
   const [form] = Form.useForm();
   const [dateInput, setDateInput] = useState(new Date());
   const formattedDate = dayjs(dateInput).format('YYYY-MM-DD');
-  
-  
+
+  const [expenseBlocks, setExpenseBlocks] = useState([{ expence: '', amount: '' }]);
+
+
 
 
   useEffect(() => {
-    if (missionDate && missionEndDate) {
-      const start = dayjs(missionDate, 'YYYY-MM-DD');
-      const end = dayjs(missionEndDate, 'YYYY-MM-DD');
-      const diffInDays = end.diff(start, 'day');
-      setDuration(diffInDays);
-    } else {
-      setDuration(null);
-    }
-  }, [missionDate, missionEndDate]);
+    let sum = 0;
+    expenseBlocks.forEach((block) => {
+      if (block.amount) {
+        sum += parseFloat(block.amount);
+      }
+    });
+    setTotalAmount(sum);
+  }, [expenseBlocks]);
+  const handleAddExpenseBlock = () => {
+    setExpenseBlocks([...expenseBlocks, { expence: '', amount: '' }]);
+  };
 
-  const handleCommentsChange = (event) => {
-    setComments(event.target.value);
+  const handleAmountChange = (event) => {
+    const value = event.target.value;
+    const updatedExpenses = [...expenseBlocks];
+    updatedExpenses[expenseBlocks.length - 1].amount = value; // Update the last added expense block
+    setExpenseBlocks(updatedExpenses);
   };
 
 
-  const handleInputGetsIdChange  = (event) => {
+  const handleInputGetsIdChange = (event) => {
     const value = event.target.value;
     setGetsId(event.target.value);
     console.log(value); // Log the input value to the console
   };
- 
+  const handleCountryChange = (event) => {
+    const value = event.target.value;
+    setCountry(event.target.value);
+
+  };
+  const handleMissionObjectChange = (event) => {
+    const value = event.target.value;
+    setMissionObject(event.target.value);
+
+  };
+  const handleExpenceChange = (event) => {
+    const value = event.target.value;
+    setExpence(event.target.value);
+  }
+
+
+
+
+  const handleCostCenterChange = (event) => {
+    const value = event.target.value;
+    setCostCenter(event.target.value);
+  };
+
 
   const LastIndexMission = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/last`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intMission/last`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -173,21 +202,11 @@ const Mission = () => {
       if (response.ok) {
         const responseData = await response.json();
         setName(responseData?.name);
-        setPosition(responseData?.position);
-        setCountry(responseData?.destination);
-  
-        const projectsData = responseData?.projects?.map(project => ({
-          projName: project.projName,
-          projId: project.projId
-        }));
-  
-        const projectscountry = responseData?.projects?.flatMap(project => project.country);
-        setProjectsCountry(projectscountry);
-        setProjects(projectsData);
+
 
 
       }
-     
+
 
 
     } catch (error) {
@@ -197,35 +216,32 @@ const Mission = () => {
 
   useEffect(() => {
     LastIndexMission();
-   
-      findId();
-     
-    
-    GetIdProject()
-  }, [getsId, selectedProject, idProject,name]);
-  const GetIdProject = async () => {
-    try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/getByname?name=${selectedProject}`, {
-        method: 'GET',
-      });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const responseData = await response.json();
-      setIdProject(responseData?.[0]?.idProject)
-      setProjRef(responseData?.[0]?.projRef)
+    findId();
 
 
 
-    } catch (error) {
-      console.error("Erreur lors de la récupération du jobcode:", error);
-    }
+  }, [getsId]);
+
+  const mapExpensesToApiFields = (expenses) => {
+    const apiFields = {
+      expence1: expence[0]?.expence || "",
+      expence2: expence[1]?.expence || "",
+      expence3: expence[2]?.expence || "",
+      others: expence[3]?.expence || "", // Assurez-vous que cela correspond à votre logique
+
+      val1: expence[0]?.amount || 0,
+      val2: expence[1]?.amount || 0,
+      val3:expence[2]?.amount || 0,
+      valOthers: expence[3]?.amount || 0
+    };
+  
+    return apiFields;
   };
-
+  
   const handleAddMission = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/add?id=${idProject}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intMission/add`, {
 
         method: 'POST',
         headers: {
@@ -235,20 +251,24 @@ const Mission = () => {
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
         body: JSON.stringify({
-
+          idMiss: lastIdMission + 1,
+          MissionObject: missionObject,
+          MissionPlace: country,
+          costCenter: costCenter,
           empName: name,
-          getsId: getsId,
-          fonct: position,
-          destination: country,
-          location: selectedProjectCountry,
-          projRef: projRef,
-          projName: selectedProject,
-          starTDateMiss: missionDate,
-          endDateMiss: missionEndDate,
-          dureMiss: duration,
-          refMiss: LastMission
+          totalAmount: totalAmount.toFixed(2),
+          remainingAmount: remaining,
+          expence1: expenseBlocks[0]?.expence || "",
+          expence2: expenseBlocks[1]?.expence || "",
+          expence3: expenseBlocks[2]?.expence || "",
+          others: expenseBlocks[3]?.expence || "",
+          val1: expenseBlocks[0]?.amount || 0,
+          val2: expenseBlocks[1]?.amount || 0,
+          val3: expenseBlocks[2]?.amount || 0,
+          valOthers: expenseBlocks[3]?.amount || 0
         })
       });
+    
 
       if (!response.ok) {
         openNotificationError('bottomRight')
@@ -259,8 +279,8 @@ const Mission = () => {
         const responseData = await response.json();
         form.resetFields();
         openNotification('bottomRight')
-   
-      
+
+
 
 
       }
@@ -270,28 +290,26 @@ const Mission = () => {
     }
   };
 
- 
+  const handleRequestRefChange = (value) => {
 
-  const handleProjectChange = (value, option) => {
+    setRequestRef(value);
+  };
+  const handleTotalAmountChange = (value) => {
 
-    setSelectedProject(value);
-
+    setTotalAmount(value);
   };
 
-  const handleProjectLocationChange = (value) => {
-    console.log('Select project :', value);
-    setSelectedProjectCountry(value);
-  };
   const goBack = () => {
     navigate(-1)
   }
+
   const BeforeSaveMission = () => {
-    form.validateFields(['Destination', 'missionStartDate', 'missionEndDate'])
+    form.validateFields(['Destination', 'missionObject', 'Destination'])
       .then(values => {
         handleAddMission()
       })
       .catch(errorInfo => {
-        
+
         openNotificationWarning('bottomRight')
 
 
@@ -303,10 +321,36 @@ const Mission = () => {
   }
   const handleCancelMission = () => {
     //onCancel(true);
- 
-      navigate(-1)
-  
+
+    navigate(-1)
+
   }
+  const [formItems, setFormItems] = useState([{ key: Date.now() }]);
+
+  const addFormItem = () => {
+    setFormItems([...formItems, { key: Date.now() }]);
+  };
+  useEffect(() => {
+    let sum = 0;
+    expenseBlocks.forEach((block) => {
+      if (block.amount) {
+        sum += parseFloat(block.amount);
+      }
+    });
+    setTotalAmount(sum);
+  }, [expenseBlocks]);
+  ////////////////////
+  const handleExpenseChange = (index, fieldName, value) => {
+    const updatedExpenses = [...expenseBlocks];
+    updatedExpenses[index][fieldName] = value;
+    setExpenseBlocks(updatedExpenses);
+  };
+  const handleRemainingChange = (event) => {
+    const value = event.target.value;
+    setRemaining(event.target.value);
+
+  }
+
   return (
     <>
       <Form
@@ -322,7 +366,7 @@ const Mission = () => {
       >
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
-            <Typography.Title level={4}>Mission Assignment Order</Typography.Title>
+            <Typography.Title level={4}>Mission  Order</Typography.Title>
           </div>
         </div>
         <Divider style={{ marginTop: 16, marginBottom: 16 }} />
@@ -334,33 +378,65 @@ const Mission = () => {
             <StyledShadowWrapper>
               <AppRowContainer>
                 <Col xs={24} md={12} >
-                  <Form.Item  label='Reference' name='interviewCode'>
-                    <Input placeholder={"MAO-" + LastMission} readOnly={true} />
+                  <Form.Item label='Reference' name='interviewCode'>
+                    <Input placeholder={LastMission} readOnly={true} />
                   </Form.Item>
                 </Col>
-                <Col  xs={24} md={12}>
+                <Col xs={24} md={12}>
                   <Form.Item label='Date' name='Date'  >
-                  <Input
-                      
+                    <Input
+
                       placeholder={formattedDate}
                       readOnly
-                     
-                     />
 
-                     {/* <DatePicker
+                    />
+
+                    {/* <DatePicker
                       style={{ width: "100%", height: "30px" }}
                       defaultValue={dateInput ? dayjs(formattedDate, 'YYYY-MM-DD') : null}
                       value={formattedDate ? dayjs(formattedDate, 'YYYY-MM-DD') : null}
                       onChange={(value) => setDateInput(value ? dayjs(value).format('YYYY-MM-DD') : '')}
                     /> */}
-                  
+
+                  </Form.Item>
+                </Col>
+
+                <Col xs={24} md={12}>
+                  <Form.Item label='Cost Center' name='Cost Center '>
+                    <Input
+                      className='Input'
+                      placeholder="Cost Center"
+                      value={costCenter}
+                      onChange={handleCostCenterChange} />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label='Gets Id' name='Gets Id '>
+                  <Form.Item label='Request Ref' name='Request Ref'>
                     <Input
                       className='Input'
-                      placeholder="Gets Id"
+                      placeholder="Request Ref"
+                      value={requestRef}
+                      onChange={handleRequestRefChange} />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} md={12}>
+                  <Form.Item label='Total Amount' name='TotalAmount'>
+                    <Input
+                      className='Input'
+                      type='number'
+                      placeholder="Total Amount"
+                      readOnly
+                    // value={totalAmount}
+                    // onChange={handleTotalAmountChange}
+
+                    />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} md={12}>
+                  <Form.Item label='Gets ID' name='Gets ID'>
+                    <Input
+                      className='Input'
+                      placeholder="Gets ID"
                       value={getsId}
                       onChange={handleInputGetsIdChange} />
                   </Form.Item>
@@ -373,70 +449,42 @@ const Mission = () => {
                       readOnly />
                   </Form.Item>
                 </Col>
+
                 <Col xs={24} md={12}>
                   <Form.Item
-                    label='Function' name='Function'>
-                    <Input
-                      readOnly={true}
-                      className='Input'
-                      placeholder={position} />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label='Destination ' name='Destination'
+                    label='Mission Place' name='Destination'
                     rules={[
-                      { required: true, message: 'Please input your Destination!' },
+                      { required: true, message: 'Please input your Mission Place!' },
                     ]}
                   >
                     <Input
                       className='Input'
-                      placeholder={country}
-                      name='Destination'
-                    />
-                  </Form.Item>
-                </Col>
+                      placeholder="Mission Place"
+                      value={country}
+                      onChange={handleCountryChange}
 
-
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label='Mission Start Date'
-                    name='missionStartDate'
-                    rules={[
-                      { required: true, message: 'Please input your Mission Start Date!' },
-                    ]}
-                  >
-                    <DatePicker
-                      style={{ width: "100%", height: "30px" }}
-                      placeholder='YYYY-MM-DD'
-                      value={missionDate ? dayjs(missionDate, 'YYYY-MM-DD') : null}
-                      onChange={(value) => setMissionDate(value ? dayjs(value).format('YYYY-MM-DD') : '')}
+                      name='Mission Place'
                     />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item
-                    label='Mission End Date'
-                    name='missionEndDate'
+                    label='Mission Object' name='missionObject'
                     rules={[
-                      { required: true, message: 'Please input your Mission End Date!' },
+                      { required: true, message: 'Please input your Mission Object!' },
                     ]}
                   >
-                    <DatePicker
-                      style={{ width: "100%", height: "30px" }}
-                      placeholder='YYYY-MM-DD'
-                      value={missionEndDate ? dayjs(missionEndDate, 'YYYY-MM-DD') : null}
-                      onChange={(value) => setMissionEndDate(value ? dayjs(value).format('YYYY-MM-DD') : '')}
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Duration' name='Duration'>
                     <Input
-                      placeholder={duration + "Days"}
-                      readOnly={true} />
+                      className='Input'
+                      placeholder="Mission Object"
+                      value={missionObject}
+                      onChange={handleMissionObjectChange}
+
+                      name='Mission Place'
+                    />
                   </Form.Item>
                 </Col>
+
 
 
 
@@ -447,62 +495,49 @@ const Mission = () => {
         <Divider style={{ marginTop: 16, marginBottom: 16 }} />
         <AppRowContainer>
           <Col xs={24} md={6}>
-            <Typography.Title level={5}>Project Details</Typography.Title>
+            <Typography.Title level={5}>Expence Details</Typography.Title>
           </Col>
           <Col xs={24} md={18}>
             <StyledShadowWrapper>
               <AppRowContainer>
 
-                <Col xs={24} md={12}>
-                  <Form.Item className='form-field'
-                    name='projectName'
-                  //  rules={[
-                  //   { required: true, message: 'Please input your Project Name' },
-                  // ]}
+                {expenseBlocks.map((expense, index) => (
+                  <React.Fragment key={index}>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label='Expense'
+                        name={`Expence-${index}`}
 
-
-                  >
-                    <FloatLabel >
-                      <span className='modallabel'>Project Name:</span>
-                      <Select
-                        style={{ marginTop: "10px" }}
-                        placeholder="Select Your Project Name"
-
-                        onChange={handleProjectChange}
-                        value={selectedProject}
                       >
-                        {projects.map(project => (
-                          <Option key={project.projId} value={project.projName}>
-                            {project.projName}
-                          </Option>
-                        ))}
-                      </Select>
-                    </FloatLabel>
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item className='form-field'
-                    name="location"
-                  //  rules={[
-                  //   { required: true, message: 'Please input your  Location' },
-                  // ]}
->
-                    <FloatLabel name="Location">
-                      <span className='modallabel'>Location:</span>
-                      <Select
-                        style={{ marginTop: "10px" }}
-                        placeholder="Select Projects"
-                        onChange={handleProjectLocationChange}
-                        value={selectedProjectCountry} >
-                        {projectsCountry.map(project => (
-                          <Option key={project} value={project}>
-                            {project}
-                          </Option>
-                        ))}
-                      </Select>
-                    </FloatLabel>
-                  </Form.Item>
-                </Col>
+                        <Input
+                          className='Input'
+                          placeholder="Expense"
+                          value={expense.expence}
+                          onChange={(e) => handleExpenseChange(index, 'expence', e.target.value)}
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        type='number'
+                        label='Amount'
+                        name={`Amount-${index}`}
+
+                      >
+                        <Input
+                          className='Input'
+                          placeholder="0 DT"
+                          value={expense.amount}
+                          onChange={(e) => handleExpenseChange(index, 'amount', e.target.value)}
+                        />
+                      </Form.Item>
+                    </Col>
+                  </React.Fragment>
+                ))}
+                <Button onClick={handleAddExpenseBlock}>+ Add Expense</Button>
+
+
+
               </AppRowContainer>
             </StyledShadowWrapper>
           </Col>
@@ -510,24 +545,49 @@ const Mission = () => {
         <Divider style={{ marginTop: 16, marginBottom: 16 }} />
         <AppRowContainer>
           <Col xs={24} md={6}>
-            <Typography.Title level={5}>Comments</Typography.Title>
+            <Typography.Title level={5}>Amount</Typography.Title>
           </Col>
           <Col xs={24} md={18}>
             <StyledShadowWrapper>
               <AppRowContainer>
-                <Col xs={24} md={24}>
-                  <Form.Item label='Comments' name='Comments'>
+                <Col xs={24} md={12}>
+                  <Form.Item label='Total Amount' name='TotalAmount'>
                     <Input
-                      className='InputComment'
-                      value={comments}
-                      onChange={handleCommentsChange}
-                      placeholder="Comments"
+                      className='Input'
+                      type='number'
+                      placeholder={`${totalAmount.toFixed(2)} DT`}
+
+                      value={totalAmount.toFixed(2)} // Utilisez toFixed(2) pour le formatage
+
+                      readOnly
+                    />
+                  </Form.Item>
+                </Col>
+
+                <Col xs={24} md={12}>
+                  <Form.Item
+                    label='Remaining Amount' name='remaining'
+                    rules={[
+                      { required: true, message: 'Please input your Remaining Amount!' },
+                    ]}
+
+                  >
+                    <Input
+                      type='number'
+                      className='Input'
+                      placeholder="Remaining Amount"
+                      name='Remaining Amount'
+                      value={remaining}
+                      onChange={handleRemainingChange}
+                     
                     />
                   </Form.Item>
                 </Col>
               </AppRowContainer>
             </StyledShadowWrapper>
           </Col>
+
+
         </AppRowContainer>
         <Space
           size={15}
@@ -537,7 +597,7 @@ const Mission = () => {
           <Button
             onClick={BeforeSaveMission}
             type='primary'
-            disabled={!selectedProjectCountry || !selectedProject}
+
             htmlType='submit'>
             Save
           </Button>
@@ -553,7 +613,7 @@ const Mission = () => {
           handleConfirmationAddMission={handleConfirmationAddMission}
         />
       ) : null}
-        {isCancel? (
+      {isCancel ? (
         <ConfirmationModal
           open={isCancel}
           paragraph={'Are you sure you canceled All data is lost?'}
@@ -567,4 +627,4 @@ const Mission = () => {
   );
 };
 
-export default Mission;
+export default InternalMission;

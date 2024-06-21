@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import AppRowContainer from '../../../../../@crema/components/AppRowContainer';
-import AppAnimate from '../../../../../@crema/components/AppAnimate';
-import { useGetDataApi } from '../../../../../@crema/hooks/APIHooks';
-import AppLoader from '../../../../../@crema/components/AppLoader';
+import AppRowContainer from '../../../../@crema/components/AppRowContainer';
+import AppAnimate from '../../../../@crema/components/AppAnimate';
+import { useGetDataApi } from '../../../../@crema/hooks/APIHooks';
+import AppLoader from '../../../../@crema/components/AppLoader';
 import TotalVisitor from './TotalVisitor';
 import { Col } from 'antd';
 import { padding } from 'polished';

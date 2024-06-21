@@ -19,6 +19,10 @@ import ManpowerAllocationPerProject from '../../../modules/VisaAndTravel/visa/Ma
 import Radar from '../../../modules/VisaAndTravel/visa/Radar';
 import FunnelChart from '../../../modules/VisaAndTravel/visa/Funnel';
 import Mission from '../../../modules/VisaAndTravel/visa/Mission';
+import InternalMission from '../../../modules/VisaAndTravel/visa/InternalMission';
+import AllMission from '../../../modules/VisaAndTravel/visa/AllMission';
+import ViewMission from '../../../modules/VisaAndTravel/visa/ViewMission';
+import UpdateMission from '../../../modules/VisaAndTravel/visa/EditMission';
 import AddTravel from '../../../modules/VisaAndTravel/visa/Travel';
 import AddDemobization from '../../../modules/TripTrackRecord/AddDemobilization';
 import DemoPermissionSite from '../../../modules/TripTrackRecord/DemobPermissionSite';
@@ -30,6 +34,26 @@ export const recharts2Configs = [
   {
     path: '/Hr/Visa/Mission',
     element: <Mission/>,
+  },
+  ///Hr/Visa/InternalMission
+  {
+    path: '/Hr/Visa/InternalMission',
+    element: <InternalMission/>,
+  },
+
+
+  ///Hr/Visa/InternalMission
+  {
+    path: '/Hr/Visa/MissionOrder',
+    element: <AllMission/>,
+  },
+  {
+    path: '/Hr/Visa/ViewMissionOrder/:id',
+    element: <ViewMission/>,
+  },
+  {
+    path: '/Hr/Visa/UpdateMissionOrder/:id',
+    element: <UpdateMission/>,
   },
   {
     path: '/Hr/Visa/Travel',

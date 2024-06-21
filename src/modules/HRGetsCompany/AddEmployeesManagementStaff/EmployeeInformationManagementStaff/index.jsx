@@ -453,6 +453,7 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
             border: "1px solid transparent",
             boxShadow: "0 2px 5px 1px rgba(64, 60, 67, .16)",
             borderRadius: "8px",
+            zIndex:1
 
 
 

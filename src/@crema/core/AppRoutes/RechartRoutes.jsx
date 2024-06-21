@@ -1,6 +1,6 @@
 import React from 'react';
 import ComposedChart from '../../../modules/VisaAndTravel/visa/Composed';
-// import OfficeTimeSheet from '../../../modules/TimeSheet/TimeSheetoffice';
+ import OfficeTimeSheet from '../../../modules/TimeSheet/TimeSheetoffice';
 import Radial from '../../../modules/VisaAndTravel/visa/Radial';
 import Treemap from '../../../modules/VisaAndTravel/visa/Treemap';
 import Radar from '../../../modules/VisaAndTravel/visa/Radar';
@@ -13,7 +13,7 @@ export const rechartsConfigs = [
   },
   {
     path: '/Hr/Attendances/OfficeTimeSheet',
-    element: <ComposedChart />,
+    element: <OfficeTimeSheet />,
   },
   {
     path: '/third-party/recharts/composed',

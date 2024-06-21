@@ -72,7 +72,7 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
       message: 'Error',
       description: 'Error Save Visa Employees',
       style: {
-        backgroundColor: '#dc3545',
+        backgroundColor: 'red',
         border: '1px solid #dc3545',
         color: '#FFFFFF !important',
         borderRadius: '3px',

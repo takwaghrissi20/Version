@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef  } from 'react';
 import AppRowContainer from '../../../@crema/components/AppRowContainer';
 import {
   Button, Col, Divider, Form, Input, Space, Typography, Select,
-  Alert, Checkbox, DatePicker, notification
+  Alert, Checkbox, DatePicker, notification, List, Row
 } from 'antd';
 import { MdEdit } from 'react-icons/md';
 import {
@@ -10,6 +10,7 @@ import {
   StyledInput,
 } from './index.styled';
 import FloatLabel from "./FloatLabel";
+import { FaSearch } from "react-icons/fa";
 
 const { Option } = Select;
 import dayjs from 'dayjs';
@@ -23,6 +24,7 @@ const AddExtensionMission = () => {
   const navigate = useNavigate();
   const [lastMission, setLastMission] = useState(0);
   const [missionExtentionId, setMissionExtentionId] = useState("");
+  const [list, setList] = useState("");
   const [missionId, setMissionId] = useState("");
 
   const [projname, setProjname] = useState("");
@@ -38,6 +40,8 @@ const AddExtensionMission = () => {
   const [isCancel, onCancel] = useState(false);
   const [dateInput, setDateInput] = useState(new Date());
   const formattedDate = dayjs(dateInput).format('YYYY-MM-DD');
+  const [searchValue, setSearchValue] = useState('');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   console.log("newDate", dateInput)
   const [dateoldMission, setDateoldMission] = useState("");
   const [isExDep, setIsExDep] = useState(false);
@@ -176,7 +180,7 @@ const AddExtensionMission = () => {
       message: 'Error',
       description: 'Error Mission Extension Request',
       style: {
-        backgroundColor: '#dc35450',
+        backgroundColor: 'red',
         border: '1px solid #dc3545',
         color: '#FFFFFF !important',
         borderRadius: '3px',
@@ -223,16 +227,13 @@ const AddExtensionMission = () => {
           new_mission: newMission,
           plannerInput: isOrDep,
           extraProject: isExDep,
-          dateinput: dateInput
-
-
-
+          dateinput: formattedDate
 
         })
       });
 
       if (!response.ok) {
-        // openNotificationError('bottomRight')
+        openNotificationError('bottomRight')
         throw new Error('Network response was not ok');
 
       }
@@ -255,10 +256,11 @@ const AddExtensionMission = () => {
     if (missionId) {
       findId();
     }
+    GetALLMission()
 
 
 
-  }, [missionId,projname,projref,name]);
+  }, [missionId, projname, projref, name]);
 
 
   const LastMissionExtentionId = missionExtentionId + 1;
@@ -290,7 +292,110 @@ const AddExtensionMission = () => {
   const handleCancelExtention = () => {
     onCancel(true);
   }
+  ////////////////
+  const handleSearch = value => {
+    setSearchValue(value);
+    setIsDropdownOpen(value.trim() !== '');
+  };
+  // const filteredInterviews = searchValue.trim() === '' ? listInterview : listInterview.filter(interview => {
+  //   return interview.interviewCode.toString().startsWith(searchValue);
+  // });
+  ///GetAllMission
+  const GetALLMission = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getAll`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
 
+      if (!response.ok) {
+        throw new Error('La requête a échoué avec le code ' + response.status);
+      }
+
+      const data = await response.json();
+      setList(data)
+
+
+    } catch (error) {
+      console.error('Erreur lors de la récupération Last Recruitement', error);
+    }
+  };
+  //////////////
+  const [findIdInterview, setFindIdInterview] = useState(0);
+  const filteredInterviews = searchValue.trim() === '' ? list : list.filter(interview => {
+    return interview.refMiss.toString().startsWith(searchValue);
+  });
+  const [selectedInterviews, setSelectedInterviews] = useState([]);
+
+  const handleItemClick = (interview) => {
+
+     
+
+    const isSelected = selectedInterviews.some(item => item.refMiss === interview.refMiss);
+
+    if (!isSelected) {
+      setSelectedInterviews([...selectedInterviews, interview]);
+      setSelectedMission(interview);
+      setSearchValue(interview.refMiss.toString());
+      setIsDropdownOpen(false);
+    }
+    setSelectedMission(interview);
+      setSearchValue(interview.refMiss.toString());
+      setIsDropdownOpen(false);
+  };
+
+  //
+  const fetchDataId = async (searchValue) => {
+    try {
+      const endPoint =
+        process.env.NODE_ENV === "development"
+          ? "https://dev-gateway.gets-company.com"
+          : "";
+
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getById?code=${searchValue}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('La requête a échoué avec le code ' + response.status);
+      }
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
+      }
+
+      const data = await response.json();
+      setFindIdInterview(data)
+
+
+
+
+
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données:', error);
+    }
+  };
+
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
 
 
@@ -328,21 +433,76 @@ const AddExtensionMission = () => {
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Date' name='Date'
-                    rules={[
-                      { required: true, message: 'Please input your Date!' },
-                    ]}
+
                   >
-                    <DatePicker
+                    <Input
+
+                      placeholder={formattedDate}
+                      readOnly
+
+                    />
+
+                    {/* <Input
+                      
+                      placeholder={formattedDate}
+                      
+                      readOnly
+                      
+                     /> */}
+                    {/* <DatePicker
                       style={{ width: "100%", height: "30px" }}
                       defaultValue={dateInput ? dayjs(formattedDate, 'YYYY-MM-DD') : null}
                       value={formattedDate ? dayjs(formattedDate, 'YYYY-MM-DD') : null}
                       onChange={(value) => setDateInput(value ? dayjs(value).format('YYYY-MM-DD') : '')}
-                    />
+                    /> */}
 
                   </Form.Item>
                 </Col>
+      
+
                 <Col xs={24} md={12}>
-                  <Form.Item label='Numero Mission' name='NumeroMission '>
+                  
+
+                
+                
+                      <Form.Item label='Mission Reference' name='NumeroMission '>
+
+                        <Input
+
+                          
+                          placeholder="Numero Mission"
+
+                          value={"MAO-" + searchValue}
+                          onChange={(e) => handleSearch(e.target.value)} />
+                      </Form.Item>
+                     
+
+
+                      {isDropdownOpen && (
+                        <div style={{
+                          borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px", zIndex: 1,
+                          background: "white", position: "absolute", top: "4rem", width: "90%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"
+                        }}>
+                          <List
+                            dataSource={filteredInterviews}
+                            renderItem={item => (
+                              <List.Item onClick={() => { handleItemClick(item); fetchDataId(searchValue); }}>
+                                MOA-{item.refMiss}</List.Item>
+                            )}
+                          />
+                        </div>
+                      )}
+
+                      <div>
+
+                      </div>
+                
+                  </Col>
+               
+
+
+                <Col xs={24} md={12}>
+                  <Form.Item label='Mission Reference' name='NumeroMission '>
                     <Input
                       type="number"
                       className='Input'
