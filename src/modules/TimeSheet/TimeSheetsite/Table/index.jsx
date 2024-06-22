@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import { Table, Tooltip } from 'antd';
 import moment from 'moment';
 
-const OrderTable = ({ orderData }) => {
-
-  const currentDate = moment();
+const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
+  const currentDate = moment({ year: selectedYear, month: selectedMonth - 1 });
   const currentMonthDays = Array.from({ length: currentDate.daysInMonth() }, (v, k) => k + 1);
   const currentMonthName = currentDate.format('MMMM').toUpperCase();
  
@@ -26,25 +25,26 @@ const OrderTable = ({ orderData }) => {
       render: (name) => <Tooltip title={name}>{name}</Tooltip>,
     },
     ...currentMonthDays.map(day => {
-      const date = moment({ year: currentDate.year(), month: currentDate.month(), day });
+      const date = moment({ year: selectedYear, month: selectedMonth - 1, day });
       const dayName = date.format('dddd');
       return {
-        title: `${day} -${dayName}`,
+        title: `${day} - ${dayName}`,
         dataIndex: `day${day}`,
         key: `day${day}`,
         width: 150,
         render: (text, record) => {
-          const pointage = record.officepointages.find(p => moment(p.date).date() === day)?.pointage || '';
+          const pointage = record.pointages.find(p => moment(p.date).isSame(date, 'day'))?.pointage || '';
           return <span>{pointage}</span>;
         }
       };
     }),
   ];
 
-  const data = orderData.map(employee => {
+  const data = orderData?.map(employee => {
     const employeeData = {};
     currentMonthDays.forEach(day => {
-      const pointage = employee.officepointages.find(p => moment(p.date).date() === day);
+      const date = moment({ year: selectedYear, month: selectedMonth - 1, day });
+      const pointage = employee.pointages.find(p => moment(p.date).isSame(date, 'day'));
       employeeData[`day${day}`] = pointage ? pointage.pointage : '';
     });
     return { ...employee, ...employeeData };
@@ -54,7 +54,7 @@ const OrderTable = ({ orderData }) => {
     <Table
       columns={columns}
       dataSource={data}
-      scroll={{ x:500, y: 1000 }}
+      scroll={{ x: 1500, y: 1000 }}
       pagination={false}
       rowKey="getsId"
     />
@@ -63,6 +63,8 @@ const OrderTable = ({ orderData }) => {
 
 OrderTable.propTypes = {
   orderData: PropTypes.array.isRequired,
+  selectedMonth: PropTypes.number.isRequired,
+  selectedYear: PropTypes.number.isRequired,
 };
 
 export default OrderTable;
