@@ -25,17 +25,6 @@ export const rechartsConfigs = [
     path: '/third-party/recharts/pie',
     element: <ComposedChart />,
   },
-  {
-    path: '/third-party/recharts/radar',
-    element: <Treemap />,
-  },
-  {
-    path: '/third-party/recharts/radial',
-    element: <Treemap />,
-  },
-  {
-    path: '/third-party/recharts/treemap',
-    element: <Treemap />,
-  },
+
 
 ];

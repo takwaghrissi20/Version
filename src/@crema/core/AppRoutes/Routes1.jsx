@@ -31,9 +31,6 @@ export const recharts1Configs = [
     element: <ComposedChart />,
   },
 
-  {
-    path: '/third-party1/recharts1/treemap',
-    element: <Treemap />,
-  },
+  
 
 ];

@@ -276,7 +276,8 @@ const Mission = () => {
         const responseData = await response.json();
         form.resetFields();
         openNotification('bottomRight')
-        navigate(-1)
+         navigate(`/Hr/Visa/MissionOrder`)
+        //navigate(-1)
    
       
 

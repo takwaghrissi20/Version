@@ -13,7 +13,7 @@ import ViewCovid from '../../../modules/VisaAndTravel/visa/HealthCorona/Covid/Vi
 import EditHealth from '../../../modules/VisaAndTravel/visa/HealthCorona/Health/EditHealth';
 import EditCovid from '../../../modules/VisaAndTravel/visa/HealthCorona/Covid/EditCovid';
 import LocationTripTrack from '../../../modules/VisaAndTravel/visa/LocationTripTrack';
-import Treemap from '../../../modules/VisaAndTravel/visa/Treemap';
+import HeadOfficeEmployees from '../../../modules/HeadEmployeesSite';
 import ManpowerAllocationPerProject from '../../../modules/VisaAndTravel/visa/ManpowerAllocationPerProject';
 import PersonOnBoard from '../../../modules/PersonOnBoard';
 import Mission from '../../../modules/VisaAndTravel/visa/Mission';
@@ -171,12 +171,9 @@ export const recharts2Configs = [
   },
   {
     path: '/ManpowerLocation/HeadOfficeEmployees',
-    element: <Treemap />,
+    element: <HeadOfficeEmployees />,
   },
-  {
-    path: '/ManpowerLocation/ManpowerHystograms',
-    element: <Treemap />,
-  },
+ 
   {
     path: '/ManpowerLocation/ManpowerAllocationPerProject',
     element: <ManpowerAllocationPerProject />,

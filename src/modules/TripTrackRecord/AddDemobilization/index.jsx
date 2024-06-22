@@ -307,15 +307,16 @@ const AddDemobilization = () => {
         throw new Error('Network response was not ok');
       }
       const responseData = await response.json();
-
+      console.log("projjjjjj3333", responseData)
       setProjRef(responseData?.[0]?.projRef)
-
+      
 
 
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
     }
   };
+  console.log("ggggggjkkll",selectedProject)
   const GetMissionByProjName = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getByProjName?name=${selectedProject}`, {
@@ -326,6 +327,7 @@ const AddDemobilization = () => {
         throw new Error('Network response was not ok');
       }
       const responseData = await response.json();
+      console.log("projjjjjj3333", responseData)
       const MissionData = responseData?.map(mission => ({
         missionId: mission.idMiss,
 
