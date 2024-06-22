@@ -13,11 +13,9 @@ import ViewCovid from '../../../modules/VisaAndTravel/visa/HealthCorona/Covid/Vi
 import EditHealth from '../../../modules/VisaAndTravel/visa/HealthCorona/Health/EditHealth';
 import EditCovid from '../../../modules/VisaAndTravel/visa/HealthCorona/Covid/EditCovid';
 import LocationTripTrack from '../../../modules/VisaAndTravel/visa/LocationTripTrack';
-import Radial from '../../../modules/VisaAndTravel/visa/Radial';
 import Treemap from '../../../modules/VisaAndTravel/visa/Treemap';
 import ManpowerAllocationPerProject from '../../../modules/VisaAndTravel/visa/ManpowerAllocationPerProject';
-import Radar from '../../../modules/VisaAndTravel/visa/Radar';
-import FunnelChart from '../../../modules/VisaAndTravel/visa/Funnel';
+import PersonOnBoard from '../../../modules/PersonOnBoard';
 import Mission from '../../../modules/VisaAndTravel/visa/Mission';
 import InternalMission from '../../../modules/VisaAndTravel/visa/InternalMission';
 import AllMission from '../../../modules/VisaAndTravel/visa/AllMission';
@@ -33,6 +31,8 @@ import AddMissionExtensoin from '../../../modules/TripTrackRecord/AddExtensionMi
 import DemobTripTrackRecorde from '../../../modules/TripTrackRecord/DeMOBTRIPTRACKRECORD';
 import SammaryDemobTrips from '../../../modules/TripTrackRecord/SAMMARYDEMOBTRIPS';
 import SammaryMobTrips from '../../../modules/TripTrackRecord/SAMMARYMOBTRIPS';
+import DemobilizationDirect  from '../../../modules/DemobilizationDirect';
+
 export const recharts2Configs = [
   {
     path: '/Hr/Visa/Mission',
@@ -60,9 +60,10 @@ export const recharts2Configs = [
     element: <ViewMission/>,
   },
   {
-    path: '/Hr/Visa/ViewMissionOrderExtention/:id',
-    element: <ViewMissionExtention/>,
+    path: '/Hr/Visa/ViewMissionOrder/:id',
+    element: <ViewMission/>,
   },
+ 
   {
     path: '/Hr/Visa/UpdateMissionOrder/:id',
     element: <UpdateMission/>,
@@ -166,11 +167,11 @@ export const recharts2Configs = [
   },
   {
     path: '/ManpowerLocation/PersononBoard',
-    element: <Radar />,
+    element: <PersonOnBoard />,
   },
   {
     path: '/ManpowerLocation/HeadOfficeEmployees',
-    element: <Radial />,
+    element: <Treemap />,
   },
   {
     path: '/ManpowerLocation/ManpowerHystograms',
@@ -182,6 +183,6 @@ export const recharts2Configs = [
   },
   {
     path: '/ManpowerLocation/DemobilizationDirectEmployeesSite',
-    element: <FunnelChart />,
+    element: <DemobilizationDirect/>,
   },
 ];

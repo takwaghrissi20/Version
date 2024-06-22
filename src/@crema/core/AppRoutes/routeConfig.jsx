@@ -171,27 +171,27 @@ const routesConfig = [
           {
             id: "Vacation",
             title: "Vacation",
-            messageId: "sidebar.hrrelation.vacation",
+            messageId: "sidebar.components.VacationLeave",
             url: "/Hr/Vacation&Leave/Vacation",
           },
-          {
-            id: "Leave",
-            title: "Leave",
-            messageId: "sidebar.hrrelation.leave",
-            url: "/Hr/Vacation&Leave/Leave",
-          },
-          {
-            id: "JustifiedAbsence",
-            title: "JustifiedAbsence",
-            messageId: "sidebar.hrrelation.JustifiedAbsence",
-            url: "/Hr/Vacation&Leave/JustifiedAbsence",
-          },
-          {
-            id: "MaternityPaternity",
-            title: "MaternityPaternity",
-            messageId: "sidebar.hrrelation.MaternityPaternity",
-            url: "/Hr/Vacation&Leave/MaternityPaternity",
-          },
+          // {
+          //   id: "Leave",
+          //   title: "Leave",
+          //   messageId: "sidebar.hrrelation.leave",
+          //   url: "/Hr/Vacation&Leave/Leave",
+          // },
+          // {
+          //   id: "JustifiedAbsence",
+          //   title: "JustifiedAbsence",
+          //   messageId: "sidebar.hrrelation.JustifiedAbsence",
+          //   url: "/Hr/Vacation&Leave/JustifiedAbsence",
+          // },
+          // {
+          //   id: "MaternityPaternity",
+          //   title: "MaternityPaternity",
+          //   messageId: "sidebar.hrrelation.MaternityPaternity",
+          //   url: "/Hr/Vacation&Leave/MaternityPaternity",
+          // },
           {
             id: "ReportedReports",
             title: "ReportedReports",

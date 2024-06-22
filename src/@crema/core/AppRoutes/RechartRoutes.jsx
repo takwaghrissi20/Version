@@ -2,10 +2,9 @@ import React from 'react';
 import ComposedChart from '../../../modules/VisaAndTravel/visa/Composed';
 import OfficeTimeSheet from '../../../modules/TimeSheet/TimeSheetoffice';
 import SiteTimeSheet from '../../../modules/TimeSheet/TimeSheetsite';
-import Radial from '../../../modules/VisaAndTravel/visa/Radial';
 import Treemap from '../../../modules/VisaAndTravel/visa/Treemap';
-import Radar from '../../../modules/VisaAndTravel/visa/Radar';
-import FunnelChart from '../../../modules/VisaAndTravel/visa/Funnel';
+
+
 
 export const rechartsConfigs = [
   {
@@ -30,12 +29,9 @@ export const rechartsConfigs = [
   },
   {
     path: '/third-party/recharts/radar',
-    element: <Radar />,
+    element: <Treemap />,
   },
-  {
-    path: '/third-party/recharts/radial',
-    element: <Radial />,
-  },
+ 
   {
     path: '/third-party/recharts/treemap',
     element: <Treemap />,
@@ -44,8 +40,5 @@ export const rechartsConfigs = [
     path: '/third-party/recharts/scatter',
     element: <Treemap />,
   },
-  {
-    path: '/third-party/recharts/funnel',
-    element: <FunnelChart />,
-  },
+
 ];

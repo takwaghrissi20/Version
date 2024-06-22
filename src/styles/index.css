@@ -636,6 +636,17 @@ font-weight: bold;
   font-size: 1rem !important;
 
 }
+.row-red {
+  color: red !important;
+  background-color:#C0B198;
+}
+.Title{
+  color: #40494D;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
 
 
 

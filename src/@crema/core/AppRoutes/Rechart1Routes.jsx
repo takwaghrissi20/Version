@@ -1,8 +1,8 @@
 import React from 'react';
 import ComposedChart from '../../../modules/VisaAndTravel/visa/Composed';
 import Treemap from '../../../modules/VisaAndTravel/visa/Treemap';;
-import Radar from '../../../modules/VisaAndTravel/visa/Radar';
-import FunnelChart from '../../../modules/VisaAndTravel/visa/Funnel';
+
+
 
 export const recharts1Configs = [
   {
@@ -19,19 +19,19 @@ export const recharts1Configs = [
   },
   {
     path: '/Hr/Vacation&Leave/MaternityPaternity',
-    element: <Radar />,
+    element: <Treemap />,
   },
   {
     path: '/Hr/Vacation&Leave/ReportedReports',
-    element: <Radar />,
+    element: <Treemap />,
   },
   {
     path: '/third-party1/recharts1/radar',
-    element: <Radar />,
+    element: <Treemap />,
   },
   {
     path: '/third-party1/recharts1/radial',
-    element: <Radar />,
+    element: <Treemap />,
   },
   {
     path: '/third-party1/recharts1/treemap',
@@ -41,8 +41,5 @@ export const recharts1Configs = [
     path: '/third-party1/recharts1/scatter',
     element: <Treemap />,
   },
-  {
-    path: '/third-party1/recharts1/funnel',
-    element: <FunnelChart />,
-  },
+ 
 ];

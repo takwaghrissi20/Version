@@ -86,6 +86,7 @@ const Sammuary = React.lazy(() =>
   import('../../../modules/SammaryEmployee'),
 );
 
+
 const AddEmployees = React.lazy(() =>
   import('../../../modules/HRGetsCompany/AddEmployees/ScrumBoard'),
 );
