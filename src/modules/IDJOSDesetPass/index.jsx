@@ -9,52 +9,42 @@ import {
   StyledOrderHeaderRight,
 
 } from '../../styles/index.styled';
-import AppsContainer from "../../@crema/components/AppsContainer";
+
 import AppsHeader from '../../@crema/components/AppsContainer/AppsHeader';
 import AppCard from '../../@crema/components/AppCard';
 import { useIntl } from 'react-intl';
-import StatsMobilizationCard from './StatsMobilizationCard';
-import StatsDeMobilizationCard from './StatsDeMobilizationCard';
-import StatsEndMission from './StatsEndMission';
-import AppRowContainer from '../../@crema/components/AppRowContainer';
 
-const DemobilizationDirect = () => {
+const IdJosDesertPass = () => {
   const { messages } = useIntl();
-  const [demobilization, setDeMobilization] = useState([]);
+  const [mobilization, setMobilization] = useState([]);
   const [employeesFiltrer, setEmployeesFiltrer] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [nameFilter, setNameFilter] = useState('');
-  const [count, setCount] = useState(0); 
-   const [countMobilization, setCountMobilization] = useState(0);
+  const [count, setCount] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
-    fetchDemobilization();
+    fetchEmployees();
   }, [currentPage, pageSize, nameFilter]);
 
-  const fetchDemobilization = async () => {
+  const fetchEmployees = async () => {
     try {
-      // const countMob = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/countByType?type=DeMobilization`);
-      // const datacount = await countMob.json();
-      // setCount(datacount);
-      // //CountMobilization
-      // const countMobilization= await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/countGoBack?type=0`);
-      // const datacountMobilization = await countMobilization.json();
-      // setCountMobilization(datacountMobilization);
+      const countMob = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/countGoBack?type=0`);
+      const datacount = await countMob.json();
+      setCount(datacount);
 
-
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/list?page=${currentPage}&size=${pageSize}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/goBackBypage?type=0&page=${currentPage}&size=${pageSize}`);
 
 
       if (!response.ok) {
-        throw new Error('Failed to fetch employees');
+        throw new Error('Failed to fetch mob');
       }
 
       const data = await response.json();
-      setDeMobilization(data);
+      setMobilization(data);
     } catch (error) {
-      console.error('Error fetching employees:', error);
+      console.error('Error fetching mob:', error);
     }
   };
 
@@ -68,7 +58,7 @@ const DemobilizationDirect = () => {
       const data = await response.json();
 
       setEmployeesFiltrer(data)
-      setDeMobilization(data);
+      setMobilization(data);
     } catch (error) {
       console.error('Error filtering employees:', error);
     }
@@ -84,12 +74,12 @@ const DemobilizationDirect = () => {
   };
 
   const handleListItemClick = (item) => {
-    setNameFilter(item.name); // Mettre le nom de l'élément dans le champ de saisie
-    handleSearch({ target: { value: item.name } }); // Simuler l'événement pour le filtrage
+    setNameFilter(item.name); 
+    handleSearch({ target: { value: item.name } }); 
     setIsDropdownOpen(false)
   };
   const handleNameFilterChange = async (event) => {
-    const filterValue = event.target.value.trim(); // Trim whitespace from input value
+    const filterValue = event.target.value.trim(); 
     setNameFilter(filterValue);
 
     if (filterValue !== '') {
@@ -100,7 +90,7 @@ const DemobilizationDirect = () => {
         }
         const data = await response.json();
         setEmployeesFiltrer(data);
-        setDeMobilization(data);
+        setMobilization(data);
         setIsDropdownOpen(true);
       } catch (error) {
         console.error('Error filtering  mobilization:', error);
@@ -109,29 +99,10 @@ const DemobilizationDirect = () => {
       setIsDropdownOpen(false); // Close dropdown if filter is empty
     }
   };
-  console.log("jjkllllll6666",demobilization)
+
   return (
-    <div style={{marginBottom:"2rem"}}>
-      <AppPageMeta title='Demobilization Direct  mobilization' />
-
-    <h2 className="Title">Number of Mobilization && Demobilization</h2>
-      <AppRowContainer ease={'easeInSine'}>
-        <Col xs={24} sm={12} lg={8}>
-          <StatsMobilizationCard TotalPersonMobilization={countMobilization}></StatsMobilizationCard>
-
-        </Col>
-        <Col xs={24} sm={12} lg={8}>
-          <StatsDeMobilizationCard TotalPersonDemobilization={count}></StatsDeMobilizationCard>
-        </Col>
-        {/* <Col xs={24} sm={12} lg={8}>
-          <StatsEndMission numberNewEmployees="20"></StatsEndMission>
-        </Col> */}
-
-      </AppRowContainer>
-    
-  
-
-
+    <div>
+      <AppPageMeta title='SiteClerck' />
       <div style={{ backgroundColor: "white", borderRadius: "20px" }}>
         <AppsHeader>
           <StyledOrderHeader>
@@ -168,25 +139,22 @@ const DemobilizationDirect = () => {
         </AppsHeader>
         <AppCard
           className='no-card-space-ltr-rtl'
-          title={messages['dashboard.DemobilizationDirectmobilization']}
-        >
+          title={messages['siteClearck.idjosdesertpass']}>
 
-          <OrderTable className={clsx("item-hover")} demobilization={demobilization} />
+          <OrderTable className={clsx("item-hover")} mobilization={mobilization} />
         </AppCard>
-        <div style={{marginTop:"1rem",paddingBottom:"1rem"}}>
+
         <StyledOrderHeaderRight>
 
           <Pagination
-             currentPage={currentPage}
-             totalPages={Math.ceil(count / pageSize)}
-             handlePageChange={handlePageChange}
+            currentPage={currentPage}
+            totalPages={Math.ceil(count / pageSize)}
+            handlePageChange={handlePageChange}
           />
 
 
 
         </StyledOrderHeaderRight>
-        </div>
-
 
 
 
@@ -195,4 +163,4 @@ const DemobilizationDirect = () => {
   );
 };
 
-export default DemobilizationDirect;
+export default IdJosDesertPass;

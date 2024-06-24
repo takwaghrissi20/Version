@@ -36,9 +36,9 @@ const HeadOfficeEmployees = () => {
 
   const fetchDemobilization = async () => {
     try {
-      const countMob = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/countByType?type=DeMobilization`);
-      const datacount = await countMob.json();
-      setCount(datacount);
+      // const countMob = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/countByType?type=DeMobilization`);
+      // const datacount = await countMob.json();
+      // setCount(datacount);
       //CountMobilization
       const lastDemobilization = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/getAll`);
       const allDemobilizations = await lastDemobilization.json();
@@ -178,7 +178,7 @@ const HeadOfficeEmployees = () => {
 
           <Pagination
              currentPage={currentPage}
-             totalPages={Math.ceil(count / pageSize)}
+             totalPages={Math.ceil(20 / pageSize)}
              handlePageChange={handlePageChange}
           />
 

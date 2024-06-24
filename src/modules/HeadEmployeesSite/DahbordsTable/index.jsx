@@ -66,7 +66,7 @@ const OrderTable = ({ orderData }) => {
       title: 'Rest Day',
       dataIndex: 'dayRest',
       key: 'dayRest',
-      render: (text, record) => calculateRestDays(record),
+      render: (text, record) => calculateRestDays(record)
     },
     {
       title: 'Return Date to Office After Rest',

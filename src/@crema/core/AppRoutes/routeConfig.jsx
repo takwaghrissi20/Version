@@ -8,6 +8,7 @@ import { LiaCcVisa } from "react-icons/lia";
 import { MdLocationOn } from "react-icons/md";
 import { MdChangeCircle } from "react-icons/md";
 import { MdOutlineChangeCircle } from "react-icons/md";
+import { RxPerson } from "react-icons/rx";
 
 
 
@@ -412,12 +413,41 @@ const routesConfig = [
             messageId: "sidebar.general.HeadOfficeEmployees",
             url: "/ManpowerLocation/HeadOfficeEmployees",
           },
+          // {
+          //   id: "ManpowerHystograms",
+          //   title: "ManpowerHystograms",
+          //   messageId: "sidebar.general.ManpowerHystograms",
+          //   url: "/ManpowerLocation/ManpowerHystograms",
+          // },
+    
+       
+        ],
+      },
+      //
+      {
+        id: "Site Clerk",
+        title: "SiteClerk",
+        messageId: "sidebar.SiteCleark",
+        icon: <RxPerson />,
+        url: "recharts",
+        type: "collapse",
+        children: [
+          
           {
-            id: "ManpowerHystograms",
-            title: "ManpowerHystograms",
-            messageId: "sidebar.general.ManpowerHystograms",
-            url: "/ManpowerLocation/ManpowerHystograms",
+            id: "SiteCleark",
+            title: "ManpowerLocationTrackRecord",
+            messageId: "sidebar.generalSiteClearkShall",
+            url: "/SiteCleark/IdJosAndDesertPass",
           },
+          
+          {
+            id: "SiteCleark",
+            title: "ManpowerLocationTrackRecord",
+            messageId: "sidebar.ReachDate",
+            ellipsis: true,
+            url: "/SiteCleark/Reached_ToSite_And_DemobFromSite",
+          },
+      
     
        
         ],

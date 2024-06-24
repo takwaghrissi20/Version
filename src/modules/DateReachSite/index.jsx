@@ -13,12 +13,8 @@ import AppsContainer from "../../@crema/components/AppsContainer";
 import AppsHeader from '../../@crema/components/AppsContainer/AppsHeader';
 import AppCard from '../../@crema/components/AppCard';
 import { useIntl } from 'react-intl';
-import StatsMobilizationCard from './StatsMobilizationCard';
-import StatsDeMobilizationCard from './StatsDeMobilizationCard';
-import StatsEndMission from './StatsEndMission';
-import AppRowContainer from '../../@crema/components/AppRowContainer';
 
-const DemobilizationDirect = () => {
+const ReachedToSite  = () => {
   const { messages } = useIntl();
   const [demobilization, setDeMobilization] = useState([]);
   const [employeesFiltrer, setEmployeesFiltrer] = useState([]);
@@ -31,7 +27,40 @@ const DemobilizationDirect = () => {
 
   useEffect(() => {
     fetchDemobilization();
+    fetchCountDeMobilization()
   }, [currentPage, pageSize, nameFilter]);
+  const fetchCountDeMobilization = async () => {
+    try {
+      const endPoint =
+        process.env.NODE_ENV === "development"
+          ? "https://dev-gateway.gets-company.com"
+          : "";
+
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/getAll`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('La requête a échoué mobDemob ' + response.status);
+      }
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
+      }
+      const data = await response.json();
+      const filteredData = data.filter(item => item.type === 'DeMobilization');
+      console.log("filteredData",filteredData.length)
+      setCountMobilization(filteredData.length)
+
+
+    } catch (error) {
+      console.error('Erreur lors de la récupération mobDemob', error);
+    }
+  };
 
   const fetchDemobilization = async () => {
     try {
@@ -109,28 +138,10 @@ const DemobilizationDirect = () => {
       setIsDropdownOpen(false); // Close dropdown if filter is empty
     }
   };
-  console.log("jjkllllll6666",demobilization)
+
   return (
     <div style={{marginBottom:"2rem"}}>
       <AppPageMeta title='Demobilization Direct  mobilization' />
-
-    <h2 className="Title">Number of Mobilization && Demobilization</h2>
-      <AppRowContainer ease={'easeInSine'}>
-        <Col xs={24} sm={12} lg={8}>
-          <StatsMobilizationCard TotalPersonMobilization={countMobilization}></StatsMobilizationCard>
-
-        </Col>
-        <Col xs={24} sm={12} lg={8}>
-          <StatsDeMobilizationCard TotalPersonDemobilization={count}></StatsDeMobilizationCard>
-        </Col>
-        {/* <Col xs={24} sm={12} lg={8}>
-          <StatsEndMission numberNewEmployees="20"></StatsEndMission>
-        </Col> */}
-
-      </AppRowContainer>
-    
-  
-
 
       <div style={{ backgroundColor: "white", borderRadius: "20px" }}>
         <AppsHeader>
@@ -168,17 +179,20 @@ const DemobilizationDirect = () => {
         </AppsHeader>
         <AppCard
           className='no-card-space-ltr-rtl'
-          title={messages['dashboard.DemobilizationDirectmobilization']}
+          title={messages['siteClearck.DateReach']}
         >
 
-          <OrderTable className={clsx("item-hover")} demobilization={demobilization} />
+          <OrderTable className={clsx("item-hover")} 
+          demobilization={demobilization} 
+          fetchDemobilization={fetchDemobilization}
+          />
         </AppCard>
-        <div style={{marginTop:"1rem",paddingBottom:"1rem"}}>
+        <div style={{marginTop:"0.25rem",paddingBottom:"0.25rem"}}>
         <StyledOrderHeaderRight>
 
           <Pagination
              currentPage={currentPage}
-             totalPages={Math.ceil(count / pageSize)}
+             totalPages={Math.ceil(countMobilization / pageSize)}
              handlePageChange={handlePageChange}
           />
 
@@ -195,4 +209,4 @@ const DemobilizationDirect = () => {
   );
 };
 
-export default DemobilizationDirect;
+export default ReachedToSite ;

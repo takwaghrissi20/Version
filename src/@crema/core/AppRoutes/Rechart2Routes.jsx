@@ -32,6 +32,10 @@ import DemobTripTrackRecorde from '../../../modules/TripTrackRecord/DeMOBTRIPTRA
 import SammaryDemobTrips from '../../../modules/TripTrackRecord/SAMMARYDEMOBTRIPS';
 import SammaryMobTrips from '../../../modules/TripTrackRecord/SAMMARYMOBTRIPS';
 import DemobilizationDirect  from '../../../modules/DemobilizationDirect';
+import IdJosDesertPass  from '../../../modules/IDJOSDesetPass';
+import ReachedToSite from '../../../modules/DateReachSite';
+
+
 
 export const recharts2Configs = [
   {
@@ -60,8 +64,8 @@ export const recharts2Configs = [
     element: <ViewMission/>,
   },
   {
-    path: '/Hr/Visa/ViewMissionOrder/:id',
-    element: <ViewMission/>,
+    path: '/Hr/Visa/ViewMissionOrderExtention/:id',
+    element: < ViewMissionExtention/>,
   },
  
   {
@@ -182,4 +186,14 @@ export const recharts2Configs = [
     path: '/ManpowerLocation/DemobilizationDirectEmployeesSite',
     element: <DemobilizationDirect/>,
   },
+  //
+  {
+    path: '/SiteCleark/IdJosAndDesertPass',
+    element: <IdJosDesertPass/>,
+  },
+  {
+    path: '/SiteCleark/Reached_ToSite_And_DemobFromSite',
+    element: <ReachedToSite/>,
+  },
+  
 ];

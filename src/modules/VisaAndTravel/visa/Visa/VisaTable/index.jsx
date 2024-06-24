@@ -75,7 +75,6 @@ function NestedTable({ dataemployeesVisa }) {
         const responseData = await response.json();
 
         //setFindIdData(responseData); 
-        console.log('ttttggg', responseData?.vaccins)
         setExpandedData(responseData?.vaccins)
 
         //setProjects(projects)

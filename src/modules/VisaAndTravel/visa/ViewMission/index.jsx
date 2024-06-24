@@ -20,6 +20,16 @@ const ViewMission = () => {
   const [dateInput, setDateInput] = useState(new Date());
   const formattedDate = dayjs(dateInput).format('YYYY-MM-DD');
   const location = useLocation();
+  const [pdfVisible, setPdfVisible] = useState(false);
+  //////////////////
+  const handleGeneratePDF = () => {
+    setPdfVisible(true);
+    setTimeout(() => {
+      generatePDF(targetRef, { filename: 'Mission Order' });
+      setPdfVisible(false);
+    }, 1000);
+  };
+  ///////////////
   //////////////////////////////////
   const [profile, setProfile] = useState("")
   const id = location.state ? location.state.id: null;
@@ -106,7 +116,7 @@ const ViewMission = () => {
           }
         }}
       >
-           <div  ref={targetRef} id="pdf-content">
+           <div  >
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
             <Typography.Title level={4}>Mission Assignment Order</Typography.Title>
@@ -281,13 +291,19 @@ const ViewMission = () => {
           style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
         >
           <Button onClick={handleCancelMission}>Cancel</Button>
-          
-          <Button  
-          // onClick={() => generatePDF(targetRef, { filename: 'Mission Order' })}
-          >Generate PDF</Button>
+          <Button onClick={handleGeneratePDF}>Generate PDF</Button>
+          {/* <Button  
+           onClick={() => generatePDF(targetRef, { filename: 'Mission Order' })}
+          >Generate PDF</Button> */}
      
         </Space>
       </Form>
+      <div ref={targetRef} id="pdf-content" style={{ visibility: pdfVisible ? "visible" : "hidden" }}>
+    
+      test
+      
+      
+      </div>
 
         {isCancel? (
         <ConfirmationModal
