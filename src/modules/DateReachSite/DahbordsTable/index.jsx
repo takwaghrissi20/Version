@@ -141,6 +141,7 @@ const OrderTable = ({ orderData,fetchDemobilization }) => {
       render: (text, record) => (
         editingRow === record.idMd ? (
           <Input
+          type='number'
             value={editingData?.joysId}
             onChange={(e) => handleChange('joysId', e.target.value)}
           />

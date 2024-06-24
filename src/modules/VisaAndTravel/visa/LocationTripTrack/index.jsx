@@ -13,8 +13,8 @@ const LocationTripTrack = () => {
   const { messages } = useIntl();
   const [employees, setEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState(1);
   const [count, setCount] = useState(0);
   const [selectedProject, setSelectedProject] = useState('All Projects');
   const [allProjects, setAllProjects] = useState([]);
@@ -38,30 +38,104 @@ const LocationTripTrack = () => {
     });
   };
 
-
-
   useEffect(() => {
-    fetchEmployees();
+
     fetchAllProjects()
+    fetchEmployees()
+
   }, [currentPage, pageSize, selectedProject]);
+
+
+  ////////////////////Test
 
   const fetchEmployees = async () => {
     try {
       const countEmployeesResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/list`);
+      const data = await countEmployeesResponse.json();
+      const latestMobPerEmployee = {};
+
+      data.forEach(mob => {
+        const existing = latestMobPerEmployee[mob.getsId];
+        if (!existing || new Date(mob.dateMob) > new Date(existing.dateMob)) {
+          latestMobPerEmployee[mob.getsId] = mob;
+        }
+      });
+
+      const latestMobList = Object.values(latestMobPerEmployee);
+      console.log("latestMobList", latestMobList)
+      setEmployees(latestMobList);
+      setFilteredEmployees(selectedProject !== 'All Projects'
+        ? latestMobList.filter(emp => emp.projName === selectedProject)
+        : latestMobList);
+       
+        setCount(latestMobList.length);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // Handle error gracefully
+      throw error;
+    }
+  };
+
+
+
+  const fetchEmployees3 = async () => {
+    try {
+      const countEmployeesResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/list`);
+      const data = await countEmployeesResponse.json();
+
+      // Assuming data is an array of travel objects as shown in your example
+      // Sort data by dateMob in descending order (latest date first)
+      data.sort((a, b) => {
+        // Convert date strings to Date objects for comparison
+        const dateA = new Date(a.dateMob);
+        const dateB = new Date(b.dateMob);
+
+        // Sort descending
+        return dateB - dateA;
+      });
+
+      // Get the latest dateMob value for each employee
+      const latestDateMobs = {};
+
+      data.forEach(employee => {
+        const { getsId, dateMob } = employee;
+        if (!(getsId in latestDateMobs) || new Date(dateMob) > new Date(latestDateMobs[getsId])) {
+          latestDateMobs[getsId] = dateMob;
+        }
+      });
+
+      // Log or use latestDateMobs as needed
+      console.log('Latest dateMob for each employee:', latestDateMobs);
+
+      // Return latestDateMobs or use it as needed in your application
+      return latestDateMobs;
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // Handle error gracefully
+      throw error;
+    }
+  };
+
+
+  const fetchEmployeesTest = async () => {
+    try {
+      const countEmployeesResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/list`);
       const datacount = await countEmployeesResponse.json();
       setCount(datacount.length);
+
 
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/list?page=${currentPage}&size=${pageSize}`);
       if (!response.ok) {
         openNotificationError();
         throw new Error('Failed to fetch travel');
       }
-
       const data = await response.json();
       setEmployees(data);
       setFilteredEmployees(selectedProject !== 'All Projects'
         ? data.filter(emp => emp.projName === selectedProject)
         : data);
+        
     } catch (error) {
       console.error('Error fetching travel', error);
       openNotificationError();
@@ -133,7 +207,7 @@ const LocationTripTrack = () => {
         <StyledOrderHeaderRight>
           <Pagination
             currentPage={currentPage}
-            totalPages={Math.ceil(30/ pageSize)}
+            totalPages={Math.ceil(count / pageSize)}
             handlePageChange={handlePageChange}
           />
         </StyledOrderHeaderRight>

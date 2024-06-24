@@ -70,7 +70,7 @@ const AllocationPerProject = () => {
         throw new Error('Failed to fetch mob');
       }
       const data = await response.json();
-      console.log("dattttaa",data)
+  
       setMob(data);
       setFilteredMob(selectedProject !== 'All Projects'
         ? data.filter(p => p.projName === selectedProject)
