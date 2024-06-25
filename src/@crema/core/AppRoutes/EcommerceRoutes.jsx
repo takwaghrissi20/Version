@@ -344,6 +344,7 @@ export const ecommerceConfig = [
     permittedRole: RoutePermittedRole.User,
     path: '/Hr/EmployeesStatus',
     element: <EmployeesStatus />,
+    
   },
 
   {

@@ -12,7 +12,6 @@ import { FiDownload } from "react-icons/fi";
 import { useRef } from 'react';
 import generatePDF from 'react-to-pdf';
 import AllPdf from './GeneratePdf'
-
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import axios from 'axios';

@@ -37,7 +37,7 @@ const AppVerticalNav = ({ routesConfig }) => {
     console.log("filterMenuItems",items)
     return items.filter(item => {
       
-      if (userRole.includes("Manager")) {
+      if (userRole.includes("Manager") &&userRole.includes("admin")) {
         if (item.id === "VisaHealth"||
             item.id === "ManpowerLocation"||
             item.id === "Employees"  ||
@@ -50,7 +50,7 @@ const AppVerticalNav = ({ routesConfig }) => {
           return false; 
         }
       }
-      if (userRole.includes("Planner")) {
+      if (userRole.includes("Planner")&&userRole.includes("admin")) {
         if (item.id === "VisaHealth"||
             item.id === "ManpowerLocation"||
             item.id === "Employees"  ||
@@ -65,7 +65,7 @@ const AppVerticalNav = ({ routesConfig }) => {
           return false; 
         }
       }
-      else if (userRole.includes("bod")) {
+      else if (userRole.includes("bod")&&userRole.includes("admin")) {
         if (item.id === "VisaHealth"||
             item.id === "ManpowerLocation"||
             item.id === "Employees"  ||
@@ -79,7 +79,7 @@ const AppVerticalNav = ({ routesConfig }) => {
           return false; 
         }
       }
-      else if (userRole.includes("Administrator" )) {
+      else if (userRole.includes("Administrator")&&userRole.includes("admin")) {
         if (
             item.id === "VisaHealth"  || 
             item.id === "ManpowerEvaluation" ||

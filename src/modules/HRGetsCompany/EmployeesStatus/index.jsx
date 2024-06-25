@@ -281,14 +281,13 @@ const EmployeesStatus = () => {
             <StyledCustomerHeaderRight>
          
         
-         
           </StyledCustomerHeaderRight>
          </StyledCustomerHeader>
          </AppsHeader>
           <CustomerTableOffice 
           loading={loading}
           employeesoffice={employeesoffice} />
-                  <div className='Pagination' >
+          <div className='Pagination' >
             <Pagination
             currentPage={currentPage}
             //totalPages={Math.ceil(countOffice / pageSize)}
@@ -349,8 +348,7 @@ const EmployeesStatus = () => {
         totalPages={Math.ceil(289 / pageSize)}
         handlePageChange={handlePageChangeOffice}
       />
-        </div>
-    
+        </div>  
     </>,
     },
     {
