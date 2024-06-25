@@ -650,11 +650,40 @@ font-weight: bold;
   visibility: hidden;
 
 }
+.downloadbutton{
+  margin-right:2rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left:2rem;
+  padding-right:2rem;
+  background-color: #7acd4b;
+  color: white;
+}
+.downloadbutton:hover{
+  opacity: 0.7;
+}
+table {
+  border-collapse: collapse;
+  width: 20%;
+}
+th, td {
+  padding: 8px;
+  text-align: left;
+}
+/* Style pour les en-têtes */
 
-
-
-
-
+.page {
+  display: flex;
+  flex-direction: row; /* Ajuster à l'orientation paysage */
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: Helvetica;
+  transform: rotate(50deg); /* Rotation de 90 degrés pour l'orientation paysage */
+  transform-origin: center center; /* Centrer la rotation */
+  width: 100vh; /* Définir la largeur pour correspondre à la hauteur de la page */
+  height: 100vw; /* Définir la hauteur pour correspondre à la largeur de la page */
+}
 
 
 

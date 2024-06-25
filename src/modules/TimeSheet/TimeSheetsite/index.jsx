@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, List, Input, Select, Space, Dropdown, Button, Menu } from 'antd';
+import { Card, List, Input, Select, Space, Dropdown, Button, Menu, DatePicker } from 'antd';
 import moment from 'moment';
 import { FcEmptyFilter } from 'react-icons/fc'; // Import de l'icône
 import AppPageMeta from '../../../@crema/components/AppPageMeta';
@@ -8,6 +8,8 @@ import OrderTable from './Table';
 import Pagination from '../../../@crema/components/AppsPagination';
 import { StyledOrderHeaderRight, StyledCustomerInputView } from '../../../styles/index.styled';
 import { FcClearFilters } from "react-icons/fc";
+
+const { MonthPicker } = DatePicker;
 
 const TimeSheetSite = () => {
   const [employeesOffice, setEmployeesOffice] = useState([]);
@@ -43,12 +45,11 @@ const TimeSheetSite = () => {
     setCurrentPage(page);
   };
 
-  const handleMonthChange = (value) => {
-    setSelectedMonth(value);
-  };
-
-  const handleYearChange = (value) => {
-    setSelectedYear(value);
+  const handleMonthChange = (date) => {
+    if (date) {
+      setSelectedMonth(date.month() + 1);
+      setSelectedYear(date.year());
+    }
   };
 
   const handleFilterTypeChange = ({ key }) => {
@@ -104,8 +105,8 @@ const TimeSheetSite = () => {
 
   const filterMenu = (
     <Menu onClick={handleFilterTypeChange}>
-      <Menu.Item style={{padding:"1rem"}} key="month">Filter by Month</Menu.Item>
-      <Menu.Item style={{padding:"1rem"}} key="year">Filter by Year</Menu.Item>
+      <Menu.Item style={{padding:"1rem"}} key="month">Filter by Month && Year</Menu.Item>
+      {/* <Menu.Item style={{padding:"1rem"}} key="year">Filter by Year</Menu.Item> */}
       <Menu.Item style={{padding:"1rem"}} key="name">Filter by Name</Menu.Item>
     </Menu>
   );
@@ -118,38 +119,18 @@ const TimeSheetSite = () => {
         title={`Site Time Sheet - ${currentMonthName} ${selectedYear}`}>
         <Space style={{ margin: '1rem' }}>
           <Dropdown overlay={filterMenu}>
-          <Button>
-          <FcClearFilters style={{marginTop:'0.1rem',marginRight:"0.1rem",fontSize:"1rem"}} /> 
+            <Button>
+              <FcClearFilters style={{marginTop:'0.1rem',marginRight:"0.1rem",fontSize:"1rem"}} /> 
             </Button>
           </Dropdown>
           {filterType === 'month' && (
-            <Select
-              value={selectedMonth}
+            <MonthPicker
+              value={moment().month(selectedMonth - 1).year(selectedYear)}
               onChange={handleMonthChange}
-              style={{ width: 120 }}
-            >
-              {moment.months().map((month, index) => (
-                <Select.Option key={index} value={index + 1}>
-                  {month}
-                </Select.Option>
-              ))}
-            </Select>
-          )}
-          {filterType === 'year' && (
-            <Select
-              value={selectedYear}
-              onChange={handleYearChange}
-              style={{ width: 120 }}
-            >
-              {[...Array(10).keys()].map(i => {
-                const year = moment().year() - i;
-                return (
-                  <Select.Option key={year} value={year}>
-                    {year}
-                  </Select.Option>
-                );
-              })}
-            </Select>
+              format="MMMM YYYY"
+              style={{ height: "2rem" }}
+              placeholder="Select Month and Year"
+            />
           )}
           {filterType === 'name' && (
             <Input.Search

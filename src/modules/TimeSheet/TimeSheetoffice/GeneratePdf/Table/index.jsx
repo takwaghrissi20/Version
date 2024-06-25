@@ -21,7 +21,7 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
       dataIndex: 'name',
       key: 'name',
       fixed: 'left',
-      width: 80,
+      width: 150,
       render: (name) => <Tooltip title={name}>{name}</Tooltip>,
     },
     {
