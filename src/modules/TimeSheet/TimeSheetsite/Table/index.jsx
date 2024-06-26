@@ -8,7 +8,15 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
   const currentDate = moment({ year: selectedYear, month: selectedMonth - 1 });
   const currentMonthDays = Array.from({ length: currentDate.daysInMonth() }, (v, k) => k + 1);
   const currentMonthName = currentDate.format('MMMM').toUpperCase();
- 
+  const pointageLabels = {
+    'S': 'StandBy ',
+    'WS': 'WORKING Site',
+    'TG': 'Travel Go',
+    'WH': 'Travel Back',
+    'Sic': 'Sick Day',
+    'A': 'Absent',
+   
+  };
   const columns = [
     {
       title: 'Gets Id',
@@ -34,9 +42,8 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
         key: `day${day}`,
         width: 150,
         render: (text, record) => {
-          const pointage = record.pointages.find(p => moment(p.date).isSame(date, 'day'))?.pointage || '';
-    
-          // Définir les styles en fonction de la valeur de pointage
+          const pointage = record[`day${day}`] || '';
+
           let color = 'black';
           let fontSize = '1rem'; 
           let fontWeight = 'normal';
@@ -54,9 +61,38 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
             fontWeight = 'bold';
            
           }
+
+          return (
+            <Tooltip title={pointageLabels[pointage] || ''}>
+              <span style={{ color, fontSize, fontWeight }}>{pointage}</span>
+            </Tooltip>
+          );
+        },
+        /////////////////////////////
+        // render: (text, record) => {
+        //   const pointage = record.pointages.find(p => moment(p.date).isSame(date, 'day'))?.pointage || '';
     
-          return <span style={{ color, fontSize}}>{pointage}</span>;
-        }
+        //   // Définir les styles en fonction de la valeur de pointage
+        //   let color = 'black';
+        //   let fontSize = '1rem'; 
+        //   let fontWeight = 'normal';
+          
+        //   if (pointage === 'A') {
+        //     color = 'red';
+        //   } else if (pointage === 'S') {
+        //     color = 'gray';
+        //   } else if (pointage === 'TG') {
+        //     color = '#F6B339';
+        //   }else if (pointage === 'TB') {
+        //     color = '#5C5792';
+        //   }else if (pointage === 'WS') {
+        //     color = 'green';
+        //     fontWeight = 'bold';
+           
+        //   }
+    
+        //   return <span style={{ color, fontSize}}>{pointage}</span>;
+        // }
       };
     }),
     {

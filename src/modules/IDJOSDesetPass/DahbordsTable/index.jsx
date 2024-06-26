@@ -85,11 +85,6 @@ const OrderTable = ({ orderData }) => {
     },
    
    
-    {
-      title: 'Project Work',
-      dataIndex: 'projName',
-      key: 'projName',
-    },
 
   
   

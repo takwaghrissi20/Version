@@ -16,6 +16,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FaRegCalendarAlt } from "react-icons/fa";
 
+
 const TimeSheetOffice = () => {
   const targetRef = useRef();
   const currentDate = moment();
@@ -168,6 +169,8 @@ const TimeSheetOffice = () => {
     try {
       const response = await axios.get('https://dev-gateway.gets-company.com/api/v1/emp/list');
       const employees = response.data;
+      // const dataOffice=employees.filter(p=>p.type_Emp==="office" && p.actStatus==="Active ")
+ 
       const doc = new jsPDF('landscape');
       const now = new Date();
       const currentYear = now.getFullYear();
@@ -249,7 +252,7 @@ const TimeSheetOffice = () => {
        
           <Col  span={4}>
           <Button onClick={handleGeneratePDF} className='downloadbutton'>
-              <FiDownload /> Download pdf
+              <FiDownload style={{marginRight:"0.5rem"}} /> Download pdf
             </Button>
           
           </Col>

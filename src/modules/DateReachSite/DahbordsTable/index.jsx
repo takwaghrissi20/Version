@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Input, Select, Table, Row, Col, DatePicker, Popconfirm, notification, Space } from 'antd';
+import { Button, Input, Select, Table, Row, Col, Popconfirm, notification, Space } from 'antd';
 import AppAnimate from '../../../@crema/components/AppAnimate';
 import { StyledAnChar, StyledOrderTable, StyledScrumBoardDatePicker } from '../../../styles/index.styled';
 import { AiFillEdit } from "react-icons/ai";
 import { MdCancel } from "react-icons/md";
 import { CiSaveUp1 } from "react-icons/ci";
 import moment from 'moment';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
+const { MonthPicker } = DatePicker;
 
 const OrderTable = ({ orderData,fetchDemobilization }) => {
   const [editingRow, setEditingRow] = useState(null);
@@ -33,8 +37,10 @@ const OrderTable = ({ orderData,fetchDemobilization }) => {
   };
 
   const handleChangeDateMob = (date, dateString) => {
-    setEditingData({ ...editingData, dateMob: dateString });
+    //setEditingData({ ...editingData, dateMob: dateString });
+    setEditingData({ ...editingData, dateMob: moment(date).format('YYYY-MM-DD') });
   };
+  console.log("editingData",editingData)
 
   const openNotification = () => {
     notification.open({
@@ -97,9 +103,10 @@ const OrderTable = ({ orderData,fetchDemobilization }) => {
         headers: {
           'Content-Type': 'application/json',
         },
+   
         body: JSON.stringify(editingData),
       });
-
+      console.log("editingDatasss",editingData)
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -124,7 +131,13 @@ const OrderTable = ({ orderData,fetchDemobilization }) => {
   };
 
   const columns = [
-  
+    {
+      title: 'Id',
+      dataIndex: 'idMd',
+      key: 'idMd',
+      width: '10%',
+    },
+    
 
     {
       title: 'Gets Id',
@@ -136,7 +149,7 @@ const OrderTable = ({ orderData,fetchDemobilization }) => {
       title: 'Jos Id',
       dataIndex: 'joysId',
       key: 'joysId',
-      render: (id) => <StyledAnChar>JT-{id}</StyledAnChar>,
+  
       width: '15%',
       render: (text, record) => (
         editingRow === record.idMd ? (
@@ -191,8 +204,10 @@ const OrderTable = ({ orderData,fetchDemobilization }) => {
           <div className="table-cell-center">
             <DatePicker
               placeholder='YYYY-MM-DD'
-              value={editingData.dateMob ? moment(editingData.dateMob, 'YYYY-MM-DD') : null}
+              selected={editingData.dateMob ? moment(editingData.dateMob, 'YYYY-MM-DD').toDate() : null}
+              // value={editingData.dateMob ? moment(editingData.dateMob, 'YYYY-MM-DD') : null}
               onChange={handleChangeDateMob}
+               dateFormat='yyyy-MM-dd'
             />
           </div>
         ) : (
