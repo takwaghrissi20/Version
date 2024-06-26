@@ -684,6 +684,42 @@ th, td {
   width: 100vh; /* Définir la largeur pour correspondre à la hauteur de la page */
   height: 100vw; /* Définir la hauteur pour correspondre à la largeur de la page */
 }
+.react-datepicker-ignore-onclickoutside{
+  background-color: #eeeeee!important;
+ 
+  z-index: 2;
+}
+input{
+  background-color: #eeeeee;
+  border-color: transparent;
+  width:20rem;
+  padding-top: 0.5rem;
+
+  padding-bottom: 0.5rem;
+  border-radius: 0.25rem;
+  opacity: 0.8;
+  z-index: 2;
+  padding-left: 4rem;
+  padding-right: 4rem;
+
+
+  
+
+
+}
+@media screen and (min-width: 300px) and (max-width:700px) {
+.row{
+  display: block;
+
+}
+}
+@media screen and (min-width: 300px) and (max-width:500px) {
+  .calendar{
+    display: block;
+  
+  }
+  }
+
 
 
 

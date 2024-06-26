@@ -7,6 +7,15 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
   const currentDate = moment({ year: selectedYear, month: selectedMonth - 1 });
   const currentMonthDays = Array.from({ length: currentDate.daysInMonth() }, (v, k) => k + 1);
   const currentMonthName = currentDate.format('MMMM').toUpperCase();
+  const pointageLabels = {
+    'WO': 'Working Office ',
+    'V': 'Vacation',
+    'A': 'Absence',
+    'WH': 'Working Home',
+    'R': 'Site Rest',
+    'JA': 'Justified Absence',
+    'WR': 'Work Recorded'
+  };
 
   const columns = [
     {
@@ -74,7 +83,11 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
             fontWeight = 'bold';
           } 
 
-          return <span style={{ color, fontSize, fontWeight }}>{pointage}</span>;
+          return (
+            <Tooltip title={pointageLabels[pointage] || ''}>
+              <span style={{ color, fontSize, fontWeight }}>{pointage}</span>
+            </Tooltip>
+          );
         },
       };
     }),
@@ -112,7 +125,7 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
       },
     },
     {
-      title: 'Rest Vacation',
+      title: 'Rest',
       dataIndex: 'rest',
       key: 'rest',
       width: 100,
