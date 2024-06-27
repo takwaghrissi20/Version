@@ -34,6 +34,7 @@ import SammaryMobTrips from '../../../modules/TripTrackRecord/SAMMARYMOBTRIPS';
 import DemobilizationDirect  from '../../../modules/DemobilizationDirect';
 import IdJosDesertPass  from '../../../modules/IDJOSDesetPass';
 import ReachedToSite from '../../../modules/DateReachSite';
+import AddTimeSheetsite from '../../../modules/TimeSheet/AddTimeSheetsite'
 
 
 
@@ -195,5 +196,14 @@ export const recharts2Configs = [
     path: '/SiteCleark/Reached_ToSite_And_DemobFromSite',
     element: <ReachedToSite/>,
   },
+  {
+    path: '/SiteCleark/Reached_ToSite_And_DemobFromSite',
+    element: <ReachedToSite/>,
+  },
+  {
+    path: '/SiteCleark/Add-Employees-Pointages',
+    element: <AddTimeSheetsite/>,
+  },
+  
   
 ];

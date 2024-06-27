@@ -305,7 +305,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
               fontFamily:"inherit"
             }}
           >
-            waiting
+            pending
           </StyledRecentPatientBadge>
         )
       ),
@@ -335,7 +335,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
               fontFamily:"inherit"
             }}
           >
-            waiting
+         pending
           </StyledRecentPatientBadge>
         )
       ),

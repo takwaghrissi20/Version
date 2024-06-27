@@ -388,7 +388,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
 
           }}>
             {/* <FaSearch></FaSearch> */}
-            <span>CIS- </span>
+            <span style={{marginTop:"0.5rem"}}>CIS- </span>
             <input
               style={{
                 borderRight: '1px solid grey',

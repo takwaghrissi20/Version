@@ -690,7 +690,7 @@ th, td {
   z-index: 2;
 }
 input{
-  background-color: #eeeeee;
+
   border-color: transparent;
   width:20rem;
   padding-top: 0.5rem;
@@ -699,8 +699,7 @@ input{
   border-radius: 0.25rem;
   opacity: 0.8;
   z-index: 2;
-  padding-left: 4rem;
-  padding-right: 4rem;
+  
 
 
   
@@ -708,7 +707,7 @@ input{
 
 }
 @media screen and (min-width: 300px) and (max-width:700px) {
-.row{
+.calendar{
   display: block;
 
 }
@@ -720,6 +719,71 @@ input{
   }
   }
 
+  .datepicker-wrapper {
+    position: relative;
+    width: 30%;
+
+  }
+  
+  .calendar-icon {
+    position: absolute;
+    z-index: 2;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #767375;
+  }
+  .custom-datepickerEdit{
+    width: 100%;
+    background-color: #eeeeee;
+    color:black;
+    padding-left: 1rem
+
+    
+  }
+  
+  .custom-datepicker {
+    width: 100%;
+    padding-left: 4rem; /* Adjust padding to accommodate the icon */
+    padding-right: 4rem;
+    background-color: 
+    #eeeeee;
+    color:#bfc0bf;
+    z-index: 1;
+    border-radius: 0.5rem;
+  }
+  @media screen and (min-width: 300px) and (max-width:900px) {
+
+    .custom-datepicker {
+     
+      width: 30%;
+      background-color: 
+      #eeeeee;
+      color:#bfc0bf;
+      z-index: 1;
+      border-radius: 0.5rem;
+    }
+    .datepicker-wrapper {
+      position: relative;
+      width: 100%;
+  
+    }
+    .calendar-icon {
+      position: absolute;
+      z-index: 2;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #767375;
+    }
+
+  }
+  .row1-red {
+    background-color: red !important;
+    color: black;
+  }
+  
+  
 
 
 

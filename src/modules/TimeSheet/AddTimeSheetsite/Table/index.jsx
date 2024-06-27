@@ -1,14 +1,56 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Tooltip } from 'antd';
+import { Table, Tooltip, Select } from 'antd';
 import moment from 'moment';
 
-const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
+const { Option } = Select;
 
-  const currentDate = moment({ year: selectedYear, month: selectedMonth - 1 });
-  const currentMonthDays = Array.from({ length: currentDate.daysInMonth() }, (v, k) => k + 1);
-  const currentMonthName = currentDate.format('MMMM').toUpperCase();
- 
+const OrderTable = ({ orderData, pickerValue }) => {
+  const [selectedPointage, setSelectedPointage] = useState({});
+
+  const formattedPickerValue = moment(pickerValue).format('YYYY-MM-DD');
+
+  const handlePointageChange0 = async (value, record) => {
+    setSelectedPointage({ ...selectedPointage, [record.getsId]: value });
+    await handleAddPointage(record.getsId, value);
+  };
+  const handlePointageChange = (value, record) => {
+    setSelectedPointage({ ...selectedPointage, [record.getsId]: value });
+    if(value==="A"){
+    handleAddPointage(record.getsId,"A"); }
+    else if(value==="W"){
+      handleAddPointage(record.getsId,"W"); }
+      else if(value==="WS"){
+        handleAddPointage(record.getsId,"WF"); }
+
+  };
+
+  const handleAddPointage = async (code, pointage) => {
+    try {
+      const bodyData = {
+        date: formattedPickerValue,
+        pointage: pointage
+      };
+
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/sheetSite/add?id=${code}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bodyData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const responseData = await response.json();
+      console.log('Pointage ajouté avec succès:', responseData);
+    } catch (error) {
+      console.error("Erreur lors de l'ajout du pointage:", error);
+    }
+  };
+
   const columns = [
     {
       title: 'Gets Id',
@@ -22,132 +64,40 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
       dataIndex: 'name',
       key: 'name',
       fixed: 'left',
-      width: 150,
+      width: 90,
       render: (name) => <Tooltip title={name}>{name}</Tooltip>,
     },
-    ...currentMonthDays.map(day => {
-      const date = moment({ year: selectedYear, month: selectedMonth - 1, day });
-      const dayName = date.format('dddd');
-      return {
-        title: `${day} - ${dayName.substring(0, 3)}`,
-        dataIndex: `day${day}`,
-        key: `day${day}`,
-        width: 150,
-        render: (text, record) => {
-          const pointage = record.pointages.find(p => moment(p.date).isSame(date, 'day'))?.pointage || '';
-    
-          // Définir les styles en fonction de la valeur de pointage
-          let color = 'black';
-          let fontSize = '1rem'; 
-          let fontWeight = 'normal';
-          
-          if (pointage === 'A') {
-            color = 'red';
-          } else if (pointage === 'S') {
-            color = 'gray';
-          } else if (pointage === 'TG') {
-            color = '#F6B339';
-          }else if (pointage === 'TB') {
-            color = '#5C5792';
-          }else if (pointage === 'WS') {
-            color = 'green';
-            fontWeight = 'bold';
-           
-          }
-    
-          return <span style={{ color, fontSize}}>{pointage}</span>;
-        }
-      };
-    }),
     {
-      title: 'Absences',
-      dataIndex: 'absent',
-      key: 'absent',
-      width: 100,
-      render: (absent, record) => <span>{record.siteWorkStatus[0]?.absent}</span>,
+      title: 'Time Pointages',
+      dataIndex: 'Pointages',
+      key: 'Pointages',
+      fixed: 'left',
+      width: 90,
+      render: (text, record) => (
+        <div>
+          {selectedPointage[record.getsId] ? (
+            selectedPointage[record.getsId]
+          ) : (
+            <Select
+              style={{ width: 120 }}
+              defaultValue="Select Pointage"
+              onChange={(value) => handlePointageChange(value, record)}
+            >
+              <Option value="Select Pointage" disabled>Default</Option>
+              <Option value="W">W</Option>
+              <Option value="A">A</Option>
+              <Option value="WS">WS</Option>
+            </Select>
+          )}
+        </div>
+      ),
     },
-    {
-      title: 'Friday Work',
-      dataIndex: 'fridayWork',
-      key: 'fridayWork',
-      width: 100,
-      render: (fridayWork, record) => <span>{record.siteWorkStatus[0]?.fridayWork}</span>,
-    },
-    {
-      title: 'Over Time',
-      dataIndex: 'overTime',
-      key: 'overTime',
-      width: 100,
-      render: (overTime, record) => <span>{record.siteWorkStatus[0]?.overTime}</span>,
-    },
-    {
-      title: 'Rest',
-      dataIndex: 'rest',
-      key: 'rest',
-      width: 100,
-      render: (overTime, record) => <span>{record.siteWorkStatus[0]?.overTime}</span>,
-    },
-    {
-      title: 'Sick Day',
-      dataIndex: 'sickDay',
-      key: 'sickDay',
-      width: 100,
-      render: (sickDay, record) => <span>{record.siteWorkStatus[0]?.sickDay}</span>,
-    },
-    {
-      title: 'StandBy',
-      dataIndex: 'standBy',
-      key: 'standBy',
-      width: 100,
-      render: (standBy, record) => <span>{record.siteWorkStatus[0]?.standBy}</span>,
-    },
-    {
-      title: 'TravelBack',
-      dataIndex: 'travelBack',
-      key: 'travelBack',
-      width: 100,
-      render: (travelBacky, record) => <span>{record.siteWorkStatus[0]?.travelBack}</span>,
-    },
-    {
-      title: 'Travel Go',
-      dataIndex: 'travelGo',
-      key: 'travelGo',
-      width: 100,
-      render: (travelGo, record) => <span>{record.siteWorkStatus[0]?.travelGo}</span>,
-    },
-    {
-      title: 'Vacation',
-      dataIndex: 'vacation',
-      key: 'vacation',
-      width: 100,
-      render: (vacation, record) => <span>{record.siteWorkStatus[0]?.vacation}</span>,
-    },
-    {
-      title: 'Work Site',
-      dataIndex: 'workSite',
-      key: 'workSite',
-      width: 100,
-      render: (workSite, record) => <span>{record.siteWorkStatus[0]?.workSite}</span>,
-    },
-    
- 
-  
   ];
-
-  const data = orderData?.map(employee => {
-    const employeeData = {};
-    currentMonthDays.forEach(day => {
-      const date = moment({ year: selectedYear, month: selectedMonth - 1, day });
-      const pointage = employee.pointages.find(p => moment(p.date).isSame(date, 'day'));
-      employeeData[`day${day}`] = pointage ? pointage.pointage : '';
-    });
-    return { ...employee, ...employeeData };
-  });
 
   return (
     <Table
       columns={columns}
-      dataSource={data}
+      dataSource={orderData}
       scroll={{ x: 1500, y: 1000 }}
       pagination={false}
       rowKey="getsId"
@@ -157,8 +107,7 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
 
 OrderTable.propTypes = {
   orderData: PropTypes.array.isRequired,
-  selectedMonth: PropTypes.number.isRequired,
-  selectedYear: PropTypes.number.isRequired,
+  pickerValue: PropTypes.instanceOf(Date).isRequired,
 };
 
 export default OrderTable;

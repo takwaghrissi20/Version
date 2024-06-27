@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useIntl } from 'react-intl';
 import IntlMessages from '@crema/helpers/IntlMessages';
@@ -25,7 +25,7 @@ const HystoriqueForm = (props) => {
     setUserImage,
     handleAddContactClose,
     findIdData
-   
+
 
   } = props;
 
@@ -45,77 +45,74 @@ const HystoriqueForm = (props) => {
 
   console.log("ffff", findIdData)
 
-  
+
 
   return (
     <StyledContactForm>
-    <StyledContactFormHeader>
-      <Form.Item >
-        <input {...getInputProps()} />
-        <label htmlFor='icon-button-file'>
-          < StyledContactFormHeaderTitle  >
-            {/* <IntlMessages id='Recruitement.Request' /> */}
-            <p className='TitleModal'>Historical</p>
+      <StyledContactFormHeader>
+        <Form.Item >
+          <input {...getInputProps()} />
+          <label htmlFor='icon-button-file'>
+            < StyledContactFormHeaderTitle  >
+              {/* <IntlMessages id='Recruitement.Request' /> */}
+              <p className='TitleModal'>Historical</p>
 
-          </StyledContactFormHeaderTitle>
-        </label>
-      </Form.Item>
+            </StyledContactFormHeaderTitle>
+          </label>
+        </Form.Item>
 
-      <StyledContactFormHeaderTitle>
+        <StyledContactFormHeaderTitle>
 
-      </StyledContactFormHeaderTitle>
+        </StyledContactFormHeaderTitle>
 
-    </StyledContactFormHeader>
+      </StyledContactFormHeader>
 
-    <StyledContactModalScrollbar>
-      <StyledContactFormContent>
-        <StyledContactFormContentItem>
-          <StyledContactFormItemTitle>
-            <p className='SousTitle'> Historical Information</p>
-            {/* <IntlMessages id='Recruitement.RequestorandRequired Profile' /> */}
-          </StyledContactFormItemTitle>
-          <StyledContactFormContentField>
-            {findIdData?.map(p=>
-            <Row gutter={16}>
-            <Col span={8}>
-              <Form.Item className='form-field'>
-                <FloatLabel name="Date Of Mobilization">
-                  <span className='modallabel'>Date Of Mobilization:</span>
-                  <Input
-                    className='Input'
-                    placeholder="Date Of Mobilization"
-                    value={p.dateMob}
-                    readOnly={true}
-                  />
-                </FloatLabel>
-              </Form.Item>
-            </Col>
-            <Col span={8}>
-              <Form.Item className='form-field'>
-                <FloatLabel name="project Name">
-                  <span className='modallabel'>project Name :</span>
-                  <Input
-                    className='Input'
-                    placeholder="project Name"
-                    value={p.projName
-                    }
-                    readOnly={true}
-                  />
-                </FloatLabel>
-              </Form.Item>
-            </Col>
-          
-        
-          </Row>
+      <StyledContactModalScrollbar>
+        <StyledContactFormContent>
+          <StyledContactFormContentItem>
+            <StyledContactFormItemTitle>
+              <p className='SousTitle'> Historical Information</p>
+              {/* <IntlMessages id='Recruitement.RequestorandRequired Profile' /> */}
+            </StyledContactFormItemTitle>
+            <StyledContactFormContentField>
+              {
+                findIdData?.map((p, index) => (
+                  <div key={index}>
+                    <p style={{fontWeight:"bold",color:"#2DA8E0",textDecoration: "underline" }}>Update {index + 1}: </p>
+                    <Row gutter={16}>
+                      <Col span={8}>
+                        <Form.Item className='form-field'>
+                          <FloatLabel name="Date Of Mobilization">
+                            <span className='modallabel'>Date Of Mobilization:</span>
+                            <Input
+                              className='Input'
+                              placeholder="Date Of Mobilization"
+                              value={p.dateMob}
+                              readOnly={true}
+                            />
+                          </FloatLabel>
+                        </Form.Item>
+                      </Col>
+                      <Col span={8}>
+                        <Form.Item className='form-field'>
+                          <FloatLabel name="Project Name">
+                            <span className='modallabel'>Project Name:</span>
+                            <Input
+                              className='Input'
+                              placeholder="Project Name"
+                              value={p.projName}
+                              readOnly={true}
+                            />
+                          </FloatLabel>
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                  </div>
+                ))
+              }
 
-     
 
-            )
-
-
-            }
-
-            {/* <Row gutter={16}>
+              {/* <Row gutter={16}>
               <Col span={8}>
                 <Form.Item className='form-field'>
                   <FloatLabel name="Gets Id">
@@ -132,37 +129,38 @@ const HystoriqueForm = (props) => {
             
           
             </Row> */}
-        
-
-         
 
 
 
-        
-          </StyledContactFormContentField>
-        </StyledContactFormContentItem>
-       
-        <StyledContactFormFooter>
-          <StyledContactFormBtn
-            type='primary'
-            ghost
-            onClick={handleAddContactClose}
-          >
-            <IntlMessages id='common.cancel' />
-          </StyledContactFormBtn>
-
-
-        </StyledContactFormFooter>
 
 
 
-      </StyledContactFormContent>
+
+            </StyledContactFormContentField>
+          </StyledContactFormContentItem>
+
+          <StyledContactFormFooter>
+            <StyledContactFormBtn
+              type='primary'
+              ghost
+              onClick={handleAddContactClose}
+            >
+              <IntlMessages id='common.cancel' />
+            </StyledContactFormBtn>
+
+
+          </StyledContactFormFooter>
 
 
 
-    </StyledContactModalScrollbar>
-  </StyledContactForm>
-  )}
+        </StyledContactFormContent>
+
+
+
+      </StyledContactModalScrollbar>
+    </StyledContactForm>
+  )
+}
 
 export default HystoriqueForm;
 

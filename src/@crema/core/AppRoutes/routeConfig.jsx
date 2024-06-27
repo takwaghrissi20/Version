@@ -432,9 +432,15 @@ const routesConfig = [
         url: "recharts",
         type: "collapse",
         children: [
-          
+        
           {
-            id: "SiteCleark",
+            id: "SiteClearkPointages",
+            title: "AddEmployeesPointages",
+            messageId: "sidebar.generalSiteClearkAddPointages",
+            url: "/SiteCleark/Add-Employees-Pointages",
+          },
+          {
+            id: "SiteClearkIdJosAndDesertPass",
             title: "ManpowerLocationTrackRecord",
             messageId: "sidebar.generalSiteClearkShall",
             url: "/SiteCleark/IdJosAndDesertPass",

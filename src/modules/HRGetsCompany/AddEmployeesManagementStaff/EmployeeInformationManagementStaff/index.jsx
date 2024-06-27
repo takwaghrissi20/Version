@@ -459,8 +459,8 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
 
           }}>
             {/* <FaSearch></FaSearch> */}
-            <span>MSIS- </span>
-            <input
+            <span style={{marginTop:'0.5rem'}}>MSIS- </span>
+            <Input
               style={{
                 borderRight: '1px solid grey',
                 border: '1px solid transparent', // Bordure transparente par défaut
@@ -474,7 +474,7 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
               onChange={(e) => handleSearch(e.target.value)}
               //value={searchValue ? searchValue : 'CIS'}
               value={searchValue}
-            ></input>
+            ></Input>
             {isDropdownOpen && (
               <div style={{
                 borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px",

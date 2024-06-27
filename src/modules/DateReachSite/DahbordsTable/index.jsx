@@ -9,10 +9,11 @@ import { CiSaveUp1 } from "react-icons/ci";
 import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { FaRegCalendarAlt } from "react-icons/fa";
 
 const { MonthPicker } = DatePicker;
 
-const OrderTable = ({ orderData,fetchDemobilization }) => {
+const OrderTable = ({ orderData, fetchDemobilization }) => {
   const [editingRow, setEditingRow] = useState(null);
   const [editingData, setEditingData] = useState({});
   const [backgroundColor, setBackgroundColor] = useState('transparent');
@@ -33,14 +34,15 @@ const OrderTable = ({ orderData,fetchDemobilization }) => {
   };
 
   const handleChangeDateReach = (date, dateString) => {
-    setEditingData({ ...editingData, richDateToSite: dateString });
+    //setEditingData({ ...editingData, dateMob: dateString });
+    setEditingData({ ...editingData, richDateToSite: moment(date).format('YYYY-MM-DD') });
   };
 
   const handleChangeDateMob = (date, dateString) => {
     //setEditingData({ ...editingData, dateMob: dateString });
     setEditingData({ ...editingData, dateMob: moment(date).format('YYYY-MM-DD') });
   };
-  console.log("editingData",editingData)
+  console.log("editingData", editingData)
 
   const openNotification = () => {
     notification.open({
@@ -69,10 +71,10 @@ const OrderTable = ({ orderData,fetchDemobilization }) => {
     });
   };
 
-  const openNotificationError = () => {
+  const openNotificationError = (errorMessage) => {
     notification.open({
       message: 'Error',
-      description: 'Error Update',
+      description: `Error Update: ${errorMessage}`,
       style: {
         backgroundColor: 'red',
         border: '1px solid #dc3545',
@@ -95,7 +97,6 @@ const OrderTable = ({ orderData,fetchDemobilization }) => {
       color: '#FFFFFF !important',
     });
   };
-
   const saveEdit2 = async (id) => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/update?id=${id}`, {
@@ -103,15 +104,42 @@ const OrderTable = ({ orderData,fetchDemobilization }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-   
         body: JSON.stringify(editingData),
       });
-      console.log("editingDatasss",editingData)
+
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
 
-      const responseData = await response.text();
+      const responseData = await response.json();
+      // Update your data here
+      setEditingRow(null);
+      setEditingData({});
+      setBackgroundColor('transparent');
+      openNotification('bottomRight')
+
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+      openNotificationError('bottomRight')
+    }
+  };
+
+  const saveEditTest = async (id) => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/update?id=${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(editingData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        throw new Error(`Network response was not ok: ${errorData.message || response.statusText}`);
+      }
+
+      const responseData = await response.json();
       setEditingRow(null);
       setEditingData({});
       setBackgroundColor('transparent');
@@ -120,9 +148,12 @@ const OrderTable = ({ orderData,fetchDemobilization }) => {
 
     } catch (error) {
       console.error("Erreur lors de la récupération du Id :", error);
-      openNotificationError();
+      openNotificationError(error.message);
     }
   };
+
+
+
 
   const cancelEdit = () => {
     setEditingRow(null);
@@ -131,13 +162,13 @@ const OrderTable = ({ orderData,fetchDemobilization }) => {
   };
 
   const columns = [
-    {
-      title: 'Id',
-      dataIndex: 'idMd',
-      key: 'idMd',
-      width: '10%',
-    },
-    
+    // {
+    //   title: 'Id',
+    //   dataIndex: 'idMd',
+    //   key: 'idMd',
+    //   width: '10%',
+    // },
+
 
     {
       title: 'Gets Id',
@@ -149,13 +180,14 @@ const OrderTable = ({ orderData,fetchDemobilization }) => {
       title: 'Jos Id',
       dataIndex: 'joysId',
       key: 'joysId',
-  
+
       width: '15%',
       render: (text, record) => (
         editingRow === record.idMd ? (
           <Input
-          type='number'
+            type='number'
             value={editingData?.joysId}
+            
             onChange={(e) => handleChange('joysId', e.target.value)}
           />
         ) : (
@@ -183,10 +215,14 @@ const OrderTable = ({ orderData,fetchDemobilization }) => {
       render: (text, record) => (
         editingRow === record.idMd ? (
           <div className="table-cell-center">
+            <FaRegCalendarAlt className="calendar-icon"/>
             <DatePicker
+              className='custom-datepickerEdit'
               placeholder='YYYY-MM-DD'
-              value={editingData.richDateToSite ? moment(editingData.richDateToSite, 'YYYY-MM-DD') : null}
+              selected={editingData.richDateToSite ? moment(editingData.richDateToSite, 'YYYY-MM-DD').toDate() : null}
+              // value={editingData.dateMob ? moment(editingData.dateMob, 'YYYY-MM-DD') : null}
               onChange={handleChangeDateReach}
+              dateFormat='yyyy-MM-dd'
             />
           </div>
         ) : (
@@ -202,12 +238,14 @@ const OrderTable = ({ orderData,fetchDemobilization }) => {
       render: (text, record) => (
         editingRow === record.idMd ? (
           <div className="table-cell-center">
+                 <FaRegCalendarAlt className="calendar-icon"/>
             <DatePicker
+              className='custom-datepickerEdit'
               placeholder='YYYY-MM-DD'
               selected={editingData.dateMob ? moment(editingData.dateMob, 'YYYY-MM-DD').toDate() : null}
               // value={editingData.dateMob ? moment(editingData.dateMob, 'YYYY-MM-DD') : null}
               onChange={handleChangeDateMob}
-               dateFormat='yyyy-MM-dd'
+              dateFormat='yyyy-MM-dd'
             />
           </div>
         ) : (
@@ -246,7 +284,7 @@ const OrderTable = ({ orderData,fetchDemobilization }) => {
     fetchDemobilization()
     const updateTableHeight = () => {
       const pageHeight = window.innerHeight;
-      const tableHeight = pageHeight ;
+      const tableHeight = pageHeight;
       setTableHeight(tableHeight);
     };
 
@@ -268,7 +306,7 @@ const OrderTable = ({ orderData,fetchDemobilization }) => {
           dataSource={orderData}
           bordered
           size='middle'
-          scroll={{ x: 'auto', y: tableHeight}}
+          scroll={{ x: 'auto', y: tableHeight }}
         />
       </Space>
     </AppAnimate>

@@ -30,7 +30,7 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
       dataIndex: 'name',
       key: 'name',
       fixed: 'left',
-      width: 150,
+      width: 200,
       render: (name) => <Tooltip title={name}>{name}</Tooltip>,
     },
     ...currentMonthDays.map(day => {
@@ -40,7 +40,7 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
         title: `${day} - ${dayName.substring(0, 3)}`,
         dataIndex: `day${day}`,
         key: `day${day}`,
-        width: 150,
+        width: 80,
         render: (text, record) => {
           const pointage = record[`day${day}`] || '';
 
@@ -187,6 +187,7 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
       scroll={{ x: 1500, y: 1000 }}
       pagination={false}
       rowKey="getsId"
+      bordered
     />
   );
 };

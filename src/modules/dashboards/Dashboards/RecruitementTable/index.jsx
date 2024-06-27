@@ -162,7 +162,7 @@ const OrderTable = ({ loading,AllRecruitement}) => {
           
           
             const data = await response.text();
-            console.log("deletee", data);         
+        
             alert(data);
             onDeleteRecruitement(false);
         }

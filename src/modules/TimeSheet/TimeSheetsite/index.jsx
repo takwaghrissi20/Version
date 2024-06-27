@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, List, Input, Select, Space, Dropdown, Button, Menu,Row,Col} from 'antd';
+import { Card, List, Input, Select, Space, Dropdown, Button, Menu, Row, Col } from 'antd';
 import moment from 'moment';
 import { FcEmptyFilter } from 'react-icons/fc'; // Import de l'icône
 import AppPageMeta from '../../../@crema/components/AppPageMeta';
@@ -19,7 +19,7 @@ const { MonthPicker } = DatePicker;
 
 const TimeSheetSite = () => {
   const [employeesOffice, setEmployeesOffice] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
   const [nameFilter, setNameFilter] = useState('');
@@ -35,7 +35,6 @@ const TimeSheetSite = () => {
   const [pickerValue, setPickerValue] = useState(new Date(selectedYear, selectedMonth - 1));
   const [tempSelectedMonth, setTempSelectedMonth] = useState(selectedMonth);
   const [tempSelectedYear, setTempSelectedYear] = useState(selectedYear);
-
 
   useEffect(() => {
     fetchEmployeesByType();
@@ -64,11 +63,11 @@ const TimeSheetSite = () => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
-     
-      const dataSite=data.filter(p=>p.type_Emp==="site" && p.actStatus==="Active ")   
-  
+
+      const dataSite = data.filter(p => p.type_Emp === "site" && p.actStatus === "Active ")
+
       setTotalRecords(dataSite.length)
-   
+
 
 
     } catch (error) {
@@ -77,11 +76,11 @@ const TimeSheetSite = () => {
   };
   const fetchEmployeesByType = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getEmByTypeStatus?type=site&status=Active &page=${currentPage }&size=${pageSize}&month=${selectedMonth}&year=${selectedYear}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getEmByTypeStatus?type=site&status=Active &page=${currentPage}&size=${pageSize}&month=${selectedMonth}&year=${selectedYear}`);
       const data = await response.json();
-  
-      setEmployeesOffice(data); 
-      setTotalRecords(data.totalElements || 0); 
+
+      setEmployeesOffice(data);
+      setTotalRecords(data.totalElements || 0);
     } catch (error) {
       console.error('Error fetching site employees:', error);
     }
@@ -153,9 +152,9 @@ const TimeSheetSite = () => {
 
   const filterMenu = (
     <Menu onClick={handleFilterTypeChange}>
-      <Menu.Item style={{padding:"1rem"}} key="month">Filter by Month && Year</Menu.Item>
+      <Menu.Item style={{ padding: "1rem" }} key="month">Filter by Month && Year</Menu.Item>
       {/* <Menu.Item style={{padding:"1rem"}} key="year">Filter by Year</Menu.Item> */}
-      <Menu.Item style={{padding:"1rem"}} key="name">Filter by Name</Menu.Item>
+      <Menu.Item style={{ padding: "1rem" }} key="name">Filter by Name</Menu.Item>
     </Menu>
   );
   const handleOkClick = () => {
@@ -216,41 +215,76 @@ const TimeSheetSite = () => {
 
   return (
     <div className='site-statistic-demo-card'>
+
       <AppPageMeta title='Time Sheet Site' />
       <AppCard
         className='no-card-space-ltr-rtl'
         title={`Site Time Sheet - ${currentMonthName} ${selectedYear}`}>
-           <Row  className="row"gutter={16} style={{marginTop:"1rem",marginBottom:"2rem"}}>
-        <Col span={5}>  
-                 
-          </Col> 
-                      
-          <Col  className="calendar" style={{display:"flex"}} span={15}>   
-          <span style={{display:"flex", justifyContent: "center", textAlign:"center",marginTop:'-1.25rem',marginRight:"-3rem",fontWeight:"bold"}}>Month <span style={{color:'red'}}>*</span></span> 
-          <FaRegCalendarAlt style={{ position: 'absolute',  zIndex: 2, marginLeft: '0.5rem', marginTop: '0.75rem',color:"#767375" }} />
-  
+        <Col span={24} style={{ display: 'flex', justifyContent: 'flex-end', marginTop: "-0.5" }}>
+          <Button onClick={handleGeneratePDF} className='downloadbutton'>
+            <FiDownload style={{ marginRight: "0.5rem" }} /> Download pdf
+          </Button>
+
+        </Col>
+
+        <Row className="row" gutter={16} style={{ marginTop: "1rem", marginBottom: "2rem", zIndex: 1 }}>
+          <Col span={8}>
+
+          </Col>
+          <Col className="calendar" style={{ display: "flex", zIndex: 10 }} span={15}>
+
+
+            <div className="datepicker-wrapper">
+              <FaRegCalendarAlt className="calendar-icon" />
+              <DatePicker
+                selected={pickerValue}
+                onChange={handleMonthChange}
+                dateFormat="MMMM yyyy"
+                showMonthYearPicker
+                placeholderText="Select Month and Year"
+                className="custom-datepicker"
+              />
+            </div>
+
+            <Button
+              style={{
+
+                backgroundColor: '#41b3f8',
+                borderColor: 'transparent',
+                color: 'white',
+                paddingRight: "4rem",
+                paddingLeft: "4rem",
+                marginLeft: "0.5rem"
+              }}
+              onClick={handleOkClick}
+            >
+              Filter
+            </Button>
+          </Col>
+
+
+
+          {/* <Col className="calendar" style={{ display: "flex" }} span={15}>
+            <span style={{ display: "flex", justifyContent: "center", textAlign: "center", marginTop: '-1.25rem', marginRight: "-3rem", fontWeight: "bold" }}>Month <span style={{ color: 'red' }}>*</span></span>
+            <FaRegCalendarAlt style={{ position: 'absolute', zIndex: 2, marginLeft: '0.5rem', marginTop: '0.75rem', color: "#767375" }} />
+
             <DatePicker
               selected={pickerValue}
               onChange={handleMonthChange}
               dateFormat="MMMM yyyy"
               showMonthYearPicker
               placeholderText="Select Month and Year"
-              style={{ zIndex: 2,  width:"100%" }}
+              style={{ zIndex: 2, width: "100%", backgroundColor: "red" }}
             />
             <Button
-              style={{ marginLeft:"0.5rem" ,backgroundColor: '#41b3f8', borderColor: 'transparent', color: 'white',paddingRight:"2rem",paddingLeft:"2rem" }}
+              style={{ marginLeft: "0.5rem", backgroundColor: '#41b3f8', borderColor: 'transparent', color: 'white', paddingRight: "2rem", paddingLeft: "2rem" }}
               onClick={handleOkClick}
             >
               Filter
             </Button>
-          </Col>
-       
-          <Col  span={4}>
-          <Button onClick={handleGeneratePDF} className='downloadbutton'>
-              <FiDownload style={{marginRight:"0.5rem"}} /> Download pdf
-            </Button>
-          
-          </Col>
+          </Col> */}
+
+
         </Row>
         <Space style={{ margin: '1rem' }}>
 
@@ -261,7 +295,7 @@ const TimeSheetSite = () => {
               zIndex: 5,
               borderRadius: "6px",
               maxHeight: '200px',
-              marginLeft:'5rem',
+              marginLeft: '5rem',
               overflowY: 'auto',
               paddingLeft: "10px",
               background: "white",
