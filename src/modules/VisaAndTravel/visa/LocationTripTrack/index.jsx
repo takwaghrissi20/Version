@@ -82,9 +82,7 @@ const LocationTripTrack = () => {
     try {
       const countEmployeesResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/list`);
       const data = await countEmployeesResponse.json();
-
-      // Assuming data is an array of travel objects as shown in your example
-      // Sort data by dateMob in descending order (latest date first)
+  
       data.sort((a, b) => {
         // Convert date strings to Date objects for comparison
         const dateA = new Date(a.dateMob);
@@ -118,32 +116,9 @@ const LocationTripTrack = () => {
   };
 
 
-  const fetchEmployeesTest = async () => {
-    try {
-      const countEmployeesResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/list`);
-      const datacount = await countEmployeesResponse.json();
-      setCount(datacount.length);
 
-
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/list?page=${currentPage}&size=${pageSize}`);
-      if (!response.ok) {
-        openNotificationError();
-        throw new Error('Failed to fetch travel');
-      }
-      const data = await response.json();
-      setEmployees(data);
-      setFilteredEmployees(selectedProject !== 'All Projects'
-        ? data.filter(emp => emp.projName === selectedProject)
-        : data);
-        
-    } catch (error) {
-      console.error('Error fetching travel', error);
-      openNotificationError();
-    }
-  };
   const fetchAllProjects = async () => {
     try {
-
 
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/list`);
       if (!response.ok) {
@@ -153,7 +128,6 @@ const LocationTripTrack = () => {
 
       const data = await response.json();
       const projectNames = [...new Set(data.map(project => project.projName))];
-      console.log("Project Names:", projectNames);
       setAllProjects(projectNames.map(projName => ({ proj: projName })));
       setAllProjects(projectNames)
 

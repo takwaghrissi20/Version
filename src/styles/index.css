@@ -638,7 +638,17 @@ font-weight: bold;
 }
 .row-red {
   color: red !important;
-  background-color:#C0B198;
+  background-color: #ECF8F6;
+
+
+  /* background-color:#C0B198; */
+}
+.row-brown{
+  background-color: #F1F1D3;
+}
+.row-yellow{
+  background-color: #C7DDC5;
+
 }
 .Title{
   color: #40494D;
