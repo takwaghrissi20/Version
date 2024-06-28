@@ -178,7 +178,7 @@ const DemobilizationDirect = () => {
 
           <Pagination
              currentPage={currentPage}
-             totalPages={Math.ceil(count / pageSize)}
+             totalPages={Math.ceil(40 / pageSize)}
              handlePageChange={handlePageChange}
           />
 

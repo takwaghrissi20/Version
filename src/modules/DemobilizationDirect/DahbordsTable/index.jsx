@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Dropdown } from 'antd';
+import { Button, Dropdown,Tooltip } from 'antd';
 import AppAnimate from '../../../@crema/components/AppAnimate';
 import { StyledAnChar, StyledOrderTable } from '../../../styles/index.styled';
 import { MoreOutlined } from '@ant-design/icons';
-
+import { FiAlertOctagon } from "react-icons/fi";
 const OrderTable = ({ orderData }) => {
 
   
@@ -27,6 +27,14 @@ const OrderTable = ({ orderData }) => {
 
 
   const columns = [
+    {
+      title: 'idMd',
+      dataIndex: 'idMd',
+      key: 'idMd',
+      width: 80,
+      render: (id) => <StyledAnChar>{id}</StyledAnChar>,
+    },
+  
     {
       title: 'Gets Id',
       dataIndex: 'getsId',
@@ -65,9 +73,11 @@ const OrderTable = ({ orderData }) => {
         if (!dateDemob) return null;  // Exclude empty dates
         const isFuture = new Date(dateDemob) < new Date();
         return (
+          <Tooltip title={isFuture ? 'End Demobolization Date' : ''}>
           <span style={{ color: isFuture ? 'red' : 'black' }}>
             {dateDemob}
           </span>
+          </Tooltip>
         );
       },
     },
@@ -81,7 +91,51 @@ const OrderTable = ({ orderData }) => {
       title: 'End Mission Date',
       dataIndex: 'endDateMiss',
       key: 'endDateMiss',
+      render: (endDateMiss) => {
+        
+        if (!endDateMiss) return null;  // Exclude empty dates
+        const isFuture = new Date(endDateMiss) < new Date();
+        return (
+          <Tooltip title={isFuture ? 'End Mission' : ''}>
+          <span style={{ color: isFuture ? 'yellow' : 'black' }}>
+            {endDateMiss}
+          </span>
+          </Tooltip>
+        );
+      },
     },
+  
+    {
+      title: 'Alert',
+      key: 'alert',
+      width: 200,
+      render: (record) => {
+        const isDateDemobExpired = record.dateDemob && new Date(record.dateDemob) < new Date();
+        const isEndDateMissExpired = record.endDateMiss && new Date(record.endDateMiss) < new Date();
+  
+        if (isDateDemobExpired || isEndDateMissExpired) {
+          return (
+            <span style={{ color: 'red' }}>
+              <FiAlertOctagon style={{ marginRight: 4 }} />
+              {isDateDemobExpired && (
+                <>
+                  Renew dateDemob, Expiry Date At: <span style={{ fontWeight: "bold", color: "#77021D" }}>{record.dateDemob}</span>
+                  <br />
+                </>
+              )}
+              {isEndDateMissExpired && (
+                <>
+                  Renew end mission date, Expiry Date At: <span style={{ fontWeight: "bold", color: "#77021D" }}>{record.endDateMiss}</span>
+                </>
+              )}
+            </span>
+          );
+        } else {
+          return null;
+        }
+      },
+    },
+   
     // {
     //   title: 'Actions',
     //   dataIndex: 'actions',

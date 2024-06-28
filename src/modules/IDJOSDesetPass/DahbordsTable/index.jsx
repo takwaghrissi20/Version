@@ -135,7 +135,7 @@ const OrderTable = ({ orderData }) => {
           render: (date) => {
             const isExpired = date && new Date(date) < new Date();
             return (
-              <Tooltip title={isExpired ? 'Le visa a expiré' : ''}>
+              <Tooltip title={isExpired ? 'Desert Pass Expiry' : ''}>
                 <span>{moment(date).format('YYYY-MM-DD')}</span>
               </Tooltip>
             );
