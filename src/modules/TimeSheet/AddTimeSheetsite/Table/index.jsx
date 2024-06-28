@@ -16,12 +16,13 @@ const OrderTable = ({ orderData, pickerValue }) => {
   };
   const handlePointageChange = (value, record) => {
     setSelectedPointage({ ...selectedPointage, [record.getsId]: value });
-    if(value==="A"){
-    handleAddPointage(record.getsId,"A"); }
-    else if(value==="W"){
-      handleAddPointage(record.getsId,"W"); }
-      else if(value==="WS"){
-        handleAddPointage(record.getsId,"WF"); }
+    handleAddPointage(record.getsId,value)
+    // if(value==="A"){
+    // handleAddPointage(record.getsId,"A"); }
+    // else if(value==="W"){
+    //   handleAddPointage(record.getsId,"W"); }
+    //   else if(value==="WS"){
+    //     handleAddPointage(record.getsId,"WF"); }
 
   };
 
@@ -84,9 +85,12 @@ const OrderTable = ({ orderData, pickerValue }) => {
               onChange={(value) => handlePointageChange(value, record)}
             >
               <Option value="Select Pointage" disabled>Default</Option>
-              <Option value="W">W</Option>
+              <Option value="S">S</Option>
               <Option value="A">A</Option>
               <Option value="WS">WS</Option>
+              <Option value="TG">TG</Option>
+              <Option value="TB">TB</Option>
+              <Option value="SIC">SIC</Option>
             </Select>
           )}
         </div>

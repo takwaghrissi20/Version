@@ -16,7 +16,6 @@ const OrderTable = ({ orderData }) => {
   const [isViewTravel, onViewTravel] = useState(false);
   const [findIdData, setFindIdData] = useState(null);
   
- 
 
   //Find By Id
   const findId = async (code) => {
@@ -150,8 +149,8 @@ const OrderTable = ({ orderData }) => {
       render: (record) => {
         const isExpired = record.desertPass_finish_date && new Date(record.desertPass_finish_date) < new Date();
         return isExpired ? (
-          <span style={{ color: 'red' }}>
-            <FiAlertOctagon style={{ marginRight: 4 }} />
+          <span >
+            <FiAlertOctagon style={{ marginRight: 4 , color: 'red' }} />
                 Renew Desert Pass ,Expiry Date At : <span style={{fontWeight:"bold",color:"#77021D"}}>{record.desertPass_finish_date}</span>
           </span>
         ) : '';

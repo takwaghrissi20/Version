@@ -168,8 +168,7 @@ const DemobilizationDirect = () => {
         </AppsHeader>
         <AppCard
           className='no-card-space-ltr-rtl'
-          title={messages['dashboard.DemobilizationDirectmobilization']}
-        >
+          title={messages['dashboard.DemobilizationDirectmobilization']} >
 
           <OrderTable className={clsx("item-hover")} demobilization={demobilization} />
         </AppCard>
