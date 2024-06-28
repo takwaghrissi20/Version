@@ -51,25 +51,14 @@ const OrderTable = ({ orderData }) => {
   ];
 
   const columns = [
-    {
-      title: 'idMd',
-      dataIndex: 'idMd',
-      key: 'idMd',
-      width: 80,
-      render: (id) => <StyledAnChar>{id}</StyledAnChar>,
-    },
-    {
-      title: 'dateMob',
-      dataIndex: 'dateMob',
-      key: 'dateMob',
-      width: 80,
-    },
-    {
-      title: 'Rest Day',
-      dataIndex: 'dayRest',
-      key: 'dayRest',
-      render: (text, record) => calculateRestDays(record),
-    },
+  
+  
+    // {
+    //   title: 'Rest Day',
+    //   dataIndex: 'dayRest',
+    //   key: 'dayRest',
+    //   render: (text, record) => calculateRestDays(record),
+    // },
     {
       title: 'Gets Id',
       dataIndex: 'getsId',
