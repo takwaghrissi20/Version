@@ -57,7 +57,7 @@ const AddTimeSheetSite = () => {
         className='no-card-space-ltr-rtl'
         title={`Add Site Time Sheet`}>
 
-        <Col className="calendar" style={{ display: "flex", zIndex: 10, marginLeft: '3rem' }} span={15}>
+        <Col className="calendar" style={{ display: "flex", zIndex: 10, marginLeft: '3rem',marginTop:"1rem",marginBottom:"1rem" }} span={15}>
 
 
           <div className="datepicker-wrapper">

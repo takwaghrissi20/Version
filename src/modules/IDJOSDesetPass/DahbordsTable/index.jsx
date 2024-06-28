@@ -52,7 +52,7 @@ const OrderTable = ({ orderData }) => {
   useEffect(() => {
     const updateTableHeight = () => {
       const pageHeight = window.innerHeight;
-      const tableHeight = pageHeight * 0.7;
+      const tableHeight = pageHeight * 0.6;
       setTableHeight(tableHeight);
     };
 

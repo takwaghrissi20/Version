@@ -101,6 +101,7 @@ const OrderTable = ({ orderData, pickerValue }) => {
       scroll={{ x: 1500, y: 1000 }}
       pagination={false}
       rowKey="getsId"
+      bordered
     />
   );
 };
