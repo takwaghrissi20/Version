@@ -379,6 +379,19 @@ line-height:1rem;
   cursor: pointer;
 
 }
+
+.iconeEditTime {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid 1px #0083ff;
+  border-radius: 50%;
+  color: #0083ff;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+
 .Separateur{
   width:10px;
 }
@@ -647,7 +660,7 @@ font-weight: bold;
   background-color: #F1F1D3;
 }
 .row-yellow{
-  background-color: #C7DDC5;
+  background-color: #709CA7;
 
 }
 .Title{
@@ -792,8 +805,56 @@ input{
     background-color: red !important;
     color: black;
   }
+  .Notification{
+    border: none;
+    background-color:transparent;
+    margin-bottom: 0.5rem;
   
+
+
+
+
+  }
+  .Space{
+  height: 1px;
+  background-color:  #B6CDE8;
+
+  }
+.EditIcone {
+  display: inline-block; 
+  width: 36px;
+
+  height: 36px; 
+  border-radius: 50%; 
+  background-color: red; 
+  text-align: center; 
+  line-height: 36px; 
+}
+
+/* Styles lorsque l'élément est en mode édition */
+.EditIcone.active {
+
+  border-color: green; 
+}
+.EditIcone.not-editing {
+
+  opacity: 0.5; 
+}
+
+  .EditIcone{
+    color:#0083ff;
+  }
+  .EditIcone-container {
+    display: inline-block; 
+    width: 36px;
+    height: 36px; 
+    border-radius: 50%; 
+    background-color: lightblue; 
+    text-align: center; 
+    line-height: 36px; 
+  }
   
+
 
 
 

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
 import PropTypes from 'prop-types';
 import { List } from 'antd';
 import {
@@ -7,20 +6,22 @@ import {
   StyledNotifyMsgAvatar,
 } from './NotificationItem.styled';
 import { useNavigate } from "react-router-dom";
+
 const NotificationItem = ({ user }) => {
   const navigate = useNavigate();
-  const [notif1, setNotif1] = useState([])
-  const [notifHR, setNotifHR] = useState([])
-  const [notifOperation, setNotifOperation] = useState([])
-  const [notifPlanner, setNotifPlanner] = useState([])
-  const [findIdCodeJob, setFindIdCodeJob] = useState("")
-  const [codeJob, setCodeJob] = useState("")
+  const [allnotif, setAllNotif] = useState([]);
+  const [notifBod, setNotifBod] = useState([]);
+  const [notifHR, setNotifHR] = useState([]);
+  const [notifOperation, setNotifOperation] = useState([]);
+  const [notifPlanner, setNotifPlanner] = useState([]);
+  const [findIdData, setFindIdData] = useState([]);
+  const [codeJob, setCodeJob] = useState("");
   const userEmail = localStorage.getItem("email");
-  const [project, setProject] = useState([])
-  const [listOperationproject, setListOperationproject] = useState([])
-  console.log("userEmail ", userEmail)
+  const [project, setProject] = useState([]);
+  const [listOperationproject, setListOperationproject] = useState([]);
+  console.log("userEmail ", userEmail);
 
-  //Projevt By email
+  // Project By email
   const fetchProjectEmail = async () => {
     try {
       const url = `https://dev-gateway.gets-company.com/api/v1/emp/getProjectByMail?mail=${userEmail}`;
@@ -29,10 +30,9 @@ const NotificationItem = ({ user }) => {
       });
       if (response.ok) {
         const data = await response.json();
-        const ProjectName = data.map(project => project.projName)
-        setProject(ProjectName)
-
-
+        const ProjectName = data.map(project => project.projName);
+        console.log("ProjectName ", ProjectName);
+        setProject(ProjectName);
       } else {
         console.error("Erreur lors de la récupération du email:", response.status);
       }
@@ -49,191 +49,146 @@ const NotificationItem = ({ user }) => {
           'Content-Type': 'application/json'
         },
       });
-
-
-
       if (!response.ok) {
         throw new Error('La requête a échoué avec le code ' + response.status);
       }
-
       const data = await response.json();
-      console.log("testtttt", data)
-      const FilterDataDepOperation = data.filter(list => list.dep === "operation")
-      console.log("eeervvggg", FilterDataDepOperation)
-      // Adding projname to each object in FilterDataDepOperation
-      const updatedFilterDataDepOperation = FilterDataDepOperation.map(item => ({
-        ...item,
-        //   projname: 'CONSTRUCTION OF PIPING MATERIAL'
-      }));
+      setAllNotif(data);
+      const filteredData = data.filter(item => (item.dep !== 'operation' && item.dep !== 'engineer' &&
+        item.notfi === 2) || (item.notfi === 7 && item.dep === "operation") || (item.notfi === 7 && item.dep.includes('Engineering'))
+      );
+      setNotifBod(filteredData);
+      const FilterOperationManager = data.filter(item => (item.notfi === 8 && item.dep.includes('Engineering')) ||
+        (item.notfi === 4 && item.dep === "operation")
+      );
+      setNotifOperation(FilterOperationManager);
 
-
-      console.log("Updated eeervvggg", updatedFilterDataDepOperation);
-      const FilterProject = FilterDataDepOperation.filter(project =>
-         console.log("eeervvggg Testtttt",project)     
-       )
-
-      console.log("eeervvggg 11111", FilterProject)
-      const filteredData = data.filter(item => (item.notfi === 0 && item.dep !== "operation")
-        || (item.p === 7 && item.dep === "operation"));
-      setNotif1(filteredData)
-      //Notif de HR 
-      const filteredDataHr = data.filter(item => (item.notfi === 3));
-      setNotifHR(filteredDataHr)
-      //Notif Operationn
-      const filteredNotificationOperatipnData = data.filter(item => (item.notfi === 0
-        && item.dep.includes("Engineering")) ||
-        (item.notfi === 4 && item.dep.includes("operation")));
-      setNotifOperation(filteredNotificationOperatipnData)
-      //Notif PLanner 
-
-      const filteredNotificationPlannerData = data.filter(item => (item.notfi === 7
-        || item.notfi === 5));
-      ///Project Name
-      //    if (project.includes(projectname)) {
-      //     console.log(`${projectname} est dans la liste.`);
-      // } else {
-      //     console.log(`${projectname} n'est pas dans la liste.`);
-      // }
-      //   setNotifOperation(filteredNotificationOperatipnData)
+      ///////////////// Planner 
+      const filteredPlanner = data.filter(item =>
+        (item.dep === 'operation' && item.notfi === 6 && project.includes(item.projName)) || (
+          item.dep === 'operation' && item.notfi === 7 && project.includes(item.projName) ||
+          (item.dep === 'operation' && item.notfi === 4 && project.includes(item.projName))
+        )
+      );
+      console.log("project", project);
+      console.log("filteredDataByProject", filteredPlanner);
+      setNotifPlanner(filteredPlanner);
 
     } catch (error) {
       console.error('Erreur lors de la récupération Last Recruitement', error);
     }
   };
 
+  const handleEditRecruitementOpen = (code) => {  
+    navigate(`/Hr/Recruitement&Interview/Recruitement/Update/codeJob=${code.jobCode}`, {
+      state: {
+        jobCode:code.jobCode,
+        notif:code?.notif,
+        dep: code?.dep,
+        idemp:code?.idemp ,
+        requestName: code?.requestName,
+        dateInputRecrut:code?.dateInputRecrut,
+        position: code?.position,
+        recruttrequestDate:code?. recruttrequestDate,
+        DesiredDate: code?.desiredDate,
+        projectName: code?.projectName,
+        projRef: code?.projRef,
+        type: code?.type,
+        affectedTo: code?.affectedTo,
+        requestedDicipline: code?.requestedDicipline,
+        Level: code?.experience,
+        Numbervacancies: code?.totalNumber,
+        certif:code?.certif,
+        nbExperience: code?.nbExperience,    
+        exDep: code?.exDep,
+        oDep: code?.oDep,
+        comentPlaner: code?.comentPlaner,
+        signatureBod:code?.signatureBod,
+        signatureHod: code?.signatureHod,
+      }
+    });
+  }
+
   const findId = async (code) => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/findId?code=${code}`, {
         method: 'POST',
-
       });
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      if (response.ok) {
-        const responseData = await response.json();
-        console.log("findIdtttt", responseData)
-        setFindIdCodeJob(responseData)
-        setCodeJob(findIdCodeJob?.jobCode)
-        handleAddRecruitementOpen()
-
-
-
-      }
+      const responseData = await response.json();
+      setFindIdData(responseData);
+      setCodeJob(responseData.jobCode);
+      handleEditRecruitementOpen(responseData);
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
     }
   };
 
-  const handleAddRecruitementOpen = () => {
-    navigate(`/Hr/Recruitement&Interview/Recruitement/View/codeJob=${codeJob}`, {
-      state: {
-        id: findIdCodeJob?.jobCode,
-        dep: findIdCodeJob?.dep,
-        idemp: findIdCodeJob?.idemp,
-        requestName: findIdCodeJob?.requestName,
-        position: findIdCodeJob?.position,
-        DesiredDate: findIdCodeJob?.desiredDate,
-        projectName: findIdCodeJob?.projectName,
-        projRef: findIdCodeJob?.projRef,
-        type: findIdCodeJob?.type,
-        affectedTo: findIdCodeJob?.affectedTo,
-        requestedDicipline: findIdCodeJob?.requestedDicipline,
-        Level: findIdCodeJob?.experience,
-        Numbervacancies: findIdCodeJob?.totalNumber,
-        certif: findIdCodeJob?.certif,
-        nbExperience: findIdCodeJob?.nbExperience,
-        recruttrequestDate: findIdCodeJob?.recruttrequestDate,
-        projCode: findIdCodeJob?.projRef,
-        type: findIdCodeJob?.type,
-        exDep: findIdCodeJob?.exDep,
-        oDep: findIdCodeJob?.oDep,
-        comentPlaner: findIdCodeJob?.comentPlaner,
-        notif1: notif1,
-        notif: findIdCodeJob?.notif
-
-
-
-        // signatureBod:findIdData?.signatureBod,
-        // signatureHod:findIdData?.signatureHod,
-
-      }
-
-    });
-
-
-
-
-
-    //onViewRecruitement(true);
-  };
   useEffect(() => {
-    AllNotif()
-    fetchProjectEmail()
-  }, [codeJob]);
+    AllNotif();
+    fetchProjectEmail();
+  }, [project,notifPlanner]);
 
   return (
     <>
       {user.includes("bod") ?
         <StyledNotifyListItem className='item-hover'>
           <p>Number All Notification </p>
-          {notif1.map((p, index) => (
-            <>
-              <button onClick={() => findId(p?.codejob)}>
-
-                Recruitement Request with Code Job :<span style={{ color: "red" }}>{p.codejob}</span> </button>
-
-            </>
-
+          {notifBod.map((p, index) => (
+            <div key={index}>
+              <button  className='Notification' onClick={() => findId(p?.codejob)}>
+                Recruitement Request with Code Job :<span style={{  color: "red",fontWeight:"bold"  }}>{p.codejob}</span> </button>
+                <div className='Space'></div>
+            
+            </div>
           ))}
-
-
-
         </StyledNotifyListItem>
         : null
-
       }
-      {user.includes("Administrator") ?
+      {user.includes("admin") ?
         <StyledNotifyListItem className='item-hover'>
           <p>Number All Notification </p>
-          {notifHR.map((p, index) => (
-            <>
-              <button onClick={() => findId(p?.codejob)}>
-
-                Recruitement Request with Code Job :<span style={{ color: "red" }}>{p.codejob}</span> </button>
-
-            </>
-
+          {allnotif.map((p, index) => (
+            <div key={index}>
+              <button className='Notification' onClick={() => findId(p?.codejob)}>
+                Recruitement Request with Code Job :<span style={{  color: "red",fontWeight:"bold" }}>{p.codejob}</span> </button>
+                <div className='Space'></div>
+           
+            </div>
           ))}
-
-
-
         </StyledNotifyListItem>
         : null
-
       }
-      {user == "Operation  Manager" ?
+      {user === "Operation  Manager" ?
         <StyledNotifyListItem className='item-hover'>
-          <p>Number All Notification </p>
+          <p>Number All Notification(Operation Manager) </p>
           {notifOperation.map((p, index) => (
-            <>
-              <button onClick={() => findId(p?.codejob)}>
-
-                Recruitement Request with Code Job :<span style={{ color: "red" }}>{p.codejob}</span> </button>
-
-            </>
-
+            <div key={index}>
+              <button className='Notification' onClick={() => findId(p?.codejob)}>
+                Recruitement Request with Code Job  :<span style={{  color: "red",fontWeight:"bold" }}>{p.codejob}</span> </button>
+                <div className='Space'></div>
+            </div>
           ))}
-
-
-
         </StyledNotifyListItem>
         : null
-
       }
-
-
-
+      {user.includes("Planner") ?
+        <StyledNotifyListItem className='item-hover'>
+          <p>Number All Notification </p>
+          {notifPlanner.map((p, index) => (
+            <>
+            <div key={index}>
+              <button className='Notification' onClick={() => findId(p?.codejob)}>
+                Recruitement Request with Code Job :<span style={{ color: "red",fontWeight:"bold" }}>RRS-{p.codejob}</span> </button>
+            </div>
+            <div className='Space'></div>
+            </>
+          ))}
+        </StyledNotifyListItem>
+        : null
+      }
     </>
   );
 };
@@ -241,5 +196,5 @@ const NotificationItem = ({ user }) => {
 export default NotificationItem;
 
 NotificationItem.propTypes = {
-  item: PropTypes.object.isRequired,
+  user: PropTypes.string.isRequired,
 };

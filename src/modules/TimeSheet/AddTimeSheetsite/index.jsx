@@ -1,37 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import { Card, List, Input, Select, Space, Dropdown, Button, Menu, Row, Col } from 'antd';
 import moment from 'moment';
-import { FcEmptyFilter } from 'react-icons/fc'; // Import de l'icône
+import { FcEmptyFilter } from 'react-icons/fc';
 import AppPageMeta from '../../../@crema/components/AppPageMeta';
 import AppCard from '../../../@crema/components/AppCard';
 import OrderTable from './Table';
 import Pagination from '../../../@crema/components/AppsPagination';
 import { StyledOrderHeaderRight, StyledCustomerInputView } from '../../../styles/index.styled';
-import { FcClearFilters } from "react-icons/fc";
+import { FaRegCalendarAlt } from "react-icons/fa";
+import { IoFilterSharp } from "react-icons/io5";
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import { FaRegCalendarAlt } from "react-icons/fa";
+
 const AddTimeSheetSite = () => {
   const [employeesSite, setEmployeesSite] = useState([]);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1); // Commence à 1 pour la pagination
+  const [pageSize, setPageSize] = useState(10); // Taille par défaut de la page
   const [totalRecords, setTotalRecords] = useState(0);
   const [selectedMonth, setSelectedMonth] = useState(moment().month() + 1);
   const [selectedYear, setSelectedYear] = useState(moment().year());
-  const [filterType, setFilterType] = useState(null); // Nouvel état pour le type de filtrage
-  const [pickerValue, setPickerValue] = useState(new Date(selectedYear, selectedMonth - 1));
+  const [filterDate, setFilterDate] = useState(new Date(selectedYear, selectedMonth - 1));
+  const [projects, setProjects] = useState([]);
+  const [selectedProject, setSelectedProject] = useState("All Projects");
+  const [showFilters, setShowFilters] = useState(false);
+  const currentDate = new Date();
 
   useEffect(() => {
     fetchEmployeesByType();
-  }, [currentPage, pageSize, selectedMonth, selectedYear, filterType]);
+  }, [currentPage, pageSize, selectedProject]); // Ne plus surveiller selectedMonth, selectedYear, filterDate ici
 
   const fetchEmployeesByType = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getEmByType?type=site&page=${currentPage}&size=${pageSize}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/list`);
       const data = await response.json();
+      const filteredData = data.filter(item =>
+        item.rich_DateToSite !== null && new Date(item.endDateMiss) > filterDate &&
+        (selectedProject === "All Projects" || item.projName === selectedProject)
+      );
 
-      setEmployeesSite(data);
-      setTotalRecords(data.totalElements || 0);
+      const projectNames = [...new Set(data.map(item => item.projName))];
+      setProjects(["All Projects", ...projectNames]);
+      setTotalRecords(filteredData.length);
+
+      // Calculer l'index de départ pour la pagination
+      const startIndex = (currentPage - 1) * pageSize;
+      const endIndex = startIndex + pageSize;
+      const paginatedData = filteredData.slice(startIndex, endIndex);
+      setEmployeesSite(paginatedData);
     } catch (error) {
       console.error('Error fetching site employees:', error);
     }
@@ -46,8 +61,20 @@ const AddTimeSheetSite = () => {
       const newMoment = moment(date);
       setSelectedMonth(newMoment.month() + 1);
       setSelectedYear(newMoment.year());
-      setPickerValue(date);
+      setFilterDate(date);
     }
+  };
+
+  const handleFilterClick = () => {
+    fetchEmployeesByType(); // Appel du filtrage lors du clic sur le bouton "Filter"
+  };
+
+  const handleProjectChange = (value) => {
+    setSelectedProject(value);
+  };
+
+  const toggleFilters = () => {
+    setShowFilters(!showFilters);
   };
 
   return (
@@ -57,44 +84,45 @@ const AddTimeSheetSite = () => {
         className='no-card-space-ltr-rtl'
         title={`Add Site Time Sheet`}>
 
-        <Col className="calendar" style={{ display: "flex", zIndex: 10, marginLeft: '3rem',marginTop:"1rem",marginBottom:"1rem" }} span={15}>
+        <IoFilterSharp style={{ color: "#0083ff", fontSize: "1rem", marginLeft: "1rem", marginBottom: "1rem" }} onClick={toggleFilters} />
 
+        {showFilters && (
+          <Row style={{ marginTop: '0.5rem' }}>
+            <Col className="calendar" style={{ display: "flex", zIndex: 10, marginLeft: '3rem', marginBottom: "1rem" }} span={15}>
+              <div className="datepicker-wrapper">
+                <FaRegCalendarAlt className="calendar-icon" />
+                <DatePicker
+                  selected={filterDate}
+                  onChange={handleMonthChange}
+                  dateFormat="yyyy-MM-dd"
+                  placeholderText="Select Month and Year"
+                  className="custom-datepicker"
+                />
+              </div>
+              <Button type="primary" style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }} onClick={handleFilterClick}>Filter </Button>
+              <Select
+                placeholder="Select Project"
+                onChange={handleProjectChange}
+                value={selectedProject}
+                style={{ width: 230 }}
+              >
+                {projects.map(project => (
+                  <Select.Option key={project} value={project}>
+                    {project}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Col>
+          </Row>
+        )}
 
-          <div className="datepicker-wrapper">
-            <FaRegCalendarAlt className="calendar-icon" />
-            <DatePicker
-                 selected={pickerValue}
-                 onChange={handleMonthChange}
-                 dateFormat="yyyy-MM-dd"
-                 placeholderText="Select Month and Year"
-                 className="custom-datepicker"
-            />
-          </div>
-
-         
-        </Col>
-        {/* <div >
-          <div style={{ zIndex: '10', right: '1rem' }}>
-            <FaRegCalendarAlt className="calendar-icon" />
-            <DatePicker
-              selected={pickerValue}
-              onChange={handleMonthChange}
-              dateFormat="yyyy-MM-dd"
-              placeholderText="Select Month and Year"
-              className="custom-datepicker"
-            />
-          </div>
-        </div> */}
-        <Space style={{ margin: '1rem', display: 'flex', justifyContent: 'space-between', width: '100%', }}>
-
-        </Space>
-
-        <OrderTable orderData={employeesSite} pickerValue={pickerValue} />
+        <OrderTable orderData={employeesSite} />
       </AppCard>
+
       <StyledOrderHeaderRight>
         <Pagination
           currentPage={currentPage}
-          totalPages={Math.ceil(50 / pageSize)}
+          totalPages={Math.ceil(totalRecords / pageSize)}
           handlePageChange={handlePageChange}
         />
       </StyledOrderHeaderRight>

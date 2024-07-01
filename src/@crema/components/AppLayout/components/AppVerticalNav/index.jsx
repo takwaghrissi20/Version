@@ -14,6 +14,7 @@ const AppVerticalNav = ({ routesConfig }) => {
   const selectedKeys = pathname.substr(1);
   const [openKeys, setOpenKeys] = useState([selectedKeys[0]]);
   const userRole = localStorage.getItem("role");
+ 
 
   useEffect(() => {
     setOpenKeys([selectedKeys[selectedKeys.length - 2]]);
@@ -34,23 +35,41 @@ const AppVerticalNav = ({ routesConfig }) => {
     setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
   };
   const filterMenuItems = (items) => {
-    console.log("filterMenuItems",items)
-    return items.filter(item => {
-      
-      if (userRole.includes("Manager") &&userRole.includes("admin")) {
+    console.log("filterMenuItemspp",items)
+    return items.filter(item => { 
+      if (userRole.includes("Manager")) {
         if (item.id === "VisaHealth"||
             item.id === "ManpowerLocation"||
             item.id === "Employees"  ||
             item.id === "attendance" ||
             item.id === "VacationLeave"  ||
-            item.id === "ManpowerEvaluation"                                  
+            item.id === "ManpowerEvaluation" ||
+            item.id === "Site Clerk"  ||
+            item.id === "PROJECTS TRIP TRACK RECORD "                           
+          )
+           {
+          return false; 
+        }
+      }
+      if (userRole.includes("Leader") ) {
+        if (item.id === "VisaHealth"||
+          item.id === "ManpowerLocation"||
+          item.id === "Employees"  ||
+          item.id === "attendance" ||
+          item.id === "VacationLeave"  ||
+          item.id === "ManpowerEvaluation" ||
+          item.id === "Site Clerk"  ||
+          item.id === "PROJECTS TRIP TRACK RECORD "  
+          
+       
+                                              
           )
 
            {
           return false; 
         }
       }
-      if (userRole.includes("Planner")&&userRole.includes("admin")) {
+      if (userRole.includes("Planner")) {
         if (item.id === "VisaHealth"||
             item.id === "ManpowerLocation"||
             item.id === "Employees"  ||
@@ -58,34 +77,40 @@ const AppVerticalNav = ({ routesConfig }) => {
             item.id === "VacationLeave" ||
             item.id === "ManpowerEvaluation"  ||
             item.id === "Dashboards"  ||
-            item.id === "recruitement" 
+            item.id === "recruitement" ||
+             item.id === "dashboards" ||
+             item.id === "Site Clerk"||
+             item.id === "PROJECTS TRIP TRACK RECORD " 
+
 
           )
            {
           return false; 
         }
       }
-      else if (userRole.includes("bod")&&userRole.includes("admin")) {
+      else if (userRole.includes("bod")) {
         if (item.id === "VisaHealth"||
             item.id === "ManpowerLocation"||
             item.id === "Employees"  ||
             item.id === "attendance" ||
             item.id === "VacationLeave" ||
             item.id === "ManpowerEvaluation" ||
-            item.id === "Add Recruitment" 
+            item.id === "Add Recruitment"   ||
+            item.id === "Site Clerk"  ||
+             item.id === "PROJECTS TRIP TRACK RECORD "
+
+
+
                                     
           )
            {
           return false; 
         }
       }
-      else if (userRole.includes("Administrator")&&userRole.includes("admin")) {
+      else if (userRole.includes("admin")) {
         if (
-            item.id === "VisaHealth"  || 
-            item.id === "ManpowerEvaluation" ||
-            item.id === "ManpowerLocation"
-          
-          
+            item.id === ""   
+                 
           )
            
              {
@@ -101,7 +126,7 @@ const AppVerticalNav = ({ routesConfig }) => {
         if (item.id === "Interview Statistics" ||
             item.id === "Integration" ||
             item.id === "IntegrationStatistics" ||
-            item.id === "VisaHealth" )
+            item.id === "VisaHealth" ) 
            
              {
           return false; 

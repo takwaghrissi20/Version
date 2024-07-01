@@ -153,6 +153,7 @@ const OrderTable = ({ orderData }) => {
         const isEndDateMissExpired = record.endDateMiss && new Date(record.endDateMiss) < new Date();
         const planReturnDate = calculatePlanReturnDate(record);
         const isPlanReturnDateDue = planReturnDate && new Date(planReturnDate) < new Date();
+       console.log("gggjjj",isPlanReturnDateDue)
   
         if (isDateDemobExpired || isEndDateMissExpired || isPlanReturnDateDue) {
           return (

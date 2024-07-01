@@ -90,7 +90,8 @@ const metricsData = {
       type: 'Dasbords',
       icon: 'public',
       color: '#0A8FDC',
-      Link:"#"
+      Link:"#",
+      showForRoles: ['Manager']
  
     },
     {
@@ -99,7 +100,8 @@ const metricsData = {
       type: 'Recruitement',
       icon: 'pie_chart',
       color: '#F9911C',
-      Link:"#"
+      Link:"#",
+      showForRoles: ['Manager']
   
     },
     {

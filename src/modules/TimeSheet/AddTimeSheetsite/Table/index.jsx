@@ -1,54 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Tooltip, Select } from 'antd';
+import { Table, Tooltip, Select, Button } from 'antd';
+import { EditOutlined } from '@ant-design/icons';
 import moment from 'moment';
 
 const { Option } = Select;
 
 const OrderTable = ({ orderData, pickerValue }) => {
   const [selectedPointage, setSelectedPointage] = useState({});
-
+  const [editingRecord, setEditingRecord] = useState(null);
+  const [tableHeight, setTableHeight] = useState('auto');
+  useEffect(() => {
+    const updateTableHeight = () => {
+      const pageHeight = window.innerHeight;
+      const tableHeight = pageHeight * 0.3; 
+      setTableHeight(tableHeight);
+    };
+    window.addEventListener('resize', updateTableHeight);
+    updateTableHeight();
+    return () => {
+      window.removeEventListener('resize', updateTableHeight);
+    };
+  }, []);
   const formattedPickerValue = moment(pickerValue).format('YYYY-MM-DD');
 
-  const handlePointageChange0 = async (value, record) => {
-    setSelectedPointage({ ...selectedPointage, [record.getsId]: value });
-    await handleAddPointage(record.getsId, value);
-  };
   const handlePointageChange = (value, record) => {
     setSelectedPointage({ ...selectedPointage, [record.getsId]: value });
-    handleAddPointage(record.getsId,value)
-    // if(value==="A"){
-    // handleAddPointage(record.getsId,"A"); }
-    // else if(value==="W"){
-    //   handleAddPointage(record.getsId,"W"); }
-    //   else if(value==="WS"){
-    //     handleAddPointage(record.getsId,"WF"); }
-
+    handleUpdatePointage(record.getsId, value);
+    setEditingRecord(null);
   };
 
-  const handleAddPointage = async (code, pointage) => {
+  const handleUpdatePointage = async (code, pointage) => {
     try {
       const bodyData = {
         date: formattedPickerValue,
-        pointage: pointage
+        pointage: pointage,
       };
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/sheetSite/add?id=${code}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(bodyData)
-      });
+      const response = await fetch(
+        `https://dev-gateway.gets-company.com/api/v1/sheetSite/update?id=${code}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(bodyData),
+        }
+      );
 
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
 
       const responseData = await response.json();
-      console.log('Pointage ajouté avec succès:', responseData);
+      console.log('Pointage mis à jour avec succès:', responseData);
     } catch (error) {
-      console.error("Erreur lors de l'ajout du pointage:", error);
+      console.error("Erreur lors de la mise à jour du pointage:", error);
     }
   };
 
@@ -57,56 +64,67 @@ const OrderTable = ({ orderData, pickerValue }) => {
       title: 'Gets Id',
       dataIndex: 'getsId',
       key: 'getsId',
-      fixed: 'left',
-      width: 80,
+   
     },
     {
       title: 'Full Name',
       dataIndex: 'name',
       key: 'name',
-      fixed: 'left',
-      width: 90,
+   
       render: (name) => <Tooltip title={name}>{name}</Tooltip>,
     },
     {
-      title: 'Time Pointages',
+      title: 'Time Attendance',
       dataIndex: 'Pointages',
       key: 'Pointages',
-      fixed: 'left',
-      width: 90,
+   
       render: (text, record) => (
         <div>
-          {selectedPointage[record.getsId] ? (
-            selectedPointage[record.getsId]
+          {selectedPointage[record.getsId] && editingRecord !== record.getsId ? (
+             <span >
+              {selectedPointage[record.getsId]} 
+            </span>
           ) : (
             <Select
               style={{ width: 120 }}
-              defaultValue="Select Pointage"
+              defaultValue={selectedPointage[record.getsId] || "Select Time Sheet"}
               onChange={(value) => handlePointageChange(value, record)}
             >
-              <Option value="Select Pointage" disabled>Default</Option>
-              <Option value="S">S</Option>
-              <Option value="A">A</Option>
-              <Option value="WS">WS</Option>
-              <Option value="TG">TG</Option>
-              <Option value="TB">TB</Option>
-              <Option value="SIC">SIC</Option>
+              <Option value="Select Time Sheet" disabled>Default</Option>
+              <Option value="S">Standby</Option>
+              <Option value="A">Absent</Option>
+              <Option value="WS">Working Site</Option>
+              <Option value="TG">Travel Go</Option>
+              <Option value="TB">Travel Back</Option>
+              <Option value="SIC">SICk Days</Option>
             </Select>
           )}
         </div>
       ),
     },
+    {
+      title: 'Action',
+      dataIndex: 'Action',
+      key: 'Action',
+      render: (text, record) => (
+        <span>
+          <EditOutlined className="iconeEditTime" onClick={() => setEditingRecord(record.getsId)} />
+        </span>
+      ),
+    },
   ];
 
   return (
+    <div style={{minHeight:"14rem"}}>
     <Table
       columns={columns}
       dataSource={orderData}
-      scroll={{ x: 1500, y: 1000 }}
+      scroll={{ x: "auto", y:tableHeight }}
       pagination={false}
       rowKey="getsId"
       bordered
     />
+    </div>
   );
 };
 

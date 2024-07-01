@@ -39,6 +39,7 @@ const Dashboards = () => {
   const [{ apiData: crmData }] = useGetDataApi('/dashboard/crm');
   const [passportExpered, setPassportExpered] = useState([]);
   const [visaExpered, setVisaExpered] = useState([]);
+  const user = localStorage.getItem("role");
   const handlePageChangeOffice = (page) => {
     setCurrentPage(page);
   };
@@ -69,8 +70,6 @@ const Dashboards = () => {
     };
   }, []);
 
-
-
   const fetchFilteredRecruitement = async (filterValue) => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/filterByPosition?position=${filterValue}`);
@@ -93,8 +92,18 @@ const Dashboards = () => {
   };
 
   useEffect(() => {
-    fetchEmployeesByType();
-    fetchCountRecruitement()
+    if(user.includes("admin")){
+      fetchEmployeesByType();
+      fetchCountRecruitement()
+    }
+    else{
+      fetchEmployeesByEmployees();
+      fetchEmployeesEmail()
+      fetchCountRecruitement()
+
+    }
+ 
+   
   }, [currentPage, pageSize]);
 
   const fetchCountRecruitement = async () => {
@@ -129,10 +138,8 @@ const Dashboards = () => {
     }
   };
 
-  const fetchEmployeesByType = async (type) => {
-
+  const fetchEmployeesByType = async () => {
     try {
-     
       
       const endPoint = process.env.NODE_ENV === 'development' ? 'https://dev-gateway.gets-company.com' : '';
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/listBypage?page=${currentPage}&size=${pageSize}&sortBy=recruttrequestDate`,
@@ -148,6 +155,55 @@ const Dashboards = () => {
       }
       const data = await response.json();
       setDatarecruitement(data);
+      return data;
+    
+    }
+    catch (error) {
+      console.error(`Error fetching ${type} employees:`, error);
+      return [];
+    }
+
+  };
+  const userEmail = localStorage.getItem("email");
+  console.log("userEmail ", userEmail);
+
+  // Project By email
+  const fetchEmployeesEmail = async () => {
+    try {
+      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?mail=${userEmail}`;
+      const response = await fetch(url, {
+        method: "GET",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log("ccccc",data)
+      } else {
+        console.error("Erreur lors de la récupération du email:", response.status);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la récupération du email:", error);
+    }
+  };
+  const fetchEmployeesByEmployees = async () => {
+    try {
+      
+      const endPoint = process.env.NODE_ENV === 'development' ? 'https://dev-gateway.gets-company.com' : '';
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch employees');
+      }
+      const data = await response.json();
+
+
+      
+     
       return data;
     
     }
@@ -201,17 +257,9 @@ const Dashboards = () => {
 
   }
 
-
-
-
   //End Passourt Expired
 
-  
 
-
-
-
-  const user = localStorage.getItem("role");
   const items = [
     {
       label: 'Recruitment',
@@ -296,10 +344,13 @@ const Dashboards = () => {
       {metricsData ? (
         <AppRowContainer ease={'easeInSine'}>
           {crmData?.stateData?.map((data) => (
-            <Col key={data.id} xs={24} sm={12} lg={6}>
-              <StatsDirCard data={data} />
-            </Col>
+            (!data.showForRoles || data.showForRoles.includes(role)) && (
+              <Col key={data.id} xs={24} sm={12} lg={6}>
+                <StatsDirCard data={data} />
+              </Col>
+            )
           ))}
+   
         </AppRowContainer>
       ) : null}
       <AppsContainer
