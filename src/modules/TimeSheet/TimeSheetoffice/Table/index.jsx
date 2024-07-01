@@ -26,21 +26,65 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
       width: 80,
     },
     {
-      title: 'Full Name',
-      dataIndex: 'name',
-      key: 'name',
-      fixed: 'left',
-      width: 200,
-      render: (name) => <Tooltip title={name}>{name}</Tooltip>,
+      title:  <table style={{backgroundColor:"#fafafa"}}>
+      <thead>
+        <tr>
+          <th style={{ fontSize: "1.5rem" }}>Year</th>
+          {/* <th style={{ fontSize: "1.5rem" }}> Month</th> */}
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style={{ fontSize: "1rem" }}>{currentMonthName}</td>
+          {/* <td style={{ fontSize: "1rem" }}>{selectedYear}</td> */}
+        </tr>
+      </tbody>
+    </table>,
+     
+      children: [
+        {
+          title: 'Full Name',
+          dataIndex: 'name',
+          key: 'name',
+          fixed: 'left',
+          width: 200,
+          render: (name) => <Tooltip title={name}>{name}</Tooltip>,
+        },
+     
+        
+      ],
     },
     {
-      title: 'Position',
-      dataIndex: 'position',
-      key: 'position',
-      fixed: 'left',
-      width: 150,
+      title:  <table style={{backgroundColor:"#fafafa"}}>
+      <thead>
+        <tr>
+          {/* <th style={{ fontSize: "1.5rem" }}>Year</th> */}
+         <th style={{ fontSize: "1.5rem" }}> Month</th> 
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          {/* <td style={{ fontSize: "1rem" }}>{currentMonthName}</td> */}
+          <td style={{ fontSize: "1rem" }}>{selectedYear}</td> 
+        </tr>
+      </tbody>
+    </table>,
      
+      children: [
+        {
+          title: 'Position',
+          dataIndex: 'position',
+          key: 'position',
+          fixed: 'left',
+          width: 150,
+         
+        },
+     
+        
+      ],
     },
+    
+   
     ...currentMonthDays.map(day => {
       const date = moment({ year: selectedYear, month: selectedMonth - 1, day });
       const dayName = date.format('dddd');

@@ -22,6 +22,7 @@ const TotalLocation = ({totalVisitors,totalTravels}) => {
     <AppLoader />
   ) : (
     <AppAnimate animation='transition.slideUpIn' delay={200} >
+
       <AppRowContainer delay={150}>
         <Col lg={24} xl={24} style={{padding:"2rem"}}>
           <TotalVisitor totalVisitors={totalVisitors} totalTravels={totalTravels} />

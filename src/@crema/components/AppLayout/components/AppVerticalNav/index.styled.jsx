@@ -6,6 +6,7 @@ export const StyledVerticalNav = styled(Menu)`
   padding-top: 8px;
   padding-bottom: 8px;
 
+  overflow-y: auto;
   & .ant-menu-submenu-title:active,
   & .ant-menu-item.ant-menu-item-selected,
   & .ant-menu-item:not(.ant-menu-item-selected):active {

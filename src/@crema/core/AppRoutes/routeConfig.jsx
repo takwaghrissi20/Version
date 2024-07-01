@@ -94,6 +94,12 @@ const routesConfig = [
         icon: <GrUserAdmin />,
         children: [
           {
+            id: "Add Project",
+            title: "Add Project",
+            messageId: "sidebar.hr.AddProject",
+            url: "/HrDataBase/Add_Project",
+          },
+          {
             id: "SAMMARY",
             title: "SAMMARY",
             messageId: "sidebar.hr.Sammuary",

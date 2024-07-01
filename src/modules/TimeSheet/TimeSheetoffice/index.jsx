@@ -290,7 +290,7 @@ const TimeSheetOffice = () => {
         <Space style={{ margin: '1rem', display: 'flex', justifyContent: 'space-between', width: '100%', }}>
         
         </Space>
-        <table style={{ marginTop: "2rem",marginLeft:"4.5rem",backgroundColor:"#fafafa"}}>
+        {/* <table style={{ marginTop: "2rem",marginLeft:"4.5rem",backgroundColor:"#fafafa"}}>
           <thead>
             <tr>
               <th style={{ fontSize: "1.5rem" }}>Year</th>
@@ -303,7 +303,7 @@ const TimeSheetOffice = () => {
               <td style={{ fontSize: "1rem" }}>{selectedYear}</td>
             </tr>
           </tbody>
-        </table>
+        </table> */}
         {isDropdownOpen && filterType === 'name' && (
           <List
             style={{
@@ -327,7 +327,7 @@ const TimeSheetOffice = () => {
             )}
           />
         )}
-        <OrderTable orderData={nameFilter ? employeesFiltered : employeesOffice} selectedMonth={selectedMonth} selectedYear={selectedYear} />
+        <OrderTable currentMonthName={currentMonthName} orderData={nameFilter ? employeesFiltered : employeesOffice} selectedMonth={selectedMonth} selectedYear={selectedYear} />
       </AppCard>
       <StyledOrderHeaderRight>
         <Pagination
