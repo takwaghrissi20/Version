@@ -304,7 +304,7 @@ const AddTravel = () => {
           dateTravelDesert: travelDesert,
           tripTypeDesert: typetripdessert,
           idendityCopy: urlCopy,
-          inputDate:dateInput,
+          inputDate:formattedDate,
           endDateMiss:endDateMiss
           // exitrentry //Ajouter
 
@@ -587,12 +587,18 @@ const AddTravel = () => {
                 <Col xs={24} md={12}>
                   <Form.Item label='Date' name='Date :'
                   >
-                     <DatePicker
+                     <Input
+                        //defaultValue={new Date()} 
+                        placeholder={formattedDate}
+                        readOnly
+
+                      />
+                     {/* <DatePicker
                       style={{ width: "100%", height: "30px" }}
                       defaultValue={dateInput ? dayjs(formattedDate, 'YYYY-MM-DD') : null}
                       value={formattedDate ? dayjs(formattedDate, 'YYYY-MM-DD') : null}
                       onChange={(value) => setDateInput(value ? dayjs(value).format('YYYY-MM-DD') : '')}
-                    />
+                    /> */}
                     {/* <DatePicker
                       style={{ width: "100%", height: "30px" }}
                       placeholder='YYYY-MM-DD'

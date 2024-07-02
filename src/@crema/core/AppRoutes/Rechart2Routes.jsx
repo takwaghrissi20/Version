@@ -17,6 +17,7 @@ import HeadOfficeEmployees from '../../../modules/HeadEmployeesSite';
 import ManpowerAllocationPerProject from '../../../modules/VisaAndTravel/visa/ManpowerAllocationPerProject';
 import PersonOnBoard from '../../../modules/PersonOnBoard';
 import Mission from '../../../modules/VisaAndTravel/visa/Mission';
+import Travel from '../../../modules/VisaAndTravel/visa/AllTravel';
 import InternalMission from '../../../modules/VisaAndTravel/visa/InternalMission';
 import AllMission from '../../../modules/VisaAndTravel/visa/AllMission';
 import AllMissionExtention from '../../../modules/VisaAndTravel/visa/AllMissionExtention';
@@ -35,7 +36,8 @@ import DemobilizationDirect  from '../../../modules/DemobilizationDirect';
 import IdJosDesertPass  from '../../../modules/IDJOSDesetPass';
 import ReachedToSite from '../../../modules/DateReachSite';
 import AddTimeSheetsite from '../../../modules/TimeSheet/AddTimeSheetsite'
-
+import ViewTravel from '../../../modules/VisaAndTravel/visa/Viewtravel';
+import EditTravel from '../../../modules/VisaAndTravel/visa/Edittravel';
 
 
 export const recharts2Configs = [
@@ -43,13 +45,23 @@ export const recharts2Configs = [
     path: '/Hr/Visa/Mission',
     element: <Mission/>,
   },
+  {
+    path: '/Hr/Visa/AllTravel',
+    element: <Travel/>,
+  },
+  {
+    path: '/Hr/Visa/ViewTravel/:id',
+    element: <ViewTravel/>,
+  },
+  {
+    path: '/Hr/Visa/UpdateTravel/:id',
+    element: <EditTravel/>,
+  },
   ///Hr/Visa/InternalMission
   {
     path: '/Hr/Visa/InternalMission',
     element: <InternalMission/>,
   },
-
-
   ///Hr/Visa/InternalMission
   {
     path: '/Hr/Visa/MissionOrder',

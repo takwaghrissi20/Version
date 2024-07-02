@@ -90,19 +90,16 @@ const Dashboards = () => {
     setDatarecruitementFiltrer([]);
     setIsDropdownOpen(false);
   };
-
   useEffect(() => {
     if(user.includes("admin")){
       fetchEmployeesByType();
       fetchCountRecruitement()
     }
-    else{
+    else if(!user.includes("admin")){
       fetchEmployeesByEmployees();
       fetchEmployeesEmail()
       fetchCountRecruitement()
-
     }
- 
    
   }, [currentPage, pageSize]);
 
@@ -170,7 +167,7 @@ const Dashboards = () => {
   // Project By email
   const fetchEmployeesEmail = async () => {
     try {
-      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?mail=${userEmail}`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${userEmail}`;
       const response = await fetch(url, {
         method: "GET",
       });

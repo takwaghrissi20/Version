@@ -254,7 +254,12 @@ const routesConfig = [
             messageId: "sidebar.general.travel",
             url: "/Hr/Visa/Travel",
           },
-           
+          {
+            id: "Travel",
+            title: "Travel",
+            messageId: "sidebar.general.Alltravel",
+            url: "/Hr/Visa/AllTravel",
+          },
           {
             id: "VisaHealth",
             title: "VisaHealth",
