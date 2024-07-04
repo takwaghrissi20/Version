@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import AppsContainer from '../../../@crema/components/AppsContainer';
 import { useIntl } from 'react-intl';
 import AppsHeader from '../../../@crema/components/AppsContainer/AppsHeader';
@@ -7,7 +7,7 @@ import { Input, List, Col } from 'antd';
 import AppPageMeta from '../../../@crema/components/AppPageMeta';
 import Pagination from '../../../@crema/components/AppsPagination';
 import RecruitementTable from './RecruitementTable';
-import PassportExpired  from './PassportExpired';
+import PassportExpired from './PassportExpired';
 import VisaExpired from './VisaExpired';
 import AppRowContainer from '../../../@crema/components/AppRowContainer';
 import StatsDirCard from '../CommonComponents/StatsDirCard';
@@ -23,7 +23,7 @@ import { useGetDataApi } from '../../../@crema/hooks/APIHooks';
 const Dashboards = () => {
   const dropdownRef = useRef(null);
   const { messages } = useIntl();
- 
+
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [nameFilter, setNameFilter] = useState('');
@@ -35,18 +35,22 @@ const Dashboards = () => {
   const [datarecruitement, setDatarecruitement] = useState([]);
   const [datarecruitementFiltrer, setDatarecruitementFiltrer] = useState([]);
   const [count, setCount] = useState(0);
+  const [countId, setCountId] = useState(0);
   const [{ apiData: metricsData }] = useGetDataApi('/dashboard/metrics');
   const [{ apiData: crmData }] = useGetDataApi('/dashboard/crm');
   const [passportExpered, setPassportExpered] = useState([]);
   const [visaExpered, setVisaExpered] = useState([]);
+  const [idRec, setIdRec] = useState("");
+  const [listRecruitementId, setListRecruitementId] = useState([]);
   const user = localStorage.getItem("role");
+  console.log("userrrrr",user)
   const handlePageChangeOffice = (page) => {
     setCurrentPage(page);
   };
   const handlePositionFilterChange = (event) => {
     const filterValue = event.target.value.trim();
     setNameFilter(filterValue);
-   
+
     if (filterValue !== '') {
       clearTimeout(typingTimeout);
       const timeoutId = setTimeout(() => {
@@ -68,7 +72,7 @@ const Dashboards = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [listRecruitementId, idRec]);
 
   const fetchFilteredRecruitement = async (filterValue) => {
     try {
@@ -85,23 +89,12 @@ const Dashboards = () => {
   };
 
   const handleListItemClick = (item) => {
-   
+
     setNameFilter(item.position);
     setDatarecruitementFiltrer([]);
     setIsDropdownOpen(false);
   };
-  useEffect(() => {
-    if(user.includes("admin")){
-      fetchEmployeesByType();
-      fetchCountRecruitement()
-    }
-    else if(!user.includes("admin")){
-      fetchEmployeesByEmployees();
-      fetchEmployeesEmail()
-      fetchCountRecruitement()
-    }
-   
-  }, [currentPage, pageSize]);
+
 
   const fetchCountRecruitement = async () => {
     try {
@@ -120,14 +113,18 @@ const Dashboards = () => {
       if (!response.ok) {
         throw new Error('La requête a échoué Recruitement ' + response.status);
       }
-
       const contentType = response.headers.get('content-type');
       if (!contentType || !contentType.includes('application/json')) {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
+      setCount(data.length)
+      //////Filter les count de Data de idem
+      const dataRecruitement = data.filter(p=>p.idemp===idRec);
+      console.log("lenght",dataRecruitement)
 
-     setCount(data.length)
+      setCountId(dataRecruitement)
+
 
 
     } catch (error) {
@@ -137,7 +134,6 @@ const Dashboards = () => {
 
   const fetchEmployeesByType = async () => {
     try {
-      
       const endPoint = process.env.NODE_ENV === 'development' ? 'https://dev-gateway.gets-company.com' : '';
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/listBypage?page=${currentPage}&size=${pageSize}&sortBy=recruttrequestDate`,
         {
@@ -152,8 +148,9 @@ const Dashboards = () => {
       }
       const data = await response.json();
       setDatarecruitement(data);
+      
       return data;
-    
+
     }
     catch (error) {
       console.error(`Error fetching ${type} employees:`, error);
@@ -173,7 +170,8 @@ const Dashboards = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log("ccccc",data)
+        console.log("data?.getsId", data?.getsId)
+        setIdRec(data?.getsId)
       } else {
         console.error("Erreur lors de la récupération du email:", response.status);
       }
@@ -183,33 +181,50 @@ const Dashboards = () => {
   };
   const fetchEmployeesByEmployees = async () => {
     try {
-      
+      console.log("idRec", idRec)
       const endPoint = process.env.NODE_ENV === 'development' ? 'https://dev-gateway.gets-company.com' : '';
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list`,
+      ///const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list`,
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/getRecByGetsId?id=${idRec}&page=${currentPage}&size=${pageSize}`,
+
         {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
           },
         });
-
       if (!response.ok) {
         throw new Error('Failed to fetch employees');
       }
       const data = await response.json();
 
-
-      
-     
+      console.log("idRec", idRec)
+      console.log("Filtered Data List", data);
+      console.log("data List", data)
+      setListRecruitementId(data)
       return data;
-    
+
     }
     catch (error) {
-      console.error(`Error fetching ${type} employees:`, error);
+      console.error(`Error fetching Recruitement:`, error);
       return [];
     }
 
   };
+  useEffect(() => {
+    if(user.includes("admin") || (user.includes('Administrator'))) {
+      console.log("admiiinnn or Administrator")
+      fetchEmployeesByType();
+      fetchCountRecruitement()
+      // fetchCountRecruitement()
+    }
+    else if ((!user.includes("admin"))  ) {
+      console.log("Not admiiinnn")
+      fetchEmployeesEmail()
+      fetchEmployeesByEmployees();
+
+    }
+
+  }, [currentPage, pageSize, idRec]);
   //Passport Expired
   const fetchExpiredVisa = async () => {
     try {
@@ -266,7 +281,7 @@ const Dashboards = () => {
           <>
             <AppsHeader key={'wrap'}>
               <StyledCustomerHeader>
-              <StyledCustomerInputView>
+                <StyledCustomerInputView>
                   <Input.Search
                     placeholder="Search by position"
                     value={nameFilter}
@@ -290,16 +305,37 @@ const Dashboards = () => {
             <RecruitementTable
               loading={loading}
               AllRecruitement={datarecruitement}
+              listRecruitementId={listRecruitementId}
             />
-            <div className='Pagination' >
-              <StyledCustomerHeaderRight>
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={Math.ceil(count / pageSize)}
-                  handlePageChange={handlePageChangeOffice}
-                />
-              </StyledCustomerHeaderRight>
-            </div>
+            {user.includes('admin') || user.includes('Administrator') && (
+            <>
+          
+              <div className='Pagination' >
+                <StyledCustomerHeaderRight>
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={Math.ceil(count / pageSize)}
+                    handlePageChange={handlePageChangeOffice}
+                  />
+                </StyledCustomerHeaderRight>
+              </div>
+              </>
+            )}
+            {!user.includes('admin') || !user.includes('Administrator')   && (
+              
+
+              <div className='Pagination' >
+                <StyledCustomerHeaderRight>
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={Math.ceil(count / pageSize)}
+                    handlePageChange={handlePageChangeOffice}
+                  />
+                </StyledCustomerHeaderRight>
+              </div>
+              
+
+            )}
           </>
 
 
@@ -309,28 +345,28 @@ const Dashboards = () => {
     ...(!user.includes('Manager') ? [{
       label: 'Passport Expired',
       key: '2',
-      children:    
-       <>
-      <AppsHeader key={'wrap'}>
-   
-      </AppsHeader>
-      <PassportExpired loading={loading} passportExpered={passportExpered} />
+      children:
+        <>
+          <AppsHeader key={'wrap'}>
 
-    </>,
+          </AppsHeader>
+          <PassportExpired loading={loading} passportExpered={passportExpered} />
+
+        </>,
     }] : []),
     ...(!user.includes('Manager') ? [{
       label: 'Visa Expired',
       key: '3',
-      children:    
-       <>
-      <AppsHeader key={'wrap'}>
-   
-      </AppsHeader>
-      <VisaExpired loading={loading} VisaExpired={visaExpered} />
+      children:
+        <>
+          <AppsHeader key={'wrap'}>
 
-    </>,
+          </AppsHeader>
+          <VisaExpired loading={loading} VisaExpired={visaExpered} />
+
+        </>,
     }] : []),
-   
+
 
   ];
 
@@ -338,6 +374,7 @@ const Dashboards = () => {
   return (
     <>
       <AppPageMeta title='Dashboards' />
+      <>
       {metricsData ? (
         <AppRowContainer ease={'easeInSine'}>
           {crmData?.stateData?.map((data) => (
@@ -347,9 +384,10 @@ const Dashboards = () => {
               </Col>
             )
           ))}
-   
+
         </AppRowContainer>
       ) : null}
+      </>
       <AppsContainer
         title={messages['dashboard.dashbord.RequireAttention']}
         fullView

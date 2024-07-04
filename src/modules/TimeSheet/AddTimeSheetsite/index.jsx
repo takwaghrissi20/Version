@@ -1,48 +1,41 @@
 import React, { useEffect, useState } from 'react';
-import { Card, List, Input, Select, Space, Dropdown, Button, Menu, Row, Col } from 'antd';
+import { Row, Col, Button, Select } from 'antd';
 import moment from 'moment';
-import { FcEmptyFilter } from 'react-icons/fc';
-import AppPageMeta from '../../../@crema/components/AppPageMeta';
-import AppCard from '../../../@crema/components/AppCard';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { FaRegCalendarAlt } from 'react-icons/fa';
 import OrderTable from './Table';
 import Pagination from '../../../@crema/components/AppsPagination';
-import { StyledOrderHeaderRight, StyledCustomerInputView } from '../../../styles/index.styled';
-import { FaRegCalendarAlt } from "react-icons/fa";
-import { IoFilterSharp } from "react-icons/io5";
-import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
-
+import { StyledOrderHeaderRight } from '../../../styles/index.styled';
+import AppPageMeta from '../../../@crema/components/AppPageMeta';
+import AppCard from '../../../@crema/components/AppCard';
 const AddTimeSheetSite = () => {
   const [employeesSite, setEmployeesSite] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1); // Commence à 1 pour la pagination
-  const [pageSize, setPageSize] = useState(10); // Taille par défaut de la page
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
   const [selectedMonth, setSelectedMonth] = useState(moment().month() + 1);
   const [selectedYear, setSelectedYear] = useState(moment().year());
-  const [filterDate, setFilterDate] = useState(new Date(selectedYear, selectedMonth - 1));
+  const [filterDate, setFilterDate] = useState(new Date());
   const [projects, setProjects] = useState([]);
-  const [selectedProject, setSelectedProject] = useState("All Projects");
-  const [showFilters, setShowFilters] = useState(false);
-  const currentDate = new Date();
+  const [selectedProject, setSelectedProject] = useState('All Project');
+  const [selectedPointage, setSelectedPointage] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchEmployeesByType();
-  }, [currentPage, pageSize, selectedProject]); // Ne plus surveiller selectedMonth, selectedYear, filterDate ici
+  }, [currentPage, pageSize, selectedProject]);
 
   const fetchEmployeesByType = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/list`);
       const data = await response.json();
-      const filteredData = data.filter(item =>
-        item.rich_DateToSite !== null && new Date(item.endDateMiss) > filterDate &&
-        (selectedProject === "All Projects" || item.projName === selectedProject)
-      );
+      const filteredData = data.filter(item => item.rich_DateToSite !== null && new Date(item.endDateMiss) > filterDate);
 
       const projectNames = [...new Set(data.map(item => item.projName))];
-      setProjects(["All Projects", ...projectNames]);
+      setProjects(['All Projects', ...projectNames]);
       setTotalRecords(filteredData.length);
 
-      // Calculer l'index de départ pour la pagination
       const startIndex = (currentPage - 1) * pageSize;
       const endIndex = startIndex + pageSize;
       const paginatedData = filteredData.slice(startIndex, endIndex);
@@ -52,11 +45,11 @@ const AddTimeSheetSite = () => {
     }
   };
 
-  const handlePageChange = (page) => {
+  const handlePageChange = page => {
     setCurrentPage(page);
   };
 
-  const handleMonthChange = (date) => {
+  const handleMonthChange = date => {
     if (date) {
       const newMoment = moment(date);
       setSelectedMonth(newMoment.month() + 1);
@@ -65,28 +58,44 @@ const AddTimeSheetSite = () => {
     }
   };
 
-  const handleFilterClick = () => {
-    fetchEmployeesByType(); // Appel du filtrage lors du clic sur le bouton "Filter"
+  const handleFilterPointage = () => {
+    fetchPointages();
   };
 
-  const handleProjectChange = (value) => {
+  const handleProjectChange = value => {
     setSelectedProject(value);
   };
 
-  const toggleFilters = () => {
-    setShowFilters(!showFilters);
+  const fetchPointages = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/sheetSite/all`);
+      const data = await response.json();
+      const testdate = moment(filterDate).format('YYYY-MM-DD');
+      const filteredData = data.filter(item => item.date === testdate);
+      const pointageData = filteredData.reduce((acc, item) => {
+        acc[item.getsId] = item.pointage;
+        return acc;
+      }, {});
+      setSelectedPointage(pointageData);
+    } catch (error) {
+      console.error('Error fetching pointages:', error);
+    }
+    finally {
+      setTimeout(() => {
+        setLoading(false); // Désactiver le chargement après 1 seconde
+      }, 1000);
+    }
   };
 
   return (
+    <>
     <div className='site-statistic-demo-card'>
       <AppPageMeta title='Time Sheet Site' />
       <AppCard
         className='no-card-space-ltr-rtl'
         title={`Add Site Time Sheet`}>
 
-        <IoFilterSharp style={{ color: "#0083ff", fontSize: "1rem", marginLeft: "1rem", marginBottom: "1rem" }} onClick={toggleFilters} />
-
-        {showFilters && (
           <Row style={{ marginTop: '0.5rem' }}>
             <Col className="calendar" style={{ display: "flex", zIndex: 10, marginLeft: '3rem', marginBottom: "1rem" }} span={15}>
               <div className="datepicker-wrapper">
@@ -99,7 +108,10 @@ const AddTimeSheetSite = () => {
                   className="custom-datepicker"
                 />
               </div>
-              <Button type="primary" style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }} onClick={handleFilterClick}>Filter </Button>
+              <Button type="primary" style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}  onClick={fetchPointages}>Filter</Button>
+              {/* <Button type="primary" style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }} 
+                      
+              >Filter </Button> */}
               <Select
                 placeholder="Select Project"
                 onChange={handleProjectChange}
@@ -114,11 +126,12 @@ const AddTimeSheetSite = () => {
               </Select>
             </Col>
           </Row>
-        )}
 
-        <OrderTable orderData={employeesSite} />
+        <OrderTable 
+        selectedPointage={selectedPointage}
+        loading={loading}
+        setSelectedPointage={setSelectedPointage}orderData={employeesSite} filterDate={filterDate} />
       </AppCard>
-
       <StyledOrderHeaderRight>
         <Pagination
           currentPage={currentPage}
@@ -127,6 +140,8 @@ const AddTimeSheetSite = () => {
         />
       </StyledOrderHeaderRight>
     </div>
+
+    </>
   );
 };
 

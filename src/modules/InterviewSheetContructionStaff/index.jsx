@@ -22,6 +22,7 @@ const InterviewSheetById = () => {
 
   const [activeTabKey, setActiveTabKey] = useState('1');
   const [isSaveDisabled, setIsSaveDisabled] = useState(false);
+  const roles = localStorage.getItem("role");
   const items = [
     {
       label: 'INTERVIEW SHEET CONSTRUCTION TEAM ',
@@ -30,13 +31,15 @@ const InterviewSheetById = () => {
         // isSaveDisabled={activeTabKey !== '1'}
         totalNumber={totalNumber} level={level} projectName={projectName} position={position}
         isSaveDisabled={isSaveDisabled}
-
-      ></InterviewSheet>,
+        roles={roles} ></InterviewSheet>,
     }, // remember to pass the key prop
     {
       label: 'INTERVIEW ASSESMENT SHEET ',
       key: '2',
-      children: <AssignementConstruction isSaveDisabled={true}></AssignementConstruction>,
+      children: <AssignementConstruction isSaveDisabled={true}
+      roles={roles}
+      
+      ></AssignementConstruction>,
     },
 
 

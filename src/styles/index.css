@@ -391,6 +391,18 @@ line-height:1rem;
   height: 25px;
   cursor: pointer;
 }
+.iconeEditTimeSheet{
+  display: flex;
+  border: solid 1px #0083ff;
+  border-radius: 50%;
+  color: #0083ff;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+
+
+
+}
 
 .Separateur{
   width:10px;
@@ -852,6 +864,12 @@ input{
     background-color: lightblue; 
     text-align: center; 
     line-height: 36px; 
+  }
+  .pointageContainer {
+    display: flex;
+    align-items: center; 
+  
+    padding: 4px; 
   }
   
 

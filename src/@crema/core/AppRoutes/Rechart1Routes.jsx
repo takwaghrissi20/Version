@@ -1,5 +1,6 @@
 import React from 'react';
 import ComposedChart from '../../../modules/VisaAndTravel/visa/Composed';
+import Vacation from '../../../modules/Vacation/AddVacation'
 
 
 
@@ -7,7 +8,7 @@ import ComposedChart from '../../../modules/VisaAndTravel/visa/Composed';
 export const recharts1Configs = [
   {
     path: '/Hr/Vacation&Leave/Vacation',
-    element: <ComposedChart />,
+    element: < Vacation />,
   },
   {
     path: '/Hr/Vacation&Leave/Leave',

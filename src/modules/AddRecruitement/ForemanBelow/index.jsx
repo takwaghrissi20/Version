@@ -52,7 +52,8 @@ const AddRecruitementForemanBelow = () => {
   const [modalWarning, setModalWarning] = useState(false);
   const [dateInput, setDateInput] = useState(new Date());
   const [selectedLieu, setSelectedLieu] = useState('');
-  
+  const userRole=localStorage.getItem("role")
+
   const handlePlaceSelect = (value) => {
     setSelectedLieu(value);
 
@@ -69,7 +70,7 @@ const AddRecruitementForemanBelow = () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}`, {
-        method: 'POST',
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -434,7 +435,8 @@ const AddRecruitementForemanBelow = () => {
          signatureBod: isOkBod,
          notif: 2,
          dep: profile?.departement,
-         dateInputRecrut:formattedDate
+         dateInputRecrut:formattedDate,
+         status:"pending"
 
         })
       });
@@ -519,7 +521,8 @@ const AddRecruitementForemanBelow = () => {
           signatureBod: isOkBod,
           notif: 8,
           dep: profile?.departement,
-          dateInputRecrut:formattedDate
+          dateInputRecrut:formattedDate,
+          status:"Pending Approves Operation Manager"
 
         })
       });
@@ -603,7 +606,8 @@ const AddRecruitementForemanBelow = () => {
         signatureBod: isOkBod,
         notif: 7,
         dep: profile?.departement,
-        dateInputRecrut:formattedDate
+        dateInputRecrut:formattedDate,
+        status:"Pending Approved BOD"
 
       })
     });
@@ -687,7 +691,8 @@ const SaverecrutementProjectLeader = async () => {
         signatureBod: isOkBod,
         notif: 6,
         dep: profile?.departement,
-        dateInputRecrut:formattedDate
+        dateInputRecrut:formattedDate,
+        status:"Pending Approved HOD"
 
       })
     });
@@ -701,6 +706,7 @@ const SaverecrutementProjectLeader = async () => {
     if (response.ok) {
 
       const responseData = await response.json();
+      console.log("opration reponse project Leader",responseData)
       form.resetFields();
       openNotification('bottomRight')
 
@@ -728,31 +734,40 @@ const SaverecrutementProjectLeader = async () => {
 };
 
 const BeforeSaveRecruitement = () => {
+  console.log("dep",dep)
   //setIsModalVisible(true)
   form.validateFields([ 'DateRequestor', 'ProjectName', 'ProjectCode'
     , 'DateDesiredRecruitement', 'position', 'RequiredLevel', 'Desiredyearsexperience', 'Numbervacancies',
 
   ]).then(values => {
     //onSave(true)
-    if ((!profile?.departement?.includes('operation')) && (!profile?.departement?.includes('Engineering'))) {
+    if ((!dep?.includes('Operation')) && (!dep?.includes('Engineering'))) {
+      console.log("dep33eee",dep)
       Saverecrutement();
   }
   
-    else if( profile?.departement?.includes('Engineering')&& userRole?.includes('Engineering')){
+    else if( dep?.includes('Engineering') && userRole?.includes('Engineering')){
       console.log("Engineering")
       SaverecrutementEngineer()
 
     }
-    else if( profile?.departement?.includes('operation') && userRole?.includes('Operation')){
-      console.log("Operation  Manager")
+    else if( dep?.includes("Operation") && userRole?.includes('Operation')){
+      console.log("Operation  Manager",dep)
       Saverecrutementopeartion()
 
     }
-    else if( profile?.departement?.includes('operation') && userRole?.includes('Leader')){
-      console.log("Operation  Manager")
+    else if(dep?.includes("Operation")&& userRole?.includes('Leader')){
+      console.log("dep33",dep)
       SaverecrutementProjectLeader()
-
     }
+    else
+    return null
+    // if( profile?.departement?.includes('Operation') && userRole?.includes('Leader')){
+    //   console.log("project Leader jjj",userRole)
+    //   //SaverecrutementProjectLeader()
+
+    // }
+   
     // else if( profile?.departement?.includes('operation')){
     //   console.log("Operation  Manager")
     //   Saverecrutementopeartion()
@@ -964,7 +979,6 @@ const BeforeSaveRecruitement = () => {
                       //defaultValue={new Date()} 
                       // defaultValue={dayjs(desiredrecruitementDate, '2024-01-01')}
                       placeholder="YYYY-MM-DD"
-
                       style={{ width: "100%", height: "30px" }}
                       onChange={(value) => setDesiredrecruitementDate(dayjs(value).format('YYYY-MM-DD'))}
                     />

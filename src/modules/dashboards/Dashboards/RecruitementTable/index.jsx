@@ -11,7 +11,7 @@ import { Table, Tooltip } from 'antd';
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
 import IntlMessages from '../../../../@crema/helpers/IntlMessages';
-const OrderTable = ({ loading,AllRecruitement}) => {
+const OrderTable = ({ loading,AllRecruitement, listRecruitementId}) => {
   const [findIdData, setFindIdData] = useState(null);
   const [isViewRecruitement, onViewRecruitement] = useState(false);
   const [isEditRecruitement, onEditRecruitement] = useState(false);
@@ -31,7 +31,7 @@ const OrderTable = ({ loading,AllRecruitement}) => {
     return () => {
       window.removeEventListener('resize', updateTableHeight);
     };
-  }, []);
+  }, [listRecruitementId]);
     //View Recruitement
     const handleAddRecruitementOpen = () => {
       navigate(`/Hr/Recruitement&Interview/Recruitement/View/codeJob=${id}`, {
@@ -133,10 +133,19 @@ const OrderTable = ({ loading,AllRecruitement}) => {
 
     onDeleteRecruitement(true);
   };
+  const userRoles = localStorage.getItem("role");
+
   const items = [
     { key: 1, label: <span style={{ fontSize: 14 }}>View </span>, onClick: handleAddRecruitementOpen },
-    { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditRecruitementOpen },
-    { key: 2, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteRecruitement },
+    ...(userRoles.includes('admin') ? [
+      { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditRecruitementOpen },
+      { key: 3, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteRecruitement }
+    ] : [])
+    // { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>,
+   
+    
+    // onClick: handleEditRecruitementOpen },
+    // { key: 2, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteRecruitement },
     // { key: 3, label: <span style={{ fontSize: 14 }}>generate the interview sheet</span>, onClick: handleAddInterviewSheet },
   ];
   const DeleteRecruitement = async () => {
@@ -379,25 +388,62 @@ const OrderTable = ({ loading,AllRecruitement}) => {
     }
   ];
   const user = localStorage.getItem("role");
+  console.log("listRecruitementId",listRecruitementId)
   return (
-    <>
-      {user.includes('It') && (
-    <p>IT</p>
-   
-  )}
-  {user.includes('admin') && (
+    <> 
+{/* {(!user.includes('admin')) ||(!user.includes('Administrator')) && (
+  <StyledOrderTable
+    hoverColor
+    data={listRecruitementId}
+    loading={loading}
+    columns={columns}
+    scroll={{ x: 'auto', y: tableHeight }}
+  />  
+)}
+{user.includes('admin')  && (
  <StyledOrderTable
       hoverColor
       data={AllRecruitement}
       loading={loading}
       columns={columns}
       scroll={{ x: 'auto',  y: tableHeight }}
-      //scroll={{ x: 'auto', y: 150 }}
-
-
+      //scroll={{ x: 'auto', y: 150 }
     />
    
-  )}
+  )} */}
+{/**/}
+{(user.includes('admin')) ||(user.includes('Administrator'))?
+  <StyledOrderTable
+      hoverColor
+      data={AllRecruitement}
+      loading={loading}
+      columns={columns}
+      scroll={{ x: 'auto',  y: tableHeight }}
+      //scroll={{ x: 'auto', y: 150 }
+    />
+
+
+:
+<StyledOrderTable
+hoverColor
+data={listRecruitementId}
+loading={loading}
+columns={columns}
+scroll={{ x: 'auto', y: tableHeight }}
+/> 
+
+
+
+}
+
+
+
+
+{/**/}
+
+
+
+
    {isDelteRecruitement? (
         <ConfirmationModal
           open={isDelteRecruitement}

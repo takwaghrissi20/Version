@@ -107,6 +107,24 @@ const AppVerticalNav = ({ routesConfig }) => {
           return false; 
         }
       }
+      if (userRole.includes("Administrator")) {
+        if (item.id === "VisaHealth" ||
+            item.id === "attendance" ||
+            item.id === "ManpowerLocation" || 
+            item.id === "ManpowerEvaluation" ||
+            item.id === "Site Clerk"  ||
+            item.id === "PROJECTS TRIP TRACK RECORD "
+            // item.id === "Employees"  ||
+            // item.id === "attendance" ||
+            // item.id === "VacationLeave"  ||
+            // item.id === "ManpowerEvaluation" ||
+            // item.id === "Site Clerk"  ||
+            // item.id === "PROJECTS TRIP TRACK RECORD "                           
+          )
+           {
+          return false; 
+        }
+      }
       else if (userRole.includes("admin")) {
         if (
             item.id === ""   
@@ -132,7 +150,17 @@ const AppVerticalNav = ({ routesConfig }) => {
           return false; 
         }
       }
- 
+      else if (userRole.includes("Administrator")) {
+        if (item.id === "Add Project" ||
+            item.id === "AddEmployees" ||
+            item.id === "CategoryContract" ||
+            item.id === "contractList"  ||
+             item.id === "Add Recruitment"
+        )
+             {
+          return false; 
+        }
+      }
   
       return true;
     });

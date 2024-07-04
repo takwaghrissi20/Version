@@ -40,16 +40,17 @@ const EditRecruitementAbove = () => {
   const notif = location.state ? location.state.notif : null
   const dateInputRecrut = location.state ? location.state.dateInputRecrut : null
   console.log("testttt notif", notif)
+  console.log("testttt notif33333", dep)
   const userRoles = localStorage.getItem("role");
 
   const Back = async () => {
-    if (userRoles.includes("bod")){
+    if (userRoles.includes("bod")) {
       cancelRecruitementBod()
     }
-    if (userRoles.includes("admin")){
-    navigate(-1)
+    if (userRoles.includes("admin")) {
+      navigate(-1)
     }
-   
+
 
   };
   const cancelRecruitementBod = async () => {
@@ -80,7 +81,7 @@ const EditRecruitementAbove = () => {
           totalNumber: Numbervacancies,
           experience: Level,
           nbExperience: nbExperience,
-          type: "Above Foreman",
+          type: type,
           affectedTo: affectedTo,
           certif: certif,
           bod: null,
@@ -102,7 +103,7 @@ const EditRecruitementAbove = () => {
         const responseData = await response.text();
         openRefuseNotificationBOD('bottomRight')
         console.log("updataaaa planner", responseData)
-         navigate(-1)
+        navigate(-1)
 
         //handleAddContactClose(true)
       }
@@ -112,7 +113,7 @@ const EditRecruitementAbove = () => {
       console.error("Erreur lors de la récupération du Id :", error);
     }
   }
-  
+
   const [newdesiredDate, setNewDesiredDate] = useState(DesiredDate);
   const [newdep, setNewdep] = useState(dep);
   const [newidemp, setNewidemp] = useState(idemp);
@@ -191,7 +192,7 @@ const EditRecruitementAbove = () => {
     setNewCheckedBod(e.target.checked)
 
   }
-  
+
   const openNotification = () => {
     notification.open({
       message: 'Success',
@@ -329,7 +330,7 @@ const EditRecruitementAbove = () => {
           totalNumber: newNumbervacancies,
           experience: Level,
           nbExperience: newnbExperience,
-          type: "Above Foreman",
+          type: type,
           affectedTo: newaffectedTo,
           certif: newcertif,
           bod: null,
@@ -338,6 +339,7 @@ const EditRecruitementAbove = () => {
           signatureHod: newCheckedHod,
           signatureBod: null,
           projRef: newprojRef,
+
 
         })
       });
@@ -389,7 +391,7 @@ const EditRecruitementAbove = () => {
           totalNumber: Numbervacancies,
           experience: Level,
           nbExperience: nbExperience,
-          type: "Above Foreman",
+          type: type,
           affectedTo: affectedTo,
           certif: certif,
           bod: null,
@@ -399,6 +401,7 @@ const EditRecruitementAbove = () => {
           signatureHod: null,
           signatureBod: null,
           notif: 4,
+          status: "Ckeked By Planner "
 
 
         })
@@ -451,7 +454,7 @@ const EditRecruitementAbove = () => {
           totalNumber: Numbervacancies,
           experience: Level,
           nbExperience: nbExperience,
-          type: "Above Foreman",
+          type: type,
           affectedTo: affectedTo,
           certif: certif,
           bod: null,
@@ -461,6 +464,7 @@ const EditRecruitementAbove = () => {
           signatureHod: null,
           signatureBod: null,
           notif: 7,
+          status: "Approved By Operation Manager"
 
 
         })
@@ -515,7 +519,7 @@ const EditRecruitementAbove = () => {
           totalNumber: Numbervacancies,
           experience: Level,
           nbExperience: nbExperience,
-          type: "Above Foreman",
+          type: type,
           affectedTo: affectedTo,
           certif: certif,
           bod: null,
@@ -525,10 +529,9 @@ const EditRecruitementAbove = () => {
           signatureHod: null,
           signatureBod: null,
           notif: 3,
-          status: "Approved By BOD"
+          status: "Approved By BOD "
         })
       });
-
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -841,7 +844,7 @@ const EditRecruitementAbove = () => {
           </AppRowContainer>
 
 
-          {(dep === "operation" && notif === 6) || (dep === "operation" && notif === 7) ?
+          {(dep.includes("Operation"))  ?
             <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
               <Col xs={24} md={6}>
                 <Typography.Title level={5}>Planner Review </Typography.Title>
@@ -1273,7 +1276,8 @@ const EditRecruitementAbove = () => {
             </Col>
           </AppRowContainer>
 
-          {(dep === "operation" && notif === 6) || (dep === "operation" && notif === 7) ?
+          {(dep.includes("Operation") && notif === 6 &&  (!userRoles.includes("bod"))) || (dep.includes("Operation") && notif === 7 && (!userRoles.includes("bod"))) 
+            ?
             <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
               <Col xs={24} md={6}>
                 <Typography.Title level={5}>Planner Review </Typography.Title>
@@ -1331,7 +1335,7 @@ const EditRecruitementAbove = () => {
               </Col>
             </AppRowContainer>
             : null}
-          {(dep === "operation" && notif === 4) ?
+          {/* {(dep === "operation" && notif === 4) ?
             <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
               <Col xs={24} md={6}>
                 <Typography.Title level={5}>Planner Review </Typography.Title>
@@ -1397,9 +1401,10 @@ const EditRecruitementAbove = () => {
 
 
 
-            : null}
+            : null} */}
           {/*uPDATE BOD */}
-          {(dep === "operation" && notif === 6) || (dep === "operation" && notif === 7) ?
+        
+          {(dep.includes("Operation") && notif === 4) || (dep.includes("Operation") && notif === 7)?
             <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
               <Col xs={24} md={6}>
                 <Typography.Title level={5}>Planner Review </Typography.Title>
@@ -1465,7 +1470,7 @@ const EditRecruitementAbove = () => {
 
 
 
-            : null}
+            : null} 
 
           {/*End uPDATE BOD */}
           {/* <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
@@ -1547,13 +1552,15 @@ const EditRecruitementAbove = () => {
             size={15}
             style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
           >
-            <Button onClick={Back}>Cancel</Button>
+
             {userRoles.includes("Planner") ?
 
-
-              <Button onClick={() => UpdatePlanner()}>
-                Update
-              </Button>
+              <>
+                <Button onClick={() => UpdatePlanner()}>
+                 Save
+                </Button>
+                <Button onClick={Back}>Cancel</Button>
+              </>
 
               : null
 
@@ -1566,17 +1573,19 @@ const EditRecruitementAbove = () => {
             {userRoles.includes("Operation") ?
 
               <Button onClick={() => UpdateOperation()}>
-                Update
+              Save
               </Button>
 
               : null
 
             }
             {userRoles.includes("bod") ?
-
+                 <>
               <Button onClick={() => UpdateBOD()}>
-                Update
+               Save
               </Button>
+              <Button onClick={Back}>Cancel</Button>
+              </>
               : null
             }
 

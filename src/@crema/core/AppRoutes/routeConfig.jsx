@@ -100,6 +100,15 @@ const routesConfig = [
             url: "/HrDataBase/Add_Project",
           },
           {
+            id: "Affect a project to employee",
+            title: "Affect a project to employee",
+            messageId: "sidebar.hr.Affectaprojecttoemployee",
+            url: "/HrDataBase/Affectaprojecttoemployee",
+          },
+
+
+
+          {
             id: "SAMMARY",
             title: "SAMMARY",
             messageId: "sidebar.hr.Sammuary",

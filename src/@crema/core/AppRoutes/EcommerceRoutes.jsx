@@ -88,6 +88,9 @@ const Sammuary = React.lazy(() =>
 const AddProject = React.lazy(() =>
   import('../../../modules/AddProject'),
 );
+const AffectedProject = React.lazy(() =>
+  import('../../../modules/AffectedProject'),
+);
 
 
 const AddEmployees = React.lazy(() =>
@@ -320,9 +323,15 @@ export const ecommerceConfig = [
   },
   {
     permittedRole: RoutePermittedRole.User,
+    path: '/HrDataBase/Affectaprojecttoemployee',
+    element: <AffectedProject />,
+  },
+  {
+    permittedRole: RoutePermittedRole.User,
     path: '/HrDataBase/Add_Project',
     element: <AddProject/>,
   },
+
 
 
   {

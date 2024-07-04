@@ -14,7 +14,7 @@ import RecruitementRequest from "../Model/RecruitementRequet"
 import ConfirmationModal from '../../@crema/components/AppConfirmationModal';
 import { useNavigate } from 'react-router-dom';
 import Notification from '../../modules/Notification';
-const AddProjectEmployees = () => {
+const Affectaprojecttoemployee = () => {
   const navigate = useNavigate();
   const [projName, setProjName] = useState("");
   const [getsId, setGetsId] = useState("");
@@ -279,7 +279,7 @@ const AddProjectEmployees = () => {
 
   return (
     <div style={{ paddingLeft: "0.5rem", paddingRight: "0.5rem" }}>
-      <Form
+      {/* <Form
         form={form}
         layout='vertical'
         style={{ backgroundColor: "white", marginBottom: "20px", padding: "10px", borderRadius: "20px" }}
@@ -505,7 +505,7 @@ const AddProjectEmployees = () => {
           </Button>
         </Space>
 
-      </Form>
+      </Form> */}
 
 
 
@@ -516,4 +516,4 @@ const AddProjectEmployees = () => {
 };
 
 
-export default AddProjectEmployees;
+export default Affectaprojecttoemployee;
