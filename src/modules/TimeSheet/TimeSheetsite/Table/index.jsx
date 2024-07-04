@@ -1,13 +1,27 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { Table, Tooltip } from 'antd';
 import moment from 'moment';
 
 const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
-
+  console.log("selectedMonth",selectedMonth)
+  console.log("selectedYear",selectedYear)
   const currentDate = moment({ year: selectedYear, month: selectedMonth - 1 });
   const currentMonthDays = Array.from({ length: currentDate.daysInMonth() }, (v, k) => k + 1);
   const currentMonthName = currentDate.format('MMMM').toUpperCase();
+  const [tableHeight, setTableHeight] = useState('auto');
+  useEffect(() => {
+    const updateTableHeight = () => {
+      const pageHeight = window.innerHeight;
+      const tableHeight = pageHeight * 0.7; 
+      setTableHeight(tableHeight);
+    };
+    window.addEventListener('resize', updateTableHeight);
+    updateTableHeight();
+    return () => {
+      window.removeEventListener('resize', updateTableHeight);
+    };
+  }, []);
   const pointageLabels = {
     'S': 'StandBy ',
     'WS': 'WORKING Site',
@@ -100,70 +114,118 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
       dataIndex: 'absent',
       key: 'absent',
       width: 100,
-      render: (absent, record) => <span>{record.siteWorkStatus[0]?.absent}</span>,
+      render: (absent, record) => {
+        const filteredData = record.siteWorkStatus.filter(status => {
+          const statusDate = moment(status.date);
+          return statusDate.month()  === selectedMonth && statusDate.year() === selectedYear;
+        });
+        return <span>{filteredData[0]?.absent || 0}</span>;
+      },
     },
     {
       title: 'Friday Work',
       dataIndex: 'fridayWork',
       key: 'fridayWork',
       width: 100,
-      render: (fridayWork, record) => <span>{record.siteWorkStatus[0]?.fridayWork}</span>,
+      render: (fridayWork, record) => {
+        const filteredData = record.siteWorkStatus.filter(status => {
+          const statusDate = moment(status.date);
+          return statusDate.month() === selectedMonth && statusDate.year() === selectedYear;
+        });
+        return <span>{filteredData[0]?.fridayWork|| 0}</span>;
+      },
     },
     {
       title: 'Over Time',
       dataIndex: 'overTime',
       key: 'overTime',
       width: 100,
-      render: (overTime, record) => <span>{record.siteWorkStatus[0]?.overTime}</span>,
+      render: (overTime, record) => {
+        const filteredData = record.siteWorkStatus.filter(status => {
+          const statusDate = moment(status.date);
+          return statusDate.month()  === selectedMonth && statusDate.year() === selectedYear;
+        });
+        return <span>{filteredData[0]?.overTime|| 0}</span>;
+      },
     },
     {
       title: 'Rest',
       dataIndex: 'rest',
       key: 'rest',
       width: 100,
-      render: (overTime, record) => <span>{record.siteWorkStatus[0]?.overTime}</span>,
+      render: (rest, record) => {
+        const filteredData = record.siteWorkStatus.filter(status => {
+          const statusDate = moment(status.date);
+          return statusDate.month()  === selectedMonth && statusDate.year() === selectedYear;
+        });
+        return <span>{filteredData[0]?.rest || 0}</span>;
+      },
     },
     {
       title: 'Sick Day',
       dataIndex: 'sickDay',
       key: 'sickDay',
       width: 100,
-      render: (sickDay, record) => <span>{record.siteWorkStatus[0]?.sickDay}</span>,
-    },
-    {
-      title: 'StandBy',
-      dataIndex: 'standBy',
-      key: 'standBy',
-      width: 100,
-      render: (standBy, record) => <span>{record.siteWorkStatus[0]?.standBy}</span>,
+      render: (sickDay, record) => {
+        const filteredData = record.siteWorkStatus.filter(status => {
+          const statusDate = moment(status.date);
+          return statusDate.month() === selectedMonth && statusDate.year() === selectedYear;
+        });
+        return <span>{filteredData[0]?.sickDay || 0}</span>;
+      },
     },
     {
       title: 'TravelBack',
       dataIndex: 'travelBack',
       key: 'travelBack',
       width: 100,
-      render: (travelBacky, record) => <span>{record.siteWorkStatus[0]?.travelBack}</span>,
-    },
+      render: (travelBack, record) => {
+        const filteredData = record.siteWorkStatus.filter(status => {
+          const statusDate = moment(status.date);
+          return statusDate.month()  === selectedMonth && statusDate.year() === selectedYear;
+        });
+        return <span>{filteredData[0]?.travelBack ||0}</span>;
+      },
+    }, 
     {
       title: 'Travel Go',
       dataIndex: 'travelGo',
       key: 'travelGo',
       width: 100,
-      render: (travelGo, record) => <span>{record.siteWorkStatus[0]?.travelGo}</span>,
+      render: (travelGo, record) => {
+        const filteredData = record.siteWorkStatus.filter(status => {
+          const statusDate = moment(status.date);
+          return statusDate.month()  === selectedMonth && statusDate.year() === selectedYear;
+        });
+        return <span>{filteredData[0]?.travelGo || 0}</span>;
+      },
     },
+
     {
       title: 'Vacation',
       dataIndex: 'vacation',
       key: 'vacation',
       width: 100,
-      render: (vacation, record) => <span>{record.siteWorkStatus[0]?.vacation}</span>,
+      render: (vacation, record) => {
+        const filteredData = record.siteWorkStatus.filter(status => {
+          const statusDate = moment(status.date);
+          return statusDate.month() === selectedMonth && statusDate.year() === selectedYear;
+        });
+        return <span>{filteredData[0]?.vacation || 0}</span>;
+      },
     },
     {
       title: 'Work Site',
       dataIndex: 'workSite',
       key: 'workSite',
       width: 100,
-      render: (workSite, record) => <span>{record.siteWorkStatus[0]?.workSite}</span>,
+      render: (workSite, record) => {
+        const filteredData = record.siteWorkStatus.filter(status => {
+          const statusDate = moment(status.date);
+          return statusDate.month()  === selectedMonth && statusDate.year() === selectedYear;
+        });
+        return <span>{filteredData[0]?.workSite || 0}</span>;
+      },
     },
     
  
@@ -180,11 +242,12 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
     return { ...employee, ...employeeData };
   });
 
+
   return (
     <Table
       columns={columns}
       dataSource={data}
-      scroll={{ x: 1500, y: 1000 }}
+      scroll={{ x:1500, y: tableHeight}}
       pagination={false}
       rowKey="getsId"
       bordered

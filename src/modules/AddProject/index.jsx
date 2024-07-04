@@ -256,7 +256,7 @@ const AddProjectEmployees = () => {
   const BeforeSaveProjet = () => {
     //setIsModalVisible(true)
     form.validateFields(['projName', 'GetsId', 'ReferenceProjet'
-      , 'cotractRef', 'projLocation', 'country', 'partener', 'partenername',
+      , 'cotractRef', 'projLocation', 'country'
 
     ]).then(values => {
       //onSave(true)
@@ -427,9 +427,7 @@ const AddProjectEmployees = () => {
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Partner Name' name='partener'
-                    rules={[
-                      { required: true, message: 'Please input yourPartner Name!' },
-                    ]}
+                  
 
                   >
                     <Input
@@ -445,9 +443,7 @@ const AddProjectEmployees = () => {
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Owner Name' name='partenername'
-                    rules={[
-                      { required: true, message: 'Please input your Owner Name!' },
-                    ]}
+                  
 
                   >
                     <Input
@@ -463,9 +459,7 @@ const AddProjectEmployees = () => {
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Cost Center' name='cosCenter'
-                    rules={[
-                      { required: true, message: 'Please input your Cos Center!' },
-                    ]}
+                   
 
                   >
                     <Input

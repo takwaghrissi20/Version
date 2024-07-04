@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../@crema/components/AppRowContainer';
 import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, notification, Checkbox, DatePicker, InputNumber } from 'antd';
 import {
-
   StyledShadowWrapper,
   StyledInput,
 
@@ -18,21 +17,17 @@ const Affectaprojecttoemployee = () => {
   const navigate = useNavigate();
   const [projName, setProjName] = useState("");
   const [getsId, setGetsId] = useState("");
-  const [projref, setProjRef] = useState("");
-  const [cotractRef, setCotractRef] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState("Default");
-  const [selectedCountry, setSelectedCountry] = useState("Default");
-  const [partener, setPartener] = useState("");
-  const [partenerName, setPartenerName] = useState("");
-  const [cosCenter, setCosCenter] = useState("");
   const [name, setName] = useState("");
   const [form] = Form.useForm();
+  const [profile, setProfile] = useState("")
+  const [allprojet, setAllprojet] = useState([])
+  const [selectedProjet, setSelectedProjet] = useState("Default");
 
 
   const openNotification = () => {
     notification.open({
       message: 'Success',
-      description: 'Success Add Project',
+      description: 'Success Add Project oF Employee',
       style: {
         backgroundColor: '#28a745',
         border: '1px solid #28a745',
@@ -84,7 +79,7 @@ const Affectaprojecttoemployee = () => {
   const openNotificationError = () => {
     notification.open({
       message: 'Error',
-      description: 'Error Add Project',
+      description: 'Error Add Project Of Employee',
       style: {
         backgroundColor: 'red',
         border: '1px solid #dc3545',
@@ -107,34 +102,86 @@ const Affectaprojecttoemployee = () => {
       color: '#FFFFFF !important',
     });
   };
-  const findId = async (code) => {
+  const GetProfileEmployess = async () => {
+    const storedemail = window.localStorage.getItem("email");
+
+
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}`, {
+      const endPoint =
+        process.env.NODE_ENV === "development"
+          ? "https://dev-gateway.gets-company.com"
+          : "";
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}`, {
         method: 'GET',
-
+        headers: {
+          'Content-Type': 'application/json'
+        },
       });
+
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error('La requête a échoué avec le code ' + response.status);
       }
 
-      if (response.ok) {
-        const responseData = await response.json();
-
-        setName(responseData?.name)
-
-
-
-
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
       }
+      const data = await response.json();
+      setProfile(data)
+      console.log("profile", profile)
+      setGetsId(data?.getsId)
+      setName(data?.name)
+
+
+
     } catch (error) {
-      console.error("Erreur lors de la récupération du employees:", error);
+      console.error('Erreur lors de la récupération Last Recruitement', error);
+    }
+  };
+  ///Get All Projet
+  const GetProjet = async () => {
+
+
+    try {
+      const endPoint =
+        process.env.NODE_ENV === "development"
+          ? "https://dev-gateway.gets-company.com"
+          : "";
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/list`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('La requête a échoué avec le code ' + response.status);
+      }
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
+      }
+      const data = await response.json();
+      console.log("daaattttt proj", data)
+      const uniqueProjects = [...new Set(data.map(proj => proj.projName))];
+      console.log("uniqueProjects", uniqueProjects)
+      setAllprojet(uniqueProjects);
+   
+
+    } catch (error) {
+      console.error('Erreur lors de la récupération Last Recruitement', error);
     }
   };
 
-  const SaveProject = async () => {
+
+
+  //End Get All Projet
+
+  const SaveProjectEmployee = async () => {
     try {
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/off/addproject?id=${getsId}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/off/affect?id=${getsId}&name=${selectedProjet}`, {
 
         method: 'POST',
         headers: {
@@ -143,24 +190,7 @@ const Affectaprojecttoemployee = () => {
           'Content-Type': 'application/json',
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
-        body: JSON.stringify({
-
-          projName: projName,
-          getsId: getsId,
-          name: name,
-          projRef:projref,
-          cotractRef:cotractRef,
-          projLocation:selectedLocation,
-          country:selectedCountry,
-          partener:partener,
-          partenername:partenerName,
-          // contarctRefFile:
-          cosCenter:cosCenter
-
-
-
-
-        })
+      
       });
 
       if (!response.ok) {
@@ -170,7 +200,7 @@ const Affectaprojecttoemployee = () => {
       if (response.ok) {
 
         const responseData = await response.json();
-        console.log("add projecttt",responseData)
+        console.log("add projecttt", responseData)
         form.resetFields();
         openNotification('bottomRight')
 
@@ -189,78 +219,15 @@ const Affectaprojecttoemployee = () => {
     navigate(-1)
 
   }
-  const handleProjetNameChange = (event) => {
-    const value = event.target.value;
-    setProjName(event.target.value);
-  };
-  const handleGetsIdChange = (event) => {
-
-    const value = event.target.value;
-    setGetsId(event.target.value);
-  };
-  const handleprojrefChange = (event) => {
-    const value = event.target.value;
-    setProjRef(event.target.value);
-  };
-  const handleContartRefChange = (event) => {
-    const value = event.target.value;
-    setCotractRef(event.target.value);
-  };
-  const handlePartnerName = (event) => {
-    const value = event.target.value;
-    setPartenerName(event.target.value);
-  };
-  const handleCosCenter = (event) => {
-    const value = event.target.value;
-
-    setCosCenter(event.target.value);
-  };
-  const handleCancel = () => {
-    navigate(-1)
-
-  }
-  const Location = [
-    { location: 'Brega' },
-    { location: 'Benghazi' },
-    { location: 'Messla' },
-    { location: 'Tripoli' },
-    { location: 'Nafoora' },
-    { location: 'Sarir' },
-    { location: 'Elfil' },
-    { location: 'Earawin' },
-    { location: 'Sharara' },
-    { location: 'Defa/Waha' },
-
-  ];
-  const country = [
-    { count: 'Libya' },
-
-  ];
-  const handleprojLocation = (value) => {
-    setSelectedLocation(value);
-
-
-  };
-  const handleprojCountry = (value) => {
-    setSelectedCountry(value);
-
-
-  };
-  const handlePartener = (event) => {
-    const value = event.target.value;
-    setPartener(event.target.value);
-  };
-
 
 
   const BeforeSaveProjet = () => {
     //setIsModalVisible(true)
-    form.validateFields(['projName', 'GetsId', 'ReferenceProjet'
-      , 'cotractRef', 'projLocation', 'country', 'partener', 'partenername',
+    form.validateFields(['SelectProjet'
 
     ]).then(values => {
       //onSave(true)
-      SaveProject()
+      SaveProjectEmployee()
 
 
 
@@ -273,13 +240,17 @@ const Affectaprojecttoemployee = () => {
     });
   };
   useEffect(() => {
-    findId()
-      ;
-  }, [getsId]);
+    GetProfileEmployess()
+    GetProjet()
+  }, [getsId,selectedProjet]);
+  const handleprojEmployee = (value) => {
+    setSelectedProjet(value);
 
+
+  };
   return (
     <div style={{ paddingLeft: "0.5rem", paddingRight: "0.5rem" }}>
-      {/* <Form
+      <Form
         form={form}
         layout='vertical'
         style={{ backgroundColor: "white", marginBottom: "20px", padding: "10px", borderRadius: "20px" }}
@@ -293,7 +264,7 @@ const Affectaprojecttoemployee = () => {
       >
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
-            <Typography.Title level={4}>Projet Information</Typography.Title>
+            <Typography.Title level={4}>Add Projet of Employee</Typography.Title>
 
           </div>
 
@@ -308,35 +279,15 @@ const Affectaprojecttoemployee = () => {
             <StyledShadowWrapper>
               <AppRowContainer>
                 <Col xs={24} md={12}>
-                  <Form.Item label='Projet Name' name='projName'
-                    rules={[
-                      { required: true, message: 'Please input your Project Name!' },
-                    ]}
+                  <Form.Item label='Gets Id Employee' name='GetsId'
 
-                  >
-                    <Input
-                      className='Input'
-                      placeholder="Projet Name"
-                      value={projName}
-                      onChange={handleProjetNameChange}
-
-
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Projet Leader Gets Id' name='GetsId'
-                    rules={[
-                      { required: true, message: 'Please input your Gets Id!' },
-                    ]}
 
                   >
                     <Input
                       className='Input'
                       type="number"
-                      placeholder="Gets Id"
-                      value={getsId}
-                      onChange={handleGetsIdChange}
+                      placeholder={profile?.getsId}
+                      readOnly={true}
 
 
                     />
@@ -348,10 +299,8 @@ const Affectaprojecttoemployee = () => {
 
                   >
                     <Input
-                      className='Input'
-                      placeholder={name}
-
-                      readOnly
+                      placeholder={profile?.name}
+                      readOnly={true}
 
 
 
@@ -359,123 +308,37 @@ const Affectaprojecttoemployee = () => {
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label=' Reference Projet' name='ReferenceProjet'
-                    rules={[
-                      { required: true, message: 'Please input your Reference Projet!' },
-                    ]}
-
-                  >
+                  <Form.Item label='Position' name='position'>
                     <Input
-                      className='Input'
-
-                      placeholder="Reference Projet"
-                      value={projref}
-                      onChange={handleprojrefChange}
-
-
-                    />
+                      placeholder={profile?.position}
+                      readOnly={true} />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label='Contrat Reference' name='cotractRef'
-                    rules={[
-                      { required: true, message: 'Please input your Contrat Reference!' },
-                    ]}
-
-                  >
+                  <Form.Item label='Position' name='position'>
                     <Input
-                      className='Input'
-
-                      placeholder="Contrat Reference"
-                      value={cotractRef}
-                      onChange={handleContartRefChange}
-
-
-                    />
+                      placeholder={profile?.position}
+                      readOnly={true} />
                   </Form.Item>
                 </Col>
-
                 <Col xs={24} md={12}>
                   <Form.Item
-                    name="projLocation"
-                    label="Site Location Of The Project"
-                    rules={[{ required: true, message: 'Please select Site Location Of The Project' }]}
+                    name="SelectProjet"
+                    label="Select Projet"
+                    rules={[{ required: true, message: 'Please select Name Of Projet' }]}
                   >
-                    <Select onChange={handleprojLocation} placeholder="Site Location Of The Project" allowClear>
-                      {Location.map(type => (
-                        <Option key={type.location} value={type.location}>
-                          {type.location}
+                    <Select onChange={handleprojEmployee} placeholder="Select Projet" allowClear>
+                      {allprojet.map(p => (
+                        <Option key={p} value={p}>
+                          {p}
                         </Option>
                       ))}
                     </Select>
                   </Form.Item>
                 </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    name="country"
-                    label="country"
-                    rules={[{ required: true, message: 'Please select Country' }]}
-                  >
-                    <Select onChange={handleprojCountry} placeholder="Country" allowClear>
-                      {country.map(type => (
-                        <Option key={type.count} value={type.count}>
-                          {type.count}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Partner Name' name='partener'
-                    rules={[
-                      { required: true, message: 'Please input yourPartner Name!' },
-                    ]}
-
-                  >
-                    <Input
-                      className='Input'
-
-                      placeholder="Partner Name"
-                      value={partener}
-                      onChange={handlePartener}
 
 
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Owner Name' name='partenername'
-                    rules={[
-                      { required: true, message: 'Please input your Owner Name!' },
-                    ]}
 
-                  >
-                    <Input
-                      className='Input'
-
-                      placeholder="Partner Name"
-                      value={partenerName}
-                      onChange={handlePartnerName}
-
-
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Cost Center' name='cosCenter'
-                    rules={[
-                      { required: true, message: 'Please input your Cos Center!' },
-                    ]}
-
-                  >
-                    <Input
-                      className='Input'
-                      placeholder="Cos Center"
-                      value={cosCenter}
-                      onChange={handleCosCenter}
-                    />
-                  </Form.Item>
-                </Col>
 
 
 
@@ -494,7 +357,7 @@ const Affectaprojecttoemployee = () => {
           style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
 
         >
-          <Button onClick={handleCancel} >Cancel</Button>
+          <Button onClick={goBack} >Cancel</Button>
           <Button
             onClick={BeforeSaveProjet}
 
@@ -505,7 +368,7 @@ const Affectaprojecttoemployee = () => {
           </Button>
         </Space>
 
-      </Form> */}
+      </Form>
 
 
 
