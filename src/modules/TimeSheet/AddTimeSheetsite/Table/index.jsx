@@ -133,11 +133,7 @@ const OrderTable = ({ orderData, filterDate,
   };
 
   const columns = [
-    {
-      title: 'idTravel',
-      dataIndex: 'idTravel',
-      key: 'idTravel',
-    },
+  
     {
       title: 'Gets Id',
       dataIndex: 'getsId',
