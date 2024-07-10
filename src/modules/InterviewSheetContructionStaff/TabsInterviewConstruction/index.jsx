@@ -1739,7 +1739,7 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
 
         </Form> : null
       }
-      {roles.includes("Administrator") ?
+       {roles.includes("Administrator") ?
         <Form
           layout='vertical'
           style={{ backgroundColor: "white", marginBottom: "20px", padding: "10px", borderRadius: "20px" }}
@@ -1770,16 +1770,15 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item label='Interview Date' name='Date :'
-
-
-
-                    >{/*Date et temp de Interview bu Hr*/}
+                    <Form.Item label='Interview Date' name='Date :'>
                       <Input
                         placeholder={formattedDate}
                         readOnly />
+
+
+                      {/*Date et temp de Interview bu Hr*/}
                       {/* <DatePicker
-                     
+                      //defaultValue={new Date()} 
                       defaultValue={dayjs(interviewDate, '2024-01-01')}
 
                       style={{ width: "100%", height: "30px" }}
@@ -1848,9 +1847,12 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                   </Col>
                   <Col xs={24} md={12}>
                     <Form.Item label='Department ' name='department '>
-                      <Input placeholder='Department'
-                        value={departement}
-                        onChange={handledepartementChange}
+                      <Input
+                       placeholder='Department'
+                       value={departement}
+                      onChange={handledepartementChange}
+                    
+                       
 
                       />
                     </Form.Item>
@@ -1871,9 +1873,9 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                   <Col xs={24} md={12}>
                     <Form.Item label='Requested Experience' name='requiredExperinece'>
                       <Input
-                        value={requiredExperinece}
-                        onChange={handleRequiredExperineceChange}
-                        placeholder='Requested Experience' />
+                     value={requiredExperinece}
+                     onChange={handleRequiredExperineceChange}
+                      placeholder='Requested Experience' />
                     </Form.Item>
                   </Col>
 
@@ -1898,6 +1900,7 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                       <Input placeholder='Full Name'
                         value={fullname}
                         onChange={handleFullNameChange}
+                     
 
                       />
                     </Form.Item>
@@ -1948,6 +1951,7 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                         <DatePicker
                           //defaultValue={new Date()} 
                           defaultValue={dayjs(scheduleDate, '16 06,1990')}
+
                           style={{ width: "100%", height: "34px" }}
                           onChange={(value) => setScheduleDate(dayjs(value).format('YYYY/MM/DD'))}
                         />
@@ -2006,9 +2010,7 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                       <Input
                         placeholder='Diploma /Speciality'
                         value={diploma}
-                        onChange={handleDiplomaChange}
-                        
-                        // onChange={(e) => setDiploma(e.target.value)}
+                        onChange={(e) => setDiploma(e.target.value)}
                       />
                     </Form.Item>
                   </Col>
@@ -2022,8 +2024,7 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                     >
                       <Input placeholder='Educational level'
                         value={educationLevel}
-                        onChange={handleeducationLevelChange}
-                        // onChange={(e) => setEducationLevel(e.target.value)}
+                        onChange={(e) => setEducationLevel(e.target.value)}
 
                       />
                     </Form.Item>
@@ -2041,8 +2042,7 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                         type='number'
                         placeholder='Experience'
                         value={experience}
-                        onChange={handleExperienceChange}
-                        //onChange={(e) => setExperience(e.target.value)}
+                        onChange={(e) => setExperience(e.target.value)}
 
                       />
                     </Form.Item>
@@ -2052,15 +2052,14 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
               </StyledShadowWrapper>
             </Col>
           </AppRowContainer>
-
-
+      
 
           <Space
             size={15}
             style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
           >
             <Button >Cancel</Button>
-            <Button onClick={SaveHrAdministrator}
+            <Button onClick={Save}
 
               type='primary'
               htmlType='submit'>
@@ -2084,7 +2083,7 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
 
         </Form> : null
       }
-
+     
 
     </>
   );

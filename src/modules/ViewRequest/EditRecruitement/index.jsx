@@ -529,7 +529,7 @@ const EditRecruitementAbove = () => {
           signatureHod: null,
           signatureBod: null,
           notif: 3,
-          status: "Approved By BOD "
+          status: "Approved By BOD"
         })
       });
       if (!response.ok) {

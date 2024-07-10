@@ -108,22 +108,34 @@ const RecruitementInterview = () => {
       
       />,
     },
-    {
+    {/*Interview Sheet**/},
+    ...((roles?.includes('Administrator') || roles?.includes('admin')) ? [{
       label: 'Staff Management Interview',
       key: '3',
       children: <InterviewStaff 
-      allinterviewStaffManagement={allinterviewStaffManagement}
+      allinterviewStaffManagement={allinterviewStaffManagement}/>
+     
+    }] : []),
+    // {
+    //   label: 'Staff Management Interview',
+    //   key: '3',
+    //   children: <InterviewStaff 
+    //   allinterviewStaffManagement={allinterviewStaffManagement}
 
-      
-      
-      
-      />,
-    },
-    {
+  
+    //   />,
+    // },
+    ...((roles?.includes('Administrator') || roles?.includes('admin')) ? [{
       label: 'Construction Staff Interview',
       key: '4',
-      children: <InterviewConstruction allinterviewConstructionTeam={allinterviewConstructionTeam} />,
-    },
+      children: <InterviewConstruction allinterviewConstructionTeam={allinterviewConstructionTeam} />
+     
+    }] : []),
+    // {
+    //   label: 'Construction Staff Interview',
+    //   key: '4',
+    //   children: <InterviewConstruction allinterviewConstructionTeam={allinterviewConstructionTeam} />,
+    // },
   ];
 
   useEffect(() => {

@@ -1039,11 +1039,12 @@ export const StyledItemContainer = styled.div`
 
 export const StyledTitleWrapper = styled.p`
   color: ${({ theme }) => theme.palette.text.secondary};
-  font-size: 14px;
+  font-size: 13px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   margin-bottom: 0;
+
 `;
 
 export const StyledTag = styled.span`

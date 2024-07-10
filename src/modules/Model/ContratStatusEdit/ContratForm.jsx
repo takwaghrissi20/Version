@@ -106,6 +106,10 @@ const ContratEditForm = (props) => {
   const [newName, setNewName] = useState(name);
   const [newfamilyStatus, setNewfamilyStatus] = useState(familyStatus);
   const [newposition, setNewposition] = useState(position);
+  const [newbankAccount, setNewbankAccount] = useState("");
+  const [newbankName, setNewbankName] = useState("");
+  const [newpaymentCategory, setNewpaymentCategory] = useState("");
+
   const [newtravelDate, setNewtravelDate] = useState(traveldate);
   const [newEndtravelDate, setNewEndtravelDate] = useState(endTravelDate);
   const [newdistination, setNewdistination] = useState(destination);
@@ -120,7 +124,7 @@ const ContratEditForm = (props) => {
   const Update = async (newName, newfamilyStatus, newcontratCopy, newposition,
     newEndtravelDate,newtravelDate,newdistination,newTypeCompany,newVisaReady) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/update`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/update?id=${id}`, {
 
         method: 'PUT',
         headers: {
@@ -130,7 +134,7 @@ const ContratEditForm = (props) => {
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
         body: JSON.stringify({
-          id,
+          id:id,
           name: newName,
           position: newposition,
           destination:newdistination,
@@ -182,7 +186,9 @@ const ContratEditForm = (props) => {
           idJoys, exitRentryType,
           cin, gender, residenceAdress,
           arResidenceAdress, salary, duration,
-          emergencyName, emergencyRelation
+          emergencyName, emergencyRelation,
+          rib:newbankAccount,
+          bankName:newbankName
 
         })
       });
@@ -193,8 +199,9 @@ const ContratEditForm = (props) => {
       if (response.ok) {
 
         const responseData = await response.json();
-       
+        console.log("yyyyyyyy",responseData)
         setDataEdit(responseData)
+       // window.location.reload();
         //handleAddContactClose(true)
       }
 
@@ -282,6 +289,7 @@ const ContratEditForm = (props) => {
       if (response.ok) {
 
         const responseData = await response.json();
+        console.log("testttttttt",responseData)
         handleAddContactClose(true)
        
        
@@ -310,7 +318,7 @@ const ContratEditForm = (props) => {
           <input {...getInputProps()} />
           <label htmlFor='icon-button-file'>
             < StyledContactFormHeaderTitle  >
-              <IntlMessages id='Contrat List' />
+              <IntlMessages id='Contract and Financial Data' />
 
             </StyledContactFormHeaderTitle>
           </label>
@@ -325,12 +333,12 @@ const ContratEditForm = (props) => {
       <StyledContactModalScrollbar>
         <StyledContactFormContent>
           <StyledContactFormContentItem>
-            <StyledContactFormItemTitle>
+            {/* <StyledContactFormItemTitle>
               <IntlMessages id='Contrat.Edit.Information Employee' />
-            </StyledContactFormItemTitle>
+            </StyledContactFormItemTitle> */}
 
             <StyledContactFormContentField>
-            <Form.Item className='form-field'>
+            {/* <Form.Item className='form-field'>
                 <FloatLabel name="Id">
                   <span className='modallabel'>Id:</span>
                   <Input
@@ -341,20 +349,30 @@ const ContratEditForm = (props) => {
                     readOnly={true}
                   />
                 </FloatLabel>
+                </Form.Item> */}
+                  <Form.Item className='form-field'>
+                <FloatLabel name="name">
+                  <span className='modallabel'>Id :</span>
+                  <Input
+                    className='Input'
+                    placeholder={id}
+                   
+                  />
+                </FloatLabel>
                 </Form.Item>
                 <Form.Item className='form-field'>
                 <FloatLabel name="name">
                   <span className='modallabel'>Name:</span>
                   <Input
                     className='Input'
-                    placeholder="name"
+                    placeholder={newName}
                     value={newName}
                     classNames="ViewInput"
                     onChange={(e) => setNewName(e.target.value)}
                   />
                 </FloatLabel>
                 </Form.Item>
-            
+{/*             
                 <Form.Item className='form-field'>
                 <FloatLabel name="Departement">
                   <span className='modallabel'>Departement :</span>
@@ -367,10 +385,10 @@ const ContratEditForm = (props) => {
                    
                   />
                 </FloatLabel>
-                </Form.Item>
+                </Form.Item> */}
 
     
-              <Form.Item className='form-field'>
+              {/* <Form.Item className='form-field'>
                 <FloatLabel name="familyStatus">
                   <span className='modallabel'>Family Status :</span>
                   <Input
@@ -382,7 +400,7 @@ const ContratEditForm = (props) => {
                    
                   />
                 </FloatLabel>
-                </Form.Item>
+                </Form.Item> */}
 
              
 
@@ -399,6 +417,58 @@ const ContratEditForm = (props) => {
                   />
                 </FloatLabel>
                 </Form.Item>
+                <Form.Item className='form-field'>
+                <FloatLabel name="Bank Account">
+                  <span className='modallabel'>Bank Account :</span>
+                  <Input
+                    className='Input'
+                    placeholder="Bank Account"
+                    value={newbankAccount}
+                    classNames="ViewInput"
+                    onChange={(e) => setNewbankAccount(e.target.value)}
+                   
+                  />
+                </FloatLabel>
+                </Form.Item>
+                <Form.Item className='form-field'>
+                <FloatLabel name="Bank Account">
+                  <span className='modallabel'>Bank Name:</span>
+                  <Input
+                    className='Input'
+                    placeholder="Bank Name"
+                    value={newbankName}
+                    classNames="ViewInput"
+                    onChange={(e) => setNewbankName(e.target.value)}
+                   
+                  />
+                </FloatLabel>
+                </Form.Item>
+                <Form.Item className='form-field'>
+                <FloatLabel name="Bank Account">
+                  <span className='modallabel'>Payment Category :</span>
+                  <Input
+                    className='Input'
+                    placeholder="Payment Category"
+                    value={newpaymentCategory}
+                    classNames="ViewInput"
+                    onChange={(e) => setNewpaymentCategory(e.target.value)}
+                   
+                  />
+                </FloatLabel>
+                </Form.Item>
+                <Form.Item className='form-field'>
+                <FloatLabel name="Bank Account">
+                  <span className='modallabel'>Alternative name for Bank Account :</span>
+                  <Input
+                    className='Input'
+                    placeholder="Alternative name for Bank Account"
+                    value={newpaymentCategory}
+                    classNames="ViewInput"
+                    onChange={(e) => setNewpaymentCategory(e.target.value)}
+                   
+                  />
+                </FloatLabel>
+                </Form.Item>
 
             </StyledContactFormContentField>
           </StyledContactFormContentItem>
@@ -411,7 +481,7 @@ const ContratEditForm = (props) => {
             <StyledContactFormContentField>
          
  
-
+{/* 
               <Form.Item className='form-field'>
                 <FloatLabel name="traveldate">
                   <span className='modallabel'>Travel Date:</span>
@@ -424,9 +494,9 @@ const ContratEditForm = (props) => {
                    
                   />
                 </FloatLabel>
-                </Form.Item>
+                </Form.Item> */}
       
-              <Form.Item className='form-field'>
+              {/* <Form.Item className='form-field'>
                 <FloatLabel name="destination">
                   <span className='modallabel'>Destination :</span>
                   <Input
@@ -438,7 +508,7 @@ const ContratEditForm = (props) => {
                    
                   />
                 </FloatLabel>
-                </Form.Item>
+                </Form.Item> */}
         
               <Form.Item className='form-field'>
                 <FloatLabel name="destination">
@@ -468,7 +538,7 @@ const ContratEditForm = (props) => {
                 </FloatLabel>
                 </Form.Item>
          
-              <Form.Item className='form-field'>
+              {/* <Form.Item className='form-field'>
                 <FloatLabel name="visaReady">
                   <span className='modallabel'>Visa Ready:</span>
                   <Input
@@ -480,10 +550,10 @@ const ContratEditForm = (props) => {
                    
                   />
                 </FloatLabel>
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item className='form-field'>
                 <FloatLabel name="contratctCopy">
-                  <span className='modallabel'>Contratct Copy:</span>
+                  <span className='modallabel'>Scanned Contract Nextcloud link:</span>
                   <Input
                     className='Input'
                     placeholder="https://NextCloud"
@@ -501,8 +571,8 @@ const ContratEditForm = (props) => {
 
 
         </StyledContactFormContent>
-        <h2 style={{textAlign:"center",fontWeight:"bold",paddingBottom:"20px"}}>Saving this contract will Lok information and generate employee ID.Confirm?</h2>
-
+        <h2 style={{textAlign:"center",fontWeight:"bold",paddingBottom:"20px"}}>Please insert the scanned contract link and after save & confirm a GETS ID will be generated</h2>
+       
         <StyledContactFormFooter>
 
           <StyledContactFormBtn

@@ -3,15 +3,14 @@ import PropTypes from 'prop-types';
 //import { StyledOrderTable, StyledAction } from '../index.styled';
 /// change 
 import { StyledOrderTable, StyledAction } from '../../../../../styles/index.styled';
-
-
 import ContratStatusView from "../../../../Model/ContratStatusView"
 import ContratStatusEdit from "../../../../Model/ContratStatusEdit"
-
 import { GrFormView } from "react-icons/gr";
 import { AiFillEdit } from "react-icons/ai";
 import { CiSaveDown2 } from "react-icons/ci";
 import styled from 'styled-components';
+import { MoreOutlined } from '@ant-design/icons';
+import { Button, Dropdown } from 'antd';
 
 
 const OrderTable = ({ temployee, loading }) => {
@@ -68,17 +67,17 @@ const OrderTable = ({ temployee, loading }) => {
         passportNumber: findIdData?.passportnumber,
         passportSubmitdate: findIdData?.passportSubmitdate,
         arResidenceAdress: findIdData?.arResidenceAdress,
-        companyType:findIdData?.companyType,
+        companyType: findIdData?.companyType,
         traveldate: findIdData?.traveldate,
-        endTravelDate:findIdData?.endTravelDate,
+        endTravelDate: findIdData?.endTravelDate,
         arDestination: findIdData?.arDestination,
         arPosition: findIdData?.arPosition,
         //lastId: LastIdIncremente,
-        dailyRate:findIdData?.dailyRate,
-        duration:findIdData?.duration,
-        joinDate:findIdData?.joinDate,
-        finishDate:findIdData?.finishDate,
-      
+        dailyRate: findIdData?.dailyRate,
+        duration: findIdData?.duration,
+        joinDate: findIdData?.joinDate,
+        finishDate: findIdData?.finishDate,
+
 
       }
 
@@ -92,16 +91,16 @@ const OrderTable = ({ temployee, loading }) => {
   const SelectionnnerContrat = () => {
     if (findIdCopyCategory.trim() === "" || findIdCopyCategory === "null") {
       alert("You cannot download the Contract cat Contract Category is Empty");
-    } else {   
+    } else {
       alert("AGGGGGGG");
-      if(findIdContratCategory==="CAT-A1"){
+      if (findIdContratCategory === "CAT-A1") {
         console.log(" contractCategory test  CAT-E1")
         ContratE1();
       }
     }
- 
-  
-    
+
+
+
   }
 
 
@@ -135,7 +134,7 @@ const OrderTable = ({ temployee, loading }) => {
       key: 'position',
     },
     {
-      title: 'Dep',
+      title: 'Departement',
       dataIndex: 'departement',
       key: 'departement',
     },
@@ -155,58 +154,33 @@ const OrderTable = ({ temployee, loading }) => {
       dataIndex: 'finishDate',
       key: 'finishDate',
     },
-
     {
-      title: 'Action',
-      dataIndex: 'id',
-      fixed: "center",
-      key: 'id',
-      render: (text, record) => (
-        <>
-          <StyledAction onClick={() => findId(record?.id)}>
-            <GrFormView className='iconeView'
-              onClick={handleAddContratOpen}
+      title: 'Actions',
+      dataIndex: 'actions',
+      key: 'actions',
+      className: 'customer-table-actions',
+      render: (text, record) => {
+        const items = [
+          { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleAddContratOpen },
+          { key: 2, label: <span style={{ fontSize: 14 }}>Upload Contract</span>, onClick: handleEditContratOpen },
+        ];
 
+        if (record.contratctCopy) {
+          items.push({ key: 3, label: <span style={{ fontSize: 14 }}>Download</span> });
+        }
 
-            ></GrFormView>
-            {/* <Button
-            onClick={handleAddContratOpen}
-            type='primary'
-            shape='circle'
-            className='icon-btn icon-btn-eye'
-            icon={<AiOutlineEye />}
-          /> */}
-            <ContratStatusView
-              isViewContrat={isViewContrat}
-              handleAddContactClose={handleAddContartClose}
-              findIdData={findIdData}
-              id={findIdData?.id}
-              name={findIdData?.name}
-              position={findIdData?.position}
-              destination={findIdData?.destination}
-              traveldate={findIdData?.traveldate}
-              companyType={findIdData?.companyType}
-              contractCategory={findIdData?.contractCategory}
-              familyStatus={findIdData?.familyStatus}
-              contratctCopy={findIdData?.contratctCopy}
-              visaReady={findIdData?.visaReady}
-              departement={findIdData?.departement}
-
-            />
-            <AiFillEdit
-              onClick={handleEditContratOpen}
-
-              className='iconeEdit'></AiFillEdit>
-            {/* <Button
-            type='primary'
-            shape='circle'
-            className='icon-btn icon-btn-eye'
-            onClick={handleEditContratOpen}
-            icon={<RiEditFill />}
-          /> */}
-
-            <ContratStatusEdit
+        return (
+          <div onClick={() => findId(record?.id)}>
+         
+            <Dropdown menu={{ items }} trigger={['click']}>
+              <Button type='circle'>
+                <MoreOutlined />
+              </Button>
+            </Dropdown>
+            {isEditContrat && (
+              <ContratStatusEdit
               isEditContrat={isEditContrat}
+              // isEditContrat={isEditContrat}
               handleAddContactClose={handleEditContratClose}
               id={findIdData?.id}
               name={findIdData?.name}
@@ -267,33 +241,173 @@ const OrderTable = ({ temployee, loading }) => {
               duration={findIdData?.duration}
               emergencyName={findIdData?.emergencyName}
               emergencyRelation={findIdData?.emergencyRelation}
-          
-
-
             />
-
+          )} 
+              {isViewContrat && (
+               <ContratStatusView
+               isViewContrat={isViewContrat}
+               handleAddContactClose={handleAddContartClose}
+               findIdData={findIdData}
+               id={findIdData?.id}
+               name={findIdData?.name}
+               position={findIdData?.position}
+               destination={findIdData?.destination}
+               traveldate={findIdData?.traveldate}
+               companyType={findIdData?.companyType}
+               contractCategory={findIdData?.contractCategory}
+               familyStatus={findIdData?.familyStatus}
+               contratctCopy={findIdData?.contratctCopy}
+               visaReady={findIdData?.visaReady}
+               departement={findIdData?.departement}
+ 
+             />
+          )} 
+         
+                    
           
-
-            <DownloadButton
-
-              className='iconeDownload'
-              disabled={!record.contractCopy || record.contractCopy.trim() === ""}
-              // disabled={record.contratctCopy}
-              // hasContratctCopy={record.contratctCopy}
-              onClick={SelectionnnerContrat}
-        
-
-            />
-
-
-          </StyledAction>
-
-
-
-        </>
-
-      ),
+          </div>
+        );
+      },
     },
+
+    // {
+    //   title: 'Action222',
+    //   dataIndex: 'id',
+    //   fixed: "center",
+    //   key: 'id',
+    //   render: (text, record) => (
+    //     <>
+    //       <StyledAction onClick={() => findId(record?.id)}>
+    //         <GrFormView className='viewicone'
+    //           onClick={handleAddContratOpen}
+
+
+    //         ></GrFormView>
+    //         {/* <Button
+    //         onClick={handleAddContratOpen}
+    //         type='primary'
+    //         shape='circle'
+    //         className='icon-btn icon-btn-eye'
+    //         icon={<AiOutlineEye />}
+    //       /> */}
+    //         <ContratStatusView
+    //           isViewContrat={isViewContrat}
+    //           handleAddContactClose={handleAddContartClose}
+    //           findIdData={findIdData}
+    //           id={findIdData?.id}
+    //           name={findIdData?.name}
+    //           position={findIdData?.position}
+    //           destination={findIdData?.destination}
+    //           traveldate={findIdData?.traveldate}
+    //           companyType={findIdData?.companyType}
+    //           contractCategory={findIdData?.contractCategory}
+    //           familyStatus={findIdData?.familyStatus}
+    //           contratctCopy={findIdData?.contratctCopy}
+    //           visaReady={findIdData?.visaReady}
+    //           departement={findIdData?.departement}
+
+    //         />
+    //         <AiFillEdit
+    //           onClick={handleEditContratOpen}
+
+    //           className='viewEdit'></AiFillEdit>
+    //         {/* <Button
+    //         type='primary'
+    //         shape='circle'
+    //         className='icon-btn icon-btn-eye'
+    //         onClick={handleEditContratOpen}
+    //         icon={<RiEditFill />}
+    //       /> */}
+
+    //         <ContratStatusEdit
+    //           isEditContrat={isEditContrat}
+    //           handleAddContactClose={handleEditContratClose}
+    //           id={findIdData?.id}
+    //           name={findIdData?.name}
+    //           position={findIdData?.position}
+    //           destination={findIdData?.destination}
+    //           traveldate={findIdData?.traveldate}
+    //           companyType={findIdData?.companyType}
+    //           contractCategory={findIdData?.contractCategory}
+    //           familyStatus={findIdData?.familyStatus}
+    //           contratctCopy={findIdData?.contratctCopy}
+    //           visaReady={findIdData?.visaReady}
+    //           departement={findIdData?.departement}
+    //           idVisa={findIdData?.idVisa}
+    //           arName={findIdData?.arName}
+    //           arPosition={findIdData?.arPosition}
+    //           arDestination={findIdData?.arDestination}
+    //           nbchildren={findIdData?.nbchildren}
+    //           actStatus={findIdData?.actStatus}
+    //           phoneNumber={findIdData?.phoneNumber}
+    //           email={findIdData?.email}
+    //           joinDate={findIdData?.joinDate}
+    //           finishDate={findIdData?.finishDate}
+    //           nationality={findIdData?.nationality}
+    //           passport_finish_date={findIdData?.passport_finish_date}
+    //           residance_finish_date={findIdData?.residance_finish_date}
+    //           exitRentry_finish_date={findIdData?.exitRentry_finish_date}
+    //           desertPass_finish_date={findIdData?.desertPass_finish_date}
+    //           exrentry_date={findIdData?.exrentry_date}
+    //           birthDate={findIdData?.birthDate}
+    //           nbExperience={findIdData?.nbExperience}
+    //           cnss={findIdData?.cnss}
+    //           passportnumber={findIdData?.passportnumber}
+    //           phoneEmergency={findIdData?.phoneEmergency}
+    //           contractType={findIdData?.contractType}
+    //           contractNumb={findIdData?.contractNumb}
+    //           getsEmail={findIdData?.getsEmail}
+    //           desert_pass={findIdData.desert_pass}
+    //           visa_Nb={findIdData?.visa_Nb}
+    //           type_Emp={findIdData?.type_Emp}
+    //           toApplyForVisa={findIdData?.toApplyForVisa}
+    //           requestSendVisa={findIdData?.requestSendVisa}
+    //           dateVisa={findIdData?.dateVisa}
+    //           vCableReceive={findIdData?.vCableReceive}
+    //           vCabledate={findIdData?.vCabledate}
+    //           passportSubmit={findIdData?.passportSubmit}
+    //           passportSubmitdate={findIdData?.passportSubmitdate}
+    //           endTravelDate={findIdData?.endTravelDate}
+    //           finalVisaReceive={findIdData?.finalVisaReceive}
+    //           finalVisaReceiveDate={findIdData?.finalVisaReceiveDate}
+    //           finishDateVisa={findIdData?.finishDateVisa}
+    //           idJoys={findIdData?.idJoys}
+    //           exitRentryType={findIdData?.exitRentryType}
+    //           cin={findIdData?.cin}
+    //           gender={findIdData?.gender}
+    //           residenceAdress={findIdData?.residenceAdress}
+    //           arResidenceAdress={findIdData?.arResidenceAdress}
+    //           salary={findIdData?.salary}
+    //           duration={findIdData?.duration}
+    //           emergencyName={findIdData?.emergencyName}
+    //           emergencyRelation={findIdData?.emergencyRelation}
+
+
+
+    //         />
+
+
+
+    //         <DownloadButton
+
+    //           className='viewDownload'
+    //           disabled={!record.contractCopy || record.contractCopy.trim() === ""}
+    //           // disabled={record.contratctCopy}
+    //           // hasContratctCopy={record.contratctCopy}
+    //           onClick={SelectionnnerContrat}
+
+
+    //         />
+
+
+    //       </StyledAction>
+
+
+
+    //     </>
+
+    //   ),
+    // },
 
   ];
 

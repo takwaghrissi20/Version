@@ -176,9 +176,15 @@ const AllRecruitementStaff = ({ allrecruitementabove,
       { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditRecruitementOpen },
       { key: 2, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteRecruitement },
     ] : []),
-    ...(findIdData?.status === 'Approved By BOD' ? [
-      { key: 4, label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, onClick: handleInterview }
-    ] : [])
+    ...(roles.includes('Administrator') ? [
+      ...(findIdData?.status === 'Approved By BOD' ? [
+        { key: 2, label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, onClick: handleInterview }
+           
+      ] : []),
+    ] : []),
+    // ...(findIdData?.status === 'Approved By BOD' ? [
+    //   { key: 4, label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, onClick: handleInterview }
+    // ] : [])
     // { key: 3, label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, onClick: handleInterview },
 
   ];
@@ -404,7 +410,32 @@ const AllRecruitementStaff = ({ allrecruitementabove,
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
+      width: 100,
+      render: (status) => {
+        let backgroundColor;
+        let color = 'white'; 
+    
+        if (status.includes('Pending')) {
+          backgroundColor = 'red';
+        } else if (status.includes('Approved')) {
+          backgroundColor = 'green';
+        } else if (status.includes('Refuse')) {
+          backgroundColor = 'blue';
+        }
+    
+        return (
+          <div style={{ backgroundColor, color, padding: '4px', borderRadius: '4px', textAlign: 'center' }}>
+            {status}
+          </div>
+        );
+      },
     },
+ 
+    // {
+    //   title: 'Status',
+    //   dataIndex: 'status',
+    //   key: 'status',
+    // },
     // {
     //   title: 'Status',
     //   dataIndex: 'notif',

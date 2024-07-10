@@ -62,8 +62,8 @@ const ViewInterviewConstructionTeam = () => {
   const   hrComentaire = location.state ? location.state.  hrComentaire : null
   const   finaldesision = location.state ? location.state. finaldesision : null
   
-
   console.log("goTotest2", goTotest2)
+  const roles = localStorage.getItem("role");
 
   const goBack = () => {
     navigate(-1)
@@ -73,661 +73,917 @@ const ViewInterviewConstructionTeam = () => {
   return (
     <div style={{ paddingLeft: "0.5rem", paddingRight: "0.5rem" }}>
       {/**All Fied not empty */}
+      {roles.includes("admin") && (
+  <Form
+  form={form}
+  layout='vertical'
+  style={{ backgroundColor: "white", marginBottom: "20px", padding: "10px", borderRadius: "20px" }}
+  onSubmit={e => { e.preventDefault() }}
+  onKeyDown={(e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  }}
 
+>
+  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+    <div>
+      <Typography.Title level={4}>Construction STAFF INTERVIEW SHEET</Typography.Title>
 
-      <Form
-        form={form}
-        layout='vertical'
-        style={{ backgroundColor: "white", marginBottom: "20px", padding: "10px", borderRadius: "20px" }}
-        onSubmit={e => { e.preventDefault() }}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            e.preventDefault();
-          }
-        }}
+    </div>
 
-      >
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <div>
-            <Typography.Title level={4}>Construction STAFF INTERVIEW SHEET</Typography.Title>
+  </div>
+  <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+  <AppRowContainer>
+    <Col xs={24} md={6}>
+      <Typography.Title level={5}>Recruitement Information</Typography.Title>
 
-          </div>
-
-        </div>
-        <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+    </Col>
+    <Col xs={24} md={18}>
+      <StyledShadowWrapper>
         <AppRowContainer>
-          <Col xs={24} md={6}>
-            <Typography.Title level={5}>Recruitement Information</Typography.Title>
+          <Col xs={24} md={12}>
+            <Form.Item label='Reference' name='Reference'>
+              <Input
+                className='Input'
 
+                placeholder={interviewCode}
+                classNames="ViewInput"
+                readOnly={true} />
+            </Form.Item>
           </Col>
-          <Col xs={24} md={18}>
-            <StyledShadowWrapper>
-              <AppRowContainer>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Reference' name='Reference'>
-                    <Input
-                      className='Input'
-
-                      placeholder={interviewCode}
-                      classNames="ViewInput"
-                      readOnly={true} />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Interview Date' name='Interview Date'>
-                    <Input
-                      className='Input'
-                      placeholder={interviwDate}
-                      classNames="ViewInput"
-                      readOnly={true} />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='JOB CODE:' name='JOB CODE'>
-                    <Input
-                      className='Input'
-                      placeholder={jobCode}
-                      classNames="ViewInput"
-                      readOnly={true} />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Total Number Required Position' name='Total Number Required Position'>
-                    <Input
-                      className='Input'
-                      placeholder={totalReqPos}
-                      classNames="ViewInput"
-                      readOnly={true} />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Total Interviewed' name='Total Interviewed'>
-                    <Input
-                      className='Input'
-                      placeholder={totalInterv}
-                      classNames="ViewInput"
-                      readOnly={true} />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Total Accepted' name='Total Accepted'>
-                    <Input
-                      className='Input'
-                      placeholder={totalAccept}
-                      classNames="ViewInput"
-                      readOnly={true} />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label=' Required Grade' name=' Required Grade'>
-                    <Input
-                      className='Input'
-                      placeholder={requiredGrade}
-                      classNames="ViewInput"
-                      readOnly={true} />
-                  </Form.Item>
-                </Col>
-
-
-
-              </AppRowContainer>
-
-            </StyledShadowWrapper>
+          <Col xs={24} md={12}>
+            <Form.Item label='Interview Date' name='Interview Date'>
+              <Input
+                className='Input'
+                placeholder={interviwDate}
+                classNames="ViewInput"
+                readOnly={true} />
+            </Form.Item>
           </Col>
+          <Col xs={24} md={12}>
+            <Form.Item label='JOB CODE:' name='JOB CODE'>
+              <Input
+                className='Input'
+                placeholder={jobCode}
+                classNames="ViewInput"
+                readOnly={true} />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12}>
+            <Form.Item label='Total Number Required Position' name='Total Number Required Position'>
+              <Input
+                className='Input'
+                placeholder={totalReqPos}
+                classNames="ViewInput"
+                readOnly={true} />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12}>
+            <Form.Item label='Total Interviewed' name='Total Interviewed'>
+              <Input
+                className='Input'
+                placeholder={totalInterv}
+                classNames="ViewInput"
+                readOnly={true} />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12}>
+            <Form.Item label='Total Accepted' name='Total Accepted'>
+              <Input
+                className='Input'
+                placeholder={totalAccept}
+                classNames="ViewInput"
+                readOnly={true} />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12}>
+            <Form.Item label=' Required Grade' name=' Required Grade'>
+              <Input
+                className='Input'
+                placeholder={requiredGrade}
+                classNames="ViewInput"
+                readOnly={true} />
+            </Form.Item>
+          </Col>
+
+
+
         </AppRowContainer>
-        {/**/}
-        <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+
+      </StyledShadowWrapper>
+    </Col>
+  </AppRowContainer>
+  {/**/}
+  <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+  <AppRowContainer>
+    <Col xs={24} md={6}>
+      <Typography.Title level={5}> Required Position Information </Typography.Title>
+
+    </Col>
+    <Col xs={24} md={18}>
+      <StyledShadowWrapper>
         <AppRowContainer>
-          <Col xs={24} md={6}>
-            <Typography.Title level={5}> Required Position Information </Typography.Title>
+          <Col xs={24} md={12}>
+            <Form.Item label='Project Name' name='projname'>
+              <Input
+                className='Input'
+                placeholder={projname}
+                classNames="ViewInput"
+                readOnly={true}
 
+              />
+            </Form.Item>
           </Col>
-          <Col xs={24} md={18}>
-            <StyledShadowWrapper>
-              <AppRowContainer>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Project Name' name='projname'>
-                    <Input
-                      className='Input'
-                      placeholder={projname}
-                      classNames="ViewInput"
-                      readOnly={true}
-
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Position to be Filled' name='positionToBeFilled	'>
-                    <Input
-                      className='Input'
-                      placeholder={positionToBeFilled}
-                      classNames="ViewInput"
-                      readOnly={true}
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Department ' name='department '>
-                    <Input
-                      className='Input'
-                      placeholder={department}
-                      classNames="ViewInput"
-                      readOnly={true}
-
-
-                    />
-                  </Form.Item>
-                </Col>
-
-                <Col xs={24} md={12}>
-                  <Form.Item label='Requested Qualification' name='requiredQualification'>
-                    <Input
-                      className='Input'
-                      placeholder={requiredQualification}
-                      classNames="ViewInput"
-                      readOnly={true}
-
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Requested Experience' name='requiredExperinece'>
-                    <Input
-                      className='Input'
-                      placeholder={requiredGrade}
-                      classNames="ViewInput"
-                      readOnly={true}
-                    />
-                  </Form.Item>
-                </Col>
-
-              </AppRowContainer>
-            </StyledShadowWrapper>
+          <Col xs={24} md={12}>
+            <Form.Item label='Position to be Filled' name='positionToBeFilled	'>
+              <Input
+                className='Input'
+                placeholder={positionToBeFilled}
+                classNames="ViewInput"
+                readOnly={true}
+              />
+            </Form.Item>
           </Col>
+          <Col xs={24} md={12}>
+            <Form.Item label='Department ' name='department '>
+              <Input
+                className='Input'
+                placeholder={department}
+                classNames="ViewInput"
+                readOnly={true}
+
+
+              />
+            </Form.Item>
+          </Col>
+
+          <Col xs={24} md={12}>
+            <Form.Item label='Requested Qualification' name='requiredQualification'>
+              <Input
+                className='Input'
+                placeholder={requiredQualification}
+                classNames="ViewInput"
+                readOnly={true}
+
+              />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12}>
+            <Form.Item label='Requested Experience' name='requiredExperinece'>
+              <Input
+                className='Input'
+                placeholder={requiredGrade}
+                classNames="ViewInput"
+                readOnly={true}
+              />
+            </Form.Item>
+          </Col>
+
         </AppRowContainer>
-        {/*Candidate Information*/}
-        <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-          <Col xs={24} md={6}>
-            <Typography.Title level={5}>Candidate Experience & Education </Typography.Title>
+      </StyledShadowWrapper>
+    </Col>
+  </AppRowContainer>
+  {/*Candidate Information*/}
+  <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+    <Col xs={24} md={6}>
+      <Typography.Title level={5}>Candidate Experience & Education </Typography.Title>
 
+    </Col>
+    <Col xs={24} md={18}>
+      <StyledShadowWrapper>
+        <AppRowContainer>
+          <Col xs={24} md={12}>
+            <Form.Item label='Diploma /Speciality' name='diploma'
+              rules={[
+                { required: true, message: 'Please input your Diploma /Speciality!' },
+
+              ]}
+
+
+            >
+              <Input
+                className='Input'
+                placeholder={diploma}
+                readOnly={true}
+
+
+
+              />
+            </Form.Item>
           </Col>
-          <Col xs={24} md={18}>
-            <StyledShadowWrapper>
-              <AppRowContainer>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Diploma /Speciality' name='diploma'
-                    rules={[
-                      { required: true, message: 'Please input your Diploma /Speciality!' },
-
-                    ]}
+          <Col xs={24} md={12}>
+            <Form.Item label='Educational level' name='educationLevel'
 
 
-                  >
-                    <Input
-                      className='Input'
-                      placeholder={diploma}
-                      readOnly={true}
+            >
+              <Input
+
+                className='Input'
+                placeholder={educationLevel}
+                readOnly={true}
 
 
-
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Educational level' name='educationLevel'
-
-
-                  >
-                    <Input
-
-                      className='Input'
-                      placeholder={educationLevel}
-                      readOnly={true}
-
-
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Experience' name='experience'
-
-
-
-
-                  >
-                    <Input
-                      className='Input'
-                      placeholder={experience}
-                      readOnly={true}
-
-
-
-                    />
-                  </Form.Item>
-                </Col>
-
-              </AppRowContainer>
-            </StyledShadowWrapper>
+              />
+            </Form.Item>
           </Col>
+          <Col xs={24} md={12}>
+            <Form.Item label='Experience' name='experience'
+
+
+
+
+            >
+              <Input
+                className='Input'
+                placeholder={experience}
+                readOnly={true}
+
+
+
+              />
+            </Form.Item>
+          </Col>
+
         </AppRowContainer>
-        <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-        <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-          <Col xs={24} md={6}>
-            <Typography.Title level={5}>Preliminary study of the application </Typography.Title>
-            <StyledSecondaryText1>
-              Go to test 2
-            </StyledSecondaryText1>
+      </StyledShadowWrapper>
+    </Col>
+  </AppRowContainer>
+  <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+  <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+    <Col xs={24} md={6}>
+      <Typography.Title level={5}>Preliminary study of the application </Typography.Title>
+      <StyledSecondaryText1>
+        Go to test 2
+      </StyledSecondaryText1>
+    </Col>
+    <Col xs={24} md={18}>
+      <StyledShadowWrapper>
+        <Col xs={24} md={12}>
+          <Form.Item label='Validation' name='Validation'
+
+          >
+            <Input
+              className='Input'
+              placeholder={validatesFor}
+              readOnly={true}
+
+            />
+          </Form.Item>
+        </Col>
+        <Col xs={24} md={12}>
+          <Form.Item
+            style={{ marginTop: "10px" }}
+            label='Go to test 2 :'
+            name='Gototest2' >
+
+            <Checkbox checked={goTotest2}>
+
+              <IntlMessages id='validation.test' />
+            </Checkbox>
+            <Checkbox checked={!goTotest2}>
+              <IntlMessages id='Refuse.test' />
+            </Checkbox>
+
+          </Form.Item>
+
+        </Col>
+
+      </StyledShadowWrapper>
+    </Col>
+  </AppRowContainer>
+  {/*Psychotechnical Test */}
+  <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+  <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+    <Col xs={24} md={6}>
+      <Typography.Title level={5}> Psychotechnical Test </Typography.Title>
+      <StyledSecondaryText1>
+        Go to test 3
+      </StyledSecondaryText1>
+    </Col>
+    <Col xs={24} md={18}>
+      <StyledShadowWrapper>
+        <AppRowContainer>
+          <Col xs={24} md={12}>
+            <Form.Item
+              label='Personnality'
+              name='Personnality'
+            >
+              <Input
+                className='Input'
+                placeholder={psy_Person}
+                readOnly={true}
+
+              />
+            </Form.Item>
           </Col>
-          <Col xs={24} md={18}>
-            <StyledShadowWrapper>
-              <Col xs={24} md={12}>
-                <Form.Item label='Validation' name='Validation'
+          <Col xs={24} md={12}>
+            <Form.Item
+              label='Humain quality'
+              name='Humain quality'>
+              <Input
+                className='Input'
+                placeholder={psy_HumQuality}
+                readOnly={true}
 
-                >
-                  <Input
-                    className='Input'
-                    placeholder={validatesFor}
-                    readOnly={true}
+              />
 
-                  />
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <Form.Item
-                  style={{ marginTop: "10px" }}
-                  label='Go to test 2 :'
-                  name='Gototest2' >
-
-                  <Checkbox checked={goTotest2}>
-
-                    <IntlMessages id='validation.test' />
-                  </Checkbox>
-                  <Checkbox checked={!goTotest2}>
-                    <IntlMessages id='Refuse.test' />
-                  </Checkbox>
-
-                </Form.Item>
-
-              </Col>
-
-            </StyledShadowWrapper>
+            </Form.Item>
           </Col>
+          <Col xs={24} md={12}>
+            <Form.Item
+              label='Motivation/Ambition'
+              name='Motivation/Ambition'
+
+            >
+              <Input
+                className='Input'
+                placeholder={psy_motivation}
+                readOnly={true}
+
+              />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12}>
+            <Form.Item
+              label='Intelligence'
+              name='Intelligence'
+
+            >
+              <Input
+                className='Input'
+                placeholder={psy_Intellig}
+                readOnly={true}
+
+              />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12}>
+
+            <Form.Item
+              label='Go to test 3 :'
+              name='Gototest3' >
+              <Checkbox checked={goToTest3}>
+
+                <IntlMessages id='validation.test' />
+              </Checkbox>
+              <Checkbox checked={!goToTest3}>
+                <IntlMessages id='Refuse.test' />
+              </Checkbox>
+            </Form.Item>
+
+          </Col>
+
         </AppRowContainer>
-        {/*Psychotechnical Test */}
-        <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-        <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-          <Col xs={24} md={6}>
-            <Typography.Title level={5}> Psychotechnical Test </Typography.Title>
-            <StyledSecondaryText1>
-              Go to test 3
-            </StyledSecondaryText1>
+      </StyledShadowWrapper>
+    </Col>
+  </AppRowContainer>
+  <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+  <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+    <Col xs={24} md={6}>
+      <Typography.Title level={5}> Technical Evaluation</Typography.Title>
+
+    </Col>
+    <Col xs={24} md={18}>
+      <StyledShadowWrapper>
+        <AppRowContainer>
+          <Col xs={24} md={12}>
+            <Form.Item
+              label='English Skills '
+              name='English Skills '>
+              <Input
+                className='Input'
+                placeholder={techEnglishSkills}
+                readOnly={true}
+
+              />
+
+            </Form.Item>
           </Col>
-          <Col xs={24} md={18}>
-            <StyledShadowWrapper>
-              <AppRowContainer>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label='Personnality'
-                    name='Personnality'
-                  >
-                    <Input
-                      className='Input'
-                      placeholder={psy_Person}
-                      readOnly={true}
+          <Col xs={24} md={12}>
+            <Form.Item
+              label='Date'
+              name='Date'>
 
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label='Humain quality'
-                    name='Humain quality'>
-                    <Input
-                      className='Input'
-                      placeholder={psy_HumQuality}
-                      readOnly={true}
+              <Input
+                className='Input'
+                placeholder={techDate}
+                readOnly={true}
 
-                    />
+              />
 
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label='Motivation/Ambition'
-                    name='Motivation/Ambition'
-
-                  >
-                    <Input
-                      className='Input'
-                      placeholder={psy_motivation}
-                      readOnly={true}
-
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label='Intelligence'
-                    name='Intelligence'
-
-                  >
-                    <Input
-                      className='Input'
-                      placeholder={psy_Intellig}
-                      readOnly={true}
-
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-
-                  <Form.Item
-                    label='Go to test 3 :'
-                    name='Gototest3' >
-                    <Checkbox checked={goToTest3}>
-
-                      <IntlMessages id='validation.test' />
-                    </Checkbox>
-                    <Checkbox checked={!goToTest3}>
-                      <IntlMessages id='Refuse.test' />
-                    </Checkbox>
-                  </Form.Item>
-
-                </Col>
-
-              </AppRowContainer>
-            </StyledShadowWrapper>
+            </Form.Item>
           </Col>
+          <Col xs={24} md={12}>
+            <Form.Item label='Evaluator' name='Evaluator'>
+              <Input
+                // value={evaluator}
+                className='Input'
+                readOnly={true}
+              />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12}>
+            <Form.Item label='ID Number' name='ID Number'
+            >
+              <Input
+                value={idNumb}
+                placeholder='ID Number' />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12}>
+
+            <Form.Item
+              label='The present profile meets the requirements of 
+            the requested position :'
+              name='Present profile' >
+              <Checkbox >
+
+                <IntlMessages id='validation.test' />
+              </Checkbox>
+              <Checkbox >
+                <IntlMessages id='Refuse.test' />
+              </Checkbox>
+            </Form.Item>
+
+          </Col>
+
+
         </AppRowContainer>
-        <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-        <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-          <Col xs={24} md={6}>
-            <Typography.Title level={5}> Technical Evaluation</Typography.Title>
+      </StyledShadowWrapper>
+    </Col>
+  </AppRowContainer>
+  <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+  <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+    <Col xs={24} md={6}>
+      <Typography.Title level={5}> Evaluator Decision</Typography.Title>
+
+    </Col>
+    <Col xs={24} md={18}>
+      <StyledShadowWrapper>
+        <AppRowContainer>
+
+          <Col xs={24} md={24}>
+
+            <Form.Item
+              label='Evaluator Decision :'
+              name=' EvaluatorDecision' >
+              <Checkbox checked={evalDesision} >
+
+                <IntlMessages id='validation.test' />
+              </Checkbox>
+              <Checkbox checked={!evalDesision} >
+                <IntlMessages id='Refuse.test' />
+              </Checkbox>
+            </Form.Item>
 
           </Col>
-          <Col xs={24} md={18}>
-            <StyledShadowWrapper>
-              <AppRowContainer>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label='English Skills '
-                    name='English Skills '>
-                    <Input
-                      className='Input'
-                      placeholder={techEnglishSkills}
-                      readOnly={true}
-
-                    />
-
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label='Date'
-                    name='Date'>
-
-                    <Input
-                      className='Input'
-                      placeholder={techDate}
-                      readOnly={true}
-
-                    />
-
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Evaluator' name='Evaluator'>
-                    <Input
-                      // value={evaluator}
-                      className='Input'
-                      readOnly={true}
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='ID Number' name='ID Number'
-                  >
-                    <Input
-                      value={idNumb}
-                      placeholder='ID Number' />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-
-                  <Form.Item
-                    label='The present profile meets the requirements of 
-                  the requested position :'
-                    name='Present profile' >
-                    <Checkbox >
-
-                      <IntlMessages id='validation.test' />
-                    </Checkbox>
-                    <Checkbox >
-                      <IntlMessages id='Refuse.test' />
-                    </Checkbox>
-                  </Form.Item>
-
-                </Col>
-
-
-              </AppRowContainer>
-            </StyledShadowWrapper>
+          <Col xs={24} md={24}>
+            <Form.Item label='Comments' name='Comments' >
+              <Input
+                className='InputComment'
+                placeholder={techcommentaire} />
+            </Form.Item>
           </Col>
+
+
         </AppRowContainer>
-        <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-        <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-          <Col xs={24} md={6}>
-            <Typography.Title level={5}> Evaluator Decision</Typography.Title>
+      </StyledShadowWrapper>
+    </Col>
+  </AppRowContainer>
+  <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+  <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+    <Col xs={24} md={6}>
+      <Typography.Title level={5}>  Head of Department ApprovaL</Typography.Title>
+
+    </Col>
+    <Col xs={24} md={18}>
+      <StyledShadowWrapper>
+        <AppRowContainer>
+          <Col xs={24} md={12}>
+
+            <Form.Item
+              label='Head of Department Approval :'
+              name='Head of Department Approval' >
+              <Checkbox checked={headOfDepAprouv}  >
+
+                <IntlMessages id='validation.test' />
+              </Checkbox>
+              <Checkbox checked={!headOfDepAprouv}>
+                <IntlMessages id='Refuse.test' />
+              </Checkbox>
+            </Form.Item>
 
           </Col>
-          <Col xs={24} md={18}>
-            <StyledShadowWrapper>
-              <AppRowContainer>
-
-                <Col xs={24} md={24}>
-
-                  <Form.Item
-                    label='Evaluator Decision :'
-                    name=' EvaluatorDecision' >
-                    <Checkbox checked={evalDesision} >
-
-                      <IntlMessages id='validation.test' />
-                    </Checkbox>
-                    <Checkbox checked={!evalDesision} >
-                      <IntlMessages id='Refuse.test' />
-                    </Checkbox>
-                  </Form.Item>
-
-                </Col>
-                <Col xs={24} md={24}>
-                  <Form.Item label='Comments' name='Comments' >
-                    <Input
-                      className='InputComment'
-                      placeholder={techcommentaire} />
-                  </Form.Item>
-                </Col>
 
 
-              </AppRowContainer>
-            </StyledShadowWrapper>
-          </Col>
+
         </AppRowContainer>
-        <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-        <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-          <Col xs={24} md={6}>
-            <Typography.Title level={5}>  Head of Department ApprovaL</Typography.Title>
+      </StyledShadowWrapper>
+    </Col>
+  </AppRowContainer>
+  <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+  <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+    <Col xs={24} md={6}>
+      <Typography.Title level={5}>HR Evaluation &&  Decision</Typography.Title>
 
+    </Col>
+    <Col xs={24} md={18}>
+      <StyledShadowWrapper>
+        <AppRowContainer>
+          <Col xs={24} md={12}>
+            <Form.Item
+              label='Personnality'
+              name='Personnality' >
+              <Input
+                readOnly
+                placeholder={hr_Person} />
+            </Form.Item>
           </Col>
-          <Col xs={24} md={18}>
-            <StyledShadowWrapper>
-              <AppRowContainer>
-                <Col xs={24} md={12}>
-
-                  <Form.Item
-                    label='Head of Department Approval :'
-                    name='Head of Department Approval' >
-                    <Checkbox checked={headOfDepAprouv}  >
-
-                      <IntlMessages id='validation.test' />
-                    </Checkbox>
-                    <Checkbox checked={!headOfDepAprouv}>
-                      <IntlMessages id='Refuse.test' />
-                    </Checkbox>
-                  </Form.Item>
-
-                </Col>
-
-
-
-              </AppRowContainer>
-            </StyledShadowWrapper>
+          <Col xs={24} md={12}>
+            <Form.Item
+              label='Humain quality'
+              name='Humain quality'
+            >
+              <Input
+              readOnly
+                placeholder={hr_HumQuality} />
+            </Form.Item>
           </Col>
-        </AppRowContainer>
-        <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-        <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-          <Col xs={24} md={6}>
-            <Typography.Title level={5}>HR Evaluation &&  Decision</Typography.Title>
+          <Col xs={24} md={12}>
+            <Form.Item
+              label='Motivation/Ambition'
+              name='Motivation/Ambition'
+              onChange={(value) => setSelectedMotivationHR(value)}
 
+            >
+              <Input
+               readOnly
+                placeholder={hr_motivation} />
+
+            </Form.Item>
           </Col>
-          <Col xs={24} md={18}>
-            <StyledShadowWrapper>
-              <AppRowContainer>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label='Personnality'
-                    name='Personnality' >
-                    <Input
-                      readOnly
-                      placeholder={hr_Person} />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label='Humain quality'
-                    name='Humain quality'
-                  >
-                    <Input
-                    readOnly
-                      placeholder={hr_HumQuality} />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label='Motivation/Ambition'
-                    name='Motivation/Ambition'
-                    onChange={(value) => setSelectedMotivationHR(value)}
+          <Col xs={24} md={12}>
+            <Form.Item
+              label='Intelligence'
+              name='Intelligence'
 
-                  >
-                    <Input
-                     readOnly
-                      placeholder={hr_motivation} />
+            >
+              <Input
+                readOnly
+                placeholder={hr_Intellig} />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12}>
+            <Form.Item
+              label='Level'
+              name='Level'
 
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label='Intelligence'
-                    name='Intelligence'
-
-                  >
-                    <Input
-                      readOnly
-                      placeholder={hr_Intellig} />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label='Level'
-                    name='Level'
-
-                  >
-                    <Input
-                    
-                      placeholder={level} />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Expected Join Date' name='Expected Join Date'>
-                    <Input
-                      readOnly
-                      placeholder={expectedJoinDate} />
-
-                  </Form.Item>
-                </Col>
-
-
-                <Col xs={24} md={12}>
-                  <Form.Item label='Proposed Office Salary' name='Proposed Salary'
-
-
-                  >
-                    <Input
-                     readOnly
-                      placeholder={propsedsalary} />
-
-
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Proposed Site Daily Rate' name='Proposed Daily Rate'
-
-
-
-                  >
-                    <Input
-                      readOnly
-                      placeholder={dailyRate} />
-
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={24}>
-                 
-                    <Form.Item
-                      label='HR Decision:'
-                      name='HR Evaluation' >
-                      <Checkbox checked={ hrDesion} >
-
-                        <IntlMessages id='validation.test' />
-                      </Checkbox>
-                      <Checkbox checked={ !hrDesion} >
-                        <IntlMessages id='Refuse.test' />
-                      </Checkbox>
-                    </Form.Item>
+            >
+              <Input
               
-                </Col>
-                <Col xs={24} md={24}>
-                  <Form.Item label='Comments' name='Comments'
-
-
-
-                  >
-                    <Input
-                      className='InputComment'
-                      readOnly
-                     placeholder={hrComentaire} />
-                  </Form.Item>
-                </Col>
-
-
-
-
-              </AppRowContainer>
-            </StyledShadowWrapper>
+                placeholder={level} />
+            </Form.Item>
           </Col>
+          <Col xs={24} md={12}>
+            <Form.Item label='Expected Join Date' name='Expected Join Date'>
+              <Input
+                readOnly
+                placeholder={expectedJoinDate} />
+
+            </Form.Item>
+          </Col>
+
+
+          <Col xs={24} md={12}>
+            <Form.Item label='Proposed Office Salary' name='Proposed Salary'
+
+
+            >
+              <Input
+               readOnly
+                placeholder={propsedsalary} />
+
+
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12}>
+            <Form.Item label='Proposed Site Daily Rate' name='Proposed Daily Rate'
+
+
+
+            >
+              <Input
+                readOnly
+                placeholder={dailyRate} />
+
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={24}>
+           
+              <Form.Item
+                label='HR Decision:'
+                name='HR Evaluation' >
+                <Checkbox checked={ hrDesion} >
+
+                  <IntlMessages id='validation.test' />
+                </Checkbox>
+                <Checkbox checked={ !hrDesion} >
+                  <IntlMessages id='Refuse.test' />
+                </Checkbox>
+              </Form.Item>
+        
+          </Col>
+          <Col xs={24} md={24}>
+            <Form.Item label='Comments' name='Comments'
+
+
+
+            >
+              <Input
+                className='InputComment'
+                readOnly
+               placeholder={hrComentaire} />
+            </Form.Item>
+          </Col>
+
+
+
+
         </AppRowContainer>
-      
+      </StyledShadowWrapper>
+    </Col>
+  </AppRowContainer>
 
-        <Space
-          size={15}
-          style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
-        >
-          <Button
-          onClick={goBack}
-          >Cancel</Button>
 
-        </Space>
+  <Space
+    size={15}
+    style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
+  >
+    <Button
+    onClick={goBack}
+    >Cancel</Button>
 
-      </Form>
+  </Space>
+
+</Form>
+
+)}
+{/*roles Hr Administartor*/}
+{roles.includes("Administrator") && (
+  <Form
+  form={form}
+  layout='vertical'
+  style={{ backgroundColor: "white", marginBottom: "20px", padding: "10px", borderRadius: "20px" }}
+  onSubmit={e => { e.preventDefault() }}
+  onKeyDown={(e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  }}
+
+>
+  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+    <div>
+      <Typography.Title level={4}>Construction STAFF INTERVIEW SHEET</Typography.Title>
+
+    </div>
+
+  </div>
+  <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+  <AppRowContainer>
+    <Col xs={24} md={6}>
+      <Typography.Title level={5}>Recruitement Information</Typography.Title>
+
+    </Col>
+    <Col xs={24} md={18}>
+      <StyledShadowWrapper>
+        <AppRowContainer>
+          <Col xs={24} md={12}>
+            <Form.Item label='Reference' name='Reference'>
+              <Input
+                className='Input'
+
+                placeholder={interviewCode}
+                classNames="ViewInput"
+                readOnly={true} />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12}>
+            <Form.Item label='Interview Date' name='Interview Date'>
+              <Input
+                className='Input'
+                placeholder={interviwDate}
+                classNames="ViewInput"
+                readOnly={true} />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12}>
+            <Form.Item label='JOB CODE:' name='JOB CODE'>
+              <Input
+                className='Input'
+                placeholder={jobCode}
+                classNames="ViewInput"
+                readOnly={true} />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12}>
+            <Form.Item label='Total Number Required Position' name='Total Number Required Position'>
+              <Input
+                className='Input'
+                placeholder={totalReqPos}
+                classNames="ViewInput"
+                readOnly={true} />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12}>
+            <Form.Item label='Total Interviewed' name='Total Interviewed'>
+              <Input
+                className='Input'
+                placeholder={totalInterv}
+                classNames="ViewInput"
+                readOnly={true} />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12}>
+            <Form.Item label='Total Accepted' name='Total Accepted'>
+              <Input
+                className='Input'
+                placeholder={totalAccept}
+                classNames="ViewInput"
+                readOnly={true} />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12}>
+            <Form.Item label=' Required Grade' name=' Required Grade'>
+              <Input
+                className='Input'
+                placeholder={requiredGrade}
+                classNames="ViewInput"
+                readOnly={true} />
+            </Form.Item>
+          </Col>
+
+
+
+        </AppRowContainer>
+
+      </StyledShadowWrapper>
+    </Col>
+  </AppRowContainer>
+  {/**/}
+  <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+  <AppRowContainer>
+    <Col xs={24} md={6}>
+      <Typography.Title level={5}> Required Position Information </Typography.Title>
+
+    </Col>
+    <Col xs={24} md={18}>
+      <StyledShadowWrapper>
+        <AppRowContainer>
+          <Col xs={24} md={12}>
+            <Form.Item label='Project Name' name='projname'>
+              <Input
+                className='Input'
+                placeholder={projname}
+                classNames="ViewInput"
+                readOnly={true}
+
+              />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12}>
+            <Form.Item label='Position to be Filled' name='positionToBeFilled	'>
+              <Input
+                className='Input'
+                placeholder={positionToBeFilled}
+                classNames="ViewInput"
+                readOnly={true}
+              />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12}>
+            <Form.Item label='Department ' name='department '>
+              <Input
+                className='Input'
+                placeholder={department}
+                classNames="ViewInput"
+                readOnly={true}
+
+
+              />
+            </Form.Item>
+          </Col>
+
+          <Col xs={24} md={12}>
+            <Form.Item label='Requested Qualification' name='requiredQualification'>
+              <Input
+                className='Input'
+                placeholder={requiredQualification}
+                classNames="ViewInput"
+                readOnly={true}
+
+              />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12}>
+            <Form.Item label='Requested Experience' name='requiredExperinece'>
+              <Input
+                className='Input'
+                placeholder={requiredGrade}
+                classNames="ViewInput"
+                readOnly={true}
+              />
+            </Form.Item>
+          </Col>
+
+        </AppRowContainer>
+      </StyledShadowWrapper>
+    </Col>
+  </AppRowContainer>
+  {/*Candidate Information*/}
+  <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+    <Col xs={24} md={6}>
+      <Typography.Title level={5}>Candidate Experience & Education </Typography.Title>
+
+    </Col>
+    <Col xs={24} md={18}>
+      <StyledShadowWrapper>
+        <AppRowContainer>
+          <Col xs={24} md={12}>
+            <Form.Item label='Diploma /Speciality' name='diploma'
+              rules={[
+                { required: true, message: 'Please input your Diploma /Speciality!' },
+
+              ]}
+
+
+            >
+              <Input
+                className='Input'
+                placeholder={diploma}
+                readOnly={true}
+
+
+
+              />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12}>
+            <Form.Item label='Educational level' name='educationLevel'
+
+
+            >
+              <Input
+
+                className='Input'
+                placeholder={educationLevel}
+                readOnly={true}
+
+
+              />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12}>
+            <Form.Item label='Experience' name='experience'
+
+
+
+
+            >
+              <Input
+                className='Input'
+                placeholder={experience}
+                readOnly={true}
+
+
+
+              />
+            </Form.Item>
+          </Col>
+
+        </AppRowContainer>
+      </StyledShadowWrapper>
+    </Col>
+  </AppRowContainer>
+
+
+
+  <Space
+    size={15}
+    style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
+  >
+    <Button
+    onClick={goBack}
+    >Cancel</Button>
+
+  </Space>
+
+</Form>
+
+)}
+
+    
 
 
 

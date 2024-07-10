@@ -25,6 +25,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
   const [isDelteInterviewStaff, onDeleteInterviewStaff] = useState(false)
   const [isAddEmployees, onAddEmployees] = useState(false);
   const navigate = useNavigate();
+  const userRoles = localStorage.getItem("role");
   const handleAddInterviewStaffOpen = () => {
     //onViewInterviewStaff(true);
     console.log("findIdData",findIdData?.interviewCode)
@@ -361,9 +362,13 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
         const items = [
           { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleAddInterviewStaffOpen },
           { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditInterviewStaffOpen },
-          { key: 3, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteInterviewStaff },
+          ...(userRoles.includes('admin') ? [
+            { key: 3, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteInterviewStaff },
+          ] : [])
+
+        
         ];  
-        if (record.notif === 1) {
+        if (record.notif === 3 ) {
           items.push({ key: 4, label: <span style={{ fontSize: 14 }}>Add Employees</span>, 
           onClick:handleAddEmployees });
         }

@@ -31,6 +31,8 @@ const Dashboards = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [typingTimeout, setTypingTimeout] = useState(0);
+  const [profile, setProfile] = useState("")
+  const [dep, setDep] = useState("")
   ///////
   const [datarecruitement, setDatarecruitement] = useState([]);
   const [datarecruitementFiltrer, setDatarecruitementFiltrer] = useState([]);
@@ -43,7 +45,42 @@ const Dashboards = () => {
   const [idRec, setIdRec] = useState("");
   const [listRecruitementId, setListRecruitementId] = useState([]);
   const user = localStorage.getItem("role");
-  console.log("userrrrr",user)
+  {/*Get Profile*/}
+  const GetProfileEmployess = async () => {
+    const storedemail = window.localStorage.getItem("email");
+    console.log("storedemail", storedemail)
+    try {
+      const endPoint =
+        process.env.NODE_ENV === "development"
+          ? "https://dev-gateway.gets-company.com"
+          : "";
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('La requête a échoué avec le code ' + response.status);
+      }
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
+      }
+      const data = await response.json();
+      console.log("data profile", data)
+      setDep(data?.departement)
+      setProfile(data)
+  
+
+
+    } catch (error) {
+      console.error('Erreur lors de la récupération Last Recruitement', error);
+    }
+  };
+{/*End Get Prole */}  
   const handlePageChangeOffice = (page) => {
     setCurrentPage(page);
   };
@@ -63,6 +100,7 @@ const Dashboards = () => {
     }
   };
   useEffect(() => {
+    GetProfileEmployess()
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsDropdownOpen(false);
@@ -308,8 +346,7 @@ const Dashboards = () => {
               listRecruitementId={listRecruitementId}
             />
             {user.includes('admin') || user.includes('Administrator') && (
-            <>
-          
+            <>       
               <div className='Pagination' >
                 <StyledCustomerHeaderRight>
                   <Pagination
@@ -342,19 +379,19 @@ const Dashboards = () => {
         </>
       ),
     },
-    ...(!user.includes('Manager') ? [{
+    
+    ...(!(user?.includes('Manager') || user?.includes('Planner') || user?.includes('Leader')) ? [{
       label: 'Passport Expired',
       key: '2',
-      children:
+      children: (
         <>
-          <AppsHeader key={'wrap'}>
-
-          </AppsHeader>
+          <AppsHeader key={'wrap'}></AppsHeader>
           <PassportExpired loading={loading} passportExpered={passportExpered} />
-
-        </>,
+        </>
+      ),
     }] : []),
-    ...(!user.includes('Manager') ? [{
+    
+    ...(!(user?.includes('Manager') || user?.includes('Planner') || user?.includes('Leader')) ? [{
       label: 'Visa Expired',
       key: '3',
       children:
@@ -370,23 +407,40 @@ const Dashboards = () => {
 
   ];
 
-
   return (
-    <>
+ <>
       <AppPageMeta title='Dashboards' />
       <>
-      {metricsData ? (
-        <AppRowContainer ease={'easeInSine'}>
-          {crmData?.stateData?.map((data) => (
-            (!data.showForRoles || data.showForRoles.includes(role)) && (
-              <Col key={data.id} xs={24} sm={12} lg={6}>
-                <StatsDirCard data={data} />
-              </Col>
-            )
-          ))}
-
-        </AppRowContainer>
-      ) : null}
+      {user.includes("admin") && metricsData && (
+      <AppRowContainer ease={'easeInSine'}>
+        {crmData?.stateData?.map((data) => (
+          <Col key={data.id} xs={24} sm={12} lg={6}>
+            <StatsDirCard data={data} />
+          </Col>
+        ))}
+      </AppRowContainer>
+    )}
+    
+    {user.includes("Manager")  && metricsData && (
+      <AppRowContainer ease={'easeInSine'}>
+        {crmData?.stateDataManager?.map((data) => (
+          <Col key={data.id} xs={24} sm={12} lg={6}>
+            <StatsDirCard data={data} />
+          </Col>
+        ))}
+      </AppRowContainer>
+    )}
+    {/* //hrAdministrator */}
+    {user.includes("Administrator")  && metricsData && (
+      <AppRowContainer ease={'easeInSine'}>
+        {crmData?.stateDataHRAdministrator?.map((data) => (
+          <Col key={data.id} xs={24} sm={12} lg={6}>
+            <StatsDirCard data={data} />
+          </Col>
+        ))}
+      </AppRowContainer>
+    )
+  }
       </>
       <AppsContainer
         title={messages['dashboard.dashbord.RequireAttention']}

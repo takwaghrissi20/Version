@@ -42,7 +42,7 @@ const AppVerticalNav = ({ routesConfig }) => {
             item.id === "ManpowerLocation"||
             item.id === "Employees"  ||
             item.id === "attendance" ||
-            item.id === "VacationLeave"  ||
+           
             item.id === "ManpowerEvaluation" ||
             item.id === "Site Clerk"  ||
             item.id === "PROJECTS TRIP TRACK RECORD "                           
@@ -144,6 +144,7 @@ const AppVerticalNav = ({ routesConfig }) => {
         if (item.id === "Interview Statistics" ||
             item.id === "Integration" ||
             item.id === "IntegrationStatistics" ||
+            item.id === "ReportedReports" ||        
             item.id === "VisaHealth" ) 
            
              {
@@ -161,6 +162,22 @@ const AppVerticalNav = ({ routesConfig }) => {
           return false; 
         }
       }
+      else if (userRole.includes("Leader")) {
+        if (item.id === "Interview Statistics" ||
+          item.id === "Integration" ||
+          item.id === "IntegrationStatistics" 
+        )
+             {
+          return false; 
+        }
+      }
+
+
+
+
+
+
+      
   
       return true;
     });

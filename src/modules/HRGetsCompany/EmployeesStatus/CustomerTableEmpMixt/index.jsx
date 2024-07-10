@@ -134,7 +134,7 @@ const OrderTable = ({ employeesmixt, loading }) => {
       title: 'Actions',
       dataIndex: 'actions',
       key: 'actions',
-      fixed: 'right',
+  
       className: 'customer-table-actions',
       render: (text, record) => (
         

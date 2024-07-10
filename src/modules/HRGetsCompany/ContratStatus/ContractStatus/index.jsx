@@ -108,12 +108,12 @@ useEffect(() => {
 }, [ ]);
 const items = [
   {
-    label: 'Employees Construction Team',
+    label: 'Construction Team',
     key: '1',
-    children:  <OrderContrat temployee={temployee || []}/> ,
+    children:  <OrderContrat temployee={temployee}/> ,
   }, // remember to pass the key prop
   {
-    label: 'Employees Staff Management',
+    label: 'Management Staff ',
     key: '2',
     children:<OrderContratStaff temployee={temployeeStaff}></OrderContratStaff>,
   },

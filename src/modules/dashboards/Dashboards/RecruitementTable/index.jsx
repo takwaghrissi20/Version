@@ -412,7 +412,7 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId}) => {
    
   )} */}
 {/**/}
-{(user.includes('admin')) ||(user.includes('Administrator'))?
+{(user.includes('admin') || user.includes('Administrator') )?
   <StyledOrderTable
       hoverColor
       data={AllRecruitement}

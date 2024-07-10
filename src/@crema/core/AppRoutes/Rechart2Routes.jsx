@@ -38,6 +38,8 @@ import ReachedToSite from '../../../modules/DateReachSite';
 import AddTimeSheetsite from '../../../modules/TimeSheet/AddTimeSheetsite'
 import ViewTravel from '../../../modules/VisaAndTravel/visa/Viewtravel';
 import EditTravel from '../../../modules/VisaAndTravel/visa/Edittravel';
+//Payroll
+import SalariesTracker from '../../../modules/Payroll/Salaries Tracker';
 
 
 export const recharts2Configs = [
@@ -216,6 +218,18 @@ export const recharts2Configs = [
     path: '/SiteCleark/Add-Employees-Pointages',
     element: <AddTimeSheetsite/>,
   },
+  /*Payrolll*/
+  {
+    path: '/Payroll/SalariesTracker',
+    element: <SalariesTracker/>,
+  },
+
+
+
+
+
+
+  /*End Payroll*/
   
   
 ];

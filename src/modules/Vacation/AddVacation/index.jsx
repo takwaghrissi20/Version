@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import AppRowContainer from '../../../@crema/components/AppRowContainer';
 import moment from 'moment';
 import { StyledShadowWrapper } from '../../../styles/index.styled';
+import ConfirmationModal from '../../../@crema/components/AppConfirmationModal';
 
 const Vacation = () => {
   const [form] = Form.useForm();
@@ -18,6 +19,11 @@ const Vacation = () => {
   const [reason, setReason] = useState('');
   const [id, setId] = useState(null);
   const [duration, setDuration] = useState(0);
+  const [modalWarning, setModalWarning] = useState(false);
+  const [isSave, onSave] = useState(false);
+  const [isCancel, onCancel] = useState(false);
+  const [modalError, setModalError] = useState(false);
+ 
 
   const getCurrentTime = () => {
     return moment();
@@ -39,7 +45,115 @@ const Vacation = () => {
     }
   }, [startDate, availableLeaveDays, leaveType, duration]);
 
+  const handleSaveVacation = () => {
+    onSave(true);
+  };
+  const handleCancelVacation = () => {
+    const fieldsFilled = [
+      name,
+      position,
+       availableLeaveDays,
+       leaveType,
+      reason,
+       id,
+
+
+      
+
+    ].some(field => field && field !== "");
+
+    if (fieldsFilled) {
+      onCancel(true)
+
+    } else {
+      onCancel(true);
+
+    }
+
+
+  };
+  const openNotification = () => {
+    notification.open({
+      message: 'Success',
+      description: 'Vacation Application Submitted Successfully',
+      style: {
+        backgroundColor: '#28a745',
+        border: '1px solid #28a745',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #1f8838',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
+
+  const openNotificationWarning = () => {
+    notification.open({
+      message: 'Warning',
+      description: 'All Fields Not Complete',
+      style: {
+        backgroundColor: '#eab000',
+        border: '1px solid #eab000',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #ce9c09',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
+  const openNotificationError = () => {
+    notification.open({
+      message: 'Error',
+      description: 'Error Application',
+      style: {
+        backgroundColor: 'red',
+        border: '1px solid #dc3545',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #bd1120',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
+
   const onSubmitVac = async () => {
+    
     let bodyData = {
       name,
       position,
@@ -99,14 +213,12 @@ const Vacation = () => {
       });
 
       if (!response.ok) {
+        openNotificationError('bottomRight')
         throw new Error('La requête a échoué avec le code ' + response.status);
       }
 
       const result = await response.json();
-      notification.success({
-        message: 'Leave Applied Successfully',
-        description: result.message,
-      });
+      openNotification('bottomRight')
 
     } catch (error) {
       notification.error({
@@ -139,6 +251,35 @@ const Vacation = () => {
     }
   }, [id]);
 
+
+
+
+
+
+
+  const BeforeSaveVacation = () => {
+    //setIsModalVisible(true)
+    form.validateFields(['GETS ID', 'Name', 'position', 'leaveType'
+      , ' availableLeaveDays', ' duration', ' startDate', 'endDate', 'reason',
+
+    ]).then(values => {
+        onSubmitVac()
+
+    }).catch(errorInfo => {
+      openNotificationWarning('bottomRight')
+      setTimeout(() => {
+        setModalWarning(false);
+      }, 500);
+      // setIsModalVisible(false);
+
+    });
+  };
+
+
+
+
+
+
   const goBack = () => {
     navigate(-1);
   };
@@ -164,12 +305,12 @@ const Vacation = () => {
             <StyledShadowWrapper>
               <AppRowContainer>
                 <Col xs={24} md={12}>
-                  <Form.Item label='GETS ID' name='getsId' rules={[{ required: true, message: 'Please enter your GETS ID' }]}>
+                  <Form.Item label='GETS ID' name='GETS ID' rules={[{ required: true, message: 'Please enter your GETS ID' }]}>
                     <InputNumber min={1} max={400} onChange={value => setId(value)} style={{ width: '100%', height: "30px" }} value={id} />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label='Name' name='name'>
+                  <Form.Item label='Name' name='Name'>
                     <Input
                       className='Input'
                       placeholder={name}
@@ -240,10 +381,10 @@ const Vacation = () => {
                   <Form.Item label='Start Date' name='startDate' rules={[{ required: true, message: 'Please select the start date' }]}>
                     <DatePicker
                       showTime={leaveType === 'Permission'}
-                      placeholder='Select Date and Time'
+                      placeholder='Select Date and Time' 
                       format='YYYY-MM-DD HH:mm:ss'
                       value={startDate ? dayjs(startDate) : null}
-                      defaultValue={getCurrentTime()}
+                      
                       onChange={date => setStartDate(date)}
                       style={{ width: '100%', height: "30px" }}
                     />
@@ -287,10 +428,59 @@ const Vacation = () => {
           size={15}
           style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
         >
-          <Button onClick={goBack}>Cancel</Button>
-          <Button type='primary' htmlType='submit'>Apply Leave</Button>
+          <Button onClick={handleCancelVacation}>Cancel</Button>
+          <Button type='primary' htmlType='submit' onClick={ BeforeSaveVacation}>Apply Leave</Button>
         </Space>
       </Form>
+
+
+
+      {isSave ? (
+        <ConfirmationModal
+          open={isSave}
+          paragraph={'Are you sure you want to Save Recruitement?'}
+          onDeny={onSave}
+          onConfirm={onSubmitVac}
+          modalTitle="Save Recruitement "
+          handleInterview={handleSaveVacation}
+        />
+      ) : null}
+      {isCancel ? (
+        <ConfirmationModal
+          open={isCancel}
+          paragraph={'Are you sure you canceled All data is lost?'}
+          onDeny={onCancel}
+          onConfirm={goBack}
+          modalTitle="Cancel Application "
+          handleInterview={handleCancelVacation}
+        />
+      ) : null}
+
+
+      {modalWarning && (
+        <div style={{ position: 'relative', height: '10vh' }}>
+          <Space direction='vertical' style={{ width: '90%', margin: 20, position: 'absolute', bottom: 0 }}>
+            <Alert
+              description='All Fields Not Complete'
+              type='warning'
+              showIcon
+            />
+          </Space>
+        </div>
+      )}
+      {modalError && (
+        <div style={{ position: 'relative', height: '10vh' }}>
+          <Space direction='vertical' style={{ width: '90%', margin: 20, position: 'absolute', bottom: 0 }}>
+            <Alert
+              message='Error'
+              description='Failed Recruitement.'
+              type='error'
+              showIcon
+
+            />
+          </Space>
+        </div>
+      )}
     </div>
   );
 };

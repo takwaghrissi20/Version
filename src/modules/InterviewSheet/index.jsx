@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../@crema/components/AppRowContainer';
-import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox,notification,  DatePicker, } from 'antd';
+import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox, notification, DatePicker, } from 'antd';
 import { MdEdit } from 'react-icons/md';
 import {
   StyledSecondaryText,
@@ -84,8 +84,48 @@ const InterviewSheetById = () => {
   const [salaryError, setSalaryError] = useState('');
   const [dailyError, setDailyError] = useState('');
   const [form] = Form.useForm();
-  
+
   const [evaluationDate, setEvaluationDate] = useState(dayjs().format('DD/MM/YYYY'));
+  const [dateInput, setDateInput] = useState(new Date());
+  const formattedDate = dayjs(dateInput).format('YYYY-MM-DD');
+  const RequireQalification = (event) => {
+    setRequiredQualification(event.target.value);
+
+  };
+  const RequireExperience = (event) => {
+    setRequiredExperinece(event.target.value);
+
+  };
+
+  const ChangeFullName = (event) => {
+    setFullName(event.target.value);
+  };
+  const ChangeContactEmail = (event) => {
+    setcontactEmail(event.target.value);
+
+  };
+  const ChangeContactFullNumber = (value) => {
+    setContactFullNumber(event.target.value);
+
+  };
+  const handlesituationSelect = (value) => {
+    setSelectedSituation(value);
+
+  };
+  const ChangeDiploma = (event) => {
+    setDiploma(event.target.value);
+
+  };
+  const ChangeEductionLevel = (event) => {
+    setEducationLevel(event.target.value);
+
+  };
+  const ChangeExperience = (event) => {
+    setExperience(event.target.value);
+
+  };
+
+
 
 
   const situation = [
@@ -134,14 +174,14 @@ const InterviewSheetById = () => {
     { intlg: 'Excellent' },
 
   ];
-  const  LevelHR = [
+  const LevelHR = [
     { level: 'LevelI' },
-    { level: 'LevelII'  },
-    {level: 'LevelIII'  },
- 
+    { level: 'LevelII' },
+    { level: 'LevelIII' },
+
 
   ];
-  
+
   const quality = [
     { qlt: 'low' },
     { qlt: 'bad' },
@@ -178,7 +218,7 @@ const InterviewSheetById = () => {
     { des: 'Accepted' },
     { des: 'Not Accepted' },
     { des: 'On Hold' },
- 
+
   ];
   const fetchData = async () => {
     try {
@@ -232,26 +272,26 @@ const InterviewSheetById = () => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
-     if (level === 'junior') {
-      setOfficeSalaryMax(data?.[0]?.officeSalaryJun);
-      const dalyrate = data[0].dailyrateJun;
-      const dailyRateMonth = dalyrate  / 30;
-      setDailyRateMax(dailyRateMonth);
-      setTotalMax(data?.[0]?.totalJun);
-    } else if (level === 'Meduim') {
-      setOfficeSalaryMax(data?.[0]?.officeSalaryMid);
-      const dalyrate = data[0].dailyRateMid;
-      const dailyRateMonth = dalyrate  / 30;
-      setDailyRateMax(dailyRateMonth);
-      setTotalMax(data?.[0]?.totalMid);
-    } else if (level === 'senior') {
-      setOfficeSalaryMax(data?.[0]?.officeSalarySen);
-      const dalyrate = data[0].dailyRateSen;
-      const dailyRateMonth = dalyrate  / 30;
-      setDailyRateMax(dailyRateMonth);
-      setTotalMax(data?.[0]?.totalSen);
-    }
-   
+      if (level === 'junior') {
+        setOfficeSalaryMax(data?.[0]?.officeSalaryJun);
+        const dalyrate = data[0].dailyrateJun;
+        const dailyRateMonth = dalyrate / 30;
+        setDailyRateMax(dailyRateMonth);
+        setTotalMax(data?.[0]?.totalJun);
+      } else if (level === 'Meduim') {
+        setOfficeSalaryMax(data?.[0]?.officeSalaryMid);
+        const dalyrate = data[0].dailyRateMid;
+        const dailyRateMonth = dalyrate / 30;
+        setDailyRateMax(dailyRateMonth);
+        setTotalMax(data?.[0]?.totalMid);
+      } else if (level === 'senior') {
+        setOfficeSalaryMax(data?.[0]?.officeSalarySen);
+        const dalyrate = data[0].dailyRateSen;
+        const dailyRateMonth = dalyrate / 30;
+        setDailyRateMax(dailyRateMonth);
+        setTotalMax(data?.[0]?.totalSen);
+      }
+
 
     } catch (error) {
       console.error('Erreur lors de la récupération des données Salary:', error);
@@ -267,25 +307,25 @@ const InterviewSheetById = () => {
     const value = e.target.value;
     setProposedSalary(value);
     if (parseFloat(value) > officeSalaryMax) {
-      setSalaryError(`Proposed Office Salary exceeds the maximum allowed value of ${officeSalaryMax}`);   
-    }else
-    setSalaryError("");   
+      setSalaryError(`Proposed Office Salary exceeds the maximum allowed value of ${officeSalaryMax}`);
+    } else
+      setSalaryError("");
   };
-  const handleDailyChange= (e) => {
+  const handleDailyChange = (e) => {
     const value = e.target.value;
     setProposedDailyRate(value);
     if (parseFloat(value) > dailyRateMax) {
       setDailyError(`Proposed Daily Rate exceeds the maximum allowed value of ${dailyRateMax}`);
-     
+
     }
-    else{
+    else {
       setDailyError("")
     }
   };
 
   const NewLastInterview = datalastIdinterview + 1
-  console.log("DatalastIdinterview",datalastIdinterview)
-  console.log("NewLastInterview",NewLastInterview)
+  console.log("DatalastIdinterview", datalastIdinterview)
+  console.log("NewLastInterview", NewLastInterview)
   //Save InterViewSheet
   const navigate = useNavigate();
   const ShowAlertAfterSaveInterview = () => {
@@ -384,11 +424,11 @@ const InterviewSheetById = () => {
     }
 
     if (parseFloat(proposedSalary) + parseFloat(proposedDailyRate) > totalMax) {
-    alert(`Total of Proposed Office Salary and Proposed Site Daily Rate exceeds the maximum allowed value of ${totalMax}`);
+      alert(`Total of Proposed Office Salary and Proposed Site Daily Rate exceeds the maximum allowed value of ${totalMax}`);
       return;
     }
     try {
-      console.log("selectedValidation",selectedValidation)
+      console.log("selectedValidation", selectedValidation)
       const endPoint =
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
@@ -404,6 +444,10 @@ const InterviewSheetById = () => {
           interviewCode: NewLastInterview,
           jobcode1: JobCode,
           jobCode: JobCode,
+
+
+
+
           // interviwDate: interviewDate,
           // fullName: fullname,
           // projname: projectName,
@@ -421,7 +465,7 @@ const InterviewSheetById = () => {
           // validatesFor:selectedValidation,
           // goTotest2: CheckedFinalGotest2
 
-          
+
 
 
         })
@@ -441,7 +485,96 @@ const InterviewSheetById = () => {
         setDataInterview(data)
         form.resetFields();
         openNotification('bottomRight')
-       // navigate(-1);
+        // navigate(-1);
+      }
+
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données:', error);
+    }
+  };
+  const SaveHRADMONISTRTOR = async () => {
+    if (salaryError || dailyError) {
+      return;
+    }
+
+    if (parseFloat(proposedSalary) + parseFloat(proposedDailyRate) > totalMax) {
+      alert(`Total of Proposed Office Salary and Proposed Site Daily Rate exceeds the maximum allowed value of ${totalMax}`);
+      return;
+    }
+    try {
+      console.log("selectedValidation", selectedValidation)
+      const endPoint =
+        process.env.NODE_ENV === "development"
+          ? "https://dev-gateway.gets-company.com"
+          : "";
+
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/addintv?id=${JobCode}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify({
+          interviewCode: NewLastInterview,
+          jobcode1: JobCode,
+          jobCode: JobCode,
+          totalReqPos: totalNumber,
+          totalInterv: 5,
+          totalAccept: 2,
+          requiredGrade: level,
+          projname: projectName,
+          positionToBeFilled: position,
+          department: departement,
+          requiredExperinece: requiredExperinece,
+          requiredQualification: requiredQualification,
+          fullName: fullname,
+          // telCondidate: contactFullNumber,
+          // email: contactEmail,
+          // birthayDate:scheduleDate,
+          //familySituation:selectedSituation,
+          diploma: diploma,
+          educationLevel: educationLevel,
+          requiredExperinece: requiredExperinece,
+          notif:0,
+
+          // interviwDate: interviewDate,
+          // fullName: fullname,
+          // projname: projectName,
+          // department: departement,
+          // diploma: diploma,
+          // requiredExperinece: requiredExperinece,
+          // requiredQualification: requiredQualification,
+          // birthayDate: scheduleDate,
+          // familySituation: selectedSituation,
+          // educationLevel: educationLevel,
+          // requiredGrade: level,
+          // experience: experience,
+          // positionToBeFilled: position,
+          //telCondidate:contactFullNumber,
+          // validatesFor:selectedValidation,
+          // goTotest2: CheckedFinalGotest2
+
+
+
+
+        })
+      });
+
+      if (!response.ok) {
+        openNotificationError('bottomRight')
+        throw new Error('La requête a échoué avec le code ' + response.status);
+      }
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
+      }
+      if (response.ok) {
+        const data = await response.json();
+        setDataInterview(data)
+        form.resetFields();
+        openNotification('bottomRight')
+        // navigate(-1);
       }
 
     } catch (error) {
@@ -451,7 +584,7 @@ const InterviewSheetById = () => {
   const isButtonDisabled = () => {
     return (
       salaryError ||
-      dailyError||
+      dailyError ||
       parseFloat(proposedSalary) + parseFloat(proposedDailyRate) > totalMax
     );
   };
@@ -463,7 +596,7 @@ const InterviewSheetById = () => {
   const [isVisibleEvaluatorDecision, setIsVisibleEvaluatorDecision] = useState(false);
   const [isVisibleHeadDecision, setIsVisibleHeadDecision] = useState(false);
   const [isVisibleHRDecision, setIsVisibleHRDecision] = useState(false);
- 
+
   function Ok(e) {
     console.log(`checked = ${e.target.checked}`);
     setIsOkChecked(e.target.checked);
@@ -472,12 +605,12 @@ const InterviewSheetById = () => {
 
       setIsNoChecked(false);
     }
-    else if (!(e.target.checked) ) {
+    else if (!(e.target.checked)) {
       setIsVisible(false);
     }
   }
 
-const CheckedFinalGotest2=isOkChecked ?1 : 0;
+  const CheckedFinalGotest2 = isOkChecked ? 1 : 0;
   function No(e) {
 
     setIsNoChecked(e.target.checked);
@@ -487,7 +620,7 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
       setIsNoChecked(true);
     }
   }
-  
+
   function Ok3(e) {
     console.log(`checked = ${e.target.checked}`);
     setIsOkChecked3(e.target.checked);
@@ -496,7 +629,7 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
 
       setIsNoChecked3(false);
     }
-    else if (!(e.target.checked) ) {
+    else if (!(e.target.checked)) {
       setIsVisibletest3(false);
     }
   }
@@ -515,12 +648,12 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
     console.log(`checked = ${e.target.checked}`);
     setIsOkCheckedProfile(e.target.checked);
     setIsVisibletestEvaluator(true)
-  
+
     if (e.target.checked) {
 
       setIsNoCheckedProfile(false);
     }
-    else if (!(e.target.checked) ) {
+    else if (!(e.target.checked)) {
       setIsVisibletestEvaluator(false);
     }
   }
@@ -535,16 +668,16 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
     }
   }
   //Ok or No Evaluator
-  function  OkEvaluator(e) {
+  function OkEvaluator(e) {
     console.log(`checked = ${e.target.checked}`);
     setIsOkCheckedEvaluator(e.target.checked);
     setIsVisibleEvaluatorDecision(true)
-  
+
     if (e.target.checked) {
 
       setIsNoCheckedEvaluator(false);
     }
-    else if (!(e.target.checked) ) {
+    else if (!(e.target.checked)) {
       setIsVisibleEvaluatorDecision(false);
     }
   }
@@ -560,16 +693,16 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
   }
 
   //Desicion Head 
-  function  OkHead(e) {
+  function OkHead(e) {
     console.log(`checked = ${e.target.checked}`);
     setIsOkCheckedHead(e.target.checked);
     setIsVisibleHeadDecision(true)
-  
+
     if (e.target.checked) {
 
       setIsNoCheckedHead(false);
     }
-    else if (!(e.target.checked) ) {
+    else if (!(e.target.checked)) {
       setIsVisibleHeadDecision(false);
     }
   }
@@ -583,16 +716,16 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
       setIsNoCheckedHead(true);
     }
   }
-  function  OkHrDesicision(e) {
+  function OkHrDesicision(e) {
     console.log(`checked = ${e.target.checked}`);
     setIsOkCheckedHRDecision(e.target.checked);
     setIsVisibleHRDecision(true)
-  
+
     if (e.target.checked) {
 
       setIsNoCheckedHRDecision(false);
     }
-    else if (!(e.target.checked) ) {
+    else if (!(e.target.checked)) {
       setIsVisibleHRDecision(false);
     }
   }
@@ -613,1032 +746,1030 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
     setSelectedbodDescition(value);
     console.log('Final Descision ', value);
   };
-
+  const roles = localStorage.getItem("role");
   return (
-    <Form
-      layout='vertical'
-      style={{ backgroundColor: "white", marginBottom: "20px", padding: "10px", borderRadius: "20px" }}
-    // initialValues={settings}
+    <>
+      {roles.includes("admin") && (
+        <Form
+          layout='vertical'
+          style={{ backgroundColor: "white", marginBottom: "20px", padding: "10px", borderRadius: "20px" }}
+        // initialValues={settings}
 
-    >
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <div>
-          <Typography.Title level={4}>MANAGEMENT STAFF INTERVIEW SHEET</Typography.Title>
-          <StyledSecondaryText>
-            MANAGEMENT STAFF
-          </StyledSecondaryText>
-        </div>
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div>
+              <Typography.Title level={4}>MANAGEMENT STAFF INTERVIEW SHEET</Typography.Title>
+              <StyledSecondaryText>
+                MANAGEMENT STAFF
+              </StyledSecondaryText>
+            </div>
 
-      </div>
-      <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-      <AppRowContainer>
-        <Col xs={24} md={6}>
-          <Typography.Title level={5}>InterView Information</Typography.Title>
-         
-        </Col>
-        <Col xs={24} md={18}>
-          <StyledShadowWrapper>
-            <AppRowContainer>
-              <Col xs={24} md={12}>
-                <Form.Item label='Reference' name='interviewCode'>
-                  <Input placeholder={"MSIS-" + NewLastInterview} readOnly={true} />
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <Form.Item label='Interview Date' name='Date :'
-                 rules={[
-                  { required: true, message: 'Please input your Interview Date!' },
-                ]}
-                
-                            
-                >{/*Date et temp de Interview bu Hr*/}
-                <DatePicker
-                      //defaultValue={new Date()} 
-                      //defaultValue={dayjs(interviewDate, '2024-01-01')}
-
-                      style={{ width: "100%", height: "30px" }}
-                      onChange={(value) =>setInterviewDate(dayjs(value).format('YYYY/MM/DD'))}
-                    />
-               
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <Form.Item label='JOB CODE:' name='jobcode1'>
-                  <Input placeholder={JobCode} readOnly={true} />{/*Ajout le MSIS OU cis*/}
-                </Form.Item>
-              </Col>
-
-              <Col xs={24} md={12}>
-                <Form.Item label='Total Number Required Position' name='Total Number Required Position'>
-                  <Input placeholder={totalNumber} readOnly={true} />
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <Form.Item label='Total Interviewed' name='TotalRequiredPosition'>
-                  <Input
-                  readOnly={true}
-                  placeholder='Total Required Position' />
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <Form.Item label='Total Accepted' name='TotalAccepted'>
-                  <Input
-                    readOnly={true}
-                  placeholder='Total Accepted' />
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <Form.Item label='Required Grade' name='requiredGrade'>
-                  <Input placeholder={level} readOnly={true} />
-                </Form.Item>
-              </Col>
-
-
-
-
-            </AppRowContainer>
-          </StyledShadowWrapper>
-        </Col>
-      </AppRowContainer>
-      <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-      <AppRowContainer>
-        <Col xs={24} md={6}>
-          <Typography.Title level={5}> Required Position Information </Typography.Title>
-      
-        </Col>
-        <Col xs={24} md={18}>
-          <StyledShadowWrapper>
-            <AppRowContainer>
-              <Col xs={24} md={12}>
-                <Form.Item label='Project Name' name='projname'>
-                  <Input placeholder={projectName}
-                    readOnly={true} />
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <Form.Item label='Position to be Filled' name='positionToBeFilled	'>
-                  <Input placeholder={position} readOnly={true} />
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <Form.Item label='Department ' name='department '>
-                  <Input placeholder='Department'
-                    value={departement}
-                    onChange={(e) => setDepartement(e.target.value)}
-
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col xs={24} md={12}>
-                <Form.Item label='Requested Qualification' name='requiredQualification'>
-                  <Input placeholder='Requested Qualification'
-
-                    value={requiredQualification}
-                    onChange={(e) => setRequiredQualification(e.target.value)}
-
-
-                  />
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <Form.Item label='Requested Experience' name='requiredExperinece'>
-                  <Input
-                    value={requiredExperinece}
-                    onChange={(e) => setRequiredExperinece(e.target.value)}
-
-                    placeholder='Requested Experience' />
-                </Form.Item>
-              </Col>
-
-            </AppRowContainer>
-          </StyledShadowWrapper>
-        </Col>
-      </AppRowContainer>
-      <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-      <AppRowContainer>
-        <Col xs={24} md={6}>
-          <Typography.Title level={5}>Candidate Personal Information</Typography.Title>
-    
-        </Col>
-        <Col xs={24} md={18}>
-          <StyledShadowWrapper>
-            <AppRowContainer>
-              <Col xs={24} md={12}>
-                <Form.Item label='Full Name' name='fullName'
-                  rules={[
-                    { required: true, message: 'Please input your Full Name!' },
-                  ]}
-                
-                >
-                  <Input placeholder='Full Name'
-                    value={fullname}
-                    onChange={(e) => setFullName(e.target.value)}
-
-                  />
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <Form.Item label='Contact Full Number' name='telCondidate'
-                 rules={[
-                  { required: true, message: 'Please input your Contact Full Number!' },
-              
-                ]}
-                  
-                  >
-                  <Input placeholder='Contact Full Number'
-                    value={contactFullNumber}
-                    onChange={(e) => setContactFullNumber(e.target.value)}
-
-                  />
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <Form.Item label='Contact Email' name='Contact Email'
-                
-                rules={[
-                  { required: true, message: 'Please input your Contact Email!' },
-                 
-                ]}
-                
-                
-                >
-                  <Input placeholder='Contact Email'
-                    value={contactEmail}
-                    onChange={(e) => setcontactEmail(e.target.value)}
-
-
-                  />
-                </Form.Item>
-              </Col>
-
-              <Col xs={24} md={12}>
-                <Form.Item label='Date of Birth' name='birthayDate'
-                   rules={[
-                    { required: true, message: 'Please input your Date of Birth!' },
-                   
-                  ]}
-                >
-                  <StyledTodoDetailDatePicker className='form-field'>
-
-                    <DatePicker
-                      //defaultValue={new Date()} 
-                      defaultValue={dayjs(scheduleDate, '16 06,1990')}
-
-                      style={{ width: "100%", height: "34px" }}
-                      onChange={(value) => setScheduleDate(dayjs(value).format('YYYY/MM/DD'))}
-                    />
-                  </StyledTodoDetailDatePicker>
-                </Form.Item>
-              </Col>
-
-              <Col xs={24} md={12}>
-                <Form.Item
-                  label='Family Situation'
-                  name='Family Situation'
-                  rules={[
-                    { required: true, message: 'Please Select your Family Situation!' },
-                   
-                  ]}
-                  // Remplacez initialValue par la valeur initiale de votre choix
-                  onChange={(value) => setSelectedSituation(value)}
-                >
-                  <Select
-                    placeholder='Select Family Situation'
-
-                    onChange={(value) => console.log('Selected situation:', value)}
-                    value={selectedSituation} // La valeur sélectionnée est définie par l'état selectedSituation
-                  >
-                    {situation.map((sit, index) => (
-                      <Select.Option key={index} value={sit.st}>
-                        {sit.st}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </Col>
-
-
-            </AppRowContainer>
-          </StyledShadowWrapper>
-        </Col>
-      </AppRowContainer>
-      <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-        <Col xs={24} md={6}>
-          <Typography.Title level={5}>Candidate Experience & Education </Typography.Title>
-         
-        </Col>
-        <Col xs={24} md={18}>
-          <StyledShadowWrapper>
-            <AppRowContainer>
-              <Col xs={24} md={12}>
-                <Form.Item label='Diploma /Speciality' name='diploma'
-                  rules={[
-                    { required: true, message: 'Please input your Diploma /Speciality!' },
-                   
-                  ]}
-                
-                
-                >
-                  <Input
-                    placeholder='Diploma /Speciality'
-                    value={diploma}
-                    onChange={(e) => setDiploma(e.target.value)}
-                  />
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <Form.Item label='Educational level' name='educationLevel'
-                  rules={[
-                    { required: true, message: 'Please input your Educational level!' },
-                   
-                  ]}
-                
-                >
-                  <Input placeholder='Educational level'
-                    value={educationLevel}
-                    onChange={(e) => setEducationLevel(e.target.value)}
-
-                  />
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <Form.Item label='Experience' name='experience'
-                
-                rules={[
-                  { required: true, message: 'Please input your Experience!' },
-                 
-                ]}
-                
-                
-                >
-                  <Input placeholder='Experience'
-                    value={experience}
-                    onChange={(e) => setExperience(e.target.value)}
-
-                  />
-                </Form.Item>
-              </Col>
-
-            </AppRowContainer>
-          </StyledShadowWrapper>
-        </Col>
-      </AppRowContainer>
-      <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-      {/*Preliminary study of the application*/}
-      <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-        <Col xs={24} md={6}>
-          <Typography.Title level={5}>Preliminary study of the application </Typography.Title>
-          <StyledSecondaryText1>
-          Go to test 2
-          </StyledSecondaryText1>
-        </Col>
-        <Col xs={24} md={18}>
-          <StyledShadowWrapper>
-            <AppRowContainer>
-              <Col xs={24} md={12}>
-                <Form.Item
-                  label='Validation'
-                  name='validatesFor'
-                  rules={[
-                    { required: true, message: 'Please Select your Select Validation!' },
-                   
-                  ]}
-                  onChange={(value) => setSelectedValidation(value)}
-                >
-                  <Select
-                    placeholder='Select Validation'
-
-                    onChange={(value) => console.log('Selected Validation:', value)}
-                    value={selectedValidation}
-                  >
-                    {Validation.map((val, index) => (
-                      <Select.Option key={index} value={val.vld}>
-                        {val.vld}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <StyledInput>
-                <Form.Item
-                style={{marginTop:"10px"}}
-                  label='Go to test 2 :'
-                  name='Gototest2' >
-                  <Checkbox  checked={isOkChecked} onChange={Ok}>
-               
-                    <IntlMessages id='validation.test' />
-                  </Checkbox>
-                  <Checkbox checked={isNoChecked} onClick={No}>
-                    <IntlMessages id='Refuse.test' />
-                  </Checkbox>
-                  </Form.Item>
-                </StyledInput>
-              </Col>
-
-
-            </AppRowContainer>
-          </StyledShadowWrapper>
-        </Col>
-      </AppRowContainer>
-
-      {/* Psychotechnical Test*/}
-    
-      {/*Preliminary study of the application*/}
-      {isVisible && (
-        <>
+          </div>
           <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-         <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-         <Col xs={24} md={6}>
-           <Typography.Title level={5}> Psychotechnical Test </Typography.Title>
-           <StyledSecondaryText1>
-           Go to test 3
-           </StyledSecondaryText1>
-         </Col>
-         <Col xs={24} md={18}>
-          <StyledShadowWrapper>
-            <AppRowContainer>
-         <Col xs={24} md={12}>
-                <Form.Item
-                  label='Personnality'
-                  name='Personnality'
-                  onChange={(value) => setSelectedPersonality(value)}
-                  rules={[
-                    { required: true, message: 'Please Select your Select Personnality!' },
-                   
-                  ]}
-                >
-                  <Select
-                    placeholder='Select Personnality'
+          <AppRowContainer>
+            <Col xs={24} md={6}>
+              <Typography.Title level={5}>InterView Information</Typography.Title>
 
-                    onChange={(value) => console.log('Selected Personnality:', value)}
-                    value={selectedPersonality}
-                  >
-                    {personality.map((p, index) => (
-                      <Select.Option key={index} value={p.personality}>
-                        {p.pesonality}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <Form.Item
-                  label='Humain quality'
-                  name='Humain quality'
-                  onChange={(value) => setSelectedHumainquality(value)}
-                  rules={[
-                    { required: true, message: 'Please Select your Select Humain quality!' },
-                   
-                  ]}
-                >
-                  <Select
-                    placeholder='Humain quality'
+            </Col>
+            <Col xs={24} md={18}>
+              <StyledShadowWrapper>
+                <AppRowContainer>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Reference' name='interviewCode'>
+                      <Input placeholder={"MSIS-" + NewLastInterview} readOnly={true} />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Interview Date' name='Date'>
+                      <Input
 
-                    onChange={(value) => console.log('Selected Humain quality:', value)}
-                    value={selectedHumainquality}
-                  >
-                    {quality.map((p, index) => (
-                      <Select.Option key={index} value={p.qlt}>
-                        {p.qlt}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <Form.Item
-                  label='Motivation/Ambition'
-                  name='Motivation/Ambition'
-                  onChange={(value) => setSelectedMotivation(value)}
-                  rules={[
-                    { required: true, message: 'Please Select your Select Motivation/Ambition!' },
-                   
-                  ]}
-                >
-                  <Select
-                    placeholder='Motivation/Ambition'
+                        placeholder={formattedDate}
+                        readOnly
 
-                    onChange={(value) => console.log('Selected Motivation:', value)}
-                    value={selectedMotivation}
-                  >
-                    {motivation.map((p, index) => (
-                      <Select.Option key={index} value={p.mtv}>
-                        {p.mtv}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <Form.Item
-                  label='Intelligence'
-                  name='Intelligence'
-                  onChange={(value) => setSelectedIntelligence(value)}
-                  rules={[
-                    { required: true, message: 'Please Select your Select Intelligence!' },
-                   
-                  ]}
-                >
-                  <Select
-                    placeholder='Intelligence'
+                      />
 
-                    onChange={(value) => console.log('Selected Intelligence:', value)}
-                    value={selectedIntelligence}
-                  >
-                    {intelligence.map((p, index) => (
-                      <Select.Option key={index} value={p.intlg}>
-                        {p.intlg}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <StyledInput>
-                <Form.Item
-                  label='Go to test 3 :'
-                  name='Gototest3' >
-                  <Checkbox  checked={isOkChecked3} onChange={Ok3}>
-               
-                    <IntlMessages id='validation.test' />
-                  </Checkbox>
-                  <Checkbox checked={isNoChecked3} onClick={No3}>
-                    <IntlMessages id='Refuse.test' />
-                  </Checkbox>
-                  </Form.Item>
-                </StyledInput>
-              </Col>
-             
-              </AppRowContainer>
+
+
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='JOB CODE:' name='jobcode1'>
+                      <Input placeholder={JobCode} readOnly={true} />{/*Ajout le MSIS OU cis*/}
+                    </Form.Item>
+                  </Col>
+
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Total Number Required Position' name='Total Number Required Position'>
+                      <Input placeholder={totalNumber} readOnly={true} />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Total Interviewed' name='TotalRequiredPosition'>
+                      <Input
+                        readOnly={true}
+                        placeholder='Total Required Position' />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Total Accepted' name='TotalAccepted'>
+                      <Input
+                        readOnly={true}
+                        placeholder='Total Accepted' />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Required Grade' name='requiredGrade'>
+                      <Input placeholder={level} readOnly={true} />
+                    </Form.Item>
+                  </Col>
+
+
+
+
+                </AppRowContainer>
               </StyledShadowWrapper>
-              </Col>
-       </AppRowContainer>
-       </>
-      )}
-   
-      {/*Preliminary study of the application*/}
-      {isVisibletest3 && (
-        <>
-            <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-         <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-         <Col xs={24} md={6}>
-           <Typography.Title level={5}> Technical Evaluation</Typography.Title>
-         
-         </Col>
-         <Col xs={24} md={18}>
-          <StyledShadowWrapper>
-            <AppRowContainer>
-            <Col xs={24} md={12}>
-                <Form.Item
-                  label='English Skills '
-                  name='English Skills '
-                  onChange={(value) =>setSelectedSkillls(value)}
-                  rules={[
-                    { required: true, message: 'Please Select your Select English Skills!' },
-                   
-                  ]}
-                  
-                >
-                  <Select
-                    placeholder='English Skills '
-                    onChange={(value) => console.log('English Skills ', value)}
-                    value={selectedSkillls}
-                  >
-                    {skills.map((p, index) => (
-                      <Select.Option key={index} value={p.skill}>
-                        {p.skill}
-                      </Select.Option>
-                    ))}
-                  </Select>
-              
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <Form.Item
-                  label='Date'
-                  name='Date'
-                  rules={[
-                    { required: true, message: 'Please Select your input Date!' },
-                   
-                  ]}
-                >
-                  
-                     <DatePicker
-                     style={{ width: '100%',height:"33px" }}
-                autoFocus
-                value={dayjs(evaluationDate, 'DD/MM/YYYY')}
-                onChange={(value) => {
-                  setEvaluationDate(getFormattedDate(value, 'DD/MM/YYYY'));
-        
-                }}
-           
-              />
-                 
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <Form.Item label='Evaluator' name='Evaluator'
-                    rules={[
-                      { required: true, message: 'Please input your Evaluator!' },
-                     
-                    ]}
-                
-                >
-                  <Input
-                    value={evaluator}
-                    onChange={(e) => setEvaluator(e.target.value)}
-                
-
-                    placeholder='Evaluator' />
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <Form.Item label='ID Number' name='ID Number'
-                    rules={[
-                      { required: true, message: 'Please input your ID Number!' },
-                     
-                    ]}
-                >
-                  <Input
-                    value={idNumber}
-                    onChange={(e) => setIdNumber(e.target.value)}
-
-                    placeholder='ID Number' />
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <StyledInput>
-                <Form.Item
-                  label='The present profile meets the requirements of 
-                  the requested position :'
-                  name='Present profile' >
-                  <Checkbox  checked={isOkCheckedProfile} onChange={OkProfile}>
-               
-                    <IntlMessages id='validation.test' />
-                  </Checkbox>
-                  <Checkbox checked={isNoCheckedProfile} onClick={NoProfile}>
-                    <IntlMessages id='Refuse.test' />
-                  </Checkbox>
-                  </Form.Item>
-                </StyledInput>
-              </Col>
-          
-             
-              </AppRowContainer>
-              </StyledShadowWrapper>
-              </Col>
-       </AppRowContainer>
-       </>
-      )}
-      {/*Evalautor Desicion*/}
-    
-      {/*Preliminary study of the application*/}
-      {isVisibletestEvaluator && (
-        <>
+            </Col>
+          </AppRowContainer>
           <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-         <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-         <Col xs={24} md={6}>
-           <Typography.Title level={5}> Evaluator Decision</Typography.Title>
-          
-         </Col>
-         <Col xs={24} md={18}>
-          <StyledShadowWrapper>
-            <AppRowContainer>
-     
-              <Col xs={24} md={24}>
-                <StyledInput>
-                <Form.Item
-                  label='Evaluator Decision :'
-                  name=' EvaluatorDecision' >
-                  <Checkbox  checked={isOkCheckedEvaluator} onChange={OkEvaluator}>
-               
-                    <IntlMessages id='validation.test' />
-                  </Checkbox>
-                  <Checkbox checked={isNoCheckedEvaluator} onClick={NoEvaluator}>
-                    <IntlMessages id='Refuse.test' />
-                  </Checkbox>
-                  </Form.Item>
-                </StyledInput>
-              </Col>
-              <Col xs={24} md={24}>
-                <Form.Item label='Comments' name='Comments'
-                
-                rules={[
-                  { required: true, message: 'Please input your Comments!' },
-                 
-                ]}>
-                  <Input
-                  className='InputComment'
-                    value={comment}
-                    onChange={(e) => setComments(e.target.value)}
+          <AppRowContainer>
+            <Col xs={24} md={6}>
+              <Typography.Title level={5}> Required Position Information </Typography.Title>
 
-                    placeholder='Comments' />
-                </Form.Item>
-              </Col>
-          
-             
-              </AppRowContainer>
+            </Col>
+            <Col xs={24} md={18}>
+              <StyledShadowWrapper>
+                <AppRowContainer>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Project Name' name='projname'>
+                      <Input placeholder={projectName}
+                        readOnly={true} />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Position to be Filled' name='positionToBeFilled	'>
+                      <Input placeholder={position} readOnly={true} />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Department ' name='department '>
+                      <Input placeholder='Department'
+                        value={departement}
+                        onChange={(e) => setDepartement(e.target.value)}
+
+                      />
+                    </Form.Item>
+                  </Col>
+
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Requested Qualification' name='requiredQualification'>
+                      <Input placeholder='Requested Qualification'
+
+                        value={requiredQualification}
+                        onChange={RequireQalification}
+
+
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Requested Experience' name='requiredExperinece'>
+                      <Input
+                        value={requiredExperinece}
+                        onChange={RequireExperience}
+                        placeholder='Requested Experience' />
+                    </Form.Item>
+                  </Col>
+
+                </AppRowContainer>
               </StyledShadowWrapper>
-              </Col>
-       </AppRowContainer>
-       </>
-      )}
-       
-      {/*6. Head of Department Approval*/}
-      {isVisibleEvaluatorDecision && (
-        <>
-         <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-         <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-         <Col xs={24} md={6}>
-           <Typography.Title level={5}>  Head of Department ApprovaL</Typography.Title>
-          
-         </Col>
-         <Col xs={24} md={18}>
-          <StyledShadowWrapper>
-            <AppRowContainer>
-     
-              <Col xs={24} md={12}>
-                <StyledInput>
-                <Form.Item
-                  label='Head of Department Approval :'
-                  name='Head of Department Approval' >
-                  <Checkbox  checked={isOkCheckedHead} onChange={OkHead}>
-               
-                    <IntlMessages id='validation.test' />
-                  </Checkbox>
-                  <Checkbox checked={isNoCheckedHead} onClick={NoHead}>
-                    <IntlMessages id='Refuse.test' />
-                  </Checkbox>
-                  </Form.Item>
-                </StyledInput>
-              </Col>
-           
-          
-             
-              </AppRowContainer>
+            </Col>
+          </AppRowContainer>
+          <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+          <AppRowContainer>
+            <Col xs={24} md={6}>
+              <Typography.Title level={5}>Candidate Personal Information</Typography.Title>
+
+            </Col>
+            <Col xs={24} md={18}>
+              <StyledShadowWrapper>
+                <AppRowContainer>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Full Name' name='fullName'
+                      rules={[
+                        { required: true, message: 'Please input your Full Name!' },
+                      ]}
+
+                    >
+                      <Input placeholder='Full Name'
+                        value={fullname}
+                        onChange={ChangeFullName}
+
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Contact Full Number' name='telCondidate'
+                      rules={[
+                        { required: true, message: 'Please input your Contact Full Number!' },
+
+                      ]}
+
+                    >
+                      <Input placeholder='Contact Full Number'
+                        value={contactFullNumber}
+                        onChange={ChangeContactFullNumber}
+
+
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Contact Email' name='Contact Email'
+
+                      rules={[
+                        { required: true, message: 'Please input your Contact Email!' },
+
+                      ]}
+
+
+                    >
+                      <Input placeholder='Contact Email'
+                        value={contactEmail}
+                        onChange={ChangeContactEmail}
+
+
+                      />
+                    </Form.Item>
+                  </Col>
+
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Date of Birth' name='birthayDate'
+                      rules={[
+                        { required: true, message: 'Please input your Date of Birth!' },
+
+                      ]}
+                    >
+                      <StyledTodoDetailDatePicker className='form-field'>
+
+                        <DatePicker
+                          //defaultValue={new Date()} 
+                          //defaultValue={dayjs(scheduleDate, '16 06,1990')}
+                          placeholder='Select Date of Birth'
+                          style={{ width: "100%", height: "34px" }}
+                          onChange={(value) => setScheduleDate(dayjs(value).format('YYYY/MM/DD'))}
+                        />
+                      </StyledTodoDetailDatePicker>
+                    </Form.Item>
+                  </Col>
+
+                  <Col xs={24} md={12}>
+                    <Form.Item
+                      label='Family Situation'
+                      name='Family Situation'
+                      rules={[
+                        { required: true, message: 'Please Select your Family Situation!' },
+
+                      ]}
+
+                    >
+                      <Select
+                        placeholder='Select Family Situation'
+                        onChange={handlesituationSelect}
+                        value={selectedSituation}
+
+
+                      >
+                        {situation.map((sit, index) => (
+                          <Select.Option key={index} value={sit.st}>
+                            {sit.st}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+
+
+                </AppRowContainer>
               </StyledShadowWrapper>
-              </Col>
-       </AppRowContainer>
-       </>
-      )}
-      {/*HR Evaluation*/}
-   
-      {/*6. Head of Department Approval*/}
-      {isVisibleHeadDecision && (
-        <>
-           <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-         <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-         <Col xs={24} md={6}>
-           <Typography.Title level={5}>HR Evaluation &&  Decision</Typography.Title>
-         
-         </Col>
-         <Col xs={24} md={18}>
-          <StyledShadowWrapper>
-            <AppRowContainer>
-            <Col xs={24} md={12}>
-                <Form.Item
-                  label='Personnality'
-                  name='Personnality'
-                  onChange={(value) => setSelectedPersonalityHR(value)}
-                  rules={[
-                    { required: true, message: 'Please Select  your Personnality!' },
-                   
-                  ]}
-                >
-                  <Select
-                    placeholder='Select Personnality'
+            </Col>
+          </AppRowContainer>
+          <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+            <Col xs={24} md={6}>
+              <Typography.Title level={5}>Candidate Experience & Education </Typography.Title>
 
-                    onChange={(value) => console.log('Selected Personnality:', value)}
-                    value={setSelectedPersonalityHR}
-                  >
-                    {personalityHR.map((p, index) => (
-                      <Select.Option key={index} value={p.personality}>
-                        {p.pesonality}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <Form.Item
-                  label='Humain quality'
-                  name='Humain quality'
-                  onChange={(value) => setSelectedHumainqualityHR(value)}
-                  rules={[
-                    { required: true, message: 'Please Select  your Humain quality!' },
-                   
-                  ]}
-                >
-                  <Select
-                    placeholder='Humain quality'
+            </Col>
+            <Col xs={24} md={18}>
+              <StyledShadowWrapper>
+                <AppRowContainer>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Diploma /Speciality' name='diploma'
+                      rules={[
+                        { required: true, message: 'Please input your Diploma /Speciality!' },
 
-                    onChange={(value) => console.log('Selected Humain quality:', value)}
-                    value={selectedHumainqualityHR}
-                  >
-                    {quality.map((p, index) => (
-                      <Select.Option key={index} value={p.qlt}>
-                        {p.qlt}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <Form.Item
-                  label='Motivation/Ambition'
-                  name='Motivation/Ambition'
-                  onChange={(value) => setSelectedMotivationHR(value)}
-                  rules={[
-                    { required: true, message: 'Please Select  your Motivation/Ambition!' },
-                   
-                  ]}
-                >
-                  <Select
-                    placeholder='Motivation/Ambition'
+                      ]}
 
-                    onChange={(value) => console.log('Selected Motivation:', value)}
-                    value={selectedMotivationHR}
-                  >
-                    {motivation.map((p, index) => (
-                      <Select.Option key={index} value={p.mtv}>
-                        {p.mtv}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <Form.Item
-                  label='Intelligence'
-                  name='Intelligence'
-                  onChange={(value) => setSelectedIntelligenceHR(value)}
-                  rules={[
-                    { required: true, message: 'Please Select  your Intelligence!' },
-                   
-                  ]}
-                >
-                  <Select
-                    placeholder='Intelligence'
 
-                    onChange={(value) => console.log('Selected Intelligence:', value)}
-                    value={selectedIntelligenceHR}
-                  >
-                    {intelligence.map((p, index) => (
-                      <Select.Option key={index} value={p.intlg}>
-                        {p.intlg}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <Form.Item
-                  label='Level'
-                  name='Level'
-                  onChange={(value) => setSelectedLevelHR(value)}
-                  rules={[
-                    { required: true, message: 'Please Select  your Level!' },
-                   
-                  ]}
-                >
-                  <Select
-                    placeholder='Level'
+                    >
+                      <Input
+                        placeholder='Diploma /Speciality'
+                        value={diploma}
+                        onChange={ChangeDiploma}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Educational level' name='educationLevel'
+                      rules={[
+                        { required: true, message: 'Please input your Educational level!' },
 
-                    onChange={(value) => console.log('Selected Level:', value)}
-                    value={selectedLevelHR}
-                  >
-                    {LevelHR.map((p, index) => (
-                      <Select.Option key={index} value={p.level}>
-                        {p.level}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-              <Form.Item label='Expected Join Date' name='Expected Join Date'
-               rules={[
-                { required: true, message: 'Please Select  your Expected Join Date!' },
-               
-              ]}
-              
-              
-              >
-               
-                    <DatePicker
-                      //defaultValue={new Date()} 
-                      defaultValue={dayjs(expectedJoinDate, '16 06,1990')}
+                      ]}
 
-                      style={{ width: "100%", height: "30px" }}
-                      onChange={(value) =>setExpectedJoinDate(dayjs(value).format('YYYY/MM/DD'))}
-                    />
-                
-                </Form.Item>
+                    >
+                      <Input placeholder='Educational level'
+                        value={educationLevel}
+                        onChange={ChangeEductionLevel}
+
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Experience' name='experience'
+
+                      rules={[
+                        { required: true, message: 'Please input your Experience!' },
+
+                      ]}
+
+
+                    >
+                      <Input placeholder='Experience'
+                        value={experience}
+                        onChange={ChangeExperience}
+
+
+                      />
+                    </Form.Item>
+                  </Col>
+
+                </AppRowContainer>
+              </StyledShadowWrapper>
+            </Col>
+          </AppRowContainer>
+          <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+          {/*Preliminary study of the application*/}
+          <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+            <Col xs={24} md={6}>
+              <Typography.Title level={5}>Preliminary study of the application </Typography.Title>
+              <StyledSecondaryText1>
+                Go to test 2
+              </StyledSecondaryText1>
+            </Col>
+            <Col xs={24} md={18}>
+              <StyledShadowWrapper>
+                <AppRowContainer>
+                  <Col xs={24} md={12}>
+                    <Form.Item
+                      label='Validation'
+                      name='validatesFor'
+                      rules={[
+                        { required: true, message: 'Please Select your Select Validation!' },
+
+                      ]}
+                      onChange={(value) => setSelectedValidation(value)}
+                    >
+                      <Select
+                        placeholder='Select Validation'
+
+                        onChange={(value) => console.log('Selected Validation:', value)}
+                        value={selectedValidation}
+                      >
+                        {Validation.map((val, index) => (
+                          <Select.Option key={index} value={val.vld}>
+                            {val.vld}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <StyledInput>
+                      <Form.Item
+                        style={{ marginTop: "10px" }}
+                        label='Go to test 2 :'
+                        name='Gototest2' >
+                        <Checkbox checked={isOkChecked} onChange={Ok}>
+
+                          <IntlMessages id='validation.test' />
+                        </Checkbox>
+                        <Checkbox checked={isNoChecked} onClick={No}>
+                          <IntlMessages id='Refuse.test' />
+                        </Checkbox>
+                      </Form.Item>
+                    </StyledInput>
+                  </Col>
+
+
+                </AppRowContainer>
+              </StyledShadowWrapper>
+            </Col>
+          </AppRowContainer>
+
+          {/* Psychotechnical Test*/}
+
+          {/*Preliminary study of the application*/}
+          {isVisible && (
+            <>
+              <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+              <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                <Col xs={24} md={6}>
+                  <Typography.Title level={5}> Psychotechnical Test </Typography.Title>
+                  <StyledSecondaryText1>
+                    Go to test 3
+                  </StyledSecondaryText1>
                 </Col>
-     
-                 
-                <Col xs={24} md={12}>
-                <Form.Item label='Proposed Office Salary' name='Proposed Salary'
-                  rules={[
-                    { required: true, message: 'Please input your Proposed Salary!' },
-                    { pattern: /^[0-9]+$/, message: 'Proposed Salary must be a number!' },
-                   
-                  ]}
-                              
-                >
-                  <Input
-                    value={proposedSalary}
-                    onChange={handleSalaryChange}
-                    // onChange={(e) => setProposedSalary(e.target.value)}
-                    placeholder={`Proposed Office Salary does not exceed ${officeSalaryMax}`}
-                    
-                     />
-                   {salaryError && <Alert className="custom-alert" message={salaryError} type="error" showIcon />}
-                   
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-                <Form.Item label='Proposed Site Daily Rate' name='Proposed Daily Rate'
-                  rules={[
-                    { required: true, message: 'Please input your Proposed Daily Rate!' },
-                    { pattern: /^[0-9]+$/, message: 'Proposed Daily Rate must be a number!' },
-                   
-                  ]}
-                
-                
-                >
-                  <Input
-                    value={proposedDailyRate}
-                    onChange={handleDailyChange}
-                    // onChange={(e) =>setProposedDailyRate(e.target.value)}
-                    placeholder={`Proposed Daily Rate does not exceed ${dailyRateMax}`}
-                     />
-                  {dailyError && <Alert className="custom-alert" message={dailyError} type="error" showIcon />}
-                </Form.Item>
-              </Col>
-              <Col xs={24} md={24}>
-                <StyledInput>
-                <Form.Item
-                  label='HR Decision:'
-                  name='HR Evaluation' >
-                  <Checkbox  checked={isOkCheckedHRDecision} onChange={OkHrDesicision}>
-               
-                    <IntlMessages id='validation.test' />
-                  </Checkbox>
-                  <Checkbox checked={isNoCheckedHRDecision} onClick={NoHrDesicision}>
-                    <IntlMessages id='Refuse.test' />
-                  </Checkbox>
-                  </Form.Item>
-                </StyledInput>
-              </Col>
-              <Col xs={24} md={24}>
-                <Form.Item label='Comments' name='Comments'
-                 rules={[
-                  { required: true, message: 'Please Select  your Comments!' },
-                 
-                ]}
-                
-                
-                >
-                  <Input
-                  className='InputComment'
-                    value={commentHr}
-                    onChange={(e) => setCommentsHr(e.target.value)}
+                <Col xs={24} md={18}>
+                  <StyledShadowWrapper>
+                    <AppRowContainer>
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label='Personnality'
+                          name='Personnality'
+                          onChange={(value) => setSelectedPersonality(value)}
+                          rules={[
+                            { required: true, message: 'Please Select your Select Personnality!' },
 
-                    placeholder='Comments' />
-                </Form.Item>
-              </Col>
-            
-                
-          
-             
+                          ]}
+                        >
+                          <Select
+                            placeholder='Select Personnality'
+
+                            onChange={(value) => console.log('Selected Personnality:', value)}
+                            value={selectedPersonality}
+                          >
+                            {personality.map((p, index) => (
+                              <Select.Option key={index} value={p.personality}>
+                                {p.pesonality}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label='Humain quality'
+                          name='Humain quality'
+                          onChange={(value) => setSelectedHumainquality(value)}
+                          rules={[
+                            { required: true, message: 'Please Select your Select Humain quality!' },
+
+                          ]}
+                        >
+                          <Select
+                            placeholder='Humain quality'
+
+                            onChange={(value) => console.log('Selected Humain quality:', value)}
+                            value={selectedHumainquality}
+                          >
+                            {quality.map((p, index) => (
+                              <Select.Option key={index} value={p.qlt}>
+                                {p.qlt}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label='Motivation/Ambition'
+                          name='Motivation/Ambition'
+                          onChange={(value) => setSelectedMotivation(value)}
+                          rules={[
+                            { required: true, message: 'Please Select your Select Motivation/Ambition!' },
+
+                          ]}
+                        >
+                          <Select
+                            placeholder='Motivation/Ambition'
+
+                            onChange={(value) => console.log('Selected Motivation:', value)}
+                            value={selectedMotivation}
+                          >
+                            {motivation.map((p, index) => (
+                              <Select.Option key={index} value={p.mtv}>
+                                {p.mtv}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label='Intelligence'
+                          name='Intelligence'
+                          onChange={(value) => setSelectedIntelligence(value)}
+                          rules={[
+                            { required: true, message: 'Please Select your Select Intelligence!' },
+
+                          ]}
+                        >
+                          <Select
+                            placeholder='Intelligence'
+
+                            onChange={(value) => console.log('Selected Intelligence:', value)}
+                            value={selectedIntelligence}
+                          >
+                            {intelligence.map((p, index) => (
+                              <Select.Option key={index} value={p.intlg}>
+                                {p.intlg}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
+                        <StyledInput>
+                          <Form.Item
+                            label='Go to test 3 :'
+                            name='Gototest3' >
+                            <Checkbox checked={isOkChecked3} onChange={Ok3}>
+
+                              <IntlMessages id='validation.test' />
+                            </Checkbox>
+                            <Checkbox checked={isNoChecked3} onClick={No3}>
+                              <IntlMessages id='Refuse.test' />
+                            </Checkbox>
+                          </Form.Item>
+                        </StyledInput>
+                      </Col>
+
+                    </AppRowContainer>
+                  </StyledShadowWrapper>
+                </Col>
               </AppRowContainer>
-              </StyledShadowWrapper>
-              </Col>
-       </AppRowContainer>
-       </>
-      )}
+            </>
+          )}
 
-      {/*6. Head of Department Approval*/}
-     {isVisibleHRDecision  && (
-      <>
-          <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-         <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-         <Col xs={24} md={6}>
-           <Typography.Title level={5}>Board of directors Decision</Typography.Title>
-          
-         </Col>
-         <Col xs={24} md={18}>
-          <StyledShadowWrapper>
-            <AppRowContainer>
-            <Col xs={24} md={12}>
-                <Form.Item
-                  label='Final Descision:'
-                  name='Final Descision: '
-                 
-                  rules={[
-                    { required: true, message: 'Please Select your Final Descision!' },
-                   
-                  ]}
-                  
-                >
-                  <Select
-                    placeholder='Final Descision'
-                    onChange={handleDecisionChange}
-                    value={selectedbodDescition}
-                  
-                  >
-                    {descisionBod.map((p, index) => (
-                      <Select.Option key={index} value={p.des}>
-                        {p.des}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                 
-                </Form.Item>
-     
-              </Col>
-              {selectedbodDescition === 'Accepted' && (
-                <>
-       
-          <Col xs={24} md={12}>
-            <Form.Item
-              label='Salary'
-              name='salary'
-              
-            >
-              <Input placeholder='Salary' />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12}>
-            <Form.Item
-              label='Daily'
-              name='daily'
-             
-            >
-              <Input placeholder='Daily' />
-            </Form.Item>
-          </Col>
-          </>
-      )}
+          {/*Preliminary study of the application*/}
+          {isVisibletest3 && (
+            <>
+              <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+              <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                <Col xs={24} md={6}>
+                  <Typography.Title level={5}> Technical Evaluation</Typography.Title>
 
-      {(selectedbodDescition === 'Not Accepted' || selectedbodDescition === 'On Hold') && (
-        
-          <Col xs={24} md={12}>
-            <Form.Item
-              label='Comment'
-              name='comment'>
-              <Input 
-              
-              placeholder='Comment' />
-            </Form.Item>
-          </Col>
-        
-      )}
-      
-            {/* <Col xs={24} md={12}>
+                </Col>
+                <Col xs={24} md={18}>
+                  <StyledShadowWrapper>
+                    <AppRowContainer>
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label='English Skills '
+                          name='English Skills '
+                          onChange={(value) => setSelectedSkillls(value)}
+                          rules={[
+                            { required: true, message: 'Please Select your Select English Skills!' },
+
+                          ]}
+
+                        >
+                          <Select
+                            placeholder='English Skills '
+                            onChange={(value) => console.log('English Skills ', value)}
+                            value={selectedSkillls}
+                          >
+                            {skills.map((p, index) => (
+                              <Select.Option key={index} value={p.skill}>
+                                {p.skill}
+                              </Select.Option>
+                            ))}
+                          </Select>
+
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label='Date'
+                          name='Date'
+                          rules={[
+                            { required: true, message: 'Please Select your input Date!' },
+
+                          ]}
+                        >
+
+                          <DatePicker
+                            style={{ width: '100%', height: "33px" }}
+                            autoFocus
+                            value={dayjs(evaluationDate, 'DD/MM/YYYY')}
+                            onChange={(value) => {
+                              setEvaluationDate(getFormattedDate(value, 'DD/MM/YYYY'));
+
+                            }}
+
+                          />
+
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
+                        <Form.Item label='Evaluator' name='Evaluator'
+                          rules={[
+                            { required: true, message: 'Please input your Evaluator!' },
+
+                          ]}
+
+                        >
+                          <Input
+                            value={evaluator}
+                            onChange={(e) => setEvaluator(e.target.value)}
+
+
+                            placeholder='Evaluator' />
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
+                        <Form.Item label='ID Number' name='ID Number'
+                          rules={[
+                            { required: true, message: 'Please input your ID Number!' },
+
+                          ]}
+                        >
+                          <Input
+                            value={idNumber}
+                            onChange={(e) => setIdNumber(e.target.value)}
+
+                            placeholder='ID Number' />
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
+                        <StyledInput>
+                          <Form.Item
+                            label='The present profile meets the requirements of 
+                  the requested position :'
+                            name='Present profile' >
+                            <Checkbox checked={isOkCheckedProfile} onChange={OkProfile}>
+
+                              <IntlMessages id='validation.test' />
+                            </Checkbox>
+                            <Checkbox checked={isNoCheckedProfile} onClick={NoProfile}>
+                              <IntlMessages id='Refuse.test' />
+                            </Checkbox>
+                          </Form.Item>
+                        </StyledInput>
+                      </Col>
+
+
+                    </AppRowContainer>
+                  </StyledShadowWrapper>
+                </Col>
+              </AppRowContainer>
+            </>
+          )}
+          {/*Evalautor Desicion*/}
+
+          {/*Preliminary study of the application*/}
+          {isVisibletestEvaluator && (
+            <>
+              <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+              <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                <Col xs={24} md={6}>
+                  <Typography.Title level={5}> Evaluator Decision</Typography.Title>
+
+                </Col>
+                <Col xs={24} md={18}>
+                  <StyledShadowWrapper>
+                    <AppRowContainer>
+
+                      <Col xs={24} md={24}>
+                        <StyledInput>
+                          <Form.Item
+                            label='Evaluator Decision :'
+                            name=' EvaluatorDecision' >
+                            <Checkbox checked={isOkCheckedEvaluator} onChange={OkEvaluator}>
+
+                              <IntlMessages id='validation.test' />
+                            </Checkbox>
+                            <Checkbox checked={isNoCheckedEvaluator} onClick={NoEvaluator}>
+                              <IntlMessages id='Refuse.test' />
+                            </Checkbox>
+                          </Form.Item>
+                        </StyledInput>
+                      </Col>
+                      <Col xs={24} md={24}>
+                        <Form.Item label='Comments' name='Comments'
+
+                          rules={[
+                            { required: true, message: 'Please input your Comments!' },
+
+                          ]}>
+                          <Input
+                            className='InputComment'
+                            value={comment}
+                            onChange={(e) => setComments(e.target.value)}
+
+                            placeholder='Comments' />
+                        </Form.Item>
+                      </Col>
+
+
+                    </AppRowContainer>
+                  </StyledShadowWrapper>
+                </Col>
+              </AppRowContainer>
+            </>
+          )}
+
+          {/*6. Head of Department Approval*/}
+          {isVisibleEvaluatorDecision && (
+            <>
+              <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+              <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                <Col xs={24} md={6}>
+                  <Typography.Title level={5}>  Head of Department ApprovaL</Typography.Title>
+
+                </Col>
+                <Col xs={24} md={18}>
+                  <StyledShadowWrapper>
+                    <AppRowContainer>
+
+                      <Col xs={24} md={12}>
+                        <StyledInput>
+                          <Form.Item
+                            label='Head of Department Approval :'
+                            name='Head of Department Approval' >
+                            <Checkbox checked={isOkCheckedHead} onChange={OkHead}>
+
+                              <IntlMessages id='validation.test' />
+                            </Checkbox>
+                            <Checkbox checked={isNoCheckedHead} onClick={NoHead}>
+                              <IntlMessages id='Refuse.test' />
+                            </Checkbox>
+                          </Form.Item>
+                        </StyledInput>
+                      </Col>
+
+
+
+                    </AppRowContainer>
+                  </StyledShadowWrapper>
+                </Col>
+              </AppRowContainer>
+            </>
+          )}
+          {/*HR Evaluation*/}
+
+          {/*6. Head of Department Approval*/}
+          {isVisibleHeadDecision && (
+            <>
+              <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+              <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                <Col xs={24} md={6}>
+                  <Typography.Title level={5}>HR Evaluation &&  Decision</Typography.Title>
+
+                </Col>
+                <Col xs={24} md={18}>
+                  <StyledShadowWrapper>
+                    <AppRowContainer>
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label='Personnality'
+                          name='Personnality'
+                          onChange={(value) => setSelectedPersonalityHR(value)}
+                          rules={[
+                            { required: true, message: 'Please Select  your Personnality!' },
+
+                          ]}
+                        >
+                          <Select
+                            placeholder='Select Personnality'
+
+                            onChange={(value) => console.log('Selected Personnality:', value)}
+                            value={setSelectedPersonalityHR}
+                          >
+                            {personalityHR.map((p, index) => (
+                              <Select.Option key={index} value={p.personality}>
+                                {p.pesonality}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label='Humain quality'
+                          name='Humain quality'
+                          onChange={(value) => setSelectedHumainqualityHR(value)}
+                          rules={[
+                            { required: true, message: 'Please Select  your Humain quality!' },
+
+                          ]}
+                        >
+                          <Select
+                            placeholder='Humain quality'
+
+                            onChange={(value) => console.log('Selected Humain quality:', value)}
+                            value={selectedHumainqualityHR}
+                          >
+                            {quality.map((p, index) => (
+                              <Select.Option key={index} value={p.qlt}>
+                                {p.qlt}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label='Motivation/Ambition'
+                          name='Motivation/Ambition'
+                          onChange={(value) => setSelectedMotivationHR(value)}
+                          rules={[
+                            { required: true, message: 'Please Select  your Motivation/Ambition!' },
+
+                          ]}
+                        >
+                          <Select
+                            placeholder='Motivation/Ambition'
+
+                            onChange={(value) => console.log('Selected Motivation:', value)}
+                            value={selectedMotivationHR}
+                          >
+                            {motivation.map((p, index) => (
+                              <Select.Option key={index} value={p.mtv}>
+                                {p.mtv}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label='Intelligence'
+                          name='Intelligence'
+                          onChange={(value) => setSelectedIntelligenceHR(value)}
+                          rules={[
+                            { required: true, message: 'Please Select  your Intelligence!' },
+
+                          ]}
+                        >
+                          <Select
+                            placeholder='Intelligence'
+
+                            onChange={(value) => console.log('Selected Intelligence:', value)}
+                            value={selectedIntelligenceHR}
+                          >
+                            {intelligence.map((p, index) => (
+                              <Select.Option key={index} value={p.intlg}>
+                                {p.intlg}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label='Level'
+                          name='Level'
+                          onChange={(value) => setSelectedLevelHR(value)}
+                          rules={[
+                            { required: true, message: 'Please Select  your Level!' },
+
+                          ]}
+                        >
+                          <Select
+                            placeholder='Level'
+
+                            onChange={(value) => console.log('Selected Level:', value)}
+                            value={selectedLevelHR}
+                          >
+                            {LevelHR.map((p, index) => (
+                              <Select.Option key={index} value={p.level}>
+                                {p.level}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
+                        <Form.Item label='Expected Join Date' name='Expected Join Date'
+                          rules={[
+                            { required: true, message: 'Please Select  your Expected Join Date!' },
+
+                          ]}
+
+
+                        >
+
+                          <DatePicker
+                            //defaultValue={new Date()} 
+                            defaultValue={dayjs(expectedJoinDate, '16 06,1990')}
+
+                            style={{ width: "100%", height: "30px" }}
+                            onChange={(value) => setExpectedJoinDate(dayjs(value).format('YYYY/MM/DD'))}
+                          />
+
+                        </Form.Item>
+                      </Col>
+
+
+                      <Col xs={24} md={12}>
+                        <Form.Item label='Proposed Office Salary' name='Proposed Salary'
+                          rules={[
+                            { required: true, message: 'Please input your Proposed Salary!' },
+                            { pattern: /^[0-9]+$/, message: 'Proposed Salary must be a number!' },
+
+                          ]}
+
+                        >
+                          <Input
+                            value={proposedSalary}
+                            onChange={handleSalaryChange}
+                            // onChange={(e) => setProposedSalary(e.target.value)}
+                            placeholder={`Proposed Office Salary does not exceed ${officeSalaryMax}`}
+
+                          />
+                          {salaryError && <Alert className="custom-alert" message={salaryError} type="error" showIcon />}
+
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
+                        <Form.Item label='Proposed Site Daily Rate' name='Proposed Daily Rate'
+                          rules={[
+                            { required: true, message: 'Please input your Proposed Daily Rate!' },
+                            { pattern: /^[0-9]+$/, message: 'Proposed Daily Rate must be a number!' },
+
+                          ]}
+
+
+                        >
+                          <Input
+                            value={proposedDailyRate}
+                            onChange={handleDailyChange}
+                            // onChange={(e) =>setProposedDailyRate(e.target.value)}
+                            placeholder={`Proposed Daily Rate does not exceed ${dailyRateMax}`}
+                          />
+                          {dailyError && <Alert className="custom-alert" message={dailyError} type="error" showIcon />}
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={24}>
+                        <StyledInput>
+                          <Form.Item
+                            label='HR Decision:'
+                            name='HR Evaluation' >
+                            <Checkbox checked={isOkCheckedHRDecision} onChange={OkHrDesicision}>
+
+                              <IntlMessages id='validation.test' />
+                            </Checkbox>
+                            <Checkbox checked={isNoCheckedHRDecision} onClick={NoHrDesicision}>
+                              <IntlMessages id='Refuse.test' />
+                            </Checkbox>
+                          </Form.Item>
+                        </StyledInput>
+                      </Col>
+                      <Col xs={24} md={24}>
+                        <Form.Item label='Comments' name='Comments'
+                          rules={[
+                            { required: true, message: 'Please Select  your Comments!' },
+
+                          ]}
+
+
+                        >
+                          <Input
+                            className='InputComment'
+                            value={commentHr}
+                            onChange={(e) => setCommentsHr(e.target.value)}
+
+                            placeholder='Comments' />
+                        </Form.Item>
+                      </Col>
+
+
+
+
+                    </AppRowContainer>
+                  </StyledShadowWrapper>
+                </Col>
+              </AppRowContainer>
+            </>
+          )}
+
+          {/*6. Head of Department Approval*/}
+          {isVisibleHRDecision && (
+            <>
+              <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+              <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                <Col xs={24} md={6}>
+                  <Typography.Title level={5}>Board of directors Decision</Typography.Title>
+
+                </Col>
+                <Col xs={24} md={18}>
+                  <StyledShadowWrapper>
+                    <AppRowContainer>
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label='Final Descision:'
+                          name='Final Descision: '
+
+                          rules={[
+                            { required: true, message: 'Please Select your Final Descision!' },
+
+                          ]}
+
+                        >
+                          <Select
+                            placeholder='Final Descision'
+                            onChange={handleDecisionChange}
+                            value={selectedbodDescition}
+
+                          >
+                            {descisionBod.map((p, index) => (
+                              <Select.Option key={index} value={p.des}>
+                                {p.des}
+                              </Select.Option>
+                            ))}
+                          </Select>
+
+                        </Form.Item>
+
+                      </Col>
+                      {selectedbodDescition === 'Accepted' && (
+                        <>
+
+                          <Col xs={24} md={12}>
+                            <Form.Item
+                              label='Salary'
+                              name='salary'
+
+                            >
+                              <Input placeholder='Salary' />
+                            </Form.Item>
+                          </Col>
+                          <Col xs={24} md={12}>
+                            <Form.Item
+                              label='Daily'
+                              name='daily'
+
+                            >
+                              <Input placeholder='Daily' />
+                            </Form.Item>
+                          </Col>
+                        </>
+                      )}
+
+                      {(selectedbodDescition === 'Not Accepted' || selectedbodDescition === 'On Hold') && (
+
+                        <Col xs={24} md={12}>
+                          <Form.Item
+                            label='Comment'
+                            name='comment'>
+                            <Input
+
+                              placeholder='Comment' />
+                          </Form.Item>
+                        </Col>
+
+                      )}
+
+                      {/* <Col xs={24} md={12}>
                 <StyledInput>
                 <Form.Item
                   label=' Final Descision:'
@@ -1660,20 +1791,20 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
                   </Form.Item>
                 </StyledInput>
               </Col> */}
-              
-            
-           
-          
-             
-              </AppRowContainer>
-              </StyledShadowWrapper>
-              </Col>
-       </AppRowContainer>
-       </>
-        )}
-      
 
-      {/* {isConfirmationInterview? (
+
+
+
+
+                    </AppRowContainer>
+                  </StyledShadowWrapper>
+                </Col>
+              </AppRowContainer>
+            </>
+          )}
+
+
+          {/* {isConfirmationInterview? (
         <ConfirmationModal
           open={isConfirmationInterview}
           paragraph={'Are you sure you want to Save this Interview?'}
@@ -1684,31 +1815,31 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
       ) : null} */}
 
 
-      <Space
-        size={15}
-        style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
-      >
-        <Button onClick={goBack} >Cancel</Button>
-        <Button onClick={Save}
-        disabled={isButtonDisabled()}
-         type='primary' 
-         htmlType='submit'>
-          Save
-        </Button>
-      </Space>
+          <Space
+            size={15}
+            style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
+          >
+            <Button onClick={goBack} >Cancel</Button>
+            <Button onClick={Save}
+              disabled={isButtonDisabled()}
+              type='primary'
+              htmlType='submit'>
+              Save
+            </Button>
+          </Space>
 
-      {showAlertError && (
-        <Alert
-          message="Failed"
-          description="Interview Not Save"
-          type="error"
-          showIcon
-          closable
-          onClose={() => setShowAlertError(false)}
+          {showAlertError && (
+            <Alert
+              message="Failed"
+              description="Interview Not Save"
+              type="error"
+              showIcon
+              closable
+              onClose={() => setShowAlertError(false)}
 
-        />
-      )}
-      {/* {showAlertConfirmation && (
+            />
+          )}
+          {/* {showAlertConfirmation && (
         <div className="modal-container">
           <div className="modal-content">
             <p>Do you want to save an interview ?</p>
@@ -1722,7 +1853,365 @@ const CheckedFinalGotest2=isOkChecked ?1 : 0;
       )} */}
 
 
-    </Form>
+        </Form>
+      )}
+      {/*HR Adminstrator*/}
+      {roles.includes("Administrator") && (
+        <Form
+          layout='vertical'
+          style={{ backgroundColor: "white", marginBottom: "20px", padding: "10px", borderRadius: "20px" }}
+        // initialValues={settings}
+
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div>
+              <Typography.Title level={4}>MANAGEMENT STAFF INTERVIEW SHEET</Typography.Title>
+              <StyledSecondaryText>
+                MANAGEMENT STAFF
+              </StyledSecondaryText>
+            </div>
+
+          </div>
+          <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+          <AppRowContainer>
+            <Col xs={24} md={6}>
+              <Typography.Title level={5}>InterView Information</Typography.Title>
+
+            </Col>
+            <Col xs={24} md={18}>
+              <StyledShadowWrapper>
+                <AppRowContainer>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Reference' name='interviewCode'>
+                      <Input placeholder={"MSIS-" + NewLastInterview} readOnly={true} />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Interview Date' name='Date :'
+
+                    >
+                      <Input
+                        placeholder={formattedDate}
+                        readOnly
+
+                      >
+
+
+
+
+                      </Input>
+
+
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='JOB CODE:' name='jobcode1'>
+                      <Input placeholder={JobCode} readOnly={true} />{/*Ajout le MSIS OU cis*/}
+                    </Form.Item>
+                  </Col>
+
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Total Number Required Position' name='Total Number Required Position'>
+                      <Input placeholder={totalNumber} readOnly={true} />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Total Interviewed' name='TotalRequiredPosition'>
+                      <Input
+                        readOnly={true}
+                        placeholder='Total Required Position' />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Total Accepted' name='TotalAccepted'>
+                      <Input
+                        readOnly={true}
+                        placeholder='Total Accepted' />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Required Grade' name='requiredGrade'>
+                      <Input placeholder={level} readOnly={true} />
+                    </Form.Item>
+                  </Col>
+
+
+
+
+                </AppRowContainer>
+              </StyledShadowWrapper>
+            </Col>
+          </AppRowContainer>
+          <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+          <AppRowContainer>
+            <Col xs={24} md={6}>
+              <Typography.Title level={5}> Required Position Information </Typography.Title>
+
+            </Col>
+            <Col xs={24} md={18}>
+              <StyledShadowWrapper>
+                <AppRowContainer>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Project Name' name='projname'>
+                      <Input placeholder={projectName}
+                        readOnly={true} />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Position to be Filled' name='positionToBeFilled	'>
+                      <Input placeholder={position} readOnly={true} />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Department ' name='department '>
+                      <Input placeholder='Department'
+                        value={departement}
+                        onChange={(e) => setDepartement(e.target.value)}
+
+                      />
+                    </Form.Item>
+                  </Col>
+
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Requested Qualification' name='requiredQualification'>
+                      <Input placeholder='Requested Qualification'
+
+                        value={requiredQualification}
+                        onChange={RequireQalification}
+
+
+
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Requested Experience' name='requiredExperinece'>
+                      <Input
+                        value={requiredExperinece}
+                        onChange={RequireExperience}
+
+                        placeholder='Requested Experience' />
+                    </Form.Item>
+                  </Col>
+
+                </AppRowContainer>
+              </StyledShadowWrapper>
+            </Col>
+          </AppRowContainer>
+          <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+          <AppRowContainer>
+            <Col xs={24} md={6}>
+              <Typography.Title level={5}>Candidate Personal Information</Typography.Title>
+
+            </Col>
+            <Col xs={24} md={18}>
+              <StyledShadowWrapper>
+                <AppRowContainer>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Full Name' name='fullName'
+                      rules={[
+                        { required: true, message: 'Please input your Full Name!' },
+                      ]}
+
+                    >
+                      <Input placeholder='Full Name'
+                        value={fullname}
+                        onChange={ChangeFullName}
+
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Contact Full Number' name='telCondidate'
+                      rules={[
+                        { required: true, message: 'Please input your Contact Full Number!' },
+
+                      ]}
+
+                    >
+                      <Input placeholder='Contact Full Number'
+                        value={contactFullNumber}
+                        onChange={ChangeContactFullNumber}
+
+
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Contact Email' name='Contact Email'
+
+                      rules={[
+                        { required: true, message: 'Please input your Contact Email!' },
+
+                      ]}
+
+
+                    >
+                      <Input placeholder='Contact Email'
+                        value={contactEmail}
+                        onChange={ChangeContactEmail}
+
+
+                      />
+                    </Form.Item>
+                  </Col>
+
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Date of Birth' name='birthayDate'
+                      rules={[
+                        { required: true, message: 'Please input your Date of Birth!' },
+
+                      ]}
+                    >
+                      <StyledTodoDetailDatePicker className='form-field'>
+
+                        <DatePicker
+                          //defaultValue={new Date()} 
+                          defaultValue={dayjs(scheduleDate, '16 06,1990')}
+
+                          style={{ width: "100%", height: "34px" }}
+                          onChange={(value) => setScheduleDate(dayjs(value).format('YYYY/MM/DD'))}
+                        />
+                      </StyledTodoDetailDatePicker>
+                    </Form.Item>
+                  </Col>
+
+                  <Col xs={24} md={12}>
+                    <Form.Item
+                      label='Family Situation'
+                      name='Family Situation'
+                      rules={[
+                        { required: true, message: 'Please Select your Family Situation!' },
+
+                      ]}
+
+                    >
+                      <Select
+                        placeholder='Select Family Situation'
+                        onChange={handlesituationSelect}
+                        value={selectedSituation}
+                      >
+                        {situation.map((sit, index) => (
+                          <Select.Option key={index} value={sit.st}>
+                            {sit.st}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+
+
+                </AppRowContainer>
+              </StyledShadowWrapper>
+            </Col>
+          </AppRowContainer>
+          <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+            <Col xs={24} md={6}>
+              <Typography.Title level={5}>Candidate Experience & Education </Typography.Title>
+
+            </Col>
+            <Col xs={24} md={18}>
+              <StyledShadowWrapper>
+                <AppRowContainer>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Diploma /Speciality' name='diploma'
+                      rules={[
+                        { required: true, message: 'Please input your Diploma /Speciality!' },
+
+                      ]}
+
+
+                    >
+                      <Input
+                        placeholder='Diploma /Speciality'
+                        value={diploma}
+                        onChange={ChangeDiploma}
+
+
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Educational level' name='educationLevel'
+                      rules={[
+                        { required: true, message: 'Please input your Educational level!' },
+
+                      ]}
+
+                    >
+                      <Input placeholder='Educational level'
+                        value={educationLevel}
+                        onChange={ChangeEductionLevel}
+
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Experience' name='experience'
+
+                      rules={[
+                        { required: true, message: 'Please input your Experience!' },
+
+                      ]}
+
+
+                    >
+                      <Input placeholder='Experience'
+                        value={experience}
+                        onChange={ChangeExperience}
+
+                      />
+                    </Form.Item>
+                  </Col>
+
+                </AppRowContainer>
+              </StyledShadowWrapper>
+            </Col>
+          </AppRowContainer>
+
+
+
+          <Space
+            size={15}
+            style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
+          >
+            <Button onClick={goBack} >Cancel</Button>
+            <Button onClick={SaveHRADMONISTRTOR}
+              disabled={isButtonDisabled()}
+              type='primary'
+              htmlType='submit'>
+              Save
+            </Button>
+          </Space>
+
+          {showAlertError && (
+            <Alert
+              message="Failed"
+              description="Interview Not Save"
+              type="error"
+              showIcon
+              closable
+              onClose={() => setShowAlertError(false)}
+
+            />
+          )}
+          {/* {showAlertConfirmation && (
+      <div className="modal-container">
+        <div className="modal-content">
+          <p>Do you want to save an interview ?</p>
+          <div className="button-container">
+            <button className="red-button" onClick={Save }>Yes</button>
+            <button className="green-button" onClick={() => setShowAlertConfirmation(dalse)}>Cancel</button>
+          </div>
+     
+        </div>
+      </div>
+    )} */}
+
+
+        </Form>
+      )}
+    </>
   );
 };
 

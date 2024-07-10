@@ -105,9 +105,15 @@ const ContartTypeC = React.lazy(() =>
 const ContartTypeD= React.lazy(() =>
   import('../../../modules/ContratConstructionTeam/ContratD'),
 );
+
+
 const ContartTypeA1= React.lazy(() =>
   import('../../../modules/ContratStaffManagement/ContratA1'),
 );
+const ContratSIVP = React.lazy(() =>
+  import('../../../modules/ContratStaffManagement/ContartSIVP')
+);
+
 const ContartTypeA2= React.lazy(() =>
   import('../../../modules/ContratStaffManagement/ContartA2'),
 );
@@ -256,8 +262,15 @@ export const ecommerceConfig = [
   element: <ContartTypeD />,
 },
 
+
   //End Contact
 //Contrat Statt Management
+{
+  permittedRole: RoutePermittedRole.User,
+  path: '/HRGetsCompany/StaffManagement/ContratSIVP',
+  element: <ContratSIVP />,
+},
+
 {
   permittedRole: RoutePermittedRole.User,
   path: '/HRGetsCompany/StaffManagement/ContartTypeA1',

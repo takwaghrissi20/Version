@@ -32,15 +32,17 @@ const InterviewSheetById = () => {
         totalNumber={totalNumber} level={level} projectName={projectName} position={position}
         isSaveDisabled={isSaveDisabled}
         roles={roles} ></InterviewSheet>,
-    }, // remember to pass the key prop
-    {
+    }, 
+    ...(roles.includes('HSE') ? [{
       label: 'INTERVIEW ASSESMENT SHEET ',
       key: '2',
       children: <AssignementConstruction isSaveDisabled={true}
       roles={roles}
       
       ></AssignementConstruction>,
-    },
+    },] : []
+  ),
+    
 
 
   ];

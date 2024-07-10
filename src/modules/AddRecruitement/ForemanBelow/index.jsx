@@ -436,7 +436,7 @@ const AddRecruitementForemanBelow = () => {
          notif: 2,
          dep: profile?.departement,
          dateInputRecrut:formattedDate,
-         status:"pending"
+         status:"Pending"
 
         })
       });

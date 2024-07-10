@@ -193,80 +193,22 @@ const AllRecruitementStaff = ({ roles,allrecruitementbelow, findIdData, id, find
 
   const items = [
     { key: 1, label: <span style={{ fontSize: 14 }}>View </span>, onClick: handleAddRecruitementOpen },   
-    { key: 3, label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, onClick: handleInterview },
+    // { key: 3, label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, onClick: handleInterview },
+  
+    //Approved Hr 
+    ...(roles.includes('Administrator') ? [
+      ...(findIdData?.status === 'Approved By BOD' ? [
+        { key: 2, label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, onClick: handleInterview }
+           
+      ] : []),
+    ] : []),
     ...(roles.includes('admin') ? [
-      { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditRecruitementOpen },
-      { key: 2, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteRecruitement },
+      { key: 3, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditRecruitementOpen },
+      { key: 4, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteRecruitement },
     ] : []),
   ];
-  const columns0 = [
-    {
-      title: 'Recruitement Reference',
-      dataIndex: 'jobCode',
-      key: 'jobCode',
 
-    },
-
-    {
-      title: 'Requestor Name',
-      dataIndex: 'requestName',
-      key: 'requestName',
-    },
-
-
-    {
-      title: 'Requested Discipline',
-      dataIndex: 'requestedDicipline',
-      key: 'requestedDicipline',
-    },
-
-
-    {
-      title: 'Project Code/Site',
-      dataIndex: 'projRef',
-      key: 'projRef',
-    },
-    {
-      title: 'Desired Date',
-      dataIndex: 'desiredDate',
-      key: 'desiredDate',
-    },
-
-    {
-      title: 'Total Number',
-      dataIndex: 'totalNumber',
-      key: 'totalNumber',
-
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
-
-    },
-    {
-      title: 'Actions',
-      dataIndex: 'actions',
-      key: 'actions',
-      fixed: 'right',
-      className: 'customer-table-actions',
-      render: (text, record) => (
-        <div onClick={() => findId(record?.jobCode)}>
-          <Dropdown menu={{ items }} trigger={['click']}  >
-            <Button type='circle'>
-              <MoreOutlined />
-            </Button>
-          </Dropdown>
-
-
-        </div>
-
-      ),
-
-
-    },
-
-  ];
+ 
   const columns = [
     {
       title: 'Recruitement Reference',
@@ -308,7 +250,7 @@ const AllRecruitementStaff = ({ roles,allrecruitementbelow, findIdData, id, find
       title: 'Desired Date',
       dataIndex: 'desiredDate',
       key: 'desiredDate',
-      width: 150,
+      width: 100,
       ellipsis: {
         showTitle: false,
       },
@@ -336,7 +278,27 @@ const AllRecruitementStaff = ({ roles,allrecruitementbelow, findIdData, id, find
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
+      width: 100,
+      render: (status) => {
+        let backgroundColor;
+        let color = 'white'; 
+    
+        if (status.includes('Pending')) {
+          backgroundColor = 'red';
+        } else if (status.includes('Approved')) {
+          backgroundColor = 'green';
+        } else if (status.includes('Refuse')) {
+          backgroundColor = 'blue';
+        }
+    
+        return (
+          <div style={{ backgroundColor, color, padding: '4px', borderRadius: '4px', textAlign: 'center' }}>
+            {status}
+          </div>
+        );
+      },
     },
+ 
     // {
     //   title: 'Status',
     //   dataIndex: 'notif',
