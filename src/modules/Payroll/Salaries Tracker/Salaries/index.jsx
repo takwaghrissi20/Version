@@ -284,7 +284,7 @@ const Table = () => {
     <div>
       <h2 className="Title">Staries Tracker</h2>
       <div style={{ marginBottom: "20px" }}>
-        <StyledBuyCellCard style={{ paddingLeft: "10px" }} title="STORIES">
+        <StyledBuyCellCard style={{ paddingLeft: "10px" }} title="Staries Tracker">
           <StyledTabs defaultActiveKey="1">
             {items.map(item => (
               <StyledTabs.TabPane key={item.key} tab={item.label}>
