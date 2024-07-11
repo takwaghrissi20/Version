@@ -1,22 +1,21 @@
-import React, { useState,useEffect } from 'react';
-import AppsContainer from '../../../../@crema/components/AppsContainer';
-import AppsHeader from '../../../../@crema/components/AppsContainer/AppsHeader';
-import AppPageMeta from '../../../../@crema/components/AppPageMeta';
-import { Input } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Input, Row, Col, Select, DatePicker, Button } from 'antd';
 import {
   StyledOrderHeader,
   StyledOrderHeaderInputView,
   StyledOrderHeaderRight,
-
 } from './index.styled';
-import FinancialData from './FinancialData';
-import OrderContratStaff from './OrderContratStatusStaffManagement';
-import Pagination from '../../../../@crema/components/AppsPagination';
 import { useGetDataApi } from '../../../../@crema/hooks/APIHooks';
+import { useIntl } from "react-intl";
+import dayjs from 'dayjs';
+import FinancialData from './FinancialData';
+import Salarypayment from './salarypayment';
+import Pagination from '../../../../@crema/components/AppsPagination';
 import AppInfoView from '../../../../@crema/components/AppInfoView';
 import { StyledBuyCellCard, StyledTabs } from '../../../../styles/index.styled';
 import CashDeduction from './Cash Deduction';
-import { useIntl } from "react-intl";
+import AppsHeader from '../../../../@crema/components/AppsContainer/AppsHeader';
+
 const Table = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -24,65 +23,58 @@ const Table = () => {
   const [page, setPage] = useState(1);
   const [search, setSearchQuery] = useState('');
   const [employee, setEmployees] = useState([]);
-  const [temployeeStaff, setTemployeesStaff] = useState([]);
+  const [allemployee, setAllemployee] = useState([]);
   const [count, setCount] = useState(0);
+  const [projName, setProjName] = useState([]);
+  const [costCenters, setCostCenters] = useState([]);
+  const [deductionMonth, setDeductionMonth] = useState(dayjs());
+  const [selectType, setSelectType] = useState("");
+  const [selectedProject, setSelectedProject] = useState('');
 
   const [{ loading }, { setQueryParams }] = useGetDataApi(
-   //int,
     {},
     {},
     false,
   );
-  const onPageChange = (page) => {
-    setPage(page);
-  };
+  console.log("deductionMonth1111", deductionMonth)
+  useEffect(() => {
+    fetchListEmployee();
+    fetchCountEmployees();
+    fetchAllListEmployee();
+  }, [currentPage, pageSize]);
 
-  
   useEffect(() => {
     setQueryParams({ search, page });
   }, [search, page]);
 
+  const onPageChange = (page) => {
+    setPage(page);
+  };
+
   const onSearchOrder = (e) => {
     setSearchQuery(e.target.value);
-    setPage(1); 
+    setPage(1);
   };
- 
-//  // Filtrer les données en fonction de la recherche
-//  const filteredData = int.filter(item =>
-//   item.fullname.toLowerCase().includes(search.toLowerCase())
-//   // Ajoutez d'autres conditions de filtrage au besoin
-// );
-// const startIndex = (page - 1) * pageSize;
-// const paginatedData = filteredData.slice(startIndex, startIndex + pageSize);
-const handlePageChange = (page) => {
-  setCurrentPage(page);
-};
-const fetchCountEmployees = async () => {
-  try {
-    const countEmployees = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/countAll`);
- 
-    if (!countEmployees.ok) {
-      throw new Error('Failed to fetch employees');
-    }
-    if (countEmployees.ok) {
+
+  const fetchCountEmployees = async () => {
+    try {
+      const countEmployees = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/countAll`);
+
+      if (!countEmployees.ok) {
+        throw new Error('Failed to fetch employees');
+      }
+
       const datacount = await countEmployees.json();
       setCount(datacount);
-    
+
+    } catch (error) {
+      console.error('Error fetching employees:', error);
     }
-  
-  } catch (error) {
-    console.error('Error fetching employees:', error);
-  }
-};
+  };
 
-const fetchListEmployee = async () => {
-  try {
-    const endPoint =
-      process.env.NODE_ENV === "development"
-        ? "https://dev-gateway.gets-company.com"
-        : "";
-        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/listBypage?page=${currentPage}&size=${pageSize}`);
-
+  const fetchListEmployee = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/listBypage?page=${currentPage}&size=${pageSize}`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch employees');
@@ -91,142 +83,219 @@ const fetchListEmployee = async () => {
       const data = await response.json();
       setEmployees(data);
 
-
-    if (!response.ok) {
-      throw new Error('La requête a échoué avec le code ' + response.status);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données:', error);
     }
-    
-    const contentType = response.headers.get('content-type');
- 
-  } catch (error) {
-    console.error('Erreur lors de la récupération des données:', error);
-  }
-};
-useEffect(() => {
-  fetchListEmployee();
-  fetchCountEmployees()
-}, [ currentPage, pageSize,]);
+  };
 
-const items = [
-  {
-    label: 'Financial Data',
-    key: '1',
-    children:   
-    <div >
-     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-  <StyledOrderHeaderRight style={{ flex: 1 }}>
-    <div style={{ display: "flex", flexDirection: 'column', height: '100%' }}>
-         <AppsHeader>
-        <StyledOrderHeader>
-          <StyledOrderHeaderInputView>
-            <Input
-              id='user-name'
-              placeholder='Search'
-              type='search'
-              onChange={onSearchOrder}
-            />
-          </StyledOrderHeaderInputView>
-          <StyledOrderHeaderRight>
-           
+  const fetchAllListEmployee = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list`);
 
-            {/* <StyledOrderHeaderPagination
-                pageSize={pageSize}
-                orderData={paginatedData}
-                page={page}
-                onChange={onPageChange}
-            /> */}
-          </StyledOrderHeaderRight>
-        </StyledOrderHeader>
-      </AppsHeader>
-      <div style={{ flex: 1 }}>
-      <FinancialData employee={employee} />
-        
+      if (!response.ok) {
+        throw new Error('Failed to fetch employees');
+      }
+
+      const data = await response.json();
+      setAllemployee(data);
+
+      // Extract unique project names and cost centers
+      const projectInfoSet = new Set();
+      const costCenterSet = new Set();
+      data.forEach(employee => {
+        if (employee.projects && employee.projects.length > 0) {
+          employee.projects.forEach(project => {
+            const info = {
+              projName: project.projName ? project.projName.trim() : '',
+              cosCenter: project.cosCenter ? project.cosCenter.trim() : ''
+            };
+            projectInfoSet.add(info);
+            if (project.cosCenter && project.cosCenter.trim() !== '') {
+              costCenterSet.add(project.cosCenter.trim());
+            }
+          });
+        }
+      });
+      setProjName(Array.from(projectInfoSet));
+      setCostCenters(Array.from(costCenterSet));
+
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données:', error);
+    }
+  };
+
+  const Type = [
+    { type: "office" },
+    { type: "site" },
+  ];
+
+  const handletype = (value) => {
+    setSelectType(value);
+  };
+
+  const handleCostCenterChange = (selectedCostCenter) => {
+    const project = projName.find(proj => proj.cosCenter === selectedCostCenter);
+    setSelectedProject(project ? project.projName : '');
+  };
+  const handleFilterApply = () => {
    
-      </div>
-      <div style={{ marginTop: "auto", marginBottom: "10px", display: "flex", justifyContent: "flex-end" }}>
-        <Pagination
-          currentPage={currentPage}
-          totalPages={Math.ceil(count / pageSize)}
-          handlePageChange={handlePageChange}
-        />
-      </div>
-    </div>
-  </StyledOrderHeaderRight>
-</div>
+    let filteredEmployees = allemployee;
 
-  </div>
-  
-  }, // remember to pass the key prop
-  {
-    label: 'Cash Deduction ',
-    key: '2',
-    children:
-    <>
-    <CashDeduction></CashDeduction>,
-    
+    if (selectType) {
+      filteredEmployees = filteredEmployees.filter(employee => employee.type_Emp === selectType);
+    }
 
-    
-    </>
-    
+    if (selectedProject) {
+      filteredEmployees = filteredEmployees.filter(employee => {
+        return employee.projects.some(project => project.projName === selectedProject);
+      });
+    }
 
-  },
-  {
-    label: 'Salary Payment ',
-    key: '3',
-    children:<OrderContratStaff temployee={temployeeStaff}></OrderContratStaff>,
-  },
-  {
-    label: 'Salaries Increase Request',
-    key: '4',
-    children:<OrderContratStaff temployee={temployeeStaff}></OrderContratStaff>,
-  },
+    if (deductionMonth) {
+      filteredEmployees = filteredEmployees.filter(employee => {
+        return dayjs(employee.month).isSame(deductionMonth, 'month');
+      });
+    }
+
+    setAllemployee(filteredEmployees);
+    console.log("tthhjjkkki",filteredEmployees)
+  };
 
 
-    
-];
-
+  const items = [
+    {
+      label: 'Financial Data',
+      key: '1',
+      children:
+        <div>
+          <StyledOrderHeaderRight style={{ flex: 1 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+              <AppsHeader>
+                <StyledOrderHeader>
+                  <StyledOrderHeaderInputView>
+                    <Input
+                      id='user-name'
+                      placeholder='Search'
+                      type='search'
+                      onChange={onSearchOrder}
+                    />
+                  </StyledOrderHeaderInputView>
+                </StyledOrderHeader>
+              </AppsHeader>
+              <div style={{ flex: 1 }}>
+                <FinancialData employee={employee} />
+              </div>
+              <div style={{ marginTop: "auto", marginBottom: "10px", display: "flex", justifyContent: "flex-end" }}>
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={Math.ceil(count / pageSize)}
+                  handlePageChange={onPageChange}
+                />
+              </div>
+            </div>
+          </StyledOrderHeaderRight>
+        </div>
+    },
+    {
+      label: 'Cash Deduction ',
+      key: '2',
+      children:
+        <CashDeduction />
+    },
+    {
+      label: 'Salary Payment ',
+      key: '3',
+      children:
+        <div style={{ margin: "1rem" }}>
+          <Row style={{ marginBottom: "2rem" }} gutter={16}>
+            <Col span={10}>
+              <span className='TitleInput'>Cost Center :</span>
+              <Select
+                style={{ width: "100%",marginTop:"0.5rem"}}
+                placeholder="Cost Center"
+                allowClear
+                onChange={handleCostCenterChange}
+              >
+                {costCenters?.map(costCenter => (
+                  <Select.Option key={costCenter} value={costCenter}>
+                    {costCenter}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Col>
+            <Col span={10}>
+              <span>Project Cost Center</span>
+              <Input
+               style={{marginTop:"0.5rem"}}
+              
+              value={selectedProject} disabled />
+            </Col>
+          </Row>
+          <Row style={{ marginBottom: "2rem" }} gutter={16} justify="center">
+            <Col span={10}>
+              <span>Month of</span>
+              <DatePicker
+                style={{ width: "100%", height: "30px" }}
+                picker="month"
+                placeholder="For Month"
+                onChange={(value) => setDeductionMonth(value)}
+                value={deductionMonth}
+                format="YYYY-MM"
+              />
+            </Col>
+          </Row>
+          <Row style={{ marginBottom: "2rem" }} gutter={16}>
+            <Col span={10}>
+              <span>Site / Office</span>
+              <Select
+                  style={{ width: "100%",marginTop:"0.5rem"}}
+                placeholder='Type'
+                onChange={handletype}
+              >
+                {Type.map((p, index) => (
+                  <Select.Option key={index} value={p.type}>
+                    {p.type}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Col>
+            <Col span={10}>
+              <span>Total</span>
+              <Input 
+              
+              style={{ marginTop:"0.5rem"}}
+              placeholder='Total' readOnly />
+            </Col>
+          </Row>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Button type="primary" onClick={handleFilterApply}>Apply Filter</Button>
+          </div>
+          <Salarypayment allemployee={allemployee} />
+        </div>
+    },
+    {
+      label: 'Salaries Increase Request',
+      key: '4',
+      children: <p>Salaries Increase Request</p>,
+    },
+  ];
 
   return (
-    <div >
-    <AppPageMeta title='Payroll' />
-    <h2 className="Title">Staries Tracker </h2>
-
-      <div style={{marginBottom:"20px"}} >
-          <StyledBuyCellCard style={{ paddingLeft: "10px"}} heightFull>
-            <StyledTabs defaultActiveKey='1' items={items} />
-          </StyledBuyCellCard>
-
-        <AppInfoView />
-
-    
-
-</div >
- 
-
-      {/* <AppsContainer
-       contentStyle={{
-        paddingLeft: 20,
-        paddingRight: 20,
-      }}
-        style={{paddingRight:"20px"}}   
-        type='bottom'
-        fullView>
-       <StyledBuyCellCard   style={{ paddingLeft: "10px" }} heightFull>
-      <StyledTabs defaultActiveKey='1' items={items} />
-    </StyledBuyCellCard>
-    </AppsContainer> */}
-
-
-    
-
-      
-
-    <AppInfoView />
-  </div>
-  
+    <div>
+      <h2 className="Title">Staries Tracker</h2>
+      <div style={{ marginBottom: "20px" }}>
+        <StyledBuyCellCard style={{ paddingLeft: "10px" }} title="STORIES">
+          <StyledTabs defaultActiveKey="1">
+            {items.map(item => (
+              <StyledTabs.TabPane key={item.key} tab={item.label}>
+                {item.children}
+              </StyledTabs.TabPane>
+            ))}
+          </StyledTabs>
+        </StyledBuyCellCard>
+      </div>
+    </div>
   );
 };
 
 export default Table;
-
-
