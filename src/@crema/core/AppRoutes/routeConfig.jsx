@@ -664,9 +664,31 @@ const routesConfig = [
           {
             id: "Salaries Tracker",
             title: "SalariesTracker",
+            messageId: "sidebar.general.SalariesCalculate",
+            url: "/Payroll/CalculateSiteSalary",
+          },
+          {
+            id: "Salaries Tracker",
+            title: "SalariesTracker",
+            messageId: "sidebar.general.SalariesCalculateOffice",
+            url: "/Payroll/CalculateSiteSalaryOffice",
+          },
+         
+         
+          
+          {
+            id: "Salaries Calculate",
+            title: "SalariesCalculate",
             messageId: "sidebar.general.Payroll",
             url: "/Payroll/SalariesTracker",
           },
+          {
+            id: "Payment Request",
+            title: "Payment Request",
+            messageId: "sidebar.general.paymentRequest",
+            url: "/Payroll/PaymentRequest",
+          },
+     
      
        
         ],
