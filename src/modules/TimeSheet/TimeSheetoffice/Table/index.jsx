@@ -145,16 +145,7 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
         return currentMonthStatus ? currentMonthStatus.workingDay : 0;
       },
     },
-    {
-      title: 'Working Day',
-      dataIndex: 'workingHome',
-      key: 'workingHome',
-      width: 100,     
-      render: (text, record) => {
-        const currentMonthStatus = record.officeWorkStatus.find(status => status.month === currentMonthName);
-        return currentMonthStatus ? currentMonthStatus.workingHome : 0;
-      },
-    },
+
   
 
     {

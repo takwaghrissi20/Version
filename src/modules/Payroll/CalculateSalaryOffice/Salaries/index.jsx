@@ -78,12 +78,18 @@ const Table = () => {
   const fetchAllListEmployee = async () => {
     try {
       setLoading(true);  // Set loading to true before fetch
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getEmByTypeWithoutPage?type=site`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list`);
+    
       if (!response.ok) {
         throw new Error('Failed to fetch employees');
       }
-      const data = await response.json();
-      setAllemployee(data);
+      const json = await response.text();
+      const data = JSON.parse(json);
+  
+      const dataFilter = data.filter(p => p.type_Emp === "office" || p.type_Emp === "office & site");
+      console.log("dataFilter",dataFilter)
+
+      setAllemployee(dataFilter);
       
       const projectInfoSet = new Set();
       const costCenterSet = new Set();
@@ -103,10 +109,10 @@ const Table = () => {
       });
       setProjName(Array.from(projectInfoSet).map(item => JSON.parse(item)));
       setCostCenters(Array.from(costCenterSet));
-      setLoading(false);  // Set loading to false after fetch
+      setLoading(false);  
     } catch (error) {
       console.error('Erreur lors de la récupération des données:', error);
-      setLoading(false);  // Set loading to false on error
+      setLoading(false);  
     }
   };
 
@@ -155,7 +161,7 @@ const Table = () => {
 
   const items = [
     {
-      label: 'Calculate Employee Site salaries',
+      label: 'Calculate Employee Office salaries',
       key: '1',
       children:
         <div style={{ margin: "1rem" }}>
@@ -231,9 +237,9 @@ const Table = () => {
 
   return (
     <div>
-      <h2 className="Title">Salary Employees Site</h2>
+      <h2 className="Title">Salary Employees Office</h2>
       <div style={{ marginBottom: "20px" }}>
-        <StyledBuyCellCard style={{ paddingLeft: "10px" }} title="Salary Employees Site">
+        <StyledBuyCellCard style={{ paddingLeft: "10px" }} title="Salary Employees Office">
           <StyledTabs defaultActiveKey="1">
             {items.map(item => (
               <StyledTabs.TabPane key={item.key} tab={item.label}>

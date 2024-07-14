@@ -42,8 +42,11 @@ import EditTravel from '../../../modules/VisaAndTravel/visa/Edittravel';
 import SalariesTracker from '../../../modules/Payroll/Salaries Tracker';
 import PaymentRequest from '../../../modules/Payroll/PaymentRequest';
 import CalculateSalary from '../../../modules/Payroll/CalculateSalary';
+import CalculateSalaryOffice from '../../../modules/Payroll/CalculateSalaryOffice';
 // import CalculateSalaryOffice from '../../../modules/Payroll/CalculateSalaryOffice';
 import PAYMENTORDERREQUESTS from '../../../modules/Payroll/PaymentOrderRequest';
+import PaymentOrderRequestOffice from '../../../modules/Payroll/PaymentOrderRequestOffice';
+
  
 export const recharts2Configs = [
   {
@@ -234,15 +237,18 @@ export const recharts2Configs = [
     path: '/Payroll/CalculateSiteSalary',
     element: <CalculateSalary />,
   },
-  // {
-  //   path: '/Payroll/CalculateSiteSalaryOffice',
-  //   element: < CalculateSalaryOffice />,
-  // },
+  {
+    path: '/Payroll/CalculateSalaryOffice',
+    element: < CalculateSalaryOffice />,
+  },
   {
     path: '/Payroll/PAYMENT_ORDER_REQUESTS',
     element: <PAYMENTORDERREQUESTS  />,
   },
-
+  {
+    path: '/Payroll/office/PAYMENT_ORDER_REQUESTS',
+    element: <PaymentOrderRequestOffice  />,
+  },
 
 
 

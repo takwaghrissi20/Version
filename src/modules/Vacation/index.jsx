@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Button, Col, Divider, Form, Input, Space, Typography, Select, DatePicker, InputNumber, notification } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
-import AppRowContainer from '../../../@crema/components/AppRowContainer';
+import AppRowContainer from '../../@crema/components/AppRowContainer';
 import moment from 'moment';
-import { StyledShadowWrapper } from '../../../styles/index.styled';
-import ConfirmationModal from '../../../@crema/components/AppConfirmationModal';
+import { StyledShadowWrapper } from './index.styled';
+import ConfirmationModal from '../../@crema/components/AppConfirmationModal';
 
 const Vacation = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const [name, setName] = useState('');
+  const [position, setPosition] = useState('');
   const [availableLeaveDays, setAvailableLeaveDays] = useState(0);
   const [leaveType, setLeaveType] = useState('');
   const [startDate, setStartDate] = useState(null);
@@ -21,41 +23,10 @@ const Vacation = () => {
   const [isSave, onSave] = useState(false);
   const [isCancel, onCancel] = useState(false);
   const [modalError, setModalError] = useState(false);
-  const [profile, setProfile] = useState("")
-  const userRole = localStorage.getItem("role")
-  const GetProfileEmployess = async () => {
-    const storedemail = window.localStorage.getItem("email");
-    console.log("storedemail", storedemail)
-    try {
-      const endPoint =
-        process.env.NODE_ENV === "development"
-          ? "https://dev-gateway.gets-company.com"
-          : "";
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      });
+ 
 
-      if (!response.ok) {
-        throw new Error('La requête a échoué avec le code ' + response.status);
-      }
-
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        throw new TypeError("La réponse n'est pas au format JSON");
-      }
-      const data = await response.json();
-      console.log("data profile", data)
-      setProfile(data)
-      setId(data?.getsId)
-
-
-
-    } catch (error) {
-      console.error('Erreur lors de la récupération Last Recruitement', error);
-    }
+  const getCurrentTime = () => {
+    return moment();
   };
 
   useEffect(() => {
@@ -79,13 +50,15 @@ const Vacation = () => {
   };
   const handleCancelVacation = () => {
     const fieldsFilled = [
-      availableLeaveDays,
-      leaveType,
+      name,
+      position,
+       availableLeaveDays,
+       leaveType,
       reason,
-   
+       id,
 
 
-
+      
 
     ].some(field => field && field !== "");
 
@@ -180,15 +153,14 @@ const Vacation = () => {
   };
 
   const onSubmitVac = async () => {
-
+    
     let bodyData = {
-      name: profile?.name,
-      position: profile?.position,
+      name,
+      position,
       numberdays: leaveType === 'Permission' ? 0 : availableLeaveDays,
       type: leaveType,
       reason,
-      getsId: profile?.getsId,
-      notif:3,
+      getsId: id,
     };
 
     if (leaveType === 'Justified Absent') {
@@ -213,18 +185,25 @@ const Vacation = () => {
         endPermission: endDate ? endDate.format('YYYY-MM-DD HH:mm:ss') : null,
       };
     } else if (leaveType === 'MaternityPaternity') {
+      console.log('Available Leave Days:', availableLeaveDays);
       bodyData = {
         ...bodyData,
+        numberdays: availableLeaveDays,
         startMatern: startDate ? startDate.format('YYYY-MM-DD HH:mm:ss') : null,
         joinEndMatern: endDate ? endDate.format('YYYY-MM-DD HH:mm:ss') : null,
       };
-    } else if (leaveType === 'Vacation') {
+    }
+    
+    
+    
+    else if (leaveType === 'Vacation') {
       bodyData = {
         ...bodyData,
         startDate: startDate ? startDate.format('YYYY-MM-DD HH:mm:ss') : null,
         endDate: endDate ? endDate.format('YYYY-MM-DD HH:mm:ss') : null,
       };
     }
+
     console.log('Request payload:', bodyData);
 
     try {
@@ -243,22 +222,39 @@ const Vacation = () => {
         openNotificationError('bottomRight')
         throw new Error('La requête a échoué avec le code ' + response.status);
       }
-      if (response.ok) {
+
       const result = await response.json();
-      console.log("result",result)
       openNotification('bottomRight')
-    
-    }
 
     } catch (error) {
-    console.error("Employeees Vacation",error)
+      notification.error({
+        message: 'Error',
+        description: error.message,
+      });
+    }
+  };
+
+  const findEmployeeById = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${id}`, {
+        method: 'GET',
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const responseData = await response.json();
+      setName(responseData?.name);
+      setPosition(responseData?.position);
+    } catch (error) {
+      console.error('Error fetching employee:', error);
     }
   };
 
   useEffect(() => {
-
-      GetProfileEmployess()
-    
+    if (id) {
+      findEmployeeById();
+    }
   }, [id]);
 
 
@@ -269,11 +265,11 @@ const Vacation = () => {
 
   const BeforeSaveVacation = () => {
     //setIsModalVisible(true)
-    form.validateFields([ 'leaveType'
+    form.validateFields(['GETS ID', 'Name', 'position', 'leaveType'
       , ' availableLeaveDays', ' duration', ' startDate', 'endDate', 'reason',
 
     ]).then(values => {
-      onSubmitVac()
+        onSubmitVac()
 
     }).catch(errorInfo => {
       openNotificationWarning('bottomRight')
@@ -299,7 +295,7 @@ const Vacation = () => {
       <Form
         form={form}
         layout='vertical'
-        // onFinish={onSubmitVac}
+        onFinish={onSubmitVac}
         style={{ backgroundColor: 'white', marginBottom: '20px', padding: '10px', borderRadius: '20px' }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -315,24 +311,17 @@ const Vacation = () => {
             <StyledShadowWrapper>
               <AppRowContainer>
                 <Col xs={24} md={12}>
-                  <Form.Item label='GETS ID' name='GETS ID'>
-
-
-                    <Input
-                      className='Input'
-                      placeholder={profile?.getsId}
-                      readOnly={true}
-
-
-                    />
+                  <Form.Item label='GETS ID' name='GETS ID' rules={[{ required: true, message: 'Please enter your GETS ID' }]}>
+                    <InputNumber min={1} max={400} onChange={value => setId(value)} style={{ width: '100%', height: "30px" }} value={id} />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Name' name='Name'>
                     <Input
                       className='Input'
-                      placeholder={profile?.name}
-                      readOnly={true}
+                      placeholder={name}
+                      readOnly
+                      style={{ width: '100%', height: "30px" }}
                     />
                   </Form.Item>
                 </Col>
@@ -340,8 +329,8 @@ const Vacation = () => {
                   <Form.Item label='Position' name='position'>
                     <Input
                       className='Input'
-                      placeholder={profile?.position}
-
+                      placeholder={position}
+                      style={{ height: "30px" }}
                       readOnly
                     />
                   </Form.Item>
@@ -362,7 +351,7 @@ const Vacation = () => {
                   <Form.Item label='Leave Type' name='leaveType' rules={[{ required: true, message: 'Please select a leave type' }]}>
                     <Select placeholder='Select Leave Type' onChange={value => setLeaveType(value)} size="large" style={{ height: "30px" }}>
                       <Select.Option value='Justified Absent'>Justified Absent</Select.Option>
-                      <Select.Option value='MaternityPaternity'>Maternity&Paternity</Select.Option>
+                      <Select.Option value='MaternityPaternity'>MaternityPaternity</Select.Option>
                       <Select.Option value='Permission'>Permission</Select.Option>
                       <Select.Option value='Vacation'>Vacation</Select.Option>
                     </Select>
@@ -398,10 +387,10 @@ const Vacation = () => {
                   <Form.Item label='Start Date' name='startDate' rules={[{ required: true, message: 'Please select the start date' }]}>
                     <DatePicker
                       showTime={leaveType === 'Permission'}
-                      placeholder='Select Date and Time'
+                      placeholder='Select Date and Time' 
                       format='YYYY-MM-DD HH:mm:ss'
                       value={startDate ? dayjs(startDate) : null}
-
+                      
                       onChange={date => setStartDate(date)}
                       style={{ width: '100%', height: "30px" }}
                     />
@@ -446,13 +435,22 @@ const Vacation = () => {
           style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
         >
           <Button onClick={handleCancelVacation}>Cancel</Button>
-          <Button type='primary' htmlType='submit' onClick={BeforeSaveVacation}>Apply Leave</Button>
+          <Button type='primary' htmlType='submit' onClick={ BeforeSaveVacation}>Apply Leave</Button>
         </Space>
       </Form>
 
 
 
-    
+      {isSave ? (
+        <ConfirmationModal
+          open={isSave}
+          paragraph={'Are you sure you want to Save Recruitement?'}
+          onDeny={onSave}
+          onConfirm={onSubmitVac}
+          modalTitle="Save Recruitement "
+          handleInterview={handleSaveVacation}
+        />
+      ) : null}
       {isCancel ? (
         <ConfirmationModal
           open={isCancel}
@@ -465,6 +463,30 @@ const Vacation = () => {
       ) : null}
 
 
+      {modalWarning && (
+        <div style={{ position: 'relative', height: '10vh' }}>
+          <Space direction='vertical' style={{ width: '90%', margin: 20, position: 'absolute', bottom: 0 }}>
+            <Alert
+              description='All Fields Not Complete'
+              type='warning'
+              showIcon
+            />
+          </Space>
+        </div>
+      )}
+      {modalError && (
+        <div style={{ position: 'relative', height: '10vh' }}>
+          <Space direction='vertical' style={{ width: '90%', margin: 20, position: 'absolute', bottom: 0 }}>
+            <Alert
+              message='Error'
+              description='Failed Recruitement.'
+              type='error'
+              showIcon
+
+            />
+          </Space>
+        </div>
+      )}
     </div>
   );
 };

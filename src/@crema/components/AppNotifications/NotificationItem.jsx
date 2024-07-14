@@ -277,9 +277,9 @@ const NotificationItem = ({ user }) => {
     });
   }
 //Interview
-const handleEditInterviewStaffOpen = () => {
+const handleEditInterviewStaffOpen = (code) => {
   console.log("findIdData",findIdData?.interviewCode)
-    navigate(`/Hr/Recruitement&Interview/ConstructionStaffInterview/Update/${interviewCode}`, {
+    navigate(`/Hr/Recruitement&Interview/ConstructionStaffInterview/Update/${code}`, {
       state: {
         interviewCode:findIdData?.interviewCode,
         jobCode:findIdData?.jobCode,
@@ -504,15 +504,18 @@ const handleEditInterviewStaffOpen = () => {
          <button 
            className='Notification' 
            onClick={() => 
-             p.type === "Interview of construction team" 
+             p.type .includes("Interview of construction team") 
                ? findIdInterviewConstruction(p?.interviewCode) 
                : findIdInterview (p?.interviewCode)
            }
          >
            Notification {p.type} Code {p.interviewCode}:
            <span style={{ color: "red", fontWeight: "bold" }}>
-             RRS-{p.codejob}
+           {p.type.includes("Interview of construction team") ? `CIS-${p.codejob}` : `RRS-${p.codejob}`}
            </span>
+           {/* <span style={{ color: "red", fontWeight: "bold" }}>
+             RRS-{p.codejob}
+           </span> */}
          </button>
        </div>
         )}

@@ -16,16 +16,20 @@ import { useNavigate } from 'react-router-dom';
 import IntlMessages from '../../../@crema/helpers/IntlMessages';
  import OrderTable from './TableOrderPaymentRequest';
  import { useLocation } from 'react-router-dom';
-const PaymentOrderRequest  = () => {
+const PaymentOrderRequestOffice  = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const filteredEmployees = location.state ? location.state.filteredEmployees : null;
   const  costCenter = location.state ? location.state. costCenter : null;
   const  selectedProject = location.state ? location.state.selectedProject : null;
- console.log("filterrrrrr",filteredEmployees)
+ console.log("filterrrrrr Offive",filteredEmployees)
   //////////////////////////////
-;
+  const [amountDeducted, setAmountDeducted] = useState("");
+  const [scan, setScan] = useState("");
+
+  const [deductionMonth, setDeductionMonth] = useState(dayjs());
   const [getsId, setGetsId] = useState("");
+  const [selectCashAdvanceType, setSelectCashAdvanceType] = useState('');
   const [lastRequest, setLastRequest] = useState(0);
   const [objet, setObjet] = useState("");
   const [from, setFrom] = useState("Payroll Coordinator & Administrator");
@@ -40,6 +44,7 @@ const PaymentOrderRequest  = () => {
   const [dateInput, setDateInput] = useState(new Date());
   const userRole = localStorage.getItem("role");
   console.log("userRole", userRole)
+
 
   const GetProfileEmployess = async () => {
     const storedemail = window.localStorage.getItem("email");
@@ -76,12 +81,12 @@ const PaymentOrderRequest  = () => {
     GetProfileEmployess()
     LastRequestPayment()
     //Calculate Total
-    const totalNetSite = filteredEmployees?.reduce((accumulator, filteredEmployees) => {
-      return accumulator + filteredEmployees?.netSite;
+    const totalnetOfice = filteredEmployees?.reduce((accumulator, filteredEmployees) => {
+      return accumulator + filteredEmployees?.netOfice;
     }, 0);
     
-    console.log("Somme totale de netSite pour tous les employés :", totalNetSite);
-    setTotal(totalNetSite)
+    console.log("Somme totale de netSite pour tous les employés :", totalnetOfice);
+    setTotal(totalnetOfice)
   }, [getsId]);
 
 
@@ -239,9 +244,7 @@ const PaymentOrderRequest  = () => {
   //Save Request Order
   const SaveRequest = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/RequestPayment/add?date=${formattedDate}&objet=${objet}&objet=${objet}&from=${from}&payment=${isCash}&total=${total}
-        
-        `, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/RequestPayment/add`, {
 
         method: 'POST',
         headers: {
@@ -251,16 +254,14 @@ const PaymentOrderRequest  = () => {
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
         body: JSON.stringify({
-          filteredEmployees
-      // //  id:LastIndexRequestPaymentIncremente,
-      //  dateInput:formattedDate,
-      //  object:objet,
-      //  fromReq:from,
+      //  id:LastIndexRequestPaymentIncremente,
+       dateInput:formattedDate,
+       object:objet,
+       fromReq:from,
 
 
         })
       });
-      
 
       if (!response.ok) {
         openNotificationError('bottomRight')
@@ -476,4 +477,4 @@ const PaymentOrderRequest  = () => {
 };
 
 
-export default PaymentOrderRequest ;
+export default PaymentOrderRequestOffice ;

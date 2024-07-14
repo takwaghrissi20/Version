@@ -1279,8 +1279,8 @@ const EditInterviewConstruction = () => {
                     name='English Skills '>
                     <Input
                       className='Input'
-                      placeholder={techEnglishSkills}
-                      readOnly={true}
+                    
+                      
 
                     />
 

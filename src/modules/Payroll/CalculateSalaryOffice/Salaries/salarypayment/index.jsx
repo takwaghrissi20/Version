@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { StyledOrderTable } from '../../../../../styles/index.styled';
 import { Button, Checkbox, Modal, Table, Select, Input,notification } from 'antd';
 import { useNavigate } from 'react-router-dom';
-const OrderTable = ({ allemployee, loading, deductionMonth, costCenter,
+const OrderTableOffice = ({ allemployee, loading, deductionMonth, costCenter,
   selectedProject}) => {
   const dateObject = new Date(deductionMonth);
   const month = dateObject.getMonth() + 1;
@@ -17,7 +17,7 @@ const OrderTable = ({ allemployee, loading, deductionMonth, costCenter,
   const [filteredEmployees, setFilteredEmployees] = useState([]);
   const navigate = useNavigate();
   const handleRequestPayment = () => {
-      navigate(`/Payroll/PAYMENT_ORDER_REQUESTS`, {
+      navigate(`/Payroll/office/PAYMENT_ORDER_REQUESTS`, {
         state: {
          filteredEmployees: filteredEmployees,
          costCenter:costCenter,
@@ -88,7 +88,7 @@ const OrderTable = ({ allemployee, loading, deductionMonth, costCenter,
   };
   const Calculate = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/sheetSite/calculate?id=${code}&month=${monthName}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/sheetOffice/calculate?id=${code}&month=${monthName}`, {
         method: 'GET',
       });
       if (!response.ok) {
@@ -195,7 +195,7 @@ const OrderTable = ({ allemployee, loading, deductionMonth, costCenter,
       dataIndex: 'btnsalary',
       key: 'btnsalary',
       render: (text, record) => (
-        record.netSite === 0 ? (
+        record.netOfice === 0 ? (
           <>
           <Button onClick={() => Calculate(record.getsId)}>
             Calculate Salary
@@ -204,7 +204,7 @@ const OrderTable = ({ allemployee, loading, deductionMonth, costCenter,
           </>
         ) : (
           <>
-          <span>{record.netSite}</span>
+          <span>{record.netOfice}</span>
        
           </>
         )
@@ -273,7 +273,7 @@ const OrderTable = ({ allemployee, loading, deductionMonth, costCenter,
             onChange={handleFilterProjectChange}
             allowClear
           >
-            {allemployee.reduce((uniqueProjects, employee) => {
+            {allemployee?.reduce((uniqueProjects, employee) => {
               employee.projects.forEach(project => {
                 if (!uniqueProjects.includes(project.projName)) {
                   uniqueProjects.push(project.projName);
@@ -298,13 +298,13 @@ const OrderTable = ({ allemployee, loading, deductionMonth, costCenter,
   );
 };
 
-OrderTable.defaultProps = {
+OrderTableOffice.defaultProps = {
   allemployee: [],
 };
 
-OrderTable.propTypes = {
+OrderTableOffice.propTypes = {
   allemployee: PropTypes.array,
   loading: PropTypes.bool,
 };
 
-export default OrderTable;
+export default OrderTableOffice;

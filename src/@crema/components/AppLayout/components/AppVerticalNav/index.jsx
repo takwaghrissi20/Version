@@ -45,7 +45,9 @@ const AppVerticalNav = ({ routesConfig }) => {
            
             item.id === "ManpowerEvaluation" ||
             item.id === "Site Clerk"  ||
-            item.id === "PROJECTS TRIP TRACK RECORD "                           
+            item.id === "PROJECTS TRIP TRACK RECORD " ||
+            item.id === "Payroll" 
+                              
           )
            {
           return false; 
@@ -59,7 +61,8 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "VacationLeave"  ||
           item.id === "ManpowerEvaluation" ||
           item.id === "Site Clerk"  ||
-          item.id === "PROJECTS TRIP TRACK RECORD "  
+          item.id === "PROJECTS TRIP TRACK RECORD "  ||
+          item.id === "Payroll" 
           
        
                                               
@@ -80,7 +83,8 @@ const AppVerticalNav = ({ routesConfig }) => {
             item.id === "recruitement" ||
              item.id === "dashboards" ||
              item.id === "Site Clerk"||
-             item.id === "PROJECTS TRIP TRACK RECORD " 
+             item.id === "PROJECTS TRIP TRACK RECORD " ||
+             item.id === "Payroll" 
 
 
           )
@@ -97,7 +101,8 @@ const AppVerticalNav = ({ routesConfig }) => {
             item.id === "ManpowerEvaluation" ||
             item.id === "Add Recruitment"   ||
             item.id === "Site Clerk"  ||
-             item.id === "PROJECTS TRIP TRACK RECORD "
+             item.id === "PROJECTS TRIP TRACK RECORD " ||
+             item.id === "Payroll" 
 
 
 
@@ -113,7 +118,8 @@ const AppVerticalNav = ({ routesConfig }) => {
             item.id === "ManpowerLocation" || 
             item.id === "ManpowerEvaluation" ||
             item.id === "Site Clerk"  ||
-            item.id === "PROJECTS TRIP TRACK RECORD "
+            item.id === "PROJECTS TRIP TRACK RECORD " ||
+            item.id === "Payroll" 
             // item.id === "Employees"  ||
             // item.id === "attendance" ||
             // item.id === "VacationLeave"  ||

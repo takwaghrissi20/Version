@@ -190,6 +190,13 @@ const routesConfig = [
             messageId: "sidebar.components.VacationLeave",
             url: "/Hr/Vacation&Leave/Vacation",
           },
+          {
+            id: "AllLeave",
+            title: "AllLeave",
+            messageId: "sidebar.components.AllLeave",
+            url: "/Hr/Vacation&Leave/ALL_Leave",
+          },
+          
           // {
           //   id: "Leave",
           //   title: "Leave",
@@ -671,7 +678,7 @@ const routesConfig = [
             id: "Salaries Tracker",
             title: "SalariesTracker",
             messageId: "sidebar.general.SalariesCalculateOffice",
-            url: "/Payroll/CalculateSiteSalaryOffice",
+            url: "/Payroll/CalculateSalaryOffice",
           },
          
          

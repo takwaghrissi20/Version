@@ -913,7 +913,21 @@ input{
     padding-bottom: 1rem;
     
   }
+  .status-approved {
+    color: green;
+  }
+  
+  .status-rejected {
+    color: red;
+  }
+  
+  .status-unknown {
+    color: black;
+  }
+  .status-Pending{
+    color: black;
 
+  }
 
 
 
