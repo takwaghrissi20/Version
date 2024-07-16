@@ -31,7 +31,7 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
   useEffect(() => {
     const updateTableHeight = () => {
       const pageHeight = window.innerHeight;
-      const tableHeight = pageHeight * 0.1; 
+      const tableHeight = pageHeight * 0.2; 
       setTableHeight(tableHeight);
     };
     window.addEventListener('resize', updateTableHeight);

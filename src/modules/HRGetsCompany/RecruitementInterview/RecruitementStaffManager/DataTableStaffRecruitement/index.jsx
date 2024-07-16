@@ -81,7 +81,7 @@ const AllRecruitementStaff = ({ allrecruitementabove,
   useEffect(() => {
     const updateTableHeight = () => {
       const pageHeight = window.innerHeight;
-      const tableHeight = pageHeight * 0.1;
+      const tableHeight = pageHeight * 0.25;
       setTableHeight(tableHeight);
     };
     window.addEventListener('resize', updateTableHeight);
@@ -176,7 +176,7 @@ const AllRecruitementStaff = ({ allrecruitementabove,
       { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditRecruitementOpen },
       { key: 2, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteRecruitement },
     ] : []),
-    ...(roles.includes('Administrator') ? [
+    ...(roles.includes('Administrator') || roles.includes('admin')  ? [
       ...(findIdData?.status === 'Approved By BOD' ? [
         { key: 2, label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, onClick: handleInterview }
            

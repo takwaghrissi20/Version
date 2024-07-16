@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import PropTypes from 'prop-types';
 //import { StyledOrderTable, StyledAction } from '../index.styled';
 /// change 
@@ -26,6 +26,19 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
   const [isAddEmployees, onAddEmployees] = useState(false);
   const navigate = useNavigate();
   const userRoles = localStorage.getItem("role");
+  const [tableHeight, setTableHeight] = useState('auto');
+  useEffect(() => {
+    const updateTableHeight = () => {
+      const pageHeight = window.innerHeight;
+      const tableHeight = pageHeight * 0.23;
+      setTableHeight(tableHeight);
+    };
+    window.addEventListener('resize', updateTableHeight);
+    updateTableHeight();
+    return () => {
+      window.removeEventListener('resize', updateTableHeight);
+    };
+  }, []);
   const handleAddInterviewStaffOpen = () => {
     //onViewInterviewStaff(true);
     console.log("findIdData",findIdData?.interviewCode)
@@ -624,7 +637,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
         hoverColor
         data={allinterviewConstructionTeam}
         columns={columns}
-        scroll={{ x: 'auto', y: 150 }}
+        scroll={{ x: 'auto', y: tableHeight }}
 
 
       />

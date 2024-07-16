@@ -239,9 +239,7 @@ const PaymentOrderRequest  = () => {
   //Save Request Order
   const SaveRequest = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/RequestPayment/add?date=${formattedDate}&objet=${objet}&objet=${objet}&from=${from}&payment=${isCash}&total=${total}
-        
-        `, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/RequestPayment/add`, {
 
         method: 'POST',
         headers: {
@@ -251,7 +249,18 @@ const PaymentOrderRequest  = () => {
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
         body: JSON.stringify({
-          filteredEmployees
+         
+          object: objet,
+          dateInput:formattedDate,
+          fromReq:from,
+          total:total,
+          cashpayment:isCash,
+          transfertPayment:isTransfer,
+          paymentType:isCheque,
+          listRequestPayments:filteredEmployees 
+          // ListRequestPayments: ListRequestPayments
+       
+          // ListRequestPayments:filteredEmployees
       // //  id:LastIndexRequestPaymentIncremente,
       //  dateInput:formattedDate,
       //  object:objet,
@@ -271,7 +280,6 @@ const PaymentOrderRequest  = () => {
       if (response.ok) {
 
         const responseData = await response.json();
-        console.log("testtthhhhreponseData",responseData)
         form.resetFields();
         openNotification('bottomRight')
 

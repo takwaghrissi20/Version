@@ -24,7 +24,7 @@ const AllRecruitementStaff = ({ roles,allrecruitementbelow, findIdData, id, find
   useEffect(() => {
     const updateTableHeight = () => {
       const pageHeight = window.innerHeight;
-      const tableHeight = pageHeight * 0.1;
+      const tableHeight = pageHeight * 0.23;
       setTableHeight(tableHeight);
     };
     window.addEventListener('resize', updateTableHeight);
@@ -196,7 +196,7 @@ const AllRecruitementStaff = ({ roles,allrecruitementbelow, findIdData, id, find
     // { key: 3, label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, onClick: handleInterview },
   
     //Approved Hr 
-    ...(roles.includes('Administrator') ? [
+    ...(roles.includes('Administrator') || roles.includes('admin')  ? [
       ...(findIdData?.status === 'Approved By BOD' ? [
         { key: 2, label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, onClick: handleInterview }
            

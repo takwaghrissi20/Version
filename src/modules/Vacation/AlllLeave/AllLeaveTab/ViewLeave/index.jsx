@@ -9,6 +9,7 @@ const ViewLeave = () => {
   const [form] = Form.useForm();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [emp, setEmp] = useState([]);
+  const [description, setDescription] = useState("");
   const [actionForm] = Form.useForm();
   const location = useLocation();
   const state = location.state || {};
@@ -112,7 +113,9 @@ const ViewLeave = () => {
 
         body: JSON.stringify({
           idv: id,
-          notif: notificationValue
+          notif: notificationValue,
+          description:description
+
 
         })
       });
@@ -366,6 +369,8 @@ const ViewLeave = () => {
           </Form.Item>
           <Form.Item label='Description'
            name='description' 
+           value={description}
+           onChange={(e) => setDescription(e.target.value)}
            >
             <Input.TextArea placeholder='Enter description' autoSize={{ minRows: 4, maxRows: 6 }} />
           </Form.Item>
