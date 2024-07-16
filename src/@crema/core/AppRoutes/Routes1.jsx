@@ -6,10 +6,7 @@ import Treemap from '../../../modules/VisaAndTravel/visa/Treemap';
 
 
 export const recharts1Configs = [
-  {
-    path: '/Hr/Vacation&Leave/Vacation',
-    element: <ComposedChart />,
-  },
+ 
   {
     path: '/Hr/Vacation&Leave/Leave',
     element: <ComposedChart />,

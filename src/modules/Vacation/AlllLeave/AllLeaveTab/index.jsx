@@ -107,8 +107,7 @@ const AllLeaveTab = () => {
 
       const data = await response.json();
       const filterData = data.filter(p => p.notif === 3)
-      console.log("filterData", filterData)
-      console.log("vacatiionnnnnn", data)
+     
       setCount(filterData.length)
       setVacations(filterData);
 

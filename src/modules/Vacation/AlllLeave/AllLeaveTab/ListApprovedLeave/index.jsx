@@ -104,8 +104,7 @@ const ListApprovedLeave  = () => {
 
       const data = await response.json();
       const filterData = data.filter(item => item.notif === 2 || item.notif === 0);
-      console.log("filterData", filterData)
-      console.log("vacatiionnnnnn", data)
+    
       setCount(filterData.length)
       setVacations(filterData);
 

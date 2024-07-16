@@ -3,13 +3,14 @@ import AppRowContainer from '../../../../@crema/components/AppRowContainer';
 import { Button, Col, Divider, Form, Input, Space, Typography, Select, Modal } from 'antd';
 import { StyledShadowWrapper } from '../../index.styled';
 import { useLocation } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 const DetailsLeaves = () => {
   const [form] = Form.useForm();
   const location = useLocation();
   const [emp,setemp]=useState([]);
+  const [notif,setNotif]=useState('')
   const state = location.state || {};
-
+  const navigate = useNavigate();
   const id = state.id || null;
   const getsId = state.getsid || null;
   const name = state.name || null;
@@ -39,6 +40,7 @@ const DetailsLeaves = () => {
 
     const data = await response.json();
     setemp(data);
+    setNotif(data.notif)
   } catch (error) {
     console.error('Error fetching employees:', error);
   }
@@ -49,6 +51,27 @@ useEffect(() => {
     findEmp();
   }
 }, [getsId]);
+const goBack = () => {
+  navigate(-1)
+}
+const getStatus = (notificationValue) => {
+  switch (notificationValue) {
+    case 3:
+      return 'Pending';
+    case 2:
+      return 'Approved by HOD';
+    case 0:
+      return 'Approved by HR';
+    case 20:
+      return 'Rejected by HOD';
+    case 10:
+      return 'Rejected by HR';
+    default:
+      return 'Unknown Status';
+  }
+};
+
+const statusText = notif !== null ? getStatus(notif) : 'Unknown Status';
   return (
     
     <Form
@@ -147,13 +170,19 @@ useEffect(() => {
             <StyledShadowWrapper>
               <AppRowContainer>
                 <Col xs={24} md={24}>
-                  <Form.Item label='HOD Remarks' name='hodRemarks'>
-                    <Input defaultValue='Waiting for Approval' readOnly />
+                  <Form.Item 
+                  label='HOD Remarks'
+                   name='hodRemarks'>
+                    <Input 
+                    placeholder={statusText}
+                    readOnly />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={24}>
                   <Form.Item label='HR Remarks' name='hrRemarks'>
-                    <Input defaultValue='Waiting for Approval' readOnly />
+                    <Input 
+                   placeholder={statusText}
+                    readOnly />
                   </Form.Item>
                 </Col>
               </AppRowContainer>
@@ -170,24 +199,37 @@ useEffect(() => {
               <AppRowContainer>
                 <Col xs={24} md={8}>
                   <Form.Item label='Action Taken Date' name='actionTakenDate'>
-                    <Input defaultValue='NA' readOnly />
+                    <Input
+                     defaultValue='N/A'
+                      readOnly />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={8}>
                   <Form.Item label='Leave Status From HOD' name='hodStatus'>
-                    <Input defaultValue='Pending/Approved' readOnly />
+                    <Input 
+                     placeholder={statusText}
+                    readOnly />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={8}>
                   <Form.Item label='Leave Status From HR' name='hrStatus'>
-                    <Input defaultValue='Pending/Approved' readOnly />
+                    <Input 
+                     placeholder={statusText} 
+                    readOnly />
                   </Form.Item>
                 </Col>
               </AppRowContainer>
             </StyledShadowWrapper>
           </Col>
-        </AppRowContainer>
         
+        </AppRowContainer>
+        <Space
+          size={15}
+          style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
+        >
+          <Button onClick={goBack} >Cancel</Button>
+
+        </Space>
       </Form>
   );
 };

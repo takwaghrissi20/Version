@@ -196,6 +196,12 @@ const routesConfig = [
             messageId: "sidebar.components.AllLeave",
             url: "/Hr/Vacation&Leave/ALL_Leave",
           },
+          {
+            id: "My Leave History",
+            title: "MyLeaveHistory",
+            messageId: "sidebar.components.MyLeaveHistory",
+            url: "/Hr/Vacation&Leave/My_Leave_History",
+          },
           
           // {
           //   id: "Leave",

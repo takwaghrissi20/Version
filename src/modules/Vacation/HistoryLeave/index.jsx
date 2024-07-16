@@ -1,39 +1,130 @@
 import React, { useEffect, useState } from "react";
-import { Col, Table } from 'antd';
+import { Col, Table, Space } from 'antd';
 import AppRowContainer from '../../../@crema/components/AppRowContainer';
-import Cards from "./Cards";
 import AppsContainer from "../../../@crema/components/AppsContainer";
 import { EyeOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import StatsAllVacationCard from "./StatsAllVacationCard";
+import StatsApprovedVacationCard from "./StatsApprovedVacationCard";
+import StatsPendingVacationCard from "./StatsPendingVacationCard";
+import StatsRejectedVacationCard from "./StatsRejectedVacationCard";
+import { useIntl } from 'react-intl';
+import AppCard from '../../../@crema/components/AppCard';
+import Pagination from '../../../@crema/components/AppsPagination';
+import {
 
+  StyledCustomerHeaderRight,
+  StyledOrderHeader,
+  StyledOrderHeaderRight
+
+} from '../../../styles/index.styled'
 const Tables = () => {
+  const { messages } = useIntl();
   const navigate = useNavigate();
   const [vacations, setVacations] = useState([]);
+  const [countVacation, setCountVacation] = useState(0);
+  const [countVacationPending, setCountVacationPending] = useState(0);
+  const [countVacationApproved, setCountVacationApproved] = useState(0);
+  const [countVacationRejected, setCountVacationRejected] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState(30);
   const [error, setError] = useState(null);
+  const [idgets,setIdGets] = useState("");
 
-  const getVacations = async (id) => {
+ //Get profile By Email
+ const userEmail = localStorage.getItem("email");
+ const GetProfileEmployess = async () => {
+
+  try {
+    const endPoint =
+      process.env.NODE_ENV === "development"
+        ? "https://dev-gateway.gets-company.com"
+        : "";
+    const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${userEmail}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+    if (!response.ok) {
+      throw new Error('La requête a échoué avec le code ' + response.status);
+    }
+
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      throw new TypeError("La réponse n'est pas au format JSON");
+    }
+    const data = await response.json();
+    setIdGets(data.getsId)
+   
+  } catch (error) {
+    console.error('Erreur lors de la récupération getByEmail', error);
+  }
+};
+
+  const getVacations = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/listByEmp?id=${id}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/listByEmp?id=${idgets}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           // Add any necessary headers like Authorization here if required
         },
-      }); 
+      });
       if (!response.ok) {
         throw new Error('Network response was not ok ' + response.statusText);
       }
       const data = await response.json();
       setVacations(data);
+      setCountVacation(data.length);
+      
+      //Pending
+      const filterDataPending = data.filter(p => p.notif === 3);
+      setCountVacationPending(filterDataPending.length);
+      
+      //Approved
+      const filterDataApproved = data.filter(item => item.notif === 2 || item.notif === 0);
+      setCountVacationApproved(filterDataApproved.length);
+      
+      //Rejected 
+      const filterDataRejected = data.filter(item => item.notif === 10);
+      setCountVacationRejected(filterDataRejected.length);
     } catch (error) {
       setError(error.message);
     }
   };
 
   useEffect(() => {
-    getVacations(2); // Assuming you want to fetch vacations for id=2 initially
-  }, []);
+    getVacations();
+    GetProfileEmployess()
+  }, [currentPage, pageSize,idgets]);
+  const getStatus = (notificationValue) => {
+    switch (notificationValue) {
+      case 2:
+        return 'Approved by HOD';
+      case 0:
+        return 'Approved by HR';
+      case 20:
+        return 'Rejected by HOD';
+      case 10:
+        return 'Rejected by HR';
+      default:
+        return 'Pending';
+    }
+  };
 
+  const getStatusClass = (notificationValue) => {
+    switch (notificationValue) {
+      case 2:
+      case 0:
+        return 'status-approved';
+      case 20:
+      case 10:
+        return 'status-rejected';
+      default:
+        return 'status-Pending';
+    }
+  }
   const handleViewVac = (record) => {
     navigate(`/Hr/Vacation&Leave/HistoryLeave/DetailsLeave/idV=${record.idv}`, {
       state: {
@@ -50,30 +141,34 @@ const Tables = () => {
   };
 
   const getLeaveData = (record, field) => {
-    switch(record.type) {
+    switch (record.type) {
       case 'Permission':
-        if(field === 'startDate') return record.livePerm;
-        if(field === 'endDate') return record.endPermission;
-        if(field === 'nuberdays') return record.durationPermiss;
+        if (field === 'startDate') return record.livePerm;
+        if (field === 'endDate') return record.endPermission;
+        if (field === 'nuberdays') return record.durationPermiss;
         break;
       case 'MaternityPaternity':
-        if(field === 'startDate') return record.startMatern;
-        if(field === 'endDate') return record.joinEndMatern;
-        if(field === 'nuberdays') return record.nuberdays;
+        if (field === 'startDate') return record.startMatern;
+        if (field === 'endDate') return record.joinEndMatern;
+        if (field === 'nuberdays') return record.nuberdays;
         break;
       case 'Justified Absent':
-        if(field === 'startDate') return record.startDateJus;
-        if(field === 'endDate') return record.endDateJus;
-        if(field === 'nuberdays') return record.nuberdaysJus;
+        if (field === 'startDate') return record.startDateJus;
+        if (field === 'endDate') return record.endDateJus;
+        if (field === 'nuberdays') return record.nuberdaysJus;
         break;
       case 'Vacation':
-        if(field === 'startDate') return record.startDate;
-        if(field === 'endDate') return record.endDate;
+        if (field === 'startDate') return record.startDate;
+        if (field === 'endDate') return record.endDate;
         if (field === 'nuberdays') return record.nuberdays;
         break;
       default:
         return record[field];
     }
+  };
+
+  const handlePageChangeVacation = (page) => {
+    setCurrentPage(page);
   };
 
   const columns = [
@@ -104,11 +199,21 @@ const Tables = () => {
       title: 'HOD Status',
       dataIndex: 'hodStatus',
       key: 'hodStatus',
+      render: (text, record) => {
+        const status = getStatus(record.notif);
+        const statusClass = getStatusClass(record.notif);
+        return <span className={statusClass}>{status}</span>;
+      },
     },
     {
       title: 'HR Status',
       dataIndex: 'hrStatus',
       key: 'hrStatus',
+      render: (text, record) => {
+        const status = getStatus(record.notif);
+        const statusClass = getStatusClass(record.notif);
+        return <span className={statusClass}>{status}</span>;
+      },
     },
     {
       title: 'Action',
@@ -121,19 +226,48 @@ const Tables = () => {
   ];
 
   return (
-    <div >
-      <Cards leaveData={{ allLeaves: vacations.length }} />
-      <div style={{ flex: 1, borderRadius: '20px', marginTop: '0.5rem'}}>
-        <AppsContainer>
-          <AppRowContainer style={{ marginTop: '2rem', marginBottom: '5rem' ,marginRight:'2rem',marginLeft:'2rem'}}>
-            <Col span={24}>
-              <div style={{ margin: '1rem', fontSize: '1.2rem', fontWeight: 'bold' }}>Leave Requests</div>
-              {error && <p>{error}</p>}
-              <Table columns={columns} dataSource={vacations} pagination={false} rowKey="idv" scroll={{ y: 400 }} />
-            </Col>
-          </AppRowContainer>
-        </AppsContainer>
-      </div>
+    <div>
+   
+        <AppRowContainer ease={'easeInSine'}>
+          <Col xs={24} sm={12} lg={6}>
+            <StatsAllVacationCard countVacation={countVacation}></StatsAllVacationCard>
+          </Col>
+          <Col xs={24} sm={12} lg={6}>
+            <StatsApprovedVacationCard countVacationApproved={countVacationApproved}></StatsApprovedVacationCard>
+          </Col>
+          <Col xs={24} sm={12} lg={6}>
+            <StatsPendingVacationCard countVacationPending={countVacationPending}></StatsPendingVacationCard>
+          </Col>
+          <Col xs={24} sm={12} lg={6}>
+            <StatsRejectedVacationCard countVacationRejected={countVacationRejected}></StatsRejectedVacationCard>
+          </Col>
+        </AppRowContainer>
+        <AppCard
+          className='no-card-space-ltr-rtl'
+          title={messages['dashboard.LeaveRequests']}
+        >
+          
+    
+            <Table
+              columns={columns}
+              dataSource={vacations}
+           
+              pagination={false}
+            />
+
+    
+        <StyledOrderHeaderRight>
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={Math.ceil(countVacation / pageSize)}
+          handlePageChange={handlePageChangeVacation}
+        />
+
+        </StyledOrderHeaderRight>
+        
+      </AppCard>
+ 
     </div>
   );
 };
