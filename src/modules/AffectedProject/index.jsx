@@ -22,7 +22,11 @@ const Affectaprojecttoemployee = () => {
   const [profile, setProfile] = useState("")
   const [allprojet, setAllprojet] = useState([])
   const [selectedProjet, setSelectedProjet] = useState("Default");
-
+  const [getsInput, setGetsInput] = useState("");
+  const [position, setPosition] = useState("");
+  const handleInputGetsId = (event) => {
+    setGetsInput(event.target.value);
+  };
 
   const openNotification = () => {
     notification.open({
@@ -102,42 +106,7 @@ const Affectaprojecttoemployee = () => {
       color: '#FFFFFF !important',
     });
   };
-  const GetProfileEmployess = async () => {
-    const storedemail = window.localStorage.getItem("email");
 
-
-    try {
-      const endPoint =
-        process.env.NODE_ENV === "development"
-          ? "https://dev-gateway.gets-company.com"
-          : "";
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('La requête a échoué avec le code ' + response.status);
-      }
-
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        throw new TypeError("La réponse n'est pas au format JSON");
-      }
-      const data = await response.json();
-      setProfile(data)
-      console.log("profile", profile)
-      setGetsId(data?.getsId)
-      setName(data?.name)
-
-
-
-    } catch (error) {
-      console.error('Erreur lors de la récupération Last Recruitement', error);
-    }
-  };
   ///Get All Projet
   const GetProjet = async () => {
 
@@ -175,13 +144,12 @@ const Affectaprojecttoemployee = () => {
   };
 
 
-
   //End Get All Projet
 
   const SaveProjectEmployee = async () => {
     try {
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/off/affect?id=${getsId}&name=${selectedProjet}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/off/affect?id=${getsInput}&name=${selectedProjet}`, {
 
         method: 'POST',
         headers: {
@@ -239,10 +207,34 @@ const Affectaprojecttoemployee = () => {
 
     });
   };
+  //FindId
+  const findId = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsInput}`, {
+        method: 'GET',
+
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      if (response.ok) {
+        const responseData = await response.json();
+        setName(responseData?.name)
+        setPosition(responseData?.position)
+     
+
+
+
+      }
+    } catch (error) {
+      console.error("Erreur lors de la récupération du employees:", error);
+    }
+  };
   useEffect(() => {
-    GetProfileEmployess()
     GetProjet()
-  }, [getsId,selectedProjet]);
+    findId()
+  }, [getsId,selectedProjet,getsInput]);
   const handleprojEmployee = (value) => {
     setSelectedProjet(value);
 
@@ -281,25 +273,23 @@ const Affectaprojecttoemployee = () => {
                 <Col xs={24} md={12}>
                   <Form.Item label='Gets Id Employee' name='GetsId'
 
-
                   >
                     <Input
                       className='Input'
                       type="number"
-                      placeholder={profile?.getsId}
-                      readOnly={true}
+                      value={getsInput}
+                      onChange={handleInputGetsId} 
+                      placeholder='Gets Id Employee'
+                  
 
 
                     />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label='Project Leader Name ' name='Name'
-
-
-                  >
+                  <Form.Item label='Project Leader Name ' name='Name' >
                     <Input
-                      placeholder={profile?.name}
+                      placeholder={name}
                       readOnly={true}
 
 
@@ -310,17 +300,11 @@ const Affectaprojecttoemployee = () => {
                 <Col xs={24} md={12}>
                   <Form.Item label='Position' name='position'>
                     <Input
-                      placeholder={profile?.position}
+                      placeholder={position}
                       readOnly={true} />
                   </Form.Item>
                 </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Position' name='position'>
-                    <Input
-                      placeholder={profile?.position}
-                      readOnly={true} />
-                  </Form.Item>
-                </Col>
+              
                 <Col xs={24} md={12}>
                   <Form.Item
                     name="SelectProjet"
@@ -346,10 +330,6 @@ const Affectaprojecttoemployee = () => {
             </StyledShadowWrapper>
           </Col>
         </AppRowContainer>
-
-
-
-
 
 
         <Space

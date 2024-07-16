@@ -81,6 +81,15 @@ const ContartTypeB3 = React.lazy(() =>
 const ContratStatus = React.lazy(() =>
   import('../../../modules/HRGetsCompany/ContratStatus'),   
 );
+const ViewContratStatus = React.lazy(() =>
+  import('../../../modules/HRGetsCompany/ViewContratList'),   
+);
+const UploadContractList = React.lazy(() =>
+  import('../../../modules/HRGetsCompany/UploadContractList'),   
+);
+const UploadContractListManagementStaff = React.lazy(() =>
+  import('../../../modules/HRGetsCompany/UploadContractListManagementStaff'),   
+);
 
 const Sammuary = React.lazy(() =>
   import('../../../modules/SammaryEmployee'),
@@ -347,11 +356,6 @@ export const ecommerceConfig = [
 
 
 
-  {
-    permittedRole: RoutePermittedRole.User,
-    path: '/apps/HRGetsCompany/invoice-2',
-    element: <ContratStatus />,
-  },
 
   {
     permittedRole: RoutePermittedRole.User,
@@ -370,6 +374,27 @@ export const ecommerceConfig = [
     path: '/Hr/contractList',
     element:<ContratStatus />,
   },
+  //ViewContartList
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/Hr/View/Construction_Team/contractList/:id',
+    element:<ViewContratStatus  />,
+  },
+
+  //End ViewContratList
+  //Upload Contract
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/Hr/Upload_Contract/Construction_Team/contractList/:id',
+    element:<UploadContractList  />,
+  },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/Hr/Upload_Contract/Management_Staff/contractList/:id',
+    element:<UploadContractListManagementStaff />,
+  },
+
+  //EndUpload Contract
 
   {
     permittedRole: RoutePermittedRole.User,

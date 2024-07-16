@@ -75,7 +75,7 @@
   }
   .page {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; 
     justify-content: space-between;
     min-height: 100%;
 }
@@ -84,7 +84,7 @@
     align-self: flex-end;
     width:80px;
     height:80px;
-    margin-top:20px;
+    /* margin-top:20px;
     margin-right:1rem;
     font-weight: bold;
     print-color-adjust: exact;
@@ -95,7 +95,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    print-color-adjust: exact;
+    print-color-adjust: exact; */
 }
   .page1{
     /* width:210mm; /* Largeur en pixels */

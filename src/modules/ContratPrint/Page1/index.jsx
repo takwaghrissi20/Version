@@ -14,7 +14,7 @@ const ContratB1Page1 = ({ fullName, passportNumber, passportSubmitdate, arReside
         {/* <div className="page">
           <img src={image} alt="logo" className="logo" />
         </div> */}
-               <img src={image} alt="logo" className="logo" />
+               {/* <img src={image} alt="logo" className="logo" /> */}
           <div className='HeaderContratPage'>
             <p dir="rtl" className="TitleGeneral">عقد شغل لمدة محدودة</p>
           </div>  

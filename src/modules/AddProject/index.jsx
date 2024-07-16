@@ -238,8 +238,6 @@ const AddProjectEmployees = () => {
   ];
   const handleprojLocation = (value) => {
     setSelectedLocation(value);
-
-
   };
   const handleprojCountry = (value) => {
     setSelectedCountry(value);
