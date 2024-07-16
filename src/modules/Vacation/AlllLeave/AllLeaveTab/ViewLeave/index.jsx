@@ -94,7 +94,7 @@ const ViewLeave = () => {
     if (selectedStatus === 'Approved') {
       notificationValue = 2;
     } else if (selectedStatus === 'Rejected') {
-      notificationValue = 3;
+      notificationValue = 10;
     } else {
       notificationValue = notif;  
     }
@@ -122,6 +122,7 @@ const ViewLeave = () => {
       }
       if (response.ok) {
         const responseData = await response.text();
+        console.log("ffffhjjjj",response)
         openNotification('bottomRight')
    
 
