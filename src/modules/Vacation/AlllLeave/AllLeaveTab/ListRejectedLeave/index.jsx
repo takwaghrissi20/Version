@@ -2,23 +2,20 @@ import React, { useEffect, useState } from "react";
 import { Card, Col, Table, Typography, Menu, Dropdown, Button, notification, Input, Space } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
-import IntlMessages from '../../../../@crema/helpers/IntlMessages';
-import AppRowContainer from '../../../../@crema/components/AppRowContainer';
-import AppsContainer from "../../../../@crema/components/AppsContainer";
-import Pagination from '../../../../@crema/components/AppsPagination';
-import AppPageMeta from "../../../../@crema/components/AppPageMeta";
-import AppCard from '../../../../@crema/components/AppCard';
+import ConfirmationModal from '../../../../../@crema/components/AppConfirmationModal';
+import Pagination from '../../../../../@crema/components/AppsPagination';
+import AppPageMeta from "../../../../../@crema/components/AppPageMeta";
+import AppCard from '../../../../../@crema/components/AppCard';
 import {
 
   StyledCustomerHeaderRight,
   StyledOrderHeader,
   StyledOrderHeaderRight
 
-} from '../../../../styles/index.styled';
+} from '../../../../../styles/index.styled';
 import { useIntl } from 'react-intl';
-import AppsHeader from '../../../../@crema/components/AppsContainer/AppsHeader';
-const AllLeaveTab = () => {
+import AppsHeader from '../../../../../@crema/components/AppsContainer/AppsHeader';
+const ListRejectedLeave = () => {
   const { messages } = useIntl();
   const [vacations, setVacations] = useState([]);
   const [isDeleteVac, setDeleteVac] = useState(false);
@@ -106,7 +103,7 @@ const AllLeaveTab = () => {
       }
 
       const data = await response.json();
-      const filterData = data.filter(p => p.notif === 3)
+      const filterData = data.filter(item => item.notif === 10);
       console.log("filterData", filterData)
       console.log("vacatiionnnnnn", data)
       setCount(filterData.length)
@@ -424,4 +421,4 @@ const AllLeaveTab = () => {
   );
 };
 
-export default AllLeaveTab;
+export default ListRejectedLeave ;

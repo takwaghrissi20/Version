@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { StyledBuyCellCard, StyledTabs } from '../../../styles/index.styled';
 import { Typography} from 'antd';
 import AllLeaveTab from "./AllLeaveTab";
+import ListApprovedLeave from "./AllLeaveTab/ListApprovedLeave";
+import ListRejectedLeave from "./AllLeaveTab/ListRejectedLeave";
+
 
 const AllLeave = () => {
   
@@ -14,12 +17,12 @@ const AllLeave = () => {
     {
       label: 'Approved Leave',
       key: '2',
-      children: <AllLeaveTab/> ,
+      children: <ListApprovedLeave /> ,
     },
     {
       label: 'Rjected Leave',
       key: '3',
-      children: <AllLeaveTab/> ,
+      children: <ListRejectedLeave/> ,
     },
 
   ];
