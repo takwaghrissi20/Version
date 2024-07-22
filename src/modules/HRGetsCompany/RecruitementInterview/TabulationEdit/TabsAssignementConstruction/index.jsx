@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import AppRowContainer from '../../../@crema/components/AppRowContainer';
+import AppRowContainer from '../../../../../@crema/components/AppRowContainer';
 import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox, DatePicker, } from 'antd';
 import { MdEdit } from 'react-icons/md';
 import {
@@ -14,17 +14,14 @@ import { useLocation } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 
 import dayjs from 'dayjs';
-import IntlMessages from '../../../@crema/helpers/IntlMessages';
+import IntlMessages from '../../../../../@crema/helpers/IntlMessages';
 
-const TabsAssignement = ({ isSaveDisabled }) => {
+const TabsAssignement = ({ isSaveDisabled, interviewCode}) => {
   console.log("isSaveDisabled2", isSaveDisabled)
  
   const location = useLocation();
   const roles = window.localStorage.getItem("role");
-
   const JobCode = location.state ? location.state.JobCode : null;
-  const interviewCode = location.state ? location.state.interviewCode: null;
-  console.log("interviewCode",interviewCode)
   const level = location.state ? location.state.level : null;
   const projectName = location.state ? location.state.projectName : null;
   const position = location.state ? location.state.position : null;
@@ -192,48 +189,33 @@ console.log("selectedHSECertificates",selectedHSECertificates)
 
   const Save = async () => {
     try {
-      console.log("selectedValidation", selectedValidation)
       const endPoint =
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/addintv?id=${JobCode}`, {
-        method: 'POST',
+          const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
+        method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
 
         body: JSON.stringify({
-          interviewCode: NewLastInterview,
-          jobcode1: JobCode,
-          jobCode: JobCode,
-          projname: projectName,
-          department: departement,
-          requiredExperinece: requiredExperinece,
-          positionToBeFilled: position,
-          fullName: fullname,
-          //interviwDate:interviwDate,//???? A faire
-          // interviwDate: DesiredDate,
-          // fullName: fullname,
-          // projname: projectName,
-          // department: departement,
-          // diploma: diploma,
-          // requiredExperinece: requiredExperinece,
-          // requiredQualification: requiredQualification,
-          // birthayDate: scheduleDate,
-          // familySituation: selectedSituation,
-          // educationLevel: educationLevel,
-          // requiredGrade: level,
-          // experience: experience,
-          // positionToBeFilled: position,
+          interviewCode: interviewCode,
+          //  hseCertif:selectedHSECertificates,
+          // siteHazCont: selectedSitehazardscontrol,
+          // properUse:selectedProperuse,
+          // hzardousMater: selectedHazardousmaterials,
+          // emergency:selectedEmergenceEvacuation,
+          // ptw:selectedPTWknowledge,
+          // hsePolicies:selectedHSEPolicies,
+          // others:selectedOthers,
+          notif:2,
 
-
-
-          //telCondidate:contactFullNumber,
-          // validatesFor:selectedValidation,
-          // goTotest2: CheckedFinalGotest2
-
+        
 
 
 
@@ -263,6 +245,67 @@ console.log("selectedHSECertificates",selectedHSECertificates)
       console.error('Erreur lors de la récupération des données:', error);
     }
   };
+  {/*HRMANAGER*/}
+  const  SaveHrManager= async () => {
+    try {
+      const endPoint =
+        process.env.NODE_ENV === "development"
+          ? "https://dev-gateway.gets-company.com"
+          : "";
+
+          const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
+        method: 'PUT',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+
+        body: JSON.stringify({
+          interviewCode: interviewCode,
+          
+          //  hseCertif:selectedHSECertificates,
+          // siteHazCont: selectedSitehazardscontrol,
+          // properUse:selectedProperuse,
+          // hzardousMater: selectedHazardousmaterials,
+          // emergency:selectedEmergenceEvacuation,
+          // ptw:selectedPTWknowledge,
+          // hsePolicies:selectedHSEPolicies,
+          // others:selectedOthers,
+          notif:6,
+
+        
+
+
+
+
+
+
+        })
+      });
+
+      if (!response.ok) {
+        setShowAlertError(true)
+        throw new Error('La requête a échoué avec le code ' + response.status);
+      }
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
+      }
+      if (response.ok) {
+        const data = await response.json();
+        console.log("dattaaammmmm", data)
+        setDataInterview(data)
+        // navigate(-1);
+      }
+
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données:', error);
+    }
+  };
+ 
 
 
 
@@ -445,7 +488,7 @@ console.log("selectedHSECertificates",selectedHSECertificates)
           </StyledShadowWrapper>
         </Col>
       </AppRowContainer> */}
-        {roles.includes("Hr") && (
+        {roles==="Human Ressource Manager" && (
           <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
             <Col xs={24} md={6}>
               <Typography.Title level={5}>ATTRIBUTES </Typography.Title>
@@ -457,18 +500,17 @@ console.log("selectedHSECertificates",selectedHSECertificates)
                   <Col xs={24} md={12}>
                     <Form.Item
                       label='Education and Training -scholastic achievements, special 
-                  studies, relevance to position applied for'
+                             studies, relevance to position applied for'
                       name='attribut1'
                       rules={[
                         { required: true, message: 'Please Select your Select Education and Training !' },
 
                       ]}
-                      onChange={(value) => setSelectedEducationTraining(value)}
+                    
                     >
                       <Select
                         placeholder='Select Education and Training'
-
-                        onChange={(value) => console.log('Select Education and Training:', value)}
+                        onChange={(value) => setSelectedEducationTraining(value)}
                         value={selectedEducationTraining}
                       >
                         {Rating.map((p, index) => (
@@ -735,7 +777,9 @@ console.log("selectedHSECertificates",selectedHSECertificates)
             </Col>
           </AppRowContainer>
         )}
-        <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+          {roles.includes("HSE") && (
+            <>
+              <Divider style={{ marginTop: 16, marginBottom: 16 }} />
         {/*Preliminary study of the application*/}
         <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
           <Col xs={24} md={6}>
@@ -749,9 +793,8 @@ console.log("selectedHSECertificates",selectedHSECertificates)
               <AppRowContainer>
                 <Col xs={24} md={12}>
                   <Form.Item
-                    label="HSE Certificates : Working at hight/ H2S/ First Aid... (If
-                    any)"
-                    name='attribut13'
+                    label="HSE Certificates:Working at hight/ H2S/ First Aid"
+                    name='attribut'
                     rules={[
                       { required: true, message: 'Please Select your Select  HSE Certificates  !' },
 
@@ -772,7 +815,7 @@ console.log("selectedHSECertificates",selectedHSECertificates)
                     </Select>
                   </Form.Item>
                 </Col>
-                <Col xs={24} md={12}>
+                <Col  xs={24} md={12}>
                   <Form.Item
                     label="Site hazards and control measures khowledge"
                     name='attribut14'
@@ -938,6 +981,10 @@ console.log("selectedHSECertificates",selectedHSECertificates)
             </StyledShadowWrapper>
           </Col>
         </AppRowContainer>
+            </>
+          
+        )}
+      
         <Divider style={{ marginTop: 16, marginBottom: 16 }} />
         {/*Preliminary study of the application*/}
         {/* <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
@@ -978,9 +1025,15 @@ console.log("selectedHSECertificates",selectedHSECertificates)
         <Space
           size={15}
           style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}>
-          <Button onClick={goback}>previous</Button>
-
+            {roles.includes("HSE")&&
+            <Button onClick={Save}>Save</Button>
+            }
+            {roles.includes("Human Ressource Manager")&&
+          <Button onClick={SaveHrManager}>Save Hr Manager</Button>
+            }
+          
         </Space>
+        
 
         {showAlertError && (
           <Alert

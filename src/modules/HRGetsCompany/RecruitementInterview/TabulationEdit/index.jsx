@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox, DatePicker, } from 'antd';
 import { MdEdit } from 'react-icons/md';
 
-import { StyledBuyCellCard, StyledTabs } from '../../styles/index.styled';
+import { StyledBuyCellCard, StyledTabs } from '../../../../styles/index.styled';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import dayjs from 'dayjs';
-import InterviewSheet from './TabsInterviewConstruction';
+import InterviewSheet from './EditInterviewConstructionTeam';
 import AssignementConstruction from './TabsAssignementConstruction';
 
 
@@ -19,36 +19,27 @@ const InterviewSheetById = () => {
   const projectName = location.state ? location.state.projectName : null;
   const position = location.state ? location.state.position : null;
   const experienceRequired = location.state ? location.state.experience : null;
-
+  const interviewCode = location.state ? location.state.interviewCode : null;
+  console.log("interviewCode66666",interviewCode)
   const [activeTabKey, setActiveTabKey] = useState('1');
   const [isSaveDisabled, setIsSaveDisabled] = useState(false);
   const roles = localStorage.getItem("role");
   const storedrole = window.localStorage.getItem("role");
-  console.log("roledddd",storedrole)
+ 
   const items = [
     {
       label: 'INTERVIEW SHEET CONSTRUCTION TEAM ',
       key: '1',
       children: <InterviewSheet JobCode={JobCode}
+
         // isSaveDisabled={activeTabKey !== '1'}
         totalNumber={totalNumber} level={level} projectName={projectName} position={position}
         isSaveDisabled={isSaveDisabled}
+        interviewCode={interviewCode}
         roles={roles} ></InterviewSheet>,
     }, 
 
-    {
-      label: 'INTERVIEW ASSESMENT SHEET ',
-      key: '2',
-      children: <AssignementConstruction isSaveDisabled={true}
-      JobCode={JobCode}
-        // isSaveDisabled={activeTabKey !== '1'}
-        totalNumber={totalNumber} level={level} projectName={projectName} position={position}
-        roles={roles}
-      
-      ></AssignementConstruction>,
-    }
-
-    // ...(roles.includes('HSE') ? [{
+    // {
     //   label: 'INTERVIEW ASSESMENT SHEET ',
     //   key: '2',
     //   children: <AssignementConstruction isSaveDisabled={true}
@@ -58,8 +49,24 @@ const InterviewSheetById = () => {
     //     roles={roles}
       
     //   ></AssignementConstruction>,
-    // },] : []
-
+    // }
+    
+    ...(roles.includes('HSE') || roles==="Human Ressource Manager"? [{
+      label: 'INTERVIEW ASSESMENT SHEET',
+      key: '2',
+      children: (
+        <AssignementConstruction
+        interviewCode={interviewCode}
+          isSaveDisabled={true}
+          JobCode={JobCode}
+          totalNumber={totalNumber}
+          level={level}
+          projectName={projectName}
+          position={position}
+          roles={roles}
+        />
+      ),
+    }] : [])
 
 
   ];
@@ -76,6 +83,7 @@ const InterviewSheetById = () => {
 
   return (
     <>
+   
       <StyledBuyCellCard style={{ paddingLeft: "10px" }} heightFull>
         <StyledTabs
           onChange={(key) => setActiveTabKey(key)}

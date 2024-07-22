@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import AppRowContainer from '../../../../@crema/components/AppRowContainer';
+import AppRowContainer from '../../../../../@crema/components/AppRowContainer';
 import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, notification, Checkbox, DatePicker, InputNumber } from 'antd';
 import {
   StyledShadowWrapper,
@@ -8,12 +8,12 @@ import {
 
 } from '../index.styled';
 
-import IntlMessages from '../../../../@crema/helpers/IntlMessages';
+import IntlMessages from '../../../../../@crema/helpers/IntlMessages';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
-import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
+import ConfirmationModal from '../../../../../@crema/components/AppConfirmationModal';
 import { useLocation } from 'react-router-dom';
-import { getFormattedDate } from '../../../../@crema/helpers/DateHelper';
+import { getFormattedDate } from '../../../../../@crema/helpers/DateHelper';
 
 const EditInterviewConstruction = () => {
   const location = useLocation();
@@ -51,7 +51,138 @@ const EditInterviewConstruction = () => {
   const [selectedPersonalityHR, setSelectedPersonalityHR] = useState('');
   const [idConstruction, setIdConstruction] = useState("");
   const [commentHSE, setCommentHSE] = useState("");
- 
+  const [selectedHumainqualityHR, setSelectedHumainqualityHR] = useState('');
+  const [selectedMotivationHR, setSelectedMotivationHR] = useState('');
+  const [selectedIntelligenceHR, setSelectedIntelligenceHR] = useState('');
+  const [selectedLevelHR, setSelectedLevelHR] = useState('');
+  const [expectedJoinDate, setExpectedJoinDate] = useState("");
+  const [proposedSalary, setProposedSalary] = useState("");
+  const [proposedDailyRate, setProposedDailyRate] = useState("");
+  const [lev1SalaryMax, setLev1SalaryMax] = useState(0);
+  const [lev1dailyRateMax, setLev1DailyRateMax] = useState(0);
+  const [dailyError, setDailyError] = useState('');
+  const [officeSalaryMax, setOfficeSalaryMax] = useState(0)
+  const [salaryError, setSalaryError] = useState('');
+  const [dailyRateMax, setDailyRateMax] = useState(0);
+  const [isOkCheckedHRDecision, setIsOkCheckedHRDecision] = useState(false);
+  const [isNoCheckedHRDecision, setIsNoCheckedHRDecision] = useState(false);
+  const [commentHr, setCommentsHr] = useState("");
+  function OkHrDesicision(e) {
+    console.log(`checked = ${e.target.checked}`);
+    setIsOkCheckedHRDecision(e.target.checked);
+    setIsVisibleHRDecision(true)
+
+    if (e.target.checked) {
+
+      setIsNoCheckedHRDecision(false);
+    }
+    else if (!(e.target.checked)) {
+      setIsVisibleHRDecision(false);
+    }
+  }
+
+  function NoHrDesicision(e) {
+    console.log(`checkedgggg = ${e.target.checked}`);
+    setIsOkCheckedHRDecision(e.target.checked);
+    setIsVisibleHRDecision(false)
+    if (e.target.checked) {
+      setIsOkCheckedHRDecision(false);
+      setIsNoCheckedHRDecision(true);
+    }
+  }
+  const handleSalaryChange = (e) => {
+    const value = e.target.value;
+    setProposedSalary(value);
+    if (parseFloat(value) > lev1SalaryMax) {
+      setSalaryError(`Proposed  Salary exceeds the maximum allowed value of ${lev1SalaryMax}`);
+    } else
+      setSalaryError("");
+  };
+  const handleDailyChange = (e) => {
+    const value = e.target.value;
+    setProposedDailyRate(value);
+    if (parseFloat(value) > lev1dailyRateMax) {
+      setDailyError(`Proposed Daily Rate exceeds the maximum allowed value of ${lev1dailyRateMax}`);
+
+    }
+    else {
+      setDailyError("")
+    }
+  };
+  const fetchMaxValues = async () => {
+    try {
+      const endPoint =
+        process.env.NODE_ENV === "development"
+          ? "https://dev-gateway.gets-company.com"
+          : "";
+
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/rateConst/filterByPosition?position=${positionToBeFilled}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('La requête a échoué avec le code ' + response.status);
+      }
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
+      }
+      const data = await response.json();
+      console.log("ratteeee",requiredQualification)
+     
+      const normalizedLevel = requiredQualification.trim();
+      console.log("Normalized level:", normalizedLevel);
+      // Additional logic based on normalized level
+      switch (normalizedLevel) {
+        case 'Level I':
+
+          setLev1SalaryMax(data?.[0]?.lev1);
+          const lev1SalaryMax = data[0].lev1;
+          const dailyMax = lev1SalaryMax / 30;
+          setLev1DailyRateMax(dailyMax)
+
+          break;
+        case 'Level II':
+          console.log("Level II");
+          setLev1SalaryMax(data?.[0]?.lev2);
+          const lev2SalaryMax = data[0].lev2;
+          const daily2Max = lev2SalaryMax / 30;
+          setLev1DailyRateMax(daily2Max)
+          break;
+        case 'levelIII':
+          console.log("Level III");
+          setLev1SalaryMax(data?.[0]?.lev3);
+          const lev3SalaryMax = data[0].lev3;
+          const daily3Max = lev3SalaryMax / 30;
+          setLev1DailyRateMax(daily3Max)
+          break;
+        case 'LEVEL IV':
+          console.log("Level IV");
+          setLev1SalaryMax(data?.[0]?.lev4);
+          const lev4SalaryMax = data[0].lev4;
+          const daily4Max = lev4SalaryMax / 30;
+          setLev1DailyRateMax(daily4Max)
+          break;
+        case 'Level V':
+          console.log("Level IV");
+          setLev1SalaryMax(data?.[0]?.lev5);
+          const lev5SalaryMax = data[0].lev5;
+          const daily5Max = lev5SalaryMax / 30;
+          setLev1DailyRateMax(daily5Max)
+          break;
+        default:
+          console.log("Unknown level");
+      }
+
+
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données Salary:', error);
+    }
+  };
   const GetProfileEmployess = async () => {
     const storedemail = window.localStorage.getItem("email");
     console.log("storedemail", storedemail)
@@ -351,7 +482,7 @@ const EditInterviewConstruction = () => {
   const headOfDepAprouv = location.state ? location.state.headOfDepAprouv : null
   const hr_Intellig = location.state ? location.state.hr_Intellig : null
   const level = location.state ? location.state.level : null
-  const expectedJoinDate = location.state ? location.state.expectedJoinDate : null
+  //const expectedJoinDate = location.state ? location.state.expectedJoinDate : null
   const propsedsalary = location.state ? location.state.propsedsalary : null
   const dailyRate = location.state ? location.state.dailyRate : null
   const hrDesion = location.state ? location.state.hrDesion : null
@@ -360,7 +491,7 @@ const EditInterviewConstruction = () => {
   const inputInterview = location.state ? location.state.inputInterview : null
 
   useEffect(() => {
-
+    fetchMaxValues()
     GetProfileEmployess()
     findIdInterviewConstruction()
 
@@ -612,7 +743,7 @@ const EditInterviewConstruction = () => {
           // feedback,
           propsedsalary,
           notif: 2,
-          hseDecision:isOkCheckedHSE,
+   
         
 
         })
@@ -723,6 +854,193 @@ const EditInterviewConstruction = () => {
 
   };
   //EndUpdataProjectLeader
+  //UpdateHSE
+  const   UpdateHSE = async () => {
+
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
+
+        method: 'PUT',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+          interviewCode: interviewCode,
+          jobCode: jobCode,
+          interviwDate: newinterviwDate,
+          totalAccept: totalAccept,
+          totalInterv: totalInterv,
+          totalReqPos: totalReqPos,
+          totalRequiredGrade: totalRequiredGrade,
+          idNumb: getsId,
+          department: department,
+          projname: projname,
+          requiredGrade: newrequiredGrade,
+          requiredQualification: newrequiredQualification,
+          positionToBeFilled: positionToBeFilled,
+          fullName: fullName,
+          birthayDate: birthayDate,
+          familySituation: familySituation,
+          experience: experience,
+          educationLevel: educationLevel,
+          diploma: diploma,
+          telCondidate: telCondidate,
+          urlCv,
+          validatesFor: selectedValidation,
+          goTotest2: isOkChecked,
+          psy_Person: selectedPersonality,
+          psy_HumQuality: selectedHumainquality,
+          psy_motivation: selectedMotivation,
+          psy_Intellig: selectedIntelligence,
+          goToTest3: isOkChecked3,
+          techEnglishSkills: selectedSkillls,
+          evalDesision: isOkCheckedEvaluator,
+          techcommentaire,
+          techDate: evaluationDate,
+          meetDesision: isOkCheckedProfile,
+          techcommentaire: comment,
+          hr_Person,
+          hr_HumQuality,
+          hr_motivation,
+          hr_Intellig,
+          level,
+          headOfDepAprouv: isOkCheckedHead,
+          // agreedJoinedDate,
+          expectedJoinDate,
+          dailyRate,
+          hrDesion,
+          // feedback,
+          propsedsalary,
+          notif: 6,
+          hseDecision:isOkCheckedHSE,
+          // hseDecision:commentHSE,??????Ajouter
+
+
+
+        })
+      });
+
+      if (!response.ok) {
+        openNotificationError('bottomRight')
+
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+
+        const responseData = await response.json();
+        // form.resetFields();
+        openNotification('bottomRight')
+        navigate(-1)
+      }
+
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+    }
+
+  };
+  {/*Human Manager*/}
+  
+  const   UpdateHumanRessource = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
+
+        method: 'PUT',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+          interviewCode: interviewCode,
+          jobCode: jobCode,
+          interviwDate: newinterviwDate,
+          totalAccept: totalAccept,
+          totalInterv: totalInterv,
+          totalReqPos: totalReqPos,
+          totalRequiredGrade: totalRequiredGrade,
+          idNumb: getsId,
+          department: department,
+          projname: projname,
+          requiredGrade: newrequiredGrade,
+          requiredQualification: newrequiredQualification,
+          positionToBeFilled: positionToBeFilled,
+          fullName: fullName,
+          birthayDate: birthayDate,
+          familySituation: familySituation,
+          experience: experience,
+          educationLevel: educationLevel,
+          diploma: diploma,
+          telCondidate: telCondidate,
+          urlCv,
+          validatesFor: selectedValidation,
+          goTotest2: isOkChecked,
+          psy_Person: selectedPersonality,
+          psy_HumQuality: selectedHumainquality,
+          psy_motivation: selectedMotivation,
+          psy_Intellig: selectedIntelligence,
+          goToTest3: isOkChecked3,
+          techEnglishSkills: selectedSkillls,
+          evalDesision: isOkCheckedEvaluator,
+          techcommentaire,
+          techDate: evaluationDate,
+          meetDesision: isOkCheckedProfile,
+          techcommentaire: comment,
+          hr_Person,
+          hr_HumQuality,
+          hr_motivation,
+          hr_Intellig,
+          level,
+          headOfDepAprouv: isOkCheckedHead,
+          // agreedJoinedDate,
+          expectedJoinDate,
+          dailyRate,
+          hrDesion,
+          // feedback,
+          propsedsalary,
+          notif: 5,
+          hseDecision:isOkCheckedHSE,
+          // hseDecision:commentHSE,??????Ajouter
+          hr_Person:selectedPersonalityHR,
+          hr_HumQuality:selectedHumainqualityHR,
+          hr_motivation:selectedMotivationHR,
+          hr_Intellig:selectedIntelligenceHR,
+          level:selectedLevelHR,
+          expectedJoinDate:expectedJoinDate,
+          hrDesion:isOkCheckedHRDecision
+
+
+
+
+        })
+      });
+
+      if (!response.ok) {
+        openNotificationError('bottomRight')
+
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+
+        const responseData = await response.json();
+        // form.resetFields();
+        openNotification('bottomRight')
+        navigate(-1)
+      }
+
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+    }
+
+  };
+
+  {/*End Human Manager*/}
+
 
   const roles = localStorage.getItem("role");
   const findIdInterview = async (code) => {
@@ -757,6 +1075,45 @@ const EditInterviewConstruction = () => {
       console.error("Erreur lors de la récupération du jobcode:", error);
     }
   };
+  const personalityHR = [
+    { pesonality: 'low' },
+    { pesonality: 'bad' },
+    { pesonality: 'Average' },
+    { pesonality: 'Good' },
+    { pesonality: 'Excellent' },
+
+  ];
+  const qualityHR = [
+    { qlt: 'low' },
+    { qlt: 'bad' },
+    { qlt: 'Average' },
+    { qlt: 'Good' },
+    { qlt: 'Excellent' },
+
+  ];
+  const motivationHR = [
+    { mtv: 'low' },
+    { mtv: 'bad' },
+    { mtv: 'Average' },
+    { mtv: 'Good' },
+    { mtv: 'Excellent' },
+
+  ];
+  const intelligenceHR = [
+    { intlg: 'low' },
+    { intlg: 'bad' },
+    { intlg: 'Average' },
+    { intlg: 'Good' },
+    { intlg: 'Excellent' },
+
+  ];
+  const LevelHR = [
+    { level: 'LevelI' },
+    { level: 'LevelII' },
+    { level: 'LevelIII' },
+
+
+  ];
   return (
     <div style={{ paddingLeft: "0.5rem", paddingRight: "0.5rem" }}>
       {/**All Fied not empty */}
@@ -1430,6 +1787,7 @@ const EditInterviewConstruction = () => {
               e.preventDefault();
             }
           }}>
+            
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <div>
               <Typography.Title level={4}>Construction STAFF INTERVIEW SHEET</Typography.Title>
@@ -1716,7 +2074,7 @@ const EditInterviewConstruction = () => {
             </Col>
           </AppRowContainer>
           {/*HSE*/}
-          {(roles.includes("HSE")) ?
+          {(roles.includes("HSE")) || (roles.includes("Human Ressource"))  ?
             <>
               <Divider style={{ marginTop: 16, marginBottom: 16 }} />
               <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
@@ -2010,54 +2368,299 @@ const EditInterviewConstruction = () => {
               )}
                 {idConstruction?.techEvaluation==="true" && (
                 <>
-
-                  <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-                  <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-                    <Col xs={24} md={6}>
-                      <Typography.Title level={5}> Evaluator Decision</Typography.Title>
-
-                    </Col>
-                    <Col xs={24} md={18}>
-                      <StyledShadowWrapper>
-                        <AppRowContainer>
-
-                          <Col xs={24} md={24}>
-
-                            <Form.Item
-                              label='HSE Approval :'
-                              name='HSE Approvalhh' >
-                              <Checkbox checked={isOkCheckedHSE} onChange={OkHSE}>
-
-                                <IntlMessages id='validation.test' />
-                              </Checkbox>
-                              <Checkbox checked={isNoCheckedHSE} onClick={NoHSE}>
-                                <IntlMessages id='Refuse.test' />
-                              </Checkbox>
-                            </Form.Item>
-
+                {roles.includes("Human Ressource") ?
+                   <>
+                   {idConstruction?.hseDecision && (
+                  <>
+                    <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+                    <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                      <Col xs={24} md={6}>
+                        <Typography.Title level={5}>HR Evaluation &&  Decision</Typography.Title>
+      
+                      </Col>
+                      <Col xs={24} md={18}>
+                        <StyledShadowWrapper>
+                          <AppRowContainer>
+                            <Col xs={24} md={12}>
+                              <Form.Item
+                                label='Personnality'
+                                name='Personnality'
+                              
+                                rules={[
+                                  { required: true, message: 'Please Select  your Personnality!' },
+      
+                                ]}
+                              >
+                                <Select
+                                  placeholder='Select Personnality'
+                                  onChange={(value) => setSelectedPersonalityHR(value)}
+                                  value={selectedPersonalityHR}
+                                >
+                                  {personalityHR.map((p, index) => (
+                                    <Select.Option key={index} value={p.personality}>
+                                      {p.pesonality}
+                                    </Select.Option>
+                                  ))}
+                                </Select>
+                              </Form.Item>
+                            </Col>
+                            <Col xs={24} md={12}>
+                              <Form.Item
+                                label='Humain quality'
+                                name='Humain quality'
+                               
+                                rules={[
+                                  { required: true, message: 'Please Select  your Humain quality!' },
+      
+                                ]}
+                              >
+                                <Select
+                                  placeholder='Humain quality'
+                                  onChange={(value) => setSelectedHumainqualityHR(value)}
+                                  value={selectedHumainqualityHR}
+                                >
+                                  {qualityHR.map((p, index) => (
+                                    <Select.Option key={index} value={p.qlt}>
+                                      {p.qlt}
+                                    </Select.Option>
+                                  ))}
+                                </Select>
+                              </Form.Item>
+                            </Col>
+                            <Col xs={24} md={12}>
+                              <Form.Item
+                                label='Motivation/Ambition'
+                                name='Motivation/Ambition'
+                               
+                                rules={[
+                                  { required: true, message: 'Please Select  your Motivation/Ambition!' },
+      
+                                ]}
+                              >
+                                <Select
+                                  placeholder='Motivation/Ambition'
+                                  onChange={(value) => setSelectedMotivationHR(value)}
+                                  value={selectedMotivationHR}
+                                >
+                                  {motivationHR.map((p, index) => (
+                                    <Select.Option key={index} value={p.mtv}>
+                                      {p.mtv}
+                                    </Select.Option>
+                                  ))}
+                                </Select>
+                              </Form.Item>
+                            </Col>
+                            <Col xs={24} md={12}>
+                              <Form.Item
+                                label='Intelligence'
+                                name='Intelligence'
+                               
+                                rules={[
+                                  { required: true, message: 'Please Select  your Intelligence!' },
+      
+                                ]}
+                              >
+                                <Select
+                                  placeholder='Intelligence'
+                                  onChange={(value) => setSelectedIntelligenceHR(value)}
+                                  value={selectedIntelligenceHR}
+                                >
+                                  {intelligence.map((p, index) => (
+                                    <Select.Option key={index} value={p.intlg}>
+                                      {p.intlg}
+                                    </Select.Option>
+                                  ))}
+                                </Select>
+                              </Form.Item>
+                            </Col>
+                            <Col xs={24} md={12}>
+                              <Form.Item
+                                label='Level'
+                                name='Level'
+                               
+                                rules={[
+                                  { required: true, message: 'Please Select  your Level!' },
+      
+                                ]}
+                              >
+                                <Select
+                                  placeholder='Level'
+                                  onChange={(value) => setSelectedLevelHR(value)}
+                                  value={selectedLevelHR}
+                                >
+                                  {LevelHR.map((p, index) => (
+                                    <Select.Option key={index} value={p.level}>
+                                      {p.level}
+                                    </Select.Option>
+                                  ))}
+                                </Select>
+                              </Form.Item>
+                            </Col>
+                            <Col xs={24} md={12}>
+                              <Form.Item label='Expected Join Date' name='Expected Join Date'
+                                rules={[
+                                  { required: true, message: 'Please Select  your Expected Join Date!' },
+      
+                                ]}
+      
+      
+                              >
+      
+                                <DatePicker
+                                  //defaultValue={new Date()} 
+                                  defaultValue={dayjs(expectedJoinDate, '16 06,1990')}
+      
+                                  style={{ width: "100%", height: "30px" }}
+                                  onChange={(value) => setExpectedJoinDate(dayjs(value).format('YYYY/MM/DD'))}
+                                />
+      
+                              </Form.Item>
+                            </Col>
+      
+      
+                            <Col xs={24} md={12}>
+                              <Form.Item label='Proposed Site Salary' name='Proposed Salary'
+                                rules={[
+                                  { required: true, message: 'Please input your Proposed Salary!' },
+                                  { pattern: /^[0-9]+$/, message: 'Proposed Salary must be a number!' },
+      
+                                ]}
+      
+                              >
+                                <Input
+                                  value={proposedSalary}
+                                  onChange={handleSalaryChange}
+                                  // onChange={(e) => setProposedSalary(e.target.value)}
+                                  placeholder={`Proposed Office Salary does not exceed ${officeSalaryMax}`}
+      
+                                />
+                                {salaryError && <Alert className="custom-alert" message={salaryError} 
+                                type="error" showIcon />}
+      
+                              </Form.Item>
+                            </Col>
+                            <Col xs={24} md={12}>
+                              <Form.Item label='Proposed Site Daily Rate' name='Proposed Daily Rate'
+                                rules={[
+                                  { required: true, message: 'Please input your Proposed Daily Rate!' },
+                                  { pattern: /^[0-9]+$/, message: 'Proposed Daily Rate must be a number!' },
+      
+                                ]}
+      
+      
+                              >
+                                <Input
+                                  value={proposedDailyRate}
+                                  onChange={handleDailyChange}
+                                  // onChange={(e) =>setProposedDailyRate(e.target.value)}
+                                  placeholder={`Proposed Daily Rate does not exceed ${dailyRateMax}`}
+                                />
+                                {dailyError && <Alert className="custom-alert" message={dailyError} type="error" showIcon />}
+                              </Form.Item>
+                            </Col>
+                            <Col xs={24} md={24}>
+                              <StyledInput>
+                                <Form.Item
+                                  label='HR Decision:'
+                                  name='HR Evaluation' >
+                                  <Checkbox checked={isOkCheckedHRDecision} onChange={OkHrDesicision}>
+      
+                                    <IntlMessages id='validation.test' />
+                                  </Checkbox>
+                                  <Checkbox checked={isNoCheckedHRDecision} onClick={NoHrDesicision}>
+                                    <IntlMessages id='Refuse.test' />
+                                  </Checkbox>
+                                </Form.Item>
+                              </StyledInput>
+                            </Col>
+                            <Col xs={24} md={24}>
+                              <Form.Item label='Comments' name='Comments'
+                                rules={[
+                                  { required: true, message: 'Please Select  your Comments!' },
+      
+                                ]}
+      
+      
+                              >
+                                <Input
+                                  className='InputComment'
+                                  value={commentHr}
+                                  onChange={(e) => setCommentsHr(e.target.value)}
+      
+                                  placeholder='Comments' />
+                              </Form.Item>
+                            </Col>
+      
+      
+      
+      
+                          </AppRowContainer>
+                        </StyledShadowWrapper>
+                      </Col>
+                    </AppRowContainer>
+                  </>
+                )}
+      
+                      </>
+              
+                :
+                <>
+                <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+                        <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                          <Col xs={24} md={6}>
+                            <Typography.Title level={5}>HSE Decision</Typography.Title>
+      
                           </Col>
-                          <Col xs={24} md={24}>
-                            <Form.Item label='Comments' name='Comments'
-
-                              rules={[
-                                { required: true, message: 'Please input your Comments!' },
-
-                              ]}>
-                              <Input
-                                className='InputComment'
-                                value={commentHSE}
-                                onChange={(e) =>setCommentHSE(e.target.value)}
-
-                                placeholder='Comments' />
-                            </Form.Item>
+                          <Col xs={24} md={18}>
+                            <StyledShadowWrapper>
+                              <AppRowContainer>
+      
+                                <Col xs={24} md={24}>
+      
+                                  <Form.Item
+                                    label='HSE Approval :'
+                                    name='HSE Approval' >
+                                    <Checkbox
+                                     checked={idConstruction?.hseDecision}
+                                     readOnly
+                                     
+                                     >
+      
+                                      <IntlMessages id='validation.test' />
+                                    </Checkbox>
+                                    <Checkbox checked={!idConstruction?.hseDecision}
+                                    readOnly
+                                    >
+                                      <IntlMessages id='Refuse.test' />
+                                    </Checkbox>
+                                  </Form.Item>
+      
+                                </Col>
+                                <Col xs={24} md={24}>
+                                  <Form.Item label='Comments' name='Comments'>
+                                    <Input
+                                      className='InputComment'
+                                     readOnly
+                                      
+      
+                                      placeholder='Comments' />
+                                  </Form.Item>
+                                </Col>
+      
+      
+                              </AppRowContainer>
+                            </StyledShadowWrapper>
                           </Col>
-
-
+      
                         </AppRowContainer>
-                      </StyledShadowWrapper>
-                    </Col>
+      
+                        {/*HR Desicion*/}
+                        <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+      
+                      </>
+                }
 
-                  </AppRowContainer>
+             
            
                 </>
               )}
@@ -2453,9 +3056,6 @@ const EditInterviewConstruction = () => {
           }
 
 
-
-
-
           {/*6. Head of Department Approval*/}
           {/* {roles.includes("Manager") && (
             <>
@@ -2504,20 +3104,26 @@ const EditInterviewConstruction = () => {
           >
             <Button onClick={goBack}
             >Cancel</Button>
-            {roles.includes("Manager") && !roles.includes("HSE") && (
+            {roles.includes("Manager") && !roles.includes("HSE") && !roles.includes("Human Ressource")&& (
               <>
                 <Button onClick={UpdateManager}
                 >Save mANAGER</Button>
               </>)}
               {roles.includes("HSE") && (
               <>
-                <Button onClick={goAssesmentSheet}
-                >Next</Button>
+                <Button onClick={UpdateHSE}
+                >Save</Button>
               </>)}
             {roles.includes("Leader") && (
               <>
                 <Button onClick={UpdateProjectLeader}
                 >Save Project Leader</Button>
+              </>)}
+              {roles==="Human Ressource Manager" && (
+              <>
+                <Button 
+                onClick={UpdateHumanRessource}
+                >Save Human Ressource </Button>
               </>)}
           </Space>
 

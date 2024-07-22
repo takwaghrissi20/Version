@@ -27,6 +27,8 @@ const InterviewSheetById = () => {
   const projectName = location.state ? location.state.projectName : null;
   const position = location.state ? location.state.position : null;
   const experienceRequired = location.state ? location.state.experience : null;
+  const dep = location.state ? location.state.dep : null;
+
   const [isConfirmationInterview, setIsConfirmationInterview] = useState(false);
   const [showAlertError, setShowAlertError] = useState(false);
   const [showAlertConfirmation, setShowAlertConfirmation] = useState(false);
@@ -38,7 +40,7 @@ const InterviewSheetById = () => {
   const [fullname, setFullName] = useState("");
   const [contactFullNumber, setContactFullNumber] = useState("");
   const [contactEmail, setcontactEmail] = useState("");
-  const [departement, setDepartement] = useState("");
+  const [departement, setDepartement] = useState(dep);
   const [selectedSituation, setSelectedSituation] = useState('');
   const [selectedValidation, setSelectedValidation] = useState('');
   const [selectedPersonality, setSelectedPersonality] = useState('');
@@ -55,8 +57,8 @@ const InterviewSheetById = () => {
   const [diploma, setDiploma] = useState("");
   const [educationLevel, setEducationLevel] = useState("");
   const [experience, setExperience] = useState("");
-  const [requiredQualification, setRequiredQualification] = useState("");
-  const [requiredExperinece, setRequiredExperinece] = useState("");
+  const [requiredQualification, setRequiredQualification] = useState(level);
+  const [requiredExperinece, setRequiredExperinece] = useState(experienceRequired);
   const [evaluator, setEvaluator] = useState("");
   const [comment, setComments] = useState("");
   const [commentHr, setCommentsHr] = useState("");
@@ -84,6 +86,7 @@ const InterviewSheetById = () => {
   const [salaryError, setSalaryError] = useState('');
   const [dailyError, setDailyError] = useState('');
   const [form] = Form.useForm();
+  console.log("interviewDate",interviewDate)
 
   const [evaluationDate, setEvaluationDate] = useState(dayjs().format('DD/MM/YYYY'));
   const [dateInput, setDateInput] = useState(new Date());
@@ -492,15 +495,31 @@ const InterviewSheetById = () => {
       console.error('Erreur lors de la récupération des données:', error);
     }
   };
-  const SaveHRADMONISTRTOR = async () => {
-    if (salaryError || dailyError) {
-      return;
-    }
+  const BeforeSaveInterview = () => {
+    //setIsModalVisible(true)
+    form.validateFields(['fullName','telCondidate','ContactEmail','FamilySituation','diploma','educationLevel','experience'
 
-    if (parseFloat(proposedSalary) + parseFloat(proposedDailyRate) > totalMax) {
-      alert(`Total of Proposed Office Salary and Proposed Site Daily Rate exceeds the maximum allowed value of ${totalMax}`);
-      return;
-    }
+    ]).then(values => {
+    
+      SaveHRADMONISTRTOR()
+
+    }).catch(errorInfo => {
+      openNotificationWarning('bottomRight')
+
+
+
+    });
+  };
+ 
+  const SaveHRADMONISTRTOR = async () => {
+    // if (salaryError || dailyError) {
+    //   return;
+    // }
+
+    // if (parseFloat(proposedSalary) + parseFloat(proposedDailyRate) > totalMax) {
+    //   alert(`Total of Proposed Office Salary and Proposed Site Daily Rate exceeds the maximum allowed value of ${totalMax}`);
+    //   return;
+    // }
     try {
       console.log("selectedValidation", selectedValidation)
       const endPoint =
@@ -528,6 +547,10 @@ const InterviewSheetById = () => {
           requiredExperinece: requiredExperinece,
           requiredQualification: requiredQualification,
           fullName: fullname,
+          interviwDate:interviewDate,
+          telCondidate:contactFullNumber,
+          email:contactEmail,
+          familySituation:selectedSituation,
           // telCondidate: contactFullNumber,
           // email: contactEmail,
           // birthayDate:scheduleDate,
@@ -535,7 +558,9 @@ const InterviewSheetById = () => {
           diploma: diploma,
           educationLevel: educationLevel,
           requiredExperinece: requiredExperinece,
-          notif:0,
+          notif: 0,
+          inputInterview: formattedDate,
+          birthayDate:scheduleDate
 
           // interviwDate: interviewDate,
           // fullName: fullname,
@@ -776,13 +801,13 @@ const InterviewSheetById = () => {
                 <AppRowContainer>
                   <Col xs={24} md={12}>
                     <Form.Item label='Reference' name='interviewCode'>
-                      <Input 
-                      placeholder={"MSIS-" + NewLastInterview} 
-                      readOnly={true} />
+                      <Input
+                        placeholder={"MSIS-" + NewLastInterview}
+                        readOnly={true} />
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item label='Interview Date' name='Date'>
+                    <Form.Item label='Date' name='Date'>
                       <Input
 
                         placeholder={formattedDate}
@@ -792,6 +817,19 @@ const InterviewSheetById = () => {
 
 
 
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Date Interview' name='DateInterview' >
+                      <StyledTodoDetailDatePicker className='form-field'>
+
+                        <DatePicker
+                          //defaultValue={new Date()} 
+                          defaultValue={dayjs(interviewDate, '16 06,1990')}
+                          style={{ width: "100%", height: "34px" }}
+                          onChange={(value) => setInterviewDate(dayjs(value).format('YYYY/MM/DD'))}
+                        />
+                      </StyledTodoDetailDatePicker>
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
@@ -926,7 +964,7 @@ const InterviewSheetById = () => {
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item label='Contact Email' name='Contact Email'
+                    <Form.Item label='Contact Email' name='ContactEmail'
 
                       rules={[
                         { required: true, message: 'Please input your Contact Email!' },
@@ -967,7 +1005,7 @@ const InterviewSheetById = () => {
                   <Col xs={24} md={12}>
                     <Form.Item
                       label='Family Situation'
-                      name='Family Situation'
+                      name='FamilySituation'
                       rules={[
                         { required: true, message: 'Please Select your Family Situation!' },
 
@@ -1007,9 +1045,7 @@ const InterviewSheetById = () => {
                     <Form.Item label='Diploma /Speciality' name='diploma'
                       rules={[
                         { required: true, message: 'Please input your Diploma /Speciality!' },
-
                       ]}
-
 
                     >
                       <Input
@@ -1862,6 +1898,14 @@ const InterviewSheetById = () => {
         <Form
           layout='vertical'
           style={{ backgroundColor: "white", marginBottom: "20px", padding: "10px", borderRadius: "20px" }}
+          form={form}
+          onSubmit={e => { e.preventDefault() }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+            }
+          }}
+
         // initialValues={settings}
 
         >
@@ -1889,7 +1933,7 @@ const InterviewSheetById = () => {
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item label='Interview Date' name='Date :'
+                    <Form.Item label='Date' name='Date :'
 
                     >
                       <Input
@@ -1906,6 +1950,22 @@ const InterviewSheetById = () => {
 
                     </Form.Item>
                   </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Date Interview' name='DateInterview'
+                     
+                    >
+                      <StyledTodoDetailDatePicker className='form-field'>
+
+                        <DatePicker
+                          //defaultValue={new Date()} 
+                          defaultValue={dayjs(interviewDate, '16 06,1990')}
+                          style={{ width: "100%", height: "34px" }}
+                          onChange={(value) => setInterviewDate(dayjs(value).format('YYYY-MM-DD'))}
+                        />
+                      </StyledTodoDetailDatePicker>
+                    </Form.Item>
+                  </Col>
+               
                   <Col xs={24} md={12}>
                     <Form.Item label='JOB CODE:' name='jobcode1'>
                       <Input placeholder={JobCode} readOnly={true} />{/*Ajout le MSIS OU cis*/}
@@ -1955,7 +2015,8 @@ const InterviewSheetById = () => {
                 <AppRowContainer>
                   <Col xs={24} md={12}>
                     <Form.Item label='Project Name' name='projname'>
-                      <Input placeholder={projectName}
+                      <Input
+                        placeholder={projectName}
                         readOnly={true} />
                     </Form.Item>
                   </Col>
@@ -1966,9 +2027,10 @@ const InterviewSheetById = () => {
                   </Col>
                   <Col xs={24} md={12}>
                     <Form.Item label='Department ' name='department '>
-                      <Input placeholder='Department'
-                        value={departement}
-                        onChange={(e) => setDepartement(e.target.value)}
+                      <Input
+                        placeholder={dep}
+                        readOnly
+
 
                       />
                     </Form.Item>
@@ -1976,10 +2038,12 @@ const InterviewSheetById = () => {
 
                   <Col xs={24} md={12}>
                     <Form.Item label='Requested Qualification' name='requiredQualification'>
-                      <Input placeholder='Requested Qualification'
+                      <Input                      
 
                         value={requiredQualification}
                         onChange={RequireQalification}
+                        placeholder={level}
+                        readOnly
 
 
 
@@ -1991,8 +2055,8 @@ const InterviewSheetById = () => {
                       <Input
                         value={requiredExperinece}
                         onChange={RequireExperience}
-
-                        placeholder='Requested Experience' />
+                        readOnly
+                        placeholder={experienceRequired} />
                     </Form.Item>
                   </Col>
 
@@ -2040,7 +2104,7 @@ const InterviewSheetById = () => {
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item label='Contact Email' name='Contact Email'
+                    <Form.Item label='Contact Email' name='ContactEmail'
 
                       rules={[
                         { required: true, message: 'Please input your Contact Email!' },
@@ -2049,7 +2113,8 @@ const InterviewSheetById = () => {
 
 
                     >
-                      <Input placeholder='Contact Email'
+                      <Input
+                        placeholder='Contact Email'
                         value={contactEmail}
                         onChange={ChangeContactEmail}
 
@@ -2060,11 +2125,7 @@ const InterviewSheetById = () => {
 
                   <Col xs={24} md={12}>
                     <Form.Item label='Date of Birth' name='birthayDate'
-                      rules={[
-                        { required: true, message: 'Please input your Date of Birth!' },
-
-                      ]}
-                    >
+                   >
                       <StyledTodoDetailDatePicker className='form-field'>
 
                         <DatePicker
@@ -2072,7 +2133,7 @@ const InterviewSheetById = () => {
                           defaultValue={dayjs(scheduleDate, '16 06,1990')}
 
                           style={{ width: "100%", height: "34px" }}
-                          onChange={(value) => setScheduleDate(dayjs(value).format('YYYY/MM/DD'))}
+                          onChange={(value) => setScheduleDate(dayjs(value).format('YYYY-MM-DD'))}
                         />
                       </StyledTodoDetailDatePicker>
                     </Form.Item>
@@ -2081,7 +2142,7 @@ const InterviewSheetById = () => {
                   <Col xs={24} md={12}>
                     <Form.Item
                       label='Family Situation'
-                      name='Family Situation'
+                      name='FamilySituation'
                       rules={[
                         { required: true, message: 'Please Select your Family Situation!' },
 
@@ -2178,7 +2239,8 @@ const InterviewSheetById = () => {
             style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
           >
             <Button onClick={goBack} >Cancel</Button>
-            <Button onClick={SaveHRADMONISTRTOR}
+            <Button
+              onClick={BeforeSaveInterview}
               disabled={isButtonDisabled()}
               type='primary'
               htmlType='submit'>

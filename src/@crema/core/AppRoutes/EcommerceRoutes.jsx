@@ -14,8 +14,14 @@ const ViewInterviewConstruction    = React.lazy(() =>
 const EditInterview  = React.lazy(() =>
   import('../../../modules/HRGetsCompany/RecruitementInterview/EditInterviewStaffManager'),
 );
+// const EditInterviewConstruction  = React.lazy(() =>
+//   import('../../../modules/HRGetsCompany/RecruitementInterview/EditInterviewConstructionTeam'),
+// );
 const EditInterviewConstruction  = React.lazy(() =>
-  import('../../../modules/HRGetsCompany/RecruitementInterview/EditInterviewConstructionTeam'),
+  import('../../../modules/HRGetsCompany/RecruitementInterview/TabulationEdit'),
+);
+const ASSESMENTSHEET  = React.lazy(() =>
+  import('../../../modules/InterviewSheetContructionStaff/TabsAssignementConstruction'),
 );
 
 const ViewRecruitementInterview  = React.lazy(() =>
@@ -180,6 +186,11 @@ export const ecommerceConfig = [
     permittedRole: RoutePermittedRole.User,
     path: '/Hr/Recruitement&Interview/Recruitement/Update/:id',
     element: < EditRecruitementInterview/>,
+  },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/Hr/Recruitement&Interview/ConstructionStaffInterview/ASSESMEN_SHEET/:id',
+    element: < ASSESMENTSHEET/>,
   },
   {
     permittedRole: RoutePermittedRole.User,

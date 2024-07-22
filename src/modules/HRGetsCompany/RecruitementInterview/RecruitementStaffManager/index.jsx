@@ -106,6 +106,10 @@ const RecruitementStaff = ({ allrecruitementabove, recruitementTypeIdAbove, role
         projectName: findIdData?.projectName,
         position: findIdData?.position,
         experience: findIdData?.experience,
+        dep:findIdData?.dep
+        
+
+
 
       }
 
@@ -128,6 +132,7 @@ const RecruitementStaff = ({ allrecruitementabove, recruitementTypeIdAbove, role
       if (response.ok) {
         const responseData = await response.json();
         setFindIdData(responseData);
+        console.log("etFindIdData",responseData)
         setId(responseData.jobCode)
 
 

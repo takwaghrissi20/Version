@@ -844,7 +844,7 @@ const EditRecruitementAbove = () => {
           </AppRowContainer>
 
 
-          {(dep.includes("Operation"))  ?
+          {(dep.includes("Operation")) ?
             <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
               <Col xs={24} md={6}>
                 <Typography.Title level={5}>Planner Review </Typography.Title>
@@ -1007,7 +1007,8 @@ const EditRecruitementAbove = () => {
 
         </Form>
 
-        : <Form
+        :
+        <Form
 
           layout='vertical'
           style={{ backgroundColor: "white", marginBottom: "20px", padding: "10px", borderRadius: "20px" }}
@@ -1276,7 +1277,7 @@ const EditRecruitementAbove = () => {
             </Col>
           </AppRowContainer>
 
-          {(dep.includes("Operation") && notif === 6 &&  (!userRoles.includes("bod"))) || (dep.includes("Operation") && notif === 7 && (!userRoles.includes("bod"))) 
+          {(dep.includes("Operation") && notif === 6 && (!userRoles.includes("bod"))) || (dep.includes("Operation") && notif === 7 && (!userRoles.includes("bod")))
             ?
             <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
               <Col xs={24} md={6}>
@@ -1403,74 +1404,46 @@ const EditRecruitementAbove = () => {
 
             : null} */}
           {/*uPDATE BOD */}
-        
-          {(dep.includes("Operation") && notif === 4) || (dep.includes("Operation") && notif === 7)?
+
+          {((dep.includes("Operation") && notif === 7 
+          && (oDep==="true" || exDep==="true"))) || ((dep.includes("Operation") 
+          && notif === 4)) ? (
             <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-              <Col xs={24} md={6}>
-                <Typography.Title level={5}>Planner Review </Typography.Title>
-
-              </Col>
-              <Col xs={24} md={18}>
-                <StyledShadowWrapper>
-                  <AppRowContainer>
-                    <Col xs={24} md={12}>
-                      <Form.Item
-                        label='As per : '
-                        name='Asper' >
-
-                        <Checkbox checked={exDep === "true"}
-                          readOnly
-                        >
-                          Extra Deployment Schedule
-                        </Checkbox>
-                      </Form.Item>
-                    </Col>
-                    <Col xs={24} md={12}>
-                      <Form.Item
-                        label=' '
-                        name='Asper'
-
-                      >
-
-                        <Checkbox
-
-                          checked={oDep === "true"}
-                          readOnly
-                        >
-                          Original Deployment Schedule
-                        </Checkbox>
-
-                      </Form.Item>
-                    </Col>
-                    <Col xs={24} md={24}
-
-                    >
-                      <Form.Item
-                        label='Planner Comments'
-                        name='PlannerComments'
-
-
-                      >
-                        <Input
-                          style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
-                          placeholder={comentPlaner}
-
-                        />
-
-                      </Form.Item>
-                    </Col>
-
-
-
-                  </AppRowContainer>
-                </StyledShadowWrapper>
-              </Col>
-            </AppRowContainer>
-
-
-
-
-            : null} 
+            <Col xs={24} md={6}>
+              <Typography.Title level={5}>Planner Review</Typography.Title>
+            </Col>
+            <Col xs={24} md={18}>
+              <StyledShadowWrapper>
+                <AppRowContainer>
+                  <Col xs={24} md={12}>
+                    <Form.Item label="As per :" name="Asper">
+                      <Checkbox checked={exDep === "true"}
+                       readOnly>
+                        Extra Deployment Schedule
+                      </Checkbox>
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label=" " name="Asper">
+                      <Checkbox checked={oDep === "true"} 
+                      readOnly>
+                        Original Deployment Schedule
+                      </Checkbox>
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={24}>
+                    <Form.Item label="Planner Comments" name="PlannerComments">
+                      <Input
+                        style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
+                        placeholder={comentPlaner}
+                      />
+                    </Form.Item>
+                  </Col>
+                </AppRowContainer>
+              </StyledShadowWrapper>
+            </Col>
+          </AppRowContainer>
+        ) : null}
 
           {/*End uPDATE BOD */}
           {/* <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
@@ -1557,7 +1530,7 @@ const EditRecruitementAbove = () => {
 
               <>
                 <Button onClick={() => UpdatePlanner()}>
-                 Save
+                  Save
                 </Button>
                 <Button onClick={Back}>Cancel</Button>
               </>
@@ -1573,18 +1546,17 @@ const EditRecruitementAbove = () => {
             {userRoles.includes("Operation") ?
 
               <Button onClick={() => UpdateOperation()}>
-              Save
+                Save
               </Button>
 
               : null
-
             }
             {userRoles.includes("bod") ?
-                 <>
-              <Button onClick={() => UpdateBOD()}>
-               Save
-              </Button>
-              <Button onClick={Back}>Cancel</Button>
+              <>
+                <Button onClick={() => UpdateBOD()}>
+                  Save
+                </Button>
+                <Button onClick={Back}>Cancel</Button>
               </>
               : null
             }

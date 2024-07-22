@@ -13,10 +13,13 @@ const NotificationItem = ({ user }) => {
   const [notifBod, setNotifBod] = useState([]);
   const [notifHR, setNotifHR] = useState([]);
   const [notifOperation, setNotifOperation] = useState([]);
+  const [notifHSE, setNotifHSE] = useState([]);
   const [notifPlanner, setNotifPlanner] = useState([]);
   const [notifManager, setNotifManager] = useState([]);
   const [notifProjetLeader, setNotifProjetLeader] = useState([]);
   const [findIdData, setFindIdData] = useState([]);
+  const [findIdDataConstruction, setFindIdDataConstruction] = useState([]);
+  const [findIdDataStaff, setFindIdDataStaff] = useState([]);
   const [codeJob, setCodeJob] = useState("");
   const userEmail = localStorage.getItem("email");
   const userRole = localStorage.getItem("role");
@@ -27,7 +30,9 @@ const NotificationItem = ({ user }) => {
   const [recrutementInterviewNotif, setRecrutementInterviewNotif] = useState([]);
   const [listOperationproject, setListOperationproject] = useState([]);
   const [ListInterviewNotif, setListInterviewNotif] = useState([]);
-  console.log("userEmail ", userEmail);
+  const [intCode, setIntCode] = useState("");
+  
+  console.log("userEmail user999", user);
 
   // Project By email
   const fetchProjectEmail = async () => {
@@ -125,25 +130,32 @@ const NotificationItem = ({ user }) => {
       const NotifInterveiw = data.filter(item => item?.type?.includes("Interview"));
       const filteredNotifications = NotifInterveiw.filter(item => ListInterviewNotif.includes(item.codejob));
 
-
-
-
       ///////
       setAllNotif(data);
-      const filteredData = data.filter(item =>
-
-        (item.notfi === 4 && (item.dep.includes('Operation') && (item.oDep || item.xDep) && item?.positionRec?.includes('Manager') ||
-          item.notfi === 7 && item.dep.includes('Engineering'))) ||
+      const filteredData = data.filter(item => 
+        (item.notfi === 4 && 
+          item.dep.includes('Operation') && 
+          (item.oDep || item.xDep) && 
+          item?.positionRec?.includes('Manager')
+        ) ||
+        (item.notfi === 7 && 
+        item.dep.includes('Engineering ')
+        ) ||
         (item.notfi === 2) ||
-        (item.notfi === 7 && item.dep.includes('Operation') && (item.oDep || item.xDep) && !item?.positionRec?.includes('Manager'))
-
+        (item.notfi === 7 && 
+          item.dep.includes('Operation') && 
+          (item.oDep || item.xDep) && 
+          !item?.positionRec?.includes('Manager')
+        )
       );
+      
 
 
       // const filteredData = data.filter(item => ((!item.dep.includes('Operation')&& (!item.dep.includes('Engineering'))) &&
       //   item.notfi === 2) || (item.notfi === 7 && item.dep.includes('Operation')) || 
       //   (item.notfi === 7 && item.dep.includes('Engineering'))
       // );
+      console.log("fffggggg",filteredData)
       setNotifBod(filteredData);
       //////NotifffHrAdminstrotor
       
@@ -161,11 +173,12 @@ const NotificationItem = ({ user }) => {
         (item.notfi === 8 && item.dep.includes('Engineering')) ||
         (item.notfi === 4 && item.dep.includes('Operation') && (item.oDep || item.xDep)) ||
         (item.notfi === 0 &&
-          (ListInterviewNotif.includes(item.codejob) &&
-            item?.type?.includes("Interview") &&
-            item?.dep?.includes('Operation') &&
-            item.positionInterv?.includes('Manager'))
+        (ListInterviewNotif.includes(item.interviewCodeJobInt) &&
+          item?.type?.includes("Interview") &&
+          item?.dep?.includes('Operation') &&
+          item.positionInterv?.includes('Manager'))
         )
+
       ));
 
       // const FilterOperationManager = data.filter(item => (item.notfi === 8 && item.dep.includes('Engineering')) ||
@@ -183,6 +196,19 @@ const NotificationItem = ({ user }) => {
       // );
       console.log("rrrrrryyyy", notifOperation)
       setNotifOperation(FilterOperationManager);
+      /////////////////Notif HSE
+      const filteredDataHSE = data.filter(item => (
+        (item.notfi === 1 && item.dep.includes('Operation')) &&(item.type.includes("construction")) ||
+        (item.notfi === 2 && (item.type.includes("construction"))) 
+       
+
+      ));
+    
+    setNotifHSE(filteredDataHSE)
+
+
+      
+      /////////////End Notif Hse
       ///////////////// Planner 
       const filteredPlanner = data.filter(item =>
         (item.notfi === 6 && item.dep.includes('Operation') && project.includes(item.projName)) ||
@@ -207,19 +233,30 @@ const NotificationItem = ({ user }) => {
       const filteredManager = data.filter(item => {
         console.log('Item:', item);
         console.log('item.notfi:', item.notfi);
-        console.log('ListInterviewNotif.includes(item.codejob):', ListInterviewNotif.includes(item.codejob));
+        console.log('ListInterviewNotif2222', ListInterviewNotif);
         console.log('item?.type?.includes("Interview"):', item?.type?.includes("Interview"));
         console.log('item?.dep?.includes("Operation"):', item?.dep?.includes('Operation'));
 
         return (
           item.notfi === 0 &&
-          ListInterviewNotif.includes(item.codejob) &&
+          ListInterviewNotif.includes(item.interviewCodeJobInt) &&
           item?.type?.includes("Interview") &&
-          !item?.dep?.includes('Operation')
+          !item?.dep?.includes('Operation')  ||
+
+          (user.includes("HSE")&& (item.notfi === 1 || item.notfi === 2
+             ) && item.type.includes("construction")
+
+          )   ||
+          ((item.notfi === 6 ) && item.type.includes("Interview")
+
+          )
+
+
         );
       });
 
       setNotifManager(filteredManager)
+   
 
       const filteredProjetLeader = data.filter(item => {
         console.log('Item:', item);
@@ -229,15 +266,18 @@ const NotificationItem = ({ user }) => {
         console.log('item?.dep?.includes("Operation"):', item?.dep?.includes('Operation'));
 
         return (
-          item.notfi === 0
+          item.notfi === 0 &&
+          ListInterviewNotif.includes(item.interviewCodeJobInt) &&
+          item?.type?.includes("Interview") &&
+          item?.dep?.includes('Operation')
 
 
         );
       });
-      console.log("errtttt", filteredManager)
+    
       // setNotifManager(filteredManager)
 
-      setNotifProjetLeader
+      setNotifProjetLeader(filteredProjetLeader)
 
 
       //End Notif de Project Leader 
@@ -277,71 +317,6 @@ const NotificationItem = ({ user }) => {
     });
   }
 //Interview
-const handleEditInterviewStaffOpen = (code) => {
-  console.log("findIdData",findIdData?.interviewCode)
-    navigate(`/Hr/Recruitement&Interview/ConstructionStaffInterview/Update/${code}`, {
-      state: {
-        interviewCode:findIdData?.interviewCode,
-        jobCode:findIdData?.jobCode,
-        interviwDate:findIdData?.interviwDate,
-        totalAccept:findIdData?.totalAccept,
-        totalInterv:findId.totalInterv,
-        totalReqPos:findIdData?.totalReqPos,
-        totalRequiredGrade:findIdData?.totalRequiredGrade,
-        idNumb:findIdData?.idNumb,
-        department:findIdData?.department,
-        projname:findIdData?.projname,
-        requiredGrade:findIdData?.requiredGrade,
-        requiredQualification:findIdData?.requiredQualification,
-        positionToBeFilled:findIdData?.positionToBeFilled,
-        fullName:findIdData?.fullName,
-        birthayDate:findIdData?.birthayDate,
-        familySituation:findIdData?.familySituation,
-        experience:findIdData?.experience,
-        educationLevel:findIdData?.educationLevel,
-        diploma:findIdData?.diploma,
-        telCondidate:findIdData?.telCondidate,
-        urlCv:findIdData?.urlCv,
-        validatesFor:findIdData?.validatesFor,
-        goTotest2:findIdData?.goTotest2,
-        psy_Person:findIdData?.psy_Person,
-        psy_HumQuality:findIdData?.psy_HumQuality,
-        psy_motivation:findIdData?.psy_motivation,
-        psy_Intellig:findIdData?.psy_Intellig,
-        goToTest3:findIdData?.goToTest3,
-        techEnglishSkills:findIdData?.techEnglishSkills,
-        evalDesision:findIdData?.evalDesision,
-        techcommentaire:findIdData?.techcommentaire,
-        techDate:findIdData?.techDate,
-        hr_Person:findIdData?.hr_Person,
-        hr_HumQuality:findIdData?.hr_HumQuality,
-        hr_motivation:findIdData?.hr_motivation,
-        hr_Intellig:findIdData?.hr_Intellig,
-        level:findIdData?.level,
-        headOfDepAprouv:findIdData?.headOfDepAprouv,
-        agreedJoinedDate:findIdData?.agreedJoinedDate,
-        expectedJoinDate:findIdData?.expectedJoinDate,
-        dailyRate:findIdData?.dailyRate,
-        hrDesion:findIdData?.hrDesion,
-        feedback:findIdData?.feedback,
-        propsedsalary:findIdData?.propsedsalary,
-        finaldesision:findIdData?.finaldesision,
-        time:findIdData?.time,
-        hrComentaire:findIdData?.hrComentaire
-   
-              
-      }
- 
-    });
-   
-
-
-//onEditInterviewStaff(true);
-
-
-};
-
-
 
 
 //End Interview
@@ -361,21 +336,142 @@ const handleEditInterviewStaffOpen = (code) => {
       console.error("Erreur lors de la récupération du jobcode:", error);
     }
   };
-  const findIdInterview = async (code) => {
+  ///////////////////
+  const findIdInterview  = async (code) => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/findId?code=${code}`, {
-        method: 'POST',
+        method: 'GET',
       });
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const responseData = await response.json();
-      console.log("findIdInterview",responseData)
-      
+      console.log("responseDataConstruction",responseData)
+      setFindIdDataStaff(responseData)
+      setIntCode(responseData?.interviewCode)
+      handleEditInterviewConstructionOpen(responseData?.interviewCode)
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
     }
   };
+  ////////////////////////
+
+
+  useEffect(() => {
+    if (findIdDataConstruction?.interviewCode) {
+      navigate(`/Hr/Recruitement&Interview/ConstructionStaffInterview/Update/${findIdDataConstruction.interviewCode}`, {
+        state: {
+          interviewCode: findIdDataConstruction?.interviewCode,
+          jobCode: findIdDataConstruction?.jobCode,
+          interviwDate: findIdDataConstruction?.interviwDate,
+          totalAccept: findIdDataConstruction?.totalAccept,
+          totalInterv: findIdDataConstruction?.totalInterv,
+          totalReqPos: findIdDataConstruction?.totalReqPos,
+          totalRequiredGrade: findIdDataConstruction?.totalRequiredGrade,
+          idNumb: findIdDataConstruction?.idNumb,
+          department: findIdDataConstruction?.department,
+          projname: findIdDataConstruction?.projname,
+          requiredGrade: findIdDataConstruction?.requiredGrade,
+          requiredQualification: findIdDataConstruction?.requiredQualification,
+          positionToBeFilled: findIdDataConstruction?.positionToBeFilled,
+          fullName: findIdDataConstruction?.fullName,
+          interviwDate: findIdDataConstruction?.interviwDate,
+          inputInterview: findIdDataConstruction?.inputInterview,
+          birthayDate: findIdDataConstruction?.birthayDate,
+          familySituation: findIdDataConstruction?.familySituation,
+          experience: findIdDataConstruction?.experience,
+          educationLevel: findIdDataConstruction?.educationLevel,
+          diploma: findIdDataConstruction?.diploma,
+          telCondidate: findIdDataConstruction?.telCondidate,
+          urlCv: findIdDataConstruction?.urlCv,
+          validatesFor: findIdDataConstruction?.validatesFor,
+          goTotest2: findIdDataConstruction?.goTotest2,
+          psy_Person: findIdDataConstruction?.psy_Person,
+          psy_HumQuality: findIdDataConstruction?.psy_HumQuality,
+          psy_motivation: findIdDataConstruction?.psy_motivation,
+          psy_Intellig: findIdDataConstruction?.psy_Intellig,
+          goToTest3: findIdDataConstruction?.goToTest3,
+          techEnglishSkills: findIdDataConstruction?.techEnglishSkills,
+          evalDesision: findIdDataConstruction?.evalDesision,
+          techcommentaire: findIdDataConstruction?.techcommentaire,
+          techDate: findIdDataConstruction?.techDate,
+          hr_Person: findIdDataConstruction?.hr_Person,
+          hr_HumQuality: findIdDataConstruction?.hr_HumQuality,
+          hr_motivation: findIdDataConstruction?.hr_motivation,
+          hr_Intellig: findIdDataConstruction?.hr_Intellig,
+          level: findIdDataConstruction?.level,
+          headOfDepAprouv: findIdDataConstruction?.headOfDepAprouv,
+          agreedJoinedDate: findIdDataConstruction?.agreedJoinedDate,
+          expectedJoinDate: findIdDataConstruction?.expectedJoinDate,
+          dailyRate: findIdDataConstruction?.dailyRate,
+          hrDesion: findIdDataConstruction?.hrDesion,
+          feedback: findIdDataConstruction?.feedback,
+          propsedsalary: findIdDataConstruction?.propsedsalary,
+          finaldesision: findIdDataConstruction?.finaldesision,
+          time: findIdDataConstruction?.time,
+          hrComentaire: findIdDataConstruction?.hrComentaire
+        }
+      });
+    }
+   
+  }, [findIdDataConstruction, navigate]);
+  useEffect(() => {
+  if (findIdDataStaff?.interviewCode) {
+      navigate(`/Hr/Recruitement&Interview/Update/${findIdDataStaff.interviewCode}`, {
+        state: {
+          interviewCode: findIdDataStaff?.interviewCode,
+          jobCode: findIdDataStaff?.jobCode,
+          interviwDate: findIdDataStaff?.interviwDate,
+          totalAccept: findIdDataStaff?.totalAccept,
+          totalInterv: findIdDataStaff?.totalInterv,
+          totalReqPos: findIdDataStaff?.totalReqPos,
+          totalRequiredGrade: findIdDataStaff?.totalRequiredGrade,
+          idNumb: findIdDataStaff?.idNumb,
+          department: findIdDataStaff?.department,
+          projname: findIdDataStaff?.projname,
+          requiredGrade: findIdDataStaff?.requiredGrade,
+          requiredQualification: findIdDataStaff?.requiredQualification,
+          positionToBeFilled: findIdDataStaff?.positionToBeFilled,
+          fullName: findIdDataStaff?.fullName,
+          interviwDate: findIdDataStaff?.interviwDate,
+          inputInterview: findIdDataStaff?.inputInterview,
+          birthayDate: findIdDataStaff?.birthayDate,
+          familySituation: findIdDataStaff?.familySituation,
+          experience: findIdDataStaff?.experience,
+          educationLevel: findIdDataStaff?.educationLevel,
+          diploma: findIdDataStaff?.diploma,
+          telCondidate: findIdDataStaff?.telCondidate,
+          urlCv: findIdDataStaff?.urlCv,
+          validatesFor: findIdDataStaff?.validatesFor,
+          goTotest2: findIdDataStaff.goTotest2,
+          psy_Person: findIdDataStaff?.psy_Person,
+          psy_HumQuality: findIdDataStaff?.psy_HumQuality,
+          psy_motivation: findIdDataStaff?.psy_motivation,
+          psy_Intellig: findIdDataStaff?.psy_Intellig,
+          goToTest3: findIdDataStaff?.goToTest3,
+          techEnglishSkills: findIdDataStaff?.techEnglishSkills,
+          evalDesision: findIdDataStaff?.evalDesision,
+          techcommentaire: findIdDataStaff?.techcommentaire,
+          techDate: findIdDataStaff?.techDate,
+          hr_Person: findIdDataStaff?.hr_Person,
+          hr_HumQuality: findIdDataStaff?.hr_HumQuality,
+          hr_motivation: findIdDataStaff?.hr_motivation,
+          hr_Intellig: findIdDataStaff?.hr_Intellig,
+          level: findIdDataStaff?.level,
+          headOfDepAprouv: findIdDataStaff?.headOfDepAprouv,
+          agreedJoinedDate: findIdDataStaff?.agreedJoinedDate,
+          expectedJoinDate: findIdDataStaff?.expectedJoinDate,
+          dailyRate: findIdDataStaff?.dailyRate,
+          hrDesion: findIdDataStaff?.hrDesion,
+          feedback: findIdDataStaff?.feedback,
+          propsedsalary: findIdDataStaff?.propsedsalary,
+          finaldesision:findIdDataStaff?.finaldesision,
+          time: findIdDataStaff?.time,
+          hrComentaire: findIdDataStaff?.hrComentaire
+        }
+      });
+    }
+  }, [ navigate,findIdDataStaff]);
   const findIdInterviewConstruction = async (code) => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${code}`, {
@@ -385,21 +481,23 @@ const handleEditInterviewStaffOpen = (code) => {
         throw new Error('Network response was not ok');
       }
       const responseData = await response.json();
-      console.log("findIdInterviewConstruction kkkkk",responseData)
-      handleEditInterviewStaffOpen(responseData?.interviewCode)
+      console.log("responseDataConstruction",responseData)
+      setFindIdDataConstruction(responseData)
+      setIntCode(responseData?.interviewCode)
+      handleEditInterviewConstructionOpen(responseData?.interviewCode)
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
     }
   };
-
 
   useEffect(() => {
     AllNotif();
     fetchProjectEmail();
     fetchRecruitementByEmployees()
     GetProfileEmployess()
+    // findIdInterviewConstruction(intCode)
    
-  }, [project, notifPlanner, idgets]);
+  }, [project, notifPlanner, idgets,id,findIdDataConstruction,intCode,findIdDataStaff]);
   console.log("user", user)
   return (
     <>
@@ -407,11 +505,11 @@ const handleEditInterviewStaffOpen = (code) => {
         <StyledNotifyListItem className='item-hover'>
           <p>Number All Notification </p>
           {notifBod.map((p, index) => (
-            <div key={index}>
+            <div  key={index}>
               <button className='Notification' onClick={() => findId(p?.codejob)}>
                 Recruitement Request with Code Job :<span style={{ color: "red", fontWeight: "bold" }}>{p.codejob}</span> </button>
               <div className='Space'></div>
-
+              
             </div>
           ))}
         </StyledNotifyListItem>
@@ -425,6 +523,7 @@ const handleEditInterviewStaffOpen = (code) => {
               <button className='Notification' onClick={() => findId(p?.codejob)}>
                 Recruitement Request with Code Job :<span style={{ color: "red", fontWeight: "bold" }}>{p.codejob}</span> </button>
               <div className='Space'></div>
+       
 
             </div>
           ))}
@@ -458,21 +557,30 @@ const handleEditInterviewStaffOpen = (code) => {
                   Recruitment Request with Code Job:
                   <span style={{ color: "red", fontWeight: "bold" }}>{p.codejob}</span>
                 </button>
-                <div key={index}>
-                  {p?.type?.includes("Interview") && (
-                    <button className='Notification' >
-                      {p?.type}
-                      <span style={{ color: "red", fontWeight: "bold" }}>{p.interviewCode}</span>
-                    </button>
-                  )}
-                  <div className='Space'></div>
-                </div>
+                <div>
+         <button 
+           className='Notification' 
+           onClick={() => 
+             p.type .includes("Interview of construction team") 
+               ? findIdInterviewConstruction(p?.interviewCode) 
+               : findIdInterview (p?.interviewCode)
+           }
+         >
+           Notification {p.type} Code {p.interviewCode}:
+           <span style={{ color: "red", fontWeight: "bold" }}>
+           {p.type.includes("Interview of construction team") ? `CIS-${p.interviewCodeJobInt}` : `RRS-${p.interviewCodeJobInt}`}
+           </span>
+           {/* <span style={{ color: "red", fontWeight: "bold" }}>
+             RRS-{p.codejob}
+           </span> */}
+         </button>
+       </div>
               </>
             ))}
           </>
         </StyledNotifyListItem>
       ) : null}
-
+    
 
       {/*PLanner */}
       {user.includes("Planner") || notifPlanner?.dep?.includes('Operation') ?
@@ -492,10 +600,46 @@ const handleEditInterviewStaffOpen = (code) => {
       }
      {(user.includes("Manager") && !dep?.includes('Operation')) && (
   <StyledNotifyListItem className='item-hover'>
+      
     <p>Number All Notification (notifManager A part Operation)</p>
 
     {notifManager.map((p, index) => (
       <div key={index}>
+        {/* <button className='Notification' onClick={() => findId(p?.codejob)}>
+          Recruitement Request with Code Job: <span style={{ color: "red", fontWeight: "bold" }}>RRS-{p.codejob}</span>
+        </button> */}
+        {p?.type?.includes("Interview") && (
+         <div>
+        
+         <button 
+           className='Notification' 
+           onClick={() => 
+             p.type .includes("Interview of construction team") 
+               ? findIdInterviewConstruction(p?.interviewCode) 
+               : findIdInterview (p?.interviewCode)
+           }
+         >
+           Notification {p.type} Code {p.interviewCode}:
+           <span style={{ color: "red", fontWeight: "bold" }}>
+           {p.type.includes("Interview of construction team") ? `CIS-${p.interviewCodeJobInt}` : `RRS-${p.interviewCodeJobInt}`}
+           </span>
+         
+         </button>
+        
+       </div>
+        )}
+      </div>
+    ))}
+  </StyledNotifyListItem>
+)}
+
+      {/* ///Notificationnn de Project Leader*/}
+      {user.includes("Leader") ?
+        <StyledNotifyListItem className='item-hover'>
+          <p>Number All Notification(ProjectlEADERS) </p>
+          {notifProjetLeader.map((p, index) => (
+            <>
+        <div key={index}>
         {/* <button className='Notification' onClick={() => findId(p?.codejob)}>
           Recruitement Request with Code Job: <span style={{ color: "red", fontWeight: "bold" }}>RRS-{p.codejob}</span>
         </button> */}
@@ -511,7 +655,7 @@ const handleEditInterviewStaffOpen = (code) => {
          >
            Notification {p.type} Code {p.interviewCode}:
            <span style={{ color: "red", fontWeight: "bold" }}>
-           {p.type.includes("Interview of construction team") ? `CIS-${p.codejob}` : `RRS-${p.codejob}`}
+           {p.type.includes("Interview of construction team") ? `CIS-${p.interviewCodeJobInt}` : `RRS-${p.interviewCodeJobInt}`}
            </span>
            {/* <span style={{ color: "red", fontWeight: "bold" }}>
              RRS-{p.codejob}
@@ -520,19 +664,6 @@ const handleEditInterviewStaffOpen = (code) => {
        </div>
         )}
       </div>
-    ))}
-  </StyledNotifyListItem>
-)}
-
-
-
-      {/* ///Notificationnn de Project Leader*/}
-      {user.includes("Leader") ?
-        <StyledNotifyListItem className='item-hover'>
-          <p>Number All Notification 3333 </p>
-          {notifProjetLeader.map((p, index) => (
-            <>
-              <p>Notttiiiiiiffff ProjectLeader</p>
               {/* <div key={index}>
               <button className='Notification' onClick={() => findId(p?.codejob)}>
                 Recruitement Request with Code Job :<span style={{ color: "red",fontWeight:"bold" }}>RRS-{p.codejob}</span> </button>

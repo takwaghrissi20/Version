@@ -1,25 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../../@crema/components/AppRowContainer';
-import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox, DatePicker, notification } from 'antd';
+import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox, notification, DatePicker, } from 'antd';
 import { MdEdit } from 'react-icons/md';
 import {
   StyledSecondaryText,
   StyledSecondaryText1,
   StyledShadowWrapper,
   StyledTodoDetailDatePicker,
+  StyledSelectRow,
+  StyledTodoSelectName,
   StyledInput,
-
-} from '../index.styled';
+  StyledSignLink
+} from './index.styled';
 import { useLocation } from 'react-router-dom';
-import { useNavigate } from "react-router-dom";
-
 import dayjs from 'dayjs';
 import IntlMessages from '../../../@crema/helpers/IntlMessages';
+import ConfirmationModal from '../../../@crema/components/AppConfirmationModal';
+import { useNavigate } from 'react-router-dom';
 
-
-const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber, level, projectName, position, roles }) => {
+const TabsInterviewSheetConstructionId = () => {
   const location = useLocation();
+  const DesiredDate = location.state ? location.state.DesiredDate : null;
+  const JobCode = location.state ? location.state.JobCode : null;
+  const totalNumber = location.state ? location.state.totalNumber : null;
+  const level = location.state ? location.state.level : null;
+  const projectName = location.state ? location.state.projectName : null;
+  const position = location.state ? location.state.position : null;
   const experienceRequired = location.state ? location.state.experience : null;
+  const dep = location.state ? location.state.dep : null;
+
   const [isConfirmationInterview, setIsConfirmationInterview] = useState(false);
   const [showAlertError, setShowAlertError] = useState(false);
   const [showAlertConfirmation, setShowAlertConfirmation] = useState(false);
@@ -29,10 +38,9 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
   const [expectedJoinDate, setExpectedJoinDate] = useState("");
   const [datalastIdinterview, setDatalastIdinterview] = useState("")
   const [fullname, setFullName] = useState("");
-
   const [contactFullNumber, setContactFullNumber] = useState("");
   const [contactEmail, setcontactEmail] = useState("");
-  const [departement, setDepartement] = useState("");
+  const [departement, setDepartement] = useState(dep);
   const [selectedSituation, setSelectedSituation] = useState('');
   const [selectedValidation, setSelectedValidation] = useState('');
   const [selectedPersonality, setSelectedPersonality] = useState('');
@@ -45,11 +53,12 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
   const [selectedIntelligenceHR, setSelectedIntelligenceHR] = useState('');
   const [selectedLevelHR, setSelectedLevelHR] = useState('');
   const [selectedSkillls, setSelectedSkillls] = useState('');
+  const [selectedbodDescition, setSelectedbodDescition] = useState('');
   const [diploma, setDiploma] = useState("");
   const [educationLevel, setEducationLevel] = useState("");
   const [experience, setExperience] = useState("");
-  const [requiredQualification, setRequiredQualification] = useState("");
-  const [requiredExperinece, setRequiredExperinece] = useState("");
+  const [requiredQualification, setRequiredQualification] = useState(level);
+  const [requiredExperinece, setRequiredExperinece] = useState(experienceRequired);
   const [evaluator, setEvaluator] = useState("");
   const [comment, setComments] = useState("");
   const [commentHr, setCommentsHr] = useState("");
@@ -71,29 +80,9 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
   const [isOkCheckedBod, setIsOkCheckedBod] = useState(false);
   const [isNoCheckedBOD, setIsNoCheckedBOD] = useState(false);
   const [isHoldCheckedBOD, setIsHoldCheckedBOD] = useState(false);
-  const [isOkcheckedHSE, setIsOkcheckedHSE] = useState(false);
-  const [isNocheckedHSE, setIsNocheckedHSE] = useState(false);
-  const [evaluationDate, setEvaluationDate] = useState(dayjs().format('DD/MM/YYYY'));
-  const [selectedEducationTraining, setSelectedEducationTraining] = useState('');
-  const [selectedworkExperience, setSelectedWorkExperience] = useState('');
-  const [selectedDiversity, setSelectedDiversity] = useState('');
-  const [selectedIntellectualCapability, setSelectedIntellectualCapability] = useState('');
-  const [selectedEmotionalIntelligence, setSelectedEmotionalIntelligence] = useState('');
-  const [selectedSelfconfidence, setSelectedSelfconfidence] = useState('');
-  const [selectedCommunicationSkills, setSelectedCommunicationSkills] = useState('');
-  const [selectedPassion, setSelectedPassion] = useState('');
-  const [selectedCreativity, setSelectedCreativity] = useState('');
-  const [selectedLeadershipQualities, setSelectedLeadershipQualities] = useState('');
-  const [selectedPhysicalpresentation, setSelectedPhysicalpresentation] = useState('');
-  const [selectedHSECertificates, setSelectedHSECertificates] = useState('');
-  const [selectedSitehazardscontrol, setSelectedSitehazardscontrol] = useState('');
-  const [selectedProperuse, setSelectedProperuse] = useState('');
-  const [selectedHazardousmaterials, setSelectedHazardousmaterials] = useState('');
-  const [selectedEmergenceEvacuation, setSelectedEmergenceEvacuation] = useState('');
-  const [selectedPTWknowledge, setSelectedPTWknowledge] = useState('');
-  const [selectedHSEPolicies, setSelectedHSEPolicies] = useState('');
-  const [selectedOthers, setSelectedOthers] = useState('');
-  const currentYear = new Date().getFullYear();
+  const [officeSalaryMax, setOfficeSalaryMax] = useState(0);
+  const [dailyRateMax, setDailyRateMax] = useState(0);
+  const [totalMax, setTotalMax] = useState(0);
   const [salarylev1Error, setSalarylev1Error] = useState('');
   const [dailylev1Error, setDailylev1Error] = useState('');
   const [lev1SalaryMax, setLev1SalaryMax] = useState(0);
@@ -116,60 +105,49 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
   const [lev5dailyRateMax, setLev5DailyRateMax] = useState(0);
   const [salaryError, setSalaryError] = useState('');
   const [dailyError, setDailyError] = useState('');
+  const [form] = Form.useForm();
+  console.log("interviewDate",interviewDate)
+
+  const [evaluationDate, setEvaluationDate] = useState(dayjs().format('DD/MM/YYYY'));
   const [dateInput, setDateInput] = useState(new Date());
   const formattedDate = dayjs(dateInput).format('YYYY-MM-DD');
-  const handledepartementChange = (event) => {
-    setDepartement(event.target.value);
-  };
-  const  handleRequiredQualificationChange = (event) => {
+  const RequireQalification = (event) => {
     setRequiredQualification(event.target.value);
+
   };
-  const  handleRequiredExperineceChange = (event) => {
+  const RequireExperience = (event) => {
     setRequiredExperinece(event.target.value);
+
   };
-  const handleFullNameChange= (event) => {
+
+  const ChangeFullName = (event) => {
     setFullName(event.target.value);
   };
-  const handleDiplomaChange= (event) => {
+  const ChangeContactEmail = (event) => {
+    setcontactEmail(event.target.value);
+
+  };
+  const ChangeContactFullNumber = (value) => {
+    setContactFullNumber(event.target.value);
+
+  };
+  const handlesituationSelect = (value) => {
+    setSelectedSituation(value);
+
+  };
+  const ChangeDiploma = (event) => {
     setDiploma(event.target.value);
+
   };
-  const   handleeducationLevelChange= (event) => {
+  const ChangeEductionLevel = (event) => {
     setEducationLevel(event.target.value);
+
   };
-  const   handleExperienceChange= (event) => {
+  const ChangeExperience = (event) => {
     setExperience(event.target.value);
+
   };
 
-
-  const fetchData = async () => {
-    try {
-      const endPoint =
-        process.env.NODE_ENV === "development"
-          ? "https://dev-gateway.gets-company.com"
-          : "";
-
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/last`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('La requête a échoué avec le code ' + response.status);
-      }
-
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        throw new TypeError("La réponse n'est pas au format JSON");
-      }
-      const data = await response.json();
-      setDatalastIdinterview(data.interviewCode)
-
-    } catch (error) {
-      console.error('Erreur lors de la récupération des données:', error);
-    }
-  };
   const situation = [
     { st: 'Single' },
     { st: 'Maried' },
@@ -256,6 +234,41 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
     { skill: 'Excellent' },
 
   ];
+  const descisionBod = [
+    { des: 'Accepted' },
+    { des: 'Not Accepted' },
+    { des: 'On Hold' },
+
+  ];
+  const fetchData = async () => {
+    try {
+      const endPoint =
+        process.env.NODE_ENV === "development"
+          ? "https://dev-gateway.gets-company.com"
+          : "";
+
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/last`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('La requête a échoué avec le code ' + response.status);
+      }
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
+      }
+      const data = await response.json();
+      setDatalastIdinterview(data.interviewCode)
+
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données:', error);
+    }
+  };
 
   const fetchMaxValues = async () => {
     try {
@@ -341,34 +354,44 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
       console.error('Erreur lors de la récupération des données Salary:', error);
     }
   };
+  useEffect(() => {
+    fetchData()
+    fetchMaxValues()
 
+  }, []);
+
+  const handleSalaryChange = (e) => {
+    const value = e.target.value;
+    setProposedSalary(value);
+    if (parseFloat(value) > lev1SalaryMax) {
+      setSalaryError(`Proposed  Salary exceeds the maximum allowed value of ${lev1SalaryMax}`);
+    } else
+      setSalaryError("");
+  };
+  const handleDailyChange = (e) => {
+    const value = e.target.value;
+    setProposedDailyRate(value);
+    if (parseFloat(value) > lev1dailyRateMax) {
+      setDailyError(`Proposed Daily Rate exceeds the maximum allowed value of ${lev1dailyRateMax}`);
+
+    }
+    else {
+      setDailyError("")
+    }
+  };
   const NewLastInterview = datalastIdinterview + 1
+  console.log("DatalastIdinterview", datalastIdinterview)
+  console.log("NewLastInterview", NewLastInterview)
   //Save InterViewSheet
   const navigate = useNavigate();
   const ShowAlertAfterSaveInterview = () => {
     setShowAlertConfirmation(true)
-
-
   }
   const Validation = [
     { vld: 'Valid for post' },
     { vld: 'Not Valid for post' },
     { vld: 'Pending' },
     { vld: 'File to complete' },
-
-  ];
-  const Rating = [
-    { rate: 'Excellent' },
-    { rate: 'Average' },
-    { rate: 'Good' },
-    { rate: 'Below Average' },
-
-  ];
-  const Rating1 = [
-    { rate: 'Excellent' },
-    { rate: 'Average' },
-    { rate: 'Good' },
-    { rate: 'Below Average' },
 
   ];
   const openNotification = () => {
@@ -426,7 +449,7 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
   const openNotificationError = () => {
     notification.open({
       message: 'Error',
-      description: 'Error  CONSTRUCTION TEAM INTERVIEW SHEET',
+      description: 'Error MANAGEMENT STAFF INTERVIEW SHEET',
       style: {
         backgroundColor: 'red',
         border: '1px solid #dc3545',
@@ -450,7 +473,16 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
     });
   };
 
+
   const Save = async () => {
+    // if (salaryError || dailyError) {
+    //   return;
+    // }
+
+    // if (parseFloat(proposedSalary) + parseFloat(proposedDailyRate) > totalMax) {
+    //   alert(`Total of Proposed Office Salary and Proposed Site Daily Rate exceeds the maximum allowed value of ${totalMax}`);
+    //   return;
+    // }
     try {
       console.log("selectedValidation", selectedValidation)
       const endPoint =
@@ -468,18 +500,8 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
           interviewCode: NewLastInterview,
           jobcode1: JobCode,
           jobCode: JobCode,
-          projname: projectName,
-          department: departement,
-          requiredExperinece: requiredExperinece,
-          positionToBeFilled: position,
-          fullName: fullname,
-          //interviwDate:interviwDate,//???? A faire
 
-
-
-
-
-          // interviwDate: DesiredDate,
+          // interviwDate: interviewDate,
           // fullName: fullname,
           // projname: projectName,
           // department: departement,
@@ -492,15 +514,9 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
           // requiredGrade: level,
           // experience: experience,
           // positionToBeFilled: position,
-
-
-
           //telCondidate:contactFullNumber,
           // validatesFor:selectedValidation,
           // goTotest2: CheckedFinalGotest2
-
-
-
 
 
 
@@ -519,23 +535,48 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
       }
       if (response.ok) {
         const data = await response.json();
-        openNotification('bottomRight')
         setDataInterview(data)
-
+        form.resetFields();
+        openNotification('bottomRight')
+        // navigate(-1);
       }
 
     } catch (error) {
       console.error('Erreur lors de la récupération des données:', error);
     }
   };
-  //Save Administartor
-  const SaveHrAdministrator = async () => {
+  const BeforeSaveInterview = () => {
+    //setIsModalVisible(true)
+    form.validateFields(['fullName','telCondidate','ContactEmail','FamilySituation','diploma','educationLevel','experience'
+
+    ]).then(values => {
+    
+      SaveHRADMONISTRTOR()
+
+    }).catch(errorInfo => {
+      openNotificationWarning('bottomRight')
+
+
+
+    });
+  };
+ 
+  const SaveHRADMONISTRTOR = async () => {
+    // if (salaryError || dailyError) {
+    //   return;
+    // }
+
+    // if (parseFloat(proposedSalary) + parseFloat(proposedDailyRate) > totalMax) {
+    //   alert(`Total of Proposed Office Salary and Proposed Site Daily Rate exceeds the maximum allowed value of ${totalMax}`);
+    //   return;
+    // }
     try {
       console.log("selectedValidation", selectedValidation)
       const endPoint =
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
+
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/addintv?id=${JobCode}`, {
         method: 'POST',
         headers: {
@@ -546,19 +587,50 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
           interviewCode: NewLastInterview,
           jobcode1: JobCode,
           jobCode: JobCode,
+          totalReqPos: totalNumber,
+          totalInterv: 5,
+          totalAccept: 2,
+          requiredGrade: level,
           projname: projectName,
+          positionToBeFilled: position,
           department: departement,
           requiredExperinece: requiredExperinece,
-          positionToBeFilled: position,
+          requiredQualification: requiredQualification,
           fullName: fullname,
-          totalReqPos: totalNumber,
-          requiredQualification: level,
-          requiredGrade: requiredQualification,
-          birthayDate: scheduleDate,
-          familySituation: selectedSituation,
+          interviwDate:interviewDate,
+          telCondidate:contactFullNumber,
+          email:contactEmail,
+          familySituation:selectedSituation,
+          // telCondidate: contactFullNumber,
+          // email: contactEmail,
+          // birthayDate:scheduleDate,
+          //familySituation:selectedSituation,
           diploma: diploma,
           educationLevel: educationLevel,
-          notif:0,
+          requiredExperinece: requiredExperinece,
+          notif: 0,
+          inputInterview: formattedDate,
+          birthayDate:scheduleDate
+
+          // interviwDate: interviewDate,
+          // fullName: fullname,
+          // projname: projectName,
+          // department: departement,
+          // diploma: diploma,
+          // requiredExperinece: requiredExperinece,
+          // requiredQualification: requiredQualification,
+          // birthayDate: scheduleDate,
+          // familySituation: selectedSituation,
+          // educationLevel: educationLevel,
+          // requiredGrade: level,
+          // experience: experience,
+          // positionToBeFilled: position,
+          //telCondidate:contactFullNumber,
+          // validatesFor:selectedValidation,
+          // goTotest2: CheckedFinalGotest2
+
+
+
 
         })
       });
@@ -574,21 +646,23 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
       }
       if (response.ok) {
         const data = await response.json();
-        openNotification('bottomRight')
-        navigate(-1)
         setDataInterview(data)
-
+        form.resetFields();
+        openNotification('bottomRight')
+        // navigate(-1);
       }
 
     } catch (error) {
       console.error('Erreur lors de la récupération des données:', error);
     }
   };
-
-
-
-
-  //End Save Administrator
+  const isButtonDisabled = () => {
+    return (
+      salaryError ||
+      dailyError ||
+      parseFloat(proposedSalary) + parseFloat(proposedDailyRate) > totalMax
+    );
+  };
 
   //End Interview Sheet
   const [isVisible, setIsVisible] = useState(false);
@@ -603,16 +677,17 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
     setIsOkChecked(e.target.checked);
     setIsVisible(true);
     if (e.target.checked) {
+
       setIsNoChecked(false);
     }
-    if (!(e.target.checked)) {
+    else if (!(e.target.checked)) {
       setIsVisible(false);
     }
   }
-  console.log("setIsOkChecked", isOkChecked)
-  console.log(" setIsNoChecked", isNoChecked)
+
   const CheckedFinalGotest2 = isOkChecked ? 1 : 0;
   function No(e) {
+
     setIsNoChecked(e.target.checked);
     setIsVisible(false);
     if (e.target.checked) {
@@ -622,31 +697,30 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
   }
 
   function Ok3(e) {
-
+    console.log(`checked = ${e.target.checked}`);
     setIsOkChecked3(e.target.checked);
     setIsVisibletest3(true);
     if (e.target.checked) {
 
       setIsNoChecked3(false);
     }
-    if (!(e.target.checked)) {
+    else if (!(e.target.checked)) {
       setIsVisibletest3(false);
     }
   }
 
   function No3(e) {
-
+    console.log(`checkedgggg = ${e.target.checked}`);
     setIsNoChecked3(e.target.checked);
     setIsVisibletest3(false);
     if (e.target.checked) {
       setIsOkChecked3(false);
       setIsNoChecked3(true);
     }
-
   }
   //OkProfile
   function OkProfile(e) {
-
+    console.log(`checked = ${e.target.checked}`);
     setIsOkCheckedProfile(e.target.checked);
     setIsVisibletestEvaluator(true)
 
@@ -654,13 +728,13 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
 
       setIsNoCheckedProfile(false);
     }
-    if (!(e.target.checked)) {
-      setIsVisibletestEvaluator(false)
+    else if (!(e.target.checked)) {
+      setIsVisibletestEvaluator(false);
     }
   }
 
   function NoProfile(e) {
-
+    console.log(`checkedgggg = ${e.target.checked}`);
     setIsNoChecked3(e.target.checked);
     setIsVisibletestEvaluator(false)
     if (e.target.checked) {
@@ -670,7 +744,7 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
   }
   //Ok or No Evaluator
   function OkEvaluator(e) {
-
+    console.log(`checked = ${e.target.checked}`);
     setIsOkCheckedEvaluator(e.target.checked);
     setIsVisibleEvaluatorDecision(true)
 
@@ -678,13 +752,13 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
 
       setIsNoCheckedEvaluator(false);
     }
-    if (!(e.target.checked)) {
-      setIsVisibletestEvaluator(false)
+    else if (!(e.target.checked)) {
+      setIsVisibleEvaluatorDecision(false);
     }
   }
 
   function NoEvaluator(e) {
-
+    console.log(`checkedgggg = ${e.target.checked}`);
     setIsNoCheckedEvaluator(e.target.checked);
     setIsVisibleEvaluatorDecision(false)
     if (e.target.checked) {
@@ -695,7 +769,7 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
 
   //Desicion Head 
   function OkHead(e) {
-
+    console.log(`checked = ${e.target.checked}`);
     setIsOkCheckedHead(e.target.checked);
     setIsVisibleHeadDecision(true)
 
@@ -703,13 +777,13 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
 
       setIsNoCheckedHead(false);
     }
-    if (!(e.target.checked)) {
-      setIsVisibleHeadDecision(false)
+    else if (!(e.target.checked)) {
+      setIsVisibleHeadDecision(false);
     }
   }
 
   function NoHead(e) {
-
+    console.log(`checkedgggg = ${e.target.checked}`);
     setIsOkCheckedHead(e.target.checked);
     setIsVisibleHeadDecision(false)
     if (e.target.checked) {
@@ -718,7 +792,7 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
     }
   }
   function OkHrDesicision(e) {
-
+    console.log(`checked = ${e.target.checked}`);
     setIsOkCheckedHRDecision(e.target.checked);
     setIsVisibleHRDecision(true)
 
@@ -726,13 +800,13 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
 
       setIsNoCheckedHRDecision(false);
     }
-    if (!(e.target.checked)) {
-      setIsVisibleHRDecision(false)
+    else if (!(e.target.checked)) {
+      setIsVisibleHRDecision(false);
     }
   }
 
   function NoHrDesicision(e) {
-
+    console.log(`checkedgggg = ${e.target.checked}`);
     setIsOkCheckedHRDecision(e.target.checked);
     setIsVisibleHRDecision(false)
     if (e.target.checked) {
@@ -740,36 +814,17 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
       setIsNoCheckedHRDecision(true);
     }
   }
-
-  useEffect(() => {
-    fetchData()
-    fetchMaxValues()
-
-  }, []);
-  const handleSalaryChange = (e) => {
-    const value = e.target.value;
-    setProposedSalary(value);
-    if (parseFloat(value) > lev1SalaryMax) {
-      setSalaryError(`Proposed  Salary exceeds the maximum allowed value of ${lev1SalaryMax}`);
-    } else
-      setSalaryError("");
+  const goBack = () => {
+    navigate(-1)
+  }
+  const handleDecisionChange = (value) => {
+    setSelectedbodDescition(value);
+    console.log('Final Descision ', value);
   };
-  const handleDailyChange = (e) => {
-    const value = e.target.value;
-    setProposedDailyRate(value);
-    if (parseFloat(value) > lev1dailyRateMax) {
-      setDailyError(`Proposed Daily Rate exceeds the maximum allowed value of ${lev1dailyRateMax}`);
-
-    }
-    else {
-      setDailyError("")
-    }
-  };
-
-
+  const roles = localStorage.getItem("role");
   return (
     <>
-      {roles.includes("admin") ?
+      {roles.includes("admin") && (
         <Form
           layout='vertical'
           style={{ backgroundColor: "white", marginBottom: "20px", padding: "10px", borderRadius: "20px" }}
@@ -780,7 +835,7 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
             <div>
               <Typography.Title level={4}>CONSTRUCTION TEAM INTERVIEW SHEET</Typography.Title>
               <StyledSecondaryText>
-                CONSTRUCTION TEAM
+              CONSTRUCTION TEAM
               </StyledSecondaryText>
             </div>
 
@@ -796,25 +851,35 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                 <AppRowContainer>
                   <Col xs={24} md={12}>
                     <Form.Item label='Reference' name='interviewCode'>
-                      <Input placeholder={"CIS-" + NewLastInterview} readOnly={true} />
+                      <Input
+                        placeholder={"CIS-" + NewLastInterview}
+                        readOnly={true} />
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item label='Interview Date' name='Date :'>
+                    <Form.Item label='Date' name='Date'>
                       <Input
+
                         placeholder={formattedDate}
-                        readOnly />
+                        readOnly
+
+                      />
 
 
-                      {/*Date et temp de Interview bu Hr*/}
-                      {/* <DatePicker
-                      //defaultValue={new Date()} 
-                      defaultValue={dayjs(interviewDate, '2024-01-01')}
 
-                      style={{ width: "100%", height: "30px" }}
-                      onChange={(value) =>setInterviewDate(dayjs(value).format('YYYY/MM/DD'))}
-                    /> */}
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Date Interview' name='DateInterview' >
+                      <StyledTodoDetailDatePicker className='form-field'>
 
+                        <DatePicker
+                          //defaultValue={new Date()} 
+                          defaultValue={dayjs(interviewDate, '16 06,1990')}
+                          style={{ width: "100%", height: "34px" }}
+                          onChange={(value) => setInterviewDate(dayjs(value).format('YYYY-MM-DD'))}
+                        />
+                      </StyledTodoDetailDatePicker>
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
@@ -877,12 +942,9 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                   </Col>
                   <Col xs={24} md={12}>
                     <Form.Item label='Department ' name='department '>
-                      <Input
-                       placeholder='Department'
-                       value={departement}
-                      onChange={handledepartementChange}
-                    
-                       
+                      <Input placeholder='Department'
+                        value={departement}
+                        onChange={(e) => setDepartement(e.target.value)}
 
                       />
                     </Form.Item>
@@ -893,8 +955,7 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                       <Input placeholder='Requested Qualification'
 
                         value={requiredQualification}
-                        onChange={handleRequiredQualificationChange}
-                        // onChange={(e) => setRequiredQualification(e.target.value)}
+                        onChange={RequireQalification}
 
 
                       />
@@ -903,9 +964,9 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                   <Col xs={24} md={12}>
                     <Form.Item label='Requested Experience' name='requiredExperinece'>
                       <Input
-                     value={requiredExperinece}
-                     onChange={handleRequiredExperineceChange}
-                      placeholder='Requested Experience' />
+                        value={requiredExperinece}
+                        onChange={RequireExperience}
+                        placeholder='Requested Experience' />
                     </Form.Item>
                   </Col>
 
@@ -926,11 +987,12 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                     <Form.Item label='Full Name' name='fullName'
                       rules={[
                         { required: true, message: 'Please input your Full Name!' },
-                      ]}>
+                      ]}
+
+                    >
                       <Input placeholder='Full Name'
                         value={fullname}
-                        onChange={handleFullNameChange}
-                     
+                        onChange={ChangeFullName}
 
                       />
                     </Form.Item>
@@ -945,13 +1007,14 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                     >
                       <Input placeholder='Contact Full Number'
                         value={contactFullNumber}
-                        onChange={(e) => setContactFullNumber(e.target.value)}
+                        onChange={ChangeContactFullNumber}
+
 
                       />
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item label='Contact Email' name='Contact Email'
+                    <Form.Item label='Contact Email' name='ContactEmail'
 
                       rules={[
                         { required: true, message: 'Please input your Contact Email!' },
@@ -962,7 +1025,7 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                     >
                       <Input placeholder='Contact Email'
                         value={contactEmail}
-                        onChange={(e) => setcontactEmail(e.target.value)}
+                        onChange={ChangeContactEmail}
 
 
                       />
@@ -980,8 +1043,8 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
 
                         <DatePicker
                           //defaultValue={new Date()} 
-                          defaultValue={dayjs(scheduleDate, '16 06,1990')}
-
+                          //defaultValue={dayjs(scheduleDate, '16 06,1990')}
+                          placeholder='Select Date of Birth'
                           style={{ width: "100%", height: "34px" }}
                           onChange={(value) => setScheduleDate(dayjs(value).format('YYYY/MM/DD'))}
                         />
@@ -992,19 +1055,19 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                   <Col xs={24} md={12}>
                     <Form.Item
                       label='Family Situation'
-                      name='Family Situation'
+                      name='FamilySituation'
                       rules={[
                         { required: true, message: 'Please Select your Family Situation!' },
 
                       ]}
-                      // Remplacez initialValue par la valeur initiale de votre choix
-                      onChange={(value) => setSelectedSituation(value)}
+
                     >
                       <Select
                         placeholder='Select Family Situation'
+                        onChange={handlesituationSelect}
+                        value={selectedSituation}
 
-                        onChange={(value) => console.log('Selected situation:', value)}
-                        value={selectedSituation} // La valeur sélectionnée est définie par l'état selectedSituation
+
                       >
                         {situation.map((sit, index) => (
                           <Select.Option key={index} value={sit.st}>
@@ -1040,7 +1103,7 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                       <Input
                         placeholder='Diploma /Speciality'
                         value={diploma}
-                        onChange={(e) => setDiploma(e.target.value)}
+                        onChange={ChangeDiploma}
                       />
                     </Form.Item>
                   </Col>
@@ -1054,7 +1117,7 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                     >
                       <Input placeholder='Educational level'
                         value={educationLevel}
-                        onChange={(e) => setEducationLevel(e.target.value)}
+                        onChange={ChangeEductionLevel}
 
                       />
                     </Form.Item>
@@ -1067,12 +1130,12 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
 
                       ]}
 
+
                     >
-                      <Input
-                        type='number'
-                        placeholder='Experience'
+                      <Input placeholder='Experience'
                         value={experience}
-                        onChange={(e) => setExperience(e.target.value)}
+                        onChange={ChangeExperience}
+
 
                       />
                     </Form.Item>
@@ -1087,7 +1150,9 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
           <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
             <Col xs={24} md={6}>
               <Typography.Title level={5}>Preliminary study of the application </Typography.Title>
-
+              <StyledSecondaryText1>
+                Go to test 2
+              </StyledSecondaryText1>
             </Col>
             <Col xs={24} md={18}>
               <StyledShadowWrapper>
@@ -1119,6 +1184,7 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                   <Col xs={24} md={12}>
                     <StyledInput>
                       <Form.Item
+                        style={{ marginTop: "10px" }}
                         label='Go to test 2 :'
                         name='Gototest2' >
                         <Checkbox checked={isOkChecked} onChange={Ok}>
@@ -1307,6 +1373,7 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                               </Select.Option>
                             ))}
                           </Select>
+
                         </Form.Item>
                       </Col>
                       <Col xs={24} md={12}>
@@ -1417,16 +1484,12 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                         </StyledInput>
                       </Col>
                       <Col xs={24} md={24}>
-                        <Form.Item
-                          label='Comments' name='Comments'
-
+                        <Form.Item label='Comments' name='Comments'
 
                           rules={[
                             { required: true, message: 'Please input your Comments!' },
 
-                          ]}
-
-                        >
+                          ]}>
                           <Input
                             className='InputComment'
                             value={comment}
@@ -1583,7 +1646,7 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                             onChange={(value) => console.log('Selected Intelligence:', value)}
                             value={selectedIntelligenceHR}
                           >
-                            {intelligenceHR.map((p, index) => (
+                            {intelligence.map((p, index) => (
                               <Select.Option key={index} value={p.intlg}>
                                 {p.intlg}
                               </Select.Option>
@@ -1625,12 +1688,11 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
 
                         >
 
-
                           <DatePicker
                             //defaultValue={new Date()} 
                             defaultValue={dayjs(expectedJoinDate, '16 06,1990')}
 
-                            style={{ width: "260%", height: "30px" }}
+                            style={{ width: "100%", height: "30px" }}
                             onChange={(value) => setExpectedJoinDate(dayjs(value).format('YYYY/MM/DD'))}
                           />
 
@@ -1638,9 +1700,8 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                       </Col>
 
 
-
                       <Col xs={24} md={12}>
-                        <Form.Item label='Proposed Salary' name='Proposed Salary'
+                        <Form.Item label='Proposed Site Salary' name='Proposed Salary'
                           rules={[
                             { required: true, message: 'Please input your Proposed Salary!' },
                             { pattern: /^[0-9]+$/, message: 'Proposed Salary must be a number!' },
@@ -1651,21 +1712,30 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                           <Input
                             value={proposedSalary}
                             onChange={handleSalaryChange}
-                            placeholder='Proposed Salary' />
+                            // onChange={(e) => setProposedSalary(e.target.value)}
+                            placeholder={`Proposed Office Salary does not exceed ${officeSalaryMax}`}
+
+                          />
                           {salaryError && <Alert className="custom-alert" message={salaryError} type="error" showIcon />}
+
                         </Form.Item>
                       </Col>
                       <Col xs={24} md={12}>
-                        <Form.Item label='Proposed Daily Rate' name='Proposed Daily Rate'
+                        <Form.Item label='Proposed Site Daily Rate' name='Proposed Daily Rate'
                           rules={[
                             { required: true, message: 'Please input your Proposed Daily Rate!' },
                             { pattern: /^[0-9]+$/, message: 'Proposed Daily Rate must be a number!' },
 
-                          ]}>
+                          ]}
+
+
+                        >
                           <Input
                             value={proposedDailyRate}
                             onChange={handleDailyChange}
-                            placeholder='Proposed Daily Rate' />
+                            // onChange={(e) =>setProposedDailyRate(e.target.value)}
+                            placeholder={`Proposed Daily Rate does not exceed ${dailyRateMax}`}
+                          />
                           {dailyError && <Alert className="custom-alert" message={dailyError} type="error" showIcon />}
                         </Form.Item>
                       </Col>
@@ -1689,7 +1759,9 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                           rules={[
                             { required: true, message: 'Please Select  your Comments!' },
 
-                          ]}>
+                          ]}
+
+                        >
                           <Input
                             className='InputComment'
                             value={commentHr}
@@ -1709,14 +1781,27 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
             </>
           )}
 
+        
+
+
+          {/* {isConfirmationInterview? (
+        <ConfirmationModal
+          open={isConfirmationInterview}
+          paragraph={'Are you sure you want to Save this Interview?'}
+          onDeny={isConfirmationInterview}
+          onConfirm={isConfirmationInterview}
+          modalTitle={<IntlMessages id='common.savaInterview' />}
+        />
+      ) : null} */}
+
 
           <Space
             size={15}
             style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
           >
-            <Button >Cancel</Button>
+            <Button onClick={goBack} >Cancel</Button>
             <Button onClick={Save}
-
+              disabled={isButtonDisabled()}
               type='primary'
               htmlType='submit'>
               Save
@@ -1734,15 +1819,35 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
 
             />
           )}
+          {/* {showAlertConfirmation && (
+        <div className="modal-container">
+          <div className="modal-content">
+            <p>Do you want to save an interview ?</p>
+            <div className="button-container">
+              <button className="red-button" onClick={Save }>Yes</button>
+              <button className="green-button" onClick={() => setShowAlertConfirmation(dalse)}>Cancel</button>
+            </div>
+       
+          </div>
+        </div>
+      )} */}
 
 
-
-        </Form> : null
-      }
-       {roles.includes("Administrator") ?
+        </Form>
+      )}
+      {/*HR Adminstrator*/}
+      {roles.includes("Administrator") && (
         <Form
           layout='vertical'
           style={{ backgroundColor: "white", marginBottom: "20px", padding: "10px", borderRadius: "20px" }}
+          form={form}
+          onSubmit={e => { e.preventDefault() }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+            }
+          }}
+
         // initialValues={settings}
 
         >
@@ -1750,7 +1855,7 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
             <div>
               <Typography.Title level={4}>CONSTRUCTION TEAM INTERVIEW SHEET</Typography.Title>
               <StyledSecondaryText>
-                CONSTRUCTION TEAM
+              CONSTRUCTION TEAM
               </StyledSecondaryText>
             </div>
 
@@ -1770,23 +1875,39 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item label='Interview Date' name='Date :'>
+                    <Form.Item label='Date' name='Date :'
+
+                    >
                       <Input
                         placeholder={formattedDate}
-                        readOnly />
+                        readOnly
+
+                      >
 
 
-                      {/*Date et temp de Interview bu Hr*/}
-                      {/* <DatePicker
-                      //defaultValue={new Date()} 
-                      defaultValue={dayjs(interviewDate, '2024-01-01')}
 
-                      style={{ width: "100%", height: "30px" }}
-                      onChange={(value) =>setInterviewDate(dayjs(value).format('YYYY/MM/DD'))}
-                    /> */}
+
+                      </Input>
+
 
                     </Form.Item>
                   </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Date Interview' name='DateInterview'
+                     
+                    >
+                      <StyledTodoDetailDatePicker className='form-field'>
+
+                        <DatePicker
+                          //defaultValue={new Date()} 
+                          defaultValue={dayjs(interviewDate, '16 06,1990')}
+                          style={{ width: "100%", height: "34px" }}
+                          onChange={(value) => setInterviewDate(dayjs(value).format('YYYY-MM-DD'))}
+                        />
+                      </StyledTodoDetailDatePicker>
+                    </Form.Item>
+                  </Col>
+               
                   <Col xs={24} md={12}>
                     <Form.Item label='JOB CODE:' name='jobcode1'>
                       <Input placeholder={JobCode} readOnly={true} />{/*Ajout le MSIS OU cis*/}
@@ -1836,7 +1957,8 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                 <AppRowContainer>
                   <Col xs={24} md={12}>
                     <Form.Item label='Project Name' name='projname'>
-                      <Input placeholder={projectName}
+                      <Input
+                        placeholder={projectName}
                         readOnly={true} />
                     </Form.Item>
                   </Col>
@@ -1848,11 +1970,9 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                   <Col xs={24} md={12}>
                     <Form.Item label='Department ' name='department '>
                       <Input
-                       placeholder='Department'
-                       value={departement}
-                      onChange={handledepartementChange}
-                    
-                       
+                        placeholder={dep}
+                        readOnly
+
 
                       />
                     </Form.Item>
@@ -1860,11 +1980,13 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
 
                   <Col xs={24} md={12}>
                     <Form.Item label='Requested Qualification' name='requiredQualification'>
-                      <Input placeholder='Requested Qualification'
+                      <Input                      
 
                         value={requiredQualification}
-                        onChange={handleRequiredQualificationChange}
-                        // onChange={(e) => setRequiredQualification(e.target.value)}
+                        onChange={RequireQalification}
+                        placeholder={level}
+                        readOnly
+
 
 
                       />
@@ -1873,9 +1995,10 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                   <Col xs={24} md={12}>
                     <Form.Item label='Requested Experience' name='requiredExperinece'>
                       <Input
-                     value={requiredExperinece}
-                     onChange={handleRequiredExperineceChange}
-                      placeholder='Requested Experience' />
+                        value={requiredExperinece}
+                        onChange={RequireExperience}
+                        readOnly
+                        placeholder={experienceRequired} />
                     </Form.Item>
                   </Col>
 
@@ -1896,11 +2019,12 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                     <Form.Item label='Full Name' name='fullName'
                       rules={[
                         { required: true, message: 'Please input your Full Name!' },
-                      ]}>
+                      ]}
+
+                    >
                       <Input placeholder='Full Name'
                         value={fullname}
-                        onChange={handleFullNameChange}
-                     
+                        onChange={ChangeFullName}
 
                       />
                     </Form.Item>
@@ -1915,13 +2039,14 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                     >
                       <Input placeholder='Contact Full Number'
                         value={contactFullNumber}
-                        onChange={(e) => setContactFullNumber(e.target.value)}
+                        onChange={ChangeContactFullNumber}
+
 
                       />
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item label='Contact Email' name='Contact Email'
+                    <Form.Item label='Contact Email' name='ContactEmail'
 
                       rules={[
                         { required: true, message: 'Please input your Contact Email!' },
@@ -1930,9 +2055,10 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
 
 
                     >
-                      <Input placeholder='Contact Email'
+                      <Input
+                        placeholder='Contact Email'
                         value={contactEmail}
-                        onChange={(e) => setcontactEmail(e.target.value)}
+                        onChange={ChangeContactEmail}
 
 
                       />
@@ -1941,11 +2067,7 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
 
                   <Col xs={24} md={12}>
                     <Form.Item label='Date of Birth' name='birthayDate'
-                      rules={[
-                        { required: true, message: 'Please input your Date of Birth!' },
-
-                      ]}
-                    >
+                   >
                       <StyledTodoDetailDatePicker className='form-field'>
 
                         <DatePicker
@@ -1953,7 +2075,7 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                           defaultValue={dayjs(scheduleDate, '16 06,1990')}
 
                           style={{ width: "100%", height: "34px" }}
-                          onChange={(value) => setScheduleDate(dayjs(value).format('YYYY/MM/DD'))}
+                          onChange={(value) => setScheduleDate(dayjs(value).format('YYYY-MM-DD'))}
                         />
                       </StyledTodoDetailDatePicker>
                     </Form.Item>
@@ -1962,19 +2084,17 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                   <Col xs={24} md={12}>
                     <Form.Item
                       label='Family Situation'
-                      name='Family Situation'
+                      name='FamilySituation'
                       rules={[
                         { required: true, message: 'Please Select your Family Situation!' },
 
                       ]}
-                      // Remplacez initialValue par la valeur initiale de votre choix
-                      onChange={(value) => setSelectedSituation(value)}
+
                     >
                       <Select
                         placeholder='Select Family Situation'
-
-                        onChange={(value) => console.log('Selected situation:', value)}
-                        value={selectedSituation} // La valeur sélectionnée est définie par l'état selectedSituation
+                        onChange={handlesituationSelect}
+                        value={selectedSituation}
                       >
                         {situation.map((sit, index) => (
                           <Select.Option key={index} value={sit.st}>
@@ -2010,7 +2130,9 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                       <Input
                         placeholder='Diploma /Speciality'
                         value={diploma}
-                        onChange={(e) => setDiploma(e.target.value)}
+                        onChange={ChangeDiploma}
+
+
                       />
                     </Form.Item>
                   </Col>
@@ -2024,7 +2146,7 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
                     >
                       <Input placeholder='Educational level'
                         value={educationLevel}
-                        onChange={(e) => setEducationLevel(e.target.value)}
+                        onChange={ChangeEductionLevel}
 
                       />
                     </Form.Item>
@@ -2037,12 +2159,11 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
 
                       ]}
 
+
                     >
-                      <Input
-                        type='number'
-                        placeholder='Experience'
+                      <Input placeholder='Experience'
                         value={experience}
-                        onChange={(e) => setExperience(e.target.value)}
+                        onChange={ChangeExperience}
 
                       />
                     </Form.Item>
@@ -2052,15 +2173,17 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
               </StyledShadowWrapper>
             </Col>
           </AppRowContainer>
-      
+
+
 
           <Space
             size={15}
             style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
           >
-            <Button >Cancel</Button>
-            <Button onClick={Save}
-
+            <Button onClick={goBack} >Cancel</Button>
+            <Button
+              onClick={BeforeSaveInterview}
+              disabled={isButtonDisabled()}
               type='primary'
               htmlType='submit'>
               Save
@@ -2078,13 +2201,22 @@ const TabsInterviewSheetConstructionId = ({ isSaveDisabled, JobCode, totalNumber
 
             />
           )}
-
-
-
-        </Form> : null
-      }
+          {/* {showAlertConfirmation && (
+      <div className="modal-container">
+        <div className="modal-content">
+          <p>Do you want to save an interview ?</p>
+          <div className="button-container">
+            <button className="red-button" onClick={Save }>Yes</button>
+            <button className="green-button" onClick={() => setShowAlertConfirmation(dalse)}>Cancel</button>
+          </div>
      
+        </div>
+      </div>
+    )} */}
 
+
+        </Form>
+      )}
     </>
   );
 };

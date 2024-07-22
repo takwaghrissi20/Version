@@ -295,64 +295,76 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
     //   key: 'expectedJoinDate',
     // },
     {
-      title: ' Evaluator  Approval',
+      title: 'Evaluator Approval',
       dataIndex: 'notif',
       key: 'notif',
-      render: (text, record) => (
-        record.notif === 5 ? (
-          <StyledRecentPatientBadge
-            style={{
-              color: record.color,
-              backgroundColor:"red",
-              color:"white",
-              fontFamily:"inherit"
-            }}
-          >
-            Accepter
-          </StyledRecentPatientBadge>
-        ) : (
-          <StyledRecentPatientBadge
-            style={{
-              color: record.color,
-              backgroundColor:"green",
-              color:"white",
-              fontFamily:"inherit"
-            }}
-          >
-            pending
-          </StyledRecentPatientBadge>
-        )
-      ),
+      render: (text, record) => {
+        if (record.notif === 2 || record.notif === 1  ) {
+          return (
+            <StyledRecentPatientBadge
+              style={{
+                color: record.color,
+                backgroundColor: "red",
+                color: "white",
+                fontFamily: "inherit"
+              }}
+            >
+              Approved By Evaluator
+            </StyledRecentPatientBadge>
+          );
+        } else if (record.notif === 6) {
+          return (
+            <StyledRecentPatientBadge
+              style={{
+                color: record.color,
+                backgroundColor: "red",
+                color: "white",
+                fontFamily: "inherit"
+              }}
+            >
+              Approved By HSE
+            </StyledRecentPatientBadge>
+          );
+        }
+        return null;
+      },
     },
+    
     {
       title: ' HR  Approval',
       dataIndex: 'notif',
       key: 'notif',
-      render: (text, record) => (
-        record.notif === 1 ? (
-          <StyledRecentPatientBadge
-            style={{
-              color: record.color,
-              backgroundColor:"red",
-              color:"white",
-              fontFamily:"inherit"
-            }}
-          >
-            Accepter
-          </StyledRecentPatientBadge>
-        ) : (
-          <StyledRecentPatientBadge
-            style={{
-              color: record.color,
-              backgroundColor:"green",
-              color:"white",
-              fontFamily:"inherit"
-            }}
-          >
-         pending
-          </StyledRecentPatientBadge>
-        )
-      ),
+      render: (text, record) => {
+        if (record.notif === 5   ) {
+          return (
+            <StyledRecentPatientBadge
+              style={{
+                color: record.color,
+                backgroundColor: "red",
+                color: "white",
+                fontFamily: "inherit"
+              }}
+            >
+              Approved By HR Manager
+            </StyledRecentPatientBadge>
+          );
+        } 
+        // else if (record.notif === 6) {
+        //   return (
+        //     <StyledRecentPatientBadge
+        //       style={{
+        //         color: record.color,
+        //         backgroundColor: "red",
+        //         color: "white",
+        //         fontFamily: "inherit"
+        //       }}
+        //     >
+        //       Approved By HSE
+        //     </StyledRecentPatientBadge>
+        //   );
+        // }
+        // return null;
+      },
      
     },
    
@@ -381,7 +393,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
 
         
         ];  
-        if (record.notif === 3 ) {
+        if (record.notif === 5 ) {
           items.push({ key: 4, label: <span style={{ fontSize: 14 }}>Add Employees</span>, 
           onClick:handleAddEmployees });
         }

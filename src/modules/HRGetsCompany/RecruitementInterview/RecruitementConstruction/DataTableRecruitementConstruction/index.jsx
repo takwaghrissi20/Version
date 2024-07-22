@@ -281,7 +281,7 @@ const AllRecruitementStaff = ({ roles,allrecruitementbelow, findIdData, id, find
       width: 100,
       render: (status) => {
         let backgroundColor;
-        let color = 'white'; 
+        let color = 'blue'; 
     
         if (status.includes('Pending')) {
           backgroundColor = 'red';
