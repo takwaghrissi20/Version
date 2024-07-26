@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../../@crema/components/AppRowContainer';
-import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox, notification, DatePicker, } from 'antd';
+import { Button, Col, Divider, Form, Input, Space, Typography, TimePicker, Select, Alert, Checkbox, notification, DatePicker, } from 'antd';
 import { MdEdit } from 'react-icons/md';
 import {
   StyledSecondaryText,
@@ -10,7 +10,8 @@ import {
   StyledSelectRow,
   StyledTodoSelectName,
   StyledInput,
-  StyledSignLink
+  StyledSignLink,
+
 } from './index.styled';
 import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
@@ -28,12 +29,12 @@ const TabsInterviewSheetConstructionId = () => {
   const position = location.state ? location.state.position : null;
   const experienceRequired = location.state ? location.state.experience : null;
   const dep = location.state ? location.state.dep : null;
-
   const [isConfirmationInterview, setIsConfirmationInterview] = useState(false);
   const [showAlertError, setShowAlertError] = useState(false);
   const [showAlertConfirmation, setShowAlertConfirmation] = useState(false);
   const [dataInterview, setDataInterview] = useState([]);
   const [interviewDate, setInterviewDate] = useState("");
+  const [interviewTime, setInterviewTime] = useState(dayjs().format('HH:mm:ss.SSS'));
   const [scheduleDate, setScheduleDate] = useState("");
   const [expectedJoinDate, setExpectedJoinDate] = useState("");
   const [datalastIdinterview, setDatalastIdinterview] = useState("")
@@ -106,7 +107,7 @@ const TabsInterviewSheetConstructionId = () => {
   const [salaryError, setSalaryError] = useState('');
   const [dailyError, setDailyError] = useState('');
   const [form] = Form.useForm();
-  console.log("interviewDate",interviewDate)
+  console.log("interviewDate", interviewDate)
 
   const [evaluationDate, setEvaluationDate] = useState(dayjs().format('DD/MM/YYYY'));
   const [dateInput, setDateInput] = useState(new Date());
@@ -240,6 +241,14 @@ const TabsInterviewSheetConstructionId = () => {
     { des: 'On Hold' },
 
   ];
+  //////////////Time
+  const handleTimeChange = (value) => {
+    if (value) {
+      setInterviewTime(dayjs(value).format('HH:mm:ss.SSS'));
+    }
+  };
+console.log("timeeewss",interviewTime)
+  /////////////End Time
   const fetchData = async () => {
     try {
       const endPoint =
@@ -547,10 +556,10 @@ const TabsInterviewSheetConstructionId = () => {
   };
   const BeforeSaveInterview = () => {
     //setIsModalVisible(true)
-    form.validateFields(['fullName','telCondidate','ContactEmail','FamilySituation','diploma','educationLevel','experience'
+    form.validateFields(['fullName', 'telCondidate', 'ContactEmail', 'FamilySituation', 'diploma', 'educationLevel', 'experience'
 
     ]).then(values => {
-    
+
       SaveHRADMONISTRTOR()
 
     }).catch(errorInfo => {
@@ -560,7 +569,7 @@ const TabsInterviewSheetConstructionId = () => {
 
     });
   };
- 
+
   const SaveHRADMONISTRTOR = async () => {
     // if (salaryError || dailyError) {
     //   return;
@@ -571,7 +580,6 @@ const TabsInterviewSheetConstructionId = () => {
     //   return;
     // }
     try {
-      console.log("selectedValidation", selectedValidation)
       const endPoint =
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
@@ -597,10 +605,10 @@ const TabsInterviewSheetConstructionId = () => {
           requiredExperinece: requiredExperinece,
           requiredQualification: requiredQualification,
           fullName: fullname,
-          interviwDate:interviewDate,
-          telCondidate:contactFullNumber,
-          email:contactEmail,
-          familySituation:selectedSituation,
+          interviwDate: interviewDate,
+          contactPhone: contactFullNumber,
+          contactEmail: contactEmail,
+          familySituation: selectedSituation,
           // telCondidate: contactFullNumber,
           // email: contactEmail,
           // birthayDate:scheduleDate,
@@ -610,8 +618,8 @@ const TabsInterviewSheetConstructionId = () => {
           requiredExperinece: requiredExperinece,
           notif: 0,
           inputInterview: formattedDate,
-          birthayDate:scheduleDate
-
+          birthayDate: scheduleDate,
+          time:interviewTime
           // interviwDate: interviewDate,
           // fullName: fullname,
           // projname: projectName,
@@ -835,7 +843,7 @@ const TabsInterviewSheetConstructionId = () => {
             <div>
               <Typography.Title level={4}>CONSTRUCTION TEAM INTERVIEW SHEET</Typography.Title>
               <StyledSecondaryText>
-              CONSTRUCTION TEAM
+                CONSTRUCTION TEAM
               </StyledSecondaryText>
             </div>
 
@@ -882,6 +890,7 @@ const TabsInterviewSheetConstructionId = () => {
                       </StyledTodoDetailDatePicker>
                     </Form.Item>
                   </Col>
+
                   <Col xs={24} md={12}>
                     <Form.Item label='JOB CODE:' name='jobcode1'>
                       <Input placeholder={JobCode} readOnly={true} />{/*Ajout le MSIS OU cis*/}
@@ -942,9 +951,11 @@ const TabsInterviewSheetConstructionId = () => {
                   </Col>
                   <Col xs={24} md={12}>
                     <Form.Item label='Department ' name='department '>
-                      <Input placeholder='Department'
+                      <Input
+                        placeholder={dep}
                         value={departement}
                         onChange={(e) => setDepartement(e.target.value)}
+                        readOnly
 
                       />
                     </Form.Item>
@@ -1433,7 +1444,7 @@ const TabsInterviewSheetConstructionId = () => {
                         <StyledInput>
                           <Form.Item
                             label='The present profile meets the requirements of 
-                  the requested position :'
+                                   the requested position :'
                             name='Present profile' >
                             <Checkbox checked={isOkCheckedProfile} onChange={OkProfile}>
 
@@ -1781,7 +1792,7 @@ const TabsInterviewSheetConstructionId = () => {
             </>
           )}
 
-        
+
 
 
           {/* {isConfirmationInterview? (
@@ -1855,7 +1866,7 @@ const TabsInterviewSheetConstructionId = () => {
             <div>
               <Typography.Title level={4}>CONSTRUCTION TEAM INTERVIEW SHEET</Typography.Title>
               <StyledSecondaryText>
-              CONSTRUCTION TEAM
+                CONSTRUCTION TEAM
               </StyledSecondaryText>
             </div>
 
@@ -1880,12 +1891,7 @@ const TabsInterviewSheetConstructionId = () => {
                     >
                       <Input
                         placeholder={formattedDate}
-                        readOnly
-
-                      >
-
-
-
+                        readOnly>
 
                       </Input>
 
@@ -1894,7 +1900,7 @@ const TabsInterviewSheetConstructionId = () => {
                   </Col>
                   <Col xs={24} md={12}>
                     <Form.Item label='Date Interview' name='DateInterview'
-                     
+
                     >
                       <StyledTodoDetailDatePicker className='form-field'>
 
@@ -1907,7 +1913,24 @@ const TabsInterviewSheetConstructionId = () => {
                       </StyledTodoDetailDatePicker>
                     </Form.Item>
                   </Col>
-               
+                  {/*Time*/}
+
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Time Interview' name='TimeInterview'>
+                      <StyledTodoDetailDatePicker
+                        className='form-field'>
+                        <TimePicker
+                          defaultValue={dayjs('12:00:00.000', 'HH:mm:ss.SSS')}
+                          format='HH:mm:ss.SSS'
+                          style={{ width: "100%", height: "34px" }}
+                          onChange={handleTimeChange}
+                        />
+                      </StyledTodoDetailDatePicker >
+                    </Form.Item>
+                  </Col>
+
+                  {/*End Time*/}
+
                   <Col xs={24} md={12}>
                     <Form.Item label='JOB CODE:' name='jobcode1'>
                       <Input placeholder={JobCode} readOnly={true} />{/*Ajout le MSIS OU cis*/}
@@ -1980,7 +2003,7 @@ const TabsInterviewSheetConstructionId = () => {
 
                   <Col xs={24} md={12}>
                     <Form.Item label='Requested Qualification' name='requiredQualification'>
-                      <Input                      
+                      <Input
 
                         value={requiredQualification}
                         onChange={RequireQalification}
@@ -2067,7 +2090,7 @@ const TabsInterviewSheetConstructionId = () => {
 
                   <Col xs={24} md={12}>
                     <Form.Item label='Date of Birth' name='birthayDate'
-                   >
+                    >
                       <StyledTodoDetailDatePicker className='form-field'>
 
                         <DatePicker

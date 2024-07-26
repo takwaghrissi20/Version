@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox, DatePicker, } from 'antd';
 import { MdEdit } from 'react-icons/md';
-
 import { StyledBuyCellCard, StyledTabs } from '../../styles/index.styled';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import dayjs from 'dayjs';
 import InterviewSheet from './TabsInterviewConstruction';
 import AssignementConstruction from './TabsAssignementConstruction';
-
 
 const InterviewSheetById = () => {
   const location = useLocation();

@@ -14,7 +14,7 @@ const AppVerticalNav = ({ routesConfig }) => {
   const selectedKeys = pathname.substr(1);
   const [openKeys, setOpenKeys] = useState([selectedKeys[0]]);
   const userRole = localStorage.getItem("role");
- 
+
 
   useEffect(() => {
     setOpenKeys([selectedKeys[selectedKeys.length - 2]]);
@@ -35,186 +35,237 @@ const AppVerticalNav = ({ routesConfig }) => {
     setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
   };
   const filterMenuItems = (items) => {
-    console.log("filterMenuItemspp",items)
-    return items.filter(item => { 
-      if (userRole.includes("Manager")) {
-        if (item.id === "VisaHealth"||
-            item.id === "ManpowerLocation"||
-            item.id === "Employees"  ||
-            item.id === "attendance" ||
-           
-            item.id === "ManpowerEvaluation" ||
-            item.id === "Site Clerk"  ||
-            item.id === "PROJECTS TRIP TRACK RECORD " ||
-            item.id === "Payroll" 
-                              
-          )
-           {
-          return false; 
+    console.log("filterMenuItemspp", items)
+    return items.filter(item => {
+      if (userRole.includes("Manager") && !userRole.includes("Construction") &&!userRole.includes("Project") ) {
+        if (item.id === "VisaHealth" ||
+          item.id === "ManpowerLocation" ||
+          item.id === "Employees" ||
+          item.id === "attendance" ||
+          item.id === "ManpowerEvaluation" ||
+          item.id === "Site Clerk" ||
+          item.id === "PROJECTS TRIP TRACK RECORD " ||
+          item.id === "Payroll"
+
+        ) {
+          return false;
         }
       }
-      if (userRole.includes("Leader") ) {
-        if (item.id === "VisaHealth"||
-          item.id === "ManpowerLocation"||
-          item.id === "Employees"  ||
+      //Construction
+      if (userRole.includes("Construction")) {
+        if (item.id === "VisaHealth" ||
+          item.id === "ManpowerLocation" ||
+          item.id === "Employees" ||
           item.id === "attendance" ||
-          item.id === "VacationLeave"  ||
-          item.id === "ManpowerEvaluation" ||
-          item.id === "Site Clerk"  ||
-          item.id === "PROJECTS TRIP TRACK RECORD "  ||
-          item.id === "Payroll" 
-          
-       
-                                              
-          )
 
-           {
-          return false; 
+          item.id === "ManpowerEvaluation" ||
+          item.id === "Site Clerk" ||
+
+          item.id === "Payroll" ||
+          item.id === "recruitement"
+
+        ) {
+          return false;
+        }
+      }
+
+      //End Construction
+       //Project Manager
+       if (userRole.includes("Project")) {
+        if (item.id === "VisaHealth" ||
+          item.id === "ManpowerLocation" ||
+          item.id === "Employees" ||
+          item.id === "attendance" ||
+          item.id === "VacationLeave" ||
+          item.id === "PROJECTS TRIP TRACK RECORD " ||
+
+          item.id === "ManpowerEvaluation" ||
+          item.id === "Site Clerk" ||
+
+          item.id === "Payroll" ||
+          item.id === "recruitement"
+
+        ) {
+          return false;
+        }
+      }
+
+
+
+      //Project Manager
+      if (userRole.includes("Leader")) {
+        if (item.id === "VisaHealth" ||
+          item.id === "ManpowerLocation" ||
+          item.id === "Employees" ||
+          item.id === "attendance" ||
+          item.id === "VacationLeave" ||
+          item.id === "ManpowerEvaluation" ||
+          item.id === "Site Clerk" ||
+          item.id === "PROJECTS TRIP TRACK RECORD " ||
+          item.id === "Payroll"
+
+
+
+
+        ) {
+          return false;
         }
       }
       if (userRole.includes("Planner")) {
-        if (item.id === "VisaHealth"||
-            item.id === "ManpowerLocation"||
-            item.id === "Employees"  ||
-            item.id === "attendance" ||
-            item.id === "VacationLeave" ||
-            item.id === "ManpowerEvaluation"  ||
-            item.id === "Dashboards"  ||
-            item.id === "recruitement" ||
-             item.id === "dashboards" ||
-             item.id === "Site Clerk"||
-             item.id === "PROJECTS TRIP TRACK RECORD " ||
-             item.id === "Payroll" 
+        if (item.id === "VisaHealth" ||
+          item.id === "ManpowerLocation" ||
+          item.id === "Employees" ||
+          item.id === "attendance" ||
+          item.id === "VacationLeave" ||
+          item.id === "ManpowerEvaluation" ||
+          item.id === "Dashboards" ||
+          item.id === "recruitement" ||
+          item.id === "dashboards" ||
+          item.id === "Site Clerk" ||
+          item.id === "PROJECTS TRIP TRACK RECORD " ||
+          item.id === "Payroll"
 
 
-          )
-           {
-          return false; 
+        ) {
+          return false;
         }
       }
       else if (userRole.includes("bod")) {
-        if (item.id === "VisaHealth"||
-            item.id === "ManpowerLocation"||
-            item.id === "Employees"  ||
-            item.id === "attendance" ||
-            item.id === "VacationLeave" ||
-            item.id === "ManpowerEvaluation" ||
-            item.id === "Add Recruitment"   ||
-            item.id === "Site Clerk"  ||
-             item.id === "PROJECTS TRIP TRACK RECORD " ||
-             item.id === "Payroll" 
+        if (item.id === "VisaHealth" ||
+          item.id === "ManpowerLocation" ||
+          item.id === "Employees" ||
+          item.id === "attendance" ||
+          item.id === "VacationLeave" ||
+          item.id === "ManpowerEvaluation" ||
+          item.id === "Add Recruitment" ||
+          item.id === "Site Clerk" ||
+          item.id === "PROJECTS TRIP TRACK RECORD " ||
+          item.id === "Payroll"
 
 
 
-                                    
-          )
-           {
-          return false; 
+
+        ) {
+          return false;
         }
       }
       if (userRole.includes("Administrator")) {
         if (item.id === "VisaHealth" ||
-            item.id === "attendance" ||
-            item.id === "ManpowerLocation" || 
-            item.id === "ManpowerEvaluation" ||
-            item.id === "Site Clerk"  ||
-            item.id === "PROJECTS TRIP TRACK RECORD " ||
-            item.id === "Payroll" 
-            // item.id === "Employees"  ||
-            // item.id === "attendance" ||
-            // item.id === "VacationLeave"  ||
-            // item.id === "ManpowerEvaluation" ||
-            // item.id === "Site Clerk"  ||
-            // item.id === "PROJECTS TRIP TRACK RECORD "                           
-          )
-           {
-          return false; 
+          item.id === "attendance" ||
+          item.id === "ManpowerLocation" ||
+          item.id === "ManpowerEvaluation" ||
+          item.id === "Site Clerk" ||
+          item.id === "PROJECTS TRIP TRACK RECORD " ||
+          item.id === "Payroll"
+          // item.id === "Employees"  ||
+          // item.id === "attendance" ||
+          // item.id === "VacationLeave"  ||
+          // item.id === "ManpowerEvaluation" ||
+          // item.id === "Site Clerk"  ||
+          // item.id === "PROJECTS TRIP TRACK RECORD "                           
+        ) {
+          return false;
         }
       }
       else if (userRole.includes("admin")) {
         if (
-            item.id === ""   
-                 
-          )
-           
-             {
-          return false; 
-        }
-      }
-   
+          item.id === ""
 
-      if (item.children && item.children.length > 0) { 
+        ) {
+          return false;
+        }
+      }
+
+      if (item.children && item.children.length > 0) {
         item.children = filterMenuItems(item.children);
-      }     
-      else if (userRole.includes("Manager")) {
-        if (item.id === "Interview Statistics" ||
-            item.id === "Integration" ||
-            item.id === "IntegrationStatistics" ||
-            item.id === "ReportedReports" ||        
-            item.id === "VisaHealth" ) 
-           
-             {
-          return false; 
-        }
       }
-      else if (userRole.includes("Administrator")) {
-        if (item.id === "Add Project" ||
-            item.id === "AddEmployees" ||
-            item.id === "CategoryContract" ||
-            item.id === "contractList"  ||
-             item.id === "Add Recruitment"
-        )
-             {
-          return false; 
-        }
-      }
-      else if (userRole.includes("Leader")) {
+      else if (userRole.includes("Manager") && !userRole.includes("Construction")) {
         if (item.id === "Interview Statistics" ||
           item.id === "Integration" ||
-          item.id === "IntegrationStatistics" 
-        )
-             {
-          return false; 
+          item.id === "IntegrationStatistics" ||
+          item.id === "ReportedReports" ||
+          item.id === "VisaHealth") {
+          return false;
         }
       }
+      ///Construction
+      else if (userRole.includes("Construction")) {
+        if (item.id === "Add Mission " ||
+          item.id === "Add Internal  Mission" ||
+          item.id === "Add Mission" ||
+          item.id === "MissionExtention" ||
+          item.id === "AddDemobInput" ||
+          item.id === "DemobPermissionSite" ||
+          item.id === "DemobTripTrackRecord" ||
+          item.id === "SummaryDemobTrip" ||
+          item.id === "SummarymobTrip" 
+           
+        )
+
+    {
+      return false;
+    }
+  }
+
+
+
+   ////End Construction
+  else if (userRole.includes("Administrator")) {
+  if (item.id === "Add Project" ||
+    item.id === "AddEmployees" ||
+    item.id === "CategoryContract" ||
+    item.id === "contractList" ||
+    item.id === "Add Recruitment"
+  ) {
+    return false;
+  }
+}
+else if (userRole.includes("Leader")) {
+  if (item.id === "Interview Statistics" ||
+    item.id === "Integration" ||
+    item.id === "IntegrationStatistics"
+  ) {
+    return false;
+  }
+}
 
 
 
 
 
 
-      
-  
-      return true;
+
+
+return true;
     });
   };
-  
 
-  const filteredRoutesConfig = filterMenuItems(routesConfig);
 
-  return (
-    <StyledVerticalNav
-      theme={sidebarColorSet.mode}
-      color={sidebarColorSet.sidebarMenuSelectedTextColor}
-      bgcolor={sidebarColorSet.sidebarMenuSelectedBgColor}
-      mode="inline"
-      className={clsx({
-        "menu-rounded": menuStyle === MenuStyle.ROUNDED,
-        "menu-rounded rounded-menu-reverse":
-          menuStyle === MenuStyle.ROUNDED_REVERSE,
-        "menu-rounded standard-menu": menuStyle === MenuStyle.STANDARD,
-        "menu-rounded curved-menu": menuStyle === MenuStyle.CURVED_MENU,
-        "bg-color-menu":
-          sidebarColorSet.sidebarBgColor !==
-          defaultConfig.sidebar.colorSet.sidebarBgColor,
-      })}
-      openKeys={openKeys}
-      onOpenChange={onOpenChange}
-      selectedKeys={selectedKeys.split("/")}
-      // defaultOpenKeys={[defaultOpenKeys]}
-      items={getRouteMenus(filteredRoutesConfig)}
-    />
-  );
+const filteredRoutesConfig = filterMenuItems(routesConfig);
+
+return (
+  <StyledVerticalNav
+    theme={sidebarColorSet.mode}
+    color={sidebarColorSet.sidebarMenuSelectedTextColor}
+    bgcolor={sidebarColorSet.sidebarMenuSelectedBgColor}
+    mode="inline"
+    className={clsx({
+      "menu-rounded": menuStyle === MenuStyle.ROUNDED,
+      "menu-rounded rounded-menu-reverse":
+        menuStyle === MenuStyle.ROUNDED_REVERSE,
+      "menu-rounded standard-menu": menuStyle === MenuStyle.STANDARD,
+      "menu-rounded curved-menu": menuStyle === MenuStyle.CURVED_MENU,
+      "bg-color-menu":
+        sidebarColorSet.sidebarBgColor !==
+        defaultConfig.sidebar.colorSet.sidebarBgColor,
+    })}
+    openKeys={openKeys}
+    onOpenChange={onOpenChange}
+    selectedKeys={selectedKeys.split("/")}
+    // defaultOpenKeys={[defaultOpenKeys]}
+    items={getRouteMenus(filteredRoutesConfig)}
+  />
+);
 };
 
 export default AppVerticalNav;

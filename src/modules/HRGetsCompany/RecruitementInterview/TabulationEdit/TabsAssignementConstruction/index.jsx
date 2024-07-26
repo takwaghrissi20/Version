@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../../../../@crema/components/AppRowContainer';
-import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox, DatePicker, } from 'antd';
+import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox, DatePicker, notification } from 'antd';
 import { MdEdit } from 'react-icons/md';
 import {
   StyledSecondaryText,
@@ -15,10 +15,36 @@ import { useNavigate } from "react-router-dom";
 
 import dayjs from 'dayjs';
 import IntlMessages from '../../../../../@crema/helpers/IntlMessages';
+import ViewAssignement from "../TabsAssignementConstruction/View";
 
-const TabsAssignement = ({ isSaveDisabled, interviewCode}) => {
+const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, validatesFor, goTotest2, psy_Person, psy_HumQuality
+  , psy_motivation, psy_Intellig, goToTest3, techEnglishSkills, techDate, techEvaluation, idNumb, meetDesision, evalDesision,
+  techcommentaire, hseCertif, siteHazCont,
+  properUse,
+  hzardousMater,
+  emergency,
+  ptw,
+  hsePolicies,
+  others,
+  educAndTrain,
+  workExp,
+  DiversityTal,
+  intellCap,
+  selfConf,
+  emotIntellij,
+  comunicSkills,
+  passion,
+  creativity,
+  physicPres,
+  leadership,
+  hseDecision,
+  hseComment,
+  idViewConstruction 
+
+
+}) => {
   console.log("isSaveDisabled2", isSaveDisabled)
- 
+
   const location = useLocation();
   const roles = window.localStorage.getItem("role");
   const JobCode = location.state ? location.state.JobCode : null;
@@ -102,7 +128,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode}) => {
   const [selectedHSEPolicies, setSelectedHSEPolicies] = useState('');
   const [selectedOthers, setSelectedOthers] = useState('');
   const currentYear = new Date().getFullYear();
-console.log("selectedHSECertificates",selectedHSECertificates)
+  console.log("selectedHSECertificates", selectedHSECertificates)
   const fetchData = async () => {
     try {
       const endPoint =
@@ -172,21 +198,72 @@ console.log("selectedHSECertificates",selectedHSECertificates)
   const goback = () => {
     navigate(`/Hr/Recruitement&Interview/ConstructionStaffInterview/Update/${interviewCode}`, {
       state: {
-        hseCertif:selectedHSECertificates,
+        hseCertif: selectedHSECertificates,
         siteHazCont: selectedSitehazardscontrol,
-        properUse:selectedProperuse,
+        properUse: selectedProperuse,
         hzardousMater: selectedHazardousmaterials,
-        emergency:selectedEmergenceEvacuation,
-        ptw:selectedPTWknowledge,
-        hsePolicies:selectedHSEPolicies,
-        others:selectedOthers
-        
+        emergency: selectedEmergenceEvacuation,
+        ptw: selectedPTWknowledge,
+        hsePolicies: selectedHSEPolicies,
+        others: selectedOthers
 
-      
+
+
       }
     });
   }
-
+  const openNotification = () => {
+    notification.open({
+      message: 'Success',
+      description: 'Success INTERVIEW ASSESMENT SHEET',
+      style: {
+        backgroundColor: '#28a745',
+        border: '1px solid #28a745',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #1f8838',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
+  const openNotificationError = () => {
+    notification.open({
+      message: 'Error',
+      description: 'Error INTERVIEW ASSESMENT SHEET',
+      style: {
+        backgroundColor: 'red',
+        border: '1px solid #dc3545',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #bd1120',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
   const Save = async () => {
     try {
       const endPoint =
@@ -194,7 +271,7 @@ console.log("selectedHSECertificates",selectedHSECertificates)
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-          const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
         method: 'PUT',
         headers: {
           "Access-Control-Allow-Headers": "Content-Type",
@@ -205,28 +282,35 @@ console.log("selectedHSECertificates",selectedHSECertificates)
 
         body: JSON.stringify({
           interviewCode: interviewCode,
-          //  hseCertif:selectedHSECertificates,
-          // siteHazCont: selectedSitehazardscontrol,
-          // properUse:selectedProperuse,
-          // hzardousMater: selectedHazardousmaterials,
-          // emergency:selectedEmergenceEvacuation,
-          // ptw:selectedPTWknowledge,
-          // hsePolicies:selectedHSEPolicies,
-          // others:selectedOthers,
-          notif:2,
-
-        
-
-
-
-
-
+          validatesFor: validatesFor,
+          goTotest2: goTotest2,
+          psy_Person: psy_Person,
+          psy_HumQuality: psy_HumQuality,
+          psy_motivation: psy_motivation,
+          psy_Intellig: psy_Intellig,
+          goToTest3: goToTest3,
+          techEnglishSkills: techEnglishSkills,
+          techDate: techDate,
+          techEvaluation: techEvaluation,
+          idNumb: idNumb,
+          meetDesision: meetDesision,
+          evalDesision: evalDesision,
+          techcommentaire: techcommentaire,
+          hseCertif: selectedHSECertificates,
+          siteHazCont: selectedSitehazardscontrol,
+          properUse: selectedProperuse,
+          hzardousMater: selectedHazardousmaterials,
+          emergency: selectedEmergenceEvacuation,
+          ptw: selectedPTWknowledge,
+          hsePolicies: selectedHSEPolicies,
+          others: selectedOthers,
+          notif: 100,
 
         })
       });
 
       if (!response.ok) {
-        setShowAlertError(true)
+        openNotificationError('bottomRight')
         throw new Error('La requête a échoué avec le code ' + response.status);
       }
 
@@ -238,6 +322,7 @@ console.log("selectedHSECertificates",selectedHSECertificates)
         const data = await response.json();
         console.log("dattaaammmmm", data)
         setDataInterview(data)
+        openNotification('bottomRight')
         // navigate(-1);
       }
 
@@ -245,15 +330,15 @@ console.log("selectedHSECertificates",selectedHSECertificates)
       console.error('Erreur lors de la récupération des données:', error);
     }
   };
-  {/*HRMANAGER*/}
-  const  SaveHrManager= async () => {
+  {/*HRMANAGER*/ }
+  const SaveHrManager = async () => {
     try {
       const endPoint =
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-          const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
         method: 'PUT',
         headers: {
           "Access-Control-Allow-Headers": "Content-Type",
@@ -264,18 +349,45 @@ console.log("selectedHSECertificates",selectedHSECertificates)
 
         body: JSON.stringify({
           interviewCode: interviewCode,
+          validatesFor: validatesFor,
+          goTotest2: goTotest2,
+          psy_Person: psy_Person,
+          psy_HumQuality: psy_HumQuality,
+          psy_motivation: psy_motivation,
+          psy_Intellig: psy_Intellig,
+          goToTest3: goToTest3,
+          techEnglishSkills: techEnglishSkills,
+          techDate: techDate,
+          techEvaluation: techEvaluation,
+          idNumb: idNumb,
+          meetDesision: meetDesision,
+          evalDesision: evalDesision,
+          techcommentaire: techcommentaire,
+          hseCertif: hseCertif,
+          siteHazCont: siteHazCont,
+          properUse: properUse,
+          hzardousMater: hzardousMater,
+          emergency: emergency,
+          ptw: ptw,
+          hsePolicies: hsePolicies,
+          others: others,
+          educAndTrain: selectedEducationTraining,
+          workExp: selectedworkExperience,
+          DiversityTal: selectedDiversity,
+          intellCap: selectedIntellectualCapability,
+          selfConf: selectedSelfconfidence,
+          emotIntellij: selectedEmotionalIntelligence,
+          comunicSkills: selectedCommunicationSkills,
+          passion: selectedPassion,
+          creativity: selectedCreativity,
+          physicPres: selectedPhysicalpresentation,
+          leadership: selectedLeadershipQualities,
+          notif: 600,          
+          hseDecision:hseDecision,
+          hseComment:hseComment,
           
-          //  hseCertif:selectedHSECertificates,
-          // siteHazCont: selectedSitehazardscontrol,
-          // properUse:selectedProperuse,
-          // hzardousMater: selectedHazardousmaterials,
-          // emergency:selectedEmergenceEvacuation,
-          // ptw:selectedPTWknowledge,
-          // hsePolicies:selectedHSEPolicies,
-          // others:selectedOthers,
-          notif:6,
 
-        
+
 
 
 
@@ -286,7 +398,7 @@ console.log("selectedHSECertificates",selectedHSECertificates)
       });
 
       if (!response.ok) {
-        setShowAlertError(true)
+        openNotificationError('bottomRight')
         throw new Error('La requête a échoué avec le code ' + response.status);
       }
 
@@ -297,6 +409,7 @@ console.log("selectedHSECertificates",selectedHSECertificates)
       if (response.ok) {
         const data = await response.json();
         console.log("dattaaammmmm", data)
+        openNotification('bottomRight')
         setDataInterview(data)
         // navigate(-1);
       }
@@ -305,7 +418,7 @@ console.log("selectedHSECertificates",selectedHSECertificates)
       console.error('Erreur lors de la récupération des données:', error);
     }
   };
- 
+
 
 
 
@@ -401,13 +514,18 @@ console.log("selectedHSECertificates",selectedHSECertificates)
 
 
                   >{/*Date et temp de Interview bu Hr*/}
-                    <DatePicker
+                    <Input
+                      placeholder={inputInterview}
+                      readOnly
+
+                    ></Input>
+                    {/* <DatePicker
                       //defaultValue={new Date()} 
                       defaultValue={dayjs(interviewDate, '2024-01-01')}
 
                       style={{ width: "100%", height: "30px" }}
                       onChange={(value) => setInterviewDate(dayjs(value).format('YYYY/MM/DD'))}
-                    />
+                    /> */}
 
                   </Form.Item>
                 </Col>
@@ -418,13 +536,19 @@ console.log("selectedHSECertificates",selectedHSECertificates)
               </Col> */}
 
 
-
-
-
               </AppRowContainer>
             </StyledShadowWrapper>
           </Col>
         </AppRowContainer>
+        {roles.includes("bod")&& (
+   <ViewAssignement
+   idViewConstruction={idViewConstruction}
+  
+   
+   ></ViewAssignement>
+
+
+        )}
         {/* <Divider style={{ marginTop: 16, marginBottom: 16 }} /> */}
         {/* <AppRowContainer>
         <Col xs={24} md={6}>
@@ -488,503 +612,643 @@ console.log("selectedHSECertificates",selectedHSECertificates)
           </StyledShadowWrapper>
         </Col>
       </AppRowContainer> */}
-        {roles==="Human Ressource Manager" && (
-          <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-            <Col xs={24} md={6}>
-              <Typography.Title level={5}>ATTRIBUTES </Typography.Title>
-
-            </Col>
-            <Col xs={24} md={18}>
-              <StyledShadowWrapper>
-                <AppRowContainer>
-                  <Col xs={24} md={12}>
-                    <Form.Item
-                      label='Education and Training -scholastic achievements, special 
-                             studies, relevance to position applied for'
-                      name='attribut1'
-                      rules={[
-                        { required: true, message: 'Please Select your Select Education and Training !' },
-
-                      ]}
-                    
-                    >
-                      <Select
-                        placeholder='Select Education and Training'
-                        onChange={(value) => setSelectedEducationTraining(value)}
-                        value={selectedEducationTraining}
-                      >
-                        {Rating.map((p, index) => (
-                          <Select.Option key={index} value={p.rate}>
-                            {p.rate}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                  <Col xs={24} md={12}>
-                    <Form.Item
-                      label='Work Experience achievements, relevance to position applied For'
-                      name='attribut2'
-                      rules={[
-                        { required: true, message: 'Please Select your Select Work Experience achievements!' },
-
-                      ]}
-                      onChange={(value) => setSelectedWorkExperience(value)}
-                    >
-                      <Select
-                        placeholder='Select Education and Training'
-
-                        onChange={(value) => console.log('Select Education and Training:', value)}
-                        value={selectedworkExperience}
-                      >
-                        {Rating.map((p, index) => (
-                          <Select.Option key={index} value={p.rate}>
-                            {p.rate}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                  <Col xs={24} md={12}>
-                    <Form.Item
-                      label="Diversity of Talents/Interests  Hobbies ; sports"
-                      name='attribut3'
-                      rules={[
-                        { required: true, message: 'Please Select your Select Diversity of Talents/Interests !' },
-
-                      ]}
-                      onChange={(value) => setSelectedDiversity(value)}
-                    >
-                      <Select
-                        placeholder='Select Education and Training'
-
-                        onChange={(value) => console.log('Select Education and Training:', value)}
-                        value={selectedDiversity}
-                      >
-                        {Rating.map((p, index) => (
-                          <Select.Option key={index} value={p.rate}>
-                            {p.rate}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                  <Col xs={24} md={12}>
-                    <Form.Item
-                      label="Intellectual Capability comprehension ; judgment; ability to reason;decision 
-                  making-decision"
-                      name='attribut4'
-                      rules={[
-                        { required: true, message: 'Please Select your Select Intellectual Capability comprehension  !' },
-
-                      ]}
-                      onChange={(value) => setSelectedIntellectualCapability(value)}
-                    >
-                      <Select
-                        placeholder='Select Intellectual Capability comprehension '
-
-                        onChange={(value) => console.log('Select Intellectual Capability comprehension :', value)}
-                        value={selectedIntellectualCapability}
-                      >
-                        {Rating.map((p, index) => (
-                          <Select.Option key={index} value={p.rate}>
-                            {p.rate}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                  <Col xs={24} md={12}>
-                    <Form.Item
-                      label="Emotional Intelligence ability to work/relate with others; 
-                  attitude towards work/life; maturity"
-                      name='attribut5'
-                      rules={[
-                        { required: true, message: 'Please Select your Select Emotional Intelligence  !' },
-
-                      ]}
-                      onChange={(value) => setSelectedEmotionalIntelligence(value)}
-                    >
-                      <Select
-                        placeholder='Select Intellectual Emotional Intelligence '
-
-                        onChange={(value) => console.log('Select Intellectual Emotional Intelligence :', value)}
-                        value={selectedEmotionalIntelligence}
-                      >
-                        {Rating.map((p, index) => (
-                          <Select.Option key={index} value={p.rate}>
-                            {p.rate}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-
-                  <Col xs={24} md={12}>
-                    <Form.Item
-                      label="Self-confidence  self- assurance ; belief in one’s potential and
-                  capability"
-                      name='attribut6'
-                      rules={[
-                        { required: true, message: 'Please Select your Select Self-confidence  self- assurance   !' },
-
-                      ]}
-                      onChange={(value) => setSelectedSelfconfidence(value)}
-                    >
-                      <Select
-                        placeholder='Select Self-confidence  self- assurance  '
-
-                        onChange={(value) => console.log('Select Intellectual Self-confidence  self- assurance  :', value)}
-                        value={selectedSelfconfidence}
-                      >
-                        {Rating.map((p, index) => (
-                          <Select.Option key={index} value={p.rate}>
-                            {p.rate}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                  <Col xs={24} md={12}>
-                    <Form.Item
-                      label="Communication Skills ability to express/present ideas in clear ,concise manner
-                "
-                      name='attribut7'
-                      rules={[
-                        { required: true, message: 'Please Select your Select Communication Skills   !' },
-
-                      ]}
-                      onChange={(value) => setSelectedCommunicationSkills(value)}
-                    >
-                      <Select
-                        placeholder='Select Communication Skills '
-
-                        onChange={(value) => console.log('Select Intellectual Communication Skills  :', value)}
-                        value={selectedCommunicationSkills}
-                      >
-                        {Rating.map((p, index) => (
-                          <Select.Option key={index} value={p.rate}>
-                            {p.rate}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                  <Col xs={24} md={12}>
-                    <Form.Item
-                      label="Passion/Enthusiasm - energy & vitality in pursuing goals & 
-                 objectives"
-                      name='attribut8'
-                      rules={[
-                        { required: true, message: 'Please Select your Select Passion/Enthusiasm   !' },
-
-                      ]}
-                      onChange={(value) => setSelectedPassion(value)}
-                    >
-                      <Select
-                        placeholder='Select Passion/Enthusiasm '
-
-                        onChange={(value) => console.log('Select Intellectual Passion/Enthusiasm :', value)}
-                        value={selectedPassion}
-                      >
-                        {Rating.map((p, index) => (
-                          <Select.Option key={index} value={p.rate}>
-                            {p.rate}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                  <Col xs={24} md={12}>
-                    <Form.Item
-                      label="   
-                  Creativity / Imagination - ability to work/find solutions 
-                       outside the boundaries of conventions."
-                      name='attribut9'
-                      rules={[
-                        { required: true, message: 'Please Select your Select  Creativity / Imagination   !' },
-
-                      ]}
-                      onChange={(value) => setSelectedCreativity(value)}
-                    >
-                      <Select
-                        placeholder='Select  Creativity / Imagination '
-
-                        onChange={(value) => console.log('Select  Creativity / Imagination :', value)}
-                        value={selectedCreativity}
-                      >
-                        {Rating.map((p, index) => (
-                          <Select.Option key={index} value={p.rate}>
-                            {p.rate}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                  <Col xs={24} md={12}>
-                    <Form.Item
-                      label="   
-                  Ladership Qualities – initiative, ability to lead others; decisiveness"
-                      name='attribut10'
-                      rules={[
-                        { required: true, message: 'Please Select your Select   Ladership Qualities  !' },
-
-                      ]}
-                      onChange={(value) => setSelectedLeadershipQualities(value)}
-                    >
-                      <Select
-                        placeholder='Select   Ladership Qualities '
-
-                        onChange={(value) => console.log('Select  Ladership Qualities :', value)}
-                        value={selectedLeadershipQualities}
-                      >
-                        {Rating.map((p, index) => (
-                          <Select.Option key={index} value={p.rate}>
-                            {p.rate}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                  <Col xs={24} md={12}>
-                    <Form.Item
-                      label="   
-                  Physical presentation during the interview"
-                      name='attribut11'
-                      rules={[
-                        { required: true, message: 'Please Select your Select  Physical presentation  !' },
-
-                      ]}
-                      onChange={(value) => setSelectedPhysicalpresentation(value)}
-                    >
-                      <Select
-                        placeholder='Select  Physical presentation '
-
-                        onChange={(value) => console.log('Select Physical presentation :', value)}
-                        value={selectedPhysicalpresentation}
-                      >
-                        {Rating.map((p, index) => (
-                          <Select.Option key={index} value={p.rate}>
-                            {p.rate}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-
-                </AppRowContainer>
-              </StyledShadowWrapper>
-            </Col>
-          </AppRowContainer>
-        )}
-          {roles.includes("HSE") && (
+        {roles === "Human Ressource Manager" && (
+          <>
             <>
               <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-        {/*Preliminary study of the application*/}
-        <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-          <Col xs={24} md={6}>
-            <Typography.Title level={5}>INTERVIEW ASSESMENT SHEET </Typography.Title>
-            <StyledSecondaryText1>
-              HSE REQUIREMENTS
-            </StyledSecondaryText1>
-          </Col>
-          <Col xs={24} md={18}>
-            <StyledShadowWrapper>
-              <AppRowContainer>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label="HSE Certificates:Working at hight/ H2S/ First Aid"
-                    name='attribut'
-                    rules={[
-                      { required: true, message: 'Please Select your Select  HSE Certificates  !' },
-
-                    ]}
-                  
-                  >
-                    <Select
-                      placeholder='Select  HSE Certificates  '
-                      onChange={(value) => setSelectedHSECertificates(value)}
-                   
-                      value={selectedHSECertificates}
-                    >
-                      {Rating.map((p, index) => (
-                        <Select.Option key={index} value={p.rate}>
-                          {p.rate}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
+              {/*Preliminary study of the application*/}
+              <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                <Col xs={24} md={6}>
+                  <Typography.Title level={5}>INTERVIEW ASSESMENT SHEET </Typography.Title>
+                  <StyledSecondaryText1>
+                    HSE REQUIREMENTS
+                  </StyledSecondaryText1>
                 </Col>
-                <Col  xs={24} md={12}>
-                  <Form.Item
-                    label="Site hazards and control measures khowledge"
-                    name='attribut14'
-                    rules={[
-                      { required: true, message: 'Please Select your Select  Site hazards and control  !' },
+                <Col xs={24} md={18}>
+                  <StyledShadowWrapper>
+                    <AppRowContainer>
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label="HSE Certificates:Working at hight/ H2S/ First Aid"
+                          name='attribut'
 
-                    ]}
-                   
-                  >
-                    <Select
-                      placeholder='Select  Site hazards and control '
-                      onChange={(value) => setSelectedSitehazardscontrol(value)}
-                      value={selectedSitehazardscontrol}
-                    >
-                      {Rating.map((p, index) => (
-                        <Select.Option key={index} value={p.rate}>
-                          {p.rate}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
+                        >
+                          <Input
+                            placeholder={hseCertif}
+
+                            readOnly
+                          ></Input>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label="Site hazards and control measures khowledge"
+                          name='attribut14'
+
+
+                        >
+                          <Input
+                            placeholder={siteHazCont}
+
+                            readOnly
+                          ></Input>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label="Proper use of Personal Protective Equipment (PPE) "
+                          name='attribut15'
+
+
+                        >
+                          <Input
+                            placeholder={properUse}
+
+                            readOnly
+                          ></Input>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label="Hazardous materials handling. "
+                          name='attribut16'
+
+
+                        >
+                          <Input
+                            placeholder={hzardousMater}
+
+                            readOnly
+                          ></Input>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label="Emergency and Evacuation knowledge. "
+                          name='attribut17'
+
+
+                        >
+                          <Input
+                            placeholder={emergency}
+
+                            readOnly
+                          ></Input>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label="PTW knowledge "
+                          name='attribut18'
+
+
+                        >
+                          <Input
+                            placeholder={ptw}
+
+                            readOnly
+                          ></Input>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label="HSE Policies and Instructions "
+                          name='attribut19'
+
+
+                        >
+                          <Input
+                            placeholder={hsePolicies}
+
+                            readOnly
+                          ></Input>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label="Others… "
+                          name='attribut'
+
+
+                        >
+                          <Input
+                            placeholder={others}
+
+                            readOnly
+                          ></Input>
+                        </Form.Item>
+                      </Col>
+
+                    </AppRowContainer>
+                  </StyledShadowWrapper>
                 </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label="Proper use of Personal Protective Equipment (PPE) "
-                    name='attribut15'
-                    rules={[
-                      { required: true, message: 'Please Select your Select  Proper use of Personal Protective  !' },
-
-                    ]}
-                
-                  >
-                    <Select
-                      placeholder='Select  Proper use of Personal Protective '
-                      onChange={(value) => setSelectedProperuse(value)}
-                      value={selectedProperuse}
-                    >
-                      {Rating.map((p, index) => (
-                        <Select.Option key={index} value={p.rate}>
-                          {p.rate}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label="Hazardous materials handling. "
-                    name='attribut16'
-                    rules={[
-                      { required: true, message: 'Please Select your Select  Hazardous materials !' },
-
-                    ]}
-               
-                  >
-                    <Select
-                      placeholder='Select  Proper use of Hazardous materials '
-                      onChange={(value) => setSelectedHazardousmaterials(value)}
-                      value={selectedHazardousmaterials}
-                    >
-                      {Rating.map((p, index) => (
-                        <Select.Option key={index} value={p.rate}>
-                          {p.rate}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label="Emergency and Evacuation knowledge. "
-                    name='attribut17'
-                    rules={[
-                      { required: true, message: 'Please Select your Select  Emergency and Evacuation knowledge. !' },
-
-                    ]}
-                   
-                  >
-                    <Select
-                      placeholder='Select Emergency and Evacuation knowledge. '
-                      value={selectedEmergenceEvacuation}
-                      onChange={(value) => setSelectedEmergenceEvacuation(value)}
-                    >
-                      {Rating.map((p, index) => (
-                        <Select.Option key={index} value={p.rate}>
-                          {p.rate}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label="PTW knowledge "
-                    name='attribut18'
-                    rules={[
-                      { required: true, message: 'Please Select your Select  PTW knowledge !' },
-
-                    ]}
-                   
-                  >
-                    <Select
-                      placeholder='Select PTW knowledge. '
-                      onChange={(value) => setSelectedPTWknowledge(value)}
-                      value={selectedPTWknowledge}
-                    >
-                      {Rating.map((p, index) => (
-                        <Select.Option key={index} value={p.rate}>
-                          {p.rate}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label="HSE Policies and Instructions "
-                    name='attribut19'
-                    rules={[
-                      { required: true, message: 'Please Select your Select  HSE Policies and Instructions !' },
-
-                    ]}
-                   
-                  >
-                    <Select
-                      placeholder='Select HSE Policies and Instructions '
-                      onChange={(value) => setSelectedHSEPolicies(value)}
-                      value={selectedHSEPolicies}
-                    >
-                      {Rating.map((p, index) => (
-                        <Select.Option key={index} value={p.rate}>
-                          {p.rate}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label="Others… "
-                    name='attribut'
-                    rules={[
-                      { required: true, message: 'Please Select your Select  Others…  !' },
-
-                    ]}
-                   
-                  >
-                    <Select
-                      placeholder='Select Others… '
-                      onChange={(value) => setSelectedOthers(value)}
-                      value={selectedOthers}
-                    >
-                      {Rating.map((p, index) => (
-                        <Select.Option key={index} value={p.rate}>
-                          {p.rate}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </Col>
-
               </AppRowContainer>
-            </StyledShadowWrapper>
-          </Col>
-        </AppRowContainer>
             </>
-          
+            <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+              <Col xs={24} md={6}>
+                <Typography.Title level={5}>ATTRIBUTES </Typography.Title>
+
+              </Col>
+              <Col xs={24} md={18}>
+                <StyledShadowWrapper>
+                  <AppRowContainer>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label='Education and Training -scholastic achievements, special 
+                             studies, relevance to position applied for'
+                        name='attribut1'
+                        rules={[
+                          { required: true, message: 'Please Select your Select Education and Training !' },
+
+                        ]}
+
+                      >
+                        <Select
+                          placeholder='Select Education and Training'
+                          onChange={(value) => setSelectedEducationTraining(value)}
+                          value={selectedEducationTraining}
+                        >
+                          {Rating.map((p, index) => (
+                            <Select.Option key={index} value={p.rate}>
+                              {p.rate}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label='Work Experience achievements, relevance to position applied For'
+                        name='attribut2'
+                        rules={[
+                          { required: true, message: 'Please Select your Select Work Experience achievements!' },
+
+                        ]}
+
+                      >
+                        <Select
+                          style={
+                            { marginTop: "1.2rem" }
+                          }
+                          placeholder='Select Education and Training'
+
+                          onChange={(value) => setSelectedWorkExperience(value)}
+                          value={selectedworkExperience}
+                        >
+                          {Rating.map((p, index) => (
+                            <Select.Option key={index} value={p.rate}>
+                              {p.rate}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label="Diversity of Talents/Interests  Hobbies ; sports"
+                        name='attribut3'
+                        rules={[
+                          { required: true, message: 'Please Select your Select Diversity of Talents/Interests !' },
+
+                        ]}
+
+                      >
+                        <Select
+                          style={
+                            { marginTop: "1.5rem" }
+                          }
+                          placeholder='Select Education and Training'
+                          onChange={(value) => setSelectedDiversity(value)}
+                          value={selectedDiversity}
+                        >
+                          {Rating.map((p, index) => (
+                            <Select.Option key={index} value={p.rate}>
+                              {p.rate}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label="Intellectual Capability comprehension ; judgment; ability to reason;decision 
+                  making-decision"
+                        name='attribut4'
+                        rules={[
+                          { required: true, message: 'Please Select your Select Intellectual Capability comprehension  !' },
+
+                        ]}
+
+                      >
+                        <Select
+                          placeholder='Select Intellectual Capability comprehension '
+                          onChange={(value) => setSelectedIntellectualCapability(value)}
+                          value={selectedIntellectualCapability}
+                        >
+                          {Rating.map((p, index) => (
+                            <Select.Option key={index} value={p.rate}>
+                              {p.rate}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label="Emotional Intelligence ability to work/relate with others; 
+                  attitude towards work/life; maturity"
+                        name='attribut5'
+                        rules={[
+                          { required: true, message: 'Please Select your Select Emotional Intelligence  !' },
+
+                        ]}
+
+                      >
+                        <Select
+                          placeholder='Select Intellectual Emotional Intelligence '
+                          onChange={(value) => setSelectedEmotionalIntelligence(value)}
+                          value={selectedEmotionalIntelligence}
+                        >
+                          {Rating.map((p, index) => (
+                            <Select.Option key={index} value={p.rate}>
+                              {p.rate}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label="Self-confidence  self- assurance ; belief in one’s potential and
+                  capability"
+                        name='attribut6'
+                        rules={[
+                          { required: true, message: 'Please Select your Select Self-confidence  self- assurance   !' },
+
+                        ]}
+
+                      >
+                        <Select
+                          style={
+                            { marginTop: "1rem" }
+                          }
+                          placeholder='Select Self-confidence  self- assurance  '
+                          onChange={(value) => setSelectedSelfconfidence(value)}
+                          value={selectedSelfconfidence}
+                        >
+                          {Rating.map((p, index) => (
+                            <Select.Option key={index} value={p.rate}>
+                              {p.rate}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label="Communication Skills ability to express/present ideas in clear ,concise manner
+                "
+                        name='attribut7'
+                        rules={[
+                          { required: true, message: 'Please Select your Select Communication Skills   !' },
+
+                        ]}
+
+                      >
+                        <Select
+                          placeholder='Select Communication Skills '
+                          onChange={(value) => setSelectedCommunicationSkills(value)}
+                          value={selectedCommunicationSkills}
+                        >
+                          {Rating.map((p, index) => (
+                            <Select.Option key={index} value={p.rate}>
+                              {p.rate}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label="Passion/Enthusiasm - energy & vitality in pursuing goals & 
+                 objectives"
+                        name='attribut8'
+                        rules={[
+                          { required: true, message: 'Please Select your Select Passion/Enthusiasm   !' },
+
+                        ]}
+
+                      >
+                        <Select
+                          style={
+                            { marginTop: "1rem" }
+                          }
+                          placeholder='Select Passion/Enthusiasm '
+
+                          onChange={(value) => setSelectedPassion(value)}
+                          value={selectedPassion}
+                        >
+                          {Rating.map((p, index) => (
+                            <Select.Option key={index} value={p.rate}>
+                              {p.rate}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label="   
+                  Creativity / Imagination - ability to work/find solutions 
+                       outside the boundaries of conventions."
+                        name='attribut9'
+                        rules={[
+                          { required: true, message: 'Please Select your Select  Creativity / Imagination   !' },
+
+                        ]}
+
+                      >
+                        <Select
+                          placeholder='Select  Creativity / Imagination '
+                          onChange={(value) => setSelectedCreativity(value)}
+                          value={selectedCreativity}
+                        >
+                          {Rating.map((p, index) => (
+                            <Select.Option key={index} value={p.rate}>
+                              {p.rate}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label="   
+                  Ladership Qualities – initiative, ability to lead others; decisiveness"
+                        name='attribut10'
+                        rules={[
+                          { required: true, message: 'Please Select your Select   Ladership Qualities  !' },
+
+                        ]}
+
+                      >
+                        <Select
+                          style={
+                            { marginTop: "1rem" }
+                          }
+                          placeholder='Select   Ladership Qualities '
+
+                          onChange={(value) => setSelectedLeadershipQualities(value)}
+                          value={selectedLeadershipQualities}
+                        >
+                          {Rating.map((p, index) => (
+                            <Select.Option key={index} value={p.rate}>
+                              {p.rate}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label="   
+                  Physical presentation during the interview"
+                        name='attribut11'
+                        rules={[
+                          { required: true, message: 'Please Select your Select  Physical presentation  !' },
+
+                        ]}
+
+                      >
+                        <Select
+                          placeholder='Select  Physical presentation '
+                          onChange={(value) => setSelectedPhysicalpresentation(value)}
+                          value={selectedPhysicalpresentation}
+                        >
+                          {Rating.map((p, index) => (
+                            <Select.Option key={index} value={p.rate}>
+                              {p.rate}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+
+                  </AppRowContainer>
+                </StyledShadowWrapper>
+              </Col>
+            </AppRowContainer>
+          </>
         )}
-      
+        {roles.includes("HSE") && (
+          <>
+            <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+            {/*Preliminary study of the application*/}
+            <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+              <Col xs={24} md={6}>
+                <Typography.Title level={5}>INTERVIEW ASSESMENT SHEET </Typography.Title>
+                <StyledSecondaryText1>
+                  HSE REQUIREMENTS
+                </StyledSecondaryText1>
+              </Col>
+              <Col xs={24} md={18}>
+                <StyledShadowWrapper>
+                  <AppRowContainer>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label="HSE Certificates:Working at hight/ H2S/ First Aid"
+                        name='attribut'
+                        rules={[
+                          { required: true, message: 'Please Select your Select  HSE Certificates  !' },
+
+                        ]}
+
+                      >
+                        <Select
+                          placeholder='Select  HSE Certificates  '
+                          onChange={(value) => setSelectedHSECertificates(value)}
+
+                          value={selectedHSECertificates}
+                        >
+                          {Rating.map((p, index) => (
+                            <Select.Option key={index} value={p.rate}>
+                              {p.rate}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label="Site hazards and control measures khowledge"
+                        name='attribut14'
+                        rules={[
+                          { required: true, message: 'Please Select your Select  Site hazards and control  !' },
+
+                        ]}
+
+                      >
+                        <Select
+                          placeholder='Select  Site hazards and control '
+                          onChange={(value) => setSelectedSitehazardscontrol(value)}
+                          value={selectedSitehazardscontrol}
+                        >
+                          {Rating.map((p, index) => (
+                            <Select.Option key={index} value={p.rate}>
+                              {p.rate}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label="Proper use of Personal Protective Equipment (PPE) "
+                        name='attribut15'
+                        rules={[
+                          { required: true, message: 'Please Select your Select  Proper use of Personal Protective  !' },
+
+                        ]}
+
+                      >
+                        <Select
+                          placeholder='Select  Proper use of Personal Protective '
+                          onChange={(value) => setSelectedProperuse(value)}
+                          value={selectedProperuse}
+                        >
+                          {Rating.map((p, index) => (
+                            <Select.Option key={index} value={p.rate}>
+                              {p.rate}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label="Hazardous materials handling. "
+                        name='attribut16'
+                        rules={[
+                          { required: true, message: 'Please Select your Select  Hazardous materials !' },
+
+                        ]}
+
+                      >
+                        <Select
+                          placeholder='Select  Proper use of Hazardous materials '
+                          onChange={(value) => setSelectedHazardousmaterials(value)}
+                          value={selectedHazardousmaterials}
+                        >
+                          {Rating.map((p, index) => (
+                            <Select.Option key={index} value={p.rate}>
+                              {p.rate}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label="Emergency and Evacuation knowledge. "
+                        name='attribut17'
+                        rules={[
+                          { required: true, message: 'Please Select your Select  Emergency and Evacuation knowledge. !' },
+
+                        ]}
+
+                      >
+                        <Select
+                          placeholder='Select Emergency and Evacuation knowledge. '
+                          value={selectedEmergenceEvacuation}
+                          onChange={(value) => setSelectedEmergenceEvacuation(value)}
+                        >
+                          {Rating.map((p, index) => (
+                            <Select.Option key={index} value={p.rate}>
+                              {p.rate}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label="PTW knowledge "
+                        name='attribut18'
+                        rules={[
+                          { required: true, message: 'Please Select your Select  PTW knowledge !' },
+
+                        ]}
+
+                      >
+                        <Select
+                          placeholder='Select PTW knowledge. '
+                          onChange={(value) => setSelectedPTWknowledge(value)}
+                          value={selectedPTWknowledge}
+                        >
+                          {Rating.map((p, index) => (
+                            <Select.Option key={index} value={p.rate}>
+                              {p.rate}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label="HSE Policies and Instructions "
+                        name='attribut19'
+                        rules={[
+                          { required: true, message: 'Please Select your Select  HSE Policies and Instructions !' },
+
+                        ]}
+
+                      >
+                        <Select
+                          placeholder='Select HSE Policies and Instructions '
+                          onChange={(value) => setSelectedHSEPolicies(value)}
+                          value={selectedHSEPolicies}
+                        >
+                          {Rating.map((p, index) => (
+                            <Select.Option key={index} value={p.rate}>
+                              {p.rate}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label="Others… "
+                        name='attribut'
+                        rules={[
+                          { required: true, message: 'Please Select your Select  Others…  !' },
+
+                        ]}
+
+                      >
+                        <Select
+                          placeholder='Select Others… '
+                          onChange={(value) => setSelectedOthers(value)}
+                          value={selectedOthers}
+                        >
+                          {Rating.map((p, index) => (
+                            <Select.Option key={index} value={p.rate}>
+                              {p.rate}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+
+                  </AppRowContainer>
+                </StyledShadowWrapper>
+              </Col>
+            </AppRowContainer>
+          </>
+
+        )}
+
         <Divider style={{ marginTop: 16, marginBottom: 16 }} />
         {/*Preliminary study of the application*/}
         {/* <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
@@ -1025,15 +1289,15 @@ console.log("selectedHSECertificates",selectedHSECertificates)
         <Space
           size={15}
           style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}>
-            {roles.includes("HSE")&&
-            <Button onClick={Save}>Save</Button>
-            }
-            {roles.includes("Human Ressource Manager")&&
-          <Button onClick={SaveHrManager}>Save Hr Manager</Button>
-            }
-          
+          {roles.includes("HSE") &&
+            <Button onClick={Save}>SaveHSE</Button>
+          }
+          {roles.includes("Human Ressource Manager") &&
+            <Button onClick={SaveHrManager}>Save Hr Manager</Button>
+          }
+
         </Space>
-        
+
 
         {showAlertError && (
           <Alert

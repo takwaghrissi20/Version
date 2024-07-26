@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Form } from 'antd';
+import { Form,TimePicker } from 'antd';
 
 export const StyledSecondaryText = styled.p`
   margin-top: 8px;
@@ -10,6 +10,7 @@ export const StyledSecondaryText1 = styled.p`
   margin-top: 4px;
   color: ${({ theme }) => theme.palette.text.secondary};
 `;
+
 
 export const StyledShadowWrapper = styled.div`
   border: 1px solid #eaecf0;

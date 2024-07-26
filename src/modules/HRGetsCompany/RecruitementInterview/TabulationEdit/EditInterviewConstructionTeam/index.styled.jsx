@@ -17,6 +17,11 @@ export const StyledShadowWrapper = styled.div`
     0px 1px 3px rgba(16, 24, 40, 0.1),
     0px 1px 2px rgba(16, 24, 40, 0.06);
 `;
+export const StyledSecondaryText1 = styled.p`
+  margin-top: 4px;
+  color: ${({ theme }) => theme.palette.text.secondary};
+`;
+
 export const StyledContactForm = styled(Form)`
   position: relative;
   & .floating-label{

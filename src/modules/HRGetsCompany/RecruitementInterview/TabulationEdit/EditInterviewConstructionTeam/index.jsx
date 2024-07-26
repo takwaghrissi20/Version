@@ -14,11 +14,93 @@ import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../../../../../@crema/components/AppConfirmationModal';
 import { useLocation } from 'react-router-dom';
 import { getFormattedDate } from '../../../../../@crema/helpers/DateHelper';
+import  ViewInterviewContraction from './View';
+const EditInterviewConstruction = ({ hseCertif,
+  siteHazCont,
+  properUse,
+  hzardousMater,
+  emergency,
+  ptw,
+  hsePolicies,
+  others,
+  educAndTrain,
+  workExp,
+  DiversityTal,
+  intellCap,
+  selfConf,
+  emotIntellij,
+  comunicSkills,
+  passion,
+  creativity,
+  physicPres,
+  leadership,
+  idViewConstruction
 
-const EditInterviewConstruction = () => {
+
+
+
+}) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  ////////////////////////////Varaibla Location
+  const interviewCode = location.state ? location.state.interviewCode : null;
+
+  // const hseCertif = location.state ? location.state.hseCertif : null;
+  // const siteHazCont = location.state ? location.state.siteHazCont : null;
+  // const properUse = location.state ? location.state.properUse : null;
+  // const hzardousMate = location.state ? location.state.hzardousMate : null;
+  // const emergency = location.state ? location.state.emergency : null;
+  // const ptw = location.state ? location.state.ptw : null;
+  // const hsePolicies = location.state ? location.state.hsePolicies : null;
+  // const others = location.state ? location.state.others : null;
+  const jobCode = location.state ? location.state.jobCode : null;
+  const interviwDate = location.state ? location.state.interviwDate : null;
+  const contactEmail = location.state ? location.state.contactEmail : null;
+  const contactPhone = location.state ? location.state.contactPhone : null;
+  const totalAccept = location.state ? location.state.totalAccept : null;
+  const totalInterv = location.state ? location.state.totalInterv : null;
+  const totalReqPos = location.state ? location.state.totalReqPos : null;
+  const totalRequiredGrade = location.state ? location.state.totalRequiredGrade : null;
+  const idNumb = location.state ? location.state.idNumb : null
+  const department = location.state ? location.state.department : null
+  const projname = location.state ? location.state.projname : null
+  const requiredGrade = location.state ? location.state.requiredGrade : null
+  const requiredQualification = location.state ? location.state.requiredQualification : null
+  const positionToBeFilled = location.state ? location.state.positionToBeFilled : null
+  const time = location.state ? location.state.time : null
+  const fullName = location.state ? location.state.fullName : null
+  const birthayDate = location.state ? location.state.birthayDate : null
+  const familySituation = location.state ? location.state.familySituation : null
+  const experience = location.state ? location.state.experience : null
+  const educationLevel = location.state ? location.state.educationLevel : null
+  const diploma = location.state ? location.state.diploma : null
+  const urlCv = location.state ? location.state.urlCv : null
+  const validatesFor = location.state ? location.state.validatesFor : null
+  const goTotest2 = location.state ? location.state.goTotest2 : null
+  const psy_Person = location.state ? location.state.psy_Person : null
+  const psy_HumQuality = location.state ? location.state.psy_HumQuality : null
+  const psy_motivation = location.state ? location.state.psy_motivation : null
+  const psy_Intellig = location.state ? location.state.psy_Intellig : null
+  const goToTest3 = location.state ? location.state.goToTest3 : null
+  const techEnglishSkills = location.state ? location.state.techEnglishSkills : null
+  const evalDesision = location.state ? location.state.evalDesision : null
+  const techcommentaire = location.state ? location.state.techcommentaire : null
+  const techDate = location.state ? location.state.techDate : null
+  const hr_Person = location.state ? location.state.hr_Person : null
+  const hr_HumQuality = location.state ? location.state.hr_HumQuality : null
+  const hr_motivation = location.state ? location.state.hr_motivation : null
+  const headOfDepAprouv = location.state ? location.state.headOfDepAprouv : null
+  const hr_Intellig = location.state ? location.state.hr_Intellig : null
+  const level = location.state ? location.state.level : null
+  //const expectedJoinDate = location.state ? location.state.expectedJoinDate : null
+  const propsedsalary = location.state ? location.state.propsedsalary : null
+  const dailyRate = location.state ? location.state.dailyRate : null
+  const hrDesion = location.state ? location.state.hrDesion : null
+  const hrComentaire = location.state ? location.state.hrComentaire : null
+  const finaldesision = location.state ? location.state.finaldesision : null
+  const inputInterview = location.state ? location.state.inputInterview : null
+  /////////////////////End Variable Location
   const [selectedValidation, setSelectedValidation] = useState('');
   const [isOkChecked, setIsOkChecked] = useState(false);
   const [isNoChecked, setIsNoChecked] = useState(false);
@@ -49,7 +131,7 @@ const EditInterviewConstruction = () => {
   const [isNoCheckedProfile, setIsNoCheckedProfile] = useState(false);
   const [comment, setComments] = useState("");
   const [selectedPersonalityHR, setSelectedPersonalityHR] = useState('');
-  const [idConstruction, setIdConstruction] = useState("");
+
   const [commentHSE, setCommentHSE] = useState("");
   const [selectedHumainqualityHR, setSelectedHumainqualityHR] = useState('');
   const [selectedMotivationHR, setSelectedMotivationHR] = useState('');
@@ -109,6 +191,8 @@ const EditInterviewConstruction = () => {
       setDailyError("")
     }
   };
+  console.log("positionToBeFilled00",positionToBeFilled)
+  console.log("requiredQualificatio00",requiredQualification)
   const fetchMaxValues = async () => {
     try {
       const endPoint =
@@ -132,14 +216,13 @@ const EditInterviewConstruction = () => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
-      console.log("ratteeee",requiredQualification)
-     
+      console.log("ratteeee", requiredQualification)
+
       const normalizedLevel = requiredQualification.trim();
       console.log("Normalized level:", normalizedLevel);
       // Additional logic based on normalized level
       switch (normalizedLevel) {
         case 'Level I':
-
           setLev1SalaryMax(data?.[0]?.lev1);
           const lev1SalaryMax = data[0].lev1;
           const dailyMax = lev1SalaryMax / 30;
@@ -317,7 +400,7 @@ const EditInterviewConstruction = () => {
     if (e.target.checked) {
       setIsNoCheckedHSE(false);
     }
-  
+
   }
   function NoHSE(e) {
     console.log(`checked = ${e.target.checked}`);
@@ -326,7 +409,7 @@ const EditInterviewConstruction = () => {
     if (e.target.checked) {
       setIsOkCheckedHSE(false);
     }
-  
+
   }
 
 
@@ -434,68 +517,14 @@ const EditInterviewConstruction = () => {
       setIsNoCheckedHead(true);
     }
   }
-  const interviewCode = location.state ? location.state.interviewCode : null;
 
-  const   hseCertif = location.state ? location.state.  hseCertif : null;
-  const   siteHazCont = location.state ? location.state. siteHazCont : null;
-  const  properUse = location.state ? location.state. properUse : null;
-  const  hzardousMate = location.state ? location.state. hzardousMate : null;
-  const  emergency = location.state ? location.state. emergency : null;
-  const  ptw = location.state ? location.state.  ptw : null;
-  const   hsePolicies = location.state ? location.state. hsePolicies : null;
-  const   others = location.state ? location.state.others : null;
-
-  const jobCode = location.state ? location.state.jobCode : null;
-  const interviwDate = location.state ? location.state.interviwDate : null;
-  const totalAccept = location.state ? location.state.totalAccept : null;
-  const totalInterv = location.state ? location.state.totalInterv : null;
-  const totalReqPos = location.state ? location.state.totalReqPos : null;
-  const totalRequiredGrade = location.state ? location.state.totalRequiredGrade : null;
-  const idNumb = location.state ? location.state.idNumb : null
-  const department = location.state ? location.state.department : null
-  const projname = location.state ? location.state.projname : null
-  const requiredGrade = location.state ? location.state.requiredGrade : null
-  const requiredQualification = location.state ? location.state.requiredQualification : null
-  const positionToBeFilled = location.state ? location.state.positionToBeFilled : null
-  const fullName = location.state ? location.state.fullName : null
-  const birthayDate = location.state ? location.state.birthayDate : null
-  const familySituation = location.state ? location.state.familySituation : null
-  const experience = location.state ? location.state.experience : null
-  const educationLevel = location.state ? location.state.educationLevel : null
-  const diploma = location.state ? location.state.diploma : null
-  const telCondidate = location.state ? location.state.telCondidate : null
-  const urlCv = location.state ? location.state.urlCv : null
-  const validatesFor = location.state ? location.state.validatesFor : null
-  const goTotest2 = location.state ? location.state.goTotest2 : null
-  const psy_Person = location.state ? location.state.psy_Person : null
-  const psy_HumQuality = location.state ? location.state.psy_HumQuality : null
-  const psy_motivation = location.state ? location.state.psy_motivation : null
-  const psy_Intellig = location.state ? location.state.psy_Intellig : null
-  const goToTest3 = location.state ? location.state.goToTest3 : null
-  const techEnglishSkills = location.state ? location.state.techEnglishSkills : null
-  const evalDesision = location.state ? location.state.evalDesision : null
-  const techcommentaire = location.state ? location.state.techcommentaire : null
-  const techDate = location.state ? location.state.techDate : null
-  const hr_Person = location.state ? location.state.hr_Person : null
-  const hr_HumQuality = location.state ? location.state.hr_HumQuality : null
-  const hr_motivation = location.state ? location.state.hr_motivation : null
-  const headOfDepAprouv = location.state ? location.state.headOfDepAprouv : null
-  const hr_Intellig = location.state ? location.state.hr_Intellig : null
-  const level = location.state ? location.state.level : null
-  //const expectedJoinDate = location.state ? location.state.expectedJoinDate : null
-  const propsedsalary = location.state ? location.state.propsedsalary : null
-  const dailyRate = location.state ? location.state.dailyRate : null
-  const hrDesion = location.state ? location.state.hrDesion : null
-  const hrComentaire = location.state ? location.state.hrComentaire : null
-  const finaldesision = location.state ? location.state.finaldesision : null
-  const inputInterview = location.state ? location.state.inputInterview : null
 
   useEffect(() => {
     fetchMaxValues()
     GetProfileEmployess()
-    findIdInterviewConstruction()
+    // findIdInterviewConstruction()
 
-  }, [interviewCode]);
+  }, [interviewCode, name]);
 
   console.log("goTotest2", goTotest2)
 
@@ -618,7 +647,8 @@ const EditInterviewConstruction = () => {
           experience: experience,
           educationLevel: educationLevel,
           diploma: diploma,
-          telCondidate: telCondidate,
+          contactPhone: contactPhone,
+          contactEmail: contactEmail, 
           urlCv,
           validatesFor,
           goTotest2,
@@ -672,15 +702,12 @@ const EditInterviewConstruction = () => {
     navigate(`/Hr/Recruitement&Interview/ConstructionStaffInterview/ASSESMEN_SHEET/CIS=${interviewCode}`, {
       state: {
         interviewCode: interviewCode
-      
+
       }
     });
   }
 
 
-
-
-  
   //EndgoAssesmentSheet
   //UpdateManager
   console.log("evaluationDatellll", evaluationDate)
@@ -715,7 +742,8 @@ const EditInterviewConstruction = () => {
           experience: experience,
           educationLevel: educationLevel,
           diploma: diploma,
-          telCondidate: telCondidate,
+          contactPhone:contactPhone,
+          contactEmail:contactEmail,
           urlCv,
           validatesFor: selectedValidation,
           goTotest2: isOkChecked,
@@ -743,8 +771,8 @@ const EditInterviewConstruction = () => {
           // feedback,
           propsedsalary,
           notif: 2,
-   
-        
+
+
 
         })
       });
@@ -769,8 +797,24 @@ const EditInterviewConstruction = () => {
   };
 
   //UpdateProjectLeader
-  const UpdateProjectLeader = async () => {
+  // const BeforeUpdateProjectLeader = () => {
+  //   //setIsModalVisible(true)
+  //   form.validateFields([]).then(values => {
+  //     //onSave(true)
+  //     console.log("Updatttteeee Yesss")
+  //     Alert("Updatttteeee Yesss")
 
+  //     //UpdateProjectLeader()
+
+
+  //   }).catch(errorInfo => {
+  //     openNotificationWarning('bottomRight')
+
+  //     // setIsModalVisible(false);
+
+  //   });
+  // };
+  const UpdateProjectLeader = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
 
@@ -784,7 +828,7 @@ const EditInterviewConstruction = () => {
         body: JSON.stringify({
           interviewCode: interviewCode,
           jobCode: jobCode,
-          interviwDate: newinterviwDate,
+          interviwDate: interviwDate,
           totalAccept: totalAccept,
           totalInterv: totalInterv,
           totalReqPos: totalReqPos,
@@ -801,7 +845,8 @@ const EditInterviewConstruction = () => {
           experience: experience,
           educationLevel: educationLevel,
           diploma: diploma,
-          telCondidate: telCondidate,
+          contactPhone: contactPhone,
+          contactEmail: contactEmail,
           urlCv,
           validatesFor: selectedValidation,
           goTotest2: isOkChecked,
@@ -812,9 +857,9 @@ const EditInterviewConstruction = () => {
           goToTest3: isOkChecked3,
           techEnglishSkills: selectedSkillls,
           evalDesision: isOkCheckedEvaluator,
-          techcommentaire,
           techDate: evaluationDate,
           meetDesision: isOkCheckedProfile,
+          techEvaluation: name,
           techcommentaire: comment,
           hr_Person,
           hr_HumQuality,
@@ -828,7 +873,8 @@ const EditInterviewConstruction = () => {
           hrDesion,
           // feedback,
           propsedsalary,
-          notif: 1
+          notif: 1,
+          time: time
 
 
         })
@@ -855,8 +901,10 @@ const EditInterviewConstruction = () => {
   };
   //EndUpdataProjectLeader
   //UpdateHSE
-  const   UpdateHSE = async () => {
+  console.log("hseCertif0000",hseCertif)
 
+  const UpdateHSE = async () => {
+    
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
 
@@ -887,26 +935,27 @@ const EditInterviewConstruction = () => {
           experience: experience,
           educationLevel: educationLevel,
           diploma: diploma,
-          telCondidate: telCondidate,
+          contactPhone: contactPhone,
           urlCv,
-          validatesFor: selectedValidation,
-          goTotest2: isOkChecked,
-          psy_Person: selectedPersonality,
-          psy_HumQuality: selectedHumainquality,
-          psy_motivation: selectedMotivation,
-          psy_Intellig: selectedIntelligence,
-          goToTest3: isOkChecked3,
-          techEnglishSkills: selectedSkillls,
-          evalDesision: isOkCheckedEvaluator,
-          techcommentaire,
-          techDate: evaluationDate,
-          meetDesision: isOkCheckedProfile,
-          techcommentaire: comment,
+          validatesFor: idConstruction?.validatesFor,
+          goTotest2: idConstruction?.goTotest2,
+          psy_Person: idConstruction?.psy_Person,
+          psy_HumQuality: idConstruction?.psy_HumQuality,
+          psy_motivation: idConstruction?.psy_motivation,
+          psy_Intellig: idConstruction?.psy_Intellig,
+          goToTest3: idConstruction?.goToTest3,
+          techEnglishSkills: idConstruction?.techEnglishSkills,
+          evalDesision: idConstruction?.evalDesision,
+          techDate: idConstruction?.techDate,
+          meetDesision: idConstruction?.meetDesision,
+          techcommentaire: idConstruction?.techcommentaire,
+          contactEmail: contactEmail,
           hr_Person,
           hr_HumQuality,
           hr_motivation,
           hr_Intellig,
           level,
+      
           headOfDepAprouv: isOkCheckedHead,
           // agreedJoinedDate,
           expectedJoinDate,
@@ -915,9 +964,16 @@ const EditInterviewConstruction = () => {
           // feedback,
           propsedsalary,
           notif: 6,
-          hseDecision:isOkCheckedHSE,
-          // hseDecision:commentHSE,??????Ajouter
-
+          hseDecision: isOkCheckedHSE,
+          hseComment: commentHSE,
+          hseCertif: idConstruction?.hseCertif,
+          siteHazCont: idConstruction?.siteHazCont,
+          properUse:idConstruction?. properUse,
+          hzardousMater:idConstruction?. hzardousMater,
+          emergency: idConstruction?.emergency,
+          ptw:idConstruction?. ptw,
+          hsePolicies:idConstruction?. hsePolicies,
+          others: idConstruction?.others
 
 
         })
@@ -942,9 +998,9 @@ const EditInterviewConstruction = () => {
     }
 
   };
-  {/*Human Manager*/}
-  
-  const   UpdateHumanRessource = async () => {
+  {/*Human Manager*/ }
+
+  const UpdateHumanRessource = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
 
@@ -975,46 +1031,70 @@ const EditInterviewConstruction = () => {
           experience: experience,
           educationLevel: educationLevel,
           diploma: diploma,
-          telCondidate: telCondidate,
-          urlCv,
-          validatesFor: selectedValidation,
-          goTotest2: isOkChecked,
-          psy_Person: selectedPersonality,
-          psy_HumQuality: selectedHumainquality,
-          psy_motivation: selectedMotivation,
-          psy_Intellig: selectedIntelligence,
-          goToTest3: isOkChecked3,
-          techEnglishSkills: selectedSkillls,
-          evalDesision: isOkCheckedEvaluator,
-          techcommentaire,
-          techDate: evaluationDate,
-          meetDesision: isOkCheckedProfile,
-          techcommentaire: comment,
-          hr_Person,
-          hr_HumQuality,
-          hr_motivation,
-          hr_Intellig,
-          level,
-          headOfDepAprouv: isOkCheckedHead,
+          contactPhone: contactPhone,
+          contactEmail: contactEmail,     
+               urlCv,
+          validatesFor: idConstruction?.validatesFor,
+          goTotest2: idConstruction?.goTotest2,
+          psy_Person: idConstruction?.psy_Person,
+          psy_HumQuality: idConstruction?.psy_HumQuality,
+          psy_motivation: idConstruction?.psy_motivation,
+          psy_Intellig: idConstruction?.psy_Intellig,
+          goToTest3: idConstruction?.goToTest3,
+          techEnglishSkills: idConstruction?.techEnglishSkills,
+          evalDesision: idConstruction?.evalDesision,
+          techDate: idConstruction?.techDate,
+          meetDesision: idConstruction?.meetDesision,
+          techcommentaire:idConstruction?.techcommentaire,
+          headOfDepAprouv: idConstruction?.headOfDepAprouv,
           // agreedJoinedDate,
           expectedJoinDate,
           dailyRate,
-          hrDesion,
           // feedback,
-          propsedsalary,
+          propsedsalary,    
+          hseDecision: idConstruction?.hseDecision,
+          hseComment:idConstruction?.hseComment,
+          hr_Person: selectedPersonalityHR,
+          hr_HumQuality: selectedHumainqualityHR,
+          hr_motivation: selectedMotivationHR,
+          hr_Intellig: selectedIntelligenceHR,
+          level: selectedLevelHR,
+          expectedJoinDate: expectedJoinDate,
+          hrDesion: isOkCheckedHRDecision,
+          educAndTrain:idConstruction?. educAndTrain,
+          workExp:idConstruction?. workExp,
+          DiversityTal:idConstruction?. DiversityTal,
+          intellCap: idConstruction?.intellCap,
+          selfConf: idConstruction?.selfConf,
+          emotIntellij: idConstruction?.emotIntellij,
+          comunicSkills:idConstruction?. comunicSkills,
+          passion:idConstruction?.passion,
+          creativity:idConstruction?.creativity,
+          physicPres:idConstruction?.physicPres,
+          leadership:idConstruction?.leadership,
           notif: 5,
-          hseDecision:isOkCheckedHSE,
-          // hseDecision:commentHSE,??????Ajouter
-          hr_Person:selectedPersonalityHR,
-          hr_HumQuality:selectedHumainqualityHR,
-          hr_motivation:selectedMotivationHR,
-          hr_Intellig:selectedIntelligenceHR,
-          level:selectedLevelHR,
-          expectedJoinDate:expectedJoinDate,
-          hrDesion:isOkCheckedHRDecision
-
-
-
+          hseDecision: isOkCheckedHSE,
+          hseComment: commentHSE,
+          hseCertif: idConstruction?.hseCertif,
+          siteHazCont: idConstruction?.siteHazCont,
+          properUse: idConstruction?.properUse,
+          hzardousMater: idConstruction?.hzardousMater,
+          emergency:idConstruction?. emergency,
+          ptw: idConstruction?.ptw,
+          hsePolicies:idConstruction?. hsePolicies,
+          others: idConstruction?.others,
+          educAndTrain:idConstruction?.educAndTrain,
+          workExp:idConstruction?.workExp,
+          DiversityTal:idConstruction?.DiversityTal,
+          intellCap:idConstruction?.intellCap,
+          emotIntellij:idConstruction?.emotIntellij,
+          selfConf:idConstruction?.selfConf,
+          comunicSkills:idConstruction?.comunicSkills,
+          passion:idConstruction?.passion,
+          creativity:idConstruction?.creativity,
+          physicPres:idConstruction?.physicPres,
+          leadership:idConstruction?.leadership,
+         
 
         })
       });
@@ -1039,7 +1119,7 @@ const EditInterviewConstruction = () => {
 
   };
 
-  {/*End Human Manager*/}
+  {/*End Human Manager*/ }
 
 
   const roles = localStorage.getItem("role");
@@ -1058,23 +1138,7 @@ const EditInterviewConstruction = () => {
       console.error("Erreur lors de la récupération du jobcode:", error);
     }
   };
-  const findIdInterviewConstruction = async () => {
-    try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${interviewCode}`, {
-        method: 'POST',
-      });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const responseData = await response.json();
-      console.log("rrttyyyy", responseData)
-      setIdConstruction(responseData)
 
-
-    } catch (error) {
-      console.error("Erreur lors de la récupération du jobcode:", error);
-    }
-  };
   const personalityHR = [
     { pesonality: 'low' },
     { pesonality: 'bad' },
@@ -1160,9 +1224,10 @@ const EditInterviewConstruction = () => {
                     <Form.Item label='Interview Date' name='Interview Date'>
                       <Input
                         className='Input'
-                        placeholder={newinterviwDate}
+                        placeholder={interviwDate}
                         value={newinterviwDate}
                         onChange={() => setNewinterviwDate()}
+                        readOnly
 
                       />
                     </Form.Item>
@@ -1575,11 +1640,14 @@ const EditInterviewConstruction = () => {
                     <Form.Item
                       label='Evaluator Decision :'
                       name=' EvaluatorDecision' >
-                      <Checkbox checked={evalDesision} >
+                      <Checkbox checked={evalDesision} 
+                      readOnly
+                      >
 
                         <IntlMessages id='validation.test' />
                       </Checkbox>
-                      <Checkbox checked={!evalDesision} >
+                      <Checkbox checked={!evalDesision}
+                       readOnly >
                         <IntlMessages id='Refuse.test' />
                       </Checkbox>
                     </Form.Item>
@@ -1787,7 +1855,7 @@ const EditInterviewConstruction = () => {
               e.preventDefault();
             }
           }}>
-            
+
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <div>
               <Typography.Title level={4}>Construction STAFF INTERVIEW SHEET</Typography.Title>
@@ -1830,6 +1898,18 @@ const EditInterviewConstruction = () => {
                       <Input
                         className='Input'
                         placeholder={interviwDate}
+                        readOnly
+                      // value={newinterviwDate}
+                      // onChange={() => setNewinterviwDate()} 
+
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Interview Time' name='Interview Time'>
+                      <Input
+                        className='Input'
+                        placeholder={time}
                         readOnly
                       // value={newinterviwDate}
                       // onChange={() => setNewinterviwDate()} 
@@ -1991,7 +2071,7 @@ const EditInterviewConstruction = () => {
                     <Form.Item label='Contact Full Number' name='telCandidate' >
                       <Input
                         className='Input'
-                        placeholder={telCondidate}
+                        placeholder={contactPhone}
                         readOnly={true}
 
                       />
@@ -2001,7 +2081,7 @@ const EditInterviewConstruction = () => {
                     <Form.Item label=' Contact Email' name='ContactEmail' >
                       <Input
                         className='Input'
-                        placeholder={telCondidate}
+                        placeholder={contactEmail}
                         readOnly={true}
 
                       />
@@ -2074,7 +2154,7 @@ const EditInterviewConstruction = () => {
             </Col>
           </AppRowContainer>
           {/*HSE*/}
-          {(roles.includes("HSE")) || (roles.includes("Human Ressource"))  ?
+          {(roles.includes("HSE")) || (roles.includes("Human Ressource")) ?
             <>
               <Divider style={{ marginTop: 16, marginBottom: 16 }} />
               <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
@@ -2092,8 +2172,6 @@ const EditInterviewConstruction = () => {
                         <Form.Item
                           label='Validation'
                           name='validatesFor'
-
-
                         >
                           <Input
                             className='Input'
@@ -2123,9 +2201,6 @@ const EditInterviewConstruction = () => {
                     </AppRowContainer>
                   </StyledShadowWrapper>
                 </Col>
-
-
-
               </AppRowContainer>
 
               {idConstruction.goTotest2 && (
@@ -2275,8 +2350,8 @@ const EditInterviewConstruction = () => {
 
                             >
                               <Input
-                              placeholder={getsId}
-                              readOnly
+                                placeholder={getsId}
+                                readOnly
                               />
                             </Form.Item>
                           </Col>
@@ -2287,8 +2362,8 @@ const EditInterviewConstruction = () => {
                               the requested position :'
                               name='Present profile' >
                               <Checkbox checked={idConstruction?.meetDesision}
-                              readOnly={true}
-                              
+                                readOnly={true}
+
                               >
 
                                 <IntlMessages id='validation.test' />
@@ -2312,7 +2387,7 @@ const EditInterviewConstruction = () => {
                   </AppRowContainer>
                 </>
               )}
-              {idConstruction?.meetDesision&& (
+              {idConstruction?.meetDesision && (
                 <>
 
                   <Divider style={{ marginTop: 16, marginBottom: 16 }} />
@@ -2330,14 +2405,14 @@ const EditInterviewConstruction = () => {
                             <Form.Item
                               label='Evaluator Decision :'
                               name=' EvaluatorDecision' >
-                              <Checkbox checked={idConstruction?.techEvaluation==="true"} 
-                              readOnly={true}
+                              <Checkbox checked={idConstruction?.evalDesision}
+                                readOnly={true}
                               >
 
                                 <IntlMessages id='validation.test' />
                               </Checkbox>
-                              <Checkbox checked={!idConstruction?.techEvaluation==="true"} 
-                              readOnly={true}
+                              <Checkbox checked={!idConstruction?.evalDesision}
+                                readOnly={true}
                               >
                                 <IntlMessages id='Refuse.test' />
                               </Checkbox>
@@ -2347,14 +2422,14 @@ const EditInterviewConstruction = () => {
                           <Col xs={24} md={24}>
                             <Form.Item label='Comments' name='Comments'
 
-                             >
+                            >
                               <Input
                                 className='InputComment'
-                                
+
                                 placeholder={idConstruction?.techcommentaire}
                                 readOnly={true}
 
-                               />
+                              />
                             </Form.Item>
                           </Col>
 
@@ -2364,304 +2439,300 @@ const EditInterviewConstruction = () => {
                     </Col>
 
                   </AppRowContainer>
+
                 </>
               )}
-                {idConstruction?.techEvaluation==="true" && (
+              {idConstruction?.evalDesision && (
                 <>
-                {roles.includes("Human Ressource") ?
-                   <>
-                   {idConstruction?.hseDecision && (
-                  <>
-                    <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-                    <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-                      <Col xs={24} md={6}>
-                        <Typography.Title level={5}>HR Evaluation &&  Decision</Typography.Title>
-      
-                      </Col>
-                      <Col xs={24} md={18}>
-                        <StyledShadowWrapper>
-                          <AppRowContainer>
-                            <Col xs={24} md={12}>
-                              <Form.Item
-                                label='Personnality'
-                                name='Personnality'
-                              
-                                rules={[
-                                  { required: true, message: 'Please Select  your Personnality!' },
-      
-                                ]}
-                              >
-                                <Select
-                                  placeholder='Select Personnality'
-                                  onChange={(value) => setSelectedPersonalityHR(value)}
-                                  value={selectedPersonalityHR}
-                                >
-                                  {personalityHR.map((p, index) => (
-                                    <Select.Option key={index} value={p.personality}>
-                                      {p.pesonality}
-                                    </Select.Option>
-                                  ))}
-                                </Select>
-                              </Form.Item>
-                            </Col>
-                            <Col xs={24} md={12}>
-                              <Form.Item
-                                label='Humain quality'
-                                name='Humain quality'
-                               
-                                rules={[
-                                  { required: true, message: 'Please Select  your Humain quality!' },
-      
-                                ]}
-                              >
-                                <Select
-                                  placeholder='Humain quality'
-                                  onChange={(value) => setSelectedHumainqualityHR(value)}
-                                  value={selectedHumainqualityHR}
-                                >
-                                  {qualityHR.map((p, index) => (
-                                    <Select.Option key={index} value={p.qlt}>
-                                      {p.qlt}
-                                    </Select.Option>
-                                  ))}
-                                </Select>
-                              </Form.Item>
-                            </Col>
-                            <Col xs={24} md={12}>
-                              <Form.Item
-                                label='Motivation/Ambition'
-                                name='Motivation/Ambition'
-                               
-                                rules={[
-                                  { required: true, message: 'Please Select  your Motivation/Ambition!' },
-      
-                                ]}
-                              >
-                                <Select
-                                  placeholder='Motivation/Ambition'
-                                  onChange={(value) => setSelectedMotivationHR(value)}
-                                  value={selectedMotivationHR}
-                                >
-                                  {motivationHR.map((p, index) => (
-                                    <Select.Option key={index} value={p.mtv}>
-                                      {p.mtv}
-                                    </Select.Option>
-                                  ))}
-                                </Select>
-                              </Form.Item>
-                            </Col>
-                            <Col xs={24} md={12}>
-                              <Form.Item
-                                label='Intelligence'
-                                name='Intelligence'
-                               
-                                rules={[
-                                  { required: true, message: 'Please Select  your Intelligence!' },
-      
-                                ]}
-                              >
-                                <Select
-                                  placeholder='Intelligence'
-                                  onChange={(value) => setSelectedIntelligenceHR(value)}
-                                  value={selectedIntelligenceHR}
-                                >
-                                  {intelligence.map((p, index) => (
-                                    <Select.Option key={index} value={p.intlg}>
-                                      {p.intlg}
-                                    </Select.Option>
-                                  ))}
-                                </Select>
-                              </Form.Item>
-                            </Col>
-                            <Col xs={24} md={12}>
-                              <Form.Item
-                                label='Level'
-                                name='Level'
-                               
-                                rules={[
-                                  { required: true, message: 'Please Select  your Level!' },
-      
-                                ]}
-                              >
-                                <Select
-                                  placeholder='Level'
-                                  onChange={(value) => setSelectedLevelHR(value)}
-                                  value={selectedLevelHR}
-                                >
-                                  {LevelHR.map((p, index) => (
-                                    <Select.Option key={index} value={p.level}>
-                                      {p.level}
-                                    </Select.Option>
-                                  ))}
-                                </Select>
-                              </Form.Item>
-                            </Col>
-                            <Col xs={24} md={12}>
-                              <Form.Item label='Expected Join Date' name='Expected Join Date'
-                                rules={[
-                                  { required: true, message: 'Please Select  your Expected Join Date!' },
-      
-                                ]}
-      
-      
-                              >
-      
-                                <DatePicker
-                                  //defaultValue={new Date()} 
-                                  defaultValue={dayjs(expectedJoinDate, '16 06,1990')}
-      
-                                  style={{ width: "100%", height: "30px" }}
-                                  onChange={(value) => setExpectedJoinDate(dayjs(value).format('YYYY/MM/DD'))}
-                                />
-      
-                              </Form.Item>
-                            </Col>
-      
-      
-                            <Col xs={24} md={12}>
-                              <Form.Item label='Proposed Site Salary' name='Proposed Salary'
-                                rules={[
-                                  { required: true, message: 'Please input your Proposed Salary!' },
-                                  { pattern: /^[0-9]+$/, message: 'Proposed Salary must be a number!' },
-      
-                                ]}
-      
-                              >
-                                <Input
-                                  value={proposedSalary}
-                                  onChange={handleSalaryChange}
-                                  // onChange={(e) => setProposedSalary(e.target.value)}
-                                  placeholder={`Proposed Office Salary does not exceed ${officeSalaryMax}`}
-      
-                                />
-                                {salaryError && <Alert className="custom-alert" message={salaryError} 
-                                type="error" showIcon />}
-      
-                              </Form.Item>
-                            </Col>
-                            <Col xs={24} md={12}>
-                              <Form.Item label='Proposed Site Daily Rate' name='Proposed Daily Rate'
-                                rules={[
-                                  { required: true, message: 'Please input your Proposed Daily Rate!' },
-                                  { pattern: /^[0-9]+$/, message: 'Proposed Daily Rate must be a number!' },
-      
-                                ]}
-      
-      
-                              >
-                                <Input
-                                  value={proposedDailyRate}
-                                  onChange={handleDailyChange}
-                                  // onChange={(e) =>setProposedDailyRate(e.target.value)}
-                                  placeholder={`Proposed Daily Rate does not exceed ${dailyRateMax}`}
-                                />
-                                {dailyError && <Alert className="custom-alert" message={dailyError} type="error" showIcon />}
-                              </Form.Item>
-                            </Col>
-                            <Col xs={24} md={24}>
-                              <StyledInput>
+                  {roles.includes("Human Ressource") ?
+                    <>
+                      <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+                      <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                        <Col xs={24} md={6}>
+                          <Typography.Title level={5}> HSE Approval</Typography.Title>
+
+                        </Col>
+                        <Col xs={24} md={18}>
+                          <StyledShadowWrapper>
+                            <AppRowContainer>
+
+                              <Col xs={24} md={24}>
+
                                 <Form.Item
-                                  label='HR Decision:'
-                                  name='HR Evaluation' >
-                                  <Checkbox checked={isOkCheckedHRDecision} onChange={OkHrDesicision}>
-      
+                                  label='HSE Decision :'
+                                  name='HSEDecision' >
+                                  <Checkbox checked={idConstruction?.hseDecision}
+                                    readOnly={true}
+                                  >
+
                                     <IntlMessages id='validation.test' />
                                   </Checkbox>
-                                  <Checkbox checked={isNoCheckedHRDecision} onClick={NoHrDesicision}>
+                                  <Checkbox checked={!idConstruction?.hseDecision}
+                                    readOnly={true}
+                                  >
                                     <IntlMessages id='Refuse.test' />
                                   </Checkbox>
                                 </Form.Item>
-                              </StyledInput>
-                            </Col>
-                            <Col xs={24} md={24}>
-                              <Form.Item label='Comments' name='Comments'
-                                rules={[
-                                  { required: true, message: 'Please Select  your Comments!' },
-      
-                                ]}
-      
-      
-                              >
-                                <Input
-                                  className='InputComment'
-                                  value={commentHr}
-                                  onChange={(e) => setCommentsHr(e.target.value)}
-      
-                                  placeholder='Comments' />
-                              </Form.Item>
-                            </Col>
-      
-      
-      
-      
-                          </AppRowContainer>
-                        </StyledShadowWrapper>
-                      </Col>
-                    </AppRowContainer>
-                  </>
-                )}
-      
-                      </>
-              
-                :
-                <>
-                <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-                        <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-                          <Col xs={24} md={6}>
-                            <Typography.Title level={5}>HSE Decision</Typography.Title>
-      
-                          </Col>
-                          <Col xs={24} md={18}>
-                            <StyledShadowWrapper>
-                              <AppRowContainer>
-      
-                                <Col xs={24} md={24}>
-      
-                                  <Form.Item
-                                    label='HSE Approval :'
-                                    name='HSE Approval' >
-                                    <Checkbox
-                                     checked={idConstruction?.hseDecision}
-                                     readOnly
-                                     
-                                     >
-      
-                                      <IntlMessages id='validation.test' />
-                                    </Checkbox>
-                                    <Checkbox checked={!idConstruction?.hseDecision}
-                                    readOnly
-                                    >
-                                      <IntlMessages id='Refuse.test' />
-                                    </Checkbox>
-                                  </Form.Item>
-      
-                                </Col>
-                                <Col xs={24} md={24}>
-                                  <Form.Item label='Comments' name='Comments'>
-                                    <Input
-                                      className='InputComment'
-                                     readOnly
-                                      
-      
-                                      placeholder='Comments' />
-                                  </Form.Item>
-                                </Col>
-      
-      
-                              </AppRowContainer>
-                            </StyledShadowWrapper>
-                          </Col>
-      
-                        </AppRowContainer>
-      
-                        {/*HR Desicion*/}
-                        <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-      
-                      </>
-                }
 
-             
-           
+                              </Col>
+                              <Col xs={24} md={24}>
+                                <Form.Item label='Comments' name='Comments'
+
+                                >
+                                  <Input
+                                    className='InputComment'
+
+                                    placeholder={idConstruction?.hseComment}
+                                    readOnly={true}
+
+                                  />
+                                </Form.Item>
+                              </Col>
+
+
+                            </AppRowContainer>
+                          </StyledShadowWrapper>
+                        </Col>
+
+                      </AppRowContainer>
+                      {idConstruction?.hseDecision && (
+                        <>
+                          <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+                          <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                            <Col xs={24} md={6}>
+                              <Typography.Title level={5}>HR Evaluation &&  Decision</Typography.Title>
+
+                            </Col>
+                            <Col xs={24} md={18}>
+                              <StyledShadowWrapper>
+                                <AppRowContainer>
+                                  <Col xs={24} md={12}>
+                                    <Form.Item
+                                      label='Personnality'
+                                      name='Personnality'
+
+                                      rules={[
+                                        { required: true, message: 'Please Select  your Personnality!' },
+
+                                      ]}
+                                    >
+                                      <Select
+                                        placeholder='Select Personnality'
+                                        onChange={(value) => setSelectedPersonalityHR(value)}
+                                        value={selectedPersonalityHR}
+                                      >
+                                        {personalityHR.map((p, index) => (
+                                          <Select.Option key={index} value={p.personality}>
+                                            {p.pesonality}
+                                          </Select.Option>
+                                        ))}
+                                      </Select>
+                                    </Form.Item>
+                                  </Col>
+                                  <Col xs={24} md={12}>
+                                    <Form.Item
+                                      label='Humain quality'
+                                      name='Humain quality'
+
+                                      rules={[
+                                        { required: true, message: 'Please Select  your Humain quality!' },
+
+                                      ]}
+                                    >
+                                      <Select
+                                        placeholder='Humain quality'
+                                        onChange={(value) => setSelectedHumainqualityHR(value)}
+                                        value={selectedHumainqualityHR}
+                                      >
+                                        {qualityHR.map((p, index) => (
+                                          <Select.Option key={index} value={p.qlt}>
+                                            {p.qlt}
+                                          </Select.Option>
+                                        ))}
+                                      </Select>
+                                    </Form.Item>
+                                  </Col>
+                                  <Col xs={24} md={12}>
+                                    <Form.Item
+                                      label='Motivation/Ambition'
+                                      name='Motivation/Ambition'
+
+                                      rules={[
+                                        { required: true, message: 'Please Select  your Motivation/Ambition!' },
+
+                                      ]}
+                                    >
+                                      <Select
+                                        placeholder='Motivation/Ambition'
+                                        onChange={(value) => setSelectedMotivationHR(value)}
+                                        value={selectedMotivationHR}
+                                      >
+                                        {motivationHR.map((p, index) => (
+                                          <Select.Option key={index} value={p.mtv}>
+                                            {p.mtv}
+                                          </Select.Option>
+                                        ))}
+                                      </Select>
+                                    </Form.Item>
+                                  </Col>
+                                  <Col xs={24} md={12}>
+                                    <Form.Item
+                                      label='Intelligence'
+                                      name='Intelligence'
+
+                                      rules={[
+                                        { required: true, message: 'Please Select  your Intelligence!' },
+
+                                      ]}
+                                    >
+                                      <Select
+                                        placeholder='Intelligence'
+                                        onChange={(value) => setSelectedIntelligenceHR(value)}
+                                        value={selectedIntelligenceHR}
+                                      >
+                                        {intelligenceHR.map((p, index) => (
+                                          <Select.Option key={index} value={p.intlg}>
+                                            {p.intlg}
+                                          </Select.Option>
+                                        ))}
+                                      </Select>
+                                    </Form.Item>
+                                  </Col>
+                                  <Col xs={24} md={12}>
+                                    <Form.Item
+                                      label='Level'
+                                      name='Level'
+
+                                      rules={[
+                                        { required: true, message: 'Please Select  your Level!' },
+
+                                      ]}
+                                    >
+                                      <Select
+                                        placeholder='Level'
+                                        onChange={(value) => setSelectedLevelHR(value)}
+                                        value={selectedLevelHR}
+                                      >
+                                        {LevelHR.map((p, index) => (
+                                          <Select.Option key={index} value={p.level}>
+                                            {p.level}
+                                          </Select.Option>
+                                        ))}
+                                      </Select>
+                                    </Form.Item>
+                                  </Col>
+                                  <Col xs={24} md={12}>
+                                    <Form.Item label='Expected Join Date' name='Expected Join Date'
+                                      rules={[
+                                        { required: true, message: 'Please Select  your Expected Join Date!' },
+
+                                      ]}
+
+
+                                    >
+
+                                      <DatePicker
+                                        //defaultValue={new Date()} 
+                                        defaultValue={dayjs(expectedJoinDate, '16 06,1990')}
+
+                                        style={{ width: "100%", height: "30px" }}
+                                        onChange={(value) => setExpectedJoinDate(dayjs(value).format('YYYY/MM/DD'))}
+                                      />
+
+                                    </Form.Item>
+                                  </Col>
+
+
+                                  <Col xs={24} md={12}>
+                                    <Form.Item label='Proposed Site Salary' name='Proposed Salary'
+                                      rules={[
+                                        { required: true, message: 'Please input your Proposed Salary!' },
+                                        { pattern: /^[0-9]+$/, message: 'Proposed Salary must be a number!' },
+
+                                      ]}
+
+                                    >
+                                      <Input
+                                        value={proposedSalary}
+                                        onChange={handleSalaryChange}
+                                        // onChange={(e) => setProposedSalary(e.target.value)}
+                                        placeholder={`Proposed Office Salary does not exceed ${officeSalaryMax}`}
+
+                                      />
+                                      {salaryError && <Alert className="custom-alert" message={salaryError}
+                                        type="error" showIcon />}
+
+                                    </Form.Item>
+                                  </Col>
+                                  <Col xs={24} md={12}>
+                                    <Form.Item label='Proposed Site Daily Rate' name='Proposed Daily Rate'
+                                      rules={[
+                                        { required: true, message: 'Please input your Proposed Daily Rate!' },
+                                        { pattern: /^[0-9]+$/, message: 'Proposed Daily Rate must be a number!' },
+
+                                      ]}
+
+
+                                    >
+                                      <Input
+                                        value={proposedDailyRate}
+                                        onChange={handleDailyChange}
+                                        // onChange={(e) =>setProposedDailyRate(e.target.value)}
+                                        placeholder={`Proposed Daily Rate does not exceed ${dailyRateMax}`}
+                                      />
+                                      {dailyError && <Alert className="custom-alert" message={dailyError} type="error" showIcon />}
+                                    </Form.Item>
+                                  </Col>
+                                  <Col xs={24} md={24}>
+                                    <StyledInput>
+                                      <Form.Item
+                                        label='HR Decision:'
+                                        name='HR Evaluation' >
+                                        <Checkbox checked={isOkCheckedHRDecision} onChange={OkHrDesicision}>
+
+                                          <IntlMessages id='validation.test' />
+                                        </Checkbox>
+                                        <Checkbox checked={isNoCheckedHRDecision} onClick={NoHrDesicision}>
+                                          <IntlMessages id='Refuse.test' />
+                                        </Checkbox>
+                                      </Form.Item>
+                                    </StyledInput>
+                                  </Col>
+                                  <Col xs={24} md={24}>
+                                    <Form.Item label='Comments' name='Comments'
+                                      rules={[
+                                        { required: true, message: 'Please Select  your Comments!' },
+
+                                      ]}
+
+
+                                    >
+                                      <Input
+                                        className='InputComment'
+                                        value={commentHr}
+                                        onChange={(e) => setCommentsHr(e.target.value)}
+
+                                        placeholder='Comments' />
+                                    </Form.Item>
+                                  </Col>
+
+
+
+
+                                </AppRowContainer>
+                              </StyledShadowWrapper>
+                            </Col>
+                          </AppRowContainer>
+                        </>
+                      )}
+
+                    </>
+                    :
+                    <></>
+                  }
+
+
+
                 </>
               )}
             </>
@@ -2708,7 +2779,14 @@ const EditInterviewConstruction = () => {
                         <Form.Item
                           style={{ marginTop: "10px" }}
                           label='Go to test 2 :'
-                          name='Gototest2' >
+                          name='Gototest2'
+                          rules={[
+                            { required: true, message: 'Please Cheked !' },
+
+                          ]}
+
+
+                        >
                           <Checkbox checked={isOkChecked} onChange={Ok}>
 
                             <IntlMessages id='validation.test' />
@@ -2769,7 +2847,7 @@ const EditInterviewConstruction = () => {
                           <Col xs={24} md={12}>
                             <Form.Item
                               label='Humain quality'
-                              name='Humain quality'
+                              name='Humainquality'
 
                               rules={[
                                 { required: true, message: 'Please Select your Select Humain quality!' },
@@ -2792,7 +2870,7 @@ const EditInterviewConstruction = () => {
                           <Col xs={24} md={12}>
                             <Form.Item
                               label='Motivation/Ambition'
-                              name='Motivation/Ambition'
+                              name='MotivationAmbition'
                               rules={[
                                 { required: true, message: 'Please Select your Select Motivation/Ambition!' },
 
@@ -2837,7 +2915,14 @@ const EditInterviewConstruction = () => {
 
                             <Form.Item
                               label='Go to test 3 :'
-                              name='Gototest3' >
+                              name='Gototest3'
+                              rules={[
+                                { required: true, message: 'Please Cheked' },
+
+                              ]}
+
+
+                            >
                               <Checkbox checked={isOkChecked3} onChange={Ok3}>
 
                                 <IntlMessages id='validation.test' />
@@ -2872,7 +2957,7 @@ const EditInterviewConstruction = () => {
                           <Col xs={24} md={12}>
                             <Form.Item
                               label='English Skills '
-                              name='English Skills '
+                              name='EnglishSkills'
 
                               rules={[
                                 { required: true, message: 'Please Select your Select English Skills!' },
@@ -2917,10 +3002,7 @@ const EditInterviewConstruction = () => {
                           </Col>
                           <Col xs={24} md={12}>
                             <Form.Item label='Evaluator' name='Evaluator'
-                              rules={[
-                                { required: true, message: 'Please input your Evaluator!' },
 
-                              ]}
 
                             >
                               <Input
@@ -2943,7 +3025,15 @@ const EditInterviewConstruction = () => {
                             <Form.Item
                               label='The present profile meets the requirements of 
                               the requested position :'
-                              name='Present profile' >
+                              name='Presentprofile'
+
+                              rules={[
+                                { required: true, message: 'Please Checked !' },
+
+                              ]}
+
+
+                            >
                               <Checkbox checked={isOkCheckedProfile} onChange={OkProfile}>
 
                                 <IntlMessages id='validation.test' />
@@ -2955,36 +3045,7 @@ const EditInterviewConstruction = () => {
 
                           </Col>
 
-                          {/* <Col xs={24} md={12}>
-                        <Form.Item label='ID Number' name='ID Number'
-                          rules={[
-                            { required: true, message: 'Please input your ID Number!' },
 
-                          ]} >
-                          <Input
-                            // value={idNumber}
-                            // onChange={(e) => setIdNumber(e.target.value)}
-
-                            placeholder='ID Number' />
-                        </Form.Item>
-                      </Col>
-                      <Col xs={24} md={12}>
-                        <StyledInput>
-                          <Form.Item
-                            label='The present profile meets the requirements of 
-                  the requested position :'
-                            name='Present profile' >
-                            <Checkbox checked={isOkCheckedProfile} onChange={OkProfile}
-                            >
-
-                              <IntlMessages id='validation.test' />
-                            </Checkbox>
-                            <Checkbox checked={isNoCheckedProfile} onClick={NoProfile}>
-                              <IntlMessages id='Refuse.test' />
-                            </Checkbox>
-                          </Form.Item>
-                        </StyledInput>
-                      </Col> */}
 
 
                         </AppRowContainer>
@@ -3013,7 +3074,13 @@ const EditInterviewConstruction = () => {
 
                             <Form.Item
                               label='Evaluator Decision :'
-                              name=' EvaluatorDecision' >
+                              name=' EvaluatorDecision'
+                              rules={[
+                                { required: true, message: 'Please Checked !' },
+
+                              ]}
+
+                            >
                               <Checkbox checked={isOkCheckedEvaluator} onChange={OkEvaluator}>
 
                                 <IntlMessages id='validation.test' />
@@ -3025,12 +3092,7 @@ const EditInterviewConstruction = () => {
 
                           </Col>
                           <Col xs={24} md={24}>
-                            <Form.Item label='Comments' name='Comments'
-
-                              rules={[
-                                { required: true, message: 'Please input your Comments!' },
-
-                              ]}>
+                            <Form.Item label='Comments' name='Comments'>
                               <Input
                                 className='InputComment'
                                 value={comment}
@@ -3048,12 +3110,71 @@ const EditInterviewConstruction = () => {
                   </AppRowContainer>
                 </>
               )}
+
             </>
 
 
 
 
           }
+          {roles.includes("HSE") ?
+            <>
+              <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+              <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                <Col xs={24} md={6}>
+                  <Typography.Title level={5}> HSE Approval</Typography.Title>
+
+                </Col>
+                <Col xs={24} md={18}>
+                  <StyledShadowWrapper>
+                    <AppRowContainer>
+
+                      <Col xs={24} md={24}>
+
+                        <Form.Item
+                          label='HSE Approval :'
+                          name='HSE Approval'
+                          rules={[
+                            { required: true, message: 'Please Checked !' },
+
+                          ]}
+
+
+                        >
+                          <Checkbox checked={isOkCheckedHSE} onChange={OkHSE}>
+
+                            <IntlMessages id='validation.test' />
+                          </Checkbox>
+                          <Checkbox checked={isNoCheckedHSE} onClick={NoHSE}>
+                            <IntlMessages id='Refuse.test' />
+                          </Checkbox>
+                        </Form.Item>
+
+                      </Col>
+                      <Col xs={24} md={24}>
+                        <Form.Item label='Comments' name='Commenthse'
+                        >
+                          <Input
+                            className='InputComment'
+                            value={commentHSE}
+                            onChange={(e) => setCommentHSE(e.target.value)}
+
+                            placeholder='Comments' />
+                        </Form.Item>
+                      </Col>
+
+
+                    </AppRowContainer>
+                  </StyledShadowWrapper>
+                </Col>
+
+              </AppRowContainer>
+
+            </>
+
+
+            : null}
+
 
 
           {/*6. Head of Department Approval*/}
@@ -3104,31 +3225,41 @@ const EditInterviewConstruction = () => {
           >
             <Button onClick={goBack}
             >Cancel</Button>
-            {roles.includes("Manager") && !roles.includes("HSE") && !roles.includes("Human Ressource")&& (
+            {roles.includes("Manager") && !roles.includes("HSE") && !roles.includes("Human Ressource") && (
               <>
                 <Button onClick={UpdateManager}
                 >Save mANAGER</Button>
               </>)}
-              {roles.includes("HSE") && (
+            {roles.includes("HSE") && (
               <>
                 <Button onClick={UpdateHSE}
-                >Save</Button>
+                >Save hse</Button>
               </>)}
             {roles.includes("Leader") && (
               <>
                 <Button onClick={UpdateProjectLeader}
                 >Save Project Leader</Button>
               </>)}
-              {roles==="Human Ressource Manager" && (
+            {roles === "Human Ressource Manager" && (
               <>
-                <Button 
-                onClick={UpdateHumanRessource}
+                <Button
+                  onClick={UpdateHumanRessource}
                 >Save Human Ressource </Button>
               </>)}
           </Space>
 
         </Form>
 
+      )}
+      {/*View Bod and HR ADministrator*/ }
+      {(roles.includes("bod") || roles.includes("Administrator")) && (
+        <ViewInterviewContraction 
+        interviewCode={interviewCode}
+        idViewConstruction={idViewConstruction}
+        
+        
+        ></ViewInterviewContraction>
+      
       )}
 
 

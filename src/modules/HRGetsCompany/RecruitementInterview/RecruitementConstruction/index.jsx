@@ -109,6 +109,7 @@ const RecruitementConstruction = ({ allrecruitementbelow, roles, recruitementTyp
         projectName: findIdData?.projectName,
         position: findIdData?.position,
         experience: findIdData?.experience,
+        dep:findIdData?.dep
         
 
 
@@ -131,7 +132,7 @@ const RecruitementConstruction = ({ allrecruitementbelow, roles, recruitementTyp
 
       if (response.ok) {
         const responseData = await response.json();
-
+          console.log("responseData333",responseData)
         setFindIdData(responseData);
         setId(responseData.jobCode)
 

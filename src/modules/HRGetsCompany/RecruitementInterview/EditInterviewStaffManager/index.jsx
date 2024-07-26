@@ -87,6 +87,91 @@ const EditInterviewStaff = () => {
   const [isOkCheckedHead, setIsOkCheckedHead] = useState(false);
   const [isNoCheckedHead, setIsNoCheckedHead] = useState(false);
   const [isVisibleHeadDecision, setIsVisibleHeadDecision] = useState(false);
+  const [idStaff, setIdStaff] = useState("");
+  const [idIntStaff, setIdIntStaff] = useState("");
+  const [selectedPersonalityHR, setSelectedPersonalityHR] = useState('');
+  const [selectedHumainqualityHR, setSelectedHumainqualityHR] = useState('');
+  const [selectedMotivationHR, setSelectedMotivationHR] = useState('');
+  const [selectedIntelligenceHR, setSelectedIntelligenceHR] = useState('');
+  const [selectedLevelHR, setSelectedLevelHR] = useState('');
+  const [expectedJoinDatehr, setExpectedJoinDatehr] = useState("");
+  const [proposedSalary, setProposedSalary] = useState("");
+  const [proposedDailyRate, setProposedDailyRate] = useState("");
+  const [officeSalaryMax, setOfficeSalaryMax] = useState(0);
+  const [dailyRateMax, setDailyRateMax] = useState(0);
+  const [totalMax, setTotalMax] = useState(0);
+  const [salaryError, setSalaryError] = useState('');
+  const [dailyError, setDailyError] = useState('');
+  const [isOkCheckedHRDecision, setIsOkCheckedHRDecision] = useState(false);
+  const [isNoCheckedHRDecision, setIsNoCheckedHRDecision] = useState(false);
+  const [commentHr, setCommentsHr] = useState("")
+  const [isVisibleHRDecision, setIsVisibleHRDecision] = useState(false);
+  const [selectedbodDescition, setSelectedbodDescition] = useState('');
+  const [selectedbodDescition2, setSelectedbodDescition2] = useState('');
+  const [salary1,setSalary1] = useState('');
+  const [daily1,setDaily1] = useState('');
+  const [comment1,setComment1] = useState('');
+  const [salary2,setSalary2] = useState('');
+  const [daily2,setDaily2] = useState('');
+  const [comment2,setComment2] = useState('');
+
+
+  const handleSalary1Change = (event) => {
+    const value = event.target.value;
+    setSalary1(event.target.value);
+  };
+  const handleDaily1Change = (event) => {
+    const value = event.target.value;
+    setDaily1(event.target.value);
+  };
+  const handleComment1Change = (event) => {
+    const value = event.target.value;
+    setComment1(event.target.value);
+  };
+  const   handleSalary2Change = (event) => {
+    const value = event.target.value;
+    setSalary2(event.target.value);
+  };
+  const handleDaily2Change = (event) => {
+    const value = event.target.value;
+    setDaily2(event.target.value);
+  };
+  const handleComment2Change = (event) => {
+    const value = event.target.value;
+    setComment2(event.target.value);
+  };
+
+
+  //////////////////////////////////////
+  const [email, setEmail] = useState("");
+  //GetProfile When Login
+  const storedrole = window.localStorage.getItem("role");
+
+  const fetchRole = async () => {
+    try {
+      const params = new URLSearchParams({ roles: storedrole });
+      const url = `https://dev-gateway.gets-company.com/api/v1/auth/editProfile?${params}`;
+      const response = await fetch(url, {
+        method: "GET",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log("hhhhhhh", data)
+        setEmail(data.email)
+        localStorage.setItem('email', data.email);
+
+
+      } else {
+        console.error("Erreur lors de la récupération du rôle:", response.status);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la récupération du rôle:", error);
+    }
+  };
+
+
+  console.log("rtttrfcccc", idStaff)
+  //////////////////////////////
   const GetProfileEmployess = async () => {
     const storedemail = window.localStorage.getItem("email");
     console.log("storedemail", storedemail)
@@ -165,8 +250,8 @@ const EditInterviewStaff = () => {
       setIsNoChecked3(true);
     }
   }
-   //OkProfile
-   function OkProfile(e) {
+  //OkProfile
+  function OkProfile(e) {
     console.log(`checked = ${e.target.checked}`);
     setIsOkCheckedProfile(e.target.checked);
     setIsVisibletestEvaluator(true)
@@ -189,8 +274,8 @@ const EditInterviewStaff = () => {
       setIsNoCheckedProfile(true);
     }
   }
-   //Ok or No Evaluator
-   function OkEvaluator(e) {
+  //Ok or No Evaluator
+  function OkEvaluator(e) {
     console.log(`checked = ${e.target.checked}`);
     setIsOkCheckedEvaluator(e.target.checked);
     setIsVisibleEvaluatorDecision(true)
@@ -234,6 +319,29 @@ const EditInterviewStaff = () => {
     if (e.target.checked) {
       setIsOkCheckedEvaluator(false);
       setIsNoCheckedEvaluator(true);
+    }
+  }
+  function OkHrDesicision(e) {
+    console.log(`checked = ${e.target.checked}`);
+    setIsOkCheckedHRDecision(e.target.checked);
+    setIsVisibleHRDecision(true)
+
+    if (e.target.checked) {
+
+      setIsNoCheckedHRDecision(false);
+    }
+    else if (!(e.target.checked)) {
+      setIsVisibleHRDecision(false);
+    }
+  }
+
+  function NoHrDesicision(e) {
+    console.log(`checkedgggg = ${e.target.checked}`);
+    setIsOkCheckedHRDecision(e.target.checked);
+    setIsVisibleHRDecision(false)
+    if (e.target.checked) {
+      setIsOkCheckedHRDecision(false);
+      setIsNoCheckedHRDecision(true);
     }
   }
   const handleValidationSelect = (value) => {
@@ -299,7 +407,7 @@ const EditInterviewStaff = () => {
     { intlg: 'Excellent' },
 
   ];
- 
+
   const skills = [
     { skill: 'low' },
     { skill: 'bad' },
@@ -307,8 +415,83 @@ const EditInterviewStaff = () => {
     { skill: 'Good' },
     { skill: 'Excellent' },
   ]
+  const personalityHR = [
+    { pesonality: 'low' },
+    { pesonality: 'bad' },
+    { pesonality: 'Average' },
+    { pesonality: 'Good' },
+    { pesonality: 'Excellent' },
 
+  ];
+  const qualityHR = [
+    { qlt: 'low' },
+    { qlt: 'bad' },
+    { qlt: 'Average' },
+    { qlt: 'Good' },
+    { qlt: 'Excellent' },
+
+  ];
+  const motivationHR = [
+    { mtv: 'low' },
+    { mtv: 'bad' },
+    { mtv: 'Average' },
+    { mtv: 'Good' },
+    { mtv: 'Excellent' },
+
+  ];
+  const intelligenceHR = [
+    { intlg: 'low' },
+    { intlg: 'bad' },
+    { intlg: 'Average' },
+    { intlg: 'Good' },
+    { intlg: 'Excellent' },
+
+  ];
+  const LevelHR = [
+    { level: 'LevelI' },
+    { level: 'LevelII' },
+    { level: 'LevelIII' },
+
+
+  ];
+  const handleSalaryChange = (e) => {
+    const value = e.target.value;
+    setProposedSalary(value);
+    if (parseFloat(value) > officeSalaryMax) {
+      setSalaryError(`Proposed Office Salary exceeds the maximum allowed value of ${officeSalaryMax}`);
+    } else
+      setSalaryError("");
+  };
+  const handleDailyChange = (e) => {
+    const value = e.target.value;
+    setProposedDailyRate(value);
+    if (parseFloat(value) > dailyRateMax) {
+      setDailyError(`Proposed Daily Rate exceeds the maximum allowed value of ${dailyRateMax}`);
+
+    }
+    else {
+      setDailyError("")
+    }
+  };
   console.log("goTotest2", goTotest2)
+  const findIdInterviewStaff = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/findId?code=${interviewCode}`, {
+        method: 'Get',
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const responseData = await response.json();
+      console.log("findIdInterviewStaff", responseData)
+      setIdIntStaff(responseData?.interviewCode)
+      setIdStaff(responseData)
+
+
+    } catch (error) {
+      console.error("Erreur lors de la récupération du jobcode:", error);
+    }
+  };
 
   const goBack = () => {
     window.location.reload();
@@ -478,13 +661,361 @@ const EditInterviewStaff = () => {
       console.error("Erreur lors de la récupération du Id :", error);
     }
   };
+  //UpdateManager
+  console.log("evaluationDatellll", evaluationDate)
+  const UpdateManager = async () => {
+
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}`, {
+
+        method: 'PUT',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+          interviewCode: interviewCode,
+          jobCode: jobCode,
+          interviwDate: newinterviwDate,
+          totalAccept: totalAccept,
+          totalInterv: totalInterv,
+          totalReqPos: totalReqPos,
+          totalRequiredGrade: totalRequiredGrade,
+          idNumb: getsId,
+          department: department,
+          projname: projname,
+          requiredGrade: newrequiredGrade,
+          requiredQualification: newrequiredQualification,
+          positionToBeFilled: positionToBeFilled,
+          fullName: fullName,
+          birthayDate: birthayDate,
+          familySituation: familySituation,
+          experience: experience,
+          educationLevel: educationLevel,
+          diploma: diploma,
+          telCondidate: telCondidate,
+          urlCv,
+          validatesFor: selectedValidation,
+          goTotest2: isOkChecked,
+          psy_Person: selectedPersonality,
+          psy_HumQuality: selectedHumainquality,
+          psy_motivation: selectedMotivation,
+          psy_Intellig: selectedIntelligence,
+          goToTest3: isOkChecked3,
+          techEnglishSkills: selectedSkillls,
+          evalDesision: isOkCheckedEvaluator,
+          techcommentaire,
+          techDate: evaluationDate,
+          meetDesision: isOkCheckedProfile,
+          techcommentaire: comment,
+          hr_Person,
+          hr_HumQuality,
+          hr_motivation,
+          hr_Intellig,
+          level,
+          headOfDepAprouv: isOkCheckedHead,
+          // agreedJoinedDate,
+          expectedJoinDate,
+          dailyRate,
+          hrDesion,
+          // feedback,
+          propsedsalary,
+          notif: 2,
+
+
+
+        })
+      });
+
+      if (!response.ok) {
+        openNotificationError('bottomRight')
+
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+
+        const responseData = await response.json();
+        // form.resetFields();
+        openNotification('bottomRight')
+        navigate(-1)
+      }
+
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+    }
+  };
+  //End
+  //////////////////////////////Save Human Manager
+  const UpdateHumanRessource = async () => {
+    // if (salaryError || dailyError) {
+    //   return;
+    // }
+
+    // if (parseFloat(proposedSalary) + parseFloat(proposedDailyRate) > totalMax) {
+    //   alert(`Total of Proposed Office Salary and Proposed Site Daily Rate exceeds the maximum allowed value of ${totalMax}`);
+    //   return;
+    // }
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}`, {
+
+        method: 'PUT',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+          interviewCode: interviewCode,
+          jobCode: jobCode,
+          interviwDate: newinterviwDate,
+          totalAccept: totalAccept,
+          totalInterv: totalInterv,
+          totalReqPos: totalReqPos,
+          totalRequiredGrade: totalRequiredGrade,
+          idNumb: getsId,
+          department: department,
+          projname: projname,
+          requiredGrade: newrequiredGrade,
+          requiredQualification: newrequiredQualification,
+          positionToBeFilled: positionToBeFilled,
+          fullName: fullName,
+          birthayDate: birthayDate,
+          familySituation: familySituation,
+          experience: experience,
+          educationLevel: educationLevel,
+          diploma: diploma,
+          telCondidate: telCondidate,
+          urlCv,
+          validatesFor: idStaff?.validatesFor,
+          goTotest2: idStaff.goTotest2,
+          psy_Person: idStaff.psy_Person,
+          psy_HumQuality: idStaff.psy_HumQuality,
+          psy_motivation: idStaff.psy_motivation,
+          psy_Intellig: idStaff.psy_Intellig,
+          goToTest3: idStaff.goToTest3,
+          techEnglishSkills: idStaff.techEnglishSkills,
+          evalDesision: idStaff.evalDesision,
+          techcommentaire: idStaff.techcommentaire,
+          techDate: idStaff.techDate,
+          meetDesision: idStaff.meetDesision,
+          hr_Person: selectedPersonalityHR,
+          hr_HumQuality: selectedHumainqualityHR,
+          hr_motivation: selectedMotivationHR,
+          hr_Intellig: selectedIntelligenceHR,
+          level: selectedLevelHR,
+          headOfDepAprouv: idStaff.headOfDepAprouv,
+          // agreedJoinedDate,
+          expectedJoinDate: expectedJoinDatehr,
+          dailyRate: proposedDailyRate,
+          hrDesion,
+          // feedback,
+          propsedsalary: proposedSalary,
+          notif: 5,
+
+
+
+        })
+      });
+
+      if (!response.ok) {
+        openNotificationError('bottomRight')
+
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+
+        const responseData = await response.json();
+        // form.resetFields();
+        openNotification('bottomRight')
+        navigate(-1)
+      }
+
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+    }
+  };
+  {/*BOD Updatebod**/}
+  const   Updatebod = async () => {
+    // if (salaryError || dailyError) {
+    //   return;
+    // }
+
+    // if (parseFloat(proposedSalary) + parseFloat(proposedDailyRate) > totalMax) {
+    //   alert(`Total of Proposed Office Salary and Proposed Site Daily Rate exceeds the maximum allowed value of ${totalMax}`);
+    //   return;
+    // }
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}`, {
+
+        method: 'PUT',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+          interviewCode: interviewCode,
+          jobCode: jobCode,
+          interviwDate: newinterviwDate,
+          totalAccept: totalAccept,
+          totalInterv: totalInterv,
+          totalReqPos: totalReqPos,
+          totalRequiredGrade: totalRequiredGrade,
+          idNumb: getsId,
+          department: department,
+          projname: projname,
+          requiredGrade: newrequiredGrade,
+          requiredQualification: newrequiredQualification,
+          positionToBeFilled: positionToBeFilled,
+          fullName: fullName,
+          birthayDate: birthayDate,
+          familySituation: familySituation,
+          experience: experience,
+          educationLevel: educationLevel,
+          diploma: diploma,
+          telCondidate: telCondidate,
+          urlCv,
+          validatesFor: idStaff?.validatesFor,
+          goTotest2: idStaff.goTotest2,
+          psy_Person: idStaff.psy_Person,
+          psy_HumQuality: idStaff.psy_HumQuality,
+          psy_motivation: idStaff.psy_motivation,
+          psy_Intellig: idStaff.psy_Intellig,
+          goToTest3: idStaff.goToTest3,
+          techEnglishSkills: idStaff.techEnglishSkills,
+          evalDesision: idStaff.evalDesision,
+          techcommentaire: idStaff.techcommentaire,
+          techDate: idStaff.techDate,
+          meetDesision: idStaff.meetDesision,
+          hr_Person: idStaff.hr_Person,
+          hr_HumQuality: idStaff.hr_HumQuality,
+          hr_motivation: idStaff.hr_motivation,
+          hr_Intellig: idStaff.hr_Intellig,
+          level: idStaff.level,
+          headOfDepAprouv: idStaff.headOfDepAprouv,
+          // agreedJoinedDate,
+          expectedJoinDate: idStaff.expectedJoinDate,
+          dailyRate:  idStaff.dailyRate,
+          hrDesion:idStaff.hrDesion,
+          // feedback,
+          propsedsalary: proposedSalary,
+          notif: 5,
+          directSign1:selectedbodDescition,
+          directSign2:selectedbodDescition2,
+          propsedsalaryBod1:salary1,
+          propsedsalaryBod2:salary2,
+          dailyRateBod1:daily1,
+          dailyRateBod2:daily2,
+          commentareBod1:comment1,
+          commentareBod2:comment2
+
+
+
+
+
+        })
+      });
+
+      if (!response.ok) {
+        openNotificationError('bottomRight')
+
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+
+        const responseData = await response.json();
+        // form.resetFields();
+        openNotification('bottomRight')
+        navigate(-1)
+      }
+
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+    }
+  };
+
+  const descisionBod = [
+    { des: 'Accepted' },
+    { des: 'Not Accepted' },
+    { des: 'On Hold' },
+
+  ];
+
+
+
+  ///////////////End Save HumanManager
   const roles = localStorage.getItem("role");
+  ///FetchMasSalary
+  const fetchMaxValues = async () => {
+    try {
+      const endPoint =
+        process.env.NODE_ENV === "development"
+          ? "https://dev-gateway.gets-company.com"
+          : "";
+
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/rateMnStaff/filterByPosition?position=${positionToBeFilled}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('La requête a échoué avec le code ' + response.status);
+      }
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
+      }
+      const data = await response.json();
+      if (level === 'junior') {
+        setOfficeSalaryMax(data?.[0]?.officeSalaryJun);
+        const dalyrate = data[0].dailyrateJun;
+        const dailyRateMonth = dalyrate / 30;
+        setDailyRateMax(dailyRateMonth);
+        setTotalMax(data?.[0]?.totalJun);
+      } else if (level === 'Meduim') {
+        setOfficeSalaryMax(data?.[0]?.officeSalaryMid);
+        const dalyrate = data[0].dailyRateMid;
+        const dailyRateMonth = dalyrate / 30;
+        setDailyRateMax(dailyRateMonth);
+        setTotalMax(data?.[0]?.totalMid);
+      } else if (level === 'senior') {
+        setOfficeSalaryMax(data?.[0]?.officeSalarySen);
+        const dalyrate = data[0].dailyRateSen;
+        const dailyRateMonth = dalyrate / 30;
+        setDailyRateMax(dailyRateMonth);
+        setTotalMax(data?.[0]?.totalSen);
+      }
+
+
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données Salary:', error);
+    }
+  };
   useEffect(() => {
-
+    fetchMaxValues()
     GetProfileEmployess()
-
-
-  }, [interviewCode]);
+    findIdInterviewStaff()
+    fetchRole()
+  }, [interviewCode, idStaff]);
+  //////////////////////
+  const handleDecisionChange = (value) => {
+    setSelectedbodDescition(value);
+    console.log('Final Descision ', value);
+  };
+  const handleDecision2Change = (value) => {
+    setSelectedbodDescition2(value);
+    console.log('Final Descision ', value);
+  };
   return (
     <div style={{ paddingLeft: "0.5rem", paddingRight: "0.5rem" }}>
       {/**All Fied not empty */}
@@ -1087,9 +1618,6 @@ const EditInterviewStaff = () => {
                   </Col>
                   <Col xs={24} md={12}>
                     <Form.Item label='Proposed Site Daily Rate' name='Proposed Daily Rate'
-
-
-
                     >
                       <Input
 
@@ -1179,7 +1707,7 @@ const EditInterviewStaff = () => {
         </Form>
       )}
       {/*Project Leader et Manager*/}
-      {(roles.includes("Manager") || roles.includes("Leader")) && (
+      {(roles.includes("Manager") || roles.includes("Leader")) || roles.includes("bod") && (
         <Form
           form={form}
           layout='vertical'
@@ -1419,53 +1947,56 @@ const EditInterviewStaff = () => {
             </Col>
           </AppRowContainer>
           <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-          <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-            <Col xs={24} md={6}>
-              <Typography.Title level={5}>Preliminary study of the application </Typography.Title>
-              <StyledSecondaryText1>
-                Go to test 2
-              </StyledSecondaryText1>
-            </Col>
-            <Col xs={24} md={18}>
-              <StyledShadowWrapper>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Validation' name='Validation'>
-                    <Select
-                      placeholder='Select Validation'
-                      onChange={handleValidationSelect}
-
-                      value={selectedValidation}
-                    >
-                      {Validation.map((val, index) => (
-                        <Select.Option key={index} value={val.vld}>
-                          {val.vld}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
+          {(roles.includes("Manager") && !roles.includes("Leader")) && !roles.includes("Human Ressource") && (
+            <>
+              <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                <Col xs={24} md={6}>
+                  <Typography.Title level={5}>Preliminary study of the application </Typography.Title>
+                  <StyledSecondaryText1>
+                    Go to test 2
+                  </StyledSecondaryText1>
                 </Col>
-                <Col xs={24} md={12}>
+                <Col xs={24} md={18}>
+                  <StyledShadowWrapper>
+                    <Col xs={24} md={12}>
+                      <Form.Item label='Validation' name='Validation'>
+                        <Select
+                          placeholder='Select Validation'
+                          onChange={handleValidationSelect}
 
-                        <Form.Item
-                          style={{ marginTop: "10px" }}
-                          label='Go to test 2 :'
-                          name='Gototest2' >
-                          <Checkbox checked={isOkChecked} onChange={Ok}>
+                          value={selectedValidation}
+                        >
+                          {Validation.map((val, index) => (
+                            <Select.Option key={index} value={val.vld}>
+                              {val.vld}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
 
-                            <IntlMessages id='validation.test' />
-                          </Checkbox>
-                          <Checkbox checked={isNoChecked} onClick={No}>
-                            <IntlMessages id='Refuse.test' />
-                          </Checkbox>
-                        </Form.Item>
+                      <Form.Item
+                        style={{ marginTop: "10px" }}
+                        label='Go to test 2 :'
+                        name='Gototest2' >
+                        <Checkbox checked={isOkChecked} onChange={Ok}>
 
-                      </Col>
+                          <IntlMessages id='validation.test' />
+                        </Checkbox>
+                        <Checkbox checked={isNoChecked} onClick={No}>
+                          <IntlMessages id='Refuse.test' />
+                        </Checkbox>
+                      </Form.Item>
 
-              </StyledShadowWrapper>
-            </Col>
-          </AppRowContainer>
-          {/*Psychotechnical Test */}
-          {isVisible && (
+                    </Col>
+
+                  </StyledShadowWrapper>
+                </Col>
+              </AppRowContainer>
+
+              {/*Psychotechnical Test */}
+              {isVisible && (
                 <>
                   <Divider style={{ marginTop: 16, marginBottom: 16 }} />
                   <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
@@ -1691,7 +2222,7 @@ const EditInterviewStaff = () => {
 
                           </Col>
 
-                        
+
 
 
                         </AppRowContainer>
@@ -1703,7 +2234,7 @@ const EditInterviewStaff = () => {
                   </AppRowContainer>
                 </>
               )}
-                {isVisibletestEvaluator && (
+              {isVisibletestEvaluator && (
                 <>
 
                   <Divider style={{ marginTop: 16, marginBottom: 16 }} />
@@ -1756,65 +2287,1161 @@ const EditInterviewStaff = () => {
                   </AppRowContainer>
                 </>
               )}
-           {/*Sauf Manager */ }
-           {(roles.includes("Manager") && !roles.includes("Leader")) && (
+            </>
+          )}
+          {/*Sauf Manager */}
+          {(roles.includes("Manager") && !roles.includes("Leader")) && !roles.includes("Human Ressource") && (
             <>
-            {isVisibleEvaluatorDecision && (
+              {isVisibleEvaluatorDecision && (
+                <>
+                  <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+                  <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                    <Col xs={24} md={6}>
+                      <Typography.Title level={5}>  Head of Department ApprovaL</Typography.Title>
+
+                    </Col>
+                    <Col xs={24} md={18}>
+                      <StyledShadowWrapper>
+                        <AppRowContainer>
+
+                          <Col xs={24} md={12}>
+
+                            <Form.Item
+                              label='Head of Department Approval :'
+                              name='Head of Department Approval' >
+                              <Checkbox checked={isOkCheckedHead} onChange={OkHead}>
+
+                                <IntlMessages id='validation.test' />
+                              </Checkbox>
+                              <Checkbox checked={isNoCheckedHead} onClick={NoHead}>
+                                <IntlMessages id='Refuse.test' />
+                              </Checkbox>
+                            </Form.Item>
+
+                          </Col>
+
+
+
+                        </AppRowContainer>
+                      </StyledShadowWrapper>
+                    </Col>
+                  </AppRowContainer>
+                </>
+              )}
+            </>
+
+
+
+
+          )}
+          {/*Roles Human Ressource Manager */}
+          {(roles.includes("Human Ressource") || roles.includes("bod") && (
+            <>
+              <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+
               <>
-                <Divider style={{ marginTop: 16, marginBottom: 16 }} />
                 <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
                   <Col xs={24} md={6}>
-                    <Typography.Title level={5}>  Head of Department ApprovaL</Typography.Title>
-
+                    <Typography.Title level={5}>Preliminary study of the application </Typography.Title>
+                    <StyledSecondaryText1>
+                      Go to test 2
+                    </StyledSecondaryText1>
                   </Col>
                   <Col xs={24} md={18}>
                     <StyledShadowWrapper>
-                      <AppRowContainer>
+                      <Col xs={24} md={12}>
+                        <Form.Item label='Validation' name='Validation'>
+                          <Input
+                            className='Input'
+                            placeholder={idStaff.validatesFor}
+                            readOnly={true}
+                          />
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
 
-                        <Col xs={24} md={12}>
+                        <Form.Item
+                          style={{ marginTop: "10px" }}
+                          label='Go to test 2 :'
+                          name='Gototest2' >
+                          <Checkbox checked={!idStaff.goTotest2} >
 
-                          <Form.Item
-                            label='Head of Department Approval :'
-                            name='Head of Department Approval' >
-                            <Checkbox checked={isOkCheckedHead} onChange={OkHead}>
+                            <IntlMessages id='validation.test' />
+                          </Checkbox>
+                          <Checkbox checked={idStaff.goTotest2}>
+                            <IntlMessages id='Refuse.test' />
+                          </Checkbox>
+                        </Form.Item>
 
-                              <IntlMessages id='validation.test' />
-                            </Checkbox>
-                            <Checkbox checked={isNoCheckedHead} onClick={NoHead}>
-                              <IntlMessages id='Refuse.test' />
-                            </Checkbox>
-                          </Form.Item>
+                      </Col>
 
-                        </Col>
-
-
-
-                      </AppRowContainer>
                     </StyledShadowWrapper>
                   </Col>
                 </AppRowContainer>
-              </>
-            )}
-          </>
 
-    
-       
-         
-   )}
+                {/*Psychotechnical Test */}
+                {!idStaff.goTotest2 && (
+                  <>
+                    <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+                    <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                      <Col xs={24} md={6}>
+                        <Typography.Title level={5}> Psychotechnical Test </Typography.Title>
+                        <StyledSecondaryText1>
+                          Go to test 3
+                        </StyledSecondaryText1>
+                      </Col>
+                      <Col xs={24} md={18}>
+                        <StyledShadowWrapper>
+                          <AppRowContainer>
+                            <Col xs={24} md={12}>
+                              <Form.Item
+                                label='Personnality'
+                                name='Personnality'
+
+                              >
+                                <Input
+                                  className='Input'
+                                  placeholder={idStaff.psy_Person}
+                                  readOnly={true}
+                                />
+                              </Form.Item>
+                            </Col>
+                            <Col xs={24} md={12}>
+                              <Form.Item
+                                label='Humain quality'
+                                name='Humain quality'
+
+                              >
+                                <Input
+                                  className='Input'
+                                  placeholder={idStaff.psy_HumQuality}
+                                  readOnly={true}
+                                />
+                              </Form.Item>
+                            </Col>
+                            <Col xs={24} md={12}>
+                              <Form.Item
+                                label='Motivation/Ambition'
+                                name='Motivation/Ambition'
+
+                              >
+                                <Input
+                                  className='Input'
+                                  placeholder={idStaff.psy_motivation}
+                                  readOnly={true}
+                                />
+                              </Form.Item>
+                            </Col>
+                            <Col xs={24} md={12}>
+                              <Form.Item
+                                label='Intelligence'
+                                name='Intelligence'
+                              >
+                                <Input
+                                  className='Input'
+                                  placeholder={idStaff.psy_Intellig}
+                                  readOnly={true}
+                                />
+                              </Form.Item>
+                            </Col>
+                            <Col xs={24} md={12}>
+
+                              <Form.Item
+                                label='Go to test 3 :'
+                                name='Gototest3' >
+                                <Checkbox checked={!idStaff.goToTest3}>
+
+                                  <IntlMessages id='validation.test' />
+                                </Checkbox>
+                                <Checkbox checked={idStaff.goToTest3}>
+                                  <IntlMessages id='Refuse.test' />
+                                </Checkbox>
+                              </Form.Item>
+
+                            </Col>
+
+                          </AppRowContainer>
+                        </StyledShadowWrapper>
+                      </Col>
+                    </AppRowContainer>
+                  </>
+                )}
+                {!idStaff.goToTest3 && (
+                  <>
+
+                    {/*Psychotechnical Test */}
+
+                    <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+                    <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                      <Col xs={24} md={6}>
+                        <Typography.Title level={5}> Technical Evaluation</Typography.Title>
+
+                      </Col>
+                      <Col xs={24} md={18}>
+                        <StyledShadowWrapper>
+                          <AppRowContainer>
+                            <Col xs={24} md={12}>
+                              <Form.Item
+                                label='English Skills '
+                                name='English Skills '
+
+                              >
+                                <Input
+                                  className='Input'
+                                  placeholder={idStaff.techEnglishSkills}
+                                  readOnly={true}
+                                />
+
+                              </Form.Item>
+                            </Col>
+                            <Col xs={24} md={12}>
+                              <Form.Item
+                                label='Date'
+                                name='Date'
+                              >
+                                <Input
+                                  className='Input'
+                                  placeholder={idStaff.techDate}
+                                  readOnly={true}
+                                />
+
+
+                              </Form.Item>
+                            </Col>
+                            <Col xs={24} md={12}>
+                              <Form.Item label='Evaluator' name='Evaluator' >
+                                <Input
+                                  placeholder={name}
+                                  readOnly />
+                              </Form.Item>
+                            </Col>
+                            <Col xs={24} md={12}>
+                              <Form.Item label='ID Number' name='idgets'>
+                                <Input
+
+                                  placeholder={getsId} />
+                              </Form.Item>
+                            </Col>
+                            <Col xs={24} md={12}>
+
+                              <Form.Item
+                                label='The present profile meets the requirements of 
+                              the requested position :'
+                                name='Present profile' >
+                                <Checkbox
+
+                                  checked={!idStaff?.meetDesision}
+
+                                >
+
+                                  <IntlMessages id='validation.test' />
+                                </Checkbox>
+                                <Checkbox checked={idStaff?.meetDesision}>
+                                  <IntlMessages id='Refuse.test' />
+                                </Checkbox>
+                              </Form.Item>
+
+                            </Col>
+
+
+
+
+                          </AppRowContainer>
+                        </StyledShadowWrapper>
+                      </Col>
+
+
+
+                    </AppRowContainer>
+                  </>
+                )}
+                {!idStaff?.meetDesision && (
+                  <>
+
+                    <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+                    <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                      <Col xs={24} md={6}>
+                        <Typography.Title level={5}> Evaluator Decision</Typography.Title>
+
+                      </Col>
+                      <Col xs={24} md={18}>
+                        <StyledShadowWrapper>
+                          <AppRowContainer>
+
+                            <Col xs={24} md={24}>
+
+                              <Form.Item
+                                label='Evaluator Decision :'
+                                name=' EvaluatorDecision' >
+                                <Checkbox
+                                  checked={!idStaff?.evalDesision}
+                                >
+
+                                  <IntlMessages id='validation.test' />
+                                </Checkbox>
+                                <Checkbox checked={idStaff?.evalDesision}>
+                                  <IntlMessages id='Refuse.test' />
+                                </Checkbox>
+                              </Form.Item>
+
+                            </Col>
+                            <Col xs={24} md={24}>
+                              <Form.Item label='Comments' name='Comments'>
+                                <Input
+                                  className='InputComment'
+                                  placeholder={idStaff?.techcommentaire}
+
+                                />
+                              </Form.Item>
+                            </Col>
+
+                          </AppRowContainer>
+                        </StyledShadowWrapper>
+                      </Col>
+
+                    </AppRowContainer>
+                  </>
+                )}
+                {!idStaff?.evalDesision && (
+                  <>
+
+                    <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+                    <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                      <Col xs={24} md={6}>
+                        <Typography.Title level={5}> Head of Department Approval</Typography.Title>
+
+                      </Col>
+                      <Col xs={24} md={18}>
+                        <StyledShadowWrapper>
+                          <AppRowContainer>
+
+                            <Col xs={24} md={24}>
+
+                              <Form.Item
+                                label='Head of Department Approval:'
+                                name='Head of Department Approval' >
+                                <Checkbox
+                                  checked={!idStaff?.headOfDepAprouv}
+                                >
+
+                                  <IntlMessages id='validation.test' />
+                                </Checkbox>
+                                <Checkbox checked={idStaff?.headOfDepAprouv}>
+                                  <IntlMessages id='Refuse.test' />
+                                </Checkbox>
+                              </Form.Item>
+
+                            </Col>
+
+
+                          </AppRowContainer>
+                        </StyledShadowWrapper>
+                      </Col>
+
+                    </AppRowContainer>
+                    {/*HR Manager Evaluation*/}
+                    {(roles.includes("Human Ressource") || !roles.includes("bod") && (
+                      <>
+                        {!idStaff?.headOfDepAprouv && (
+                          <>
+                            <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+                            <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                              <Col xs={24} md={6}>
+                                <Typography.Title level={5}>HR Evaluation &&  Decision</Typography.Title>
+
+                              </Col>
+                              <Col xs={24} md={18}>
+                                <StyledShadowWrapper>
+                                  <AppRowContainer>
+                                    <Col xs={24} md={12}>
+                                      <Form.Item
+                                        label='Personnality'
+                                        name='Personnality'
+
+                                        rules={[
+                                          { required: true, message: 'Please Select  your Personnality!' },
+                                        ]}
+                                      >
+                                        <Select
+                                          placeholder='Select Personnality'
+                                          onChange={(value) => setSelectedPersonalityHR(value)}
+                                          value={selectedPersonalityHR}
+                                        >
+                                          {personalityHR.map((p, index) => (
+                                            <Select.Option key={index} value={p.personality}>
+                                              {p.pesonality}
+                                            </Select.Option>
+                                          ))}
+                                        </Select>
+                                      </Form.Item>
+                                    </Col>
+                                    <Col xs={24} md={12}>
+                                      <Form.Item
+                                        label='Humain quality'
+                                        name='Humain quality'
+
+                                        rules={[
+                                          { required: true, message: 'Please Select  your Humain quality!' },
+
+                                        ]}
+                                      >
+                                        <Select
+                                          placeholder='Humain quality'
+                                          onChange={(value) => setSelectedHumainqualityHR(value)}
+                                          value={selectedHumainqualityHR}
+                                        >
+                                          {qualityHR.map((p, index) => (
+                                            <Select.Option key={index} value={p.qlt}>
+                                              {p.qlt}
+                                            </Select.Option>
+                                          ))}
+                                        </Select>
+                                      </Form.Item>
+                                    </Col>
+                                    <Col xs={24} md={12}>
+                                      <Form.Item
+                                        label='Motivation/Ambition'
+                                        name='Motivation/Ambition'
+
+                                        rules={[
+                                          { required: true, message: 'Please Select  your Motivation/Ambition!' },
+
+                                        ]}
+                                      >
+                                        <Select
+                                          placeholder='Motivation/Ambition'
+                                          onChange={(value) => setSelectedMotivationHR(value)}
+                                          value={selectedMotivationHR}
+                                        >
+                                          {motivationHR.map((p, index) => (
+                                            <Select.Option key={index} value={p.mtv}>
+                                              {p.mtv}
+                                            </Select.Option>
+                                          ))}
+                                        </Select>
+                                      </Form.Item>
+                                    </Col>
+                                    <Col xs={24} md={12}>
+                                      <Form.Item
+                                        label='Intelligence'
+                                        name='Intelligence'
+
+                                        rules={[
+                                          { required: true, message: 'Please Select  your Intelligence!' },
+
+                                        ]}
+                                      >
+                                        <Select
+                                          placeholder='Intelligence'
+                                          onChange={(value) => setSelectedIntelligenceHR(value)}
+                                          value={selectedIntelligenceHR}
+                                        >
+                                          {intelligenceHR.map((p, index) => (
+                                            <Select.Option key={index} value={p.intlg}>
+                                              {p.intlg}
+                                            </Select.Option>
+                                          ))}
+                                        </Select>
+                                      </Form.Item>
+                                    </Col>
+                                    <Col xs={24} md={12}>
+                                      <Form.Item
+                                        label='Level'
+                                        name='Level'
+
+                                        rules={[
+                                          { required: true, message: 'Please Select  your Level!' },
+
+                                        ]}
+                                      >
+                                        <Select
+                                          placeholder='Level'
+                                          onChange={(value) => setSelectedLevelHR(value)}
+                                          value={selectedLevelHR}
+                                        >
+                                          {LevelHR.map((p, index) => (
+                                            <Select.Option key={index} value={p.level}>
+                                              {p.level}
+                                            </Select.Option>
+                                          ))}
+                                        </Select>
+                                      </Form.Item>
+                                    </Col>
+                                    <Col xs={24} md={12}>
+                                      <Form.Item label='Expected Join Date' name='Expected Join Date'
+                                        rules={[
+                                          { required: true, message: 'Please Select  your Expected Join Date!' },
+
+                                        ]}
+
+                                      >
+
+                                        <DatePicker
+                                          //defaultValue={new Date()} 
+                                          defaultValue={dayjs(expectedJoinDatehr, '16 06,1990')}
+
+                                          style={{ width: "100%", height: "30px" }}
+                                          onChange={(value) => setExpectedJoinDatehr(dayjs(value).format('YYYY/MM/DD'))}
+                                        />
+
+                                      </Form.Item>
+                                    </Col>
+
+
+                                    <Col xs={24} md={12}>
+                                      <Form.Item label='Proposed Office Salary' name='Proposed Salary'
+                                        rules={[
+                                          { required: true, message: 'Please input your Proposed Salary!' },
+                                          { pattern: /^[0-9]+$/, message: 'Proposed Salary must be a number!' },
+
+                                        ]}
+
+                                      >
+                                        <Input
+
+                                          value={proposedSalary}
+                                          onChange={handleSalaryChange}
+                                          // onChange={(e) => setProposedSalary(e.target.value)}
+                                          placeholder={`Proposed Office Salary does not exceed ${officeSalaryMax}`}
+
+                                        />
+                                        {salaryError && <Alert className="custom-alert" message={salaryError} type="error" showIcon />}
+
+                                      </Form.Item>
+                                    </Col>
+                                    <Col xs={24} md={12}>
+                                      <Form.Item label='Proposed Site Daily Rate' name='Proposed Daily Rate'
+                                        rules={[
+                                          { required: true, message: 'Please input your Proposed Daily Rate!' },
+                                          { pattern: /^[0-9]+$/, message: 'Proposed Daily Rate must be a number!' },
+
+                                        ]}
+
+
+                                      >
+                                        <Input
+                                          value={proposedDailyRate}
+                                          onChange={handleDailyChange}
+                                          // onChange={(e) =>setProposedDailyRate(e.target.value)}
+                                          placeholder={`Proposed Daily Rate does not exceed ${dailyRateMax}`}
+                                        />
+                                        {dailyError && <Alert className="custom-alert" message={dailyError} type="error" showIcon />}
+                                      </Form.Item>
+                                    </Col>
+                                    <Col xs={24} md={24}>
+
+                                      <Form.Item
+                                        label='HR Decision:'
+                                        name='HR Evaluation' >
+                                        <Checkbox checked={isOkCheckedHRDecision} onChange={OkHrDesicision}>
+
+                                          <IntlMessages id='validation.test' />
+                                        </Checkbox>
+                                        <Checkbox checked={isNoCheckedHRDecision} onClick={NoHrDesicision}>
+                                          <IntlMessages id='Refuse.test' />
+                                        </Checkbox>
+                                      </Form.Item>
+
+                                    </Col>
+                                    <Col xs={24} md={24}>
+                                      <Form.Item label='Comments' name='Comments'
+                                        rules={[
+                                          { required: true, message: 'Please Select  your Comments!' },
+
+                                        ]}
+
+
+                                      >
+                                        <Input
+                                          className='InputComment'
+                                          value={commentHr}
+                                          onChange={(e) => setCommentsHr(e.target.value)}
+
+                                          placeholder='Comments' />
+                                      </Form.Item>
+                                    </Col>
+
+
+
+
+                                  </AppRowContainer>
+                                </StyledShadowWrapper>
+                              </Col>
+                            </AppRowContainer>
+                          </>
+                        )}
+                      </>
+                    )
+
+                    )}
+                    {/*BOD Interview*/}
+                    {(roles.includes("bod") && (
+                      <>
+                        {!idStaff?.headOfDepAprouv && (
+                          <>
+                            <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+                            <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                              <Col xs={24} md={6}>
+                                <Typography.Title level={5}>HR Evaluation &&  Decision</Typography.Title>
+
+                              </Col>
+                              <Col xs={24} md={18}>
+                                <StyledShadowWrapper>
+                                  <AppRowContainer>
+                                    <Col xs={24} md={12}>
+                                      <Form.Item
+                                        label='Personnality'
+                                        name='Personnality'
+                                      >
+                                        <Input
+                                          className='Input'
+                                          placeholder={idStaff.hr_Person}
+                                          readOnly={true}
+                                        />
+
+                                      </Form.Item>
+                                    </Col>
+                                    <Col xs={24} md={12}>
+                                      <Form.Item
+                                        label='Humain quality'
+                                        name='Humain quality'
+
+                                      >
+                                        <Input
+                                          className='Input'
+                                          placeholder={idStaff.hr_HumQuality}
+                                          readOnly={true}
+                                        />
+                                      </Form.Item>
+                                    </Col>
+                                    <Col xs={24} md={12}>
+                                      <Form.Item
+                                        label='Motivation/Ambition'
+                                        name='Motivation/Ambition'
+
+                                      >
+                                        <Input
+                                          className='Input'
+                                          placeholder={idStaff.hr_motivation}
+                                          readOnly={true}
+                                        />
+                                      </Form.Item>
+                                    </Col>
+                                    <Col xs={24} md={12}>
+                                      <Form.Item
+                                        label='Intelligence'
+                                        name='Intelligence'
+
+
+                                      >
+                                        <Input
+                                          className='Input'
+                                          placeholder={idStaff.hr_Intellig}
+                                          readOnly={true}
+                                        />
+                                      </Form.Item>
+                                    </Col>
+                                    <Col xs={24} md={12}>
+                                      <Form.Item
+                                        label='Level'
+                                        name='Level'
+
+
+                                      >
+                                        <Input
+                                          className='Input'
+                                          placeholder={idStaff.level}
+                                          readOnly={true}
+                                        />
+                                      </Form.Item>
+                                    </Col>
+                                    <Col xs={24} md={12}>
+                                      <Form.Item label='Expected Join Date' name='Expected Join Date'
+
+
+                                      >
+
+                                        <Input
+                                          className='Input'
+                                          placeholder={idStaff.expectedJoinDate}
+                                          readOnly={true}
+                                        />
+
+                                      </Form.Item>
+                                    </Col>
+
+
+                                    <Col xs={24} md={12}>
+                                      <Form.Item label='Proposed Office Salary' name='Proposed Salary'
+
+                                      >
+                                        <Input
+                                          className='Input'
+                                          placeholder={idStaff.propsedsalary}
+                                          readOnly={true}
+
+
+                                        />
+
+
+                                      </Form.Item>
+                                    </Col>
+                                    <Col xs={24} md={12}>
+                                      <Form.Item label='Proposed Site Daily Rate' name='Proposed Daily Rate'
+
+                                      >
+                                        <Input
+                                          className='Input'
+                                          placeholder={idStaff.dailyRate}
+                                          readOnly={true}
+                                        />
+
+                                      </Form.Item>
+                                    </Col>
+                                    <Col xs={24} md={24}>
+
+                                      <Form.Item
+                                        label='HR Decision:'
+                                        name='HR Evaluation' >
+                                        <Checkbox checked={idStaff.hrDesion}
+                                          readOnly={true}
+
+                                        >
+
+                                          <IntlMessages id='validation.test' />
+                                        </Checkbox>
+                                        <Checkbox checked={!idStaff.hrDesion}
+                                          readOnly={true}
+                                        >
+                                          <IntlMessages id='Refuse.test' />
+                                        </Checkbox>
+                                      </Form.Item>
+
+                                    </Col>
+                                    <Col xs={24} md={24}>
+                                      <Form.Item label='Comments' name='Comments'
+                                      >
+                                        <Input
+                                          className='InputComment'
+                                          readOnly
+                                          placeholder={idStaff.hrComentaire}
+                                        />
+                                      </Form.Item>
+                                    </Col>
+
+
+
+
+                                  </AppRowContainer>
+                                </StyledShadowWrapper>
+                              </Col>
+                            </AppRowContainer>
+                            {/*BOD Checked */}
+                            {idStaff.hrDesion && (
+                              <>
+                                <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+                                <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                                  <Col xs={24} md={6}>
+                                    <Typography.Title level={5}>Board of directors Decision</Typography.Title>
+
+                                  </Col>
+                                  {storedrole === "bod1" &&
+                                    <>
+                                      <Col xs={24} md={18}>
+                                        <StyledShadowWrapper>
+                                          <AppRowContainer>
+
+
+                                            <Col xs={24} md={12}>
+
+                                              <Form.Item
+                                                label='Final Descision1:'
+                                                name='Final Descision: '
+
+                                                rules={[
+                                                  { required: true, message: 'Please Select your Final Descision!' },
+
+                                                ]}
+
+                                              >
+                                                <Select
+                                                  placeholder='Final Descision'
+                                                  onChange={handleDecisionChange}
+                                                  value={selectedbodDescition}
+
+                                                >
+                                                  {descisionBod.map((p, index) => (
+                                                    <Select.Option key={index} value={p.des}>
+                                                      {p.des}
+                                                    </Select.Option>
+                                                  ))}
+                                                </Select>
+
+                                              </Form.Item>
+
+                                            </Col>
+                                            {selectedbodDescition === 'Accepted' && (
+                                              <>
+
+                                                <Col xs={24} md={12}>
+                                                  <Form.Item
+                                                    label='Salary'
+                                                    name='salary'
+                                                    value={salary1}
+                                                    onChange={handleSalary1Change}
+
+                                                  >
+                                                    <Input
+                                                      placeholder='Salary'
+                                                    />
+                                                  </Form.Item>
+                                                </Col>
+                                                <Col xs={24} md={12}>
+                                                  <Form.Item
+                                                    label='Daily'
+                                                    name='daily'
+                                                    value={daily1}
+                                                    onChange={handleDaily1Change}
+
+                                                  >
+                                                    <Input placeholder='Daily' />
+                                                  </Form.Item>
+                                                </Col>
+                                              </>
+                                            )}
+
+                                            {(selectedbodDescition === 'Not Accepted' || selectedbodDescition === 'On Hold') && (
+
+                                              <Col xs={24} md={24}>
+                                                <Form.Item
+                                                  label='Comment'
+                                                  name='comment'>
+                                                  <Input
+                                                    className='InputComment'
+                                                    placeholder='Comment'
+                                                    value={comment1}
+                                                    onChange={handleComment1Change}
+                                                    
+                                                    />
+                                                </Form.Item>
+                                              </Col>
+
+                                            )}
+
+                                            {idStaff?.directSign2?.trim().length === 0 ? (
+
+                                              <p></p>
+                                            ) : (
+                                              <>
+                                                {idStaff?.directSign2?.includes('Accepted') && (
+                                                  <>
+                                                    <Col xs={24} md={12}>
+                                                      <Form.Item
+                                                        label='Final Descision'
+                                                        name='Final Descision'>
+                                                        <Input
+                                                          placeholder={idStaff?.directSign2}
+                                                       />
+                                                      </Form.Item>
+                                                    </Col>
+                                                    <Col xs={24} md={12}>
+                                                      <Form.Item
+                                                        label='Salary'
+                                                        name='salary'>
+                                                        <Input
+                                                          placeholder={idStaff?.propsedsalaryBod2}
+
+                                                        />
+                                                      </Form.Item>
+                                                    </Col>
+                                                    <Col xs={24} md={12}>
+                                                      <Form.Item
+                                                        label='Daily'
+                                                        name='daily'>
+                                                        <Input
+                                                          placeholder={idStaff?.dailyRateBod2}
+
+                                                        />
+                                                      </Form.Item>
+                                                    </Col>
+                                                  </>
+                                                )}
+                                                {idStaff?.directSign2?.includes('Not Accepted') || idStaff?.directSign2?.includes('On Hold') && (
+
+                                                  <Col xs={24} md={24}>
+                                                    <Form.Item
+                                                      label='Comment'
+                                                      name='comment'>
+                                                      <Input
+                                                        placeholder={idStaff?.commentareBod2}
+                                                        className='InputComment'
+
+                                                      />
+                                                    </Form.Item>
+                                                  </Col>
+
+                                                )}
+
+
+
+                                              </>
+
+                                            )}
+
+
+
+
+
+                                          </AppRowContainer>
+                                        </StyledShadowWrapper>
+                                      </Col>
+
+
+
+
+                                    </>
+
+
+                                  }
+                                  {/*boD2*/}
+                                  {storedrole === "bod2" &&
+                                    <>
+                                      <Col xs={24} md={18}>
+                                        <StyledShadowWrapper>
+                                          <AppRowContainer>
+                                            <Col xs={24} md={12}>
+                                              <Form.Item
+                                                label='Final Descision2:'
+                                                name='Final Descision: '
+
+                                                rules={[
+                                                  { required: true, message: 'Please Select your Final Descision!' },
+
+                                                ]}
+
+                                              >
+                                                <Select
+                                                  placeholder='Final Descision'
+                                                  onChange={handleDecision2Change}
+                                                  value={selectedbodDescition2}
+
+                                                >
+                                                  {descisionBod.map((p, index) => (
+                                                    <Select.Option key={index} value={p.des}>
+                                                      {p.des}
+                                                    </Select.Option>
+                                                  ))}
+                                                </Select>
+
+                                              </Form.Item>
+
+                                            </Col>
+                                            {selectedbodDescition2 === 'Accepted' && (
+                                              <>
+
+                                                <Col xs={24} md={12}>
+                                                  <Form.Item
+                                                    label='Salary'
+                                                    name='salary' >
+                                                    <Input
+                                                      placeholder='Salary'
+                                                      value={salary2}
+                                                      onChange={handleSalary2Change}
+
+
+
+                                                    />
+                                                  </Form.Item>
+                                                </Col>
+                                                <Col xs={24} md={12}>
+                                                  <Form.Item
+                                                    label='Daily'
+                                                    name='daily'
+                                                    value={daily2}
+                                                    onChange={handleDaily2Change}
+                                                   
+
+                                                  >
+                                                    <Input placeholder='Daily' />
+                                                  </Form.Item>
+                                                </Col>
+                                              </>
+                                            )}
+
+                                            {(selectedbodDescition === 'Not Accepted' || selectedbodDescition === 'On Hold') && (
+
+                                              <Col xs={24} md={24}>
+                                                <Form.Item
+                                                  label='Comment'
+                                                  name='comment'>
+                                                  <Input
+                                                    className='InputComment'
+                                                    value={comment2}
+                                                    onChange={handleComment2Change}
+                                                    placeholder='Comment' />
+                                                </Form.Item>
+                                              </Col>
+
+                                            )}
+                                            {idStaff?.directSign1?.trim().length === 0 ? (
+
+                                              <p></p>
+                                            ) : (
+                                              <>
+                                                {idStaff?.directSign1?.includes('Accepted') && (
+                                                  <>
+                                                    <Col xs={24} md={12}>
+                                                      <Form.Item
+                                                        label='Final Descision2'
+                                                        name='Final Descision'>
+                                                        <Input
+                                                          placeholder={idStaff?.directSign1}
+
+                                                        />
+                                                      </Form.Item>
+                                                    </Col>
+                                                    <Col xs={24} md={12}>
+                                                      <Form.Item
+                                                        label='Salary'
+                                                        name='salary'>
+                                                        <Input
+                                                          placeholder={idStaff?.propsedsalaryBod1}
+
+                                                        />
+                                                      </Form.Item>
+                                                    </Col>
+                                                    <Col xs={24} md={12}>
+                                                      <Form.Item
+                                                        label='Daily'
+                                                        name='daily'>
+                                                        <Input
+                                                          placeholder={idStaff?.dailyRateBod1}
+
+                                                        />
+                                                      </Form.Item>
+                                                    </Col>
+                                                  </>
+                                                )}
+                                                {idStaff?.directSign1?.includes('Not Accepted') || idStaff?.directSign1?.includes('On Hold') && (
+
+                                                  <Col xs={24} md={24}>
+                                                    <Form.Item
+                                                      label='Comment'
+                                                      name='comment'>
+                                                      <Input
+                                                        placeholder={idStaff?.commentareBod1}
+                                                        className='InputComment'
+
+                                                      />
+                                                    </Form.Item>
+                                                  </Col>
+
+                                                )}
+
+
+
+                                              </>
+
+                                            )}
+
+                                          </AppRowContainer>
+                                        </StyledShadowWrapper>
+
+                                      </Col>
+
+                                    </>
+
+
+                                  }
+
+
+
+                                </AppRowContainer>
+                              </>
+                            )}
+                            {/*End Bod Checked*/}
+
+
+                          </>
+                        )}
+                      </>
+                    ))}
+
+
+
+
+
+
+                  </>
+
+
+
+
+
+                )}
+
+
+
+              </>
+
+            </>
+
+
+          )
+
+          )}
+
+          {/*End Roles Human Ressource Manager*/}
+
+
+
+
           <Space
             size={15}
             style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
           >
             <Button onClick={goBack}
             >Cancel</Button>
-            <Button onClick={Update}
-            >Save</Button>
+            {roles.includes("admin") && (
+              <>
+                <Button onClick={Update}
+                >Save</Button>
+              </>)}
+
+            {roles.includes("Manager") && !roles.includes("Human Ressource") && (
+              <>
+                <Button onClick={UpdateManager}
+                >SaveManager</Button>
+              </>)}
+            {roles.includes("Human Ressource Manager") && (
+              <>
+                <Button
+                  onClick={UpdateHumanRessource}
+                >Save Human Ressource </Button>
+              </>)}
+              {roles.includes("bod")  && (
+              <>
+                <Button onClick={Updatebod}
+                >Savebod</Button>
+              </>)}
+
+
+
+
+
+
+
+
+
+
+
           </Space>
 
         </Form>
       )}
 
       {/*End Projct Leadeer && Manager*/}
+
 
 
 

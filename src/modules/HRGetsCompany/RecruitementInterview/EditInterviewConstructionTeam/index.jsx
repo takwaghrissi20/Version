@@ -1972,13 +1972,13 @@ const EditInterviewConstruction = () => {
                             <Form.Item
                               label='Evaluator Decision :'
                               name=' EvaluatorDecision' >
-                              <Checkbox checked={idConstruction?.techEvaluation==="true"} 
+                              <Checkbox checked={idConstruction?.evalDesision} 
                               readOnly={true}
                               >
 
                                 <IntlMessages id='validation.test' />
                               </Checkbox>
-                              <Checkbox checked={!idConstruction?.techEvaluation==="true"} 
+                              <Checkbox checked={!idConstruction?.evalDesision} 
                               readOnly={true}
                               >
                                 <IntlMessages id='Refuse.test' />
@@ -2008,7 +2008,7 @@ const EditInterviewConstruction = () => {
                   </AppRowContainer>
                 </>
               )}
-                {idConstruction?.techEvaluation==="true" && (
+                {idConstruction?.evalDesision && (
                 <>
 
                   <Divider style={{ marginTop: 16, marginBottom: 16 }} />
@@ -2025,7 +2025,7 @@ const EditInterviewConstruction = () => {
 
                             <Form.Item
                               label='HSE Approval :'
-                              name='HSE Approvalhh' >
+                              name='HSE Approval' >
                               <Checkbox checked={isOkCheckedHSE} onChange={OkHSE}>
 
                                 <IntlMessages id='validation.test' />

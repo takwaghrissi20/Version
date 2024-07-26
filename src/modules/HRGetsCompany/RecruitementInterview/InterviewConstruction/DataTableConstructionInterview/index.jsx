@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,  
   findId, setFindIdData,open,handleInterview,codeJob,interviewCode}) => {
   //const [findIdData, setFindIdData] = useState(null);
+  console.log("findIdData",findIdData)
   const [isViewInterviewStaff, onViewInterviewStaff] = useState(false);
   const [isEditInterviewStaff, onEditInterviewStaff] = useState(false);
   const [isDelteInterviewStaff, onDeleteInterviewStaff] = useState(false)
@@ -159,7 +160,9 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
             propsedsalary:findIdData?.propsedsalary,
             finaldesision:findIdData?.finaldesision,
             time:findIdData?.time,
-            hrComentaire:findIdData?.hrComentaire
+            hrComentaire:findIdData?.hrComentaire,
+        
+           
        
                   
           }

@@ -16,9 +16,9 @@ import { useNavigate } from "react-router-dom";
 import dayjs from 'dayjs';
 import IntlMessages from '../../../@crema/helpers/IntlMessages';
 
-const TabsAssignement = ({ isSaveDisabled }) => {
+const TabsAssignement = ({ isSaveDisabled,inputInterview }) => {
   console.log("isSaveDisabled2", isSaveDisabled)
- 
+
   const location = useLocation();
   const roles = window.localStorage.getItem("role");
 
@@ -318,7 +318,6 @@ console.log("selectedHSECertificates",selectedHSECertificates)
 
   return (
     <>
-
       <Form
         layout='vertical'
         style={{ backgroundColor: "white", marginBottom: "20px", padding: "10px", borderRadius: "20px", marginTop: "20px" }}
@@ -352,31 +351,16 @@ console.log("selectedHSECertificates",selectedHSECertificates)
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Date' name='Date :'
-                    rules={[
-                      { required: true, message: 'Please input your  Date!' },
-                    ]}
-
-
+          
                   >{/*Date et temp de Interview bu Hr*/}
-                    <DatePicker
-                      //defaultValue={new Date()} 
-                      defaultValue={dayjs(interviewDate, '2024-01-01')}
-
-                      style={{ width: "100%", height: "30px" }}
-                      onChange={(value) => setInterviewDate(dayjs(value).format('YYYY/MM/DD'))}
-                    />
-
+                  <Input
+                  placeholder={inputInterview}
+                  readOnly                 
+                  ></Input>
+                
                   </Form.Item>
                 </Col>
-                {/* <Col xs={24} md={12}>
-                <Form.Item label='JOB CODE:' name='jobcode1'>
-                  <Input placeholder={JobCode} readOnly={true} />
-                </Form.Item>
-              </Col> */}
-
-
-
-
+            
 
               </AppRowContainer>
             </StyledShadowWrapper>

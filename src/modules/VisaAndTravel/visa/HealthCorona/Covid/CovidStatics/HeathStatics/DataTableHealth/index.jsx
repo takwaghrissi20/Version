@@ -57,7 +57,7 @@ const TableCovidHealth = ({vaccin}) => {
                 ? "https://dev-gateway.gets-company.com"
                 : "";
 //Ajouter delete par type
-        const response = await fetch(`${endPoint}/api/v1/vacin/delete?code=${idv}&id=${getsId}`, {
+        const response = await fetch(`${endPoint}/api/v1/vacin/delete?code=${getsId}&id=${idv}`, {
             method: 'DELETE',
         });
 
