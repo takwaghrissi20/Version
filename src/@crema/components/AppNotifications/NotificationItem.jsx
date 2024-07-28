@@ -574,7 +574,7 @@ const NotificationItem = ({ user }) => {
       console.log("responseDataConstruction", responseData)
       setFindIdDataConstruction(responseData)
       setIntCode(responseData?.interviewCode)
-      handleEditInterviewConstructionOpen(responseData?.interviewCode)
+      // handleEditInterviewConstructionOpen(responseData?.interviewCode)
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
     }

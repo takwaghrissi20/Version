@@ -114,6 +114,11 @@ const AddEmployees = React.lazy(() =>
 const AddEmployeesContratCategory = React.lazy(() =>
   import('../../../modules/HRGetsCompany/ContratCategoryList'),
 );
+const GenerateContract = React.lazy(() =>
+  import('../../../modules/HRGetsCompany/ContratCategoryList/GenerateContract'),
+);
+
+
 const ContartTypeC = React.lazy(() =>
   import('../../../modules/ContratConstructionTeam/ContratC'),
 );
@@ -378,6 +383,12 @@ export const ecommerceConfig = [
     path: ['/Hr/EmployeesCategoryContract'],
     element: < AddEmployeesContratCategory/>,
   },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: ['/Hr/EmployeesCategoryContract/:id'],
+    element: <GenerateContract/>,
+  },
+
  
 
   {

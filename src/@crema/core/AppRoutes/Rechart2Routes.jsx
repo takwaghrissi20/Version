@@ -46,7 +46,7 @@ import CalculateSalaryOffice from '../../../modules/Payroll/CalculateSalaryOffic
 // import CalculateSalaryOffice from '../../../modules/Payroll/CalculateSalaryOffice';
 import PAYMENTORDERREQUESTS from '../../../modules/Payroll/PaymentOrderRequest';
 import PaymentOrderRequestOffice from '../../../modules/Payroll/PaymentOrderRequestOffice';
-
+import CashAdvance from '../../../modules/Payroll/CashAdvance';
  
 export const recharts2Configs = [
   {
@@ -249,7 +249,10 @@ export const recharts2Configs = [
     path: '/Payroll/office/PAYMENT_ORDER_REQUESTS',
     element: <PaymentOrderRequestOffice  />,
   },
-
+  {
+    path: '/Payroll/Cash_Advance',
+    element: <CashAdvance />,
+  },
 
 
 

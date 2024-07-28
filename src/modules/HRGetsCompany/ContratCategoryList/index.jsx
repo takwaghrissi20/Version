@@ -49,8 +49,6 @@ const ContratList = () => {
         const data = await response.json();
         console.log("Original Data:", data);
         /////////////////////////////////////////
-
-
         const filteredEmployees2 = data.filter(employee => {
           const isManagementStaff = employee.category === "Management Staff";
           const isConstructionStaffOnSite = employee.category === "Construction Staff" && employee.type_Emp === "site" && employee.dateVisa !== null;
@@ -77,9 +75,7 @@ const ContratList = () => {
       console.error('Error fetching employee count:', error);
     }
   }
-  
      
-    
   const handleSearch = async (event) => {
     event.preventDefault();
     try {

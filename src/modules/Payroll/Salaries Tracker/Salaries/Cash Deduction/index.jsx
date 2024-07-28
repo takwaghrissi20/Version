@@ -19,11 +19,11 @@ const CashDeduction = () => {
   //////////////////////////////
   const [amountDeducted, setAmountDeducted] = useState("");
   const [scan, setScan] = useState("");
-
+  const [getsInput, setGetsInput] = useState("");
   const [deductionMonth, setDeductionMonth] = useState(dayjs());
   const [getsId, setGetsId] = useState("");
   const [selectCashAdvanceType, setSelectCashAdvanceType] = useState('');
-
+  const [name, setName] = useState("");
   /////////////////////////
 
   const [profile, setProfile] = useState("")
@@ -31,7 +31,9 @@ const CashDeduction = () => {
   const [form] = Form.useForm();
   const [dateInput, setDateInput] = useState("");
   const userRole = localStorage.getItem("role");
-  console.log("userRole", userRole)
+  const handleInputGetsId = (event) => {
+    setGetsInput(event.target.value);
+  };
   const CashAdvanceType = [
     {
       type: "Office Cash Advance",
@@ -73,17 +75,42 @@ const CashDeduction = () => {
       console.error('Erreur lors de la récupération Last Recruitement', error);
     }
   };
+    //FindId
+    const findId = async () => {
+      try {
+        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsInput}`, {
+          method: 'GET',
+  
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+  
+        if (response.ok) {
+          const responseData = await response.json();
+          setName(responseData?.name)
+        
+       
+  
+  
+  
+        }
+      } catch (error) {
+        console.error("Erreur lors de la récupération du employees:", error);
+      }
+    };
 
   useEffect(() => {
     GetProfileEmployess()
+    findId()
 
-  }, [getsId]);
+  }, [getsId,getsInput]);
 
 
   const BeforeSaveCashAdvance = () => {
     //setIsModalVisible(true)
     form.validateFields(['AmounttobeDeducted', 'ForMonth', 'CashAdvanceType'
-      , 'ScanFileCashAdvance'
+      , 'ScanFileCashAdvance','GetsId'
 
     ]).then(values => {
 
@@ -208,7 +235,7 @@ const CashDeduction = () => {
     try {
 
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/AdvSalary/add?id=${getsId}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/AdvSalary/add?id=${getsInput}`, {
 
         method: 'POST',
         headers: {
@@ -218,8 +245,8 @@ const CashDeduction = () => {
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
         body: JSON.stringify({
-          getsId: profile?.getsId,
-          name: profile?.name,
+          getsId: getsInput,
+          name:name,
           amount: amountDeducted,
           month: deductionMonth,
           cashOrOther: selectCashAdvanceType,
@@ -296,19 +323,22 @@ const CashDeduction = () => {
               <AppRowContainer>
                 <Col xs={24} md={12}>
                   <Form.Item label='Gets Id ' name='GetsId'>
-                    <Input
-                      readOnly
-                      placeholder={profile?.getsId}
-
-
+                  <Input
+                      className='Input'
+                      type="number"
+                      value={getsInput}
+                      onChange={handleInputGetsId} 
+                      placeholder='Gets Id'
+                  
                     />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Full Name' name='name'>
                     <Input
-                      readOnly
-                      placeholder={profile?.name}
+                   
+                      placeholder={name}
+                      readOnly={true}
 
                     />
 

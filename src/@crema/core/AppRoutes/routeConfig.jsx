@@ -534,6 +534,13 @@ const routesConfig = [
             url: "/Payroll/SalariesTracker",
           },
           {
+            id: "CashAdvance",
+            title: "Cash Advance & Deduction From Salaries",
+            messageId: "sidebar.app.CashAdvance",
+            url: "/Payroll/Cash_Advance",
+          },
+       
+          {
             id: "Payment Request",
             title: "Payment Request",
             messageId: "sidebar.general.paymentRequest",
