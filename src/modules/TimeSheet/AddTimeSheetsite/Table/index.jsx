@@ -1,21 +1,16 @@
-
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Tooltip, Select } from 'antd';
 import moment from 'moment';
 import { EditOutlined } from '@ant-design/icons';
+
 const { Option } = Select;
 
-const OrderTable = ({ orderData, filterDate,
-  setSelectedPointage, selectedPointage, loading
-
-}) => {
-
+const OrderTable = ({ orderData, filterDate, setSelectedPointage, selectedPointage, loading }) => {
   const [editingRecord, setEditingRecord] = useState(null);
   const formattedPickerValue = moment(filterDate).format('YYYY-MM-DD');
   const [tableHeight, setTableHeight] = useState('auto');
   const [allpointage, setAllpointage] = useState('');
-  console.log("orderData 3333 ", orderData)
 
   useEffect(() => {
     GetAllPointage();
@@ -31,22 +26,20 @@ const OrderTable = ({ orderData, filterDate,
     };
   }, []);
 
-
+  useEffect(() => {
+    fetchPointages();
+  }, [filterDate]);
 
   const fetchPointages = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/sheetSite/all`);
       const data = await response.json();
-      console.log("dattttttt", data)
-      const testdate = moment(filterDate).format('YYYY-MM-DD')
-      console.log("testdate", testdate)
+      const testdate = moment(filterDate).format('YYYY-MM-DD');
       const filteredData = data.filter(item => item.date === testdate);
-      console.log("Filtered pointageDataffff:", filteredData);
       const pointageData = filteredData.reduce((acc, item) => {
         acc[item.getsId] = item.pointage;
         return acc;
       }, {});
-      console.log("Filtered pointageData:", pointageData);
       setSelectedPointage(pointageData);
     } catch (error) {
       console.error('Error fetching pointages:', error);
@@ -90,8 +83,6 @@ const OrderTable = ({ orderData, filterDate,
       }
 
       const responseData = await response.json();
-      console.log('Pointage ajouté avec succès:', responseData);
-
       setEditingRecord(code);
     } catch (error) {
       console.error("Erreur lors de l'ajout du pointage:", error);
@@ -121,7 +112,6 @@ const OrderTable = ({ orderData, filterDate,
       }
 
       const responseData = await response.json();
-      console.log('Pointage mis à jour avec succès:', responseData);
       setEditingRecord(null);
     } catch (error) {
       console.error("Erreur lors de la mise à jour du pointage:", error);
@@ -133,7 +123,6 @@ const OrderTable = ({ orderData, filterDate,
   };
 
   const columns = [
-  
     {
       title: 'Gets Id',
       dataIndex: 'getsId',
@@ -145,43 +134,22 @@ const OrderTable = ({ orderData, filterDate,
       key: 'name',
       render: (name) => <Tooltip title={name}>{name}</Tooltip>,
     },
-  
-   
     {
       title: 'Time Attendance',
       dataIndex: 'Pointages',
       key: 'Pointages',
       fixed: 'left',
-      render: (text, record) => (
-     
-        <div>
-          {editingRecord === record.getsId ? (
-            <Select
-              style={{ width: 120 }}
-              defaultValue={selectedPointage[record.getsId]}
-              onChange={(value) => handlePointageChange(value, record)}
-            >
-              <Option value="S">Standby</Option>
-              <Option value="A">Absent</Option>
-              <Option value="WS">Working Site</Option>
-              <Option value="TG">Travel Go</Option>
-              <Option value="TB">Travel Back</Option>
-              <Option value="SIC">Sick Days</Option>
-            </Select>
-          ) : (
-            selectedPointage[record.getsId] ? (
-              <div className='pointageContainer'>
-                {selectedPointage[record.getsId]}
-              </div>
-            ) : (
+      render: (text, record) => {
+        const currentDate = moment().format('YYYY-MM-DD');
+        const pointage = selectedPointage[record.getsId];
+        return (
+          <div>
+            {editingRecord === record.getsId ? (
               <Select
                 style={{ width: 120 }}
-                defaultValue="Select Time Sheet"
+                defaultValue={pointage}
                 onChange={(value) => handlePointageChange(value, record)}
               >
-                <Option value="Select Time Sheet" disabled>
-                  Default
-                </Option>
                 <Option value="S">Standby</Option>
                 <Option value="A">Absent</Option>
                 <Option value="WS">Working Site</Option>
@@ -189,13 +157,31 @@ const OrderTable = ({ orderData, filterDate,
                 <Option value="TB">Travel Back</Option>
                 <Option value="SIC">Sick Days</Option>
               </Select>
-            )
-          )}
-        </div>
-      ),
+            ) : (
+              <div className='pointageContainer'>
+                {pointage || (
+                  <Select
+                    style={{ width: 120 }}
+                    defaultValue="Select Time Sheet"
+                    onChange={(value) => handlePointageChange(value, record)}
+                  >
+                    <Option value="Select Time Sheet" disabled>
+                      Default
+                    </Option>
+                    <Option value="S">Standby</Option>
+                    <Option value="A">Absent</Option>
+                    <Option value="WS">Working Site</Option>
+                    <Option value="TG">Travel Go</Option>
+                    <Option value="TB">Travel Back</Option>
+                    <Option value="SIC">Sick Days</Option>
+                  </Select>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      },
     },
- 
-    
     {
       title: 'Action',
       key: 'action',
@@ -207,7 +193,6 @@ const OrderTable = ({ orderData, filterDate,
         />
       ),
     },
-  
   ];
 
   const GetAllPointage = async () => {
@@ -220,8 +205,7 @@ const OrderTable = ({ orderData, filterDate,
       }
       if (response.ok) {
         const responseData = await response.json();
-        console.log("Pointage", responseData)
-        setAllpointage(responseData)
+        setAllpointage(responseData);
       }
     } catch (error) {
       console.error("Erreur lors de la récupération all Pointage:", error);
@@ -230,14 +214,13 @@ const OrderTable = ({ orderData, filterDate,
 
   return (
     <>
-      {/* <button onClick={fetchPointages}>Filter pointage</button> */}
       {loading ? (
-         <div style={{
+        <div style={{
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          height: '100vh', 
-          color:"#2997ff"
+          height: '100vh',
+          color: "#2997ff"
         }}>
           <p>Loading...</p>
         </div>
@@ -251,7 +234,6 @@ const OrderTable = ({ orderData, filterDate,
           bordered
         />
       )}
-
     </>
   );
 };
@@ -259,6 +241,9 @@ const OrderTable = ({ orderData, filterDate,
 OrderTable.propTypes = {
   orderData: PropTypes.array.isRequired,
   filterDate: PropTypes.instanceOf(Date).isRequired,
+  setSelectedPointage: PropTypes.func.isRequired,
+  selectedPointage: PropTypes.object.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default OrderTable;

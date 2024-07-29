@@ -102,7 +102,7 @@ const EditRecruitementAbove = () => {
 
         const responseData = await response.text();
         openRefuseNotificationBOD('bottomRight')
-        console.log("updataaaa planner", responseData)
+
         navigate(-1)
 
         //handleAddContactClose(true)
