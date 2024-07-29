@@ -6,6 +6,26 @@ import { StyledCalendar } from '../index.styled';
 const localizer = momentLocalizer(moment);
 
 const CalendarInterview = () => {
+  const userEmail = localStorage.getItem("email");
+  const [idgets, setIdgets] = useState("");
+  const fetchProjectEmail = async () => {
+    try {
+      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getProjectByMail?mail=${userEmail}`;
+      const response = await fetch(url, {
+        method: "GET",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log("datttttt000",data?.[0]?.getsId)
+        setIdgets(data?.[0]?.getsId)
+
+      } else {
+        console.error("Erreur lors de la récupération du email:", response.status);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la récupération du email:", error);
+    }
+  };
   const [interviews, setInterviews] = useState([]);
   useEffect(() => {
     const fetchGetAllInterview = async () => {
@@ -19,13 +39,18 @@ const CalendarInterview = () => {
         const url = `${endPoint}/api/v1/int/list`;
         const response = await fetch(url, { method: "GET" });
 
-        if (response.ok) {
-          const data = await response.json();
-          const InterviewsAccepted = data.filter(interview => interview.notif === 3);
-
-          setInterviews(InterviewsAccepted);
-
+         
+          if (response.ok) {
+            const data = await response.json();
+              
+            const InterviewsAccepted = data.filter(interview => {
+                return interview.notif === 0 && interview.idNumb === idgets;
+            });       
+            console.log("InterviewsAccepted 000", InterviewsAccepted);
+            setInterviews(InterviewsAccepted);
         }
+             
+        
       } catch (error) {
         console.error("Erreur lors de la récupération des entretiens:", error);
 
@@ -53,6 +78,9 @@ const CalendarInterview = () => {
       //allDay: true
     };
   });
+  useEffect(() => {
+    fetchProjectEmail()
+  }, [idgets]);
 
 
 

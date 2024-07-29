@@ -161,6 +161,7 @@ export const GlobalStyles = createGlobalStyle`
  
     background: transparent !important;
     color: ${({ theme }) => theme.palette.text.primary} !important;
+   
 
   }
 

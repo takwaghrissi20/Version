@@ -15,7 +15,7 @@ const OrderTable = ({ orderData, filterDate,
   const formattedPickerValue = moment(filterDate).format('YYYY-MM-DD');
   const [tableHeight, setTableHeight] = useState('auto');
   const [allpointage, setAllpointage] = useState('');
-  console.log("filterDate ", filterDate)
+  console.log("orderData 3333 ", orderData)
 
   useEffect(() => {
     GetAllPointage();
@@ -145,6 +145,7 @@ const OrderTable = ({ orderData, filterDate,
       key: 'name',
       render: (name) => <Tooltip title={name}>{name}</Tooltip>,
     },
+  
    
     {
       title: 'Time Attendance',
@@ -152,6 +153,7 @@ const OrderTable = ({ orderData, filterDate,
       key: 'Pointages',
       fixed: 'left',
       render: (text, record) => (
+     
         <div>
           {editingRecord === record.getsId ? (
             <Select
@@ -192,6 +194,8 @@ const OrderTable = ({ orderData, filterDate,
         </div>
       ),
     },
+ 
+    
     {
       title: 'Action',
       key: 'action',

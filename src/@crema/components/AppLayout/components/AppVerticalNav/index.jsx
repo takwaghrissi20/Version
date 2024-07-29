@@ -46,7 +46,6 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "Site Clerk" ||
           item.id === "PROJECTS TRIP TRACK RECORD " ||
           item.id === "Payroll"
-
         ) {
           return false;
         }
@@ -184,6 +183,7 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "Integration" ||
           item.id === "IntegrationStatistics" ||
           item.id === "ReportedReports" ||
+          item.id === "AllLeave" ||
           item.id === "VisaHealth") {
           return false;
         }

@@ -31,7 +31,8 @@ const Table = () => {
     fetchListEmployee();
     fetchCountEmployees();
     // fetchAllListEmployee();
-    fetchAllListEmployeeWithoutPage()
+   
+    fetchAllListEmployee()
   }, [currentPage, pageSize]);
 
   useEffect(() => {
@@ -75,79 +76,24 @@ const Table = () => {
       setLoading(false);  // Set loading to false on error
     }
   };
-  // const fetchAllListEmployee= async () => {
-  //   try {
-      
-  //     const endPoint = process.env.NODE_ENV === 'development' ? 'https://dev-gateway.gets-company.com' : '';
-  //     const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getEmByTypeWithoutPage?type=site`,
-
-  //       {
-  //         method: 'GET',
-  //         headers: {
-  //           'Content-Type': 'application/json'
-  //         },
-  //       });
-  //     if (!response.ok) {
-  //       throw new Error('Failed to fetch employees');
-  //     }
-  //     const data = await response.json();
-  //     console.log("datttttttt",data)
-  //     setAllemployee(data); 
-  //     const projectInfoSet = new Set();
-  //     const costCenterSet = new Set();
-  
-  //     data.forEach(employee => {
-  //       if (employee.projects && employee.projects.length > 0) {
-  //         employee.projects.forEach(project => {
-  //           const projName = project.projName ? project.projName.trim() : '';
-  //           const cosCenter = project.cosCenter ? project.cosCenter.trim() : '';
-            
-  //           if (projName) {
-  //             projectInfoSet.add(JSON.stringify({ projName, cosCenter }));
-  //           }
-            
-  //           if (cosCenter) {
-  //             costCenterSet.add(cosCenter);
-  //           }
-  //         });
-  //       }
-  //     });
-  
-  //     setProjName(Array.from(projectInfoSet).map(item => JSON.parse(item)));
-  //     setCostCenters(Array.from(costCenterSet));
-  
-  //     console.log("Cost Centers:", Array.from(costCenterSet));
-  
-  //     setLoading(false);  // Set loading to false after fetch
-  //   } catch (error) {
-  //     console.error('Erreur lors de la récupération des données getEmByTypeWithoutPage:', error);
-  //     setLoading(false);  // Set loading to false on error
-  //   }
-   
-
-  // };
-  const fetchAllListEmployeeWithoutPage = async () => {
+  const fetchAllListEmployee= async () => {
     try {
-      setLoading(true);  // Set loading to true before fetch
-  
-      const response = await fetch('https://dev-gateway.gets-company.com/api/v1/emp/list');
+      
+      const endPoint = process.env.NODE_ENV === 'development' ? 'https://dev-gateway.gets-company.com' : '';
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getEmByTypeWithoutPage?type=site`,
+
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        });
       if (!response.ok) {
         throw new Error('Failed to fetch employees');
       }
-      const rawText = await response.text();
-      console.log("Raw JSON response:", rawText);
-  
-      // Try parsing the raw JSON to catch any syntax errors
-      let data;
-      try {
-        data = JSON.parse(rawText);
-      } catch (parseError) {
-        throw new Error('Error parsing JSON: ' + parseError.message);
-      }
-  
-      console.log("Parsed data:", data);
-      setAllemployee(rawText);
-  
+      const data = await response.json();
+      console.log("datttttttt",data)
+      setAllemployee(data); 
       const projectInfoSet = new Set();
       const costCenterSet = new Set();
   
@@ -174,12 +120,14 @@ const Table = () => {
       console.log("Cost Centers:", Array.from(costCenterSet));
   
       setLoading(false);  // Set loading to false after fetch
-    } 
-    catch (error) {
-      console.error('Erreur lors de la récupération des données with List', error);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données getEmByTypeWithoutPage:', error);
       setLoading(false);  // Set loading to false on error
     }
+   
+
   };
+
   
 
 

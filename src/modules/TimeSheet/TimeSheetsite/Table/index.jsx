@@ -61,6 +61,11 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
           let color = 'black';
           let fontSize = '1rem'; 
           let fontWeight = 'normal';
+          if (pointage === 'WF') {
+            pointage === 'TG'
+            //pointage === 'WS';
+            color = 'white';
+          }
           
           if (pointage === 'A') {
             color = 'red';
@@ -75,6 +80,7 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
             fontWeight = 'bold';
            
           }
+        
 
           return (
             <Tooltip title={pointageLabels[pointage] || ''}>

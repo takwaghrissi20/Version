@@ -281,14 +281,14 @@ const AllRecruitementStaff = ({ roles,allrecruitementbelow, findIdData, id, find
       width: 100,
       render: (status) => {
         let backgroundColor;
-        let color = 'blue'; 
+        let color = '#93441A'; 
     
         if (status.includes('Pending')) {
           backgroundColor = 'red';
         } else if (status.includes('Approved')) {
           backgroundColor = 'green';
         } else if (status.includes('Refuse')) {
-          backgroundColor = 'blue';
+          backgroundColor = '#93441A';
         }
     
         return (

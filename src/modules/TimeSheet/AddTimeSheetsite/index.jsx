@@ -96,7 +96,7 @@ const AddTimeSheetSite = () => {
         className='no-card-space-ltr-rtl'
         title={`Add Site Time Sheet`}>
 
-          <Row style={{ marginTop: '0.5rem' }}>
+          <Row style={{ marginTop: '1rem',marginBottom:"1rem" }}>
             <Col className="calendar" style={{ display: "flex", zIndex: 10, marginLeft: '3rem', marginBottom: "1rem" }} span={15}>
               <div className="datepicker-wrapper">
                 <FaRegCalendarAlt className="calendar-icon" />
@@ -108,7 +108,7 @@ const AddTimeSheetSite = () => {
                   className="custom-datepicker"
                 />
               </div>
-              <Button type="primary" style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}  onClick={fetchPointages}>Filter</Button>
+              
               {/* <Button type="primary" style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }} 
                       
               >Filter </Button> */}
@@ -124,7 +124,10 @@ const AddTimeSheetSite = () => {
                   </Select.Option>
                 ))}
               </Select>
+              <Button type="primary" style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}  
+              onClick={fetchPointages}>Filter</Button>
             </Col>
+            
           </Row>
 
         <OrderTable 
