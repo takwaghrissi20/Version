@@ -283,15 +283,15 @@ const routesConfig = [
             url: "/Hr/Visa/AllTravel",
           },
           {
-            id: "VisaHealth",
-            title: "VisaHealth",
+            id: "ADDVisaHealth",
+            title: "ADDVisaHealth",
             messageId: "sidebar.general.ADDVisaHealth",
             url: "/Hr/VisaHealth/AddVisa",
           },
         
           {
-            id: "VisaHealth",
-            title: "VisaHealth",
+            id: "Visa",
+            title: "Visa",
             messageId: "sidebar.general.VisaHealth",
             url: "/Hr/VisaHealth/Visa",
           },
@@ -345,7 +345,7 @@ const routesConfig = [
             url: "/Hr/Visa/InternalMission",
           },
           {
-            id: "Add Mission",
+            id: "Mission Order",
             title: "Mission Order",
             messageId: "sidebar.general.AllMission",
             url: "/Hr/Visa/MissionOrder",

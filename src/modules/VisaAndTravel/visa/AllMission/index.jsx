@@ -21,16 +21,44 @@ const AllMission = () => {
   const [nameFilter, setNameFilter] = useState('');
   const [count, setCount] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const user = localStorage.getItem("role");
+  const [projetUserName, setProjetUserName] = useState([]);
+  const [filteredMissionUser, setFilteredMissionUser] = useState([]);
 
   useEffect(() => {
     fetchMission();
+    fetchProjectEmail ()
   }, [currentPage, pageSize, nameFilter]);
-
+  const fetchProjectEmail = async () => {
+    try {
+      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getProjectByMail?mail=${userEmail}`;
+      const response = await fetch(url, {
+        method: "GET",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log("projett Data", data)
+        const ProjectName = data.map(project => project.projName);
+        console.log("ProjectName User", ProjectName)
+        setProjetUserName(ProjectName)
+      } else {
+        console.error("Erreur lors de la récupération du email:", response.status);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la récupération du email:", error);
+    }
+  };
   const fetchMission = async () => {
     try {
       const countMission = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getAll`);
       const datacount = await countMission.json();
+      console.log('datacount 3333',datacount)
       setCount(datacount.length);
+        {/*Project List*/ }
+        const filteredProjet = datacount.filter(item => projetUserName.includes(item.projName));
+        setFilteredMissionUser(filteredProjet)
+  
+        /////////////////////////////////
 
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/list?page=${currentPage}&size=${pageSize}`);
 
@@ -100,9 +128,9 @@ const AllMission = () => {
   };
 
   return (
-    <div>
+    <div >
       <AppPageMeta title='Mission Order' />
-      <div style={{ backgroundColor: "white", borderRadius: "20px" }}>
+      <div style={{ backgroundColor: "white", borderRadius: "20px",marginBottom:"3rem"}}>
         <AppsHeader>
           <StyledOrderHeader>
             <div style={{ marginRight: 20, boxShadow: "none !important", width: "20%" }}>
@@ -138,15 +166,25 @@ const AllMission = () => {
           className='no-card-space-ltr-rtl'
           title={messages['dashboard.MissionOrder']}
         >
-          <OrderTable className={clsx("item-hover")} datamission={filteredMission.length > 0 ? filteredMission : mission} />
-        </AppCard>
+          {user.includes("Leader")?
+          <OrderTable className={clsx("item-hover")} datamission={filteredMissionUser.length > 0 ? filteredMission :filteredMissionUser}
+          user={user}
+          />:
+          <OrderTable className={clsx("item-hover")} datamission={filteredMission.length > 0 ? filteredMission : mission} user={user}/>
+          }
+       
+          </AppCard>
+          {user.includes("Leader")?
+          <></>:
         <StyledOrderHeaderRight>
           <Pagination
             currentPage={currentPage}
             totalPages={Math.ceil(count / pageSize)}
             handlePageChange={handlePageChange}
           />
+           <div style={{marginBottom:"3rem" }}></div>
         </StyledOrderHeaderRight>
+}
       </div>
     </div>
   );

@@ -71,19 +71,21 @@ const DemobTripTrack = () => {
           <StyledCustomerInputView>
           
             </StyledCustomerInputView>
-            <StyledCustomerHeaderRight>
-         
-          <Pagination
-            currentPage={currentPage}
-            //totalPages={Math.ceil(countOffice / pageSize)}
-            totalPages={Math.ceil(count / pageSize)}
-            handlePageChange={handlePageChangeSite}
-          />
-  
-          </StyledCustomerHeaderRight>
+     
          </StyledCustomerHeader>
          </AppsHeader>
           <CustomerTableSite loading={loading} orderData ={demopTrips} />
+          <StyledCustomerHeaderRight style={{ display: 'flex', justifyContent: 'flex-end' }}>
+         
+         <Pagination
+           currentPage={currentPage}
+           //totalPages={Math.ceil(countOffice / pageSize)}
+           totalPages={Math.ceil(count / pageSize)}
+           handlePageChange={handlePageChangeSite}
+         />
+          <div style={{marginBottom:"0.5rem" }}></div>
+ 
+         </StyledCustomerHeaderRight>
         
         </>
       ),

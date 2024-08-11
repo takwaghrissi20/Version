@@ -8,7 +8,7 @@ import { MoreOutlined } from '@ant-design/icons';
 import { useLocation } from 'react-router-dom';
 import jsPDF from 'jspdf';
 
-const OrderTable = ({ orderData }) => {
+const OrderTable = ({ orderData,user }) => {
   const location = useLocation();
   const [findIdData, setFindIdData] = useState(null);
   const [id, setId] = useState("");
@@ -60,8 +60,26 @@ const OrderTable = ({ orderData }) => {
     doc.text(`Fonction: ${findIdData?.fonct}`, 10, 50);
     doc.save(`MissionOrder_MOA-${findIdData?.idMiss}.pdf`);
   };
-
-  const items = [
+  const items = user?.includes("admin") ? [
+    { 
+      key: 1, 
+      label: <span style={{ fontSize: 14 }}>View</span>, 
+      onClick: handleViewMission
+    },
+    { 
+      key: 2, 
+      label: <span style={{ fontSize: 14 }}>Edit</span>, 
+      onClick: handleEditMission 
+    }
+  ] : [
+    { 
+      key: 1, 
+      label: <span style={{ fontSize: 14 }}>View</span>, 
+      onClick: handleViewMission 
+    }
+  ];
+  
+  const itemstest = [
     { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleViewMission },
     { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditMission },
   

@@ -86,6 +86,7 @@ const JWTAuthProvider = ({ children }) => {
           isAuthenticated: true,
           isLoading: false,
         });
+        window.location.reload();
         fetchSuccess();
       }
     } catch (error) {

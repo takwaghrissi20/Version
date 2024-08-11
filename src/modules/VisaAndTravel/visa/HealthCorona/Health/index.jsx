@@ -13,7 +13,8 @@ const HealthCertification = () => {
   const [totalVaccinFetness, setTotalVaccinFetness] = useState(0);
   const [totalVaccinHepatite, setTotalVaccinHepatite] = useState(0);
   const [totalVaccinIdz, setTotalVaccinIdz] = useState(0);
-  
+  const user = localStorage.getItem("role");
+
   const fetchVaccin = async () => {
     try {
       const countVaccin = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/list`);
@@ -51,7 +52,9 @@ const HealthCertification = () => {
           <AppViewStatic>
                   
             <StaticsHealth 
-            HeatlStatics={HeatlStatics}/>
+            HeatlStatics={HeatlStatics}
+            user={user}
+            />
             </AppViewStatic>
       
 

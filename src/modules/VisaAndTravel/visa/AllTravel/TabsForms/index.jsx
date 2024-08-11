@@ -1,10 +1,11 @@
 import React from 'react';
 import AppsContainer from "../../../../../@crema/components/AppsContainer";
 import OrderTable from '../DahbordsTable';
-const TabsForms = ({ datamission }) => {
+const TabsForms = ({ datamission,user }) => {
   return (
     <AppsContainer type='bottom' fullView>
-      <OrderTable orderData={datamission} />
+      <OrderTable orderData={datamission}
+      user={user} />
     </AppsContainer>
   );
 };

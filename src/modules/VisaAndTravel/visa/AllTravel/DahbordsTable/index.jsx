@@ -8,7 +8,7 @@ import { MoreOutlined } from '@ant-design/icons';
 import { useLocation } from 'react-router-dom';
 import jsPDF from 'jspdf';
 
-const OrderTable = ({ orderData }) => {
+const OrderTable = ({ orderData,user }) => {
   const location = useLocation();
   const [findIdData, setFindIdData] = useState(null);
   const [id, setId] = useState("");
@@ -51,8 +51,27 @@ const OrderTable = ({ orderData }) => {
   };
 
 
-
-  const items = [
+  const items= user?.includes("admin") ? [
+    { 
+      key: 1, 
+      label: <span style={{ fontSize: 14 }}>View</span>, 
+      onClick: handleViewTravel 
+    },
+    { 
+      key: 2, 
+      label: <span style={{ fontSize: 14 }}>Edit</span>, 
+      onClick: handleEditTravel 
+    }
+  ] : [
+    { 
+      key: 1, 
+      label: <span style={{ fontSize: 14 }}>View</span>, 
+      onClick: handleViewTravel 
+    }
+  ];
+  
+  const itemstest = [
+   
     { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleViewTravel },
     { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditTravel },
   

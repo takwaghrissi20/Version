@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../../@crema/components/AppRowContainer';
 import {
   Button, Col, Divider, Form, Input, Space, Typography, Select,
-  Alert, Checkbox, DatePicker,notification
+  Alert, Checkbox, DatePicker, notification
 } from 'antd';
 import { MdEdit } from 'react-icons/md';
 import {
@@ -25,8 +25,6 @@ const AddDemobilization = () => {
   const [getsId, setGetsId] = useState("");
   const [JosId, setJosId] = useState("");
   const [ticketReference, setTicketReference] = useState("");
-
-
   const [name, setName] = useState("");
   const [position, setPosition] = useState("");
   const [passportnumber, setPassportnumber] = useState("");
@@ -75,8 +73,9 @@ const AddDemobilization = () => {
   const [type, setType] = useState("DeMobilization");
   const [demobmonth, setDemobmonth] = useState("");
   const [dateInput, setDateInput] = useState(new Date());
+  const userRole = localStorage.getItem("role")
+  console.log("rolessss", userRole)
   const formattedDate = dayjs(dateInput).format('YYYY-MM-DD');
-
   useEffect(() => {
     // Reset employee-related state variables
     setName("");
@@ -240,8 +239,6 @@ const AddDemobilization = () => {
     setUrlCopy(event.target.value);
   };
 
-
-
   const LastIndexTravel = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/last?type=${type}`, {
@@ -256,6 +253,7 @@ const AddDemobilization = () => {
       }
 
       const data = await response.json();
+      console.log("data?.idMd",data?.idMd)
       setLastDemobilization(data?.idMd)
 
     } catch (error) {
@@ -308,7 +306,7 @@ const AddDemobilization = () => {
       }
       const responseData = await response.json();
       setProjRef(responseData?.[0]?.projRef)
-      
+
 
 
     } catch (error) {
@@ -332,7 +330,7 @@ const AddDemobilization = () => {
       }));
 
       setMissionOrder(MissionData)
-     
+
 
 
 
@@ -449,6 +447,57 @@ const AddDemobilization = () => {
       console.error("Erreur lors de la récupération du MossionId:", error);
     }
   };
+  //Site Clerck
+  const handleAddDemobSiteClerck = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/add?id=${idlastTravel}`, {
+
+        method: 'POST',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+          inputDate: formattedDate,
+         // idMd:LastDemobId ,
+          getsId: getsId,
+          name: name,
+          position: position,
+          actualLocation: actualLocation,
+          projName: selectedProject,
+          dateMob: lastTravel,
+          totalWorkingDays: totalWorking,
+          dateDemob: demobDate,
+          type:"Demob",
+          notif:13
+
+        })
+      });
+
+      if (!response.ok) {
+        openNotificationError('bottomRight')
+        throw new Error('Network response was not ok');
+
+      }
+      if (response.ok) {
+
+        const responseData = await response.json();
+        console.log("testttttdemonMob",responseData)
+        openNotification('bottomRight')
+
+
+
+      }
+
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id Mission:", error);
+    }
+  };
+
+
+  //End Site Clerck
 
   const handleAddDemob = async () => {
     try {
@@ -462,7 +511,7 @@ const AddDemobilization = () => {
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
         body: JSON.stringify({
-       
+          inputDate: formattedDate,
           commentaire: comments,
           desiredDate: DesiredDate,
           visaType: visatype,
@@ -477,25 +526,25 @@ const AddDemobilization = () => {
           backToBackType: isNeedsite,
           newRecruitment: isNewRecruitement,
           inputDate: dateInput,
-          backToBackNeed:isBackNeed,
-          backToBackType:isNoBackNeed,
-        
+          backToBackNeed: isBackNeed,
+          backToBackType: isNoBackNeed,
 
-  
+
+
 
         })
       });
 
-      if (!response.ok) { 
+      if (!response.ok) {
         openNotificationError('bottomRight')
         throw new Error('Network response was not ok');
-     
+
       }
       if (response.ok) {
 
         const responseData = await response.json();
         openNotification('bottomRight')
-   
+
 
 
       }
@@ -581,29 +630,59 @@ const AddDemobilization = () => {
     //const comment = form.getFieldValue('comments');
     const TotalWorkingDays = form.getFieldValue('TotalWorkingDays');
     const demobDate = form.getFieldValue('demobDate');
-    const DemobDecision = form.getFieldValue('DemobDecision');
-    const Reason = form.getFieldValue('Reason');
-    const demobMonth = form.getFieldValue('demobMonth');
-    const visatype = form.getFieldValue('visatype');
-    const DesiredDate = form.getFieldValue('DesiredDate');
-  
-    if (!TotalWorkingDays || !demobDate || !DemobDecision || !Reason || !demobMonth || !visatype ) {
+    // const DemobDecision = form.getFieldValue('DemobDecision');
+    // const Reason = form.getFieldValue('Reason');
+    // const demobMonth = form.getFieldValue('demobMonth');
+    // const visatype = form.getFieldValue('visatype');
+    // const DesiredDate = form.getFieldValue('DesiredDate');
+
+    // if (!TotalWorkingDays || !demobDate || !DemobDecision || !Reason || !demobMonth || !visatype ) {
+    if (!TotalWorkingDays || !demobDate) {
       openNotificationWarning('bottomRight')
-    
+
       return;
     }
 
-    form.validateFields(['TotalWorkingDays', 'demobDate', 'DemobDecision', 'Reason', 'demobMonth', 'visatype','DesiredDate'])
+    form.validateFields(['TotalWorkingDays', 'demobDate'])
       .then(values => {
         handleAddDemob()
-     
+
         // setConfirmationDemob(true);
       })
       .catch(errorInfo => {
         openNotificationWarning('bottomRight')
-      
+
       });
   };
+  const BeforeSaveDemobSiteClerck = () => {
+    //const comment = form.getFieldValue('comments');
+    const TotalWorkingDays = form.getFieldValue('TotalWorkingDays');
+    const demobDate = form.getFieldValue('demobDate');
+    // const DemobDecision = form.getFieldValue('DemobDecision');
+    // const Reason = form.getFieldValue('Reason');
+    // const demobMonth = form.getFieldValue('demobMonth');
+    // const visatype = form.getFieldValue('visatype');
+    // const DesiredDate = form.getFieldValue('DesiredDate');
+
+    // if (!TotalWorkingDays || !demobDate || !DemobDecision || !Reason || !demobMonth || !visatype ) {
+    if (!TotalWorkingDays || !demobDate) {
+      openNotificationWarning('bottomRight')
+
+      return;
+    }
+
+    form.validateFields(['TotalWorkingDays', 'demobDate'])
+      .then(values => {
+        handleAddDemobSiteClerck()
+
+        // setConfirmationDemob(true);
+      })
+      .catch(errorInfo => {
+        openNotificationWarning('bottomRight')
+
+      });
+  };
+
 
 
   const handleConfirmationAddDemobilization = () => {
@@ -624,7 +703,7 @@ const AddDemobilization = () => {
   }
 
   function NoBackNeed(e) {
-  ;
+    ;
     setNoIsBackNeed(e.target.checked)
 
   }
@@ -645,411 +724,667 @@ const AddDemobilization = () => {
 
   return (
     <>
-      <Form
-        form={form}
-        layout='vertical'
-        style={{ backgroundColor: "white", marginBottom: "20px", padding: "10px", borderRadius: "20px" }}
-        onSubmit={e => { e.preventDefault() }}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            e.preventDefault();
-          }
-        }}
-      >
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <div>
-            <Typography.Title level={4}>Demobilization Permission</Typography.Title>
-          </div>
-        </div>
-        <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+      {userRole.includes("admin") &&
 
-        <AppRowContainer>
-          <Col xs={24} md={6}>
-            <Typography.Title level={5}>Information Demobilization</Typography.Title>
-          </Col>
-          <Col xs={24} md={18}>
-            <StyledShadowWrapper>
-              <AppRowContainer>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Reference' name='refdemob'>
-                    <Input placeholder={"DP -" + LastDemobId} readOnly={true} />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Date' name='Date :'
-                  >
-                      <DatePicker
-                      style={{ width: "100%", height: "30px" }}
-                      defaultValue={dateInput ? dayjs(formattedDate, 'YYYY-MM-DD') : null}
-                      value={formattedDate ? dayjs(formattedDate, 'YYYY-MM-DD') : null}
-                      onChange={(value) => setDateInput(value ? dayjs(value).format('YYYY-MM-DD') : '')}
-                    />
-                    {/* <DatePicker
-                      style={{ width: "100%", height: "30px" }}
-                      placeholder='YYYY-MM-DD'
-                      value={dateInput ? dayjs(dateInput, 'YYYY-MM-DD') : null}
-                      onChange={(value) => setDateInput(value ? dayjs(value).format('YYYY-MM-DD') : '')}
-
-                    /> */}
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Gets Id' name='Gets Id '>
-                    <Input
-                      className='Input'
-                      placeholder="Gets Id"
-                      value={getsId}
-                      onChange={handleInputGetsIdChange} />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Jos Id' name='Jos Id'>
-                    <Input
-                      className='Input'
-                      // placeholder="Jos Id"
-                      placeholder={JosId}
-                      readOnly
-                    // value={JosId}
-
-
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Employee Name' name='PersonName'>
-                    <Input
-                      className='Input'
-                      placeholder={name}
-                      readOnly />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label='Position' name='Position'>
-                    <Input
-                      readOnly={true}
-                      className='Input'
-                      placeholder={position} />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label='Actual Location' name='ActualLocation'
-                    rules={[{ required: true, message: 'Please select Actual Location ' }]}>
-
-
-                    <Input
-                      className='Input'
-                      placeholder="Actual Location"
-                      value={actualLocation}
-                      onChange={handleActualLocation}
-                    />
-                  </Form.Item>
-                </Col>
-
-
-              </AppRowContainer>
-            </StyledShadowWrapper>
-          </Col>
-        </AppRowContainer>
-        <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-        <AppRowContainer>
-          <Col xs={24} md={6}>
-            <Typography.Title level={5}>Mob/Demob Information</Typography.Title>
-          </Col>
-
-          <Col xs={24} md={18}>
-            <StyledShadowWrapper>
-              <AppRowContainer>
-                <Col xs={24} md={12}>
-                  <Form.Item className='form-field'
-                    name='projectName'
-                  >
-                    <FloatLabel >
-                      <span className='modallabel'>Project Name:</span>
-                      <Select
-                        style={{ marginTop: "10px" }}
-                        placeholder="Select Your Project Name"
-                        onChange={handleProjectChange}
-                        value={selectedProject}
-                      >
-                        {projects.map(project => (
-                          <Option key={project.projId} value={project.projName}>
-                            {project.projName}
-                          </Option>
-                        ))}
-                      </Select>
-                    </FloatLabel>
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item className='form-field'
-                    name='projectRef'
-                    label="project Ref :"
-                  >
-                    <Input
-                      className='Input'
-                      placeholder={projectRef}
-                      readOnly
-
-
-
-
-                    />
-
-
-
-                  </Form.Item>
-                </Col>
-
-
-                <Col xs={24} md={12}>
-                  <Form.Item className='form-field'
-                    name='Mission'
-                  >
-                    <FloatLabel >
-                      <span className='modallabel'>Reference Mision Order:</span>
-                      <Select
-                        style={{ marginTop: "10px" }}
-                        placeholder="Select Your Mision Order"
-                        onChange={handleMissionChange}
-                        value={selectedMission}
-                      >
-                        {missionOrder.map(p => (
-                          <Option key={p.missionId} value={p.missionId}>
-                            {"MAO -" + p.missionId}
-                          </Option>
-                        ))}
-                      </Select>
-                    </FloatLabel>
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    name="LastMob"
-                    label="Last Mob Date">
-
-                    <Input
-                      className='Input'
-                      placeholder={lastTravel}
-                      readOnly
-
-
-
-                    />
-
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item className='form-field'
-                    name='TotalWorkingDays'
-                    label="Total Working Days :"
-                    rules={[{ required: true, message: 'Please select Total Working Days' }]}
-                  >
-                    <Input
-                      className='Input'
-                      placeholder="Total Working Days"
-                      type="number"
-                      value={totalWorking ? `${totalWorking} /days` : ''}
-                      onChange={handleTotalworking}
-
-                    />
-
-
-
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Contractual Demob Date' name='demobDate'
-                    rules={[{ required: true, message: 'Please select Date Demobilization' }]}>
-                    <DatePicker
-                      style={{ width: "100%", height: "30px" }}
-                      value={demobDate ? dayjs(demobDate, 'YYYY-MM-DD') : null}
-                      onChange={(value) => setDemobDate(value ? dayjs(value).format('YYYY-MM-DD') : '')}
-                    />
-                  </Form.Item>
-                </Col>
-
-
-              </AppRowContainer>
-            </StyledShadowWrapper>
-          </Col>
-        </AppRowContainer>
-        <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-        <AppRowContainer>
-          <Col xs={24} md={6}>
-            <Typography.Title level={5}>Demobilization Permission</Typography.Title>
-          </Col>
-
-          <Col xs={24} md={18}>
-            <StyledShadowWrapper>
-              <AppRowContainer>
-
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    name="DemobDecision"
-                    label="Demobilization Decision"
-                    rules={[{ required: true, message: 'Please select Demob Decision' }]}
-                  >
-                    <Select
-                      onChange={handleSelectDemobdescition}
-                      placeholder="Demobilization Decision" allowClear>
-                      {demobdecision.map(type => (
-                        <Option key={type.type} value={type.type}>
-                          {type.type}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </Col>
-
-
-                <Col xs={24} md={12}>
-                  <Form.Item className='form-field'
-                    name='Reason'
-                    label="Reason :"
-                    rules={[{ required: true, message: 'Please select Reason' }]}
-                  >
-                    <Input
-                      className='Input'
-                      placeholder="Reason"
-                      value={reason}
-                      onChange={handleReason}
-
-
-                    />
-
-
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label='Demobilization For the Month'
-                    name='demobMonth'
-                    rules={[{ required: true, message: 'Please select Date Demobilization of the month' }]}
-                  >
-                    <MonthPicker
-                      style={{ width: "100%", height: "30px" }}
-                      value={demobmonth ? dayjs(demobmonth, 'YYYY-MM') : null}
-                      onChange={(value) => setDemobmonth(value ? dayjs(value).format('YYYY-MM') : '')}
-                    />
-                  </Form.Item>
-                </Col>
-
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    name="visatype"
-                    label="Visa Type"
-                    rules={[{ required: true, message: 'Please select Visa Type' }]}
-                  >
-                    <Select
-                      onChange={handleTypeVisa}
-                      placeholder="Visa Type" allowClear>
-                      {visaType.map(type => (
-                        <Option key={type.type} value={type.type}>
-                          {type.type}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </Col>
-
-                {/* <Col xs={24} md={12}>
-                  <Form.Item label='Demobilization For the Month' name='demobMonth'
-                    rules={[{ required: true, message: 'Please select Date Demobilization of the month' }]}>
-                    <DatePicker
-                      style={{ width: "100%", height: "30px" }}
-                      value={demobmonth ? dayjs(demobmonth, 'YYYY-MM-DD') : null}
-                      onChange={(value) => setDemobmonth(value ? dayjs(value).format('YYYY-MM-DD') : '')}
-                    />
-                  </Form.Item>
-                </Col> */}
-
-                <Col xs={24} md={24}>
-                  <StyledInput>
-                    <Form.Item
-                      label='Back To Back :'
-                      name='Back'
-
-
-                    >
-                      <Checkbox checked={isBackNeed} onChange={BackNeed}>
-
-                        <IntlMessages id='demob.Need' />
-                      </Checkbox>
-                      <Checkbox checked={isNoBackNeed} onClick={NoBackNeed}>
-                        <IntlMessages id='demob.No.Need' />
-                      </Checkbox>
-                    </Form.Item>
-                  </StyledInput>
-                </Col>
-                <Col xs={24} md={24}>
-                  <StyledInput>
-                    <Form.Item
-                      label='Type of Back To Back (In Case of Need back to back please specify the type)'
-                      name='Back'
-
-
-                    >
-                      <Checkbox style={{ margin: "8px" }} checked={isNeedoffice} onChange={Needoffice}>
-
-                        <IntlMessages id='demob.Needoffice' />
-                      </Checkbox>
-                      <Checkbox style={{ margin: "8px" }} checked={isNeedsite} onClick={Needsite}>
-                        <IntlMessages id='demob.NeedSite' />
-                      </Checkbox>
-                      <Checkbox style={{ margin: "8px" }} checked={isNewRecruitement} onClick={NewRecruitement}>
-                        <IntlMessages id='demob.NewRecuitement' />
-                      </Checkbox>
-                    </Form.Item>
-                  </StyledInput>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Desired Date' name='DesiredDate'
-                  rules={[{ required: true, message: 'Please select Desired Date' }]}
-                  >
-                    <DatePicker
-                      style={{ width: "100%", height: "30px" }}
-                      placeholder='YYYY-MM-DD'
-                      value={DesiredDate ? dayjs(DesiredDate, 'YYYY-MM-DD') : null}
-                      onChange={(value) => setDesiredDate(value ? dayjs(value).format('YYYY-MM-DD') : '')}
-
-
-
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={24}>
-                  <Form.Item label='Comment ' name='comments'
-                  >
-                    <Input
-                      className='InputComment'
-                      placeholder="Comments "
-                      value={comments}
-                      onChange={handleComments}
-                    />
-
-                  </Form.Item>
-                </Col>
-              </AppRowContainer>
-            </StyledShadowWrapper>
-          </Col>
-        </AppRowContainer>
-
-        <Space
-          size={15}
-          style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
+        <Form
+          form={form}
+          layout='vertical'
+          style={{ backgroundColor: "white", marginBottom: "20px", padding: "10px", borderRadius: "20px" }}
+          onSubmit={e => { e.preventDefault() }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+            }
+          }}
         >
-          <Button onClick={handleCancelDemob}>Cancel</Button>
-          <Button
-            onClick={BeforeSaveDemob}
-            disabled={!selectedMission || !selectedProject || !getsId}
-            type='primary'
-            htmlType='submit'>
-            Save
-          </Button>
-        </Space>
-      </Form>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div>
+              <Typography.Title level={4}>Demobilization Permission</Typography.Title>
+            </div>
+          </div>
+          <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+
+          <AppRowContainer>
+            <Col xs={24} md={6}>
+              <Typography.Title level={5}>Information Demobilization</Typography.Title>
+            </Col>
+            <Col xs={24} md={18}>
+              <StyledShadowWrapper>
+                <AppRowContainer>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Reference' name='refdemob'>
+                      <Input placeholder={"DP -" + LastDemobId} readOnly={true} />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Date' name='Date :'
+                    >
+                      <DatePicker
+                        style={{ width: "100%", height: "30px" }}
+                        defaultValue={dateInput ? dayjs(formattedDate, 'YYYY-MM-DD') : null}
+                        value={formattedDate ? dayjs(formattedDate, 'YYYY-MM-DD') : null}
+                        onChange={(value) => setDateInput(value ? dayjs(value).format('YYYY-MM-DD') : '')}
+                      />
+                      {/* <DatePicker
+                       style={{ width: "100%", height: "30px" }}
+                       placeholder='YYYY-MM-DD'
+                       value={dateInput ? dayjs(dateInput, 'YYYY-MM-DD') : null}
+                       onChange={(value) => setDateInput(value ? dayjs(value).format('YYYY-MM-DD') : '')}
+ 
+                     /> */}
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Gets Id' name='Gets Id '>
+                      <Input
+                        className='Input'
+                        placeholder="Gets Id"
+                        value={getsId}
+                        onChange={handleInputGetsIdChange} />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Jos Id' name='Jos Id'>
+                      <Input
+                        className='Input'
+                        // placeholder="Jos Id"
+                        placeholder={JosId}
+                        readOnly
+                      // value={JosId}
+
+
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Employee Name' name='PersonName'>
+                      <Input
+                        className='Input'
+                        placeholder={name}
+                        readOnly />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item
+                      label='Position' name='Position'>
+                      <Input
+                        readOnly={true}
+                        className='Input'
+                        placeholder={position} />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item
+                      label='Actual Location' name='ActualLocation'
+                      rules={[{ required: true, message: 'Please select Actual Location ' }]}>
+
+
+                      <Input
+                        className='Input'
+                        placeholder="Actual Location"
+                        value={actualLocation}
+                        onChange={handleActualLocation}
+                      />
+                    </Form.Item>
+                  </Col>
+
+
+                </AppRowContainer>
+              </StyledShadowWrapper>
+            </Col>
+          </AppRowContainer>
+          <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+          <AppRowContainer>
+            <Col xs={24} md={6}>
+              <Typography.Title level={5}>Mob/Demob Information</Typography.Title>
+            </Col>
+
+            <Col xs={24} md={18}>
+              <StyledShadowWrapper>
+                <AppRowContainer>
+                  <Col xs={24} md={12}>
+                    <Form.Item className='form-field'
+                      name='projectName'
+                    >
+                      <FloatLabel >
+                        <span className='modallabel'>Project Name:</span>
+                        <Select
+                          style={{ marginTop: "10px" }}
+                          placeholder="Select Your Project Name"
+                          onChange={handleProjectChange}
+                          value={selectedProject}
+                        >
+                          {projects.map(project => (
+                            <Option key={project.projId} value={project.projName}>
+                              {project.projName}
+                            </Option>
+                          ))}
+                        </Select>
+                      </FloatLabel>
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item className='form-field'
+                      name='projectRef'
+                      label="project Ref :"
+                    >
+                      <Input
+                        className='Input'
+                        placeholder={projectRef}
+                        readOnly
+
+
+                      />
+
+
+
+                    </Form.Item>
+                  </Col>
+
+
+                  <Col xs={24} md={12}>
+                    <Form.Item className='form-field'
+                      name='Mission'
+                    >
+                      <FloatLabel >
+                        <span className='modallabel'>Reference Mision Order:</span>
+                        <Select
+                          style={{ marginTop: "10px" }}
+                          placeholder="Select Your Mision Order"
+                          onChange={handleMissionChange}
+                          value={selectedMission}
+                        >
+                          {missionOrder.map(p => (
+                            <Option key={p.missionId} value={p.missionId}>
+                              {"MAO -" + p.missionId}
+                            </Option>
+                          ))}
+                        </Select>
+                      </FloatLabel>
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item
+                      name="LastMob"
+                      label="Last Mob Date">
+
+                      <Input
+                        className='Input'
+                        placeholder={lastTravel}
+                        readOnly
+
+
+
+                      />
+
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item className='form-field'
+                      name='TotalWorkingDays'
+                      label="Total Working Days :"
+                      rules={[{ required: true, message: 'Please select Total Working Days' }]}
+                    >
+                      <Input
+                        className='Input'
+                        placeholder="Total Working Days"
+                        type="number"
+                        value={totalWorking ? `${totalWorking} /days` : ''}
+                        onChange={handleTotalworking}
+
+                      />
+
+
+
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Contractual Demob Date' name='demobDate'
+                      rules={[{ required: true, message: 'Please select Date Demobilization' }]}>
+                      <DatePicker
+                        style={{ width: "100%", height: "30px" }}
+                        value={demobDate ? dayjs(demobDate, 'YYYY-MM-DD') : null}
+                        onChange={(value) => setDemobDate(value ? dayjs(value).format('YYYY-MM-DD') : '')}
+                      />
+                    </Form.Item>
+                  </Col>
+
+
+                </AppRowContainer>
+              </StyledShadowWrapper>
+            </Col>
+          </AppRowContainer>
+          <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+          <AppRowContainer>
+            <Col xs={24} md={6}>
+              <Typography.Title level={5}>Demobilization Permission</Typography.Title>
+            </Col>
+
+            <Col xs={24} md={18}>
+              <StyledShadowWrapper>
+                <AppRowContainer>
+
+                  <Col xs={24} md={12}>
+                    <Form.Item
+                      name="DemobDecision"
+                      label="Demobilization Decision"
+                      rules={[{ required: true, message: 'Please select Demob Decision' }]}
+                    >
+                      <Select
+                        onChange={handleSelectDemobdescition}
+                        placeholder="Demobilization Decision" allowClear>
+                        {demobdecision.map(type => (
+                          <Option key={type.type} value={type.type}>
+                            {type.type}
+                          </Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+
+
+                  <Col xs={24} md={12}>
+                    <Form.Item className='form-field'
+                      name='Reason'
+                      label="Reason :"
+                      rules={[{ required: true, message: 'Please select Reason' }]}
+                    >
+                      <Input
+                        className='Input'
+                        placeholder="Reason"
+                        value={reason}
+                        onChange={handleReason}
+
+
+                      />
+
+
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item
+                      label='Demobilization For the Month'
+                      name='demobMonth'
+                      rules={[{ required: true, message: 'Please select Date Demobilization of the month' }]}
+                    >
+                      <MonthPicker
+                        style={{ width: "100%", height: "30px" }}
+                        value={demobmonth ? dayjs(demobmonth, 'YYYY-MM') : null}
+                        onChange={(value) => setDemobmonth(value ? dayjs(value).format('YYYY-MM') : '')}
+                      />
+                    </Form.Item>
+                  </Col>
+
+                  <Col xs={24} md={12}>
+                    <Form.Item
+                      name="visatype"
+                      label="Visa Type"
+                      rules={[{ required: true, message: 'Please select Visa Type' }]}
+                    >
+                      <Select
+                        onChange={handleTypeVisa}
+                        placeholder="Visa Type" allowClear>
+                        {visaType.map(type => (
+                          <Option key={type.type} value={type.type}>
+                            {type.type}
+                          </Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+
+                  {/* <Col xs={24} md={12}>
+                   <Form.Item label='Demobilization For the Month' name='demobMonth'
+                     rules={[{ required: true, message: 'Please select Date Demobilization of the month' }]}>
+                     <DatePicker
+                       style={{ width: "100%", height: "30px" }}
+                       value={demobmonth ? dayjs(demobmonth, 'YYYY-MM-DD') : null}
+                       onChange={(value) => setDemobmonth(value ? dayjs(value).format('YYYY-MM-DD') : '')}
+                     />
+                   </Form.Item>
+                 </Col> */}
+
+                  <Col xs={24} md={24}>
+                    <StyledInput>
+                      <Form.Item
+                        label='Back To Back :'
+                        name='Back'
+
+
+                      >
+                        <Checkbox checked={isBackNeed} onChange={BackNeed}>
+
+                          <IntlMessages id='demob.Need' />
+                        </Checkbox>
+                        <Checkbox checked={isNoBackNeed} onClick={NoBackNeed}>
+                          <IntlMessages id='demob.No.Need' />
+                        </Checkbox>
+                      </Form.Item>
+                    </StyledInput>
+                  </Col>
+                  <Col xs={24} md={24}>
+                    <StyledInput>
+                      <Form.Item
+                        label='Type of Back To Back (In Case of Need back to back please specify the type)'
+                        name='Back'
+
+
+                      >
+                        <Checkbox style={{ margin: "8px" }} checked={isNeedoffice} onChange={Needoffice}>
+
+                          <IntlMessages id='demob.Needoffice' />
+                        </Checkbox>
+                        <Checkbox style={{ margin: "8px" }} checked={isNeedsite} onClick={Needsite}>
+                          <IntlMessages id='demob.NeedSite' />
+                        </Checkbox>
+                        <Checkbox style={{ margin: "8px" }} checked={isNewRecruitement} onClick={NewRecruitement}>
+                          <IntlMessages id='demob.NewRecuitement' />
+                        </Checkbox>
+                      </Form.Item>
+                    </StyledInput>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Desired Date' name='DesiredDate'
+                      rules={[{ required: true, message: 'Please select Desired Date' }]}
+                    >
+                      <DatePicker
+                        style={{ width: "100%", height: "30px" }}
+                        placeholder='YYYY-MM-DD'
+                        value={DesiredDate ? dayjs(DesiredDate, 'YYYY-MM-DD') : null}
+                        onChange={(value) => setDesiredDate(value ? dayjs(value).format('YYYY-MM-DD') : '')}
+
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={24}>
+                    <Form.Item label='Comment ' name='comments'
+                    >
+                      <Input
+                        className='InputComment'
+                        placeholder="Comments "
+                        value={comments}
+                        onChange={handleComments}
+                      />
+
+                    </Form.Item>
+                  </Col>
+                </AppRowContainer>
+              </StyledShadowWrapper>
+            </Col>
+          </AppRowContainer>
+
+          <Space
+            size={15}
+            style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
+          >
+            <Button onClick={handleCancelDemob}>Cancel</Button>
+            <Button
+              onClick={BeforeSaveDemob}
+              disabled={!selectedMission || !selectedProject || !getsId}
+              type='primary'
+              htmlType='submit'>
+              Save
+            </Button>
+          </Space>
+        </Form>
+
+      }
+      {/* //Site Clecrk */}
+      {userRole.includes("Site Klerk") &&
+        <Form
+          form={form}
+          layout='vertical'
+          style={{ backgroundColor: "white", marginBottom: "20px", padding: "10px", borderRadius: "20px" }}
+          onSubmit={e => { e.preventDefault() }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+            }
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div>
+              <Typography.Title level={4}>Demobilization Permission</Typography.Title>
+            </div>
+          </div>
+          <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+
+          <AppRowContainer>
+            <Col xs={24} md={6}>
+              <Typography.Title level={5}>Information Demobilization</Typography.Title>
+            </Col>
+            <Col xs={24} md={18}>
+              <StyledShadowWrapper>
+                <AppRowContainer>
+               
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Reference' name='refdemob'>
+                      <Input placeholder={"DP -" + LastDemobId} readOnly={true} />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Date' name='Date :'
+                    >
+                      <Input
+                        placeholder={formattedDate}
+                        readOnly
+                      />
+                      {/* <DatePicker
+                    style={{ width: "100%", height: "30px" }}
+                    defaultValue={dateInput ? dayjs(formattedDate, 'YYYY-MM-DD') : null}
+                    value={formattedDate ? dayjs(formattedDate, 'YYYY-MM-DD') : null}
+                    onChange={(value) => setDateInput(value ? dayjs(value).format('YYYY-MM-DD') : '')}
+                  /> */}
+                      {/* <DatePicker
+                    style={{ width: "100%", height: "30px" }}
+                    placeholder='YYYY-MM-DD'
+                    value={dateInput ? dayjs(dateInput, 'YYYY-MM-DD') : null}
+                    onChange={(value) => setDateInput(value ? dayjs(value).format('YYYY-MM-DD') : '')}
+
+                  /> */}
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Gets Id' name='Gets Id '>
+                      <Input
+                        className='Input'
+                        placeholder="Gets Id"
+                        value={getsId}
+                        onChange={handleInputGetsIdChange} />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Jos Id' name='Jos Id'>
+                      <Input
+                        className='Input'
+                        // placeholder="Jos Id"
+                        placeholder={JosId}
+                        readOnly
+                      // value={JosId}
+
+
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Employee Name' name='PersonName'>
+                      <Input
+                        className='Input'
+                        placeholder={name}
+                        readOnly />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item
+                      label='Position' name='Position'>
+                      <Input
+                        readOnly={true}
+                        className='Input'
+                        placeholder={position} />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item
+                      label='Actual Location' name='ActualLocation'
+                      rules={[{ required: true, message: 'Please select Actual Location ' }]}>
+
+
+                      <Input
+                        className='Input'
+                        placeholder="Actual Location"
+                        value={actualLocation}
+                        onChange={handleActualLocation}
+                      />
+                    </Form.Item>
+                  </Col>
+
+
+                </AppRowContainer>
+              </StyledShadowWrapper>
+            </Col>
+          </AppRowContainer>
+          <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+          <AppRowContainer>
+            <Col xs={24} md={6}>
+              <Typography.Title level={5}>Mob/Demob Information</Typography.Title>
+            </Col>
+
+            <Col xs={24} md={18}>
+              <StyledShadowWrapper>
+                <AppRowContainer>
+                  <Col xs={24} md={12}>
+                    <Form.Item className='form-field'
+                      name='projectName'
+                    >
+                      <FloatLabel >
+                        <span className='modallabel'>Project Name:</span>
+                        <Select
+                          style={{ marginTop: "10px" }}
+                          placeholder="Select Your Project Name"
+                          onChange={handleProjectChange}
+                          value={selectedProject}
+                        >
+                          {projects.map(project => (
+                            <Option key={project.projId} value={project.projName}>
+                              {project.projName}
+                            </Option>
+                          ))}
+                        </Select>
+                      </FloatLabel>
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item className='form-field'
+                      name='projectRef'
+                      label="project Ref :"
+                    >
+                      <Input
+                        className='Input'
+                        placeholder={projectRef}
+                        readOnly
+
+
+
+
+                      />
+
+
+
+                    </Form.Item>
+                  </Col>
+
+
+                  <Col xs={24} md={12}>
+                    <Form.Item className='form-field'
+                      name='Mission'
+                    >
+                      <FloatLabel >
+                        <span className='modallabel'>Reference Mision Order:</span>
+                        <Select
+                          style={{ marginTop: "10px" }}
+                          placeholder="Select Your Mision Order"
+                          onChange={handleMissionChange}
+                          value={selectedMission}
+                        >
+                          {missionOrder.map(p => (
+                            <Option key={p.missionId} value={p.missionId}>
+                              {"MAO -" + p.missionId}
+                            </Option>
+                          ))}
+                        </Select>
+                      </FloatLabel>
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item
+                      name="LastMob"
+                      label="Last Mob Date">
+
+                      <Input
+                        className='Input'
+                        placeholder={lastTravel}
+                        readOnly
+
+
+
+                      />
+
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item className='form-field'
+                      name='TotalWorkingDays'
+                      label="Total Working Days :"
+                      rules={[{ required: true, message: 'Please select Total Working Days' }]}
+                    >
+                      <Input
+                        className='Input'
+                        placeholder="Total Working Days"
+                        type="number"
+                        value={totalWorking ? `${totalWorking} /days` : ''}
+                        onChange={handleTotalworking}
+
+                      />
+
+
+
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Contractual Demob Date' name='demobDate'
+                      rules={[{ required: true, message: 'Please select Date Demobilization' }]}>
+                      <DatePicker
+                        style={{ width: "100%", height: "30px" }}
+                        value={demobDate ? dayjs(demobDate, 'YYYY-MM-DD') : null}
+                        onChange={(value) => setDemobDate(value ? dayjs(value).format('YYYY-MM-DD') : '')}
+                      />
+                    </Form.Item>
+                  </Col>
+
+
+                </AppRowContainer>
+              </StyledShadowWrapper>
+            </Col>
+          </AppRowContainer>
+
+
+          <Space
+            size={15}
+            style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
+          >
+            <Button onClick={handleCancelDemob}>Cancel</Button>
+            <Button
+              onClick={BeforeSaveDemobSiteClerck}
+              // disabled={!selectedMission || !selectedProject || !getsId}
+              type='primary'
+              htmlType='submit'>
+              Save Site Clerck
+            </Button>
+          </Space>
+        </Form>
+      }
+
+
       {confirmationDemob ? (
         <ConfirmationModal
           open={confirmationDemob}

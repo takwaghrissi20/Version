@@ -371,8 +371,6 @@ export const ecommerceConfig = [
   },
 
 
-
-
   {
     permittedRole: RoutePermittedRole.User,
     path: ['/apps/scrum-board/:id', '/apps/scrum-board/ConstructionTeam','/Hr/AddEmployees'],

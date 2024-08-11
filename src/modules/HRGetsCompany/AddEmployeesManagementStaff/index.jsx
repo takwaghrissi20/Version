@@ -16,7 +16,6 @@ import EmployeeInformation from './EmployeeInformationManagementStaff'
 const AddEmployeesManagementStaff= () => {
   const [listInterview, setListInterview] = useState([]);
   const navigate = useNavigate();
-  
 
 
   const fetchDataList = async () => {

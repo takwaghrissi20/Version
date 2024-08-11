@@ -799,7 +799,9 @@ input{
   .datepicker-wrapper {
     position: relative;
     width: 30%;
-    margin-right:1rem;
+   
+    /* flex-direction: row;
+    display: flex; */
 
   }
   
@@ -935,7 +937,12 @@ input{
     color: black;
 
   }
+  .time{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1rem;
 
+  }
 
 
 

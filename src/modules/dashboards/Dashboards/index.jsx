@@ -45,7 +45,7 @@ const Dashboards = () => {
   const [idRec, setIdRec] = useState("");
   const [listRecruitementId, setListRecruitementId] = useState([]);
   const user = localStorage.getItem("role");
-  {/*Get Profile*/}
+  {/*Get Profile*/ }
   const GetProfileEmployess = async () => {
     const storedemail = window.localStorage.getItem("email");
     console.log("storedemail", storedemail)
@@ -73,14 +73,14 @@ const Dashboards = () => {
       console.log("data profile", data)
       setDep(data?.departement)
       setProfile(data)
-  
+
 
 
     } catch (error) {
       console.error('Erreur lors de la récupération Last Recruitement', error);
     }
   };
-{/*End Get Prole */}  
+  {/*End Get Prole */ }
   const handlePageChangeOffice = (page) => {
     setCurrentPage(page);
   };
@@ -158,8 +158,8 @@ const Dashboards = () => {
       const data = await response.json();
       setCount(data.length)
       //////Filter les count de Data de idem
-      const dataRecruitement = data.filter(p=>p.idemp===idRec);
-      console.log("lenght",dataRecruitement)
+      const dataRecruitement = data.filter(p => p.idemp === idRec);
+      console.log("lenght", dataRecruitement)
 
       setCountId(dataRecruitement)
 
@@ -186,7 +186,7 @@ const Dashboards = () => {
       }
       const data = await response.json();
       setDatarecruitement(data);
-      
+
       return data;
 
     }
@@ -249,14 +249,12 @@ const Dashboards = () => {
 
   };
   useEffect(() => {
-    if(user.includes("admin") || (user.includes('Administrator'))) {
-      console.log("admiiinnn or Administrator")
+    if (user.includes("admin") || (user.includes('Administrator'))) {
       fetchEmployeesByType();
       fetchCountRecruitement()
       // fetchCountRecruitement()
     }
-    else if ((!user.includes("admin"))  ) {
-      console.log("Not admiiinnn")
+    else if ((!user.includes("admin"))) {
       fetchEmployeesEmail()
       fetchEmployeesByEmployees();
 
@@ -345,21 +343,21 @@ const Dashboards = () => {
               AllRecruitement={datarecruitement}
               listRecruitementId={listRecruitementId}
             />
-            {user.includes('admin') || user.includes('Administrator') && (
-            <>       
-              <div className='Pagination' >
-                <StyledCustomerHeaderRight>
-                  <Pagination
-                    currentPage={currentPage}
-                    totalPages={Math.ceil(count / pageSize)}
-                    handlePageChange={handlePageChangeOffice}
-                  />
-                </StyledCustomerHeaderRight>
-              </div>
+            {user.includes('admin') || user.includes('Administrator')   || !user?.includes('Construction')&& (
+              <>
+                <div className='Pagination' >
+                  <StyledCustomerHeaderRight>
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={Math.ceil(count / pageSize)}
+                      handlePageChange={handlePageChangeOffice}
+                    />
+                  </StyledCustomerHeaderRight>
+                </div>
               </>
             )}
-            {!user.includes('admin') || !user.includes('Administrator')   && (
-              
+            {!user.includes('admin') || !user.includes('Administrator') && (
+
 
               <div className='Pagination' >
                 <StyledCustomerHeaderRight>
@@ -370,7 +368,7 @@ const Dashboards = () => {
                   />
                 </StyledCustomerHeaderRight>
               </div>
-              
+
 
             )}
           </>
@@ -379,8 +377,10 @@ const Dashboards = () => {
         </>
       ),
     },
-    
-    ...(!(user?.includes('Manager') || user?.includes('Planner') || user?.includes('Leader')) ? [{
+
+    ...(!(user?.includes('Manager') || user?.includes('Planner') || user?.includes('Leader') ||
+         user?.includes('Administrator')) ||user?.includes('Human Ressource')  || !user?.includes('Construction') ? 
+     [{
       label: 'Passport Expired',
       key: '2',
       children: (
@@ -390,8 +390,9 @@ const Dashboards = () => {
         </>
       ),
     }] : []),
-    
-    ...(!(user?.includes('Manager') || user?.includes('Planner') || user?.includes('Leader')) ? [{
+
+    ...(!(user?.includes('Manager') || user?.includes('Planner') || user?.includes('Leader') || 
+         user?.includes('Administrator')) || user?.includes('Human Ressource')  || !user?.includes('Construction')? [{
       label: 'Visa Expired',
       key: '3',
       children:
@@ -408,51 +409,68 @@ const Dashboards = () => {
   ];
 
   return (
- <>
+    <>
       <AppPageMeta title='Dashboards' />
       <>
-      {user.includes("admin") && metricsData && (
-      <AppRowContainer ease={'easeInSine'}>
-        {crmData?.stateData?.map((data) => (
-          <Col key={data.id} xs={24} sm={12} lg={6}>
-            <StatsDirCard data={data} />
-          </Col>
-        ))}
-      </AppRowContainer>
-    )}
-    
-    {user.includes("Manager")  && metricsData && (
-      <AppRowContainer ease={'easeInSine'}>
-        {crmData?.stateDataManager?.map((data) => (
-          <Col key={data.id} xs={24} sm={12} lg={6}>
-            <StatsDirCard data={data} />
-          </Col>
-        ))}
-      </AppRowContainer>
-    )}
-    {/* //hrAdministrator */}
-    {user.includes("Administrator")  && metricsData && (
-      <AppRowContainer ease={'easeInSine'}>
-        {crmData?.stateDataHRAdministrator?.map((data) => (
-          <Col key={data.id} xs={24} sm={12} lg={6}>
-            <StatsDirCard data={data} />
-          </Col>
-        ))}
-      </AppRowContainer>
-    )
-  }
+        {user.includes("admin") && metricsData && (
+          <AppRowContainer ease={'easeInSine'}>
+            {crmData?.stateData?.map((data) => (
+              <Col key={data.id} xs={24} sm={12} lg={6}>
+                <StatsDirCard data={data} />
+              </Col>
+            ))}
+          </AppRowContainer>
+        )}
+
+        {user.includes("Manager")  &&  !user?.includes('Construction')&& metricsData && (
+          <AppRowContainer ease={'easeInSine'}>
+            {crmData?.stateDataManager?.map((data) => (
+              <Col key={data.id} xs={24} sm={12} lg={6}>
+                <StatsDirCard data={data} />
+              </Col>
+            ))}
+          </AppRowContainer>
+        )}
+        {/**Leader */}
+        {user.includes("Leader") && metricsData && (
+          <AppRowContainer ease={'easeInSine'}>
+            {crmData?.stateDataManager?.map((data) => (
+              <Col key={data.id} xs={24} sm={12} lg={6}>
+                <StatsDirCard data={data} />
+              </Col>
+            ))}
+          </AppRowContainer>
+        )}
+        {/*End Project*/}
+        {/* //hrAdministrator */}
+        {user.includes("Administrator") && metricsData && (
+          <AppRowContainer ease={'easeInSine'}>
+            {crmData?.stateDataHRAdministrator?.map((data) => (
+              <Col key={data.id} xs={24} sm={12} lg={6}>
+                <StatsDirCard data={data} />
+              </Col>
+            ))}
+          </AppRowContainer>
+        )
+        }
       </>
+      {user.includes("Planner") || user?.includes('Construction')  || user?.includes('Site Klerk') ||
+      user.includes("QC") ||  user.includes("ASSET AND LOGISTIC ")
+
+       ?
+      <></>
+     
+      : 
       <AppsContainer
-        title={messages['dashboard.dashbord.RequireAttention']}
-        fullView
-        type='bottom'
-      >
+      title={messages['dashboard.dashbord.RequireAttention']}
+      fullView
+      type='bottom'
+    >
+      <StyledBuyCellCard style={{ paddingLeft: '10px' }} heightFull>
+        <StyledTabs defaultActiveKey='1' items={items} />
+      </StyledBuyCellCard>
 
-        <StyledBuyCellCard style={{ paddingLeft: '10px' }} heightFull>
-          <StyledTabs defaultActiveKey='1' items={items} />
-        </StyledBuyCellCard>
-
-      </AppsContainer>
+    </AppsContainer>}
 
       <AppInfoView />
     </>

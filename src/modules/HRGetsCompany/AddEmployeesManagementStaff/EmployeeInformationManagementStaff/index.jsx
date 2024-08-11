@@ -462,6 +462,7 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
             <span style={{marginTop:'0.5rem'}}>MSIS- </span>
             <Input
               style={{
+                marginTop:"0.25rem",
                 borderRight: '1px solid grey',
                 border: '1px solid transparent', // Bordure transparente par défaut
                 outline: 'none', // Supprime la bordure de focus par défaut
@@ -469,7 +470,6 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
                   border: '1px solid transparent', // Rend la bordure transparente lorsqu'en focus
                 }
               }}
-
               placeholder="Interview Code"
               onChange={(e) => handleSearch(e.target.value)}
               //value={searchValue ? searchValue : 'CIS'}
@@ -478,13 +478,15 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
             {isDropdownOpen && (
               <div style={{
                 borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px",
-                background: "white", position: "absolute", top: "3.5rem", width: "100%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"
+                background: "white", position: "absolute", top: "3.5rem", width: "100%",
+                boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)",zIndex:"5"
               }}>
                 <List
                   dataSource={filteredInterviews}
                   renderItem={item => (
                     <List.Item onClick={() => { handleItemClick(item); fetchDataId(searchValue); }}>
                       MSIS-{item.interviewCode}</List.Item>
+                      
                   )}
                 />
               </div>

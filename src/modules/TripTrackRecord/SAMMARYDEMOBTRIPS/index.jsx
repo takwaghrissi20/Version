@@ -64,6 +64,13 @@ const SummaryDemobTrip = () => {
     <div>
       <AppPageMeta title='Summary Demob Trip' />
       <div style={{ backgroundColor: "white", borderRadius: "20px" }}>
+       
+        <AppCard
+          className='no-card-space-ltr-rtl'
+          title={messages['dashboard.SummaryDemobTrip']}
+        >
+          <OrderTable className={clsx("item-hover")} demopTrips={demopTrips} />
+        </AppCard>
         <AppsHeader>
           <StyledOrderHeader>
             <div style={{ marginRight: 20, boxShadow: "none !important", width: "20%" }}>
@@ -85,12 +92,6 @@ const SummaryDemobTrip = () => {
             </StyledOrderHeaderRight>
           </StyledOrderHeader>
         </AppsHeader>
-        <AppCard
-          className='no-card-space-ltr-rtl'
-          title={messages['dashboard.SummaryDemobTrip']}
-        >
-          <OrderTable className={clsx("item-hover")} demopTrips={demopTrips} />
-        </AppCard>
       </div>
     </div>
   );

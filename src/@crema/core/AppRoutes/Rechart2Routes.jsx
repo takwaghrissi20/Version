@@ -27,6 +27,7 @@ import UpdateMission from '../../../modules/VisaAndTravel/visa/EditMission';
 import UpdateMissionExtention from '../../../modules/VisaAndTravel/visa/EditMissionExtention';
 import AddTravel from '../../../modules/VisaAndTravel/visa/Travel';
 import AddDemobization from '../../../modules/TripTrackRecord/AddDemobilization';
+import UpdateDemobization from '../../../modules/TripTrackRecord/Demobilization';
 import DemoPermissionSite from '../../../modules/TripTrackRecord/DemobPermissionSite';
 import AddMissionExtensoin from '../../../modules/TripTrackRecord/AddExtensionMission';
 import DemobTripTrackRecorde from '../../../modules/TripTrackRecord/DeMOBTRIPTRACKRECORD';
@@ -123,6 +124,10 @@ export const recharts2Configs = [
   {
     path: '/ManpowerLocation/AddDemobilization',
     element: <AddDemobization />,
+  },
+  {
+    path: '/ManpowerLocation/Update_Demobilization/:id',
+    element: < UpdateDemobization />,
   },
   {
     path: '/ManpowerLocation/DemobPermissionSite',
