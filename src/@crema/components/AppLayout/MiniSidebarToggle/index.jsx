@@ -29,6 +29,7 @@ const MiniSidebarToggle = ({ routes, routesConfig }) => {
       })}
     >
       <AppSidebar isCollapsed={isCollapsed} routesConfig={routesConfig} />
+
       <StyledAppLayoutMiniSidebarMain className='app-layout-mini-sidebar-main'>
         <AppHeader
           isCollapsed={isCollapsed}

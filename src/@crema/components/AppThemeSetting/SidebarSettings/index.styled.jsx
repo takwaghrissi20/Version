@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const StyledSidebarSettings = styled.div`
+ 
   &:not(:last-child) {
     border-bottom: 1px solid ${({ theme }) => theme.palette.borderColor};
     padding-bottom: 20px;

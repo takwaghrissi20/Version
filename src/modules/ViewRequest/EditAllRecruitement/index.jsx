@@ -208,7 +208,9 @@ const EditRecruitement = () => {
               <AppRowContainer>
                 <Col xs={24} md={12}>
                   <Form.Item label='Job Code' name='JobCode'>
-                    <Input placeholder={"RRS-" + id} readOnly={true} />
+                    <Input
+                    className='StyleInput'
+                    placeholder={"RRS-" + id} readOnly={true} />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
@@ -220,7 +222,7 @@ const EditRecruitement = () => {
                       //defaultValue={new Date()} 
                       defaultValue=""
 
-                      style={{ width: "100%", height: "30px" }}
+                      style={{ width: "100%", height: "38px" }}
                       readOnly
 
                     />
@@ -244,6 +246,7 @@ const EditRecruitement = () => {
                 <Col xs={24} md={12}>
                   <Form.Item label='ID Number ' name='id'>
                     <Input
+                    className='StyleInput'
                       placeholder={idemp}
                       readOnly={true}
                     />
@@ -252,6 +255,7 @@ const EditRecruitement = () => {
                 <Col xs={24} md={12}>
                   <Form.Item label='Full Name' name='name'>
                     <Input
+                    className='StyleInput'
                       placeholder={requestName}
                       readOnly={true}
                     />
@@ -262,6 +266,7 @@ const EditRecruitement = () => {
                 <Col xs={24} md={12}>
                   <Form.Item label='Position' name='position'>
                     <Input
+                    className='StyleInput'
 
                       placeholder={requestedDicipline}
                       readOnly={true} />
@@ -272,6 +277,7 @@ const EditRecruitement = () => {
 
                   >
                     <Input
+                    className='StyleInput'
                       placeholder={recruttrequestDate}
                       readOnly={true}
                     />
@@ -304,6 +310,7 @@ const EditRecruitement = () => {
 
                   >
                     <Input
+                    className='StyleInput'
                       value={newprojectName}
                       onChange={(e) => setNewprojectName(e.target.value)}
                     />
@@ -345,6 +352,7 @@ const EditRecruitement = () => {
                   <Form.Item label='Desired Date of Recruitment' name='DateDesiredRecruitement'
                   >
                     <StyledScrumBoardDatePicker
+                    className='StyleInput'
                       value={newdesiredDate}
                       onChange={() => setNewDesiredDate()}
                     />
@@ -355,6 +363,7 @@ const EditRecruitement = () => {
                 <Col xs={24} md={12}>
                   <Form.Item label='Recruitment For' name='Recruitment For'>
                     <Select
+                    
                       placeholder='Recruitment For'
                       onChange={handlePlaceSelect}
                       value={selectedLieu}
@@ -372,6 +381,7 @@ const EditRecruitement = () => {
                   <Col xs={24} md={12}>
                     <Form.Item label='Recruitement For' name='Recruitement For'>
                       <Input
+                      className='StyleInput'
                         placeholder={affectedTo}
                         readOnly={true} />
                     </Form.Item>
@@ -387,6 +397,7 @@ const EditRecruitement = () => {
                 <Col xs={24} md={12}>
                   <Form.Item label='Position' name='Position'>
                     <Input
+                    className='StyleInput'
                       value={newposition}
                       onChange={() => setNewposition()}
                       placeholder="Position"
@@ -403,6 +414,7 @@ const EditRecruitement = () => {
 
                   >
                     <Input
+                    className='StyleInput'
                       value={newLevel}
                       onChange={() => setNewLevel()}
                       placeholder="Required Level"
@@ -415,6 +427,7 @@ const EditRecruitement = () => {
                     name='Desiredyearsexperience'>
 
                     <Input
+                    className='StyleInput'
                       value={newnbExperience}
                       onChange={() => setNewnbExperience()}
                       placeholder="Desired years of experience"
@@ -427,6 +440,7 @@ const EditRecruitement = () => {
                     label='Number of vacancies'
                   >
                     <Input
+                    className='StyleInput'
                       value={newNumbervacancies}
                       onChange={() => setNewNumbervacancies()}
                       placeholder="Number of vacancies"
@@ -440,11 +454,13 @@ const EditRecruitement = () => {
 
                 <Col xs={24} md={12}>
                   <Form.Item
+                  
                     label='Academic Certificates /Comments (otherrequired Knowledge /Recruitment objective)'
                     name='certif'
 
                   >
                     <Input
+                    className='StyleInput'
                       value={certif}
                       onChange={() => setNewcertif()}
                       placeholder="Academic Certificates" />

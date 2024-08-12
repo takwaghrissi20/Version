@@ -251,6 +251,7 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "ADDVisaHealth" ||
           item.id === "AddHealthCertification" ||
           item.id === "AddCorona" ||
+          item.id === "AddCorona" ||
           item.id === "ManpowerLocation" ||
           item.id === "Add Project" ||
           item.id === "Affect a project to employee" ||
@@ -263,7 +264,9 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "ManpowerEvaluation" ||
           item.id === "Add Recruitment" ||
           item.id === "Site Clerk" ||
-          item.id === "PROJECTS TRIP TRACK RECORD " ||
+          item.id === "Add Mission" ||
+          item.id === "Add Internal  Mission" ||
+          
           item.id === "Payroll"
 
 

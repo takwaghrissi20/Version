@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import AppsPagination from '../@crema/components/AppsPagination';
 import AppTableContainer from '../@crema/components/AppTableContainer';
 import { rgba } from 'polished';
-import { Avatar,Button, Card, Drawer,Form, Modal,Col,DatePicker } from 'antd';
+import { Avatar, Button, Card, Drawer, Form, Modal, Col, DatePicker } from 'antd';
 import { Input, Layout } from 'antd';
 const { Search } = Input;
 import { InputNumber, Select, Tabs } from 'antd';
@@ -484,19 +484,20 @@ export const StyledOrderId = styled.span`
 `;
 
 
-{/*AppRowContainer*/}
+{/*AppRowContainer*/ }
 export const StyledAppRowContainer = styled.div`
+  position: relative;
+   cursor: pointer;
+
   & .ant-row {
     & > .ant-col {
-
+      position: relative; // Ensure positioning context for the hover effect
 
       & .card-outer-title {
         font-size: ${({ theme }) => theme.font.size.lg};
-      
         font-weight: ${({ theme }) => theme.font.weight.bold};
         color: ${({ theme }) => theme.palette.text.primary};
       }
-
 
       .ant-form & {
         margin-bottom: 0;
@@ -506,12 +507,35 @@ export const StyledAppRowContainer = styled.div`
     &.ant-form-item > .ant-col {
       margin-bottom: 0;
     }
+
+    // Hover effect for the box
+    &:hover::after {
+      position: absolute;
+      cursor: pointer;
+      bottom: 0;
+      left: 0;
+      background: ${({ theme }) => theme.palette.background.secondary};
+      color: ${({ theme }) => theme.palette.text.secondary};
+      padding: 10px;
+      border: 1px solid ${({ theme }) => theme.palette.border};
+      border-radius: 4px;
+      box-shadow:0 6px 10px rgba(0, 0, 0, 0.15);
+      opacity: 1;
+      transition: opacity 0.3s ease;
+      z-index: 10;
+      white-space: nowrap; // Prevents the text from wrapping
+      pointer-events: none; // Prevents interaction with the box
+    }
+
+    &:not(:hover)::after {
+      opacity: 0;
+    }
   }
 `;
 
 
-{/*AppRowContainer*/}
-{/*Styles Modal*/}
+{/*AppRowContainer*/ }
+{/*Styles Modal*/ }
 
 export const StyledContactModal = styled(Modal)`
   position: relative;
@@ -608,7 +632,7 @@ export const StyledContactFormAvatar = styled(Avatar)`
   background:"red"
 `;
 export const StyledContactFormHeaderTitle = styled.h4`
-  font-weight: ${({ theme }) => theme.font.weight. EXTRA_BOLD};
+  font-weight: ${({ theme }) => theme.font.weight.EXTRA_BOLD};
 `;
 /////////////////////////////////////////////////////////////////////////
 // export const StyledAppContentContainer = styled(AppScrollbar)`
@@ -662,7 +686,7 @@ export const StyledContactFormHeaderTitle = styled.h4`
 //     border-radius: ${({ theme }) => theme.cardRadius};
 //     background-color: #DB6A8F};
 //     height: 100% !important;
-   
+
 
 //     @media screen and (min-width: ${({ theme }) => theme.breakpoints.md}px) {
 //       min-width: 354px;
@@ -897,8 +921,8 @@ export const StyledMedialCarousel = styled.div`
 `;
 
 
-{/*End Styles Modal*/}
-{/**Style input Search*/}
+{/*End Styles Modal*/ }
+{/**Style input Search*/ }
 export const StyledHeaderSearch = styled(Search)`
   position: relative;
   max-width: 140px;
@@ -971,7 +995,7 @@ export const StyledHeaderSearch = styled(Search)`
       ${({ theme }) => theme.sizes.borderRadius.base};
   }
 `;
-{/*Card */}
+{/*Card */ }
 export const StyledFlexSuccessContainer = styled.div`
   display: flex;
   align-items: center;
@@ -1044,6 +1068,7 @@ export const StyledTitleWrapper = styled.p`
   text-overflow: ellipsis;
   white-space: nowrap;
   margin-bottom: 0;
+  font-family: cursive;
 
 `;
 
@@ -1061,7 +1086,7 @@ export const StyledTag = styled.span`
   }
 `;
 {/*End Card*/ }
-{/*Style View Icone*/}
+{/*Style View Icone*/ }
 export const StyledViewer = styled.div`
   display: flex;
 
@@ -1206,6 +1231,10 @@ export const StyledTabs = styled(Tabs)`
       & .ant-tabs-tab-btn {
       
         font-weight: ${({ theme }) => theme.font.weight.regular};
+        font-family: sans-serif;
+            font-size: 15px;
+            margin-left: 1rem;
+           margin-right: 1rem;
       }
     }
   }
@@ -1297,7 +1326,7 @@ export const StyledTitleWrapperRecruitement = styled.p`
   padding-left:2px
 `;
 
-export const AppViewStatic= styled.div`
+export const AppViewStatic = styled.div`
   margin-right:1rem;
   margin-top:0.5rem
 `;
@@ -1339,6 +1368,8 @@ export const StyledOrderTable = styled(AppTableContainer)`
     text-align:left;
     font-weight: ${({ theme }) => theme.font.weight.bold};
     line-height: 1.5;
+    font-family: serif;
+  font-weight: 500;
    
 
     }
@@ -1785,7 +1816,7 @@ export const StyledUserCardUnlock = styled(StyledUserCardLg)`
     }
   }
 `;
-{/*Style Notification*/}
+{/*Style Notification*/ }
 
 export const StyledReactNotification = styled.div`
   position: relative;

@@ -47,7 +47,7 @@ const BitBucket = ({ routes, routesConfig }) => {
          
         </StyledBitbucketMainScrollbar>
       </StyledAppBitbucketLayoutMain>
-      <AppThemeSetting />
+      {/* <AppThemeSetting /> */}
     </StyledAppBitbucketLayout>
   );
 };

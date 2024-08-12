@@ -10,7 +10,8 @@ const AppLogo = ({ hasSidebarColor }) => {
       {hasSidebarColor && sidebarColorSet.mode === 'dark' ? (
         <img src='/assets/images/logo-white-with-name.png' alt='Gets Company' />
       ) : (
-        <img src='/assets/images/logo-with-name.png' alt='Gets Company' />
+        <p></p>
+        // <img src='/assets/images/logo-with-name.png' alt='Gets Company' />
       )}
     </StyledAppLogo>
   );

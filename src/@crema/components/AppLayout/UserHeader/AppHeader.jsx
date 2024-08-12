@@ -31,6 +31,7 @@ const AppHeader = ({ isCollapsed, onToggleSidebar }) => {
         <AiOutlineMenu />
       </a>
       <AppLogo />
+     
       <StyledAppUserHeaderSearch placeholder={messages['common.searchHere']} />
       <StyledAppUserHeaderSectionDesktop>
         {allowMultiLanguage && <AppLanguageSwitcher />}

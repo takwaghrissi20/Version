@@ -15,7 +15,7 @@ export const StyledCustomerInputView = styled.div`
   max-width: 120px;
 
   @media screen and (min-width: ${({ theme }) => theme.breakpoints.sm}px) {
-    max-width: 150px;
+    max-width: 15rem;
   }
 `;
 

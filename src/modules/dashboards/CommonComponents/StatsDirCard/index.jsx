@@ -17,7 +17,6 @@ const { Link } = Anchor;
 
 const StatsDirCard = ({ data }) => {
   return (
-  
     <AppCard className='card-hover no-card-space'>
       <StyledFlexWrapper>
         <StyledFlexContainer>
@@ -30,13 +29,13 @@ const StatsDirCard = ({ data }) => {
             {data?.icon ? (
               data.icon
             ) : (
-              <img src={getAssetsUrl(data.iconImg)} alt='' />
+              <img style={{width:"30px"}} src={getAssetsUrl(data.iconImg)} alt='' />
             )}
           </StyledIconWrapper>
 
           <div style={{ marginRight: 8, overflow: 'hidden' }}>
             <Typography.Title level={5}>{data.value}</Typography.Title>
-            <StyledTitleWrapper>{data.name}</StyledTitleWrapper>
+            <StyledTitleWrapper >{data.name}</StyledTitleWrapper>
           </div>
         </StyledFlexContainer>
 

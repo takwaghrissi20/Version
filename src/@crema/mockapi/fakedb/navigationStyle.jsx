@@ -8,7 +8,7 @@ import {
 export const navStyles = [
   {
     id: 1,
-    alias: NavStyle.DEFAULT,
+    alias:NavStyle.MINI_SIDEBAR_TOGGLE,
     image: '/assets/images/navigationStyle/default.svg',
   },
   {
@@ -33,7 +33,7 @@ export const navStyles = [
   },
   {
     id: 6,
-    alias: NavStyle.MINI_SIDEBAR_TOGGLE,
+    alias: NavStyle.DEFAULT,
     image: '/assets/images/navigationStyle/mini-sidebar-toggle.svg',
   },
   {

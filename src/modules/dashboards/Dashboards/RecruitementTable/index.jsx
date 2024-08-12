@@ -7,7 +7,7 @@ import { Dropdown, Button } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { StyledOrderTable, StyledAction } from '../../../../styles/index.styled';
 import { all } from 'axios';
-import { Table, Tooltip } from 'antd';
+import { Table, Tooltip,notification } from 'antd';
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
 import IntlMessages from '../../../../@crema/helpers/IntlMessages';
@@ -23,7 +23,7 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId}) => {
   useEffect(() => {
     const updateTableHeight = () => {
       const pageHeight = window.innerHeight;
-      const tableHeight = pageHeight * 0.3; 
+      const tableHeight = pageHeight * 0.4; 
       setTableHeight(tableHeight);
     };
     window.addEventListener('resize', updateTableHeight);
@@ -148,6 +148,59 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId}) => {
     // { key: 2, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteRecruitement },
     // { key: 3, label: <span style={{ fontSize: 14 }}>generate the interview sheet</span>, onClick: handleAddInterviewSheet },
   ];
+  const openNotification = () => {
+    notification.open({
+      message: 'Success',
+      description: 'deleted successfully Recruitement',
+      style: {
+        backgroundColor: '#28a745',
+        border: '1px solid #28a745',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #1f8838',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
+
+  const openNotificationError = () => {
+    notification.open({
+      message: 'Error',
+      description: 'Error deleted  Recruitement',
+      style: {
+        backgroundColor: '#dc35450',
+        border: '1px solid #dc3545',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #bd1120',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
   const DeleteRecruitement = async () => {
  
     try {
@@ -163,7 +216,7 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId}) => {
         // Handle server response
         if (!response.ok) {
             console.log("Error: Response not OK", response.status);
-            alert("Error Not Recruitement Delete");
+            openNotificationError('bottomRight')
             throw new Error('La requête a échoué avec le code ' + response.status);
         }
 
@@ -171,9 +224,14 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId}) => {
           
           
             const data = await response.text();
+            openNotification('bottomRight')
+            setTimeout(() => {
+              onDeleteRecruitement(false);
+              window.location.reload(); 
+          }, 1000);
         
-            alert(data);
-            onDeleteRecruitement(false);
+            // alert(data);
+            // onDeleteRecruitement(false);
         }
 
         const contentType = response.headers.get('content-type');
@@ -227,7 +285,7 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId}) => {
       title: 'jobCode',
       dataIndex: 'jobCode',
       key: 'jobCode',
-      width: 150,
+      width: 80,
   
     },
     {
@@ -290,7 +348,7 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId}) => {
       title: 'Desired Date',
       dataIndex: 'desiredDate',
       key: 'desiredDate',
-      width: 150,
+      width: 100,
       ellipsis: {
         showTitle: false,
       },
@@ -306,7 +364,7 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId}) => {
       title: 'OVERDUE DATE DAYS',
       dataIndex: 'desiredDate',
       key: 'overdueDateDays',
-      width: 80,
+      width: 100,
       ellipsis: {
         showTitle: false,
       },
@@ -324,7 +382,7 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId}) => {
       title: 'Actions',
       dataIndex: 'actions',
       key: 'actions',
-      width: 88,
+      width: 100,
       fixed: 'right',
       className: 'customer-table-actions',
       render: (text, record) => (
