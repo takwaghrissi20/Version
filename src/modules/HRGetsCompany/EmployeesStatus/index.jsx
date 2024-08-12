@@ -22,6 +22,8 @@ import {
 } from './index.styled';
 
 const EmployeesStatus = () => {
+  
+  const user = localStorage.getItem("role");
   const { messages } = useIntl();
   const [employeesoffice, setEmployeesoffice] = useState([]);
   const [employeessite, setEmployeessite] = useState([]);
@@ -286,6 +288,8 @@ const EmployeesStatus = () => {
          </AppsHeader>
           <CustomerTableOffice 
           loading={loading}
+          user={user}
+
           employeesoffice={employeesoffice} />
           <div className='Pagination' >
             <Pagination
@@ -341,7 +345,10 @@ const EmployeesStatus = () => {
       </StyledCustomerHeaderRight>
      </StyledCustomerHeader>
      </AppsHeader>
-      <CustomerTableSite loading={loading} employeessite={employeessite} />
+      <CustomerTableSite 
+      loading={loading} 
+      user={user}
+      employeessite={employeessite} />
       <div className='Pagination' >
       <Pagination
         currentPage={currentPage}
@@ -392,7 +399,10 @@ const EmployeesStatus = () => {
       </StyledCustomerHeaderRight>
      </StyledCustomerHeader>
      </AppsHeader>
-      <CustomerTableMixt loading={loading} employeesmixt={employeesmixt} />
+      <CustomerTableMixt loading={loading} 
+      employeesmixt={employeesmixt}
+      user={user}
+       />
       <div className='Pagination' >
       <Pagination
         currentPage={currentPage}

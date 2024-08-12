@@ -246,9 +246,15 @@ const AppVerticalNav = ({ routesConfig }) => {
 
       //QC Lead
       else if (userRole.includes("bod")) {
-        if (item.id === "VisaHealth" ||
+        if (
+          item.id === "VisaHealth" ||
           item.id === "ManpowerLocation" ||
-          item.id === "Employees" ||
+          item.id === "Add Project" ||
+          item.id === "Affect a project to employee" ||
+          item.id === "AddEmployees" ||
+          item.id === "CategoryContract" ||
+         
+       
           item.id === "attendance" ||
           item.id === "VacationLeave" ||
           item.id === "ManpowerEvaluation" ||

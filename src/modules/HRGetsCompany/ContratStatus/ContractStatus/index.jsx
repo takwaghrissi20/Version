@@ -16,7 +16,7 @@ import { useGetDataApi } from '../../../../@crema/hooks/APIHooks';
 import AppInfoView from '../../../../@crema/components/AppInfoView';
 import { StyledBuyCellCard, StyledTabs } from '../../../../styles/index.styled';
 import { useIntl } from "react-intl";
-const Table = () => {
+const Table = ({user}) => {
   const { messages } = useIntl();
   
 
@@ -110,12 +110,12 @@ const items = [
   {
     label: 'Construction Team',
     key: '1',
-    children:  <OrderContrat temployee={temployee}/> ,
+    children:  <OrderContrat user={user} temployee={temployee}/> ,
   }, // remember to pass the key prop
   {
     label: 'Management Staff ',
     key: '2',
-    children:<OrderContratStaff temployee={temployeeStaff}></OrderContratStaff>,
+    children:<OrderContratStaff user={user}  temployee={temployeeStaff}></OrderContratStaff>,
   },
 
     
@@ -168,9 +168,6 @@ const items = [
     </AppsContainer>
 
 
-    
-
-      
     </AppsContainer>
     <AppInfoView />
   </>
