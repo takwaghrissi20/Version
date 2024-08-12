@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox, DatePicker, } from 'antd';
 import { MdEdit } from 'react-icons/md';
-
 import { StyledBuyCellCard, StyledTabs } from '../../styles/index.styled';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import dayjs from 'dayjs';
 import InterviewSheet from './TabsInterviewConstruction';
 import AssignementConstruction from './TabsAssignementConstruction';
-
 
 const InterviewSheetById = () => {
   const location = useLocation();
@@ -22,6 +20,9 @@ const InterviewSheetById = () => {
 
   const [activeTabKey, setActiveTabKey] = useState('1');
   const [isSaveDisabled, setIsSaveDisabled] = useState(false);
+  const roles = localStorage.getItem("role");
+  const storedrole = window.localStorage.getItem("role");
+  console.log("roledddd",storedrole)
   const items = [
     {
       label: 'INTERVIEW SHEET CONSTRUCTION TEAM ',
@@ -30,14 +31,33 @@ const InterviewSheetById = () => {
         // isSaveDisabled={activeTabKey !== '1'}
         totalNumber={totalNumber} level={level} projectName={projectName} position={position}
         isSaveDisabled={isSaveDisabled}
+        roles={roles} ></InterviewSheet>,
+    }, 
 
-      ></InterviewSheet>,
-    }, // remember to pass the key prop
     {
       label: 'INTERVIEW ASSESMENT SHEET ',
       key: '2',
-      children: <AssignementConstruction isSaveDisabled={true}></AssignementConstruction>,
-    },
+      children: <AssignementConstruction isSaveDisabled={true}
+      JobCode={JobCode}
+        // isSaveDisabled={activeTabKey !== '1'}
+        totalNumber={totalNumber} level={level} projectName={projectName} position={position}
+        roles={roles}
+      
+      ></AssignementConstruction>,
+    }
+
+    // ...(roles.includes('HSE') ? [{
+    //   label: 'INTERVIEW ASSESMENT SHEET ',
+    //   key: '2',
+    //   children: <AssignementConstruction isSaveDisabled={true}
+    //   JobCode={JobCode}
+    //     // isSaveDisabled={activeTabKey !== '1'}
+    //     totalNumber={totalNumber} level={level} projectName={projectName} position={position}
+    //     roles={roles}
+      
+    //   ></AssignementConstruction>,
+    // },] : []
+
 
 
   ];

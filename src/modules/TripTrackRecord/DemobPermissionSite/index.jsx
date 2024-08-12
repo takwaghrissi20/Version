@@ -40,7 +40,7 @@ const DemobPermissionSite = () => {
       }
 
       const data = await response.json();
-    const filteredData = data.filter(item => item.type === "DeMobilization");
+      const filteredData = data.filter(item => item.type === "DeMobilization");
       setMob(filteredData)
     } catch (error) {
       console.error('Error fetching Mob employees:', error);
@@ -55,37 +55,39 @@ const DemobPermissionSite = () => {
 
 
   return (
-    <div>
+    <div style={{ marginTop: "0.5rem" }}>
       <AppPageMeta title='Demob Permission Site' />
-      <div style={{backgroundColor:"white",borderRadius:"20px"}}>
+      <div style={{ backgroundColor: "white", borderRadius: "20px" }}>
         <AppsHeader>
-          <StyledOrderHeader>
-        <div style={{ marginRight: 20, boxShadow: "none !important",width:"20%"}}>
-             
-            </div>
 
-            <StyledOrderHeaderRight>
-
-              <Pagination
-                currentPage={currentPage}
-                totalPages={Math.ceil(15 / pageSize)}
-                handlePageChange={handlePageChange}
-              />
-
-
-
-            </StyledOrderHeaderRight>
-          </StyledOrderHeader>
         </AppsHeader>
-            <AppCard
-              className='no-card-space-ltr-rtl'
-              title={messages['sidebar.general.demonpermissionSite']}
-            >
+        <AppCard
+          className='no-card-space-ltr-rtl'
+          title={messages['sidebar.general.demonpermissionSite']}
+        >
 
-              <OrderTable className={clsx("item-hover")} mob={mob} />
-            </AppCard>
-    
-       
+          <OrderTable className={clsx("item-hover")} mob={mob} />
+        </AppCard>
+        <StyledOrderHeader>
+          <div style={{ marginRight: 20, boxShadow: "none !important", width: "20%" }}>
+
+          </div>
+
+          <StyledOrderHeaderRight>
+
+            <Pagination
+
+              currentPage={currentPage}
+              totalPages={Math.ceil(15 / pageSize)}
+              handlePageChange={handlePageChange}
+            />
+            <div style={{ marginBottom: "3rem" }}></div>
+
+          </StyledOrderHeaderRight>
+
+        </StyledOrderHeader>
+
+
 
       </div>
     </div>

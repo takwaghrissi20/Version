@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../../@crema/components/AppRowContainer';
-import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert,
-   Checkbox, DatePicker, InputNumber,notification } from 'antd';
+import {
+  Button, Col, Divider, Form, Input, Space, Typography, Select, Alert,
+  Checkbox, DatePicker, InputNumber, notification
+} from 'antd';
 import {
 
   StyledShadowWrapper,
@@ -50,7 +52,9 @@ const AddRecruitementAbove = () => {
   const [modalError, setModalError] = useState(false);
   const [type, setType] = useState("Above Foreman")
   const [form] = Form.useForm();
-
+  const [dateInput, setDateInput] = useState(new Date());
+  const userRole = localStorage.getItem("role");
+  console.log("userRole", userRole)
   const handleValidateEmployeeClose = () => {
     setIsModalVisible(false);
   };
@@ -63,7 +67,7 @@ const AddRecruitementAbove = () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}`, {
-        method: 'POST',
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -81,6 +85,7 @@ const AddRecruitementAbove = () => {
       setDep(data.departement)
       setProfile(data)
       setProjets(data.projects)
+      console.log(data.departement)
 
 
 
@@ -143,6 +148,10 @@ const AddRecruitementAbove = () => {
   };
   const handlePlaceSelect = (value) => {
     setSelectedLieu(value);
+
+  };
+  const RequestedDicipline = (value) => {
+    setPositionRecruitement(value);
 
   };
   const handleAsper = (value) => {
@@ -221,6 +230,12 @@ const AddRecruitementAbove = () => {
   function OkHead(e) {
     console.log(`checkedHead = ${e.target.checked}`);
     setIsOkHead(e.target.checked)
+    if (e.target.checked) {
+      setIsNOHead(false);
+      setIsExDep(false);
+      setIsOrDep(false);
+    }
+
 
   }
 
@@ -243,27 +258,45 @@ const AddRecruitementAbove = () => {
 
   const BeforeSaveRecruitement = () => {
     //setIsModalVisible(true)
-    form.validateFields(['DateRecruitement', 'DateRequestor', 'ProjectName', 'ProjectCode'
+    form.validateFields(['DateRequestor', 'ProjectName', 'ProjectCode'
       , 'DateDesiredRecruitement', 'position', 'RequiredLevel', 'Desiredyearsexperience', 'Numbervacancies',
 
     ]).then(values => {
       //onSave(true)
-      Saverecrutement()
+      if ((!dep?.includes('Operation')) && (!dep?.includes('Engineering'))) {
+        Saverecrutement();
+      }
 
+      else if (dep?.includes('Engineering') && userRole?.includes('Engineering')) {
+        console.log("Engineering")
+        SaverecrutementEngineer()
+
+      }
+      else if (dep?.includes("Operation") && userRole?.includes('Operation')) {
+        console.log("Operation  Manager")
+        Saverecrutementopeartion()
+
+      }
+      else if (dep?.includes("Operation") && userRole?.includes('Leader')) {
+        console.log("Operation  Manager")
+        SaverecrutementProjectLeader()
+
+      }
+      // else if( profile?.departement?.includes('operation')){
+      //   console.log("Operation  Manager")
+      //   Saverecrutementopeartion()
+
+      // }
 
     }).catch(errorInfo => {
-      
+
       openNotificationWarning('bottomRight')
-  
+
       // setIsModalVisible(false);
 
     });
   };
-  function OkHead(e) {
-    console.log(`checkedHead = ${e.target.checked}`);
-    setIsOkHead(e.target.checked)
 
-  }
   function ExDep(e) {
     console.log(`checkedHead = ${e.target.checked}`);
     setIsExDep(e.target.checked)
@@ -273,12 +306,17 @@ const AddRecruitementAbove = () => {
     console.log(`checkedHead = ${e.target.checked}`);
     setIsOrDep(e.target.checked)
 
+
   }
 
 
   function NoHead(e) {
     console.log(`NoHead = ${e.target.checked}`);
     setIsNOHead(e.target.checked)
+    if (e.target.checked) {
+      setIsOkHead(false);
+
+    }
 
   }
   function OkBOD(e) {
@@ -295,8 +333,183 @@ const AddRecruitementAbove = () => {
   const handleSaveRecruitement = () => {
     onSave(true);
   };
+  //cANCEL Bod 
+  const UpdateHod = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${LastIndexRecruitementIncremente}`, {
+
+        method: 'PUT',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+
+          //recruttrequestDate: DateRecruitement,
+          requestName: profile?.name,
+          approuvedRecrutRequestNumber: null,
+          //jobCode: JobCode,
+          certif: certif,
+          experience: selectedLevel,
+          type: type,
+          position: positionRecruitement,
+          projectName: selectedProject,
+          recruttrequestDate: requestorDate,
+          requestedDicipline: positionRecruitement,
+          totalNumber: vacancie,
+          oDep: isOrDep,
+          exDep: isExDep,
+          jobCode: LastIndexRecruitementIncremente,
+          // type: "For Foreman & Below",
+          // oDep: asper,
+          // // exDep: "",
+          // // status:"0",
+          nbExperience: desiredExperience,
+          projRef: projectCode,
+          // bod: isOkBod,
+          idemp: profile?.getsId,
+          desiredDate: desiredrecruitementDate,
+          affectedTo: selectedLieu,
+          signatureHod: isOkHead,
+          signatureBod: isOkBod,
+          notif: 20,
+          dep: profile?.departement,
+          dateInputRecrut: formattedDate,
+          status: "Refuse By HOD"
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+
+        const responseData = await response.text();
+        openRefuseNotification('bottomRight')
+        console.log("UpdateHod", responseData)
+        goBack()
+        // navigate(-1)
+
+        //handleAddContactClose(true)
+      }
+
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+    }
+  }
+
+
+
+  //Cancel Bod
+  //Cancel Operation Manager 
+
+  const CancelOperation = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${LastIndexRecruitementIncremente}`, {
+
+        method: 'PUT',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+
+          //recruttrequestDate: DateRecruitement,
+          requestName: profile?.name,
+          approuvedRecrutRequestNumber: null,
+          //jobCode: JobCode,
+          certif: certif,
+          experience: selectedLevel,
+          type: type,
+          position: positionRecruitement,
+          projectName: selectedProject,
+          recruttrequestDate: requestorDate,
+          requestedDicipline: positionRecruitement,
+          totalNumber: vacancie,
+          oDep: isOrDep,
+          exDep: isExDep,
+          jobCode: LastIndexRecruitementIncremente,
+          // type: "For Foreman & Below",
+          // oDep: asper,
+          // // exDep: "",
+          // // status:"0",
+          nbExperience: desiredExperience,
+          projRef: projectCode,
+          // bod: isOkBod,
+          idemp: profile?.getsId,
+          desiredDate: desiredrecruitementDate,
+          affectedTo: selectedLieu,
+          signatureHod: isOkHead,
+          signatureBod: isOkBod,
+          notif: 70,
+          dep: profile?.departement,
+          dateInputRecrut: formattedDate,
+          status: "Refuse By Operation Manager"
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+
+        const responseData = await response.text();
+        openRefuseNotification('bottomRight')
+        console.log("UpdateHod", responseData)
+        goBack()
+        // navigate(-1)
+
+        //handleAddContactClose(true)
+      }
+
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+  ///////////////////////////////////////////
   const handleCancelRecruitement = () => {
-    onCancel(true);
+    if (user.includes("admin")) {
+      onCancel(true)
+    }
+    //onCancel(true);
+    if ((!profile?.departement?.includes('operation')) && (!profile?.departement?.includes('Engineering'))) {
+      console("no operation no engeneer")
+      //CancelOpertionManager()
+
+    }
+
+    else if (profile?.departement?.includes('Engineering') && userRole?.includes('Engineering')) {
+      console.log("Cancel Engineering")
+
+
+
+    }
+    else if (profile?.departement?.includes('operation') && userRole?.includes('Operation')) {
+      CancelOperation()
+
+
+    }
+    else if (profile?.departement?.includes('operation') && userRole?.includes('Leader')) {
+      console.log("Operation  Leader")
+
+
+    }
   }
   const openNotification = () => {
     notification.open({
@@ -305,6 +518,32 @@ const AddRecruitementAbove = () => {
       style: {
         backgroundColor: '#28a745',
         border: '1px solid #28a745',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #1f8838',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
+  const openRefuseNotification = () => {
+    notification.open({
+      message: 'Refuse',
+      description: 'Refuse Recruitement Sheet',
+      style: {
+        backgroundColor: '#335F8A',
+        border: '1px solid #335F8A',
         color: '#FFFFFF !important',
         borderRadius: '3px',
         boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
@@ -394,17 +633,17 @@ const AddRecruitementAbove = () => {
           requestName: profile?.name,
           approuvedRecrutRequestNumber: null,
           //jobCode: JobCode,
-          certif: profile?.certif,
+          certif: certif,
           experience: selectedLevel,
           type: type,
           position: positionRecruitement,
           projectName: selectedProject,
           recruttrequestDate: requestorDate,
-          requestedDicipline: profile?.position,
+          requestedDicipline: positionRecruitement,
           totalNumber: vacancie,
           oDep: isOrDep,
           exDep: isExDep,
-          jobCode:LastIndexRecruitementIncremente,
+          jobCode: LastIndexRecruitementIncremente,
           // type: "For Foreman & Below",
           // oDep: asper,
           // // exDep: "",
@@ -417,8 +656,11 @@ const AddRecruitementAbove = () => {
           affectedTo: selectedLieu,
           signatureHod: isOkHead,
           signatureBod: isOkBod,
-          notif:0,
-          dep:profile?.departement
+          notif: 2,
+          dep: profile?.departement,
+          dateInputRecrut: formattedDate,
+          status: "Pending"
+
 
         })
       });
@@ -426,15 +668,268 @@ const AddRecruitementAbove = () => {
       if (!response.ok) {
         openNotificationError('bottomRight')
         throw new Error('Network response was not ok');
-       
-      
+
+
       }
       if (response.ok) {
 
         const responseData = await response.json();
         form.resetFields();
         openNotification('bottomRight')
-        
+
+        const email = 'rihemhassounanjim90@gmail.com';
+        const secondApiResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/bodNotif?email=${encodeURIComponent(email)}`, {
+          method: 'POST',
+        });
+
+        if (secondApiResponse.ok) {
+          const secondResponseData = await secondApiResponse.json();
+          form.resetFields();
+          window.location.reload();
+        } else {
+          //setModalError(true)
+          console.error("Failed to fetch data from the second API.");
+        }
+
+        // alert('Recruitment request saved successfully.');
+
+      }
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+    }
+  };
+  const SaverecrutementEngineer = async () => {
+    try {
+
+      const params = new URLSearchParams({ name: selectedProject, id: profile?.getsId });
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
+
+        method: 'POST',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+          //recruttrequestDate: DateRecruitement,
+          requestName: profile?.name,
+          approuvedRecrutRequestNumber: null,
+          //jobCode: JobCode,
+          certif: certif,
+          experience: selectedLevel,
+          type: type,
+          position: profile?.position,
+          projectName: selectedProject,
+          recruttrequestDate: requestorDate,
+          requestedDicipline: positionRecruitement,
+          totalNumber: vacancie,
+          oDep: isOrDep,
+          exDep: isExDep,
+          jobCode: LastIndexRecruitementIncremente,
+          // type: "For Foreman & Below",
+          // oDep: asper,
+          // // exDep: "",
+          // // status:"0",
+          nbExperience: desiredExperience,
+          projRef: projectCode,
+          // bod: isOkBod,
+          idemp: profile?.getsId,
+          desiredDate: desiredrecruitementDate,
+          affectedTo: selectedLieu,
+          signatureHod: isOkHead,
+          signatureBod: isOkBod,
+          notif: 8,
+          dep: profile?.departement,
+          dateInputRecrut: formattedDate,
+          status: "Pending Approved Operation Manager"
+
+        })
+      });
+
+      if (!response.ok) {
+        openNotificationError('bottomRight')
+        throw new Error('Network response was not ok');
+
+
+      }
+      if (response.ok) {
+
+        const responseData = await response.json();
+        form.resetFields();
+        openNotification('bottomRight')
+
+        const email = 'rihemhassounanjim90@gmail.com';
+        const secondApiResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/bodNotif?email=${encodeURIComponent(email)}`, {
+          method: 'POST',
+        });
+
+        if (secondApiResponse.ok) {
+          const secondResponseData = await secondApiResponse.json();
+          form.resetFields();
+          window.location.reload();
+        } else {
+          //setModalError(true)
+          console.error("Failed to fetch data from the second API.");
+        }
+
+        // alert('Recruitment request saved successfully.');
+
+      }
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+    }
+  };
+  //Opration Save Recruitement 
+
+  const Saverecrutementopeartion = async () => {
+    try {
+
+      const params = new URLSearchParams({ name: selectedProject, id: profile?.getsId });
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
+
+        method: 'POST',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+          //recruttrequestDate: DateRecruitement,
+          requestName: profile?.name,
+          approuvedRecrutRequestNumber: null,
+          //jobCode: JobCode,
+          certif: certif,
+          experience: selectedLevel,
+          type: type,
+          position: profile?.position,
+          projectName: selectedProject,
+          recruttrequestDate: requestorDate,
+          requestedDicipline: positionRecruitement,
+          totalNumber: vacancie,
+          oDep: isOrDep,
+          exDep: isExDep,
+          jobCode: LastIndexRecruitementIncremente,
+          // type: "For Foreman & Below",
+          // oDep: asper,
+          // // exDep: "",
+          // // status:"0",
+          nbExperience: desiredExperience,
+          projRef: projectCode,
+          // bod: isOkBod,
+          idemp: profile?.getsId,
+          desiredDate: desiredrecruitementDate,
+          affectedTo: selectedLieu,
+          signatureHod: isOkHead,
+          signatureBod: isOkBod,
+          notif: 7,
+          dep: profile?.departement,
+          dateInputRecrut: formattedDate,
+          status: "Pending Approves BOD"
+
+        })
+      });
+
+      if (!response.ok) {
+        openNotificationError('bottomRight')
+        throw new Error('Network response was not ok');
+
+
+      }
+      if (response.ok) {
+
+        const responseData = await response.json();
+        form.resetFields();
+        openNotification('bottomRight')
+
+        const email = 'rihemhassounanjim90@gmail.com';
+        const secondApiResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/bodNotif?email=${encodeURIComponent(email)}`, {
+          method: 'POST',
+        });
+
+        if (secondApiResponse.ok) {
+          const secondResponseData = await secondApiResponse.json();
+          form.resetFields();
+          window.location.reload();
+        } else {
+          //setModalError(true)
+          console.error("Failed to fetch data from the second API.");
+        }
+
+        // alert('Recruitment request saved successfully.');
+
+      }
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+    }
+  };
+  {/*Save Project leader */ }
+
+  const SaverecrutementProjectLeader = async () => {
+    try {
+
+      const params = new URLSearchParams({ name: selectedProject, id: profile?.getsId });
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
+
+        method: 'POST',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+          //recruttrequestDate: DateRecruitement,
+          requestName: profile?.name,
+          approuvedRecrutRequestNumber: null,
+          //jobCode: JobCode,
+          certif: certif,
+          experience: selectedLevel,
+          type: type,
+          position: profile?.position,
+          projectName: selectedProject,
+          recruttrequestDate: requestorDate,
+          requestedDicipline: positionRecruitement,
+          totalNumber: vacancie,
+          oDep: isOrDep,
+          exDep: isExDep,
+          jobCode: LastIndexRecruitementIncremente,
+          // type: "For Foreman & Below",
+          // oDep: asper,
+          // // exDep: "",
+          // // status:"0",
+          nbExperience: desiredExperience,
+          projRef: projectCode,
+          // bod: isOkBod,
+          idemp: profile?.getsId,
+          desiredDate: desiredrecruitementDate,
+          affectedTo: selectedLieu,
+          signatureHod: isOkHead,
+          signatureBod: isOkBod,
+          notif: 6,
+          dep: profile?.departement,
+          dateInputRecrut: formattedDate,
+          status: "Pending Approved bY HOD"
+
+        })
+      });
+
+      if (!response.ok) {
+        openNotificationError('bottomRight')
+        throw new Error('Network response was not ok');
+
+
+      }
+      if (response.ok) {
+
+        const responseData = await response.json();
+        form.resetFields();
+        openNotification('bottomRight')
+
         const email = 'rihemhassounanjim90@gmail.com';
         const secondApiResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/bodNotif?email=${encodeURIComponent(email)}`, {
           method: 'POST',
@@ -459,18 +954,21 @@ const AddRecruitementAbove = () => {
   };
 
 
+  {/*End Save Project Leader */ }
+
+
+
+  //End Operation Recruitement
+
   const goBack = () => {
     navigate(-1)
-
-
   }
+
   const user = localStorage.getItem("role");
-  console.log("user", user)
+  const formattedDate = dayjs(dateInput).format('YYYY-MM-DD');
   return (
-    <div style={{paddingLeft:"0.5rem",paddingRight:"0.5rem"}}>
+    <div style={{ paddingLeft: "0.5rem", paddingRight: "0.5rem" }}>
       {/**All Fied not empty */}
-   
-     
       <Form
         form={form}
         layout='vertical'
@@ -505,21 +1003,12 @@ const AddRecruitementAbove = () => {
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label='Recruitement Date' name='DateRecruitement'
-                    rules={[
-                      { required: true, message: 'Please input your Recruitement Date!' },
-                    ]}
-
-
-                  >
-                    <DatePicker
-                      //defaultValue={new Date()} 
-                      // defaultValue="YYYY-MM-DD"
-                      placeholder='YYYY-MM-DD'
-
-                      style={{ width: "100%", height: "30px" }}
-                      onChange={(value) => setRecruitementDate(dayjs(value).format('YYYY-MM-DD'))}
+                  <Form.Item label='Recruitement Date' name='DateRecruitement'>
+                    <Input
+                      placeholder={formattedDate}
+                      readOnly
                     />
+
 
                   </Form.Item>
                 </Col>
@@ -700,7 +1189,7 @@ const AddRecruitementAbove = () => {
 
                 <Col xs={24} md={12}>
                   <Form.Item label='Position' name='Position'
-                    onChange={(value) => setPositionRecruitement(value)}
+
 
                     rules={[
                       { required: true, message: 'Please input your Position!' },
@@ -709,7 +1198,8 @@ const AddRecruitementAbove = () => {
                     <Select
                       placeholder='Select Position'
                       value={positionRecruitement}
-                      onChange={(value) => console.log('Select Position:', value)}
+                      onChange={RequestedDicipline}
+                    // onChange={(value) => console.log('Select Position:', value)}
 
                     >
 
@@ -749,6 +1239,7 @@ const AddRecruitementAbove = () => {
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item
+                    type="number"
                     label='Desired years of experience'
                     name='Desiredyearsexperience'
 
@@ -756,7 +1247,7 @@ const AddRecruitementAbove = () => {
 
                     <Input
                       placeholder={desiredExperience}
-                      />
+                    />
 
                   </Form.Item>
                 </Col>
@@ -806,7 +1297,7 @@ const AddRecruitementAbove = () => {
         </AppRowContainer>
 
 
-        {dep === "operation" && user.includes('Planner')  ?
+        {dep === "operation" && user.includes('Planner') ?
           <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
             <Col xs={24} md={6}>
               <Typography.Title level={5}>Planner Review </Typography.Title>
@@ -1007,14 +1498,18 @@ const AddRecruitementAbove = () => {
           style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
         >
           <Button onClick={handleCancelRecruitement} >Cancel</Button>
+          {/*Save Head of departement differenr de Enginner et operation*/}
+
           <Button
             onClick={BeforeSaveRecruitement}
 
             type='primary'
             htmlType='submit'>
             Save
-
           </Button>
+
+
+
         </Space>
 
       </Form>
@@ -1075,29 +1570,29 @@ const AddRecruitementAbove = () => {
       ) : null}
       {modalWarning && (
         <div style={{ position: 'relative', height: '10vh' }}>
-        <Space direction='vertical' style={{ width: '90%', margin: 20, position: 'absolute', bottom: 0 }}>
-          <Alert      
-            description='All Fields Not Complete'
-            type='warning'
-            showIcon
-          />
-        </Space>
-      </div>
-        )}
-         {modalError && (
+          <Space direction='vertical' style={{ width: '90%', margin: 20, position: 'absolute', bottom: 0 }}>
+            <Alert
+              description='All Fields Not Complete'
+              type='warning'
+              showIcon
+            />
+          </Space>
+        </div>
+      )}
+      {modalError && (
         <div style={{ position: 'relative', height: '10vh' }}>
-        <Space direction='vertical' style={{ width: '90%', margin: 20, position: 'absolute', bottom: 0 }}>
-          <Alert      
-            message='Error'
-            description='Failed Recruitement.'
-            type='error'
-            showIcon
-           
-          />
-        </Space>
-      </div>
-        )}
-      
+          <Space direction='vertical' style={{ width: '90%', margin: 20, position: 'absolute', bottom: 0 }}>
+            <Alert
+              message='Error'
+              description='Failed Recruitement.'
+              type='error'
+              showIcon
+
+            />
+          </Space>
+        </div>
+      )}
+
     </div>
 
   );

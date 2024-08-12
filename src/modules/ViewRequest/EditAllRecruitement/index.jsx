@@ -39,7 +39,7 @@ const EditRecruitement = () => {
   const requestedDicipline = location.state ? location.state.requestedDicipline : null
   const affectedTo = location.state ? location.state.affectedTo : null
 
-
+  const userRoles = localStorage.getItem("role");
   const Back = () => {
     navigate(-1)
 
@@ -436,6 +436,9 @@ const EditRecruitement = () => {
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
+                </Col>
+
+                <Col xs={24} md={12}>
                   <Form.Item
                     label='Academic Certificates /Comments (otherrequired Knowledge /Recruitment objective)'
                     name='certif'
@@ -526,7 +529,10 @@ const EditRecruitement = () => {
 
 
           : null}
-        <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+           {userRoles.includes("admin") ?
+           <>
+           
+           <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
           <Col xs={24} md={6}>
             <Typography.Title level={5}> Head of Department Inputs</Typography.Title>
           </Col>
@@ -599,6 +605,20 @@ const EditRecruitement = () => {
           </Col>
 
         </AppRowContainer>
+           
+           
+           
+           
+           
+           </>
+           
+           
+           
+           
+           
+           :null}
+
+       
 
 
         <Space

@@ -11,12 +11,13 @@ const ContratB1Page1 = ({ fullName, passportNumber, passportSubmitdate, arReside
   return (
     <div className='page1'>
       <div className='ContratPage'>
-        <div className="page">
+        {/* <div className="page">
           <img src={image} alt="logo" className="logo" />
-        </div>
+        </div> */}
+               {/* <img src={image} alt="logo" className="logo" /> */}
           <div className='HeaderContratPage'>
             <p dir="rtl" className="TitleGeneral">عقد شغل لمدة محدودة</p>
-          </div>
+          </div>  
        
 
         <div className='table'>

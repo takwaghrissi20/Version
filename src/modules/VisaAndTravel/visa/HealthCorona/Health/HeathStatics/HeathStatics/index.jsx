@@ -17,7 +17,7 @@ import {
   StyledOrderHeaderRight,
 } from '../../../../../../../styles/index.styled';
 import AppRowContainer from '@crema/components/AppRowContainer';
-const HealthInformation = ({HeatlStatics}) => {
+const HealthInformation = ({HeatlStatics, user}) => {
   const { messages } = useIntl();
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -74,10 +74,8 @@ const HealthInformation = ({HeatlStatics}) => {
                 paddingBottom: 10,
               }}
               className='no-card-space-ltr-rtl'
-              title={messages['dashboard.Health']}
-            >
-
-              <OrderTable vaccin={vaccin}  />
+              title={messages['dashboard.Health']}>
+              <OrderTable vaccin={vaccin}   user={user}/>
             </AppCard>
       
             </StyledCoinsWrapper>

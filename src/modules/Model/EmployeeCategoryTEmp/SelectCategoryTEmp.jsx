@@ -92,6 +92,10 @@ const ContratCategory = (props) => {
 
   const navigate = useNavigate();
   const ListContrat = [
+    {
+      type: "Contrat SIVP",
+
+    },
 
     {
       type: "CAT-A1",
@@ -226,7 +230,14 @@ const ContratCategory = (props) => {
       setSelectedContratType('CDD');
       setIsReadOnly(true);
 
-    };
+    }
+    else if (contractCategory === "Contrat SIVP") {
+      console.log("Contrat SIVP")
+      setSelectedContratType('CDD');
+      setIsReadOnly(true);
+     
+    }
+
 
 
   }, [selectedContractCategorie, selectedContratType]);
@@ -494,6 +505,29 @@ const ContratCategory = (props) => {
 
     });
   };
+  const ContratSIVP = () => {
+    navigate('/HRGetsCompany/StaffManagement/ContratSIVP', {
+      state: {
+        name:name,
+        fullName: arName,
+        passportNumber: passportnumber,
+        passportSubmitdate: passportSubmitdate,
+        arResidenceAdress: arResidenceAdress,
+        companyType:companyType,
+        traveldate:traveldate,
+        endTravelDate:endTravelDate,
+        arDestination: arDestination,
+        arPosition: arPosition,
+        lastId: LastIdIncremente,
+        salary: salary,
+        primeProductivity:primeProductivity,
+        dailyRate:dailyRate
+
+      }
+
+
+    });
+  };
 
 
   const SelectionnnerContrat = () => {
@@ -556,6 +590,10 @@ const ContratCategory = (props) => {
     else if (contractCategory === "CAT-D") {
       console.log(" contractCategory")
       ContratD()
+    }
+    else if (contractCategory === "Contrat SIVP") {
+      console.log("Contrat SIVP")
+      ContratSIVP()
     }
 
 
@@ -705,7 +743,7 @@ const ContratCategory = (props) => {
                 <FloatLabel  name="joinDate">
                   <Input
                     className='Input'
-                     value={ salary}
+                    value={ salary}
                     placeholder="Salary"
                     readOnly
                     

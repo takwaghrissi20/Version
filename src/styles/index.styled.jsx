@@ -1039,11 +1039,12 @@ export const StyledItemContainer = styled.div`
 
 export const StyledTitleWrapper = styled.p`
   color: ${({ theme }) => theme.palette.text.secondary};
-  font-size: 14px;
+  font-size: 13px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   margin-bottom: 0;
+
 `;
 
 export const StyledTag = styled.span`
@@ -1209,7 +1210,14 @@ export const StyledTabs = styled(Tabs)`
     }
   }
 `;
-
+export const StyledShadowWrapper = styled.div`
+  border: 1px solid #eaecf0;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow:
+    0px 1px 3px rgba(16, 24, 40, 0.1),
+    0px 1px 2px rgba(16, 24, 40, 0.06);
+`;
 export const StyledCurrencyWrapper = styled.div`
   padding: 8px;
   border-radius: 8px;
@@ -1233,6 +1241,7 @@ export const StyledInput = styled(InputNumber)`
     border: none;
   }
 `;
+
 
 export const StyledSelect = styled(Select)`
   width: 100%;

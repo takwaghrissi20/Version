@@ -1,18 +1,33 @@
 import React from 'react';
 import ComposedChart from '../../../modules/VisaAndTravel/visa/Composed';
-
-
-
-
+import Vacation from '../../../modules/Vacation/AddVacation'
+import AllLeave from '../../../modules/Vacation/AlllLeave'
+import ViewLeave from '../../../modules/Vacation/AlllLeave/AllLeaveTab/ViewLeave'
+import MyLeaveHistory from '../../../modules/Vacation/HistoryLeave'
+import DetailsLeave from '../../../modules/Vacation/HistoryLeave/DetailsLeave'
 export const recharts1Configs = [
   {
     path: '/Hr/Vacation&Leave/Vacation',
-    element: <ComposedChart />,
+    element: < Vacation />,
   },
   {
-    path: '/Hr/Vacation&Leave/Leave',
-    element: <ComposedChart />,
+    path: '/Hr/Vacation&Leave/ALL_Leave',
+    element: < AllLeave />,
   },
+  {
+    path: '/Hr/Vacation&Leave/View/:id',
+    element: <ViewLeave />,
+  },
+  {
+    path: '/Hr/Vacation&Leave/My_Leave_History',
+    element: <MyLeaveHistory/>,
+  },
+  {
+    path: '/Hr/Vacation&Leave/HistoryLeave/DetailsLeave/:id',
+    element: <DetailsLeave/>,
+  },
+
+ 
   {
     path: '/Hr/Vacation&Leave/JustifiedAbsence',
     element: <ComposedChart />,

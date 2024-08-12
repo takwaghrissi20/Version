@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import PropTypes from 'prop-types';
 //import { StyledOrderTable, StyledAction } from '../index.styled';
 /// change 
@@ -20,11 +20,26 @@ import { useNavigate } from "react-router-dom";
 const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,  
   findId, setFindIdData,open,handleInterview,codeJob,interviewCode}) => {
   //const [findIdData, setFindIdData] = useState(null);
+  console.log("findIdData",findIdData)
   const [isViewInterviewStaff, onViewInterviewStaff] = useState(false);
   const [isEditInterviewStaff, onEditInterviewStaff] = useState(false);
   const [isDelteInterviewStaff, onDeleteInterviewStaff] = useState(false)
   const [isAddEmployees, onAddEmployees] = useState(false);
   const navigate = useNavigate();
+  const userRoles = localStorage.getItem("role");
+  const [tableHeight, setTableHeight] = useState('auto');
+  useEffect(() => {
+    const updateTableHeight = () => {
+      const pageHeight = window.innerHeight;
+      const tableHeight = pageHeight * 0.23;
+      setTableHeight(tableHeight);
+    };
+    window.addEventListener('resize', updateTableHeight);
+    updateTableHeight();
+    return () => {
+      window.removeEventListener('resize', updateTableHeight);
+    };
+  }, []);
   const handleAddInterviewStaffOpen = () => {
     //onViewInterviewStaff(true);
     console.log("findIdData",findIdData?.interviewCode)
@@ -145,7 +160,9 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
             propsedsalary:findIdData?.propsedsalary,
             finaldesision:findIdData?.finaldesision,
             time:findIdData?.time,
-            hrComentaire:findIdData?.hrComentaire
+            hrComentaire:findIdData?.hrComentaire,
+        
+           
        
                   
           }
@@ -281,64 +298,76 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
     //   key: 'expectedJoinDate',
     // },
     {
-      title: ' Evaluator  Approval',
+      title: 'Evaluator Approval',
       dataIndex: 'notif',
       key: 'notif',
-      render: (text, record) => (
-        record.notif === 5 ? (
-          <StyledRecentPatientBadge
-            style={{
-              color: record.color,
-              backgroundColor:"red",
-              color:"white",
-              fontFamily:"inherit"
-            }}
-          >
-            Accepter
-          </StyledRecentPatientBadge>
-        ) : (
-          <StyledRecentPatientBadge
-            style={{
-              color: record.color,
-              backgroundColor:"green",
-              color:"white",
-              fontFamily:"inherit"
-            }}
-          >
-            waiting
-          </StyledRecentPatientBadge>
-        )
-      ),
+      render: (text, record) => {
+        if (record.notif === 2 || record.notif === 1  ) {
+          return (
+            <StyledRecentPatientBadge
+              style={{
+                color: record.color,
+                backgroundColor: "red",
+                color: "white",
+                fontFamily: "inherit"
+              }}
+            >
+              Approved By Evaluator
+            </StyledRecentPatientBadge>
+          );
+        } else if (record.notif === 6) {
+          return (
+            <StyledRecentPatientBadge
+              style={{
+                color: record.color,
+                backgroundColor: "red",
+                color: "white",
+                fontFamily: "inherit"
+              }}
+            >
+              Approved By HSE
+            </StyledRecentPatientBadge>
+          );
+        }
+        return null;
+      },
     },
+    
     {
       title: ' HR  Approval',
       dataIndex: 'notif',
       key: 'notif',
-      render: (text, record) => (
-        record.notif === 1 ? (
-          <StyledRecentPatientBadge
-            style={{
-              color: record.color,
-              backgroundColor:"red",
-              color:"white",
-              fontFamily:"inherit"
-            }}
-          >
-            Accepter
-          </StyledRecentPatientBadge>
-        ) : (
-          <StyledRecentPatientBadge
-            style={{
-              color: record.color,
-              backgroundColor:"green",
-              color:"white",
-              fontFamily:"inherit"
-            }}
-          >
-            waiting
-          </StyledRecentPatientBadge>
-        )
-      ),
+      render: (text, record) => {
+        if (record.notif === 5   ) {
+          return (
+            <StyledRecentPatientBadge
+              style={{
+                color: record.color,
+                backgroundColor: "red",
+                color: "white",
+                fontFamily: "inherit"
+              }}
+            >
+              Approved By HR Manager
+            </StyledRecentPatientBadge>
+          );
+        } 
+        // else if (record.notif === 6) {
+        //   return (
+        //     <StyledRecentPatientBadge
+        //       style={{
+        //         color: record.color,
+        //         backgroundColor: "red",
+        //         color: "white",
+        //         fontFamily: "inherit"
+        //       }}
+        //     >
+        //       Approved By HSE
+        //     </StyledRecentPatientBadge>
+        //   );
+        // }
+        // return null;
+      },
      
     },
    
@@ -361,9 +390,13 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
         const items = [
           { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleAddInterviewStaffOpen },
           { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditInterviewStaffOpen },
-          { key: 3, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteInterviewStaff },
+          ...(userRoles.includes('admin') ? [
+            { key: 3, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteInterviewStaff },
+          ] : [])
+
+        
         ];  
-        if (record.notif === 1) {
+        if (record.notif === 5 ) {
           items.push({ key: 4, label: <span style={{ fontSize: 14 }}>Add Employees</span>, 
           onClick:handleAddEmployees });
         }
@@ -619,7 +652,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
         hoverColor
         data={allinterviewConstructionTeam}
         columns={columns}
-        scroll={{ x: 'auto', y: 150 }}
+        scroll={{ x: 'auto', y: tableHeight }}
 
 
       />

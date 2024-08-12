@@ -31,7 +31,7 @@ const StaffInterview = ({ allinterviewStaffManagement }) => {
   useEffect(() => {
     fetchInterviewStaff();
   }, [currentPage, pageSize, nameFilter, count, id]);
-
+  const userRoles = localStorage.getItem("role");
   const fetchInterviewStaff = async () => {
     try {
 

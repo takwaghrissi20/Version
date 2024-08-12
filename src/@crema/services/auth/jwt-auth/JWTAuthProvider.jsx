@@ -79,12 +79,14 @@ const JWTAuthProvider = ({ children }) => {
         const data = response.data;
         localStorage.setItem('token', data.token);
         localStorage.setItem('role', data.roles);
+        localStorage.setItem('email', data.email);
         setAuthToken(data.token);
         setAuthData({
           user: data,
           isAuthenticated: true,
           isLoading: false,
         });
+        window.location.reload();
         fetchSuccess();
       }
     } catch (error) {
@@ -125,6 +127,7 @@ const JWTAuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('email');
     setAuthToken(null);
     setAuthData({
       user: null,

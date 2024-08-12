@@ -1,52 +1,56 @@
-import React, { useEffect, useState } from 'react';
-import { Card, List, Input, Select, Space, Dropdown, Button, Menu, DatePicker } from 'antd';
+import React, { useEffect, useState, useRef } from 'react';
+import { Card, List, Input, Select, Space, Dropdown, Button, Menu, Row, Col, Table } from 'antd';
 import moment from 'moment';
-import { FcEmptyFilter } from 'react-icons/fc'; // Import de l'icône
+import { FcEmptyFilter, FcClearFilters } from 'react-icons/fc';
+import { FiDownload } from 'react-icons/fi';
 import AppPageMeta from '../../../@crema/components/AppPageMeta';
 import AppCard from '../../../@crema/components/AppCard';
 import OrderTable from './Table';
+import OrderTableSite from './TableSite';
+import TableSiteModal from './TableSiteModal';
 import Pagination from '../../../@crema/components/AppsPagination';
 import { StyledOrderHeaderRight, StyledCustomerInputView } from '../../../styles/index.styled';
-import { FcClearFilters } from "react-icons/fc";
-import { FiDownload } from "react-icons/fi";
-import { useRef } from 'react';
 import generatePDF from 'react-to-pdf';
-import AllPdf from './GeneratePdf'
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import axios from 'axios';
-const { MonthPicker } = DatePicker;
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { FaRegCalendarAlt } from "react-icons/fa";
+
+const { Option } = Select;
 
 const TimeSheetOffice = () => {
   const targetRef = useRef();
   const currentDate = moment();
   const [employeesOffice, setEmployeesOffice] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(50);
+  const [pageSize, setPageSize] = useState(20);
   const [totalRecords, setTotalRecords] = useState(0);
   const [nameFilter, setNameFilter] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [employeesFiltered, setEmployeesFiltered] = useState([]);
   const [typingTimeout, setTypingTimeout] = useState(0);
-  const [selectedMonth, setSelectedMonth] = useState(currentDate.month() + 1); // Les mois de moment vont de 0 à 11
+  const [selectedMonth, setSelectedMonth] = useState(currentDate.month() + 1);
   const [selectedYear, setSelectedYear] = useState(currentDate.year());
-  // const [selectedMonth, setSelectedMonth] = useState(moment().month() + 1);
-  // const [selectedYear, setSelectedYear] = useState(moment().year());
   const [filterType, setFilterType] = useState(null);
-  const [okClicked, setOkClicked] = useState(false) // Nouvel état pour le type de filtrage
+  const [okClicked, setOkClicked] = useState(false);
   const [pdfVisible, setPdfVisible] = useState(false);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [siteTimeSheet, setSiteTimeSheet] = useState([]);
+  const [modal, setModal] = useState(false);
 
   useEffect(() => {
     fetchEmployeesByType();
-  }, [currentPage, pageSize, selectedMonth, selectedYear, filterType]);
+    fetchCountEmployeesOffice();
+  }, [currentPage, pageSize, selectedMonth, selectedYear, filterType, startDate, endDate]);
 
   const fetchEmployeesByType = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getEmByType?type=office&page=${currentPage - 1}&size=${pageSize}&month=${selectedMonth}&year=${selectedYear}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getEmByTypeStatus?type=office&status=Active&page=${currentPage}&size=${pageSize}&month=${selectedMonth}&year=${selectedYear}`);
       const data = await response.json();
-
       setEmployeesOffice(data);
-      setTotalRecords(data.totalElements || 0);
     } catch (error) {
       console.error('Error fetching site employees:', error);
     }
@@ -56,10 +60,16 @@ const TimeSheetOffice = () => {
     setCurrentPage(page);
   };
 
+  const handlePageSizeChange = (value) => {
+    setPageSize(value);
+    setCurrentPage(1);
+  };
+
   const handleMonthChange = (date) => {
     if (date) {
-      setSelectedMonth(date.month() + 1);
-      setSelectedYear(date.year());
+      const newMoment = moment(date);
+      setSelectedMonth(newMoment.month() + 1);
+      setSelectedYear(newMoment.year());
     }
   };
 
@@ -99,83 +109,71 @@ const TimeSheetOffice = () => {
     }
   };
 
-  const handleSearch = async (event) => {
-    event.preventDefault();
-    if (nameFilter !== '') {
-      fetchFilteredEmployees(nameFilter);
-    } else {
-      fetchEmployeesByType();
+  const filterMenu = (
+    <Menu onClick={handleFilterTypeChange}>
+      <Menu.Item style={{ padding: "1rem" }} key="custom_range">User Define</Menu.Item>
+      <Menu.Item style={{ padding: "1rem" }} key="today">Today</Menu.Item>
+      <Menu.Item style={{ padding: "1rem" }} key="yesterday">Yesterday</Menu.Item>
+      <Menu.Item style={{ padding: "1rem" }} key="this_week">This Week</Menu.Item>
+      <Menu.Item style={{ padding: "1rem" }} key="this_month">This Month</Menu.Item>
+    </Menu>
+  );
+
+  const handleOkClick = () => {
+    setOkClicked(!okClicked);
+  };
+
+  const fetchCountEmployeesOffice = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+      if (!response.ok) {
+        throw new Error('La requête a échoué list Employees ' + response.status);
+      }
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
+      }
+      const data = await response.json();
+      const dataOffice = data.filter(p => p.type_Emp === "office" && p.actStatus === "Active ");
+      setTotalRecords(dataOffice.length);
+    } catch (error) {
+      console.error('Erreur lors de la récupération list Employees', error);
     }
   };
 
-  const handleListItemClick = (item) => {
-    setNameFilter(item.name);
-    setEmployeesFiltered([item]);
-    setIsDropdownOpen(false);
-  };
-
-  const filterMenu = (
-    <Menu onClick={handleFilterTypeChange}>
-      <Menu.Item style={{ padding: "1rem" }} key="month">Filter by Month && Year</Menu.Item>
-      {/* <Menu.Item style={{padding:"1rem"}} key="year">Filter by Year</Menu.Item> */}
-      <Menu.Item style={{ padding: "1rem" }} key="name">Filter by Name</Menu.Item>
-    </Menu>
-  );
-  const handleOkClick = () => {
-    setOkClicked(!okClicked); // Toggle okClicked state to trigger useEffect
-  };
-  //Generate pdf
-
   const handleGeneratePDF = async () => {
     try {
-      // Fetch data from the API
       const response = await axios.get('https://dev-gateway.gets-company.com/api/v1/emp/list');
       const employees = response.data;
-
-      // Create a new jsPDF instance with landscape orientation
       const doc = new jsPDF('landscape');
-
-      // Get the current year and month
       const now = new Date();
       const currentYear = now.getFullYear();
-      const currentMonth = now.getMonth() + 1; // Months are zero-based
-
-      // Generate an array of all dates in the current month
+      const currentMonth = now.getMonth() + 1;
       const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
       const dates = Array.from({ length: daysInMonth }, (_, i) => `${currentYear}-${String(currentMonth).padStart(2, '0')}-${String(i + 1).padStart(2, '0')}`);
-
-      // Prepare table header
       const tableHeaders = ['Employee Name', 'Position', 'GetsID', ...dates];
-
-      // Prepare table data
       const tableData = employees.map(employee => {
         const { name, position, getsId, officepointages } = employee;
-
-        // Create a row with the employee's name, position, getsId, and empty pointage fields
         const row = Array(daysInMonth + 3).fill('');
         row[0] = name;
         row[1] = position;
         row[2] = getsId;
-
-        // Fill in the pointages for the current month
         officepointages.forEach(pointage => {
           if (pointage.date.startsWith(`${currentYear}-${String(currentMonth).padStart(2, '0')}`)) {
             const day = parseInt(pointage.date.split('-')[2], 10);
             row[day + 2] = pointage.pointage;
           }
         });
-
         return row;
       });
-
-      // Adjust font size to fit content on one page
-      const fontSize = 5; // Adjust as needed
+      const fontSize = 5;
       doc.setFontSize(fontSize);
-
-      // Add title to PDF
-      doc.text(`Employee Pointages for ${now.toLocaleString('default', { month: 'long' })} ${currentYear}`, 14, 22);
-
-      // Add table to PDF
+      doc.text(`Office Summary Attendence ${now.toLocaleString('en-US', { month: 'long' })} ${currentYear}`, 14, 22);
       doc.autoTable({
         head: [tableHeaders],
         body: tableData,
@@ -188,131 +186,112 @@ const TimeSheetOffice = () => {
         },
         theme: 'grid',
         columnStyles: {
-          0: { cellWidth: 30 }, // Employee Name column width
-          1: { cellWidth: 20 }, // Position column width
-          2: { cellWidth: 20 }, // GetsID column width
-          // Adjust other column widths as needed
+          0: { cellWidth: 30 },
+          1: { cellWidth: 20 },
+          2: { cellWidth: 20 },
         },
       });
-
-      // Save the PDF
-      doc.save(`Employee_Pointages_${now.toLocaleString('default', { month: 'long' })}_${currentYear}.pdf`);
+      doc.save(`Office Summary Attendence_${now.toLocaleString('en-US', { month: 'long' })}_${currentYear}.pdf`);
     } catch (error) {
       console.error('Error generating PDF:', error);
     }
   };
+
+  const fetchSiteTimeSheet = async () => {
+    if (!startDate || !endDate) return;
+
+    const startDateString = startDate.toISOString().slice(0, 10);
+    const endDateString = endDate.toISOString().slice(0, 10);
+
+    try {
+      const url = `https://dev-gateway.gets-company.com/api/v1/poin/employees?page=${currentPage}&page_size=${pageSize}&start_date=${startDateString}&end_date=${endDateString}`;
+      const response = await fetch(url, {
+        method: "GET",
+      });
+      const data = await response.json();
+      setSiteTimeSheet(data.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const applyFilter = () => {
+    let start, end;
+    switch (filterType) {
+      case 'today':
+        start = moment().startOf('day');
+        end = moment().endOf('day');
+        break;
+      case 'yesterday':
+        start = moment().subtract(1, 'days').startOf('day');
+        end = moment().subtract(1, 'days').endOf('day');
+        break;
+      case 'this_week':
+        start = moment().startOf('week');
+        end = moment().endOf('week');
+        break;
+      case 'this_month':
+        start = moment().startOf('month');
+        end = moment().endOf('month');
+        break;
+      case 'custom_range':
+        fetchSiteTimeSheet();
+        return;
+      default:
+        return;
+    }
+    setStartDate(start);
+    setEndDate(end);
+    fetchSiteTimeSheet();
+  };
+
+  const Filter = () => {
+    setModal(true);
+  };
+
+  const closeFilter = () => {
+    setModal(false);
+  };
+  console.log("siteTimeSheet", siteTimeSheet);
+
   return (
-    <div className='site-statistic-demo-card'>
-      <AppPageMeta title='Time Sheet Office' />
-      <AppCard
-        className='no-card-space-ltr-rtl'
-        title={`Office Summary Attendence - ${currentMonthName} ${selectedYear}`}>
-        <Space style={{ margin: '1rem', display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-          <Dropdown overlay={filterMenu}>
-            <Button>
-              <FcClearFilters style={{ marginTop: '0.1rem', marginRight: "0.1rem", fontSize: "1rem" }} />
-            </Button>
-          </Dropdown>
-
-          {filterType === 'month' && (
-            <>
-              <MonthPicker
-                value={moment().month(selectedMonth - 1).year(selectedYear)}
-                onChange={handleMonthChange}
-                format="MMMM YYYY"
-                style={{ height: "2rem" }}
-                placeholder="Select Month and Year"
+    <>
+      <AppPageMeta title="Office Employees" />
+      <AppCard title="Office Employees" heightFull>
+        <div ref={targetRef}>
+          <StyledOrderHeaderRight>
+        
+            <Space className='time' direction="vertical" size={12}>
+              <DatePicker
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+                placeholderText="Start Date"
+                dateFormat="yyyy-MM-dd"
+                style={{ marginBottom: '1rem' }}
+                customInput={<Button icon={<FaRegCalendarAlt />}>
+                  {startDate ? moment(startDate).format('yyyy-MM-DD') : 'Select Start Date'}</Button>}
               />
-              <Button style={{ backgroundColor: "#41b3f8", borderColor: 'transparent', color: "white" }} onClick={handleOkClick}>Filter</Button>
-            </>
-          )}
-          {filterType === 'name' && (
-            <Input.Search
-              placeholder='Search Here'
-              type="text"
-              value={nameFilter}
-              onChange={handleNameFilterChange}
-              onKeyPress={(event) => {
-                if (event.key === 'Enter') {
-                  handleSearch(event);
-                }
-              }}
-            />
-          )}
-    
-  
-   
-    <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', alignItems: 'center' }}>
-      <Button onClick={handleGeneratePDF} className='downloadbutton'>
-        <FiDownload /> Download pdf
-      </Button>
-    </div>
-          {/* <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', alignItems: 'center' }}>
-            <Button onClick={handleGeneratePDF} className='downloadbutton'> <FiDownload />Download pdf</Button>
-   
-          
-          </div> */}
-        </Space>
-        <table style={{ marginTop: "2rem" }}>
-          <thead>
-            <tr>
-              <th style={{ fontSize: "1.5rem" }}>Year</th>
-              <th style={{ fontSize: "1.5rem" }}> Month</th>
-
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style={{ fontSize: "1rem" }}>{currentMonthName}</td>
-              <td style={{ fontSize: "1rem" }}>{selectedYear}</td>
-
-            </tr>
-
-
-          </tbody>
-        </table>
-        {isDropdownOpen && filterType === 'name' && (
-          <List
-            style={{
-              zIndex: 5,
-              borderRadius: "6px",
-              maxHeight: '200px',
-              marginLeft: '5rem',
-              overflowY: 'auto',
-              paddingLeft: "10px",
-              background: "white",
-              position: "absolute",
-              top: "6rem",
-              width: "18%",
-              boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"
-            }}
-            dataSource={employeesFiltered}
-            renderItem={(item) => (
-              <List.Item onClick={() => handleListItemClick(item)}>
-                {item.name}
-              </List.Item>
-            )}
-          />
-        )}
-     {/* <div ref={targetRef} id="pdf-content" style={{ visibility: pdfVisible ? "visible" : "hidden" }}> */}
-        <OrderTable orderData={nameFilter ? employeesFiltered : employeesOffice} selectedMonth={selectedMonth} selectedYear={selectedYear} />
+              <DatePicker
+                selected={endDate}
+                onChange={(date) => setEndDate(date)}
+                placeholderText="End Date"
+                dateFormat="yyyy-MM-dd"
+                style={{ marginBottom: '1rem' }}
+                customInput={<Button icon={<FaRegCalendarAlt />}>{endDate ? moment(endDate).format('yyyy-MM-DD') : 'Select End Date'}</Button>}
+              />
+              <Button onClick={fetchSiteTimeSheet}>Filter</Button>
+            </Space>
+          </StyledOrderHeaderRight>
+          <OrderTableSite siteTimeSheet={siteTimeSheet} />
+        </div>
       </AppCard>
-      <StyledOrderHeaderRight>
-        <Pagination
-          currentPage={currentPage}
-          totalPages={Math.ceil(50 / pageSize)}
-          handlePageChange={handlePageChange}
-        />
-      </StyledOrderHeaderRight>
- 
-      <div ref={targetRef} id="pdf-content" style={{ visibility: pdfVisible ? "visible" : "hidden" }}> 
-        <AllPdf></AllPdf>
-
-        </div>  
-
-           
-
-    </div>
+      {modal && (
+        <>
+          <p>Modal</p>
+          <TableSiteModal siteTimeSheet={siteTimeSheet} />
+        </>
+      )}
+    </>
   );
 };
 

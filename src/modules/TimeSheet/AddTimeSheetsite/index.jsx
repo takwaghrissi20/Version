@@ -1,175 +1,140 @@
 import React, { useEffect, useState } from 'react';
-import { Card, List, Input, Select, Space, Dropdown, Button, Menu, DatePicker } from 'antd';
+import { Row, Col, Button, Select } from 'antd';
 import moment from 'moment';
-import { FcEmptyFilter } from 'react-icons/fc'; // Import de l'icône
-import AppPageMeta from '../../../@crema/components/AppPageMeta';
-import AppCard from '../../../@crema/components/AppCard';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { FaRegCalendarAlt } from 'react-icons/fa';
 import OrderTable from './Table';
 import Pagination from '../../../@crema/components/AppsPagination';
-import { StyledOrderHeaderRight, StyledCustomerInputView } from '../../../styles/index.styled';
-import { FcClearFilters } from "react-icons/fc";
-
-const { MonthPicker } = DatePicker;
-
-const TimeSheetSite = () => {
-  const [employeesOffice, setEmployeesOffice] = useState([]);
+import { StyledOrderHeaderRight } from '../../../styles/index.styled';
+import AppPageMeta from '../../../@crema/components/AppPageMeta';
+import AppCard from '../../../@crema/components/AppCard';
+const AddTimeSheetSite = () => {
+  const [employeesSite, setEmployeesSite] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
-  const [nameFilter, setNameFilter] = useState('');
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [employeesFiltered, setEmployeesFiltered] = useState([]);
-  const [typingTimeout, setTypingTimeout] = useState(0);
-
   const [selectedMonth, setSelectedMonth] = useState(moment().month() + 1);
   const [selectedYear, setSelectedYear] = useState(moment().year());
-  const [filterType, setFilterType] = useState(null); // Nouvel état pour le type de filtrage
+  const [filterDate, setFilterDate] = useState(new Date());
+  const [projects, setProjects] = useState([]);
+  const [selectedProject, setSelectedProject] = useState('All Project');
+  const [selectedPointage, setSelectedPointage] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchEmployeesByType();
-  }, [currentPage, pageSize, selectedMonth, selectedYear, filterType]);
+  }, [currentPage, pageSize, selectedProject]);
 
   const fetchEmployeesByType = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getEmByType?type=site&page=${currentPage - 1}&size=${pageSize}&month=${selectedMonth}&year=${selectedYear}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/list`);
       const data = await response.json();
-  
-      setEmployeesOffice(data); 
-      setTotalRecords(data.totalElements || 0); 
+      const filteredData = data.filter(item => item.rich_DateToSite !== null && new Date(item.endDateMiss) > filterDate);
+
+      const projectNames = [...new Set(data.map(item => item.projName))];
+      setProjects(['All Projects', ...projectNames]);
+      setTotalRecords(filteredData.length);
+
+      const startIndex = (currentPage - 1) * pageSize;
+      const endIndex = startIndex + pageSize;
+      const paginatedData = filteredData.slice(startIndex, endIndex);
+      setEmployeesSite(paginatedData);
     } catch (error) {
       console.error('Error fetching site employees:', error);
     }
   };
 
-  const handlePageChange = (page) => {
+  const handlePageChange = page => {
     setCurrentPage(page);
   };
 
-  const handleMonthChange = (date) => {
+  const handleMonthChange = date => {
     if (date) {
-      setSelectedMonth(date.month() + 1);
-      setSelectedYear(date.year());
+      const newMoment = moment(date);
+      setSelectedMonth(newMoment.month() + 1);
+      setSelectedYear(newMoment.year());
+      setFilterDate(date);
     }
   };
 
-  const handleFilterTypeChange = ({ key }) => {
-    setFilterType(key);
+  const handleFilterPointage = () => {
+    fetchPointages();
   };
 
-  const currentMonthName = moment().month(selectedMonth - 1).format('MMMM').toUpperCase();
+  const handleProjectChange = value => {
+    setSelectedProject(value);
+  };
 
-  const fetchFilteredEmployees = async (filterValue) => {
+  const fetchPointages = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${filterValue}`);
-      if (!response.ok) {
-        throw new Error('Failed to filter employees');
-      }
+      setLoading(true);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/sheetSite/all`);
       const data = await response.json();
-      setEmployeesFiltered(data);
-      setIsDropdownOpen(true);
+      const testdate = moment(filterDate).format('YYYY-MM-DD');
+      const filteredData = data.filter(item => item.date === testdate);
+      const pointageData = filteredData.reduce((acc, item) => {
+        acc[item.getsId] = item.pointage;
+        return acc;
+      }, {});
+      setSelectedPointage(pointageData);
     } catch (error) {
-      console.error('Error filtering employees:', error);
+      console.error('Error fetching pointages:', error);
+    }
+    finally {
+      setTimeout(() => {
+        setLoading(false); // Désactiver le chargement après 1 seconde
+      }, 1000);
     }
   };
-
-  const handleNameFilterChange = (event) => {
-    const filterValue = event.target.value.trim();
-    setNameFilter(filterValue);
-    if (filterValue !== '') {
-      clearTimeout(typingTimeout);
-      const timeoutId = setTimeout(() => {
-        fetchFilteredEmployees(filterValue);
-      }, 300);
-      setTypingTimeout(timeoutId);
-    } else {
-      setIsDropdownOpen(false);
-      setEmployeesFiltered([]);
-      fetchEmployeesByType();
-    }
-  };
-
-  const handleSearch = async (event) => {
-    event.preventDefault();
-    if (nameFilter !== '') {
-      fetchFilteredEmployees(nameFilter);
-    } else {
-      fetchEmployeesByType();
-    }
-  };
-
-  const handleListItemClick = (item) => {
-    setNameFilter(item.name);
-    setEmployeesFiltered([item]);
-    setIsDropdownOpen(false);
-  };
-
-  const filterMenu = (
-    <Menu onClick={handleFilterTypeChange}>
-      <Menu.Item style={{padding:"1rem"}} key="month">Filter by Month && Year</Menu.Item>
-      {/* <Menu.Item style={{padding:"1rem"}} key="year">Filter by Year</Menu.Item> */}
-      <Menu.Item style={{padding:"1rem"}} key="name">Filter by Name</Menu.Item>
-    </Menu>
-  );
 
   return (
+    <>
     <div className='site-statistic-demo-card'>
       <AppPageMeta title='Time Sheet Site' />
       <AppCard
         className='no-card-space-ltr-rtl'
-        title={`Site Time Sheet - ${currentMonthName} ${selectedYear}`}>
-        <Space style={{ margin: '1rem' }}>
-          <Dropdown overlay={filterMenu}>
-            <Button>
-              <FcClearFilters style={{marginTop:'0.1rem',marginRight:"0.1rem",fontSize:"1rem"}} /> 
-            </Button>
-          </Dropdown>
-          {filterType === 'month' && (
-            <MonthPicker
-              value={moment().month(selectedMonth - 1).year(selectedYear)}
-              onChange={handleMonthChange}
-              format="MMMM YYYY"
-              style={{ height: "2rem" }}
-              placeholder="Select Month and Year"
-            />
-          )}
-          {filterType === 'name' && (
-            <Input.Search
-              placeholder='Search Here'
-              type="text"
-              value={nameFilter}
-              onChange={handleNameFilterChange}
-              onKeyPress={(event) => {
-                if (event.key === 'Enter') {
-                  handleSearch(event);
-                }
-              }}
-            />
-          )}
-        </Space>
-        {isDropdownOpen && filterType === 'name' && (
-          <List
-            style={{
-              zIndex: 5,
-              borderRadius: "6px",
-              maxHeight: '200px',
-              marginLeft:'5rem',
-              overflowY: 'auto',
-              paddingLeft: "10px",
-              background: "white",
-              position: "absolute",
-              top: "6rem",
-              width: "18%",
-              boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"
-            }}
-            dataSource={employeesFiltered}
-            renderItem={(item) => (
-              <List.Item onClick={() => handleListItemClick(item)}>
-                {item.name}
-              </List.Item>
-            )}
-          />
-        )}
-        <OrderTable orderData={nameFilter ? employeesFiltered : employeesOffice} selectedMonth={selectedMonth} selectedYear={selectedYear} />
+        title={`Add Site Time Sheet`}>
+
+          <Row style={{ marginTop: '1rem',marginBottom:"1rem" }}>
+            <Col className="calendar" style={{ display: "flex", zIndex: 10, marginLeft: '3rem', marginBottom: "1rem" }} span={15}>
+              <div className="datepicker-wrapper">
+                <FaRegCalendarAlt className="calendar-icon" />
+                <DatePicker
+                  selected={filterDate}
+                  onChange={handleMonthChange}
+                  dateFormat="yyyy-MM-dd"
+                  placeholderText="Select Month and Year"
+                  className="custom-datepicker"
+                />
+              </div>
+              
+              {/* <Button type="primary" style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }} 
+                      
+              >Filter </Button> */}
+              <Select
+                placeholder="Select Project"
+                onChange={handleProjectChange}
+                value={selectedProject}
+                style={{ width: 230 }}
+              >
+                {projects.map(project => (
+                  <Select.Option key={project} value={project}>
+                    {project}
+                  </Select.Option>
+                ))}
+              </Select>
+              <Button type="primary" style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}  
+              onClick={fetchPointages}>Filter</Button>
+            </Col>
+            
+          </Row>
+
+        <OrderTable 
+        style={{ backgroundcolor:"red"}}      
+        selectedPointage={selectedPointage}
+        loading={loading}
+        setSelectedPointage={setSelectedPointage}orderData={employeesSite} filterDate={filterDate} />
       </AppCard>
       <StyledOrderHeaderRight>
         <Pagination
@@ -179,7 +144,9 @@ const TimeSheetSite = () => {
         />
       </StyledOrderHeaderRight>
     </div>
+
+    </>
   );
 };
 
-export default TimeSheetSite;
+export default AddTimeSheetSite;

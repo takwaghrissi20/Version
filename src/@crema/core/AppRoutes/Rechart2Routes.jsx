@@ -17,6 +17,7 @@ import HeadOfficeEmployees from '../../../modules/HeadEmployeesSite';
 import ManpowerAllocationPerProject from '../../../modules/VisaAndTravel/visa/ManpowerAllocationPerProject';
 import PersonOnBoard from '../../../modules/PersonOnBoard';
 import Mission from '../../../modules/VisaAndTravel/visa/Mission';
+import Travel from '../../../modules/VisaAndTravel/visa/AllTravel';
 import InternalMission from '../../../modules/VisaAndTravel/visa/InternalMission';
 import AllMission from '../../../modules/VisaAndTravel/visa/AllMission';
 import AllMissionExtention from '../../../modules/VisaAndTravel/visa/AllMissionExtention';
@@ -26,6 +27,7 @@ import UpdateMission from '../../../modules/VisaAndTravel/visa/EditMission';
 import UpdateMissionExtention from '../../../modules/VisaAndTravel/visa/EditMissionExtention';
 import AddTravel from '../../../modules/VisaAndTravel/visa/Travel';
 import AddDemobization from '../../../modules/TripTrackRecord/AddDemobilization';
+import UpdateDemobization from '../../../modules/TripTrackRecord/Demobilization';
 import DemoPermissionSite from '../../../modules/TripTrackRecord/DemobPermissionSite';
 import AddMissionExtensoin from '../../../modules/TripTrackRecord/AddExtensionMission';
 import DemobTripTrackRecorde from '../../../modules/TripTrackRecord/DeMOBTRIPTRACKRECORD';
@@ -34,21 +36,41 @@ import SammaryMobTrips from '../../../modules/TripTrackRecord/SAMMARYMOBTRIPS';
 import DemobilizationDirect  from '../../../modules/DemobilizationDirect';
 import IdJosDesertPass  from '../../../modules/IDJOSDesetPass';
 import ReachedToSite from '../../../modules/DateReachSite';
-
-
-
+import AddTimeSheetsite from '../../../modules/TimeSheet/AddTimeSheetsite'
+import ViewTravel from '../../../modules/VisaAndTravel/visa/Viewtravel';
+import EditTravel from '../../../modules/VisaAndTravel/visa/Edittravel';
+//Payroll
+import SalariesTracker from '../../../modules/Payroll/Salaries Tracker';
+import PaymentRequest from '../../../modules/Payroll/PaymentRequest';
+import CalculateSalary from '../../../modules/Payroll/CalculateSalary';
+import CalculateSalaryOffice from '../../../modules/Payroll/CalculateSalaryOffice';
+// import CalculateSalaryOffice from '../../../modules/Payroll/CalculateSalaryOffice';
+import PAYMENTORDERREQUESTS from '../../../modules/Payroll/PaymentOrderRequest';
+import PaymentOrderRequestOffice from '../../../modules/Payroll/PaymentOrderRequestOffice';
+import CashAdvance from '../../../modules/Payroll/CashAdvance';
+ 
 export const recharts2Configs = [
   {
     path: '/Hr/Visa/Mission',
     element: <Mission/>,
+  },
+  {
+    path: '/Hr/Visa/AllTravel',
+    element: <Travel/>,
+  },
+  {
+    path: '/Hr/Visa/ViewTravel/:id',
+    element: <ViewTravel/>,
+  },
+  {
+    path: '/Hr/Visa/UpdateTravel/:id',
+    element: <EditTravel/>,
   },
   ///Hr/Visa/InternalMission
   {
     path: '/Hr/Visa/InternalMission',
     element: <InternalMission/>,
   },
-
-
   ///Hr/Visa/InternalMission
   {
     path: '/Hr/Visa/MissionOrder',
@@ -102,6 +124,10 @@ export const recharts2Configs = [
   {
     path: '/ManpowerLocation/AddDemobilization',
     element: <AddDemobization />,
+  },
+  {
+    path: '/ManpowerLocation/Update_Demobilization/:id',
+    element: < UpdateDemobization />,
   },
   {
     path: '/ManpowerLocation/DemobPermissionSite',
@@ -195,5 +221,48 @@ export const recharts2Configs = [
     path: '/SiteCleark/Reached_ToSite_And_DemobFromSite',
     element: <ReachedToSite/>,
   },
+  {
+    path: '/SiteCleark/Reached_ToSite_And_DemobFromSite',
+    element: <ReachedToSite/>,
+  },
+  {
+    path: '/SiteCleark/Add-Employees-Pointages',
+    element: <AddTimeSheetsite/>,
+  },
+  /*Payrolll*/
+  {
+    path: '/Payroll/SalariesTracker',
+    element: <SalariesTracker/>,
+  },
+  {
+    path: '/Payroll/PaymentRequest',
+    element: <PaymentRequest />,
+  },
+  {
+    path: '/Payroll/CalculateSiteSalary',
+    element: <CalculateSalary />,
+  },
+  {
+    path: '/Payroll/CalculateSalaryOffice',
+    element: < CalculateSalaryOffice />,
+  },
+  {
+    path: '/Payroll/PAYMENT_ORDER_REQUESTS',
+    element: <PAYMENTORDERREQUESTS  />,
+  },
+  {
+    path: '/Payroll/office/PAYMENT_ORDER_REQUESTS',
+    element: <PaymentOrderRequestOffice  />,
+  },
+  {
+    path: '/Payroll/Cash_Advance',
+    element: <CashAdvance />,
+  },
+
+
+
+
+  /*End Payroll*/
+  
   
 ];

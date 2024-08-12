@@ -86,7 +86,7 @@ const OrderTable = ({ orderData }) => {
     const updateTableHeight = () => {
       const pageHeight = window.innerHeight;
   
-      const tableHeight = pageHeight ; 
+      const tableHeight = pageHeight*0.25 ; 
       setTableHeight(tableHeight);
     };
 

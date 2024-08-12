@@ -75,16 +75,16 @@
   }
   .page {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; 
     justify-content: space-between;
     min-height: 100%;
 }
 
 .logo {
     align-self: flex-end;
-    width:200px;
-    height:200px;
-    margin-top:20px;
+    width:80px;
+    height:80px;
+    /* margin-top:20px;
     margin-right:1rem;
     font-weight: bold;
     print-color-adjust: exact;
@@ -95,7 +95,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    print-color-adjust: exact;
+    print-color-adjust: exact; */
 }
   .page1{
     /* width:210mm; /* Largeur en pixels */
@@ -346,39 +346,101 @@ line-height:1rem;
       font-size: 16px;
 
 }
-.iconeView{
- 
-  border:solid 1px rgba(41, 151, 255, 0.5);
-  padding: 8;
-  font-size: 28px;
-  border-radius: 50%;
-  color: rgb(41, 151, 255);
-  cursor: pointer;
-  justify-content:center;
-  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-  margin-right: 8px;
-  opacity: 0.5;
-  align-items: center;
-
-  
-   
+.viewicone{
+  border: 1px solid red;
+color: red;
+border-radius: 50%;
+padding: 4px;
+font-size: 24px;
+cursor: pointer;
+margin-right: 2px;
 
 }
+.viewEdit{
+  border:solid 1px rgb(41, 151, 255);
+  border-radius: 50%;
+  color: rgb(41, 151, 255);
+  font-size: 24px;
+  cursor: pointer;
+  margin-right: 2px;
+
+}
+.viewEdit:hover{
+  opacity: 0.2;
+
+}
+.viewicone:hover{
+ opacity: 0.2;
+
+}
+.viewDownload
+{
+  border: 2px solid black;
+color: black;
+border-radius: 50%;
+padding: 4px;
+font-size: 24px;
+cursor: pointer;
+margin-right: 2px;
+
+}
+.viewDownload:hover{
+  opacity: 0.2;
+ 
+ }
+
+.iconeView {
+  border: 1px solid red;
+color: red;
+border-radius: 50%;
+padding: 4px;
+font-size: 24px;
+cursor: pointer;
+margin-right: 5px;
+
+
+}
+
 .iconeView:hover{
  
   opacity: 1
 }
 
 .iconeEdit{
-  border:solid 1px rgb(248, 78, 78);
+  border: 1px solid #0083ff;
+  color: #0083ff;
   border-radius: 50%;
-  color: rgb(248, 78, 78);
-  width:25px;
-  height: 25px;
-  margin-right:50px;
+  padding: 4px;
+  font-size: 24px;
   cursor: pointer;
 
+
 }
+
+.iconeEditTime {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid 1px #0083ff;
+  border-radius: 50%;
+  color: #0083ff;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+.iconeEditTimeSheet{
+  display: flex;
+  border: solid 1px #0083ff;
+  border-radius: 50%;
+  color: #0083ff;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+
+
+
+}
+
 .Separateur{
   width:10px;
 }
@@ -586,7 +648,7 @@ font-weight: bold;
 .Pagination{
   display: flex;
    justify-Content: flex-end;
-   margin:1rem
+  
 }
 .StyleInput{
   padding-top: 0.5rem;
@@ -638,7 +700,17 @@ font-weight: bold;
 }
 .row-red {
   color: red !important;
-  background-color:#C0B198;
+  background-color: #ECF8F6;
+
+
+  /* background-color:#C0B198; */
+}
+.row-brown{
+  background-color: #F1F1D3;
+}
+.row-yellow{
+  background-color: #709CA7;
+
 }
 .Title{
   color: #40494D;
@@ -648,7 +720,12 @@ font-weight: bold;
 }
 .ant-table-wrapper .ant-table-pagination.ant-pagination{
   visibility: hidden;
+  
 
+}
+.ant-table-wrapper table {
+ 
+  min-height: 5rem !important;
 }
 .downloadbutton{
   margin-right:2rem;
@@ -684,6 +761,188 @@ th, td {
   width: 100vh; /* Définir la largeur pour correspondre à la hauteur de la page */
   height: 100vw; /* Définir la hauteur pour correspondre à la largeur de la page */
 }
+.react-datepicker-ignore-onclickoutside{
+  background-color: #eeeeee!important;
+ 
+  z-index: 2;
+}
+input{
+
+  border-color: transparent;
+  width:20rem;
+  padding-top: 0.5rem;
+
+  padding-bottom: 0.5rem;
+  border-radius: 0.25rem;
+  opacity: 0.8;
+  z-index: 2;
+  
+
+
+  
+
+
+}
+@media screen and (min-width: 300px) and (max-width:700px) {
+.calendar{
+  display: block;
+
+}
+}
+@media screen and (min-width: 300px) and (max-width:500px) {
+  .calendar{
+    display: block;
+  
+  }
+  }
+
+  .datepicker-wrapper {
+    position: relative;
+    width: 30%;
+   
+    /* flex-direction: row;
+    display: flex; */
+
+  }
+  
+  .calendar-icon {
+    position: absolute;
+    z-index: 2;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #767375;
+  }
+  .custom-datepickerEdit{
+    width: 100%;
+    height: 3rem;
+    background-color: #eeeeee;
+    color:black;
+    padding-left: 1rem
+
+    
+  }
+  
+  .custom-datepicker {
+    width: 100%;
+    padding-left: 2rem; /* Adjust padding to accommodate the icon */
+    padding-right: 4rem;
+    background-color: 
+    #eeeeee;
+    color:#bfc0bf;
+    z-index: 3;
+    border-radius: 0.5rem;
+   
+  }
+  @media screen and (min-width: 300px) and (max-width:900px) {
+
+    .custom-datepicker {
+     
+      width: 30%;
+      background-color: 
+      #eeeeee;
+      color:#bfc0bf;
+      z-index: 1;
+      border-radius: 0.5rem;
+    }
+    .datepicker-wrapper {
+      position: relative;
+      width: 100%;
+  
+    }
+    .calendar-icon {
+      position: absolute;
+      z-index: 2;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #767375;
+    }
+
+  }
+  .row1-red {
+    background-color: red !important;
+    color: black;
+  }
+  .Notification{
+    border: none;
+    background-color:transparent;
+    margin-bottom: 0.5rem;
+  
+
+
+
+
+  }
+  .Space{
+  height: 1px;
+  background-color:  #B6CDE8;
+
+  }
+.EditIcone {
+  display: inline-block; 
+  width: 36px;
+
+  height: 36px; 
+  border-radius: 50%; 
+  background-color: red; 
+  text-align: center; 
+  line-height: 36px; 
+}
+
+/* Styles lorsque l'élément est en mode édition */
+.EditIcone.active {
+
+  border-color: green; 
+}
+.EditIcone.not-editing {
+
+  opacity: 0.5; 
+}
+
+  .EditIcone{
+    color:#0083ff;
+  }
+  .EditIcone-container {
+    display: inline-block; 
+    width: 36px;
+    height: 36px; 
+    border-radius: 50%; 
+    background-color: lightblue; 
+    text-align: center; 
+    line-height: 36px; 
+  }
+  .pointageContainer {
+    display: flex;
+    align-items: center; 
+  
+    padding: 4px; 
+  }
+  .TitleInput{
+    padding-bottom: 1rem;
+    
+  }
+  .status-approved {
+    color: green;
+  }
+  
+  .status-rejected {
+    color: red;
+  }
+  
+  .status-unknown {
+    color: black;
+  }
+  .status-Pending{
+    color: black;
+
+  }
+  .time{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1rem;
+
+  }
 
 
 

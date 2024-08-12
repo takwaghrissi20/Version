@@ -9,7 +9,7 @@ import { MdLocationOn } from "react-icons/md";
 import { MdChangeCircle } from "react-icons/md";
 import { MdOutlineChangeCircle } from "react-icons/md";
 import { RxPerson } from "react-icons/rx";
-
+import { MdOutlinePayments } from "react-icons/md";
 
 
 const routesConfig = [
@@ -94,6 +94,21 @@ const routesConfig = [
         icon: <GrUserAdmin />,
         children: [
           {
+            id: "Add Project",
+            title: "Add Project",
+            messageId: "sidebar.hr.AddProject",
+            url: "/HrDataBase/Add_Project",
+          },
+          {
+            id: "Affect a project to employee",
+            title: "Affect a project to employee",
+            messageId: "sidebar.hr.Affectaprojecttoemployee",
+            url: "/HrDataBase/Affectaprojecttoemployee",
+          },
+
+
+
+          {
             id: "SAMMARY",
             title: "SAMMARY",
             messageId: "sidebar.hr.Sammuary",
@@ -175,6 +190,19 @@ const routesConfig = [
             messageId: "sidebar.components.VacationLeave",
             url: "/Hr/Vacation&Leave/Vacation",
           },
+          {
+            id: "AllLeave",
+            title: "AllLeave",
+            messageId: "sidebar.components.AllLeave",
+            url: "/Hr/Vacation&Leave/ALL_Leave",
+          },
+          {
+            id: "My Leave History",
+            title: "MyLeaveHistory",
+            messageId: "sidebar.components.MyLeaveHistory",
+            url: "/Hr/Vacation&Leave/My_Leave_History",
+          },
+          
           // {
           //   id: "Leave",
           //   title: "Leave",
@@ -248,17 +276,22 @@ const routesConfig = [
             messageId: "sidebar.general.travel",
             url: "/Hr/Visa/Travel",
           },
-           
           {
-            id: "VisaHealth",
-            title: "VisaHealth",
+            id: "Travel",
+            title: "Travel",
+            messageId: "sidebar.general.Alltravel",
+            url: "/Hr/Visa/AllTravel",
+          },
+          {
+            id: "ADDVisaHealth",
+            title: "ADDVisaHealth",
             messageId: "sidebar.general.ADDVisaHealth",
             url: "/Hr/VisaHealth/AddVisa",
           },
         
           {
-            id: "VisaHealth",
-            title: "VisaHealth",
+            id: "Visa",
+            title: "Visa",
             messageId: "sidebar.general.VisaHealth",
             url: "/Hr/VisaHealth/Visa",
           },
@@ -312,7 +345,7 @@ const routesConfig = [
             url: "/Hr/Visa/InternalMission",
           },
           {
-            id: "Add Mission",
+            id: "Mission Order",
             title: "Mission Order",
             messageId: "sidebar.general.AllMission",
             url: "/Hr/Visa/MissionOrder",
@@ -432,9 +465,15 @@ const routesConfig = [
         url: "recharts",
         type: "collapse",
         children: [
-          
+        
           {
-            id: "SiteCleark",
+            id: "SiteClearkPointages",
+            title: "AddEmployeesPointages",
+            messageId: "sidebar.generalSiteClearkAddPointages",
+            url: "/SiteCleark/Add-Employees-Pointages",
+          },
+          {
+            id: "SiteClearkIdJosAndDesertPass",
             title: "ManpowerLocationTrackRecord",
             messageId: "sidebar.generalSiteClearkShall",
             url: "/SiteCleark/IdJosAndDesertPass",
@@ -452,6 +491,67 @@ const routesConfig = [
        
         ],
       },
+      
+    
+    ],
+  },
+  {
+    id: "HRCordinator",
+    title: "HRCordinator",
+    messageId: "",
+    type: "group",
+    children: [
+    
+    
+      {
+        id: "Payroll",
+        title: "Payroll",
+        messageId: "sidebar.Payroll",
+        icon: <MdOutlinePayments  />,
+        url: "recharts",
+        type: "collapse",
+        children: [
+          
+          {
+            id: "Salaries Tracker",
+            title: "SalariesTracker",
+            messageId: "sidebar.general.SalariesCalculate",
+            url: "/Payroll/CalculateSiteSalary",
+          },
+          {
+            id: "Salaries Tracker",
+            title: "SalariesTracker",
+            messageId: "sidebar.general.SalariesCalculateOffice",
+            url: "/Payroll/CalculateSalaryOffice",
+          },
+         
+         
+          
+          {
+            id: "Salaries Calculate",
+            title: "SalariesCalculate",
+            messageId: "sidebar.general.Payroll",
+            url: "/Payroll/SalariesTracker",
+          },
+          {
+            id: "CashAdvance",
+            title: "Cash Advance & Deduction From Salaries",
+            messageId: "sidebar.app.CashAdvance",
+            url: "/Payroll/Cash_Advance",
+          },
+       
+          {
+            id: "Payment Request",
+            title: "Payment Request",
+            messageId: "sidebar.general.paymentRequest",
+            url: "/Payroll/PaymentRequest",
+          },
+     
+     
+       
+        ],
+      },
+     
       
     
     ],

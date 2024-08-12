@@ -77,7 +77,15 @@ const SummarymobTrip = () => {
       <AppPageMeta title='Summary Demob Trip' />
       <div style={{ backgroundColor: "white", borderRadius: "20px" }}>
         <AppsHeader>
-          <StyledOrderHeader>
+        
+        </AppsHeader>
+        <AppCard
+          className='no-card-space-ltr-rtl'
+          title={messages['dashboard.SummarymobTrip']}
+        >
+          <OrderTable className={clsx("item-hover")} demopTrips={demopTrips} />
+        </AppCard>
+        <StyledOrderHeader>
             <div style={{ marginRight: 20, boxShadow: "none !important", width: "20%" }}>
          
               {/* <Select
@@ -103,15 +111,9 @@ const SummarymobTrip = () => {
                 totalPages={Math.ceil(count / pageSize)}
                 handlePageChange={handlePageChange}
               />
+                 <div style={{marginBottom:"3rem" }}></div>
             </StyledOrderHeaderRight>
           </StyledOrderHeader>
-        </AppsHeader>
-        <AppCard
-          className='no-card-space-ltr-rtl'
-          title={messages['dashboard.SummarymobTrip']}
-        >
-          <OrderTable className={clsx("item-hover")} demopTrips={demopTrips} />
-        </AppCard>
       </div>
     </div>
   );

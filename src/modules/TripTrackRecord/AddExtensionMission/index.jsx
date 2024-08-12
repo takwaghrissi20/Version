@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef  } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import AppRowContainer from '../../../@crema/components/AppRowContainer';
 import {
   Button, Col, Divider, Form, Input, Space, Typography, Select,
@@ -31,6 +31,7 @@ const AddExtensionMission = () => {
   const [idRef, setIdRef] = useState("");
   const [projref, setProjref] = useState("");
   const [name, setName] = useState("");
+  const [nameConstruction, setNameConstruction] = useState("");
   const [position, setPosition] = useState("");
   const [location, setLocation] = useState("");
   const [endMission, setEndMission] = useState("");
@@ -43,10 +44,41 @@ const AddExtensionMission = () => {
   const formattedDate = dayjs(dateInput).format('YYYY-MM-DD');
   const [searchValue, setSearchValue] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  console.log("newDate", dateInput)
+  console.log("searchValue", searchValue)
   const [dateoldMission, setDateoldMission] = useState("");
   const [isExDep, setIsExDep] = useState(false);
   const [isOrDep, setIsOrDep] = useState(false);
+  const userRole = localStorage.getItem("role");
+  const userEmail = localStorage.getItem("email");
+  const GetProfileEmployess = async () => {
+
+    try {
+      const endPoint =
+        process.env.NODE_ENV === "development"
+          ? "https://dev-gateway.gets-company.com"
+          : "";
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${userEmail}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+      if (!response.ok) {
+        throw new Error('La requête a échoué avec le code ' + response.status);
+      }
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
+      }
+      const data = await response.json();
+      setNameConstruction(data?.name)
+    
+    } catch (error) {
+      console.error('Erreur lors de la récupération getByEmail', error);
+    }
+  };
+  console.log("userRole construction", userRole)
   function ExDep(e) {
     console.log(`checkedHead = ${e.target.checked}`);
     setIsExDep(e.target.checked)
@@ -58,7 +90,7 @@ const AddExtensionMission = () => {
 
   }
 
-
+console.log("nameConstruction",nameConstruction)
 
   const handleReason = (event) => {
     setReason(event.target.value);
@@ -73,7 +105,7 @@ const AddExtensionMission = () => {
     setMissionId(event.target.value);
   };
 
-  console.log("MissionId", missionId)
+
 
   const LastIndexmissionEx = async () => {
     try {
@@ -177,7 +209,7 @@ const AddExtensionMission = () => {
 
   const handleAddMisssionExtention = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/add?id=${missionId}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/add?id=${searchValue}`, {
 
         method: 'POST',
         headers: {
@@ -191,16 +223,23 @@ const AddExtensionMission = () => {
           actualLocation: location,
           comments: comments,
           position: position,
-          projRef: projref,
-          projectTitle: projname,
-          reasonForExtension: reason,
-          refMiss: missionId,
-          name: name,
-          old_mission: endMission,
+          dateinput:formattedDate,
+           refMiss:searchValue,
+           projectTitle:projname,
+          //  projRef:projref,
+            name: name,
+            contractMangerName:nameConstruction,
+          // projRef: projref,
+          // projectTitle: projname,
+           reasonForExtension: reason,
+          // refMiss: missionId,
+          // name: name,
+           old_mission: endMission,
           new_mission: newMission,
-          plannerInput: isOrDep,
-          extraProject: isExDep,
-          dateinput: formattedDate
+          notif:33
+          // plannerInput: isOrDep,
+          // extraProject: isExDep,
+          // dateinput: formattedDate
 
         })
       });
@@ -225,8 +264,9 @@ const AddExtensionMission = () => {
   };
 
   useEffect(() => {
+    GetProfileEmployess()
     LastIndexmissionEx();
-    if(searchValue===""){  
+    if (searchValue === "") {
       setProjname("")
       setProjref("")
       setName("")
@@ -235,12 +275,12 @@ const AddExtensionMission = () => {
       setEndMission("")
 
     }
-  
+
     GetALLMission()
 
 
 
-  }, [missionId, projname, projref, name,idRef]);
+  }, [missionId, projname, projref, name, idRef]);
 
 
   const LastMissionExtentionId = missionExtentionId + 1;
@@ -272,7 +312,7 @@ const AddExtensionMission = () => {
   const handleCancelExtention = () => {
     onCancel(true);
   }
-  
+
   const GetALLMission = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getAll`, {
@@ -299,7 +339,7 @@ const AddExtensionMission = () => {
   const filteredMission = searchValue === '' ? list : list.filter(p => {
     return p?.idMiss?.toString().startsWith(searchValue);
   });
- 
+
   const [selectedMission, setSelectedMission] = useState([]);
 
   const handleItemClick = (mission) => {
@@ -312,10 +352,10 @@ const AddExtensionMission = () => {
       setSearchValue(mission.idMiss);
       setIsDropdownOpen(false);
     }
-  
-  
+
+
     setSearchValue(mission.idMiss);
-      setIsDropdownOpen(false);
+    setIsDropdownOpen(false);
   };
 
   //
@@ -332,7 +372,7 @@ const AddExtensionMission = () => {
           'Content-Type': 'application/json'
         },
       });
-      console.log("gggggg3333",searchValue)
+      console.log("gggggg3333", searchValue)
       if (!response.ok) {
         throw new Error('La requête a échoué avec le code ' + response.status);
       }
@@ -342,7 +382,7 @@ const AddExtensionMission = () => {
       }
 
       const responseData = await response.json();
-      
+
       setFindIdMission(responseData)
       setIdRef(responseData?.idMiss)
       setProjname(responseData?.projName)
@@ -374,15 +414,13 @@ const AddExtensionMission = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-  const handleSearch = async (event) => {
-    const value = event.target.value;
-    setSearchValue(idRef);
-    setIsDropdownOpen(value.trim() !== '');
 
- 
+  const handleSearch = value => {
+    setSearchValue(value);
+    setIsDropdownOpen(value.trim() !== '');
   };
-  console.log("fffhyyyy",searchValue)
-  const  handleSearch1 = (event) => {
+  console.log("fffhyyyy", searchValue)
+  const handleSearch1 = (event) => {
     setSearchValue(event.target.value);
     console.log("event.target.value",)
     setIsDropdownOpen(event.target.value.trim() !== '');
@@ -391,7 +429,7 @@ const AddExtensionMission = () => {
   //   setSearchValue(value);
   //   setIsDropdownOpen(value.trim() !== '');
   // };
-console.log("setIdRef",idRef)
+  console.log("setIdRef", idRef)
   return (
     <>
       <Form
@@ -451,42 +489,46 @@ console.log("setIdRef",idRef)
 
                   </Form.Item>
                 </Col>
-      
+
 
                 <Col xs={24} md={12}>
-                               
-                      <Form.Item  onClick={()=>setIsDropdownOpen(true)} label='Mission Reference' name='NumeroMission '>
-                        <Input                                         
-                          placeholder={searchValue}
-                          
-                      
-                          // onChange={handleSearch}
-                         />
-                      </Form.Item>
-                     
-                      {isDropdownOpen && (
-                        <div style={{
-                          borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px", zIndex: 1,
-                          background: "white", position: "absolute", top: "4rem", width: "90%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"
-                        }}>
-                          <List
-                            dataSource={filteredMission}
-                            renderItem={item => (
-      
-                              <List.Item onClick={() => { handleItemClick(item); fetchDataId(item.idMiss); }}>
-                                MAO-{item.idMiss}</List.Item>
-                            )}
-                          />
-                        </div>
-                      )}
 
-                      <div>
+                  <Form.Item
+                    onClick={() => setIsDropdownOpen(true)}
+                    label='Mission Reference'
+                    name='NumeroMission '>
+                    <Input
+                     onChange={(e) => handleSearch(e.target.value)}                
+                    //  value={searchValue}
+                    placeholder={"MAO-" + searchValue}
 
-                      </div>
-                    
-                  </Col>
-               
-{/* 
+                    // onChange={handleSearch}
+                    />
+                  </Form.Item>
+
+                  {isDropdownOpen && (
+                    <div style={{
+                      borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px", zIndex: 100,
+                      background: "white", position: "absolute", top: "4rem", width: "90%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"
+                    }}>
+                      <List
+                        dataSource={filteredMission}
+                        renderItem={item => (
+
+                          <List.Item onClick={() => { handleItemClick(item); fetchDataId(item.idMiss); }}>
+                            MAO-{item.idMiss}</List.Item>
+                        )}
+                      />
+                    </div>
+                  )}
+
+                  <div>
+
+                  </div>
+
+                </Col>
+
+                {/* 
 
                 <Col xs={24} md={12}>
                   <Form.Item label='Mission Reference' name='NumeroMission '>
@@ -623,7 +665,9 @@ console.log("setIdRef",idRef)
             </StyledShadowWrapper>
           </Col>
         </AppRowContainer>
-        <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+      {userRole.includes("Planner") &&
+      <>
+       <Divider style={{ marginTop: 16, marginBottom: 16 }} />
         <AppRowContainer>
           <Col xs={24} md={6}>
             <Typography.Title level={5}>Planner Input</Typography.Title>
@@ -664,6 +708,12 @@ console.log("setIdRef",idRef)
             </StyledShadowWrapper>
           </Col>
         </AppRowContainer>
+      </>
+      
+      
+      
+      } 
+       
 
 
         <Space
@@ -673,7 +723,7 @@ console.log("setIdRef",idRef)
           <Button onClick={goBack}>Cancel</Button>
           <Button
             onClick={BeforeSaveExtention}
-            disabled={!missionId}
+             disabled={!searchValue}
 
             type='primary'
             htmlType='submit'>

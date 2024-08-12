@@ -240,7 +240,7 @@ const AddVisa = () => {
                       className='Input'
                       placeholder="Full Name "
                       value={name}
-                      readOnly // Correction de la fonction de changement
+                      readOnly 
                     />
                   </FloatLabel>
                 </Form.Item>

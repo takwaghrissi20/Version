@@ -31,8 +31,41 @@ const DemobilizationDirect = () => {
 
   useEffect(() => {
     fetchDemobilization();
+    fetchCountMobilization()
   }, [currentPage, pageSize, nameFilter]);
 
+  const fetchCountMobilization = async () => {
+    try {
+      const endPoint =
+        process.env.NODE_ENV === "development"
+          ? "https://dev-gateway.gets-company.com"
+          : "";
+
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/getAll`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('La requête a échoué MobDemob ' + response.status);
+      }
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
+      }
+      const data = await response.json();
+
+     setCount(data.length)
+
+
+
+    } catch (error) {
+      console.error('Erreur lors de la récupération MobDemob ', error);
+    }
+  };
   const fetchDemobilization = async () => {
     try {
       // const countMob = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/countByType?type=DeMobilization`);
@@ -109,7 +142,7 @@ const DemobilizationDirect = () => {
       setIsDropdownOpen(false); // Close dropdown if filter is empty
     }
   };
-  console.log("jjkllllll6666",demobilization)
+
   return (
     <div style={{marginBottom:"2rem"}}>
       <AppPageMeta title='Demobilization Direct  mobilization' />
@@ -168,8 +201,7 @@ const DemobilizationDirect = () => {
         </AppsHeader>
         <AppCard
           className='no-card-space-ltr-rtl'
-          title={messages['dashboard.DemobilizationDirectmobilization']}
-        >
+          title={messages['dashboard.DemobilizationDirectmobilization']} >
 
           <OrderTable className={clsx("item-hover")} demobilization={demobilization} />
         </AppCard>
@@ -179,12 +211,9 @@ const DemobilizationDirect = () => {
           <Pagination
              currentPage={currentPage}
              totalPages={Math.ceil(count / pageSize)}
-             handlePageChange={handlePageChange}
-          />
+             handlePageChange={handlePageChange} />
 
-
-
-        </StyledOrderHeaderRight>
+          </StyledOrderHeaderRight>
         </div>
 
 

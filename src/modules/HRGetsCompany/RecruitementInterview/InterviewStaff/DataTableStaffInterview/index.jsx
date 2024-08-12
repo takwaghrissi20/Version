@@ -27,10 +27,11 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
   const [isAddEmployees, onAddEmployees] = useState(false);
   const [isFeddbackEmployee, onFeddbackEmployee] = useState(false);
   const [tableHeight, setTableHeight] = useState('auto');
+  const userRoles = localStorage.getItem("role");
   useEffect(() => {
     const updateTableHeight = () => {
       const pageHeight = window.innerHeight;
-      const tableHeight = pageHeight * 0.1; 
+      const tableHeight = pageHeight * 0.2; 
       setTableHeight(tableHeight);
     };
     window.addEventListener('resize', updateTableHeight);
@@ -261,127 +262,7 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
     });
     setData(updatedData);
   };
-  const columns0 = [
-    {
-      title: 'Reference',
-      dataIndex: 'interviewCode',
-      key: 'interviewCode',
-      width: 150,
-  
-    },
-    {
-      title: 'Requestor Name',
-      dataIndex: 'requestName',
-      key: 'requestName',
-      render: (text) => <a>{text}</a>,
-      width: 150,
-    },
-   
-    {
-      title: 'Requested Discipline',
-      dataIndex: 'requestedDicipline',
-      key: 'requestedDicipline',
-      width: 80,
-    },
-    {
-      title: 'Project Code/Office',
-      dataIndex: 'projRef',
-      key: 'projRef',
-      width: 80,
-      ellipsis: {
-        showTitle: false,
-      },
-      render: (Project) => (
-        <Tooltip placement='topLeft' title={Project}>
-          {Project}
-        </Tooltip>
-      ),
-    
-    },
-    {
-      title: 'Desired Date',
-      dataIndex: 'desiredDate',
-      key: 'desiredDate',
-      width: 80,
-      ellipsis: {
-        showTitle: false,
-      },
-      render: (address) => (
-        <Tooltip placement='topLeft' title={address}>
-          {address}
-        </Tooltip>
-      ),
-    },
-    {
-      title: 'Total Number',
-      dataIndex: 'totalNumber',
-      key: 'totalNumber',
-      width: 80,
-      ellipsis: {
-        showTitle: false,
-      },
-      render: (address) => (
-        <Tooltip placement='topLeft' title={address}>
-          {address}
-        </Tooltip>
-      ),
-    },
-    {
-      title: 'Desired Date',
-      dataIndex: 'desiredDate',
-      key: 'desiredDate',
-      width: 150,
-      ellipsis: {
-        showTitle: false,
-      },
-      render: (desiredDate) => (
-        desiredDate ? new Date(desiredDate).toLocaleDateString() : ""
-      ),
-   
-  
-    },
-    {
-      title: 'Status',
-      dataIndex: 'notif',
-      key: 'notif',
-      width: 80,
-      ellipsis: {
-        showTitle: false,
-      },
-      render: (text, record) => (
-        <Tooltip style={{
-            color: record.color,
-            backgroundColor: record.color + '44',
-          }}>
-        {record.notif}
-      </Tooltip>
-        
-      ),  
-    },
-   
-  
-    {
-      title: 'Actions',
-      dataIndex: 'actions',
-      key: 'actions',
-      width: 88,
-      fixed: 'right',
-      className: 'customer-table-actions',
-      render: (text, record) => (
-        <div onClick={() => findId(record?.jobCode)}>
-          <Dropdown menu={{ items }} trigger={['click']}  >
-            <Button type='circle'>
-              <MoreOutlined />
-            </Button>
-          </Dropdown>
-       
-  
-        </div>
-  
-      ),
-  
-    }
-  ];
+ 
 
   const columns = [
     {
@@ -486,7 +367,7 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
               fontFamily: "inherit"
             }}
           >
-            waiting
+             pending
           </StyledRecentPatientBadge>
         )
       ),
@@ -516,7 +397,7 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
               fontFamily: "inherit"
             }}
           >
-            waiting
+             pending
           </StyledRecentPatientBadge>
         )
       ),
@@ -563,7 +444,10 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
         const items = [
           { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleAddInterviewStaffOpen },
           { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditInterviewStaffOpen },
-          { key: 3, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteInterviewStaff },
+          ...(userRoles.includes('admin') ? [
+            { key: 3, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteInterviewStaff },
+          ] : [])
+     
         ];
         if (record.notif === 3) {
           items.push({

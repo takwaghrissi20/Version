@@ -149,6 +149,7 @@ const ViewRecruitementAbove = () => {
       console.error("Erreur lors de la récupération du Id :", error);
     }
   };
+  const userRoles = localStorage.getItem("role");
 
   return (
     <AppsHeader key={'wrap'}>
@@ -381,19 +382,15 @@ const ViewRecruitementAbove = () => {
 
                   </Form.Item>
                 </Col>
-                <Col xs={24} md={12}>
+                <Col  xs={24} md={12}>
                   <Form.Item
                     label='Number of vacancies '
                     name='Numbervacancies'
-
-
 
                   >
                     <Input
                       placeholder={Numbervacancies}
                       type="number"
-
-
 
                     />
 
@@ -521,56 +518,59 @@ const ViewRecruitementAbove = () => {
 
 
         <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+        {userRoles.includes("admin") ?
+               <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+               <Col xs={24} md={6}>
+                 <Typography.Title level={5}>Decision BOD</Typography.Title>
+                 
+     
+               </Col>
+               <Col xs={24} md={18}>
+                 <StyledShadowWrapper>
+                   <AppRowContainer>
+                     <Col xs={24} md={18}>
+                       <StyledInput>
+                         <Form.Item
+                           label='Executive Directors Approval BOD'
+                           name='DirectorsApproval'>
+                           <Checkbox checked={ischecked1} onChange={Validatebod}></Checkbox>
+     
+                           Yes
+     
+                           <Checkbox style={{marginLeft:"2rem"}}checked={isNochecked} onChange={ValidateNobod}>
+                             No
+                           </Checkbox>
+     
+                         </Form.Item>
+                       </StyledInput>
+                     </Col>
+                     <Col xs={24} md={18}>
+                       <StyledInput>
+                         <Form.Item
+                           label='Executive Directors Approval BOD2'
+                           name='DirectorsApproval'>
+                           <Checkbox checked={ischecked2} onChange={Validatebod2}></Checkbox>
+     
+                           Yes
+     
+                           <Checkbox style={{marginLeft:"2rem"}}checked={isNochecked2} onChange={ValidateNobod2}>
+                             No
+                           </Checkbox>
+     
+                         </Form.Item>
+                       </StyledInput>
+                     </Col>
+     
+     
+                   </AppRowContainer>
+                 </StyledShadowWrapper>
+     
+     
+               </Col>
+     
+             </AppRowContainer> : null}
 
-        <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-          <Col xs={24} md={6}>
-            <Typography.Title level={5}>Decision BOD</Typography.Title>
-
-          </Col>
-          <Col xs={24} md={18}>
-            <StyledShadowWrapper>
-              <AppRowContainer>
-                <Col xs={24} md={18}>
-                  <StyledInput>
-                    <Form.Item
-                      label='Executive Directors Approval BOD'
-                      name='DirectorsApproval'>
-                      <Checkbox checked={ischecked1} onChange={Validatebod}></Checkbox>
-
-                      Yes
-
-                      <Checkbox style={{marginLeft:"2rem"}}checked={isNochecked} onChange={ValidateNobod}>
-                        No
-                      </Checkbox>
-
-                    </Form.Item>
-                  </StyledInput>
-                </Col>
-                <Col xs={24} md={18}>
-                  <StyledInput>
-                    <Form.Item
-                      label='Executive Directors Approval BOD2'
-                      name='DirectorsApproval'>
-                      <Checkbox checked={ischecked2} onChange={Validatebod2}></Checkbox>
-
-                      Yes
-
-                      <Checkbox style={{marginLeft:"2rem"}}checked={isNochecked2} onChange={ValidateNobod2}>
-                        No
-                      </Checkbox>
-
-                    </Form.Item>
-                  </StyledInput>
-                </Col>
-
-
-              </AppRowContainer>
-            </StyledShadowWrapper>
-
-
-          </Col>
-
-        </AppRowContainer>
+      
 
 
         <Space

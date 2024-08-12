@@ -7,6 +7,15 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
   const currentDate = moment({ year: selectedYear, month: selectedMonth - 1 });
   const currentMonthDays = Array.from({ length: currentDate.daysInMonth() }, (v, k) => k + 1);
   const currentMonthName = currentDate.format('MMMM').toUpperCase();
+  const pointageLabels = {
+    'WO': 'Working Office ',
+    'V': 'Vacation',
+    'A': 'Absence',
+    'WH': 'Working Home',
+    'R': 'Site Rest',
+    'JA': 'Justified Absence',
+    'WR': 'Work Recorded'
+  };
 
   const columns = [
     {
@@ -21,7 +30,7 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
       dataIndex: 'name',
       key: 'name',
       fixed: 'left',
-      width: 80,
+      width: 200,
       render: (name) => <Tooltip title={name}>{name}</Tooltip>,
     },
     {
@@ -32,6 +41,37 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
       width: 150,
      
     },
+    
+    {
+    //   title:  <table style={{backgroundColor:"#fafafa"}}>
+    //   <thead>
+    //     <tr>
+    //       <th style={{ fontSize: "1.5rem" }}>Year</th>
+    //       {/* <th style={{ fontSize: "1.5rem" }}> Month</th> */}
+    //     </tr>
+    //   </thead>
+    //   <tbody>
+    //     <tr>
+    //       <td style={{ fontSize: "1rem" }}>{currentMonthName}</td>
+    //       {/* <td style={{ fontSize: "1rem" }}>{selectedYear}</td> */}
+    //     </tr>
+    //   </tbody>
+    // </table>,
+     
+      children: [
+        {
+          title: 'Full Name',
+          dataIndex: 'name',
+          key: 'name',
+          fixed: 'left',
+          width: 200,
+          render: (name) => <Tooltip title={name}>{name}</Tooltip>,
+        },
+     
+        
+      ],
+    },
+      
     ...currentMonthDays.map(day => {
       const date = moment({ year: selectedYear, month: selectedMonth - 1, day });
       const dayName = date.format('dddd');
@@ -39,7 +79,7 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
         title: `${day} - ${dayName.substring(0, 3)}`,
         dataIndex: `day${day}`,
         key: `day${day}`,
-        width: 150,
+        width: 80,
         render: (text, record) => {
           const pointage = record[`day${day}`] || '';
 
@@ -74,7 +114,11 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
             fontWeight = 'bold';
           } 
 
-          return <span style={{ color, fontSize, fontWeight }}>{pointage}</span>;
+          return (
+            <Tooltip title={pointageLabels[pointage] || ''}>
+              <span style={{ color, fontSize, fontWeight }}>{pointage}</span>
+            </Tooltip>
+          );
         },
       };
     }),
@@ -88,17 +132,7 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
         return currentMonthStatus ? currentMonthStatus.workingDay : 0;
       },
     },
-    {
-      title: 'Working Day',
-      dataIndex: 'workingHome',
-      key: 'workingHome',
-      width: 100,     
-      render: (text, record) => {
-        const currentMonthStatus = record.officeWorkStatus.find(status => status.month === currentMonthName);
-        return currentMonthStatus ? currentMonthStatus.workingHome : 0;
-      },
-    },
-  
+
 
     {
       title: 'Vacation',
@@ -112,7 +146,7 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
       },
     },
     {
-      title: 'Rest Vacation',
+      title: 'Rest',
       dataIndex: 'rest',
       key: 'rest',
       width: 100,
@@ -177,6 +211,7 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
       scroll={{ x: 1500, y: 1000 }}
       pagination={false}
       rowKey="getsId"
+      bordered
     />
   );
 };

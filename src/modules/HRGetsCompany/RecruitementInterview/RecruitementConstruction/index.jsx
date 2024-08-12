@@ -15,9 +15,11 @@ import Pagination from '../../../../@crema/components/AppsPagination';
 import clsx from 'clsx';
 import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
 import { useNavigate } from "react-router-dom";
-const RecruitementConstruction = ({ allrecruitementbelow }) => {
+const RecruitementConstruction = ({ allrecruitementbelow, roles, recruitementTypeIdbelow }) => {
   const navigate = useNavigate();
+  console.log("recruitementTypeIdbelowzzzz", recruitementTypeIdbelow)
   const [recruitementbelow, setRecruitementbelow] = useState([]);
+  const [recruitementbelowid, setRecruitementbelowid] = useState(recruitementTypeIdbelow);
   const [recruitementbelowFiltrer, setRecruitementbelowFiltrer] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -106,7 +108,9 @@ const RecruitementConstruction = ({ allrecruitementbelow }) => {
         level: findIdData?.experience,
         projectName: findIdData?.projectName,
         position: findIdData?.position,
-        experience: findIdData?.experience
+        experience: findIdData?.experience,
+        dep:findIdData?.dep
+        
 
 
       }
@@ -128,7 +132,7 @@ const RecruitementConstruction = ({ allrecruitementbelow }) => {
 
       if (response.ok) {
         const responseData = await response.json();
-
+          console.log("responseData333",responseData)
         setFindIdData(responseData);
         setId(responseData.jobCode)
 
@@ -186,25 +190,64 @@ const RecruitementConstruction = ({ allrecruitementbelow }) => {
           paddingBottom: 10,
         }}
       >
-        <OrderTable allrecruitementbelow={recruitementbelow} findIdData={findIdData}
-          id={id}
-          findId={findId}
-          setFindIdData={setFindIdData}
-          open={open}
-          handleInterview={handleInterview}
+        {(roles.includes("admin")) ||(roles.includes("Administrator"))  ?
+          <>
+            <OrderTable
+              allrecruitementbelow={recruitementbelow}
+              findIdData={findIdData}
+              id={id}
+              findId={findId}
+              setFindIdData={setFindIdData}
+              open={open}
+              handleInterview={handleInterview}
+              roles={roles}
 
-        />
-         <div className='Pagination' >
-        <StyledOrderHeaderRight>
+            />
+            <div className='Pagination' >
+              <StyledOrderHeaderRight>
 
 
-          <Pagination
-            currentPage={currentPage}
-            totalPages={Math.ceil(count / pageSize)}
-            handlePageChange={handlePageChange}/>
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={Math.ceil(count / pageSize)}
+                  handlePageChange={handlePageChange} />
 
-        </StyledOrderHeaderRight>
-        </div>
+              </StyledOrderHeaderRight>
+
+            </div>
+          </>
+          : <>
+            <OrderTable
+              allrecruitementbelow={recruitementTypeIdbelow}
+              findIdData={findIdData}
+              id={id}
+              findId={findId}
+              setFindIdData={setFindIdData}
+              open={open}
+              handleInterview={handleInterview}
+              roles={roles}
+
+            />
+            <div className='Pagination' >
+            
+              <StyledOrderHeaderRight>
+
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={Math.ceil(recruitementTypeIdbelow.length / pageSize)}
+                  handlePageChange={handlePageChange} />
+                </StyledOrderHeaderRight>
+
+            </div>
+          </>
+
+
+
+
+        }
+        {/* {(!roles.includes("admin")) ?
+       
+        :null} */}
         {/* <OrderTable 
          allrecruitementabove={filteredData}
          /> */}

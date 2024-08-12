@@ -11,7 +11,7 @@ const AppFooter = () => {
 
 
     return (
-      <StyledMainFooter>
+      <StyledMainFooter style={{marginTop:"2rem"}}>
         <p>ERP  @GetsCompany 2024</p>
         <StyledFooterBtnView>
           <StyledFooterBtn type='link' color='primary'>

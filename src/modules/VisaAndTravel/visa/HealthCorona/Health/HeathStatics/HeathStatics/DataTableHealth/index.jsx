@@ -11,7 +11,7 @@ import { MoreOutlined } from '@ant-design/icons';
 import ConfirmationModal from '../../../../../../../../@crema/components/AppConfirmationModal';
 import IntlMessages from '../../../../../../../../@crema/helpers/IntlMessages';
 import { useNavigate } from 'react-router-dom';
-const TableHealth = ({vaccin}) => {
+const TableHealth = ({vaccin,user}) => {
     
   //const [findIdData, setFindIdData] = useState(null);
 
@@ -61,7 +61,7 @@ const TableHealth = ({vaccin}) => {
                 ? "https://dev-gateway.gets-company.com"
                 : "";
 
-        const response = await fetch(`${endPoint}/api/v1/vacin/delete?code=${idv}&id=${getsId}`, {
+        const response = await fetch(`${endPoint}/api/v1/vacin/delete?code=${getsId}&id=${idv}`, {
             method: 'DELETE',
         });
 
@@ -138,8 +138,31 @@ const  handleViewHealth = () => {
   
   //onViewRecruitement(true);
 };
+const items= user?.includes("admin") ? [
+  { 
+    key: 1, 
+    label: <span style={{ fontSize: 14 }}>View</span>, 
+    onClick: handleViewHealth 
+  },
+  { 
+    key: 2, 
+    label: <span style={{ fontSize: 14 }}>Edit</span>, 
+    onClick: handleEditHealth 
+  },
+  { 
+    key: 2, 
+    label: <span style={{ fontSize: 14 }}>Delete</span>, 
+    onClick: handleDeleteVaccin
+  }
+] : [
+  { 
+    key: 1, 
+    label: <span style={{ fontSize: 14 }}>View</span>, 
+    onClick: handleViewHealth
+  }
+];
 
-  const items = [
+  const itemstest = [
     { key: 1, label: <span style={{ fontSize: 14 }}>View </span>, onClick: handleViewHealth },
     { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick:  handleEditHealth},
     { key: 2, label: <span style={{ fontSize: 14 }}>Delete</span> ,onClick: handleDeleteVaccin},

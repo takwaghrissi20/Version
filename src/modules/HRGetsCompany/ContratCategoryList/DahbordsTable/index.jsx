@@ -6,15 +6,17 @@ import { StyledAnChar, StyledOrderTable } from '../../../../styles/index.styled'
 import CategoryTEmp from "../../../Model/EmployeeCategoryTEmp";
 import AppIconButton from "../../../../@crema/components/AppIconButton";
 import { MdLabelOutline } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 const OrderTable = ({ orderData }) => {
   const [hoveredRow, setHoveredRow] = useState(null);
-  const [findIdData, setFindIdData] = useState(null);
+  const [findIdData, setFindIdData] = useState([]);
   const [idEmployee, setIdEmployee] = useState(null);
   const [isCategoryTEmployee, onCategoryTEmployee] = useState(false);
   const [lastId, setLastId] = useState(0);
 
-
+  const navigate = useNavigate();
+  
   const handleRowHover = (record) => {
     setHoveredRow(record);
   };
@@ -43,6 +45,42 @@ const OrderTable = ({ orderData }) => {
       console.error("Erreur lors de la récupération du id eMPLOYEE:", error);
     }
   };
+  const handleRowClickPage = (index) => {
+    findId(index)
+    navigate(`/Hr/EmployeesCategoryContract/${index}`, {
+      state: {
+        id:findIdData?.id,
+        category:findIdData?.category,
+        contractType:findIdData?.contractType,
+        contractCategory:findIdData?.contractCategory,
+        primeProductivity:findIdData?.primeProductivity,
+        arName:findIdData?.arName,
+        passportnumber:findIdData?.passportnumber,
+        passportSubmitdate:findIdData?.passportSubmitdate,
+        arDestination:findIdData?.arDestination,
+        companyType:findIdData?.companyType,
+        traveldate:findIdData?.traveldate,
+        endTravelDate:findIdData?.endTravelDate,
+        arResidenceAdress:findIdData?.arResidenceAdress,
+        arPosition:findIdData?.arPosition,
+        salary:findIdData?.salary,
+        dailyRate:findIdData?.dailyRate,         
+        duration:findIdData?.duration,
+        finishDate:findIdData?.finishDate,
+        joinDate:findIdData?.joinDate,
+        cin:findIdData?.cin,
+        cinDate:findIdData?.cinDate,
+        id:findIdData?.id,
+        name:findIdData?.name,
+
+
+       
+      }
+    });
+
+
+  };
+console.log("findIdData?.name",findIdData?.name)
 
   const handleRowClick = (index) => {
     findId(index)
@@ -125,7 +163,7 @@ const OrderTable = ({ orderData }) => {
     return () => {
       window.removeEventListener('resize', updateTableHeight);
     };
-  }, []);
+  }, [findIdData]);
   const handleAddEmployeeClose = () => {
     setFindIdData(null);
     onCategoryTEmployee(false);
@@ -144,7 +182,9 @@ const OrderTable = ({ orderData }) => {
 
         }}
         onRow={(record, index) => ({
+          
           onClick: () => handleRowClick(record.id),
+       
           onMouseEnter: () => handleRowHover(record.getsId),
           onMouseLeave: handleRowLeave,
         })}

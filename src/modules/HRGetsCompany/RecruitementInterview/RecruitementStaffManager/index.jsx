@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Input,List } from 'antd';
+import { Input, List } from 'antd';
 import AppsContainer from "../../../../@crema/components/AppsContainer"
 import OrderTable from './DataTableStaffRecruitement';
 import {
@@ -12,9 +12,9 @@ import AppsContent from '../../../../@crema/components/AppsContainer/AppsContent
 import Pagination from '../../../../@crema/components/AppsPagination';
 import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
 import { useNavigate } from "react-router-dom";
-const RecruitementStaff = ({ allrecruitementabove }) => {
+const RecruitementStaff = ({ allrecruitementabove, recruitementTypeIdAbove, roles }) => {
   const navigate = useNavigate();
-  const [recruitementabove , setRecruitementabove ] = useState([]);
+  const [recruitementabove, setRecruitementabove] = useState([]);
   const [recruitementaboveFiltrer, setRecruitementaboveFiltrer] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -23,17 +23,18 @@ const RecruitementStaff = ({ allrecruitementabove }) => {
   const [isGenerateInterview, onGenerateInterview] = useState(false);
   const [findIdData, setFindIdData] = useState(null);
   const [id, setId] = useState(0);
-  const count=allrecruitementabove.length
+  const count = allrecruitementabove.length
+
   useEffect(() => {
     fetchRecruitementabove();
-  }, [currentPage, pageSize, nameFilter,count,id]);
+  }, [currentPage, pageSize, nameFilter, count, id]);
 
   const fetchRecruitementabove = async () => {
     try {
 
       const url = `https://dev-gateway.gets-company.com/api/v1/re/getRecByType?size=${pageSize}&page=${currentPage}&type=Above Foreman&sortBy=desiredDate`;
       const response = await fetch(url);
-     
+
 
       if (!response.ok) {
         throw new Error('Failed to fetch employees');
@@ -48,7 +49,7 @@ const RecruitementStaff = ({ allrecruitementabove }) => {
 
   const handleSearch = async (event) => {
     event.preventDefault();
-   
+
   };
   // const handleNameFilterChange = (event) => {
   //   setNameFilter(event.target.value);
@@ -61,13 +62,13 @@ const RecruitementStaff = ({ allrecruitementabove }) => {
   };
 
   const handleListItemClick = (item) => {
-    setNameFilter(item.position ); 
-    handleSearch({ target: { value: item.position } }); 
+    setNameFilter(item.position);
+    handleSearch({ target: { value: item.position } });
     setIsDropdownOpen(false)
   };
   const handleNameFilterChange = async (event) => {
     const filterValue = event.target.value.trim(); // Trim whitespace from input value
-    setNameFilter(filterValue);  
+    setNameFilter(filterValue);
     if (filterValue !== '') {
       try {
         const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/filterByPosition?position=$${filterValue}`);
@@ -85,7 +86,7 @@ const RecruitementStaff = ({ allrecruitementabove }) => {
         setIsDropdownOpen(true);
         // Filtrer les données en fonction de la valeur de l'entrée
         const filteredData = // votre logique de filtrage ici
-        setRecruitementaboveFiltrer(filteredData);
+          setRecruitementaboveFiltrer(filteredData);
       } else {
         setIsDropdownOpen(false);
       }
@@ -93,27 +94,30 @@ const RecruitementStaff = ({ allrecruitementabove }) => {
       setIsDropdownOpen(false); // Close dropdown if filter is empty
     }
   };
-  
-  const InterviewGenerate= async () => {
-  
+
+  const InterviewGenerate = async () => {
+
     navigate(`/dashboards/hr/${id}`, {
       state: {
-        DesiredDate:findIdData?.desiredDate,
-        JobCode:findIdData?.jobCode,
-        totalNumber:findIdData?.totalNumber,
-        level:findIdData?.experience,
-        projectName:findIdData?.projectName,
-        position:findIdData?.position,
-        experience:findIdData?.experience,
-     
-               
+        DesiredDate: findIdData?.desiredDate,
+        JobCode: findIdData?.jobCode,
+        totalNumber: findIdData?.totalNumber,
+        level: findIdData?.experience,
+        projectName: findIdData?.projectName,
+        position: findIdData?.position,
+        experience: findIdData?.experience,
+        dep:findIdData?.dep
+        
+
+
+
       }
 
 
     });
 
-  
-  } 
+
+  }
   //Fin Bu Id 
   const findId = async (code) => {
     try {
@@ -128,8 +132,9 @@ const RecruitementStaff = ({ allrecruitementabove }) => {
       if (response.ok) {
         const responseData = await response.json();
         setFindIdData(responseData);
+        console.log("etFindIdData",responseData)
         setId(responseData.jobCode)
-      
+
 
 
       }
@@ -143,60 +148,67 @@ const RecruitementStaff = ({ allrecruitementabove }) => {
   return (
     <AppsContainer type='bottom' fullView>
 
-        <AppsHeader>
-          <StyledOrderHeader>
-            <div style={{ marginRight: 20, boxShadow: "none !important" }}>
+      <AppsHeader>
+        <StyledOrderHeader>
+          <div style={{ marginRight: 20, boxShadow: "none !important" }}>
 
-              <Input.Search
-                placeholder='Search Here By Position'
-                type="text"
-                value={nameFilter}
-                onChange={handleNameFilterChange}
-                onKeyPress={(event) => {
-                  if (event.key === 'Enter') {
-                    handleSearch(event);
-                  }
+            <Input.Search
+              placeholder='Search Here By Position'
+              type="text"
+              value={nameFilter}
+              onChange={handleNameFilterChange}
+              onKeyPress={(event) => {
+                if (event.key === 'Enter') {
+                  handleSearch(event);
+                }
+              }}
+            />
+            {isDropdownOpen && (
+              <List
+                style={{
+                  zIndex: 5, borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px",
+                  background: "white", position: "absolute", top: "3.5rem", width: "15%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"
                 }}
+                dataSource={recruitementaboveFiltrer}
+                renderItem={(item) => (
+                  <List.Item onClick={() => handleListItemClick(item)}>
+                    {item.position}
+                  </List.Item>
+                )}
               />
-              {isDropdownOpen && (
-                <List
-                style={{zIndex:5, borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px",
-                background: "white", position: "absolute", top: "3.5rem", width: "15%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"}}
-                  dataSource={recruitementaboveFiltrer} 
-                  renderItem={(item) => (
-                    <List.Item onClick={() => handleListItemClick(item)}>
-                      {item.position}
-                    </List.Item>
-                  )}
-                />
-              )}
-            </div>
+            )}
+          </div>
 
 
-            <StyledOrderHeaderRight>
+          <StyledOrderHeaderRight>
 
-            </StyledOrderHeaderRight>
-          </StyledOrderHeader>
-        </AppsHeader>
-        <AppsContent
+          </StyledOrderHeaderRight>
+        </StyledOrderHeader>
+      </AppsHeader>
+      <AppsContent
         style={{
           paddingTop: 10,
           paddingBottom: 10,
+
         }}>
-          <OrderTable  
-          allrecruitementabove={recruitementabove}  
-           findIdData={findIdData}
-          id={id}
-          findId={findId} 
-          setFindIdData={setFindIdData}
-          open={open}
-          handleInterview={handleInterview}
-          
-          />
-        {/* <OrderTable 
+        {/*admin*/}
+        {(roles.includes("admin")) || (roles.includes("Administrator")) ?
+          <>
+            <OrderTable
+              allrecruitementabove={recruitementabove}
+              findIdData={findIdData}
+              id={id}
+              findId={findId}
+              setFindIdData={setFindIdData}
+              open={open}
+              handleInterview={handleInterview}
+              roles={roles}
+
+            />
+            {/* <OrderTable 
          allrecruitementabove={filteredData}
          /> */}
-          <div className='Pagination' >
+            <div className='Pagination' >
               <StyledCustomerHeaderRight>
                 <Pagination
                   currentPage={currentPage}
@@ -205,9 +217,37 @@ const RecruitementStaff = ({ allrecruitementabove }) => {
                 />
               </StyledCustomerHeaderRight>
             </div>
-        
+          </>
+          : <>
+            <OrderTable
+              allrecruitementabove={recruitementTypeIdAbove}
+              findIdData={findIdData}
+              id={id}
+              findId={findId}
+              setFindIdData={setFindIdData}
+              open={open}
+              handleInterview={handleInterview}
+              roles={roles}
+
+            />
+
+            <div className='Pagination' >
+              <StyledCustomerHeaderRight>
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={Math.ceil(recruitementTypeIdAbove.length / pageSize)}
+                  handlePageChange={handlePageChange}
+                />
+              </StyledCustomerHeaderRight>
+            </div>
+          </>}
+        {(!roles.includes("admin")) || (!roles.includes("Administrator")) ?
+
+          <></>
+          : <p>null</p>}
+
       </AppsContent>
-      {isGenerateInterview? (
+      {isGenerateInterview ? (
         <ConfirmationModal
           open={isGenerateInterview}
           paragraph={'Are you sure you want to Gernerate  this?'}
@@ -217,9 +257,9 @@ const RecruitementStaff = ({ allrecruitementabove }) => {
           handleInterview={handleInterview}
         />
       ) : null}
-       
-      </AppsContainer>
-   
+
+    </AppsContainer>
+
   );
 };
 

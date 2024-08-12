@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import AppsContainer from '../../../@crema/components/AppsContainer';
 import { useIntl } from 'react-intl';
 import AppsHeader from '../../../@crema/components/AppsContainer/AppsHeader';
@@ -7,7 +7,7 @@ import { Input, List, Col } from 'antd';
 import AppPageMeta from '../../../@crema/components/AppPageMeta';
 import Pagination from '../../../@crema/components/AppsPagination';
 import RecruitementTable from './RecruitementTable';
-import PassportExpired  from './PassportExpired';
+import PassportExpired from './PassportExpired';
 import VisaExpired from './VisaExpired';
 import AppRowContainer from '../../../@crema/components/AppRowContainer';
 import StatsDirCard from '../CommonComponents/StatsDirCard';
@@ -23,7 +23,7 @@ import { useGetDataApi } from '../../../@crema/hooks/APIHooks';
 const Dashboards = () => {
   const dropdownRef = useRef(null);
   const { messages } = useIntl();
- 
+
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [nameFilter, setNameFilter] = useState('');
@@ -31,21 +31,63 @@ const Dashboards = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [typingTimeout, setTypingTimeout] = useState(0);
+  const [profile, setProfile] = useState("")
+  const [dep, setDep] = useState("")
   ///////
   const [datarecruitement, setDatarecruitement] = useState([]);
   const [datarecruitementFiltrer, setDatarecruitementFiltrer] = useState([]);
   const [count, setCount] = useState(0);
+  const [countId, setCountId] = useState(0);
   const [{ apiData: metricsData }] = useGetDataApi('/dashboard/metrics');
   const [{ apiData: crmData }] = useGetDataApi('/dashboard/crm');
   const [passportExpered, setPassportExpered] = useState([]);
   const [visaExpered, setVisaExpered] = useState([]);
+  const [idRec, setIdRec] = useState("");
+  const [listRecruitementId, setListRecruitementId] = useState([]);
+  const user = localStorage.getItem("role");
+  {/*Get Profile*/ }
+  const GetProfileEmployess = async () => {
+    const storedemail = window.localStorage.getItem("email");
+    console.log("storedemail", storedemail)
+    try {
+      const endPoint =
+        process.env.NODE_ENV === "development"
+          ? "https://dev-gateway.gets-company.com"
+          : "";
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('La requête a échoué avec le code ' + response.status);
+      }
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
+      }
+      const data = await response.json();
+      console.log("data profile", data)
+      setDep(data?.departement)
+      setProfile(data)
+
+
+
+    } catch (error) {
+      console.error('Erreur lors de la récupération Last Recruitement', error);
+    }
+  };
+  {/*End Get Prole */ }
   const handlePageChangeOffice = (page) => {
     setCurrentPage(page);
   };
   const handlePositionFilterChange = (event) => {
     const filterValue = event.target.value.trim();
     setNameFilter(filterValue);
-   
+
     if (filterValue !== '') {
       clearTimeout(typingTimeout);
       const timeoutId = setTimeout(() => {
@@ -58,6 +100,7 @@ const Dashboards = () => {
     }
   };
   useEffect(() => {
+    GetProfileEmployess()
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsDropdownOpen(false);
@@ -67,9 +110,7 @@ const Dashboards = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
-
-
+  }, [listRecruitementId, idRec]);
 
   const fetchFilteredRecruitement = async (filterValue) => {
     try {
@@ -86,16 +127,12 @@ const Dashboards = () => {
   };
 
   const handleListItemClick = (item) => {
-   
+
     setNameFilter(item.position);
     setDatarecruitementFiltrer([]);
     setIsDropdownOpen(false);
   };
 
-  useEffect(() => {
-    fetchEmployeesByType();
-    fetchCountRecruitement()
-  }, [currentPage, pageSize]);
 
   const fetchCountRecruitement = async () => {
     try {
@@ -114,14 +151,18 @@ const Dashboards = () => {
       if (!response.ok) {
         throw new Error('La requête a échoué Recruitement ' + response.status);
       }
-
       const contentType = response.headers.get('content-type');
       if (!contentType || !contentType.includes('application/json')) {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
+      setCount(data.length)
+      //////Filter les count de Data de idem
+      const dataRecruitement = data.filter(p => p.idemp === idRec);
+      console.log("lenght", dataRecruitement)
 
-     setCount(data.length)
+      setCountId(dataRecruitement)
+
 
 
     } catch (error) {
@@ -129,11 +170,8 @@ const Dashboards = () => {
     }
   };
 
-  const fetchEmployeesByType = async (type) => {
-
+  const fetchEmployeesByType = async () => {
     try {
-     
-      
       const endPoint = process.env.NODE_ENV === 'development' ? 'https://dev-gateway.gets-company.com' : '';
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/listBypage?page=${currentPage}&size=${pageSize}&sortBy=recruttrequestDate`,
         {
@@ -148,8 +186,9 @@ const Dashboards = () => {
       }
       const data = await response.json();
       setDatarecruitement(data);
+
       return data;
-    
+
     }
     catch (error) {
       console.error(`Error fetching ${type} employees:`, error);
@@ -157,6 +196,71 @@ const Dashboards = () => {
     }
 
   };
+  const userEmail = localStorage.getItem("email");
+  console.log("userEmail ", userEmail);
+
+  // Project By email
+  const fetchEmployeesEmail = async () => {
+    try {
+      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${userEmail}`;
+      const response = await fetch(url, {
+        method: "GET",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log("data?.getsId", data?.getsId)
+        setIdRec(data?.getsId)
+      } else {
+        console.error("Erreur lors de la récupération du email:", response.status);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la récupération du email:", error);
+    }
+  };
+  const fetchEmployeesByEmployees = async () => {
+    try {
+      console.log("idRec", idRec)
+      const endPoint = process.env.NODE_ENV === 'development' ? 'https://dev-gateway.gets-company.com' : '';
+      ///const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list`,
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/getRecByGetsId?id=${idRec}&page=${currentPage}&size=${pageSize}`,
+
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        });
+      if (!response.ok) {
+        throw new Error('Failed to fetch employees');
+      }
+      const data = await response.json();
+
+      console.log("idRec", idRec)
+      console.log("Filtered Data List", data);
+      console.log("data List", data)
+      setListRecruitementId(data)
+      return data;
+
+    }
+    catch (error) {
+      console.error(`Error fetching Recruitement:`, error);
+      return [];
+    }
+
+  };
+  useEffect(() => {
+    if (user.includes("admin") || (user.includes('Administrator'))) {
+      fetchEmployeesByType();
+      fetchCountRecruitement()
+      // fetchCountRecruitement()
+    }
+    else if ((!user.includes("admin"))) {
+      fetchEmployeesEmail()
+      fetchEmployeesByEmployees();
+
+    }
+
+  }, [currentPage, pageSize, idRec]);
   //Passport Expired
   const fetchExpiredVisa = async () => {
     try {
@@ -201,17 +305,9 @@ const Dashboards = () => {
 
   }
 
-
-
-
   //End Passourt Expired
 
-  
 
-
-
-
-  const user = localStorage.getItem("role");
   const items = [
     {
       label: 'Recruitment',
@@ -221,7 +317,7 @@ const Dashboards = () => {
           <>
             <AppsHeader key={'wrap'}>
               <StyledCustomerHeader>
-              <StyledCustomerInputView>
+                <StyledCustomerInputView>
                   <Input.Search
                     placeholder="Search by position"
                     value={nameFilter}
@@ -245,74 +341,136 @@ const Dashboards = () => {
             <RecruitementTable
               loading={loading}
               AllRecruitement={datarecruitement}
+              listRecruitementId={listRecruitementId}
             />
-            <div className='Pagination' >
-              <StyledCustomerHeaderRight>
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={Math.ceil(count / pageSize)}
-                  handlePageChange={handlePageChangeOffice}
-                />
-              </StyledCustomerHeaderRight>
-            </div>
+            {user.includes('admin') || user.includes('Administrator')   || !user?.includes('Construction')&& (
+              <>
+                <div className='Pagination' >
+                  <StyledCustomerHeaderRight>
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={Math.ceil(count / pageSize)}
+                      handlePageChange={handlePageChangeOffice}
+                    />
+                  </StyledCustomerHeaderRight>
+                </div>
+              </>
+            )}
+            {!user.includes('admin') || !user.includes('Administrator') && (
+
+
+              <div className='Pagination' >
+                <StyledCustomerHeaderRight>
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={Math.ceil(count / pageSize)}
+                    handlePageChange={handlePageChangeOffice}
+                  />
+                </StyledCustomerHeaderRight>
+              </div>
+
+
+            )}
           </>
 
 
         </>
       ),
     },
-    ...(!user.includes('Manager') ? [{
+
+    ...(!(user?.includes('Manager') || user?.includes('Planner') || user?.includes('Leader') ||
+         user?.includes('Administrator')) ||user?.includes('Human Ressource')  || !user?.includes('Construction') ? 
+     [{
       label: 'Passport Expired',
       key: '2',
-      children:    
-       <>
-      <AppsHeader key={'wrap'}>
-   
-      </AppsHeader>
-      <PassportExpired loading={loading} passportExpered={passportExpered} />
-
-    </>,
+      children: (
+        <>
+          <AppsHeader key={'wrap'}></AppsHeader>
+          <PassportExpired loading={loading} passportExpered={passportExpered} />
+        </>
+      ),
     }] : []),
-    ...(!user.includes('Manager') ? [{
+
+    ...(!(user?.includes('Manager') || user?.includes('Planner') || user?.includes('Leader') || 
+         user?.includes('Administrator')) || user?.includes('Human Ressource')  || !user?.includes('Construction')? [{
       label: 'Visa Expired',
       key: '3',
-      children:    
-       <>
-      <AppsHeader key={'wrap'}>
-   
-      </AppsHeader>
-      <VisaExpired loading={loading} VisaExpired={visaExpered} />
+      children:
+        <>
+          <AppsHeader key={'wrap'}>
 
-    </>,
+          </AppsHeader>
+          <VisaExpired loading={loading} VisaExpired={visaExpered} />
+
+        </>,
     }] : []),
-   
+
 
   ];
-
 
   return (
     <>
       <AppPageMeta title='Dashboards' />
-      {metricsData ? (
-        <AppRowContainer ease={'easeInSine'}>
-          {crmData?.stateData?.map((data) => (
-            <Col key={data.id} xs={24} sm={12} lg={6}>
-              <StatsDirCard data={data} />
-            </Col>
-          ))}
-        </AppRowContainer>
-      ) : null}
+      <>
+        {user.includes("admin") && metricsData && (
+          <AppRowContainer ease={'easeInSine'}>
+            {crmData?.stateData?.map((data) => (
+              <Col key={data.id} xs={24} sm={12} lg={6}>
+                <StatsDirCard data={data} />
+              </Col>
+            ))}
+          </AppRowContainer>
+        )}
+
+        {user.includes("Manager")  &&  !user?.includes('Construction')&& metricsData && (
+          <AppRowContainer ease={'easeInSine'}>
+            {crmData?.stateDataManager?.map((data) => (
+              <Col key={data.id} xs={24} sm={12} lg={6}>
+                <StatsDirCard data={data} />
+              </Col>
+            ))}
+          </AppRowContainer>
+        )}
+        {/**Leader */}
+        {user.includes("Leader") && metricsData && (
+          <AppRowContainer ease={'easeInSine'}>
+            {crmData?.stateDataManager?.map((data) => (
+              <Col key={data.id} xs={24} sm={12} lg={6}>
+                <StatsDirCard data={data} />
+              </Col>
+            ))}
+          </AppRowContainer>
+        )}
+        {/*End Project*/}
+        {/* //hrAdministrator */}
+        {user.includes("Administrator") && metricsData && (
+          <AppRowContainer ease={'easeInSine'}>
+            {crmData?.stateDataHRAdministrator?.map((data) => (
+              <Col key={data.id} xs={24} sm={12} lg={6}>
+                <StatsDirCard data={data} />
+              </Col>
+            ))}
+          </AppRowContainer>
+        )
+        }
+      </>
+      {user.includes("Planner") || user?.includes('Construction')  || user?.includes('Site Klerk') ||
+      user.includes("QC") ||  user.includes("ASSET AND LOGISTIC ")
+
+       ?
+      <></>
+     
+      : 
       <AppsContainer
-        title={messages['dashboard.dashbord.RequireAttention']}
-        fullView
-        type='bottom'
-      >
+      title={messages['dashboard.dashbord.RequireAttention']}
+      fullView
+      type='bottom'
+    >
+      <StyledBuyCellCard style={{ paddingLeft: '10px' }} heightFull>
+        <StyledTabs defaultActiveKey='1' items={items} />
+      </StyledBuyCellCard>
 
-        <StyledBuyCellCard style={{ paddingLeft: '10px' }} heightFull>
-          <StyledTabs defaultActiveKey='1' items={items} />
-        </StyledBuyCellCard>
-
-      </AppsContainer>
+    </AppsContainer>}
 
       <AppInfoView />
     </>

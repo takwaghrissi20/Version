@@ -17,9 +17,9 @@ const ContratA1Page3 = () => {
   return (
     <div className='page1'>
       <div className='ContratPage'>
-        <div className="page">
+        {/* <div className="page">
           <img style={{marginTop:"9rem"}}src={image} alt="logo" className="logo" />
-        </div>
+        </div> */}
         <div  style={{marginTop:"20px"}}className='HeaderContratPage'>
           <p dir="rtl" className="TitleGeneral">عقد شغل لمدة محدودة</p>
         </div>
