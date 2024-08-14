@@ -1280,7 +1280,7 @@ const AddRecruitementAbove = () => {
 
                   >
                     <Input
-
+                     placeholder="Academic Certificates /Comments (otherrequired Knowledge /Recruitment objective)"
                       value={certif}
                       onChange={(e) => setCertif(e.target.value)}
 

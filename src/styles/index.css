@@ -1,13 +1,6 @@
 @import 'antd/dist/reset.css';
 @import 'country-flag/sprite-flags-24x24.css';
 @import 'ql-editor.css';
-@import url(http://fonts.googleapis.com/earlyaccess/droidarabickufi.css);
-@font-face {
-  font-family: 'Arial';
-  src: url('path/to/arial.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
 
 .ant-modal-root .ant-modal-mask {
   opacity:0.3  !important;

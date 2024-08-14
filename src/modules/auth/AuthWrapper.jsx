@@ -34,8 +34,7 @@ const AuthWrapper = ({ children }) => {
             <StyledAuthWelContent>
               <h2>Welcome to Gets Comapny!</h2>
               <p>
-                Crema is purely based on Ant Design components and follows Ant
-                Design guidelines.
+              
               </p>
             </StyledAuthWelContent>
           </StyledAuthWellAction>

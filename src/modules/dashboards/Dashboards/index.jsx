@@ -343,7 +343,7 @@ const Dashboards = () => {
               AllRecruitement={datarecruitement}
               listRecruitementId={listRecruitementId}
             />
-            {user.includes('admin') || user.includes('Administrator')   || !user?.includes('Construction')&& (
+            {user.includes('admin') || user.includes('Administrator') || !user?.includes('Construction') && (
               <>
                 <div className='Pagination' >
                   <StyledCustomerHeaderRight>
@@ -378,32 +378,43 @@ const Dashboards = () => {
       ),
     },
 
-    ...(!(user?.includes('Manager') || user?.includes('Planner') || user?.includes('Leader') ||
-         user?.includes('Administrator')) ||user?.includes('Human Ressource')  || !user?.includes('Construction') ? 
-     [{
-      label: 'Passport Expired',
-      key: '2',
-      children: (
-        <>
-          <AppsHeader key={'wrap'}></AppsHeader>
-          <PassportExpired loading={loading} passportExpered={passportExpered} />
-        </>
-      ),
-    }] : []),
+    // ...((!user?.includes('Manager') || user?.includes('Planner') || user?.includes('Leader') ||
+    //      user?.includes('Administrator')) || user?.includes('Human Ressource')  || !user?.includes('Construction') ? 
+    //  [{
+    //   label: 'Passport Expired',
+    //   key: '2',
+    //   children: (
+    //     <>
+    //       <AppsHeader key={'wrap'}></AppsHeader>
+    //       <PassportExpired loading={loading} passportExpered={passportExpered} />
+    //     </>
+    //   ),
+    // }] : []),
+    ...(((!(user?.includes('Manager') || user?.includes('Planner') || user?.includes('Leader') ||
+      user?.includes('Administrator') || user?.includes('Construction'))) || user?.includes('Human Ressource')) ? [{
+        label: 'Passport Expired',
+        key: '2',
+        children: (
+          <>
+            <AppsHeader key={'wrap'}></AppsHeader>
+            <PassportExpired loading={loading} passportExpered={passportExpered} />
+          </>
+        ),
+      }] : []),
 
-    ...(!(user?.includes('Manager') || user?.includes('Planner') || user?.includes('Leader') || 
-         user?.includes('Administrator')) || user?.includes('Human Ressource')  || !user?.includes('Construction')? [{
-      label: 'Visa Expired',
-      key: '3',
-      children:
-        <>
-          <AppsHeader key={'wrap'}>
+    ...(((!(user?.includes('Manager') || user?.includes('Planner') || user?.includes('Leader') ||
+      user?.includes('Administrator') || user?.includes('Construction'))) || user?.includes('Human Ressource')) ? [{
+        label: 'Visa Expired',
+        key: '3',
+        children:
+          <>
+            <AppsHeader key={'wrap'}>
 
-          </AppsHeader>
-          <VisaExpired loading={loading} VisaExpired={visaExpered} />
+            </AppsHeader>
+            <VisaExpired loading={loading} VisaExpired={visaExpered} />
 
-        </>,
-    }] : []),
+          </>,
+      }] : []),
 
 
   ];
@@ -422,7 +433,7 @@ const Dashboards = () => {
           </AppRowContainer>
         )}
 
-        {user.includes("Manager")  &&  !user?.includes('Construction')&& metricsData && (
+        {user.includes("Manager") && !user?.includes('Construction') && metricsData && (
           <AppRowContainer ease={'easeInSine'}>
             {crmData?.stateDataManager?.map((data) => (
               <Col key={data.id} xs={24} sm={12} lg={6}>
@@ -454,23 +465,23 @@ const Dashboards = () => {
         )
         }
       </>
-      {user.includes("Planner") || user?.includes('Construction')  || user?.includes('Site Klerk') ||
-      user.includes("QC") ||  user.includes("ASSET AND LOGISTIC ")
+      {user.includes("Planner") || user?.includes('Construction') || user?.includes('Site Klerk') ||
+        user.includes("QC") || user.includes("ASSET AND LOGISTIC ")
 
-       ?
-      <></>
-     
-      : 
-      <AppsContainer
-      title={messages['dashboard.dashbord.RequireAttention']}
-      fullView
-      type='bottom'
-    >
-      <StyledBuyCellCard style={{ paddingLeft: '10px' }} heightFull>
-        <StyledTabs defaultActiveKey='1' items={items} />
-      </StyledBuyCellCard>
+        ?
+        <></>
 
-    </AppsContainer>}
+        :
+        <AppsContainer
+          title={messages['dashboard.dashbord.RequireAttention']}
+          fullView
+          type='bottom'
+        >
+          <StyledBuyCellCard style={{ paddingLeft: '10px' }} heightFull>
+            <StyledTabs defaultActiveKey='1' items={items} />
+          </StyledBuyCellCard>
+
+        </AppsContainer>}
 
       <AppInfoView />
     </>

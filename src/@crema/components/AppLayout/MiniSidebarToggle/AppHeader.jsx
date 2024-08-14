@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {  useEffect } from 'react';
 import { AiOutlineMenuFold, AiOutlineMenuUnfold } from 'react-icons/ai';
 import AppLogo from '../components/AppLogo';
 import { useIntl } from 'react-intl';
@@ -41,6 +41,8 @@ const AppHeader = ({ isCollapsed, onToggleSidebar }) => {
   const { logout } = useAuthMethod();
   const { user } = useAuthUser();
   console.log("userrrrrrr",user)
+  const roles = localStorage.getItem("role");
+  console.log("rolessss",roles?.charAt(0).toUpperCase())
   const navigate = useNavigate();
   const { sidebarColorSet } = useSidebarContext();
   const { allowSidebarBgImage } = useSidebarContext();
@@ -52,13 +54,15 @@ const AppHeader = ({ isCollapsed, onToggleSidebar }) => {
       return user.email.charAt(0).toUpperCase();
     }
   };
-
+  useEffect(() => {
+    getUserAvatar()
+  }, [roles]);
   const items = [
     {
       key: 1,
       label: (
         <p style={{ textAlign: 'center', margin: 0,fontFamily:"cursive" }}>
-          Welcome <span style={{fontWeight:"bold"}}> {user.displayName || user.email}</span>
+          Welcome <span style={{fontWeight:"bold"}}> {roles}</span>
         </p>
       ), // Display user's name or email
     },
@@ -105,7 +109,7 @@ const AppHeader = ({ isCollapsed, onToggleSidebar }) => {
             <StyledCrUserInfoAvatar src={user.photoURL} />
           ) : (
             <StyledCrUserInfoAvatar>
-              {getUserAvatar()}
+              {roles?.charAt(0).toUpperCase()}
             </StyledCrUserInfoAvatar>
           )}
           <StyledCrUserInfoContent className='cr-user-info-content'>
