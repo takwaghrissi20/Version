@@ -798,6 +798,7 @@ input{
   .datepicker-wrapper {
     position: relative;
     width: 30%;
+    
    
     /* flex-direction: row;
     display: flex; */
@@ -847,6 +848,7 @@ input{
     .datepicker-wrapper {
       position: relative;
       width: 100%;
+    
   
     }
     .calendar-icon {

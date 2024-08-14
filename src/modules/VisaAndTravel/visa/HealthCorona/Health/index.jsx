@@ -38,10 +38,10 @@ const HealthCertification = () => {
   }, []);
  
   const HeatlStatics = [
-    { title: 'Total Vaccination', number: totalVaccin, subtitle: "as of 01-December 2024" },
-    { title: 'Number Of Fetness to work', number: totalVaccinFetness, subtitle: "as of 01-December 2024" },
-    { title: 'Number of Hepatite', number:totalVaccinHepatite, subtitle: "as of 01-December 2024" },
-    { title: 'Number of IDZ/HIV tEST', number:totalVaccinIdz, subtitle: "as of 01-December 2024" },
+    { title: 'Total Vaccinations', number: totalVaccin, subtitle: "as of 01-December 2024" ,icon: <img src={'/assets/images/vaccination.png'} style={{width:"50px",backgroundColor:"#F4F7FE",borderRadius:'50%',padding:'0.5rem'}}/>},
+    { title: 'Nb. of Fitness-to-Work  ', number: totalVaccinFetness, subtitle: "as of 01-December 2024" ,icon: <img src={'/assets/images/weights.png'} style={{width:"50px",backgroundColor:"#F4F7FE",borderRadius:'50%',padding:'0.5rem'}}/>},
+    { title: 'Nb. of Hepatitis Cases', number:totalVaccinHepatite, subtitle: "as of 01-December 2024" ,icon: <img src={'/assets/images/healthcare.png'} style={{width:"50px",backgroundColor:"#F4F7FE",borderRadius:'50%',padding:'0.5rem'}}/>},
+    { title: 'Nb. of IDZ/HIV Tests', number:totalVaccinIdz, subtitle: "as of 01-December 2024",icon: <img src={'/assets/images/test-tube.png'} style={{width:"50px",backgroundColor:"#F4F7FE",borderRadius:'50%',padding:'0.5rem'}}/> },
 
   ];
 
