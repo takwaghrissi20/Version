@@ -282,7 +282,7 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId}) => {
   };
   const columns = [
     {
-      title: 'jobCode',
+      title: 'JobCode',
       dataIndex: 'jobCode',
       key: 'jobCode',
       width: 80,

@@ -86,6 +86,7 @@ export const GlobalStyles = createGlobalStyle`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+   
   }
 
   .card-hover {

@@ -21,7 +21,7 @@ import CountUp from 'react-countup';
 
 
 const StatsTotalNewEmployeesCard = ({ numberNewEmployees }) => {
- 
+
   return (
     <AppCard className='card-hover no-card-space'>
       <StyledFlexWrapper>
@@ -29,47 +29,50 @@ const StatsTotalNewEmployeesCard = ({ numberNewEmployees }) => {
           <StyledIconWrapper
             style={{
               color: "#0A8FDC",
-              backgroundColor: numberNewEmployees?.color + '22',
+              backgroundColor: '#e6f0ff',
             }}
           >
-{/*             
-              <img src="../" alt='image-user' /> */}
-           
+            <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
+              <img style={{ width: '2rem' }} src="/assets/images/new-employee.png" alt='image-user'  />
+            </div>
+
+      
+
           </StyledIconWrapper>
 
           <div style={{ marginRight: 8, overflow: 'hidden' }}>
             <Typography.Title level={5}>Total New Employees</Typography.Title>
             <StyledTitleWrapper>
-              
-            <CountUp end= {numberNewEmployees}></CountUp>
-              </StyledTitleWrapper>
+
+              <CountUp end={numberNewEmployees}></CountUp>
+            </StyledTitleWrapper>
           </div>
         </StyledFlexContainer>
         <StyledToggleContainer>
           <StyledFlexSuccessContainer>
-           
+
             <span
               style={{
                 marginLeft: 1,
                 fontSize: 14,
                 fontWeight: Fonts.BOLD,
-     
+
               }}
             >
-      
-           
+
+
             </span>
           </StyledFlexSuccessContainer>
           <StyledDurationWrapper>
-          <StyledViewer >
-          <Button
-            type='primary'
-            shape='circle'
-            className='icon-btn icon-btn-eye'
-            style={{color:"#9AC8EB"}}
-            icon={<AiOutlineEye />}
-          />
-          </StyledViewer>
+            <StyledViewer >
+              <Button
+                type='primary'
+                shape='circle'
+                className='icon-btn icon-btn-eye'
+                style={{ color: "#9AC8EB" }}
+                icon={<AiOutlineEye />}
+              />
+            </StyledViewer>
           </StyledDurationWrapper>
         </StyledToggleContainer>
       </StyledFlexWrapper>

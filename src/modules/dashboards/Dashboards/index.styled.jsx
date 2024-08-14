@@ -73,11 +73,11 @@ export const StyledCustomerTable = styled(AppTableContainer)`
   }
 
   & .ant-table-thead > tr > th {
-    font-size: 13px;
-   
-    font-weight: ${({ theme }) => theme.font.weight.bold};
-    background-color: transparent;
-    text-align: center;
+    font-size: 12px;  
+    text-align:left;
+    font-weight: bold;  
+    line-height: 1;
+    font-family: poppins;
 
     &:first-child {
 

@@ -599,6 +599,10 @@ const InterviewSheetById = () => {
         setDataInterview(data)
         form.resetFields();
         openNotification('bottomRight')
+        setTimeout(() => {
+          window.location.reload();
+          navigate(-1)
+      }, 2000);
         // navigate(-1);
       }
 

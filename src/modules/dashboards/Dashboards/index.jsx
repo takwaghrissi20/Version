@@ -423,7 +423,7 @@ const Dashboards = () => {
     <>
       <AppPageMeta title='Dashboards' />
       <>
-        {user.includes("admin") && metricsData && (
+        {(user.includes("admin") || user.includes("bod")) && metricsData && (
           <AppRowContainer ease={'easeInSine'}>
             {crmData?.stateData?.map((data) => (
               <Col key={data.id} xs={24} sm={12} lg={6}>

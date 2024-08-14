@@ -37,8 +37,7 @@ console.log("filteredData ",filteredData )
       cardStyle={{ backgroundColor: 'transparent', boxShadow: 'none' }}
       fullView
       >
-
-      
+    
       <AppRowContainer ease={'easeInSine'}>
          {listInerview?.map((data) => (
           <Col key={data.id} xs={24} sm={12} lg={6}>

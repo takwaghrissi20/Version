@@ -55,7 +55,7 @@ const crmData = {
     {
       id: 1,
       name: 'Recruitement',
-      iconImg: 'dashboard/campaign.svg',
+      iconImg: 'dashboard/speaker.png',
       color: '#F04F47',
       link:"/Hr/Recruitement&Interview"
     },
@@ -68,7 +68,7 @@ const crmData = {
     {
       id: 2,
       name: 'Recruitement',
-      iconImg: 'dashboard/campaign.svg',
+      iconImg: 'dashboard/speaker.png',
       color: '#F04F47',
       link:"/Hr/Recruitement&Interview",
   
@@ -76,7 +76,7 @@ const crmData = {
     {
       id: 3,
       name: 'Employees',
-      iconImg: 'dashboard/user.svg',
+      iconImg: 'dashboard/employee1.png',
       color: '#11C15B',
       link:"/Hr/EmployeesOffice"
    
@@ -84,7 +84,7 @@ const crmData = {
     {
       id: 4,
       name: 'Attendances',
-      iconImg: 'dashboard/attendance.png',
+      iconImg: 'dashboard/attendance1.png',
       color: '#FF5252',
       link:"/Hr/Attendances/OfficeTimeSheet"
     },

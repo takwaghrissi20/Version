@@ -81,7 +81,7 @@ const AllRecruitementStaff = ({ allrecruitementabove,
   useEffect(() => {
     const updateTableHeight = () => {
       const pageHeight = window.innerHeight;
-      const tableHeight = pageHeight * 0.25;
+      const tableHeight = pageHeight * 0.18;
       setTableHeight(tableHeight);
     };
     window.addEventListener('resize', updateTableHeight);
@@ -410,17 +410,17 @@ const AllRecruitementStaff = ({ allrecruitementabove,
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
-      width: 100,
+      width: 150,
       render: (status) => {
         let backgroundColor;
         let color = 'white'; 
     
         if (status.includes('Pending')) {
-          backgroundColor = 'red';
+          backgroundColor = '#C0C0C0';
         } else if (status.includes('Approved')) {
-          backgroundColor = 'green';
+          backgroundColor = '#32CD32';
         } else if (status.includes('Refuse')) {
-          backgroundColor = 'blue';
+          backgroundColor = '#FF2400';
         }
     
         return (

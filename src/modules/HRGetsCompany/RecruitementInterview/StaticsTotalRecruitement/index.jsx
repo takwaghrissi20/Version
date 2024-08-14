@@ -8,32 +8,43 @@ import {
   StyledGeneralStatsAvatar,
   StyledFlexWrapper,
   StyledTitleWrapper
-  
+
 } from '../../../../styles/index.styled';
 
-import {  FcReading } from 'react-icons/fc';
+import { FcReading } from 'react-icons/fc';
 
 
-const StatsTotalRecruitement = ({totalNumber}) => {
+const StatsTotalRecruitement = ({ totalNumber }) => {
 
   return (
     <AppCard className='card-hover no-card-space'>
-         <StyledGeneralStats>
-       <StyledGeneralStatsAvatar style={{ backgroundColor:"#49BD65",marginLeft:15}}>
-       < FcReading  color='#9E49E6' className='icon' />
+      <StyledGeneralStats>
+        <StyledGeneralStatsAvatar
+          style={{
+            marginLeft: 15,
+            color: "#0A8FDC",
+            backgroundColor: '#e6f0ff',
+
+
+          }}
+
+        >
+      
+
+        < FcReading  color='#9E49E6' className='icon' /> 
         </StyledGeneralStatsAvatar>
-      <StyledFlexWrapper>
-      <div style={{ marginRight: 8, overflow: 'hidden' }}>
+        <StyledFlexWrapper>
+          <div style={{ marginRight: 8, overflow: 'hidden' }}>
             <Typography.Title level={5}>Total Recruitement</Typography.Title>
             <StyledTitleWrapper><CountUp end={totalNumber} /></StyledTitleWrapper>
           </div>
-    
-      </StyledFlexWrapper>
+
+        </StyledFlexWrapper>
       </StyledGeneralStats>
     </AppCard>
   );
 };
 
-export default StatsTotalRecruitement ;
+export default StatsTotalRecruitement;
 
 

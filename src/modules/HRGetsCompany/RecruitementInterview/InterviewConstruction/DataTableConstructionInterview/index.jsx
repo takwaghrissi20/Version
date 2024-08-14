@@ -31,7 +31,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
   useEffect(() => {
     const updateTableHeight = () => {
       const pageHeight = window.innerHeight;
-      const tableHeight = pageHeight * 0.23;
+      const tableHeight = pageHeight * 0.15;
       setTableHeight(tableHeight);
     };
     window.addEventListener('resize', updateTableHeight);
@@ -305,12 +305,12 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
         if (record.notif === 2 || record.notif === 1  ) {
           return (
             <StyledRecentPatientBadge
-              style={{
-                color: record.color,
-                backgroundColor: "red",
-                color: "white",
-                fontFamily: "inherit"
-              }}
+            style={{
+              color: record.color,
+              backgroundColor:"#32CD32",
+              color:"white",
+              fontFamily:"inherit"
+            }}
             >
               Approved By Evaluator
             </StyledRecentPatientBadge>
@@ -318,12 +318,12 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
         } else if (record.notif === 6) {
           return (
             <StyledRecentPatientBadge
-              style={{
-                color: record.color,
-                backgroundColor: "red",
-                color: "white",
-                fontFamily: "inherit"
-              }}
+            style={{
+              color: record.color,
+              backgroundColor:"#32CD32",
+              color:"white",
+              fontFamily:"inherit"
+            }}
             >
               Approved By HSE
             </StyledRecentPatientBadge>
@@ -341,12 +341,12 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
         if (record.notif === 5   ) {
           return (
             <StyledRecentPatientBadge
-              style={{
-                color: record.color,
-                backgroundColor: "red",
-                color: "white",
-                fontFamily: "inherit"
-              }}
+            style={{
+              color: record.color,
+              backgroundColor:"#32CD32",
+              color:"white",
+              fontFamily:"inherit"
+            }}
             >
               Approved By HR Manager
             </StyledRecentPatientBadge>

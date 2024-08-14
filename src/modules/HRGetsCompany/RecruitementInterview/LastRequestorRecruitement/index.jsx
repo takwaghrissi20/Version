@@ -22,7 +22,10 @@ const StatsTotalRecruitement = ({lastRecruitement}) => {
   return (
     <AppCard className='card-hover no-card-space'>
         <StyledGeneralStats>
-       <StyledGeneralStatsAvatar style={{ backgroundColor:"#49BD65",marginLeft:15}}>
+       <StyledGeneralStatsAvatar style={{
+        color: "#0A8FDC",
+        backgroundColor:'#e6f0ff',
+         marginLeft:15}}>
        < FcReading  color='#9E49E6' className='icon' />
         </StyledGeneralStatsAvatar>
       <StyledFlexWrapper>

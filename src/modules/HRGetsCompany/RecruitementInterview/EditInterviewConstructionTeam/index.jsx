@@ -749,7 +749,7 @@ const EditInterviewConstruction = () => {
         throw new Error('Network response was not ok');
       }
       const responseData = await response.json();
-      console.log("rrttyyyy", responseData)
+
       setIdConstruction(responseData)
 
 
@@ -2507,7 +2507,8 @@ const EditInterviewConstruction = () => {
             {roles.includes("Manager") && !roles.includes("HSE") && (
               <>
                 <Button onClick={UpdateManager}
-                >Save mANAGER</Button>
+                >Save mANAGER
+                </Button>
               </>)}
               {roles.includes("HSE") && (
               <>

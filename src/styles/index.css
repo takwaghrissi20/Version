@@ -963,6 +963,18 @@ input{
     width: 100%;
     justify-content: flex-end;
  }
+ .text-truncate {
+  color:red
 
+ }
 
+.IconeButton{
+  font-Size:30px;
+  cursor:pointer;
+  color:#5782d9
+
+}
+.IconeButton:hover{
+  opacity: 0.5;
+}
 

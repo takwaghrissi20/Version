@@ -656,6 +656,10 @@ console.log("timeeewss",interviewTime)
         const data = await response.json();
         setDataInterview(data)
         form.resetFields();
+        setTimeout(() => {
+          window.location.reload();
+          navigate(-1)
+      }, 2000);
         openNotification('bottomRight')
         // navigate(-1);
       }

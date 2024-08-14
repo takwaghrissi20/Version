@@ -7,7 +7,7 @@ export const StyledDrowdownWrapper = styled.div`
   & .header-notify-messages {
     width: 260px;
     padding: 0;
-    background-color: red;
+  
 
     .ant-dropdown-menu {
       padding: 0;

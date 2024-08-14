@@ -30,8 +30,7 @@ const StatsTotalEmployeesCard = ({ numberIntegration }) => {
               backgroundColor: numberIntegration?.color + '22',
             }}
           >
-{/*             
-              <img src="../" alt='image-user' /> */}
+<img src="/assets/images/workers.png"  /> 
            
           </StyledIconWrapper>
 

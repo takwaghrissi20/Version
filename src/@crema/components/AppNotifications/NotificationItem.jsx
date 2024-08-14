@@ -270,6 +270,7 @@ const NotificationItem = ({ user }) => {
           // Third group of conditions
           (item.notfi === 6 && item.type.includes("Interview")) ||
           (item.notfi === 2 && item.type === "Interview") ||
+          
           (item.notfi === 34 && user.includes("Project")) ||
           (item.notfi === 37 && user.includes("Human Resource"))
 

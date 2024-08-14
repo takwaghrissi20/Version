@@ -240,7 +240,7 @@ const RecruitementInterview = () => {
             {roles==="admin" ?
               <Col xs={24} md={10}>
               <LastRequestor
-              
+        
               lastRecruitement={lastRecruitement} />
             </Col>
             :null
@@ -266,7 +266,7 @@ const RecruitementInterview = () => {
         </div>
 
         <AppsContainer
-          title={messages['sidebar.app.recruitementinterview']}
+
           type='bottom'
           fullView>
           <StyledBuyCellCard style={{ paddingLeft: "10px" }} heightFull>

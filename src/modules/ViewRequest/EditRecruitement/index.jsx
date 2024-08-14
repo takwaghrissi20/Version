@@ -44,16 +44,10 @@ const EditRecruitementAbove = () => {
   const userRoles = localStorage.getItem("role");
 
   const Back = async () => {
-    if (userRoles.includes("bod")) {
-      cancelRecruitementBod()
-    }
-    if (userRoles.includes("admin")) {
-      navigate(-1)
-    }
-
-
+   navigate(-1)
+   
   };
-  const cancelRecruitementBod = async () => {
+  const CancelRecruitementBod = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}`, {
 
@@ -102,8 +96,12 @@ const EditRecruitementAbove = () => {
 
         const responseData = await response.text();
         openRefuseNotificationBOD('bottomRight')
+        setTimeout(() => {
+          window.location.reload();
+          navigate(-1)
+      }, 2000);
 
-        navigate(-1)
+       
 
         //handleAddContactClose(true)
       }
@@ -1553,8 +1551,11 @@ const EditRecruitementAbove = () => {
             }
             {userRoles.includes("bod") ?
               <>
-                <Button onClick={() => UpdateBOD()}>
-                  Save
+                <Button style={{color:"green",borderColor:"green"}} onClick={() => UpdateBOD()}>
+                  Approved
+                </Button>
+                <Button style={{color:"red",borderColor:"red"}}onClick={() =>CancelRecruitementBod ()}>
+                  Refuse
                 </Button>
                 <Button onClick={Back}>Cancel</Button>
               </>

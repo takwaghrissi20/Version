@@ -52,7 +52,7 @@ const AddRecruitementForemanBelow = () => {
   const [modalWarning, setModalWarning] = useState(false);
   const [dateInput, setDateInput] = useState(new Date());
   const [selectedLieu, setSelectedLieu] = useState('');
-  const userRole=localStorage.getItem("role")
+  const userRole = localStorage.getItem("role")
 
   const handlePlaceSelect = (value) => {
     setSelectedLieu(value);
@@ -265,26 +265,57 @@ const AddRecruitementForemanBelow = () => {
   const handleSaveRecruitement = () => {
     onSave(true);
   };
+  // const handleCancelRecruitement = () => {
+
+
+  //   // const fieldsFilled = [
+
+
+  //   //   vacancie,
+
+  //   // ].some(field => field && field !== "");
+
+  //   // if (fieldsFilled) {
+  //   //   onCancel(true)
+
+  //   // } else {
+  //   //   onCancel(true);
+
+  //   // }
+
+
+  // };
+  const CancelReruitement = () => {
+    navigate(-1)
+  }
   const handleCancelRecruitement = () => {
-    
+    if (user.includes("admin")) {
+      CancelReruitement(true)
+    }
+    //onCancel(true);
+    if ((!profile?.departement?.includes('operation')) && (!profile?.departement?.includes('Engineering'))) {
 
-    // const fieldsFilled = [
+      Cancel()
 
+    }
 
-    //   vacancie,
-
-    // ].some(field => field && field !== "");
-
-    // if (fieldsFilled) {
-    //   onCancel(true)
-
-    // } else {
-    //   onCancel(true);
-
-    // }
+    else if (profile?.departement?.includes('Engineering') && userRole?.includes('Engineering')) {
+      console.log("Cancel Engineering")
 
 
-  };
+
+    }
+    else if (profile?.departement?.includes('operation') && userRole?.includes('Operation')) {
+      CancelOperation()
+
+
+    }
+    else if (profile?.departement?.includes('operation') && userRole?.includes('Leader')) {
+      console.log("Operation  Leader")
+
+
+    }
+  }
   const handleCancelRecruitement0 = () => {
     const fieldsFilled = [
       requestorDate,
@@ -389,7 +420,7 @@ const AddRecruitementForemanBelow = () => {
       color: '#FFFFFF !important',
     });
   };
-  
+
   ///AAAAAAAAAAAAAAAAAAAAAAAAA
   const Saverecrutement = async () => {
     try {
@@ -406,37 +437,37 @@ const AddRecruitementForemanBelow = () => {
         },
         body: JSON.stringify({
 
-         //recruttrequestDate: DateRecruitement,
-         requestName: profile?.name,
-         approuvedRecrutRequestNumber: null,
-         //jobCode: JobCode,
-         certif:certif,
-         experience: selectedLevel,
-         type: type,
-         position: positionRecruitement,
-         projectName: selectedProject,
-         recruttrequestDate: requestorDate,
-         requestedDicipline: positionRecruitement,
-         totalNumber: vacancie,
-         oDep: isOrDep,
-         exDep: isExDep,
-         jobCode: LastIndexRecruitementIncremente,
-         // type: "For Foreman & Below",
-         // oDep: asper,
-         // // exDep: "",
-         // // status:"0",
-         nbExperience: desiredExperience,
-         projRef: projectCode,
-         // bod: isOkBod,
-         idemp: profile?.getsId,
-         desiredDate: desiredrecruitementDate,
-         affectedTo: selectedLieu,
-         signatureHod: isOkHead,
-         signatureBod: isOkBod,
-         notif: 2,
-         dep: profile?.departement,
-         dateInputRecrut:formattedDate,
-         status:"Pending"
+          //recruttrequestDate: DateRecruitement,
+          requestName: profile?.name,
+          approuvedRecrutRequestNumber: null,
+          //jobCode: JobCode,
+          certif: certif,
+          experience: selectedLevel,
+          type: type,
+          position: positionRecruitement,
+          projectName: selectedProject,
+          recruttrequestDate: requestorDate,
+          requestedDicipline: positionRecruitement,
+          totalNumber: vacancie,
+          oDep: isOrDep,
+          exDep: isExDep,
+          jobCode: LastIndexRecruitementIncremente,
+          // type: "For Foreman & Below",
+          // oDep: asper,
+          // // exDep: "",
+          // // status:"0",
+          nbExperience: desiredExperience,
+          projRef: projectCode,
+          // bod: isOkBod,
+          idemp: profile?.getsId,
+          desiredDate: desiredrecruitementDate,
+          affectedTo: selectedLieu,
+          signatureHod: isOkHead,
+          signatureBod: isOkBod,
+          notif: 2,
+          dep: profile?.departement,
+          dateInputRecrut: formattedDate,
+          status: "Pending"
 
         })
       });
@@ -448,10 +479,12 @@ const AddRecruitementForemanBelow = () => {
       if (response.ok) {
 
         const responseData = await response.json();
-        console.log("testttt",responseData)
         form.resetFields();
         //window.location.reload();
         openNotification('bottomRight')
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
         //onSave(false)
         const email = 'rihemhassounanjim90@gmail.com';
         const secondApiResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/bodNotif?email=${encodeURIComponent(email)}`, {
@@ -478,6 +511,10 @@ const AddRecruitementForemanBelow = () => {
     navigate(-1)
 
   }
+
+  const Cancel = () => {
+    navigate(-1)
+  }
   const SaverecrutementEngineer = async () => {
     try {
 
@@ -496,7 +533,7 @@ const AddRecruitementForemanBelow = () => {
           requestName: profile?.name,
           approuvedRecrutRequestNumber: null,
           //jobCode: JobCode,
-          certif:certif,
+          certif: certif,
           experience: selectedLevel,
           type: type,
           position: profile?.position,
@@ -521,8 +558,8 @@ const AddRecruitementForemanBelow = () => {
           signatureBod: isOkBod,
           notif: 8,
           dep: profile?.departement,
-          dateInputRecrut:formattedDate,
-          status:"Pending Approves Operation Manager"
+          dateInputRecrut: formattedDate,
+          status: "Pending Approves Operation Manager"
 
         })
       });
@@ -561,227 +598,227 @@ const AddRecruitementForemanBelow = () => {
       console.error("Erreur lors de la récupération du Id :", error);
     }
   };
- //Opration Save Recruitement 
+  //Opration Save Recruitement 
 
- const Saverecrutementopeartion = async () => {
-  try {
+  const Saverecrutementopeartion = async () => {
+    try {
 
-    const params = new URLSearchParams({ name: selectedProject, id: profile?.getsId });
-    const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
+      const params = new URLSearchParams({ name: selectedProject, id: profile?.getsId });
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
 
-      method: 'POST',
-      headers: {
-        "Access-Control-Allow-Headers": "Content-Type",
-        "Access-Control-Allow-Origin": "*",
-        'Content-Type': 'application/json',
-        "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
-      },
-      body: JSON.stringify({
-        //recruttrequestDate: DateRecruitement,
-        requestName: profile?.name,
-        approuvedRecrutRequestNumber: null,
-        //jobCode: JobCode,
-        certif:certif,
-        experience: selectedLevel,
-        type: type,
-        position: profile?.position,
-        projectName: selectedProject,
-        recruttrequestDate: requestorDate,
-        requestedDicipline: positionRecruitement,
-        totalNumber: vacancie,
-        oDep: isOrDep,
-        exDep: isExDep,
-        jobCode: LastIndexRecruitementIncremente,
-        // type: "For Foreman & Below",
-        // oDep: asper,
-        // // exDep: "",
-        // // status:"0",
-        nbExperience: desiredExperience,
-        projRef: projectCode,
-        // bod: isOkBod,
-        idemp: profile?.getsId,
-        desiredDate: desiredrecruitementDate,
-        affectedTo: selectedLieu,
-        signatureHod: isOkHead,
-        signatureBod: isOkBod,
-        notif: 7,
-        dep: profile?.departement,
-        dateInputRecrut:formattedDate,
-        status:"Pending Approved BOD"
-
-      })
-    });
-
-    if (!response.ok) {
-      openNotificationError('bottomRight')
-      throw new Error('Network response was not ok');
-
-
-    }
-    if (response.ok) {
-
-      const responseData = await response.json();
-      form.resetFields();
-      openNotification('bottomRight')
-
-      const email = 'rihemhassounanjim90@gmail.com';
-      const secondApiResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/bodNotif?email=${encodeURIComponent(email)}`, {
         method: 'POST',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+          //recruttrequestDate: DateRecruitement,
+          requestName: profile?.name,
+          approuvedRecrutRequestNumber: null,
+          //jobCode: JobCode,
+          certif: certif,
+          experience: selectedLevel,
+          type: type,
+          position: profile?.position,
+          projectName: selectedProject,
+          recruttrequestDate: requestorDate,
+          requestedDicipline: positionRecruitement,
+          totalNumber: vacancie,
+          oDep: isOrDep,
+          exDep: isExDep,
+          jobCode: LastIndexRecruitementIncremente,
+          // type: "For Foreman & Below",
+          // oDep: asper,
+          // // exDep: "",
+          // // status:"0",
+          nbExperience: desiredExperience,
+          projRef: projectCode,
+          // bod: isOkBod,
+          idemp: profile?.getsId,
+          desiredDate: desiredrecruitementDate,
+          affectedTo: selectedLieu,
+          signatureHod: isOkHead,
+          signatureBod: isOkBod,
+          notif: 7,
+          dep: profile?.departement,
+          dateInputRecrut: formattedDate,
+          status: "Pending Approved BOD"
+
+        })
       });
 
-      if (secondApiResponse.ok) {
-        const secondResponseData = await secondApiResponse.json();
-        form.resetFields();
-        window.location.reload();
-      } else {
-        //setModalError(true)
-        console.error("Failed to fetch data from the second API.");
+      if (!response.ok) {
+        openNotificationError('bottomRight')
+        throw new Error('Network response was not ok');
+
+
       }
+      if (response.ok) {
 
-      // alert('Recruitment request saved successfully.');
+        const responseData = await response.json();
+        form.resetFields();
+        openNotification('bottomRight')
 
+        const email = 'rihemhassounanjim90@gmail.com';
+        const secondApiResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/bodNotif?email=${encodeURIComponent(email)}`, {
+          method: 'POST',
+        });
+
+        if (secondApiResponse.ok) {
+          const secondResponseData = await secondApiResponse.json();
+          form.resetFields();
+          window.location.reload();
+        } else {
+          //setModalError(true)
+          console.error("Failed to fetch data from the second API.");
+        }
+
+        // alert('Recruitment request saved successfully.');
+
+      }
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
     }
-    // Handle responseData if needed
-  } catch (error) {
-    console.error("Erreur lors de la récupération du Id :", error);
-  }
-};
-{/*Save Project leader */}
+  };
+  {/*Save Project leader */ }
 
-const SaverecrutementProjectLeader = async () => {
-  try {
+  const SaverecrutementProjectLeader = async () => {
+    try {
 
-    const params = new URLSearchParams({ name: selectedProject, id: profile?.getsId });
-    const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
+      const params = new URLSearchParams({ name: selectedProject, id: profile?.getsId });
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
 
-      method: 'POST',
-      headers: {
-        "Access-Control-Allow-Headers": "Content-Type",
-        "Access-Control-Allow-Origin": "*",
-        'Content-Type': 'application/json',
-        "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
-      },
-      body: JSON.stringify({
-        //recruttrequestDate: DateRecruitement,
-        requestName: profile?.name,
-        approuvedRecrutRequestNumber: null,
-        //jobCode: JobCode,
-        certif:certif,
-        experience: selectedLevel,
-        type: type,
-        position: profile?.position,
-        projectName: selectedProject,
-        recruttrequestDate: requestorDate,
-        requestedDicipline: positionRecruitement,
-        totalNumber: vacancie,
-        oDep: isOrDep,
-        exDep: isExDep,
-        jobCode: LastIndexRecruitementIncremente,
-        // type: "For Foreman & Below",
-        // oDep: asper,
-        // // exDep: "",
-        // // status:"0",
-        nbExperience: desiredExperience,
-        projRef: projectCode,
-        // bod: isOkBod,
-        idemp: profile?.getsId,
-        desiredDate: desiredrecruitementDate,
-        affectedTo: selectedLieu,
-        signatureHod: isOkHead,
-        signatureBod: isOkBod,
-        notif: 6,
-        dep: profile?.departement,
-        dateInputRecrut:formattedDate,
-        status:"Pending Approved HOD"
-
-      })
-    });
-
-    if (!response.ok) {
-      openNotificationError('bottomRight')
-      throw new Error('Network response was not ok');
-
-
-    }
-    if (response.ok) {
-
-      const responseData = await response.json();
-      console.log("opration reponse project Leader",responseData)
-      form.resetFields();
-      openNotification('bottomRight')
-
-      const email = 'rihemhassounanjim90@gmail.com';
-      const secondApiResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/bodNotif?email=${encodeURIComponent(email)}`, {
         method: 'POST',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+          //recruttrequestDate: DateRecruitement,
+          requestName: profile?.name,
+          approuvedRecrutRequestNumber: null,
+          //jobCode: JobCode,
+          certif: certif,
+          experience: selectedLevel,
+          type: type,
+          position: profile?.position,
+          projectName: selectedProject,
+          recruttrequestDate: requestorDate,
+          requestedDicipline: positionRecruitement,
+          totalNumber: vacancie,
+          oDep: isOrDep,
+          exDep: isExDep,
+          jobCode: LastIndexRecruitementIncremente,
+          // type: "For Foreman & Below",
+          // oDep: asper,
+          // // exDep: "",
+          // // status:"0",
+          nbExperience: desiredExperience,
+          projRef: projectCode,
+          // bod: isOkBod,
+          idemp: profile?.getsId,
+          desiredDate: desiredrecruitementDate,
+          affectedTo: selectedLieu,
+          signatureHod: isOkHead,
+          signatureBod: isOkBod,
+          notif: 6,
+          dep: profile?.departement,
+          dateInputRecrut: formattedDate,
+          status: "Pending Approved HOD"
+
+        })
       });
 
-      if (secondApiResponse.ok) {
-        const secondResponseData = await secondApiResponse.json();
+      if (!response.ok) {
+        openNotificationError('bottomRight')
+        throw new Error('Network response was not ok');
+
+
+      }
+      if (response.ok) {
+
+        const responseData = await response.json();
+        console.log("opration reponse project Leader", responseData)
         form.resetFields();
-        window.location.reload();
-      } else {
-        //setModalError(true)
-        console.error("Failed to fetch data from the second API.");
+        openNotification('bottomRight')
+
+        const email = 'rihemhassounanjim90@gmail.com';
+        const secondApiResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/bodNotif?email=${encodeURIComponent(email)}`, {
+          method: 'POST',
+        });
+
+        if (secondApiResponse.ok) {
+          const secondResponseData = await secondApiResponse.json();
+          form.resetFields();
+          window.location.reload();
+        } else {
+          //setModalError(true)
+          console.error("Failed to fetch data from the second API.");
+        }
+
+        // alert('Recruitment request saved successfully.');
+
+      }
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+    }
+  };
+
+  const BeforeSaveRecruitement = () => {
+    console.log("dep", dep)
+    //setIsModalVisible(true)
+    form.validateFields(['DateRequestor', 'ProjectName', 'ProjectCode'
+      , 'DateDesiredRecruitement', 'position', 'RequiredLevel', 'Desiredyearsexperience', 'Numbervacancies',
+
+    ]).then(values => {
+      //onSave(true)
+      if ((!dep?.includes('Operation')) && (!dep?.includes('Engineering'))) {
+        console.log("dep33eee", dep)
+        Saverecrutement();
       }
 
-      // alert('Recruitment request saved successfully.');
+      else if (dep?.includes('Engineering') && userRole?.includes('Engineering')) {
+        console.log("Engineering")
+        SaverecrutementEngineer()
 
-    }
-    // Handle responseData if needed
-  } catch (error) {
-    console.error("Erreur lors de la récupération du Id :", error);
-  }
-};
+      }
+      else if (dep?.includes("Operation") && userRole?.includes('Operation')) {
+        console.log("Operation  Manager", dep)
+        Saverecrutementopeartion()
 
-const BeforeSaveRecruitement = () => {
-  console.log("dep",dep)
-  //setIsModalVisible(true)
-  form.validateFields([ 'DateRequestor', 'ProjectName', 'ProjectCode'
-    , 'DateDesiredRecruitement', 'position', 'RequiredLevel', 'Desiredyearsexperience', 'Numbervacancies',
+      }
+      else if (dep?.includes("Operation") && userRole?.includes('Leader')) {
+        console.log("dep33", dep)
+        SaverecrutementProjectLeader()
+      }
+      else
+        return null
+      // if( profile?.departement?.includes('Operation') && userRole?.includes('Leader')){
+      //   console.log("project Leader jjj",userRole)
+      //   //SaverecrutementProjectLeader()
 
-  ]).then(values => {
-    //onSave(true)
-    if ((!dep?.includes('Operation')) && (!dep?.includes('Engineering'))) {
-      console.log("dep33eee",dep)
-      Saverecrutement();
-  }
-  
-    else if( dep?.includes('Engineering') && userRole?.includes('Engineering')){
-      console.log("Engineering")
-      SaverecrutementEngineer()
+      // }
 
-    }
-    else if( dep?.includes("Operation") && userRole?.includes('Operation')){
-      console.log("Operation  Manager",dep)
-      Saverecrutementopeartion()
+      // else if( profile?.departement?.includes('operation')){
+      //   console.log("Operation  Manager")
+      //   Saverecrutementopeartion()
 
-    }
-    else if(dep?.includes("Operation")&& userRole?.includes('Leader')){
-      console.log("dep33",dep)
-      SaverecrutementProjectLeader()
-    }
-    else
-    return null
-    // if( profile?.departement?.includes('Operation') && userRole?.includes('Leader')){
-    //   console.log("project Leader jjj",userRole)
-    //   //SaverecrutementProjectLeader()
+      // }
 
-    // }
-   
-    // else if( profile?.departement?.includes('operation')){
-    //   console.log("Operation  Manager")
-    //   Saverecrutementopeartion()
+    }).catch(errorInfo => {
 
-    // }
+      openNotificationWarning('bottomRight')
 
-  }).catch(errorInfo => {
+      // setIsModalVisible(false);
 
-    openNotificationWarning('bottomRight')
-
-    // setIsModalVisible(false);
-
-  });
-};
+    });
+  };
 
   const formattedDate = dayjs(dateInput).format('YYYY-MM-DD');
   return (
@@ -821,10 +858,10 @@ const BeforeSaveRecruitement = () => {
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Recruitement Date' name='DateRecruitement'
-                  
+
 
                   >{/*Date et temp de Interview bu Hr*/}
-                  <Input
+                    <Input
                       placeholder={formattedDate}
                       readOnly
                     />
@@ -1074,7 +1111,7 @@ const BeforeSaveRecruitement = () => {
 
                   </Form.Item>
                 </Col>
-                <Col  xs={24} md={12}>
+                <Col xs={24} md={12}>
                   <Form.Item
                     label='Number of vacancies '
                     name='Numbervacancies'
@@ -1099,9 +1136,11 @@ const BeforeSaveRecruitement = () => {
 
 
 
+
               </AppRowContainer>
             </StyledShadowWrapper>
           </Col>
+
         </AppRowContainer>
 
         {dep === "operation" && user.includes('Planner') ?
@@ -1243,7 +1282,7 @@ const BeforeSaveRecruitement = () => {
           <Button onClick={handleCancelRecruitement} >Cancel</Button>
           <Button
             onClick={BeforeSaveRecruitement}
-
+            disabled={!selectedProject}
             type='primary'
             htmlType='submit'>
             Save

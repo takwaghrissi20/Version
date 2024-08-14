@@ -305,9 +305,17 @@ export const StyledAppWrapHeader = styled.div`
 
   & h2 {
     color:#40494D;
-     font-weight: bold;
+     font-weight:bold;
     font-size: 1.2rem;
     margin-bottom: 0;
+    transform: translate(0px, 0px);
+    opacity: 1;
+   overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
+font-family: 'Cursive';
+font-style: italic;
+
   }
 `;
 
@@ -1062,13 +1070,18 @@ export const StyledItemContainer = styled.div`
 `;
 
 export const StyledTitleWrapper = styled.p`
-  color: ${({ theme }) => theme.palette.text.secondary};
+   color: ${({ theme }) => theme.palette.text.secondary};
+   font-family:poppins;
   font-size: 13px;
+  font-weight: bold;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   margin-bottom: 0;
-  font-family: cursive;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Ensures the content is centered vertically */
 
 `;
 
@@ -1287,14 +1300,14 @@ align-items: center;
 `;
 export const StyledGeneralStatsAvatar = styled(Avatar)`
   min-width: 46px;
-  height: 46px;
+  height: 40px;
   width: 46px;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 10px;
   margin-right: 16px;
-  font-size: 18px;
+  font-size: 50px;
 
   [dir='rtl'] & {
     margin-right: 0;
@@ -1364,12 +1377,11 @@ export const StyledOrderTable = styled(AppTableContainer)`
 
 }
   & .ant-table-thead > tr > th {
-    font-size: 11px;  
+    font-size: 12px;  
     text-align:left;
-    font-weight: ${({ theme }) => theme.font.weight.bold};
-    line-height: 1.5;
-    font-family: serif;
-  font-weight: 500;
+    font-weight: bold;  
+    line-height: 1;
+    font-family: poppins;
    
 
     }

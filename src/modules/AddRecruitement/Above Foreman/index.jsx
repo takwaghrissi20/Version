@@ -483,14 +483,18 @@ const AddRecruitementAbove = () => {
 
 
   ///////////////////////////////////////////
+ 
+  const  Cancel = () => {
+    navigate(-1)
+  }
   const handleCancelRecruitement = () => {
     if (user.includes("admin")) {
       onCancel(true)
     }
     //onCancel(true);
     if ((!profile?.departement?.includes('operation')) && (!profile?.departement?.includes('Engineering'))) {
-      console("no operation no engeneer")
-      //CancelOpertionManager()
+    
+      Cancel()
 
     }
 
@@ -659,7 +663,8 @@ const AddRecruitementAbove = () => {
           notif: 2,
           dep: profile?.departement,
           dateInputRecrut: formattedDate,
-          status: "Pending"
+          status: "Pending",
+          chekedNoHod:isNOHead,
 
 
         })
@@ -685,7 +690,10 @@ const AddRecruitementAbove = () => {
         if (secondApiResponse.ok) {
           const secondResponseData = await secondApiResponse.json();
           form.resetFields();
-          window.location.reload();
+          setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+          //window.location.reload();
         } else {
           //setModalError(true)
           console.error("Failed to fetch data from the second API.");
@@ -1296,7 +1304,6 @@ const AddRecruitementAbove = () => {
           </Col>
         </AppRowContainer>
 
-
         {dep === "operation" && user.includes('Planner') ?
           <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
             <Col xs={24} md={6}>
@@ -1502,7 +1509,7 @@ const AddRecruitementAbove = () => {
 
           <Button
             onClick={BeforeSaveRecruitement}
-
+            disabled={!selectedProject}
             type='primary'
             htmlType='submit'>
             Save

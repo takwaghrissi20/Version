@@ -86,10 +86,10 @@ const InterviewStatics = () => {
     fetchDataStatique();
   }, []);
   const listInerview = [
-    { title: 'Job Offers', number: jobOffers, subtitle: "Job Offers" },
-    { title: 'Total Interviews', number: totalInterviews, subtitle: "Interviews" },
-    { title: 'Accepted Employees', number: filterinterviewaccepted, subtitle: "Employees" },
-    { title: 'Rejected offers', number: filteroffresrejected, subtitle: "Offres" },
+    { title: 'Job Offers', number: jobOffers, subtitle: "Job Offers" ,icon: <img src={'/assets/images/job-offer.png'} style={{width:'15%'}}  /> },
+    { title: 'Total Interviews', number: totalInterviews, subtitle: "Interviews",icon:<img src={'/assets/images/total-interview.png'} style={{width:'15%'}}  /> },
+    { title: 'Accepted Employees', number: filterinterviewaccepted, subtitle: "Employees",icon:<img src={'/assets/images/choose.png'} style={{width:'15%'}}  />},
+    { title: 'Rejected offers', number: filteroffresrejected, subtitle: "Offres" ,icon:<img src={'/assets/images/rejected.png'} style={{width:'15%'}}  />},
   ];
 
   return (
