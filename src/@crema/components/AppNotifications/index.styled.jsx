@@ -7,6 +7,7 @@ export const StyledDrowdownWrapper = styled.div`
   & .header-notify-messages {
     width: 260px;
     padding: 0;
+  
 
     .ant-dropdown-menu {
       padding: 0;
@@ -89,7 +90,7 @@ export const StyledNotifyLink = styled.a`
     justify-content: center;
     font-size: 24px;
     background-color: ${({ theme }) =>
-      theme.palette.background.default}!important;
+    theme.palette.background.default}!important;
     color: ${({ theme }) => theme.palette.text.secondary} !important;
     padding: 9px;
     border-radius: ${({ theme }) => theme.sizes.borderRadius.circle};
@@ -102,9 +103,9 @@ export const StyledNotifyLink = styled.a`
     &:focus {
       color: ${({ theme }) => theme.palette.text.primary};
       background-color: ${({ theme }) =>
-        lighten(0.005, theme.palette.background.default)};
+    lighten(0.005, theme.palette.background.default)};
       border-color: ${({ theme }) =>
-        darken(0.1, theme.palette.background.default)};
+    darken(0.1, theme.palette.background.default)};
     }
   }
 `;

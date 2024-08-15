@@ -128,14 +128,14 @@ const Integration = () => {
       >
          <AppPageMeta title='Integration' />
         <AppRowContainer ease={'easeInSine'}>
-          <Col xs={24} sm={12} lg={6}>
+          <Col xs={24} sm={12} lg={8}>
             <StatsIntegrationCard numberIntegration={numberIntegration}></StatsIntegrationCard>
 
           </Col>
-          <Col xs={24} sm={12} lg={6}>
+          <Col xs={24} sm={12} lg={8}>
             <StatsTotalEmployeesCard numberIntegration={numberIntegration}></StatsTotalEmployeesCard>
           </Col>
-          <Col xs={24} sm={12} lg={6}>
+          <Col xs={24} sm={12} lg={8}>
             <StatsTotalNewEmployeesCard numberNewEmployees={numberNewEmployees}></StatsTotalNewEmployeesCard>
           </Col>
 

@@ -444,9 +444,9 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
         {/* <Button onClick={handleSubmit3}>Submit</Button> */}
         <Row style={{ justifyContent: "flex-end" }}>
           <Col xs={24} lg={6} style={{
-            border: '1px solid red', paddingTop: "15px", paddingBottom: "15px", paddingLeft: "5px",
+            border: '1px solid  ',  padding:'15px',
             display: "Flex",
-
+            marginTop:"-15px",
             position: "relative",
             minHeight: "44px",
             background: "#fff",
@@ -459,54 +459,41 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
 
           }}>
             {/* <FaSearch></FaSearch> */}
-            <span style={{marginTop:'0.5rem'}}>MSIS- </span>
+            <span style={{marginTop:'0.2rem'}}>MSIS- </span>
             <Input
               style={{
-                marginTop:"0.25rem",
                 borderRight: '1px solid grey',
-                border: '1px solid transparent', // Bordure transparente par défaut
+                border: '1px solid #c9d5f2', // Bordure transparente par défaut
                 outline: 'none', // Supprime la bordure de focus par défaut
                 '&:focus': {
                   border: '1px solid transparent', // Rend la bordure transparente lorsqu'en focus
                 }
               }}
+
               placeholder="Interview Code"
               onChange={(e) => handleSearch(e.target.value)}
               //value={searchValue ? searchValue : 'CIS'}
               value={searchValue}
-            ></Input>
+              suffix={<FaSearch onClick={() => fetchDataId(searchValue)} style={{ cursor: 'pointer' }} />}
+            >
+              
+            </Input>
             {isDropdownOpen && (
               <div style={{
-                borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px",
-                background: "white", position: "absolute", top: "3.5rem", width: "100%",
-                boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)",zIndex:"5"
+                borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px",cursor:"pointer",
+                background: "white", position: "absolute", top: "3.5rem", width: "100%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"
               }}>
                 <List
                   dataSource={filteredInterviews}
                   renderItem={item => (
                     <List.Item onClick={() => { handleItemClick(item); fetchDataId(searchValue); }}>
                       MSIS-{item.interviewCode}</List.Item>
-                      
                   )}
                 />
               </div>
             )}
             {/* <FaSearch onClick={() => fetchDataId(searchValue)}></FaSearch> */}
-            <div>
-              <Row>
-                {/* {selectedInterviews.map(interview => (
-                <div key={interview.interviewCode}>
-              
-                  <button onClick={() => handleItemRemove(interview)}>Remove</button>
-                </div>
-              ))} */}
-                <FaSearch onClick={() => fetchDataId(searchValue)}
-                  style={{ marginLeft: "1rem", marginTop: "4px", cursor: 'pointer', }}
-
-
-                ></FaSearch>
-              </Row>
-            </div>
+            
 
 
 

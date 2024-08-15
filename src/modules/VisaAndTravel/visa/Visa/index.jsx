@@ -142,13 +142,14 @@ const AddVisa = () => {
     fetchEmployees();
     fetchCountVisa()
   }, [currentPage, pageSize, nameFilter, totalVisa, requestSend,employees]);
-
+  
   const listVIsa = [
-    { title: 'Total Visa', number: { totalVisa }, subtitle: "Total Visa" },
-    { title: 'Number Of request Visa', number: { requestSend }, subtitle: "Number Of request Visa" },
-    { title: 'Number of Passport Submitted', number: { passportSubmit }, subtitle: "Number of Passport Submitted" },
-    { title: 'Number of Final Visa', number: { numberFinalVisa }, subtitle: "Number of Final Visa" },
+    { title: 'Total Visa', number: { totalVisa }, subtitle: "Total Visa",icon: <img src={'/assets/images/visas.png'} style={{width:"50px",backgroundColor:"#F4F7FE",borderRadius:'50%',padding:'0.5rem'}}/> },
+    { title: 'Number Of request Visa', number: { requestSend }, subtitle: "Number Of request Visa" ,icon: <img src={'/assets/images/visas.png'}style={{width:"50px",backgroundColor:"#F4F7FE",borderRadius:'50%',padding:'0.5rem'}}/>},
+    { title: 'Number of Passport Submitted', number: { passportSubmit }, subtitle: "Number of Passport Submitted" ,icon: <img src={'/assets/images/passport.png'}style={{width:"50px",backgroundColor:"#F4F7FE",borderRadius:'50%',padding:'0.5rem'}}/>},
+    { title: 'Number of Final Visa', number: { numberFinalVisa }, subtitle: "Number of Final Visa",icon: <img src={'/assets/images/visas.png'}style={{width:"50px",backgroundColor:"#F4F7FE",borderRadius:'50%',padding:'0.5rem'}}/> },
   ];
+
 
   return (
     <div>

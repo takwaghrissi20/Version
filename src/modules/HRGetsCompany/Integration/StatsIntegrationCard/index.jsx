@@ -26,16 +26,19 @@ const StatsDirCard = ({ numberIntegration }) => {
     <AppCard className='card-hover no-card-space'>
       <StyledFlexWrapper>
         <StyledFlexContainer>
-          <StyledIconWrapper
-            style={{
-              color: "#0A8FDC",
-              backgroundColor: numberIntegration?.color + '22',
-            }}
-          >
-{/*             
-              <img src="../" alt='image-user' /> */}
-           
-          </StyledIconWrapper>
+        <StyledIconWrapper
+          
+          style={{
+            color: "#0A8FDC",
+            backgroundColor: "#e6f0ff",
+          }}
+        >
+      <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
+              <img style={{ width: '2rem' }} src="/assets/images/integration.png" />
+            </div>
+
+         
+        </StyledIconWrapper>
 
           <div style={{ marginRight: 8, overflow: 'hidden' }}>
             <Typography.Title level={5}>Total Integartions</Typography.Title>

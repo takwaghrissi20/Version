@@ -246,15 +246,27 @@ const AppVerticalNav = ({ routesConfig }) => {
 
       //QC Lead
       else if (userRole.includes("bod")) {
-        if (item.id === "VisaHealth" ||
+        if (
+          item.id === "Add Travel" ||
+          item.id === "ADDVisaHealth" ||
+          item.id === "AddHealthCertification" ||
+          item.id === "AddCorona" ||
+          item.id === "AddCorona" ||
           item.id === "ManpowerLocation" ||
-          item.id === "Employees" ||
+          item.id === "Add Project" ||
+          item.id === "Affect a project to employee" ||
+          item.id === "AddEmployees" ||
+          item.id === "CategoryContract" ||     
           item.id === "attendance" ||
-          item.id === "VacationLeave" ||
+          item.id === "Vacation" ||
+          item.id === "My Leave History" ||
+          
           item.id === "ManpowerEvaluation" ||
           item.id === "Add Recruitment" ||
           item.id === "Site Clerk" ||
-          item.id === "PROJECTS TRIP TRACK RECORD " ||
+          item.id === "Add Mission" ||
+          item.id === "Add Internal  Mission" ||
+          
           item.id === "Payroll"
 
 

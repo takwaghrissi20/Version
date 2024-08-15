@@ -13,7 +13,7 @@ import { CiSaveDown2 } from "react-icons/ci";
 import { StyledOrderTable, StyledAction } from '../../../../styles/index.styled';
 import { all } from 'axios';
 
-const OrderTable = ({ employeesoffice, loading }) => {
+const OrderTable = ({ employeesoffice, loading, user }) => {
 
   const [findIdData, setFindIdData] = useState(null);
   const [isViewEmp, onViewEmp] = useState(false);
@@ -41,10 +41,10 @@ const OrderTable = ({ employeesoffice, loading }) => {
   };
   // const calculateVacationDays = (vacations) => {
   //   const congeVacations = vacations?.filter(vacation => vacation?.type === 'congé');
-    
-  
+
+
   //   const totalDays = congeVacations?.reduce((sum, vacation) => sum + vacation.nuberdays, 0);
-  
+
   //   return totalDays;
   // };
 
@@ -60,10 +60,10 @@ const OrderTable = ({ employeesoffice, loading }) => {
 
       if (response.ok) {
         const responseData = await response.json();
-        console.log("getsId",responseData)
+        console.log("getsId", responseData)
         setFindIdData(responseData);
         const totalVacationDays = calculateVacationDays(responseData.vacations);
-         console.log("Total vacation days of type 'congé':", totalVacationDays);
+        console.log("Total vacation days of type 'congé':", totalVacationDays);
         // setAllConge(totalVacationDays)
 
 
@@ -82,7 +82,7 @@ const OrderTable = ({ employeesoffice, loading }) => {
   //   const totalVacationDays = calculateVacationDays(findIdData?.vacations);
   //   console.log("Total vacation days of type Congeee0000 'congé':", totalVacationDays);
   //   setAllConge(totalVacationDays)
-  
+
   // }, [allConge]);
 
 
@@ -135,10 +135,10 @@ const OrderTable = ({ employeesoffice, loading }) => {
       key: 'Vacation',
       render: (text, record) => (
         <p>{record?.allConge}</p>
-    
-            
-    ),
-   
+
+
+      ),
+
     },
     {
       title: 'Rest',
@@ -165,73 +165,82 @@ const OrderTable = ({ employeesoffice, loading }) => {
       fixed: 'right',
       className: 'customer-table-actions',
       render: (text, record) => (
-        
-          <StyledAction onClick={() => findId(record?.getsId)}>
-            <GrFormView className='iconeView'
-              onClick={handleAddEmpOpen}
-            ></GrFormView>
-            <EmployeeView
-              isViewEmployee={isViewEmp}
-              handleAddContactClose={handleAddEmpClose}
-              getsId={findIdData?.getsId}
-              nationality={findIdData?.nationality}
-              birthDate={findIdData?.birthDate}
-              phoneNumber={findIdData?.phoneNumber}
-              joinDate={findIdData?.joinDate}
-              companyType={findIdData?.companyType}
-              finishDate={findIdData?.finishDate}
-              actStatus={findIdData?.actStatus}
-              position={findIdData?.position}
-              getsEmail={findIdData?.getsEmail}
-              name={findIdData?.name}
-              passportnumber={findIdData?.passportnumber}
-              cnss={findIdData?.cnss}
-              contractNumb={findIdData?.contractNumb}
-              cvCopy={findIdData?.cvCopy}
-              passportCopy={findIdData?.passportCopy}
-              //corona1Date={findIdData?.vaccins}
-              traveldate={findIdData?.traveldate}
-              destination={findIdData?.destination}
-              projName={findIdData?.projName}
-             
+
+        <StyledAction onClick={() => findId(record?.getsId)}>
+          <GrFormView className='iconeView'
+            onClick={handleAddEmpOpen}
+          ></GrFormView>
+          <EmployeeView
+            isViewEmployee={isViewEmp}
+            handleAddContactClose={handleAddEmpClose}
+            getsId={findIdData?.getsId}
+            nationality={findIdData?.nationality}
+            birthDate={findIdData?.birthDate}
+            phoneNumber={findIdData?.phoneNumber}
+            joinDate={findIdData?.joinDate}
+            companyType={findIdData?.companyType}
+            finishDate={findIdData?.finishDate}
+            actStatus={findIdData?.actStatus}
+            position={findIdData?.position}
+            getsEmail={findIdData?.getsEmail}
+            name={findIdData?.name}
+            passportnumber={findIdData?.passportnumber}
+            cnss={findIdData?.cnss}
+            contractNumb={findIdData?.contractNumb}
+            cvCopy={findIdData?.cvCopy}
+            passportCopy={findIdData?.passportCopy}
+            //corona1Date={findIdData?.vaccins}
+            traveldate={findIdData?.traveldate}
+            destination={findIdData?.destination}
+            projName={findIdData?.projName}
+
+          />
+          {/* <AiFillEdit
+            onClick={handleEditEmpOpen}
+
+
+            className='iconeEdit'></AiFillEdit> */}
+          {user?.includes('admin') && (
+            <AiFillEdit
+              onClick={() => {
+                findId(record?.getsId);
+                handleEditEmpOpen();
+              }}
+              className='iconeEdit'
             />
-              <AiFillEdit
-              onClick={handleEditEmpOpen}
-         
+          )}
 
-              className='iconeEdit'></AiFillEdit>
-        
-            <EmployeeStatusEdit
-              isEditEmployee={isEditEmp}
-              handleAddContactClose={handleEditEmpClose}
-              getsId={findIdData?.getsId}
-              nationality={findIdData?.nationality}
-              birthDate={findIdData?.birthDate}
-              phoneNumber={findIdData?.phoneNumber}
-              joinDate={findIdData?.joinDate}
-              companyType={findIdData?.companyType}
-              finishDate={findIdData?.finishDate}
-              actStatus={findIdData?.actStatus}
-              position={findIdData?.position}
-              getsEmail={findIdData?.getsEmail}
-              name={findIdData?.name}
-              passportnumber={findIdData?.passportnumber}
-              cnss={findIdData?.cnss}
-              contractNumb={findIdData?.contractNumb}
-              cvCopy={findIdData?.cvCopy}
-              passportCopy={findIdData?.passportCopy}
-              //corona1Date={findIdData?.vaccins}
-              traveldate={findIdData?.traveldate}
-              destination={findIdData?.destination}
-              projName={findIdData?.projName}
-             
-          
-
-            />
+          <EmployeeStatusEdit
+            isEditEmployee={isEditEmp}
+            handleAddContactClose={handleEditEmpClose}
+            getsId={findIdData?.getsId}
+            nationality={findIdData?.nationality}
+            birthDate={findIdData?.birthDate}
+            phoneNumber={findIdData?.phoneNumber}
+            joinDate={findIdData?.joinDate}
+            companyType={findIdData?.companyType}
+            finishDate={findIdData?.finishDate}
+            actStatus={findIdData?.actStatus}
+            position={findIdData?.position}
+            getsEmail={findIdData?.getsEmail}
+            name={findIdData?.name}
+            passportnumber={findIdData?.passportnumber}
+            cnss={findIdData?.cnss}
+            contractNumb={findIdData?.contractNumb}
+            cvCopy={findIdData?.cvCopy}
+            passportCopy={findIdData?.passportCopy}
+            //corona1Date={findIdData?.vaccins}
+            traveldate={findIdData?.traveldate}
+            destination={findIdData?.destination}
+            projName={findIdData?.projName}
 
 
 
-            {/* <AiFillEdit 
+          />
+
+
+
+          {/* <AiFillEdit 
              onClick={handleEditContratOpen}
            
            className='iconeEdit'></AiFillEdit> */}
@@ -239,7 +248,7 @@ const OrderTable = ({ employeesoffice, loading }) => {
 
 
 
-          </StyledAction>
+        </StyledAction>
 
 
 

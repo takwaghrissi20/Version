@@ -84,7 +84,8 @@ const InterviewSheetById = () => {
     {
       label: 'INTERVIEW SHEET CONSTRUCTION TEAM ',
       key: '1',
-      children: <InterviewSheet JobCode={JobCode}
+      children: 
+      <InterviewSheet JobCode={JobCode}
         idViewConstruction={idViewConstruction}
 
         // isSaveDisabled={activeTabKey !== '1'}

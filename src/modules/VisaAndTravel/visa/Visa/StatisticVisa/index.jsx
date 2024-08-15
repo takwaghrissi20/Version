@@ -21,8 +21,7 @@ const VisaStatic = ({ listVIsa }) => {
          {listVIsa?.map((data) => (
           
           <Col key={data.id} xs={24} sm={24} lg={10}
-      
-          
+       
           >
             <StatsDirCardStatics
             data={data} />

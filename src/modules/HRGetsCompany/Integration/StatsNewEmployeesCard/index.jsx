@@ -21,7 +21,7 @@ import CountUp from 'react-countup';
 
 
 const StatsDirCard = ({ numberIntegration }) => {
- 
+
   return (
     <AppCard className='card-hover no-card-space'>
       <StyledFlexWrapper>
@@ -32,44 +32,43 @@ const StatsDirCard = ({ numberIntegration }) => {
               backgroundColor: numberIntegration?.color + '22',
             }}
           >
-{/*             
-              <img src="../" alt='image-user' /> */}
-           
+            <img src="/assets/images/workers.png" />
+
           </StyledIconWrapper>
 
           <div style={{ marginRight: 8, overflow: 'hidden' }}>
             <Typography.Title level={5}>Employees Number</Typography.Title>
             <StyledTitleWrapper>
-              
-            <CountUp end= {458}></CountUp>
-              </StyledTitleWrapper>
+
+              <CountUp end={458}></CountUp>
+            </StyledTitleWrapper>
           </div>
         </StyledFlexContainer>
         <StyledToggleContainer>
           <StyledFlexSuccessContainer>
-           
+
             <span
               style={{
                 marginLeft: 1,
                 fontSize: 14,
                 fontWeight: Fonts.BOLD,
-     
+
               }}
             >
-      
-           
+
+
             </span>
           </StyledFlexSuccessContainer>
           <StyledDurationWrapper>
-          <StyledViewer >
-          <Button
-            type='primary'
-            shape='circle'
-            className='icon-btn icon-btn-eye'
-            style={{color:"#9AC8EB"}}
-            icon={<AiOutlineEye />}
-          />
-          </StyledViewer>
+            <StyledViewer >
+              <Button
+                type='primary'
+                shape='circle'
+                className='icon-btn icon-btn-eye'
+                style={{ color: "#9AC8EB" }}
+                icon={<AiOutlineEye />}
+              />
+            </StyledViewer>
           </StyledDurationWrapper>
         </StyledToggleContainer>
       </StyledFlexWrapper>

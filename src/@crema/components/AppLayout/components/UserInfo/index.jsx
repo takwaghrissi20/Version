@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
-import { Dropdown } from 'antd';
+import { Dropdown,Image } from 'antd';
 import { FaChevronDown } from 'react-icons/fa';
 import { useThemeContext } from '@crema/context/AppContextProvider/ThemeContextProvider';
 import { useAuthMethod, useAuthUser } from '@crema/hooks/AuthHooks';
@@ -16,6 +16,7 @@ import {
   StyledUserArrow,
   StyledUsername,
   StyledUsernameInfo,
+  StyledAppLogo 
 } from './index.styled';
 
 const UserInfo = ({ hasColor }) => {
@@ -60,7 +61,14 @@ const UserInfo = ({ hasColor }) => {
             light: themeMode === 'light',
           })}
         >
-          <Dropdown
+           <StyledAppLogo>
+           <img src='/assets/images/logo-with-name.png' alt='Gets Company' />
+    
+    <p style={{marginLeft:'10px',marginTop:'1.5rem',fontFamily:'impact',fontSize:'20px',color:'#191970'}}>
+      GETS Company 's ERP</p>
+    </StyledAppLogo>
+      
+          {/* <Dropdown
             menu={{ items }}
             trigger={['click']}
             placement='bottomRight'
@@ -95,7 +103,7 @@ const UserInfo = ({ hasColor }) => {
                 </StyledCrUserDesignation>
               </StyledCrUserInfoContent>
             </StyledCrUserInfoInner>
-          </Dropdown>
+          </Dropdown> */}
         </StyledCrUserInfo>
       ) : (
         <StyledCrUserInfo

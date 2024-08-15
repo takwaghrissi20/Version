@@ -15,7 +15,7 @@ export const StyledCustomerInputView = styled.div`
   max-width: 120px;
 
   @media screen and (min-width: ${({ theme }) => theme.breakpoints.sm}px) {
-    max-width: 150px;
+    max-width: 15rem;
   }
 `;
 
@@ -73,11 +73,11 @@ export const StyledCustomerTable = styled(AppTableContainer)`
   }
 
   & .ant-table-thead > tr > th {
-    font-size: 13px;
-   
-    font-weight: ${({ theme }) => theme.font.weight.bold};
-    background-color: transparent;
-    text-align: center;
+    font-size: 12px;  
+    text-align:left;
+    font-weight: bold;  
+    line-height: 1;
+    font-family: poppins;
 
     &:first-child {
 

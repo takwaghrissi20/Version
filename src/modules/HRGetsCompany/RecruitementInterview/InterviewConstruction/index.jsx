@@ -184,7 +184,6 @@ const InterviewConstruction = ({ allinterviewConstructionTeam }) => {
           <div className='Pagination' >
         <StyledOrderHeaderRight>
 
-
           <Pagination
             currentPage={currentPage}
             totalPages={Math.ceil(count / pageSize)}

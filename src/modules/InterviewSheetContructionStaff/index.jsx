@@ -32,19 +32,34 @@ const InterviewSheetById = () => {
         totalNumber={totalNumber} level={level} projectName={projectName} position={position}
         isSaveDisabled={isSaveDisabled}
         roles={roles} ></InterviewSheet>,
-    }, 
-
-    {
-      label: 'INTERVIEW ASSESMENT SHEET ',
+    },
+    ...(roles.includes('HSE') || roles === "Human Ressource Manager" || roles.includes('bod') ||roles.includes('admin')   ? [{
+      label: 'INTERVIEW ASSESMENT SHEET',
       key: '2',
-      children: <AssignementConstruction isSaveDisabled={true}
-      JobCode={JobCode}
-        // isSaveDisabled={activeTabKey !== '1'}
-        totalNumber={totalNumber} level={level} projectName={projectName} position={position}
-        roles={roles}
+      children: 
+        <AssignementConstruction isSaveDisabled={true}
+        JobCode={JobCode}
+          // isSaveDisabled={activeTabKey !== '1'}
+          totalNumber={totalNumber} level={level} projectName={projectName} position={position}
+          roles={roles}
+        
+        ></AssignementConstruction>,
+       
       
-      ></AssignementConstruction>,
-    }
+    }] : []) 
+
+    // {
+    //   label: 'INTERVIEW ASSESMENT SHEET ',
+    //   key: '2',
+    //   children: 
+    //   <AssignementConstruction isSaveDisabled={true}
+    //   JobCode={JobCode}
+    //     // isSaveDisabled={activeTabKey !== '1'}
+    //     totalNumber={totalNumber} level={level} projectName={projectName} position={position}
+    //     roles={roles}
+      
+    //   ></AssignementConstruction>,
+    // }
 
     // ...(roles.includes('HSE') ? [{
     //   label: 'INTERVIEW ASSESMENT SHEET ',

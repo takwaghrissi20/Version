@@ -6,47 +6,47 @@ const crmData = {
     {
       id: 2,
       name: 'Recruitement',
-      iconImg: 'dashboard/campaign.svg',
-      color: '#F04F47',
+      iconImg: 'dashboard/speaker.png',
+      color: '#C6D9F5',
       link:"/Hr/Recruitement&Interview",
   
     },
     {
       id: 3,
       name: 'Employees',
-      iconImg: 'dashboard/user.svg',
-      color: '#11C15B',
+      iconImg: 'dashboard/employee1.png',
+      color: '#C6D9F5',
       link:"/Hr/EmployeesOffice"
    
     },
     {
       id: 4,
       name: 'Attendances',
-      iconImg: 'dashboard/attendance.png',
-      color: '#FF5252',
+      iconImg: 'dashboard/attendance1.png',
+      color: '#C6D9F5',
       link:"/Hr/Attendances/OfficeTimeSheet"
     },
   
     {
       id: 6,
       name: 'Manpower Evaluation',
-      iconImg: 'dashboard/wallet_yellow.svg',
-      color: '#FF5252',
+      iconImg: 'dashboard/Manpower.png',
+      color: '#C6D9F5',
       link:""
     },
     {
       id: 7,
       name: 'Visa & Health',
-      iconImg: 'dashboard/wallet_yellow.svg',
-      color: '#FF5252',
+      iconImg: 'dashboard/visa.png',
+      color: '#C6D9F5',
       link:"/Hr/Visa/Travel"
     },
   
     {
       id: 8,
-      name: 'PROJECTS TRIP TRACK RECORD',
-      iconImg: 'dashboard/wallet_yellow.svg',
-      color: '#FF5252',
+      name: 'Projects trip track record',
+      iconImg: 'dashboard/business-trip.png',
+      color: '#C6D9F5',
       link:"/ManpowerLocation/ManpowerLocationTrackRecord"
     },
   ],
@@ -55,7 +55,7 @@ const crmData = {
     {
       id: 1,
       name: 'Recruitement',
-      iconImg: 'dashboard/campaign.svg',
+      iconImg: 'dashboard/speaker.png',
       color: '#F04F47',
       link:"/Hr/Recruitement&Interview"
     },
@@ -68,7 +68,7 @@ const crmData = {
     {
       id: 2,
       name: 'Recruitement',
-      iconImg: 'dashboard/campaign.svg',
+      iconImg: 'dashboard/speaker.png',
       color: '#F04F47',
       link:"/Hr/Recruitement&Interview",
   
@@ -76,7 +76,7 @@ const crmData = {
     {
       id: 3,
       name: 'Employees',
-      iconImg: 'dashboard/user.svg',
+      iconImg: 'dashboard/employee1.png',
       color: '#11C15B',
       link:"/Hr/EmployeesOffice"
    
@@ -84,7 +84,7 @@ const crmData = {
     {
       id: 4,
       name: 'Attendances',
-      iconImg: 'dashboard/attendance.png',
+      iconImg: 'dashboard/attendance1.png',
       color: '#FF5252',
       link:"/Hr/Attendances/OfficeTimeSheet"
     },

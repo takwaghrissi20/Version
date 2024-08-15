@@ -12,7 +12,7 @@ import { AiFillEdit } from "react-icons/ai";
 import { CiSaveDown2 } from "react-icons/ci";
 import { StyledOrderTable, StyledAction } from '../../../../styles/index.styled';
 
-const OrderTable = ({ employeesmixt, loading }) => {
+const OrderTable = ({ employeesmixt, loading,user }) => {
 
   const [findIdData, setFindIdData] = useState(null);
   const [isViewEmp, onViewEmp] = useState(false);
@@ -168,12 +168,13 @@ const OrderTable = ({ employeesmixt, loading }) => {
              
 
             />
-
+        {user?.includes('admin') && (
               <AiFillEdit
               onClick={handleEditEmpOpen}
          
 
               className='iconeEdit'></AiFillEdit>
+        )}
         
             <EmployeeStatusEdit
               isEditEmployee={isEditEmp}

@@ -2,6 +2,24 @@ import styled from 'styled-components';
 import { Avatar, List } from 'antd';
 import { darken } from 'polished';
 
+
+export const StyledAppLogo = styled.div`
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+  align-items: center;
+  
+  & img {
+    height: 50px;
+    margin-left: 5px;
+    margin-top:0.5rem;
+    [dir='rtl'] & {
+      margin-right: 0;
+      margin-left: 10px;
+    }
+  }
+`;
+
 export const StyledDropdownList = styled(List)`
   & .ant-list-item {
     padding: 5px 12px;

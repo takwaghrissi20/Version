@@ -10,8 +10,14 @@ import { MdChangeCircle } from "react-icons/md";
 import { MdOutlineChangeCircle } from "react-icons/md";
 import { RxPerson } from "react-icons/rx";
 import { MdOutlinePayments } from "react-icons/md";
-
-
+import { MdPerson } from 'react-icons/md';
+import { FcComboChart , FcAdvertising , FcClock } from 'react-icons/fc';
+import { FaCalendarAlt } from 'react-icons/fa';
+import { GiTeamIdea } from 'react-icons/gi';
+import { FaCreditCard } from 'react-icons/fa';
+import { FaPlane } from 'react-icons/fa';
+import { BiBriefcase } from 'react-icons/bi';
+import { MdAttachMoney } from 'react-icons/md';
 const routesConfig = [
   {
     id: "dashboards",
@@ -24,7 +30,7 @@ const routesConfig = [
         id: "Dashboards",
         title: "Dashboards",
         messageId: "sidebar.app.dashboards",
-        icon: <HiOutlineChartSquareBar />,
+        icon: <FcComboChart />,
         url: "/dashboards/hr",
         permittedRole: "Hr",
 
@@ -43,7 +49,7 @@ const routesConfig = [
         id: "recruitement",
         title: "Recruitement",
         messageId: "sidebar.recruitement",
-        icon: <PiOfficeChairBold />,
+        icon: <FcAdvertising />,
         type: "collapse",
         children: [
           {
@@ -91,7 +97,7 @@ const routesConfig = [
         title: "Employees",
         messageId: "sidebar.hr.Employees",
         type: "collapse",
-        icon: <GrUserAdmin />,
+        icon: <  MdPerson size={29} color=" #5782d9" />,
         children: [
           {
             id: "Add Project",
@@ -157,7 +163,7 @@ const routesConfig = [
         id: "attendance",
         title: "Time Sheet",
         messageId: "sidebar.TimeSheet",
-        icon: <CiTimer />,
+        icon: <FcClock size={25}/>,
         url: "attendance",
         type: "collapse",
         children: [
@@ -180,7 +186,7 @@ const routesConfig = [
         id: "VacationLeave",
         title: "VacationLeave",
         messageId: "sidebar.components.VacationLeave",
-        icon: <CiLogout />,
+        icon: <FaCalendarAlt  size={21} color=" #5782d9" />,
         url: "recharts1",
         type: "collapse",
         children: [
@@ -221,12 +227,12 @@ const routesConfig = [
           //   messageId: "sidebar.hrrelation.MaternityPaternity",
           //   url: "/Hr/Vacation&Leave/MaternityPaternity",
           // },
-          {
-            id: "ReportedReports",
-            title: "ReportedReports",
-            messageId: "sidebar.hrrelation.ReportedReports",
-            url: "/Hr/Vacation&Leave/ReportedReports",
-          },
+          // {
+          //   id: "ReportedReports",
+          //   title: "ReportedReports",
+          //   messageId: "sidebar.hrrelation.ReportedReports",
+          //   url: "/Hr/Vacation&Leave/ReportedReports",
+          // },
          
           
           
@@ -248,7 +254,7 @@ const routesConfig = [
         id: "ManpowerEvaluation",
         title: "ManpowerEvaluation",
         messageId: "sidebar.manpower",
-        icon: <FaAvianex />,
+        icon: < GiTeamIdea size={25} color="#5782d9"/>,
         url: "ManpowerEvaluation",
         type: "collapse",
         children: [
@@ -265,7 +271,7 @@ const routesConfig = [
         id: "VisaHealth",
         title: "VisaHealth",
         messageId: "sidebar.VisaHealth",
-        icon: <LiaCcVisa />,
+        icon: < FaCreditCard  size={24} color="#5782d9"/>,
         url: "VisaHealth",
         type: "collapse",
         children: [
@@ -328,7 +334,7 @@ const routesConfig = [
         id: "PROJECTS TRIP TRACK RECORD ",
         title: "PROJECTS TRIP TRACK RECORD ",
         messageId: "sidebar.Trip",
-        icon: <MdOutlineChangeCircle  />,
+        icon: < FaPlane size={21} color="#5782d9"/>,
         url: "recharts",
         type: "collapse",
         children: [
@@ -411,7 +417,7 @@ const routesConfig = [
         id: "ManpowerLocation",
         title: "ManpowerLocation",
         messageId: "sidebar.ManpowerLocation",
-        icon: <MdLocationOn  />,
+        icon: <MdLocationOn  size={24} color="#5782d9"/>,
         url: "recharts",
         type: "collapse",
         children: [
@@ -461,7 +467,7 @@ const routesConfig = [
         id: "Site Clerk",
         title: "SiteClerk",
         messageId: "sidebar.SiteCleark",
-        icon: <RxPerson />,
+        icon: <BiBriefcase size={24} color="#5782d9" />,
         url: "recharts",
         type: "collapse",
         children: [
@@ -507,7 +513,7 @@ const routesConfig = [
         id: "Payroll",
         title: "Payroll",
         messageId: "sidebar.Payroll",
-        icon: <MdOutlinePayments  />,
+        icon: <MdAttachMoney size={24} color="#5782d9"  />,
         url: "recharts",
         type: "collapse",
         children: [

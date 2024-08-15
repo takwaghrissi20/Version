@@ -18,9 +18,9 @@ export const StyledCustomizerOption = styled.div`
 `;
 
 export const StyledCustomizerButton = styled(Button)`
-  display: block;
+  display: none;
   border-radius: 30px 0 0 30px !important;
-  background-color: ${({ theme }) => theme.palette.orange[5]};
+  background-color: ${({ theme }) => theme.palette.orange[4]};
   color: white;
   box-shadow: none;
   border: 0 none;
@@ -35,7 +35,7 @@ export const StyledCustomizerButton = styled(Button)`
 
   &:hover,
   &:focus {
-    background-color: ${({ theme }) => theme.palette.orange[6]};
+    background-color: ${({ theme }) => theme.palette.orange[7]};
     color: white;
     border-radius: 30px 0 0 30px;
 

@@ -60,7 +60,7 @@ export const backgroundDark = {
 
 export const backgroundLight = {
   paper: '#FFFFFF',
-  default: '#F4F7FE',
+  default: '#ebf1fc',
 };
 
 const cardRadius = ThemeStyleRadius.STANDARD;
@@ -112,7 +112,7 @@ export const defaultTheme = {
       white: '#FFFFFF',
       orange: {
         5: '#ffa940',
-        6: '#fa8c16',
+        6: '#5782d9',
       },
       cyan: {
         7: '#08979c',

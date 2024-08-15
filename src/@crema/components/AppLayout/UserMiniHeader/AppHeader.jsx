@@ -28,6 +28,7 @@ const AppHeader = () => {
   return (
     <StyledAppUserMinibar className='app-userMiniHeader'>
       <AppLogo />
+      
 
       <StyledUserMiniHeaderSearch placeholder={messages['common.searchHere']} />
       <StyledUserMiniSectionDesktop>

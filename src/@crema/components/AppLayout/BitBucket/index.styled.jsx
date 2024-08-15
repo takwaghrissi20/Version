@@ -36,6 +36,10 @@ export const StyledAppBitbucketHeader = styled(Header)`
   }
 
   & .trigger {
+  display: flex;
+  justify-content: flex-end;
+  
+
   }
 `;
 

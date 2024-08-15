@@ -21,7 +21,7 @@ const NumberInterview = (props) => {
         />
 
         <StyledCoinStatsContent>
-          <p>{heading}</p>
+        <p style={{fontWeight:"bold",fontFamily:"popins"}}>{heading}</p>
           
 
           <StyledCoinStatsContentAvatar>

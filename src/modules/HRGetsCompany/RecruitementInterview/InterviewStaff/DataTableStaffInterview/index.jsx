@@ -31,7 +31,7 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
   useEffect(() => {
     const updateTableHeight = () => {
       const pageHeight = window.innerHeight;
-      const tableHeight = pageHeight * 0.2; 
+      const tableHeight = pageHeight * 0.15; 
       setTableHeight(tableHeight);
     };
     window.addEventListener('resize', updateTableHeight);
@@ -351,23 +351,22 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
           <StyledRecentPatientBadge
             style={{
               color: record.color,
-              backgroundColor: "red",
-              color: "white",
-              fontFamily: "inherit"
-            }}
+              backgroundColor: "#FF2400",
+              color: "black",
+              fontFamily: "inherit"}}
           >
-            Accept
+            Accepted
           </StyledRecentPatientBadge>
         ) : (
           <StyledRecentPatientBadge
-            style={{
-              color: record.color,
-              backgroundColor: "green",
-              color: "white",
-              fontFamily: "inherit"
-            }}
+          style={{
+            color: record.color,
+            backgroundColor: "#C0C0C0",
+            color: "black",
+            fontFamily: "inherit"
+          }}
           >
-             pending
+             Pending
           </StyledRecentPatientBadge>
         )
       ),
@@ -379,25 +378,25 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
       render: (text, record) => (
         record.notif === 3 ? (
           <StyledRecentPatientBadge
-            style={{
-              color: record.color,
-              backgroundColor: "green",
-              color: "white",
-              fontFamily: "inherit"
-            }}
+          style={{
+            color: record.color,
+            backgroundColor: "#32CD32",
+            color: "black",
+            fontFamily: "inherit"
+          }}
           >
             Accepted
           </StyledRecentPatientBadge>
         ) : (
           <StyledRecentPatientBadge
-            style={{
-              color: record.color,
-              backgroundColor: "#C0B198",
-              color: "black",
-              fontFamily: "inherit"
-            }}
+          style={{
+            color: record.color,
+            backgroundColor: "#C0C0C0",
+            color: "black",
+            fontFamily: "inherit"
+          }}
           >
-             pending
+             Pending
           </StyledRecentPatientBadge>
         )
       ),

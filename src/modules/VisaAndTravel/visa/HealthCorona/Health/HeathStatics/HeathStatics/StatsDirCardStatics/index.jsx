@@ -21,7 +21,7 @@ const StatsDirCardStatics = ({ data }) => {
         <StyledFlexContainer>
         
           <div style={{ marginRight: 8, overflow: 'hidden' }}>
-            <Typography.Title level={5}>{data.title}</Typography.Title>
+          <Typography.Title level={5}style={{fontFamily:'poppins'}}>{data.icon} {data.title}</Typography.Title>
             <StyledTitleWrapper>{data.number}</StyledTitleWrapper>
           </div>
         </StyledFlexContainer>

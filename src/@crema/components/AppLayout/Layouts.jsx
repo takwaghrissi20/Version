@@ -13,10 +13,10 @@ import HorHeaderFixed from './HorHeaderFixed';
 
 const Layouts = {
 
-  [NavStyle.DEFAULT]: Default,
+  [NavStyle.DEFAULT]: MiniSidebarToggle,
   [NavStyle.HEADER_USER]: HeaderUserLayout,
   [NavStyle.HEADER_USER_MINI]: HeaderUserMiniLayout,
-  [NavStyle.MINI_SIDEBAR_TOGGLE]: MiniSidebarToggle,
+  [NavStyle.MINI_SIDEBAR_TOGGLE]: Default,
   [NavStyle.MINI]: MiniSidebar,
   [NavStyle.DRAWER]: DrawerLayout,
   [NavStyle.BIT_BUCKET]: BitBucket,

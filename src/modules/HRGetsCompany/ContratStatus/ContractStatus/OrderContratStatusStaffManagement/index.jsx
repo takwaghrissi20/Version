@@ -9,7 +9,7 @@ import { AiFillEdit } from "react-icons/ai";
 import { CiSaveDown2 } from "react-icons/ci";
 import { MoreOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-const OrderTable = ({ temployee, loading }) => {
+const OrderTable = ({ temployee, loading,user }) => {
   console.log("temployeerrrrrrr",temployee)
   const navigate = useNavigate();
   const [findIdData, setFindIdData] = useState("");
@@ -520,7 +520,25 @@ const OrderTable = ({ temployee, loading }) => {
       key: 'actions',
       className: 'customer-table-actions',
       render: (text, record) => {
-        const items = [
+        let items = [];
+
+        if (user.includes('admin')) {
+        
+          items = [
+            { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleAddContratOpen },
+            { key: 2, label: <span style={{ fontSize: 14 }}>Upload Contract</span>, onClick: handleEditContratOpen1 }
+          ];
+    
+          if (record.contratctCopy) {
+            items.push({ key: 3, label: <span style={{ fontSize: 14 }}>Download</span>, onClick: SelectionnnerContrat });
+          }
+        } else if (user.includes('bod')) {
+          // BOD users get only the "View" option
+          items = [
+            { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleAddContratOpen }
+          ];
+        }
+        const items0 = [
           { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleAddContratOpen },
           // { key: 1, label: <span style={{ fontSize: 14 }}>Viewhhh</span>, onClick: handleAddContratOpen1 },
           // { key: 2, label: <span style={{ fontSize: 14 }}>Upload Contract</span>, onClick: handleEditContratOpen },

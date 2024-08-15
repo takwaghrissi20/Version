@@ -389,10 +389,10 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
           }}>
             {/* <FaSearch></FaSearch> */}
             <span style={{marginTop:"0.5rem"}}>CIS- </span>
-            <input
+            <Input
               style={{
                 borderRight: '1px solid grey',
-                border: '1px solid transparent', // Bordure transparente par défaut
+                border: '1px solid #c9d5f2', // Bordure transparente par défaut
                 outline: 'none', // Supprime la bordure de focus par défaut
                 '&:focus': {
                   border: '1px solid transparent', // Rend la bordure transparente lorsqu'en focus
@@ -403,7 +403,25 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
               onChange={(e) => handleSearch(e.target.value)}
               //value={searchValue ? searchValue : 'CIS'}
               value={searchValue}
-            ></input>
+              suffix={<FaSearch onClick={() => fetchDataId(searchValue)} style={{ cursor: 'pointer' }} />}
+            >
+              
+            </Input>
+            {/* <input
+              style={{
+                borderRight: '1px solid grey',
+                border: '1px solid transparent', 
+                outline: 'none', 
+                '&:focus': {
+                  border: '1px solid transparent', 
+                }
+              }}
+
+              placeholder="Interview Code"
+              onChange={(e) => handleSearch(e.target.value)}
+             
+              value={searchValue}
+            ></input> */}
             {isDropdownOpen && (
               <div style={{
                 borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px",
@@ -427,11 +445,11 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
                   <button onClick={() => handleItemRemove(interview)}>Remove</button>
                 </div>
               ))} */}
-                <FaSearch onClick={() => fetchDataId(searchValue)}
+                {/* <FaSearch onClick={() => fetchDataId(searchValue)}
                   style={{ marginLeft: "1rem", marginTop: "4px", cursor: 'pointer', }}
 
 
-                ></FaSearch>
+                ></FaSearch> */}
               </Row>
             </div>
 
