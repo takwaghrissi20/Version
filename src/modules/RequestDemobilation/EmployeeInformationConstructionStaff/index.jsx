@@ -239,10 +239,6 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
 
   //Calcul Duration Period
 
-
-
-
-
   // if (FinishDate) {
   //   // Convertir la date en format "YYYY-MM-DD"
   //   const formattedDate = FinishDate.format("YYYY-MM-DD");
