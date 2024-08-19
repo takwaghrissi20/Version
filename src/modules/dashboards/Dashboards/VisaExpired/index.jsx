@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyledCustomerTable } from '../index.styled';
 import { useNavigate } from "react-router-dom";
-const ExpiredVisaData = ({VisaExpired ,loading,AllRecruitement}) => {
+const ExpiredVisaData = ({VisaExpired ,loading,AllRecruitement,visaExperedProjet}) => {
   const [findIdData, setFindIdData] = useState(null);
   const [isViewRecruitement, onViewRecruitement] = useState(false);
   const [isEditRecruitement, onEditRecruitement] = useState(false);
@@ -27,7 +27,7 @@ const ExpiredVisaData = ({VisaExpired ,loading,AllRecruitement}) => {
       title: 'Gets Id',
       dataIndex: 'getsId',
       key: 'getsId',
-      width: 150,
+
   
     },
     {
@@ -35,13 +35,13 @@ const ExpiredVisaData = ({VisaExpired ,loading,AllRecruitement}) => {
       dataIndex: 'name',
       key: 'name',
       render: (text) => <a>{text}</a>,
-      width: 150,
+    
     },
     {
       title: 'Visa Finish Date',
      dataIndex: 'finishDateVisa',
      key: 'finishDateVisa',
-      width: 150,
+   
     },
 
   
@@ -53,7 +53,7 @@ const ExpiredVisaData = ({VisaExpired ,loading,AllRecruitement}) => {
     <p>IT</p>
    
   )}
-  {user.includes('admin') && (
+  {user.includes('admin')  && (
       <StyledCustomerTable
       hoverColor
       data={VisaExpired}
@@ -66,6 +66,20 @@ const ExpiredVisaData = ({VisaExpired ,loading,AllRecruitement}) => {
     />
    
   )}
+  {user.includes('Leader') && (
+      <StyledCustomerTable
+      hoverColor
+      data={visaExperedProjet}
+      loading={loading}
+      columns={columns}
+      scroll={{ x: 'auto',  y: tableHeight }}
+      //scroll={{ x: 'auto', y: 150 }}
+
+
+    />
+   
+  )}
+
      
 
 

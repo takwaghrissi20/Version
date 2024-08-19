@@ -1524,7 +1524,7 @@ const EditRecruitementAbove = () => {
             style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
           >
 
-            {userRoles.includes("Planner") ?
+            {userRoles.includes("PMO") ?
 
               <>
                 <Button onClick={() => UpdatePlanner()}>

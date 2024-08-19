@@ -665,7 +665,7 @@ console.log("nameConstruction",nameConstruction)
             </StyledShadowWrapper>
           </Col>
         </AppRowContainer>
-      {userRole.includes("Planner") &&
+      {userRole.includes("PMO") &&
       <>
        <Divider style={{ marginTop: 16, marginBottom: 16 }} />
         <AppRowContainer>

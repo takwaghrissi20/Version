@@ -41,10 +41,34 @@ const Dashboards = () => {
   const [{ apiData: metricsData }] = useGetDataApi('/dashboard/metrics');
   const [{ apiData: crmData }] = useGetDataApi('/dashboard/crm');
   const [passportExpered, setPassportExpered] = useState([]);
+  const [passportExperedProjet, setPassportExperedProjet] = useState([]);
   const [visaExpered, setVisaExpered] = useState([]);
+  const [visaExperedProjet, setVisaExperedProjet] = useState([]);
   const [idRec, setIdRec] = useState("");
   const [listRecruitementId, setListRecruitementId] = useState([]);
+  const [listRecruitementPMO, setListRecruitementPMO] = useState([]);
   const user = localStorage.getItem("role");
+  const [project, setProject] = useState([]);
+  const userEmail = localStorage.getItem("email");
+   // Project By email
+   const fetchProjectEmail = async () => {
+    try {
+      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getProjectByMail?mail=${userEmail}`;
+      const response = await fetch(url, {
+        method: "GET",
+      });
+      if (response.ok) {
+        const data = await response.json();       
+        const ProjectName = data.map(project => project.projName);
+        console.log("projet profile", ProjectName)
+        setProject(ProjectName);
+      } else {
+        console.error("Erreur lors de la récupération du email Projet :", response.status);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la récupération du email Projet:", error);
+    }
+  };
   {/*Get Profile*/ }
   const GetProfileEmployess = async () => {
     const storedemail = window.localStorage.getItem("email");
@@ -156,10 +180,13 @@ const Dashboards = () => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
+      console.log("POMMM",data)
       setCount(data.length)
       //////Filter les count de Data de idem
       const dataRecruitement = data.filter(p => p.idemp === idRec);
-      console.log("lenght", dataRecruitement)
+      const dataRecruitementPMO = data.filter(p => p.notif === 4);
+      setListRecruitementPMO(dataRecruitementPMO)
+      console.log("lenght", dataRecruitementPMO)
 
       setCountId(dataRecruitement)
 
@@ -196,8 +223,7 @@ const Dashboards = () => {
     }
 
   };
-  const userEmail = localStorage.getItem("email");
-  console.log("userEmail ", userEmail);
+
 
   // Project By email
   const fetchEmployeesEmail = async () => {
@@ -249,14 +275,18 @@ const Dashboards = () => {
 
   };
   useEffect(() => {
-    if (user.includes("admin") || (user.includes('Administrator'))) {
+    if (user.includes("admin") || (user.includes('Administrator')) ||(user.includes('PMO'))) {
       fetchEmployeesByType();
       fetchCountRecruitement()
+   
       // fetchCountRecruitement()
     }
-    else if ((!user.includes("admin"))) {
+    else if ((!user.includes("admin") ||user.includes("Leader") )) {
       fetchEmployeesEmail()
       fetchEmployeesByEmployees();
+      fetchExpiredVisa ()
+      fetchProjectEmail()
+      
 
     }
 
@@ -282,6 +312,11 @@ const Dashboards = () => {
           return false;
         }
       });
+      console.log("Données des visas expirés :", expiredVisaData);
+      const ProjexpiredVisaData = expiredVisaData.filter(employee =>
+        project.includes(employee.projName)
+      );
+      setVisaExperedProjet(ProjexpiredVisaData)
       /////Passport Finist Date
       const passportfinishdate = data.filter(employee => {
         // Vérifier si la date de fin de visa est définie et non vide
@@ -293,9 +328,18 @@ const Dashboards = () => {
           return false;
         }
       });
+      console.log("Données des visas expirés :", passportfinishdate);
+ 
+       // Filtrer les employés dont le projet est inclus dans le tableau project
+       const Projpassportfinishdate = passportfinishdate.filter(employee =>
+        project.includes(employee.projName)
+      );
+
+      console.log("Employés avec visas expirés et projets correspondants :", Projpassportfinishdate);
+      setPassportExperedProjet(Projpassportfinishdate)
       setPassportExpered(passportfinishdate)
       setVisaExpered(expiredVisaData)
-      console.log("Données des visas expirés :", expiredVisaData);
+      
 
 
 
@@ -307,7 +351,7 @@ const Dashboards = () => {
 
   //End Passourt Expired
 
-
+console.log("passportExperedProjet",passportExperedProjet)
   const items = [
     {
       label: 'Recruitment',
@@ -341,9 +385,13 @@ const Dashboards = () => {
             <RecruitementTable
               loading={loading}
               AllRecruitement={datarecruitement}
+              listRecruitementPMO={listRecruitementPMO}
               listRecruitementId={listRecruitementId}
             />
-            {user.includes('admin') || user.includes('Administrator') || !user?.includes('Construction') && (
+            {user.includes('admin') || user.includes('Administrator') || !user?.includes('Construction') 
+            || !user.includes('PMO') 
+            
+            && (
               <>
                 <div className='Pagination' >
                   <StyledCustomerHeaderRight>
@@ -356,7 +404,7 @@ const Dashboards = () => {
                 </div>
               </>
             )}
-            {!user.includes('admin') || !user.includes('Administrator') && (
+            {!user.includes('admin') || !user.includes('Administrator')  || !user.includes('PMO') && (
 
 
               <div className='Pagination' >
@@ -390,19 +438,22 @@ const Dashboards = () => {
     //     </>
     //   ),
     // }] : []),
-    ...(((!(user?.includes('Manager') || user?.includes('Planner') || user?.includes('Leader') ||
-      user?.includes('Administrator') || user?.includes('Construction'))) || user?.includes('Human Ressource')) ? [{
+    ...(((!(user?.includes('Manager') || user?.includes('PMO') ||
+      user?.includes('Administrator') || user?.includes('Construction'))) || user?.includes('Human Ressource')) || user?.includes('Human Ressource') ? [{
         label: 'Passport Expired',
         key: '2',
         children: (
           <>
             <AppsHeader key={'wrap'}></AppsHeader>
-            <PassportExpired loading={loading} passportExpered={passportExpered} />
+            <PassportExpired 
+            passportExperedProjet={passportExperedProjet}
+            loading={loading} 
+            passportExpered={passportExpered} />
           </>
         ),
       }] : []),
 
-    ...(((!(user?.includes('Manager') || user?.includes('Planner') || user?.includes('Leader') ||
+    ...(((!(user?.includes('Manager') || user?.includes('PMO')  ||
       user?.includes('Administrator') || user?.includes('Construction'))) || user?.includes('Human Ressource')) ? [{
         label: 'Visa Expired',
         key: '3',
@@ -411,7 +462,10 @@ const Dashboards = () => {
             <AppsHeader key={'wrap'}>
 
             </AppsHeader>
-            <VisaExpired loading={loading} VisaExpired={visaExpered} />
+            <VisaExpired 
+            visaExperedProjet={visaExperedProjet}
+            loading={loading}
+             VisaExpired={visaExpered} />
 
           </>,
       }] : []),
@@ -443,7 +497,7 @@ const Dashboards = () => {
           </AppRowContainer>
         )}
         {/**Leader */}
-        {user.includes("Leader") && metricsData && (
+        {user.includes("Leader") || user.includes("PMO")&& metricsData && (
           <AppRowContainer ease={'easeInSine'}>
             {crmData?.stateDataManager?.map((data) => (
               <Col key={data.id} xs={24} sm={12} lg={6}>
@@ -465,7 +519,7 @@ const Dashboards = () => {
         )
         }
       </>
-      {user.includes("Planner") || user?.includes('Construction') || user?.includes('Site Klerk') ||
+      { user?.includes('Construction') || user?.includes('Site Klerk') ||
         user.includes("QC") || user.includes("ASSET AND LOGISTIC ")
 
         ?

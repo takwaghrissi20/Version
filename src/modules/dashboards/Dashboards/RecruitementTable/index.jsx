@@ -11,7 +11,7 @@ import { Table, Tooltip,notification } from 'antd';
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
 import IntlMessages from '../../../../@crema/helpers/IntlMessages';
-const OrderTable = ({ loading,AllRecruitement, listRecruitementId}) => {
+const OrderTable = ({ loading,AllRecruitement, listRecruitementId,listRecruitementPMO}) => {
   const [findIdData, setFindIdData] = useState(null);
   const [isViewRecruitement, onViewRecruitement] = useState(false);
   const [isEditRecruitement, onEditRecruitement] = useState(false);
@@ -470,35 +470,40 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId}) => {
    
   )} */}
 {/**/}
-{(user.includes('admin') || user.includes('Administrator') )?
-  <StyledOrderTable
+{
+  (user.includes('admin') || user.includes('Administrator') || !user.includes('PMO')) ? (
+    <StyledOrderTable
       hoverColor
       data={AllRecruitement}
       loading={loading}
       columns={columns}
-      scroll={{ x: 'auto',  y: tableHeight }}
-      //scroll={{ x: 'auto', y: 150 }
+      scroll={{ x: 'auto', y: tableHeight }}
     />
-
-
-:
-<StyledOrderTable
-hoverColor
-data={listRecruitementId}
-loading={loading}
-columns={columns}
-scroll={{ x: 'auto', y: tableHeight }}
-/> 
-
-
-
+  ) : (
+    !user.includes('PMO') && (
+      <StyledOrderTable
+        hoverColor
+        data={listRecruitementId}
+        loading={loading}
+        columns={columns}
+        scroll={{ x: 'auto', y: tableHeight }}
+      />
+    )
+  )
 }
 
 
 
-
-{/**/}
-
+{/*PMO*/}
+{user.includes('PMO') && 
+  <StyledOrderTable
+        hoverColor
+        data={listRecruitementPMO}
+        loading={loading}
+        columns={columns}
+        scroll={{ x: 'auto', y: tableHeight }}
+      />
+}
 
 
 

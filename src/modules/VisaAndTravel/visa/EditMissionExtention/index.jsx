@@ -939,7 +939,7 @@ const UpdateMission = () => {
               </Col>
             </AppRowContainer>
             {/*Cheked Planner*/}
-            {roles.includes("Planner") &&
+            {roles.includes("PMO") &&
               <>
                 <Divider style={{ marginTop: 16, marginBottom: 16 }} />
                 <AppRowContainer>
@@ -984,7 +984,7 @@ const UpdateMission = () => {
                 </AppRowContainer>
               </>
             }
-            {!roles.includes("Planner") &&
+            {!roles.includes("PMO") &&
               <>
                 <Divider style={{ marginTop: 16, marginBottom: 16 }} />
                 <AppRowContainer>
@@ -1087,7 +1087,7 @@ const UpdateMission = () => {
             style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
           >
             <Button onClick={handleCancelMission}>Cancel</Button>
-            {roles.includes("Planner") &&
+            {roles.includes("PMO") &&
               <Button
                 onClick={UpdatePlanner}
               >Save Planner</Button>

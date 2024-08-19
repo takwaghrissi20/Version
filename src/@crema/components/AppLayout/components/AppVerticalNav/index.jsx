@@ -204,16 +204,16 @@ const AppVerticalNav = ({ routesConfig }) => {
           return false;
         }
       }
-      if (userRole.includes("Planner")) {
+      if (userRole.includes("PMO")) {
         if (item.id === "VisaHealth" ||
           item.id === "ManpowerLocation" ||
           item.id === "Employees" ||
           item.id === "attendance" ||
           item.id === "VacationLeave" ||
           item.id === "ManpowerEvaluation" ||
-          item.id === "Dashboards" ||
+         
           item.id === "recruitement" ||
-          item.id === "dashboards" ||
+        
           item.id === "Site Clerk" ||
           item.id === "PROJECTS TRIP TRACK RECORD " ||
           item.id === "Payroll"

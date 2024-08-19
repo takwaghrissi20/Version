@@ -12,7 +12,8 @@ import { StyledOrderTable, StyledAction } from '../../../../styles/index.styled'
 import { all } from 'axios';
 import { Table, Tooltip } from 'antd';
 import { useNavigate } from "react-router-dom";
-const ExpiredPassportData = ({passportExpered ,loading,AllRecruitement}) => {
+const ExpiredPassportData = ({passportExpered ,loading,AllRecruitement, passportExperedProjet}) => {
+
   const [findIdData, setFindIdData] = useState(null);
   const [isViewRecruitement, onViewRecruitement] = useState(false);
   const [isEditRecruitement, onEditRecruitement] = useState(false);
@@ -42,7 +43,7 @@ const ExpiredPassportData = ({passportExpered ,loading,AllRecruitement}) => {
       title: 'Gets Id',
       dataIndex: 'getsId',
       key: 'getsId',
-      width: 150,
+   
   
     },
     {
@@ -50,13 +51,13 @@ const ExpiredPassportData = ({passportExpered ,loading,AllRecruitement}) => {
       dataIndex: 'name',
       key: 'name',
       render: (text) => <a>{text}</a>,
-      width: 150,
+
     },
     {
       title: 'Passport Finish Date',
       dataIndex: 'passport_finish_date',
       key: 'passport_finish_date',
-      width: 150,
+     
     },
 
   
@@ -68,7 +69,7 @@ const ExpiredPassportData = ({passportExpered ,loading,AllRecruitement}) => {
     <p>IT</p>
    
   )}
-  {user.includes('admin') && (
+  {user.includes('admin')  && (
       <StyledCustomerTable
       hoverColor
       data={passportExpered}
@@ -81,7 +82,20 @@ const ExpiredPassportData = ({passportExpered ,loading,AllRecruitement}) => {
     />
    
   )}
-     
+  {user.includes('Leader') && (
+      <StyledCustomerTable
+      hoverColor
+      data={
+        passportExperedProjet}
+      loading={loading}
+      columns={columns}
+      scroll={{ x: 'auto',  y: tableHeight }}
+      //scroll={{ x: 'auto', y: 150 }}
+
+
+    />
+   
+  )}
 
 
     </>

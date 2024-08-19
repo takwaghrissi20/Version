@@ -841,7 +841,7 @@ const NotificationItem = ({ user }) => {
 
 
       {/*PLanner */}
-      {user.includes("Planner") || notifPlanner?.dep?.includes('Operation') ?
+      {user.includes("PMO") || notifPlanner?.dep?.includes('Operation') ?
         <StyledNotifyListItem className='item-hover'>
           <p>Number All Notification</p>
           {notifPlanner.map((p, index) => (

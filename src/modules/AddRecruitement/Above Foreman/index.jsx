@@ -1304,7 +1304,7 @@ const AddRecruitementAbove = () => {
           </Col>
         </AppRowContainer>
 
-        {dep === "operation" && user.includes('Planner') ?
+        {dep === "operation" && user.includes('PMO') ?
           <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
             <Col xs={24} md={6}>
               <Typography.Title level={5}>Planner Review </Typography.Title>
