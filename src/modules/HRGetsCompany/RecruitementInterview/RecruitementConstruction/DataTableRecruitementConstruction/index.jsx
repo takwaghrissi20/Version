@@ -15,7 +15,7 @@ import IntlMessages from '../../../../../@crema/helpers/IntlMessages';
 import { useNavigate } from "react-router-dom";
 import { Button, Tooltip, Dropdown } from 'antd';
 const AllRecruitementStaff = ({ roles,allrecruitementbelow, findIdData, id, findId, setFindIdData, open, handleInterview }) => {
-
+console.log("allrecruitementbelow",allrecruitementbelow)
   //const [findIdData, setFindIdData] = useState(null);
   const [isViewRecruitement, onViewRecruitement] = useState(false);
   const [isEditRecruitement, onEditRecruitement] = useState(false);
@@ -348,7 +348,6 @@ const AllRecruitementStaff = ({ roles,allrecruitementbelow, findIdData, id, find
         columns={columns}
         scroll={{ x: 'auto', y: tableHeight }}
       //scroll={{ x: 'auto', y: 200 }}
-
 
       />
 

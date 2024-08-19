@@ -745,6 +745,9 @@ const AddRecruitementForemanBelow = () => {
         const responseData = await response.json();
         console.log("opration reponse project Leader", responseData)
         form.resetFields();
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
         openNotification('bottomRight')
 
         const email = 'rihemhassounanjim90@gmail.com';

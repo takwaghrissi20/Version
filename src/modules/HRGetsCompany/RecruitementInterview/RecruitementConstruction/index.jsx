@@ -43,11 +43,12 @@ const RecruitementConstruction = ({ allrecruitementbelow, roles, recruitementTyp
       if (!response.ok) {
         throw new Error('Failed to fetch employees');
       }
-
       const data = await response.json();
+      console.log("getRecByType",data)
       setRecruitementbelow(data);
     } catch (error) {
       console.error('Error fetching employees:', error);
+
     }
   };
 
@@ -190,7 +191,7 @@ const RecruitementConstruction = ({ allrecruitementbelow, roles, recruitementTyp
           paddingBottom: 10,
         }}
       >
-        {(roles.includes("admin")) ||(roles.includes("Administrator"))  ?
+        {(roles.includes("admin")) || (roles.includes("Administrator"))  ?
           <>
             <OrderTable
               allrecruitementbelow={recruitementbelow}
@@ -205,8 +206,6 @@ const RecruitementConstruction = ({ allrecruitementbelow, roles, recruitementTyp
             />
             <div className='Pagination' >
               <StyledOrderHeaderRight>
-
-
                 <Pagination
                   currentPage={currentPage}
                   totalPages={Math.ceil(count / pageSize)}
