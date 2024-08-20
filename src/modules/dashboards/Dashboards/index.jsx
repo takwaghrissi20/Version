@@ -388,7 +388,7 @@ console.log("passportExperedProjet",passportExperedProjet)
               listRecruitementPMO={listRecruitementPMO}
               listRecruitementId={listRecruitementId}
             />
-            {user.includes('admin') || user.includes('Administrator') || !user?.includes('Construction') 
+            {user.includes('admin') || user.includes('bod') || user.includes('Administrator') || !user?.includes('Construction') 
             || !user.includes('PMO') 
             
             && (

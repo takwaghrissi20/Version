@@ -82,7 +82,6 @@ const AddRecruitementAbove = () => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
-      console.log("dataprofile", data)
       setDep(data.departement)
       setProfile(data)
       setProjets(data.projects)
@@ -1263,6 +1262,7 @@ const AddRecruitementAbove = () => {
 
                   >
                     <Input
+                      type="number"
                       placeholder="Desired years of experience"
                       value={desertExperience}
                       onChange={(e) =>setDesertExperience(e.target.value)}
@@ -1319,7 +1319,7 @@ const AddRecruitementAbove = () => {
         {dep === "operation" && user.includes('PMO') ?
           <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
             <Col xs={24} md={6}>
-              <Typography.Title level={5}>Planner Review </Typography.Title>
+              <Typography.Title level={5}>PMO Controlling </Typography.Title>
 
             </Col>
             <Col xs={24} md={18}>
@@ -1391,7 +1391,7 @@ const AddRecruitementAbove = () => {
 
               >
                 <Form.Item
-                  label='Planner Comments'
+                  label='PMO Comments'
                   name='PlannerComments'
                  
                  
@@ -1404,7 +1404,7 @@ const AddRecruitementAbove = () => {
                 >
                 <Input
                 style={{paddingTop:"1rem",paddingBottom:"1rem"}}
-                    placeholder="Planner Comments"
+                    placeholder="PMO Comments"
                     value={commentplanner}
                     onChange={(e) => setCommentPlanner(e.target.value)}
                  

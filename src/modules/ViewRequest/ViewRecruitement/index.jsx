@@ -435,7 +435,7 @@ const ViewRecruitementAbove = () => {
         {dep === "operation" ?
           <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
             <Col xs={24} md={6}>
-              <Typography.Title level={5}>Planner Review </Typography.Title>
+              <Typography.Title level={5}>PMO Controlling </Typography.Title>
 
             </Col>
             <Col xs={24} md={18}>
@@ -473,7 +473,7 @@ const ViewRecruitementAbove = () => {
 
                   >
                     <Form.Item
-                      label='Planner Comments'
+                      label='PMO Comments'
                       name='PlannerComments'
 
 

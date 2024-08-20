@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
 import IntlMessages from '../../../../@crema/helpers/IntlMessages';
 const OrderTable = ({ loading,AllRecruitement, listRecruitementId,listRecruitementPMO}) => {
-  console.log("listRecruitementId",listRecruitementId)
+  console.log("all recruitement",AllRecruitement)
   const [findIdData, setFindIdData] = useState(null);
   const [isViewRecruitement, onViewRecruitement] = useState(false);
   const [isEditRecruitement, onEditRecruitement] = useState(false);
@@ -472,9 +472,9 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId,listRecruiteme
   )} */}
 {/**/}
 { 
-  (user.includes('admin') || user.includes('Administrator')) && 
+  (user.includes('admin') || user.includes('Administrator') || user.includes('bod')) && 
   !user.includes('PMO') && 
-  !user.includes('Manager') && (
+  !user.includes('Manager')   && (
     <StyledOrderTable
       hoverColor
       data={AllRecruitement}

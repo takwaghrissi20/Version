@@ -272,8 +272,6 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "Payroll"
 
 
-
-
         ) {
           return false;
         }

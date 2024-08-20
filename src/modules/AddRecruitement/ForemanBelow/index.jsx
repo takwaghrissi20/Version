@@ -63,7 +63,7 @@ const AddRecruitementForemanBelow = () => {
   };
   const GetProfileEmployess = async () => {
     const storedemail = window.localStorage.getItem("email");
-   
+
     try {
       const endPoint =
         process.env.NODE_ENV === "development"
@@ -85,7 +85,7 @@ const AddRecruitementForemanBelow = () => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
-     
+
       setDep(data.departement)
 
       setProfile(data)
@@ -481,7 +481,10 @@ const AddRecruitementForemanBelow = () => {
         //window.location.reload();
         openNotification('bottomRight')
         setTimeout(() => {
+          
           window.location.reload();
+          navigate(-1)
+
         }, 2000);
         //onSave(false)
         const email = 'rihemhassounanjim90@gmail.com';
@@ -573,6 +576,12 @@ const AddRecruitementForemanBelow = () => {
         const responseData = await response.json();
         form.resetFields();
         openNotification('bottomRight')
+        setTimeout(() => {
+          
+          window.location.reload();
+          navigate(-1)
+
+        }, 2000);
 
         const email = 'rihemhassounanjim90@gmail.com';
         const secondApiResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/bodNotif?email=${encodeURIComponent(email)}`, {
@@ -658,6 +667,12 @@ const AddRecruitementForemanBelow = () => {
         const responseData = await response.json();
         form.resetFields();
         openNotification('bottomRight')
+        setTimeout(() => {
+          
+          window.location.reload();
+          navigate(-1)
+
+        }, 2000);
 
         const email = 'rihemhassounanjim90@gmail.com';
         const secondApiResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/bodNotif?email=${encodeURIComponent(email)}`, {
@@ -744,7 +759,10 @@ const AddRecruitementForemanBelow = () => {
         console.log("opration reponse project Leader", responseData)
         form.resetFields();
         setTimeout(() => {
-          window.location.reload();
+          window.location.reload();        
+          navigate(-1)
+  
+       
         }, 2000);
         openNotification('bottomRight')
 
@@ -1093,11 +1111,11 @@ const AddRecruitementForemanBelow = () => {
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item
-                    label='Desired years of 
-                  experience'
+                    label='Desired years of experience'
                     name='Desiredyearsexperience'
-
-                  >
+                    rules={[
+                      { required: true, message: 'Please Select your Select Desired years of experience!' },
+                    ]}>
 
                     <Input
                       value={desiredExperienceLevel}
@@ -1143,7 +1161,7 @@ const AddRecruitementForemanBelow = () => {
         {dep === "operation" && user.includes('PMO') ?
           <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
             <Col xs={24} md={6}>
-              <Typography.Title level={5}>Planner Review </Typography.Title>
+              <Typography.Title level={5}>PMO Controlling </Typography.Title>
 
             </Col>
             <Col xs={24} md={18}>
