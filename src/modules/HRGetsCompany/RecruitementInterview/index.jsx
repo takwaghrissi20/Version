@@ -44,47 +44,65 @@ const RecruitementInterview = () => {
       console.error("Erreur lors de la récupération du email:", error);
     }
   };
-
   const fetchRecruitementTypeProfile = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('La requête a échoué avec le code ' + response.status);
+      }
+
+      const data = await response.json();
+      const filteredData = data.filter(item => item?.idemp === idProfile);
+      const filteredDataType = filteredData.filter(item => item?.type === "Above Foreman");
+      setRecruitementTypeIdAbove(filteredDataType)
+
+      ///If Foreman & Below
+      const filteredDataTypeForman = filteredData.filter(item => item?.type === "Foreman & Below");
+      setRecruitementTypeIdbelow(filteredDataTypeForman)
+    
+    } catch (error) {
+      console.error('Erreur lors de la récupération List Recruitement', error);
+    }
+  };
+
+  const fetchRecruitementTypeProfile1 = async () => {
     try {
       const endPoint =
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-
-      const response = await fetch(`${endPoint}/api/v1/re/list`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
+          const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+          });
 
       if (!response.ok) {
         throw new Error('La requête a échoué Recruitement ' + response.status);
       }
-
-      const contentType = response.headers.get('content-type');
       if (!contentType || !contentType.includes('application/json')) {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
 
       const data = await response.json();
-      console.log("all recruitement", data);
-      console.log("idProfile", idProfile);
+      const filteredData = data.filter(item => item?.idemp === idProfile);
+      const filteredDataType = filteredData.filter(item => item?.type === "Above Foreman");
+      setRecruitementTypeIdAbove(filteredDataType)
 
-      
-        const filteredData = data.filter(item => item?.idemp === idProfile);
-        console.log("Filtered recruitement", filteredData);
-        const filteredDataType = filteredData.filter(item => item?.type === "Above Foreman");
-        console.log("Filtered recruitementrrrr",filteredDataType);
-        setRecruitementTypeIdAbove(filteredDataType)
-        
-        ///If Foreman & Below
-        const filteredDataTypeForman = filteredData.filter(item => item?.type === "Foreman & Below");
-        console.log("filteredDataTypeForman33333",filteredDataTypeForman)
-        setRecruitementTypeIdbelow(filteredDataTypeForman)
+      ///If Foreman & Below
+      const filteredDataTypeForman = filteredData.filter(item => item?.type === "Foreman & Below");
+      setRecruitementTypeIdbelow(filteredDataTypeForman)
 
-         ///End If Foreman & Below
-        // Use filteredData as needed
-      
+      ///End If Foreman & Below
+      // Use filteredData as needed
+
     } catch (error) {
       console.error('Erreur lors de la récupération all Recruitement', error);
     }
@@ -94,27 +112,30 @@ const RecruitementInterview = () => {
     {
       label: 'Staff Management Recruitment',
       key: '1',
-      children: <RecruitementStaff 
-      recruitementTypeIdAbove={recruitementTypeIdAbove}
-      roles={roles}
-      allrecruitementabove={allrecruitementabove} />,
+      children: 
+      <RecruitementStaff
+        recruitementTypeIdAbove={recruitementTypeIdAbove}
+        roles={roles}
+        allrecruitementabove={allrecruitementabove}
+
+      />,
     },
     {
       label: 'Constructuction Staff Recruitment',
       key: '2',
-      children: <RecruitementConstruction allrecruitementbelow={allrecruitementbelow} 
-      recruitementTypeIdbelow={recruitementTypeIdbelow}
-      roles={roles}
-      
+      children: <RecruitementConstruction allrecruitementbelow={allrecruitementbelow}
+        recruitementTypeIdbelow={recruitementTypeIdbelow}
+        roles={roles}
+
       />,
     },
-    {/*Interview Sheet**/},
-    ...((roles?.includes('Administrator') || roles?.includes('admin')) ? [{
+    {/*Interview Sheet**/ },
+    ...((roles?.includes('Administrator') || roles?.includes('admin') || roles?.includes('bod') || roles?.includes('Ressource Manager')) ? [{
       label: 'Staff Management Interview',
       key: '3',
-      children: <InterviewStaff 
-      allinterviewStaffManagement={allinterviewStaffManagement}/>
-     
+      children: <InterviewStaff
+        allinterviewStaffManagement={allinterviewStaffManagement} />
+
     }] : []),
     // {
     //   label: 'Staff Management Interview',
@@ -122,14 +143,14 @@ const RecruitementInterview = () => {
     //   children: <InterviewStaff 
     //   allinterviewStaffManagement={allinterviewStaffManagement}
 
-  
+
     //   />,
     // },
-    ...((roles?.includes('Administrator') || roles?.includes('admin')) ? [{
+    ...((roles?.includes('Administrator') || roles?.includes('admin') || roles?.includes('bod') || roles?.includes('Ressource')) ? [{
       label: 'Construction Staff Interview',
       key: '4',
       children: <InterviewConstruction allinterviewConstructionTeam={allinterviewConstructionTeam} />
-     
+
     }] : []),
     // {
     //   label: 'Construction Staff Interview',
@@ -160,11 +181,11 @@ const RecruitementInterview = () => {
           throw new TypeError("La réponse n'est pas au format JSON");
         }
         const responseData = await response.json();
-        console.log("interviewww",responseData)
+        console.log("interviewww", responseData)
         setTotalNumberInterview(responseData.length);
         setAllinterviewStaffManagement(responseData);
         //////Interview Bu Id
-        
+
 
 
 
@@ -224,7 +245,7 @@ const RecruitementInterview = () => {
     }
   }, [roles, idProfile])
 
-  
+
   return (
 
     <>
@@ -237,19 +258,19 @@ const RecruitementInterview = () => {
         <AppPageMeta title='InterviewRecruitement' />
         <div>
           <AppRowContainer ease={'easeInSine'}>
-            {roles==="admin" ?
+            {roles === "admin" ?
               <Col xs={24} md={10}>
-              <LastRequestor
-        
-              lastRecruitement={lastRecruitement} />
-            </Col>
-            :null
-                         
-          }        
+                <LastRequestor
+
+                  lastRecruitement={lastRecruitement} />
+              </Col>
+              : null
+
+            }
             <Col xs={24} md={14}>
-              <StaticNumber 
-              allrecruitementaboveItRecruitement={allrecruitementaboveItRecruitement}          
-              totalNumberInterview={totalNumberInterview} totalNumber={totalNumber} user={roles}/>
+              <StaticNumber
+                allrecruitementaboveItRecruitement={allrecruitementaboveItRecruitement}
+                totalNumberInterview={totalNumberInterview} totalNumber={totalNumber} user={roles} />
             </Col>
 
             {/* <Col  xs={24} sm={12} lg={6}>
