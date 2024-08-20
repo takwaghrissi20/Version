@@ -45,9 +45,7 @@ const ViewMission = () => {
       }
       if (response.ok) {
         const responseData = await response.json();
-        setMission(responseData)
-        console.log('ffffff',mission?.starTDateMiss)
-      
+        setMission(responseData)      
         setGetsId(responseData?.getsId )
   
        

@@ -101,7 +101,8 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "Add Internal  Mission" ||
           item.id === "AddExtensoinMission" ||
           item.id === "AddDemobInput" ||
-          item.id === "Add Mission"
+          item.id === "Add Mission"  ||
+          item.id === "ADDVisaHealth" 
 
 
         ) {
@@ -260,13 +261,14 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "attendance" ||
           item.id === "Vacation" ||
           item.id === "My Leave History" ||
+          item.id === "AddDemobInput" ||
           
           item.id === "ManpowerEvaluation" ||
           item.id === "Add Recruitment" ||
           item.id === "Site Clerk" ||
           item.id === "Add Mission" ||
           item.id === "Add Internal  Mission" ||
-          
+          item.id === "AddExtensoinMission" ||
           item.id === "Payroll"
 
 

@@ -40,9 +40,9 @@ const AppHeader = ({ isCollapsed, onToggleSidebar }) => {
   const { themeMode } = useThemeContext();
   const { logout } = useAuthMethod();
   const { user } = useAuthUser();
-  console.log("userrrrrrr",user)
+
   const roles = localStorage.getItem("role");
-  console.log("rolessss",roles?.charAt(0).toUpperCase())
+
   const navigate = useNavigate();
   const { sidebarColorSet } = useSidebarContext();
   const { allowSidebarBgImage } = useSidebarContext();

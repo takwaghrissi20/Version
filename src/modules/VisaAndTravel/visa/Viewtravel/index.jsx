@@ -38,7 +38,7 @@ const ViewTravel = () => {
       }
       if (response.ok) {
         const responseData = await response.json();
-        console.log("traveellll", responseData)
+     
         setTravel(responseData)
         setGetsId(responseData?.getsId)
 

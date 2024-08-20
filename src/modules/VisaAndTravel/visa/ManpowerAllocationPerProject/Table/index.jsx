@@ -8,7 +8,7 @@ import { MdLabelOutline } from "react-icons/md";
 import Hystorique from "../../../../Model/HystoriqueMobilization";
 import moment from 'moment';
 const OrderTable = ({ orderData }) => {
-  console.log("OrderTable",orderData )
+
   const [hoveredRow, setHoveredRow] = useState(null);
   const [findIdData, setFindIdData] = useState(null);
   const [idEmployee, setIdEmployee] = useState(null);
@@ -35,7 +35,7 @@ const OrderTable = ({ orderData }) => {
       }
       if (response.ok) {
         const responseData = await response.json();
-        console.log("responseData1111", responseData);
+  
         const travels = responseData?.projects?.flatMap(project => 
           project.miss?.flatMap(mission => 
               mission.travels.map(travel => ({
@@ -52,7 +52,6 @@ const OrderTable = ({ orderData }) => {
           ) || []
       );
       
-      console.log("Travel Data:", travels);
       setFindIdDataTravel(travels)
       //   const mobilization = responseData?.projects?.map(project => {
       //     console.log("Project:", project);

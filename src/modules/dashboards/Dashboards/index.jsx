@@ -487,7 +487,7 @@ console.log("passportExperedProjet",passportExperedProjet)
           </AppRowContainer>
         )}
 
-        {user.includes("Manager") && !user?.includes('Construction') && metricsData && (
+        {user.includes("Manager") && !user?.includes('Construction') && !user?.includes('Operation') && metricsData && (
           <AppRowContainer ease={'easeInSine'}>
             {crmData?.stateDataManager?.map((data) => (
               <Col key={data.id} xs={24} sm={12} lg={6}>
@@ -497,9 +497,18 @@ console.log("passportExperedProjet",passportExperedProjet)
           </AppRowContainer>
         )}
         {/**Leader */}
-        {user.includes("Leader") || user.includes("PMO")&& metricsData && (
+        { user.includes("PMO")&& metricsData && (
           <AppRowContainer ease={'easeInSine'}>
             {crmData?.stateDataManager?.map((data) => (
+              <Col key={data.id} xs={24} sm={12} lg={6}>
+                <StatsDirCard data={data} />
+              </Col>
+            ))}
+          </AppRowContainer>
+        )}
+        {user.includes("Leader") || user.includes("Operation")&& metricsData && (
+          <AppRowContainer ease={'easeInSine'}>
+            {crmData?.stateDataManagerOpearation?.map((data) => (
               <Col key={data.id} xs={24} sm={12} lg={6}>
                 <StatsDirCard data={data} />
               </Col>

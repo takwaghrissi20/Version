@@ -132,9 +132,7 @@ const Affectaprojecttoemployee = () => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
-      console.log("daaattttt proj", data)
       const uniqueProjects = [...new Set(data.map(proj => proj.projName))];
-      console.log("uniqueProjects", uniqueProjects)
       setAllprojet(uniqueProjects);
    
 
@@ -168,7 +166,6 @@ const Affectaprojecttoemployee = () => {
       if (response.ok) {
 
         const responseData = await response.json();
-        console.log("add projecttt", responseData)
         form.resetFields();
         openNotification('bottomRight')
 

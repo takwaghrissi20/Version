@@ -10,7 +10,7 @@ const items = [
 
 function NestedTable({ dataemployeesVisa }) {
   const [expandedData, setExpandedData] = useState();
-  console.log("dataemployeesVisa  testt", dataemployeesVisa)
+
   const expandedRowRender = () => {
     const columns = [
       { title: 'Fetness Certificate', dataIndex: 'resultFitness', key: 'resultFitness' },
@@ -81,7 +81,7 @@ function NestedTable({ dataemployeesVisa }) {
         //onEditVisa(true)
       }
     } catch (error) {
-      console.error("Erreur lors de la récupération du id eMPLOYEE:", error);
+      console.error("Erreur lors de la récupération du id EMPLOYEE:", error);
     }
   }
     return (

@@ -63,7 +63,7 @@ const AddRecruitementForemanBelow = () => {
   };
   const GetProfileEmployess = async () => {
     const storedemail = window.localStorage.getItem("email");
-    console.log("storedemail", storedemail)
+   
     try {
       const endPoint =
         process.env.NODE_ENV === "development"
@@ -85,7 +85,7 @@ const AddRecruitementForemanBelow = () => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
-      console.log("data profile", data)
+     
       setDep(data.departement)
 
       setProfile(data)
@@ -124,7 +124,6 @@ const AddRecruitementForemanBelow = () => {
       const data = await response.json();
 
       const Position = data.map(p => p.description)
-      console.log("GetPositions", Position)
       setPosition(Position)
 
 
@@ -199,7 +198,6 @@ const AddRecruitementForemanBelow = () => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
-      console.log(data.jobCode)
       setLastJobCode(data.jobCode)
 
 
@@ -774,7 +772,6 @@ const AddRecruitementForemanBelow = () => {
   };
 
   const BeforeSaveRecruitement = () => {
-    console.log("dep", dep)
     //setIsModalVisible(true)
     form.validateFields(['DateRequestor', 'ProjectName', 'ProjectCode'
       , 'DateDesiredRecruitement', 'position', 'RequiredLevel', 'Desiredyearsexperience', 'Numbervacancies',
@@ -782,22 +779,19 @@ const AddRecruitementForemanBelow = () => {
     ]).then(values => {
       //onSave(true)
       if ((!dep?.includes('Operation')) && (!dep?.includes('Engineering'))) {
-        console.log("dep33eee", dep)
         Saverecrutement();
       }
 
       else if (dep?.includes('Engineering') && userRole?.includes('Engineering')) {
-        console.log("Engineering")
+
         SaverecrutementEngineer()
 
       }
       else if (dep?.includes("Operation") && userRole?.includes('Operation')) {
-        console.log("Operation  Manager", dep)
         Saverecrutementopeartion()
 
       }
       else if (dep?.includes("Operation") && userRole?.includes('Leader')) {
-        console.log("dep33", dep)
         SaverecrutementProjectLeader()
       }
       else

@@ -16,7 +16,7 @@ export const TotalVisitor = ({ totalVisitors,totalTravels }) => {
     color: '#'+(Math.random()*0xFFFFFF<<0).toString(16) // Generating random colors
   }));
 
-  console.log('TotalVisitor List:', totalVisitorList);
+
 
   return (
     <AppCard

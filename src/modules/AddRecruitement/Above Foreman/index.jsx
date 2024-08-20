@@ -33,6 +33,7 @@ const AddRecruitementAbove = () => {
   const [selectedLevel, setSelectedLevel] = useState('');
   const [selectedLieu, setSelectedLieu] = useState('');
   const [vacancie, setVacancie] = useState(0);
+  const [desertExperience, setDesertExperience] = useState(0);
   const [asper, setAsper] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [certif, setCertif] = useState("");
@@ -197,7 +198,7 @@ const AddRecruitementAbove = () => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
-      console.log(data.jobCode)
+ 
       setLastJobCode(data.jobCode)
 
 
@@ -268,17 +269,17 @@ const AddRecruitementAbove = () => {
       }
 
       else if (dep?.includes('Engineering') && userRole?.includes('Engineering')) {
-        console.log("Engineering")
+   
         SaverecrutementEngineer()
 
       }
       else if (dep?.includes("Operation") && userRole?.includes('Operation')) {
-        console.log("Operation  Manager")
+       
         Saverecrutementopeartion()
 
       }
       else if (dep?.includes("Operation") && userRole?.includes('Leader')) {
-        console.log("Operation  Manager")
+     
         SaverecrutementProjectLeader()
 
       }
@@ -460,7 +461,6 @@ const AddRecruitementAbove = () => {
 
         const responseData = await response.text();
         openRefuseNotification('bottomRight')
-        console.log("UpdateHod", responseData)
         goBack()
         // navigate(-1)
 
@@ -510,7 +510,7 @@ const AddRecruitementAbove = () => {
 
     }
     else if (profile?.departement?.includes('operation') && userRole?.includes('Leader')) {
-      console.log("Operation  Leader")
+    
 
 
     }
@@ -639,6 +639,7 @@ const AddRecruitementAbove = () => {
           //jobCode: JobCode,
           certif: certif,
           experience: selectedLevel,
+          // nbExperience:desertExperience,
           type: type,
           position: positionRecruitement,
           projectName: selectedProject,
@@ -652,7 +653,7 @@ const AddRecruitementAbove = () => {
           // oDep: asper,
           // // exDep: "",
           // // status:"0",
-          nbExperience: desiredExperience,
+          nbExperience: desertExperience,
           projRef: projectCode,
           // bod: isOkBod,
           idemp: profile?.getsId,
@@ -736,11 +737,12 @@ const AddRecruitementAbove = () => {
           oDep: isOrDep,
           exDep: isExDep,
           jobCode: LastIndexRecruitementIncremente,
+          nbExperience: desertExperience,
           // type: "For Foreman & Below",
           // oDep: asper,
           // // exDep: "",
           // // status:"0",
-          nbExperience: desiredExperience,
+          // nbExperience: desiredExperience,
           projRef: projectCode,
           // bod: isOkBod,
           idemp: profile?.getsId,
@@ -765,8 +767,13 @@ const AddRecruitementAbove = () => {
       if (response.ok) {
 
         const responseData = await response.json();
-        form.resetFields();
+   
         openNotification('bottomRight')
+        setTimeout(() => {
+          window.location.reload();
+          form.resetFields();
+      }, 2000);
+
 
         const email = 'rihemhassounanjim90@gmail.com';
         const secondApiResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/bodNotif?email=${encodeURIComponent(email)}`, {
@@ -825,7 +832,8 @@ const AddRecruitementAbove = () => {
           // oDep: asper,
           // // exDep: "",
           // // status:"0",
-          nbExperience: desiredExperience,
+          // nbExperience: desiredExperience,
+          nbExperience: desertExperience,
           projRef: projectCode,
           // bod: isOkBod,
           idemp: profile?.getsId,
@@ -910,7 +918,8 @@ const AddRecruitementAbove = () => {
           // oDep: asper,
           // // exDep: "",
           // // status:"0",
-          nbExperience: desiredExperience,
+          // nbExperience: desiredExperience,
+          nbExperience: desertExperience,
           projRef: projectCode,
           // bod: isOkBod,
           idemp: profile?.getsId,
@@ -1164,7 +1173,6 @@ const AddRecruitementAbove = () => {
                     <DatePicker
                       //defaultValue={new Date()} 
                       placeholder="YYYY-MM-DD"
-
                       style={{ width: "100%", height: "30px" }}
                       onChange={(value) => setDesiredrecruitementDate(dayjs(value).format('YYYY-MM-DD'))}
                     />
@@ -1229,7 +1237,6 @@ const AddRecruitementAbove = () => {
 
                     rules={[
                       { required: true, message: 'Please Select your Select Required Level!' },
-
                     ]}
                   >
                     <Select
@@ -1248,13 +1255,18 @@ const AddRecruitementAbove = () => {
                 <Col xs={24} md={12}>
                   <Form.Item
                     type="number"
-                    label='Desired years of experience'
+                    label='Desired years of experience '
                     name='Desiredyearsexperience'
+                    rules={[
+                      { required: true, message: 'Please Select your Select Desired years of experience!' },
+                    ]}
 
                   >
-
                     <Input
-                      placeholder={desiredExperience}
+                      placeholder="Desired years of experience"
+                      value={desertExperience}
+                      onChange={(e) =>setDesertExperience(e.target.value)}
+
                     />
 
                   </Form.Item>

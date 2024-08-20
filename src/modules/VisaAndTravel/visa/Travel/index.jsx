@@ -368,7 +368,7 @@ const AddTravel = () => {
       setSelectTypeValue(1);
     }
   };
-  console.log("setSelectTypeValue", selectTypeValue)
+
   const handleTravelRound = (value) => {
     setSelectedRound(value);
   };

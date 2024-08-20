@@ -284,42 +284,6 @@ const EditInterviewConstruction = ({ hseCertif,
       console.error('Erreur lors de la récupération des données Salary:', error);
     }
   };
-  const GetProfileEmployess = async () => {
-    const storedemail = window.localStorage.getItem("email");
-    console.log("storedemail", storedemail)
-    try {
-      const endPoint =
-        process.env.NODE_ENV === "development"
-          ? "https://dev-gateway.gets-company.com"
-          : "";
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      });
-      if (!response.ok) {
-        throw new Error('La requête a échoué avec le code ' + response.status);
-      }
-
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        throw new TypeError("La réponse n'est pas au format JSON");
-      }
-      const data = await response.json();
-      console.log("dataprofile", data)
-      setProfile(data)
-      setGetsId(profile?.getsId)
-      setName(profile?.name)
-
-
-
-
-    } catch (error) {
-      console.error('Erreur lors de la récupération Last Recruitement', error);
-    }
-  };
-
   useEffect(() => {
     fetchMaxValues()
     GetProfileEmployess()
@@ -1519,6 +1483,38 @@ const EditInterviewConstruction = ({ hseCertif,
 
 
   ];
+  const GetProfileEmployess = async () => {
+    const storedemail = window.localStorage.getItem("email");
+    console.log("storedemail", storedemail)
+    try {
+      const endPoint =
+        process.env.NODE_ENV === "development"
+          ? "https://dev-gateway.gets-company.com"
+          : "";
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+      if (!response.ok) {
+        throw new Error('La requête a échoué avec le code ' + response.status);
+      }
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
+      }
+      const data = await response.json();
+      console.log("dataprofile", data)
+      setProfile(data)
+      setGetsId(profile?.getsId)
+      setName(profile?.name)
+
+    } catch (error) {
+      console.error('Erreur lors de la récupération Last Recruitement', error);
+    }
+  };
   return (
     <div style={{ paddingLeft: "0.5rem", paddingRight: "0.5rem" }}>
       {/**All Fied not empty */}
@@ -3572,7 +3568,7 @@ const EditInterviewConstruction = ({ hseCertif,
               <>
                 <Button style={{ color: "green", borderColor: "green" }} onClick={UpdateHSE}
                 >Approved</Button>
-                <Button style={{ color: "green", borderColor: "green" }} onClick={RefuseHSE}
+                <Button style={{ color: "red", borderColor: "red" }} onClick={RefuseHSE}
                 >Refuse</Button>
               </>)}
             {roles.includes("Leader") && (

@@ -44,8 +44,8 @@ const EditRecruitementAbove = () => {
   const userRoles = localStorage.getItem("role");
 
   const Back = async () => {
-   navigate(-1)
-   
+    navigate(-1)
+
   };
   const CancelRecruitementBod = async () => {
     try {
@@ -99,9 +99,9 @@ const EditRecruitementAbove = () => {
         setTimeout(() => {
           window.location.reload();
           navigate(-1)
-      }, 2000);
+        }, 2000);
 
-       
+
 
         //handleAddContactClose(true)
       }
@@ -476,6 +476,11 @@ const EditRecruitementAbove = () => {
         const responseData = await response.text();
         openNotification('bottomRight')
         console.log("updataaaa planner", responseData)
+        setTimeout(() => {
+          window.location.reload();
+          navigate(-1)
+        }, 2000);
+
         // navigate(-1)
 
         //handleAddContactClose(true)
@@ -488,6 +493,79 @@ const EditRecruitementAbove = () => {
   }
 
   //End Update UpdateOperation
+  ///Cancel Recruitement Oprartion
+  const   CancelRecruitementOperation = async () => {
+
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}`, {
+
+        method: 'PUT',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+
+          jobCode: jobCode,
+          dateInputRecrut: dateInputRecrut,
+          desiredDate: DesiredDate,
+          dep: dep,
+          idemp: idemp,
+          position: position,
+          recruttrequestDate: recruttrequestDate,
+          requestName: requestName,
+          requestedDicipline: requestedDicipline,
+          approuvedRecrutRequestNumber: 1,
+          projectName: projectName,
+          projRef: projRef,
+          totalNumber: Numbervacancies,
+          experience: Level,
+          nbExperience: nbExperience,
+          type: type,
+          affectedTo: affectedTo,
+          certif: certif,
+          bod: null,
+          oDep: oDep,
+          exDep: exDep,
+          comentPlaner: comentPlaner,
+          signatureHod: null,
+          signatureBod: null,
+          notif: 70,
+          status: "Refused By Operation Manager"
+
+
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+
+        const responseData = await response.text();
+        openRefuseNotificationBOD('bottomRight')
+        setTimeout(() => {
+          window.location.reload();
+          navigate(-1)
+        }, 2000);
+
+        // navigate(-1)
+
+        //handleAddContactClose(true)
+      }
+
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+    }
+  }
+
+
+
+
+  //End Cancel Recruitement Oprartion
   //Updata BOD
   const UpdateBOD = async () => {
     try {
@@ -1403,45 +1481,45 @@ const EditRecruitementAbove = () => {
             : null} */}
           {/*uPDATE BOD */}
 
-          {((dep.includes("Operation") && notif === 7 
-          && (oDep==="true" || exDep==="true"))) || ((dep.includes("Operation") 
-          && notif === 4)) ? (
+          {((dep.includes("Operation") && notif === 7
+            && (oDep === "true" || exDep === "true"))) || ((dep.includes("Operation")
+              && notif === 4)) ? (
             <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-            <Col xs={24} md={6}>
-              <Typography.Title level={5}>Planner Review</Typography.Title>
-            </Col>
-            <Col xs={24} md={18}>
-              <StyledShadowWrapper>
-                <AppRowContainer>
-                  <Col xs={24} md={12}>
-                    <Form.Item label="As per :" name="Asper">
-                      <Checkbox checked={exDep === "true"}
-                       readOnly>
-                        Extra Deployment Schedule
-                      </Checkbox>
-                    </Form.Item>
-                  </Col>
-                  <Col xs={24} md={12}>
-                    <Form.Item label=" " name="Asper">
-                      <Checkbox checked={oDep === "true"} 
-                      readOnly>
-                        Original Deployment Schedule
-                      </Checkbox>
-                    </Form.Item>
-                  </Col>
-                  <Col xs={24} md={24}>
-                    <Form.Item label="Planner Comments" name="PlannerComments">
-                      <Input
-                        style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
-                        placeholder={comentPlaner}
-                      />
-                    </Form.Item>
-                  </Col>
-                </AppRowContainer>
-              </StyledShadowWrapper>
-            </Col>
-          </AppRowContainer>
-        ) : null}
+              <Col xs={24} md={6}>
+                <Typography.Title level={5}>Planner Review</Typography.Title>
+              </Col>
+              <Col xs={24} md={18}>
+                <StyledShadowWrapper>
+                  <AppRowContainer>
+                    <Col xs={24} md={12}>
+                      <Form.Item label="As per :" name="Asper">
+                        <Checkbox checked={exDep === "true"}
+                          readOnly>
+                          Extra Deployment Schedule
+                        </Checkbox>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item label=" " name="Asper">
+                        <Checkbox checked={oDep === "true"}
+                          readOnly>
+                          Original Deployment Schedule
+                        </Checkbox>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={24}>
+                      <Form.Item label="Planner Comments" name="PlannerComments">
+                        <Input
+                          style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
+                          placeholder={comentPlaner}
+                        />
+                      </Form.Item>
+                    </Col>
+                  </AppRowContainer>
+                </StyledShadowWrapper>
+              </Col>
+            </AppRowContainer>
+          ) : null}
 
           {/*End uPDATE BOD */}
           {/* <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
@@ -1542,19 +1620,27 @@ const EditRecruitementAbove = () => {
                 Update
               </Button> : null}
             {userRoles.includes("Operation") ?
+              <>
+                <Button style={{ color: "green", borderColor: "green" }} onClick={() => UpdateOperation()}>
+                  Approved
+                </Button>
+                <Button style={{ color: "red", borderColor: "red" }} onClick={() => CancelRecruitementOperation()}>
+                 Refuse
+                </Button>
+                <Button  onClick={Back}>
+               Cancel
+                </Button>
+              </>
 
-              <Button onClick={() => UpdateOperation()}>
-                Save
-              </Button>
 
               : null
             }
             {userRoles.includes("bod") ?
               <>
-                <Button style={{color:"green",borderColor:"green"}} onClick={() => UpdateBOD()}>
+                <Button style={{ color: "green", borderColor: "green" }} onClick={() => UpdateBOD()}>
                   Approved
                 </Button>
-                <Button style={{color:"red",borderColor:"red"}}onClick={() =>CancelRecruitementBod ()}>
+                <Button style={{ color: "red", borderColor: "red" }} onClick={() => CancelRecruitementBod()}>
                   Refuse
                 </Button>
                 <Button onClick={Back}>Cancel</Button>

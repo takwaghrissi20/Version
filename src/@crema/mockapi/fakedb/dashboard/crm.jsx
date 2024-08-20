@@ -94,6 +94,42 @@ const crmData = {
     
 
   ],
+  stateDataManagerOpearation:[
+
+    
+    {
+      id: 2,
+      name: 'Recruitement',
+      iconImg: 'dashboard/speaker.png',
+      color: '#C6D9F5',
+      link:"/Hr/Recruitement&Interview",
+  
+    },
+
+  
+    {
+      id: 6,
+      name: 'Manpower Evaluation',
+      iconImg: 'dashboard/Manpower.png',
+      color: '#C6D9F5',
+      link:""
+    },
+    {
+      id: 7,
+      name: 'Visa & Health',
+      iconImg: 'dashboard/visa.png',
+      color: '#C6D9F5',
+      link:"/Hr/Visa/Travel"
+    },
+  
+    {
+      id: 8,
+      name: 'Projects trip track record',
+      iconImg: 'dashboard/business-trip.png',
+      color: '#C6D9F5',
+      link:"/ManpowerLocation/ManpowerLocationTrackRecord"
+    },
+  ]
 
 
 

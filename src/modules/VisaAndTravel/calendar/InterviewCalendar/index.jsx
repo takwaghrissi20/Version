@@ -8,6 +8,7 @@ const localizer = momentLocalizer(moment);
 const CalendarInterview = () => {
   const userEmail = localStorage.getItem("email");
   const [idgets, setIdgets] = useState("");
+  
   const fetchProjectEmail = async () => {
     try {
       const url = `https://dev-gateway.gets-company.com/api/v1/emp/getProjectByMail?mail=${userEmail}`;
@@ -15,8 +16,7 @@ const CalendarInterview = () => {
         method: "GET",
       });
       if (response.ok) {
-        const data = await response.json();
-        console.log("datttttt000",data?.[0]?.getsId)
+        const data = await response.json(); 
         setIdgets(data?.[0]?.getsId)
 
       } else {
@@ -27,6 +27,7 @@ const CalendarInterview = () => {
     }
   };
   const [interviews, setInterviews] = useState([]);
+
   useEffect(() => {
     const fetchGetAllInterview = async () => {
       try {
@@ -38,11 +39,10 @@ const CalendarInterview = () => {
 
         const url = `${endPoint}/api/v1/int/list`;
         const response = await fetch(url, { method: "GET" });
-
-         
+       
           if (response.ok) {
             const data = await response.json();
-              
+            console.log("idgetttsss",idgets)        
             const InterviewsAccepted = data.filter(interview => {
                 return interview.notif === 0 && interview.idNumb === idgets;
             });       

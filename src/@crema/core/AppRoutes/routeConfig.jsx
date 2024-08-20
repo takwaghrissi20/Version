@@ -502,8 +502,8 @@ const routesConfig = [
     ],
   },
   {
-    id: "HRCordinator",
-    title: "HRCordinator",
+    id: "Payroll",
+    title: "Payroll",
     messageId: "",
     type: "group",
     children: [

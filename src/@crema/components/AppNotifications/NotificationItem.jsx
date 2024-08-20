@@ -8,7 +8,7 @@ import {
 import { useNavigate } from "react-router-dom";
 
 const NotificationItem = ({ user }) => {
-  console.log("user66666", user)
+
   const navigate = useNavigate();
   const [allnotif, setAllNotif] = useState([]);
   const [notifBod, setNotifBod] = useState([]);
@@ -48,10 +48,8 @@ const NotificationItem = ({ user }) => {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log("data projettttt", data)
         setIdgets(data?.getsId)
         const ProjectName = data.map(project => project.projName);
-        console.log("projet profile", ProjectName)
         setProject(ProjectName);
       } else {
         console.error("Erreur lors de la récupération du email:", response.status);
@@ -62,7 +60,6 @@ const NotificationItem = ({ user }) => {
   };
   //Get profile By Email
   const GetProfileEmployess = async () => {
-
     try {
       const endPoint =
         process.env.NODE_ENV === "development"
@@ -84,9 +81,7 @@ const NotificationItem = ({ user }) => {
       }
       const data = await response.json();
       setId(data.getsId)
-      console.log("dataprofile", data?.departement)
       setDep(data?.departement)
-      console.log("setDep", data?.departement)
     } catch (error) {
       console.error('Erreur lors de la récupération getByEmail', error);
     }
@@ -103,10 +98,9 @@ const NotificationItem = ({ user }) => {
         const data = await response.json();
         const filterRecruitement = data.filter(p => p.idemp === id)
         setRecrutementInterviewNotif(filterRecruitement)
-        console.log("fetchRecruitementByEmployees YYYYY", filterRecruitement)
-        console.log("iiiuuuhghggg", allnotif)
+       
         const FilterNotification = filterRecruitement.map(item => item.jobCode)
-        console.log("FilterNotification bbbb", FilterNotification)
+      
         setListInterviewNotif(FilterNotification)
         // console.log("filterRecruitement",filterRecruitement)
       } else {
@@ -131,8 +125,7 @@ const NotificationItem = ({ user }) => {
         throw new Error('La requête a échoué avec le code ' + response.status);
       }
       const data = await response.json();
-      console.log("dattta notif", data)
-      console.log("ListInterviewNotif999", ListInterviewNotif)
+    
 
       /////includes codejob
       const NotifInterveiw = data.filter(item => item?.type?.includes("Interview"));
@@ -233,7 +226,8 @@ const NotificationItem = ({ user }) => {
 
 
       );
-      console.log('project:', project);
+
+
       //   const filteredPlanner3 = data.filter(item => {
       //     const condition1 = item?.dep?.includes("Operation") && item.notfi === 6;
       //     const condition2 = item.dep.includes("Operation") && item.notfi === 7 && project.includes(item.projName);
@@ -270,7 +264,7 @@ const NotificationItem = ({ user }) => {
           // Third group of conditions
           (item.notfi === 6 && item.type.includes("Interview")) ||
           (item.notfi === 2 && item.type === "Interview") ||
-          
+
           (item.notfi === 34 && user.includes("Project")) ||
           (item.notfi === 37 && user.includes("Human Resource"))
 
@@ -288,18 +282,18 @@ const NotificationItem = ({ user }) => {
         console.log('item.notfi:', item.notfi);
         console.log('ListInterviewNotif.includes(item.interviewCodeJobInt):', ListInterviewNotif.includes(item.interviewCodeJobInt));
         console.log('item?.type?.includes("Interview"):', item?.type?.includes("Interview"));
-        console.log('project jjjjj:', project);
+      
 
         return (
           (item.notfi === 0 &&
             ListInterviewNotif.includes(item.interviewCodeJobInt) &&
             item.type?.includes("Interview") &&
             item.dep?.includes("Operation")) ||
-             (item.notfi === 14 &&
+          (item.notfi === 14 &&
             item.type?.includes("Demob") &&
             project?.includes(item.projName))
         );
-        
+
       });
 
       // setNotifManager(filteredManager)
@@ -364,7 +358,7 @@ const NotificationItem = ({ user }) => {
       });
 
       setNotifLogistic(filteredLogistic);
-    
+
 
 
 
@@ -528,7 +522,7 @@ const NotificationItem = ({ user }) => {
         throw new Error('Network response was not ok');
       }
       const responseData = await response.json();
-      console.log("findIdDemob ", responseData)
+ 
       handleMobDemobOpen(responseData)
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
@@ -749,12 +743,12 @@ const NotificationItem = ({ user }) => {
                 </button>
               )}
               {/*Notification Demob*/}
-              {p?.type?.includes("Demob")  && (
-                  <button className='Notification' onClick={() => findIdDemob(p?.idMd)} >
-                    Demobilization Permission Notification:
-                    <span style={{ color: "red", fontWeight: "bold" }}>DP-{p?.idMd}</span>
-                  </button>
-                )}
+              {p?.type?.includes("Demob") && (
+                <button className='Notification' onClick={() => findIdDemob(p?.idMd)} >
+                  Demobilization Permission Notification:
+                  <span style={{ color: "red", fontWeight: "bold" }}>DP-{p?.idMd}</span>
+                </button>
+              )}
 
             </div>
           ))}
@@ -804,24 +798,28 @@ const NotificationItem = ({ user }) => {
                   Recruitment Request with Code Job:
                   <span style={{ color: "red", fontWeight: "bold" }}>{p.codejob}</span>
                 </button>
-                <div>
-                  <button
-                    className='Notification'
-                    onClick={() =>
-                      p.type.includes("Interview of construction team")
-                        ? findIdInterviewConstruction(p?.interviewCode)
-                        : findIdInterview(p?.interviewCode)
-                    }
-                  >
-                    Notification {p.type} Code {p.interviewCode}:
-                    <span style={{ color: "red", fontWeight: "bold" }}>
-                      {p.type.includes("Interview of construction team") ? `CIS-${p.interviewCodeJobInt}` : `RRS-${p.interviewCodeJobInt}`}
-                    </span>
-                    {/* <span style={{ color: "red", fontWeight: "bold" }}>
-             RRS-{p.codejob}
-           </span> */}
-                  </button>
-                </div>
+                {p?.type?.includes("Interview") && (
+                  <div>
+                    <button
+                      className='Notification'
+                      onClick={() =>
+                        p.type.includes("Interview of construction team")
+                          ? findIdInterviewConstruction(p?.interviewCode)
+                          : findIdInterview(p?.interviewCode)
+                      }
+                    >
+                      Notification {p.type} Code {p.interviewCode}:
+                      <span style={{ color: "red", fontWeight: "bold" }}>
+                        {p.type.includes("Interview of construction team") ? `CIS-${p.interviewCodeJobInt}` : `RRS-${p.interviewCodeJobInt}`}
+                      </span>
+                      {/* <span style={{ color: "red", fontWeight: "bold" }}>
+                    RRS-{p.codejob}
+                  </span> */}
+                    </button>
+                  </div>
+
+                )}
+
                 {p?.type?.includes("Extension") && (
                   <button className='Notification' onClick={() => findIdExtention(p?.idExtMiss)}>
                     Extension Mission Notification: <span style={{ color: "red", fontWeight: "bold" }}>MER-{p?.idExtMiss}</span>
@@ -865,11 +863,11 @@ const NotificationItem = ({ user }) => {
       }
       {(user.includes("Manager") && !user.includes("Construction") && !dep?.includes('Operation')) && (
         <StyledNotifyListItem className='item-hover'>
-          <p>Number All Notification (notifManager A part Operation)</p>
+          <p>Number All Notification</p>
           {notifManager.map((p, index) => (
             <div key={index}>
               {p?.type?.includes("Interview") && (
-                <div>
+                <div >
                   <button
                     className='Notification'
                     onClick={() =>
@@ -877,7 +875,7 @@ const NotificationItem = ({ user }) => {
                         ? findIdInterviewConstruction(p?.interviewCode)
                         : findIdInterview(p?.interviewCode)
                     }>
-                    Notification {p.type} Code {p.interviewCode}:
+                    Notification {p.type} Code  {p.interviewCode}:
                     <span style={{ color: "red", fontWeight: "bold" }}>
                       {p.type.includes("Interview of construction team") ? `CIS-${p.interviewCodeJobInt}` : `RRS-${p.interviewCodeJobInt}`}
                     </span>

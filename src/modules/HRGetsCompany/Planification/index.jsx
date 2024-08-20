@@ -65,6 +65,13 @@ const Planification = () => {
         setTotalNumber(numberOfRecruitement)
         const lastRecruitment = responseDataRecruitement[responseDataRecruitement.length - 1];
         setLastRecruitement(lastRecruitment)
+             //responseInterviewConstruction
+             const responseInterviewConstruction = await fetch("https://dev-gateway.gets-company.com/api/v1/intc/list", {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+            });
         
         if (!responseInterviewConstruction.ok) {
           throw new Error('La requête a échoué avec le code ' + responseInterviewConstruction.status);

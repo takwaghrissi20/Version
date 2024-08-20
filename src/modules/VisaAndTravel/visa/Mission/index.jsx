@@ -298,7 +298,7 @@ const Mission = () => {
   };
 
   const handleProjectLocationChange = (value) => {
-    console.log('Select project :', value);
+  
     setSelectedProjectCountry(value);
   };
   const goBack = () => {

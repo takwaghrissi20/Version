@@ -723,9 +723,7 @@ const ViewInterviewConstructionTeam = ({ interviewCode,idViewConstruction}) => {
                 <Col xs={24} md={12}>
                   <Form.Item
                     label='Level'
-                    name='Level'
-
-                  >
+                    name='Level'>
                     <Input
                      placeholder={idViewConstruction.level}
                      readOnly
