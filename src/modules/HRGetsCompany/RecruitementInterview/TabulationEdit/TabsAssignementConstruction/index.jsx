@@ -19,7 +19,7 @@ import ViewAssignement from "../TabsAssignementConstruction/View";
 
 const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, validatesFor, goTotest2, psy_Person, psy_HumQuality
   , psy_motivation, psy_Intellig, goToTest3, techEnglishSkills, techDate, techEvaluation, idNumb, meetDesision, evalDesision,
-  techcommentaire, hseCertif, siteHazCont,
+  techcommentaire, hseCertif, siteHazCont,propsedsalary,dailyRate,
   properUse,
   hzardousMater,
   emergency,
@@ -39,12 +39,12 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
   leadership,
   hseDecision,
   hseComment,
-  idViewConstruction 
+  idViewConstruction
 
 
 }) => {
-  console.log("isSaveDisabled2", isSaveDisabled)
 
+  const navigate = useNavigate();
   const location = useLocation();
   const roles = window.localStorage.getItem("role");
   const JobCode = location.state ? location.state.JobCode : null;
@@ -120,6 +120,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
   const [selectedLeadershipQualities, setSelectedLeadershipQualities] = useState('');
   const [selectedPhysicalpresentation, setSelectedPhysicalpresentation] = useState('');
   const [selectedHSECertificates, setSelectedHSECertificates] = useState('');
+  const [hSECertificates, setHSECertificates] = useState('');
   const [selectedSitehazardscontrol, setSelectedSitehazardscontrol] = useState('');
   const [selectedProperuse, setSelectedProperuse] = useState('');
   const [selectedHazardousmaterials, setSelectedHazardousmaterials] = useState('');
@@ -128,7 +129,6 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
   const [selectedHSEPolicies, setSelectedHSEPolicies] = useState('');
   const [selectedOthers, setSelectedOthers] = useState('');
   const currentYear = new Date().getFullYear();
-  console.log("selectedHSECertificates", selectedHSECertificates)
   const fetchData = async () => {
     try {
       const endPoint =
@@ -153,6 +153,10 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
       }
       const data = await response.json();
       setDatalastIdinterview(data.interviewCode)
+      setTimeout(() => {
+        window.location.reload();
+        navigate(-1)
+      }, 2000);
 
     } catch (error) {
       console.error('Erreur lors de la récupération des données:', error);
@@ -164,7 +168,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
   }, []);
   const NewLastInterview = datalastIdinterview + 1
   //Save InterViewSheet
-  const navigate = useNavigate();
+
   const ShowAlertAfterSaveInterview = () => {
     setShowAlertConfirmation(true)
 
@@ -184,11 +188,11 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
     { rate: 'Below Average' },
 
   ];
-  const Rating1 = [
-    { rate: 'Excellent' },
-    { rate: 'Average' },
-    { rate: 'Good' },
-    { rate: 'Below Average' },
+  const Others = [
+    { Others: 'Excellent' },
+    { Others: 'Average' },
+    { Others: 'Good' },
+    { Others: 'Below Average' },
 
   ];
   const gobackTest = () => {
@@ -304,6 +308,8 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
           ptw: selectedPTWknowledge,
           hsePolicies: selectedHSEPolicies,
           others: selectedOthers,
+          propsedsalary:propsedsalary,
+          dailyRate:dailyRate,
           notif: 100,
 
         })
@@ -320,9 +326,13 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
       }
       if (response.ok) {
         const data = await response.json();
-        console.log("dattaaammmmm", data)
         setDataInterview(data)
         openNotification('bottomRight')
+        setTimeout(() => {
+          window.location.reload();
+          // navigate(-1)
+        }, 2000);
+
         // navigate(-1);
       }
 
@@ -382,10 +392,12 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
           creativity: selectedCreativity,
           physicPres: selectedPhysicalpresentation,
           leadership: selectedLeadershipQualities,
-          notif: 600,          
-          hseDecision:hseDecision,
-          hseComment:hseComment,
-          
+          notif: 600,
+          hseDecision: hseDecision,
+          hseComment: hseComment,
+          dailyRate:dailyRate
+
+
 
 
 
@@ -411,6 +423,10 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
         console.log("dattaaammmmm", data)
         openNotification('bottomRight')
         setDataInterview(data)
+        setTimeout(() => {
+          window.location.reload();
+          navigate(-1)
+        }, 2000);
         // navigate(-1);
       }
 
@@ -540,12 +556,12 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
             </StyledShadowWrapper>
           </Col>
         </AppRowContainer>
-        {roles.includes("bod")&& (
-   <ViewAssignement
-   idViewConstruction={idViewConstruction}
-  
-   
-   ></ViewAssignement>
+        {roles.includes("bod") && (
+          <ViewAssignement
+            idViewConstruction={idViewConstruction}
+
+
+          ></ViewAssignement>
 
 
         )}
@@ -630,9 +646,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                       <Col xs={24} md={12}>
                         <Form.Item
                           label="HSE Certificates:Working at hight/ H2S/ First Aid"
-                          name='attribut'
-
-                        >
+                          name='attribut'>
                           <Input
                             placeholder={hseCertif}
 
@@ -787,9 +801,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                       >
                         <Select
-                          style={
-                            { marginTop: "1.2rem" }
-                          }
+
                           placeholder='Select Education and Training'
 
                           onChange={(value) => setSelectedWorkExperience(value)}
@@ -803,10 +815,14 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                         </Select>
                       </Form.Item>
                     </Col>
-                    <Col xs={24} md={12}>
+                    <Col xs={24} md={12}
+                      style={{ marginTop: "1.2rem" }}
+
+                    >
                       <Form.Item
                         label="Diversity of Talents/Interests  Hobbies ; sports"
                         name='attribut3'
+
                         rules={[
                           { required: true, message: 'Please Select your Select Diversity of Talents/Interests !' },
 
@@ -814,9 +830,8 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                       >
                         <Select
-                          style={
-                            { marginTop: "1.5rem" }
-                          }
+
+
                           placeholder='Select Education and Training'
                           onChange={(value) => setSelectedDiversity(value)}
                           value={selectedDiversity}
@@ -832,7 +847,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                     <Col xs={24} md={12}>
                       <Form.Item
                         label="Intellectual Capability comprehension ; judgment; ability to reason;decision 
-                  making-decision"
+                        making-decision"
                         name='attribut4'
                         rules={[
                           { required: true, message: 'Please Select your Select Intellectual Capability comprehension  !' },
@@ -881,7 +896,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                     <Col xs={24} md={12}>
                       <Form.Item
                         label="Self-confidence  self- assurance ; belief in one’s potential and
-                  capability"
+                           capability"
                         name='attribut6'
                         rules={[
                           { required: true, message: 'Please Select your Select Self-confidence  self- assurance   !' },
@@ -890,9 +905,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                       >
                         <Select
-                          style={
-                            { marginTop: "1rem" }
-                          }
+
                           placeholder='Select Self-confidence  self- assurance  '
                           onChange={(value) => setSelectedSelfconfidence(value)}
                           value={selectedSelfconfidence}
@@ -907,6 +920,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                     </Col>
                     <Col xs={24} md={12}>
                       <Form.Item
+                       style={{ marginTop: "1.2rem" }}
                         label="Communication Skills ability to express/present ideas in clear ,concise manner
                 "
                         name='attribut7'
@@ -959,6 +973,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                     </Col>
                     <Col xs={24} md={12}>
                       <Form.Item
+                       style={{ marginTop: "1.2rem" }}
                         label="   
                   Creativity / Imagination - ability to work/find solutions 
                        outside the boundaries of conventions."
@@ -1067,14 +1082,14 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                       >
                         <Select
                           placeholder='Select  HSE Certificates  '
-                          onChange={(value) => setSelectedHSECertificates(value)}
 
+                          onChange={(value) => setSelectedHSECertificates(value)}
                           value={selectedHSECertificates}
                         >
                           {Rating.map((p, index) => (
-                            <Select.Option key={index} value={p.rate}>
+                            <Select key={index} value={p.rate}>
                               {p.rate}
-                            </Select.Option>
+                            </Select>
                           ))}
                         </Select>
                       </Form.Item>
@@ -1220,7 +1235,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                     <Col xs={24} md={12}>
                       <Form.Item
                         label="Others… "
-                        name='attribut'
+                        name='Others'
                         rules={[
                           { required: true, message: 'Please Select your Select  Others…  !' },
 
@@ -1232,10 +1247,10 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                           onChange={(value) => setSelectedOthers(value)}
                           value={selectedOthers}
                         >
-                          {Rating.map((p, index) => (
-                            <Select.Option key={index} value={p.rate}>
-                              {p.rate}
-                            </Select.Option>
+                          {Others.map((p, index) => (
+                            <Select key={index} value={p.Others}>
+                              {p.Others}
+                            </Select>
                           ))}
                         </Select>
                       </Form.Item>
@@ -1290,10 +1305,10 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
           size={15}
           style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}>
           {roles.includes("HSE") &&
-            <Button onClick={Save}>SaveHSE</Button>
+            <Button onClick={Save}>Save</Button>
           }
           {roles.includes("Human Ressource Manager") &&
-            <Button onClick={SaveHrManager}>Save Hr Manager</Button>
+            <Button onClick={SaveHrManager}>Save </Button>
           }
 
         </Space>

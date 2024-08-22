@@ -9,7 +9,6 @@ import dayjs from 'dayjs';
 import InterviewSheet from './EditInterviewConstructionTeam';
 import AssignementConstruction from './TabsAssignementConstruction';
 
-
 const InterviewSheetById = () => {
   const location = useLocation();
   const DesiredDate = location.state ? location.state.DesiredDate : null;
@@ -60,6 +59,9 @@ const InterviewSheetById = () => {
   const leadership = location.state ? location.state.leadership : null;
   const hseDecision = location.state ? location.state.hseDecision : null;
   const hseComment = location.state ? location.state.hseComment : null;
+  const propsedsalary = location.state ? location.state.propsedsalary : null;
+  const dailyRate = location.state ? location.state.dailyRate : null;
+  
   const [idViewConstruction, setIdViewConstruction] = useState([]);
   const findIdInterviewConstruction = async () => {
     try {
@@ -113,6 +115,8 @@ const InterviewSheetById = () => {
         hseDecision={hseDecision}
         hseComment={hseComment}
         hseCertif={hseCertif}
+        propsedsalary={propsedsalary}
+        dailyRate={dailyRate}
 
         roles={roles} ></InterviewSheet>,
     },
@@ -179,6 +183,8 @@ const InterviewSheetById = () => {
           leadership={leadership}
           hseDecision={hseDecision}
           hseComment={hseComment}
+          propsedsalary={propsedsalary}
+          dailyRate={dailyRate}
         />
       ),
     }] : [])

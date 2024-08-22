@@ -160,7 +160,7 @@ const EmployeesStatus = () => {
     
     try {
       const endPoint = process.env.NODE_ENV === 'development' ? 'https://dev-gateway.gets-company.com' : '';
-      const url = `${endPoint}/api/v1/emp/getEmByType?type=${type}&page=${currentPage}&size=${pageSize}`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getEmByType?type=${type}&page=${currentPage}&size=${pageSize}`;
       const response = await fetch(url);
   
       if (!response.ok) {
@@ -178,7 +178,7 @@ const EmployeesStatus = () => {
   
   const AllEmployeesFilter = async () => {
     try {
-      const officeEmployees = await fetchEmployeesByType('office');
+      const officeEmployees = await fetchEmployeesByType('office');      
       setEmployeesoffice(officeEmployees);
       setCountOffice(officeEmployees.length);
   
@@ -295,7 +295,7 @@ const EmployeesStatus = () => {
             <Pagination
             currentPage={currentPage}
             //totalPages={Math.ceil(countOffice / pageSize)}
-            totalPages={Math.ceil(42 / pageSize)}
+            totalPages={Math.ceil(50 / pageSize)}
             handlePageChange={handlePageChangeOffice}
           />
           </div>

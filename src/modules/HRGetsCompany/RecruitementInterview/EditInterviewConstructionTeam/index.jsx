@@ -2507,7 +2507,7 @@ const EditInterviewConstruction = () => {
             {roles.includes("Manager") && !roles.includes("HSE") && (
               <>
                 <Button onClick={UpdateManager}
-                >Save mANAGER
+                >Save 
                 </Button>
               </>)}
               {roles.includes("HSE") && (

@@ -32,6 +32,10 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
   const handleChangeDateVisaCable = (date, dateString) => {
     setEditingData({ ...editingData, vCabledate: dateString });
   };
+  const handleChangeReady = (date, dateString) => {
+    setEditingData({ ...editingData, visaReady: dateString });
+  };
+  console.log("eddddoiiiittt",editingData)
 
   const handleChangeDatepassportSubmitdate = (date, dateString) => {
     setEditingData({ ...editingData, passportSubmitdate: dateString });
@@ -113,6 +117,7 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
       setEditingData({});
       setBackgroundColor('transparent');
       openNotification('bottomRight')
+   
 
     } catch (error) {
       console.error("Erreur lors de la récupération du Id :", error);
@@ -129,7 +134,7 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
   const VisaRequest = [{ type: 'Yes' }, { type: 'No' }];
   const vCableReceive = [{ type: 'Yes' }, { type: 'No' }];
   const PASSPORTSUBMITTED = [{ type: 'Yes' }, { type: 'No' }];
-  const visaReady = [{ type: 'Yes' }, { type: 'No' }];
+  const visaReady = [{ type: 'ready' }, { type: 'No' }];
   const finalVisaReceive = [{ type: 'FINAL RECEIVED' }, { type: 'Not FINAL RECEIVED' }];
 
   const columns = [
@@ -373,6 +378,7 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
             )
           ),
         },
+    
         {
           title: 'FINISH DATE',
           dataIndex: 'finishDateVisa',

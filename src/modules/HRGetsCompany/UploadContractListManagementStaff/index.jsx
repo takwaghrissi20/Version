@@ -45,6 +45,8 @@ const UploadContractList = () => {
   const [newbankName, setNewbankName] = useState(bankName);
   const [newAlternativename, setNewAlternativename] = useState(altenativeNameBank);
   const [newcontratctCopy, setNewcontratctCopy] = useState(contratctCopy);
+  const [newcheckHolderName, setNewcheckHolderName] = useState(checkHolderName);
+
   const [newrib, setNewrib] = useState(rib);
   const handlePaymentType = (value) => {
     setSelectedTypePayment(value);

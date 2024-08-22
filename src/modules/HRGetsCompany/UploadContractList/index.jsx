@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../../@crema/components/AppRowContainer';
-import { Button, Col, Divider, Form, Input, Space, Typography, Select,notification } from 'antd';
+import { Button, Col, Divider, Form, Input, Space, Typography, Select, notification } from 'antd';
 import {
   StyledShadowWrapper,
   StyledInput,
@@ -8,7 +8,7 @@ import {
 import {
 
   StyledContactFormBtn,
-  
+
   StyledContactFormFooter,
 
 } from './index.styled';
@@ -35,8 +35,64 @@ const UploadContractList = () => {
   const rib = location.state ? location.state.rib : null;
   const bankName = location.state ? location.state.bankName : null;
   const altenativeNameBank = location.state ? location.state.altenativeNameBank : null;
-  const checkHolderName = location.state ? location.state.checkHolderName: null;
-  
+  const checkHolderName = location.state ? location.state.checkHolderName : null;
+  const contractType = location.state ? location.state.contractType : null;
+  const primeProductivity = location.state ? location.state.primeProductivity : null;
+  const salary = location.state ? location.state.salary : null;
+  const dailyRate = location.state ? location.state.dailyRate : null;
+  const actStatus = location.state ? location.state.actStatus : null;
+  const approvalStatus = location.state ? location.state.approvalStatus : null;
+  const arDestination = location.state ? location.state.arDestination : null;
+  const arName = location.state ? location.state.arName : null;
+  const arPosition = location.state ? location.state.arPosition : null;
+  const arResidenceAdress = location.state ? location.state.arResidenceAdress : null;
+  const birthDate = location.state ? location.state.birthDate : null;
+  const category = location.state ? location.state.category : null;
+  const cin = location.state ? location.state.cin : null;
+  const cinDate = location.state ? location.state.cinDate : null;
+  const cnss = location.state ? location.state.cnss : null;
+  const cnssCopy = location.state ? location.state.cnssCopy : null;
+  const contractNumb = location.state ? location.state.contractNumb : null;
+  const cvCopy = location.state ? location.state.cvCopy : null;
+  const dateVisa = location.state ? location.state.dateVisa : null;
+  const deductionAmount = location.state ? location.state.deductionAmount : null;
+  const desertPass_finish_date = location.state ? location.state.desertPass_finish_date : null;
+  const desert_pass = location.state ? location.state.desert_pass : null;
+  const duration = location.state ? location.duration : null;
+  const email = location.state ? location.email : null;
+  const emergencyName = location.state ? location.emergencyName : null;
+  const emergencyRelation = location.state ? location.emergencyRelation : null;
+  const endTravelDate = location.state ? location.endTravelDate : null;
+  const exitRentryType = location.state ? location.exitRentryType : null;
+  const exitRentry_finish_date = location.state ? location.exitRentry_finish_date : null;
+  const exrentry_date = location.state ? location.exrentry_date : null;
+  const finalVisaReceive = location.state ? location.finalVisaReceive : null;
+  const finalVisaReceiveDate = location.state ? location.finalVisaReceiveDate : null;
+  const finishDate = location.state ? location.finishDate : null;
+  const finishDateVisa = location.state ? location.finishDateVisa : null;
+  const gender = location.state ? location.gender : null;
+  const joinDate = location.state ? location.joinDate : null;
+  const nationality = location.state ? location.nationality : null;
+  const nbExperience = location.state ? location.nbExperience : null;
+  const passportCopy = location.state ? location.passportCopy : null;
+  const passportSubmit = location.state ? location.passportSubmit : null;
+  const passportSubmitdate = location.state ? location.passportSubmitdate : null;
+  const passport_finish_date = location.state ? location.passport_finish_date : null;
+  const passportnumber = location.state ? location.passportnumber : null;
+  const paymentType = location.state ? location.paymentType : null;
+  const phoneEmergency = location.state ? location.phoneEmergency : null;
+  const phoneNumber = location.state ? location.phoneNumber : null;
+  const requestSendVisa = location.state ? location.requestSendVisa : null;
+  const residance_finish_date = location.state ? location.residance_finish_date : null;
+  const residenceAdress = location.state ? location.residenceAdress : null;
+  const toApplyForVisa = location.state ? location.toApplyForVisa : null;
+  const type_Emp = location.state ? location.type_Emp : null;
+  const vCableReceive = location.state ? location.vCableReceive : null;
+  const vCabledate = location.state ? location.vCabledate : null;
+  const visa_Nb = location.state ? location.visa_Nb : null;
+
+
+
   const [selectedTypePayment, setSelectedTypePayment] = useState("Default");
   const [selectedBankName, setSelectedBankName] = useState("");
   const [selectedCompanyType, setSelectedCompanyType] = useState(companyType);
@@ -168,19 +224,23 @@ const UploadContractList = () => {
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
         body: JSON.stringify({
-          id:id,
+          id: id,
           name: name,
-          position:position,
-          destination:destination,
-          traveldate:traveldate,
-          companyType:selectedCompanyType,
-          contractCategory:contractCategory,
-          familyStatus:familyStatus,
-          contratctCopy:newcontratctCopy,
-          visaReady:visaReady,
-          departement:departement,
-          checkHolderName:newcheckHolderName,
-          PaymentType:selectedTypePayment,
+          position: position,
+          destination: destination,
+          traveldate: traveldate,
+          companyType: selectedCompanyType,
+          contractCategory: contractCategory,
+          familyStatus: familyStatus,
+          contratctCopy: newcontratctCopy,
+          visaReady: visaReady,
+          departement: departement,
+          checkHolderName: newcheckHolderName,
+          PaymentType: selectedTypePayment,
+          contractType: contractType,
+          primeProductivity: primeProductivity,
+          salary: salary,
+          dailyRate: dailyRate,
           // idVisa,
           // arName,
           // arPosition,
@@ -223,8 +283,8 @@ const UploadContractList = () => {
           // cin, gender, residenceAdress,
           // arResidenceAdress, salary, duration,
           // emergencyName, emergencyRelation,
-          rib:newrib,
-          bankName:selectedBankName
+          rib: newrib,
+          bankName: selectedBankName
 
         })
       });
@@ -236,9 +296,10 @@ const UploadContractList = () => {
       if (response.ok) {
 
         const responseData = await response.json();
+        console.log("eerrrr",responseData)
         openNotificationUpdate('bottomRight')
         // setDataEdit(responseData)
-       // window.location.reload();
+        // window.location.reload();
         //handleAddContactClose(true)
       }
 
@@ -259,24 +320,78 @@ const UploadContractList = () => {
           'Content-Type': 'application/json',
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
-      
+
         body: JSON.stringify({
-         
-          name:name ,
-          departement:departement,
-          familyStatus:familyStatus,
-          position:position,
-           destination:destination,
-           traveldate:traveldate,
-          companyType:selectedCompanyType,
-          paymentCategory:newpaymentCategory,
-          visaReady:visaReady,
-          bankName:selectedBankName,
-          rib:newrib,
+
+          name: name,
+          departement: departement,
+          familyStatus: familyStatus,
+          position: position,
+          destination: destination,
+          traveldate: traveldate,
+          companyType: selectedCompanyType,
+          paymentCategory: newpaymentCategory,
+          visaReady: visaReady,
+          bankName: selectedBankName,
+          rib: newrib,
           altenativeNameBank: newAlternativename,
-          contratctCopy:newcontratctCopy,
-          contractCategory:contractCategory
-      
+          contratctCopy: newcontratctCopy,
+          contractCategory: contractCategory,
+          actStatus: actStatus,
+          approvalStatus: approvalStatus,
+          arDestination: arDestination,
+          arName: arName,
+          arPosition: arPosition,
+          arResidenceAdress: arResidenceAdress,
+          birthDate: birthDate,
+          category: category,
+          checkHolderName: checkHolderName,
+          cin: cin,
+          cinDate: cinDate,
+          cnss: cnss,
+          cnssCopy: cnssCopy,
+          contractNumb: contractNumb,
+          cvCopy: cvCopy,
+          dailyRate: dailyRate,
+          dateVisa: dateVisa,
+          departement: departement,
+          deductionAmount: deductionAmount,
+          desertPass_finish_date: desertPass_finish_date,
+          desert_pass: desert_pass,
+          duration: duration,
+          email: email,
+          emergencyName: emergencyName,
+          emergencyRelation: emergencyRelation,
+          endTravelDate: endTravelDate,
+          exitRentryType: exitRentryType,
+          exitRentry_finish_date: exitRentry_finish_date,
+          exrentry_date: exrentry_date,
+          finalVisaReceive: finalVisaReceive,
+          finalVisaReceiveDate: finalVisaReceiveDate,
+          finishDate: finishDate,
+          finishDateVisa: finishDateVisa,
+          gender: gender,
+          joinDate: joinDate,
+          nationality: nationality,
+          nbExperience: nbExperience,
+          passportCopy: passportCopy,
+          passportSubmit: passportSubmit,
+          passportSubmitdate: passportSubmitdate,
+          passport_finish_date: passport_finish_date,
+          passportnumber: passportnumber,
+          paymentType: paymentType,
+          phoneEmergency: phoneEmergency,
+          phoneNumber: phoneNumber,
+          requestSendVisa: requestSendVisa,
+          residance_finish_date: residance_finish_date,
+          residenceAdress: residenceAdress,
+          salary: salary,
+          toApplyForVisa: toApplyForVisa,
+          type_Emp: type_Emp,
+          vCableReceive: vCableReceive,
+          vCabledate: vCabledate,
+          visa_Nb: visa_Nb
+
           // idVisa,
           // arName,
           // arPosition,
@@ -330,10 +445,10 @@ const UploadContractList = () => {
       if (response.ok) {
 
         const responseData = await response.json();
-        console.log("testttttttt Contart List",responseData)
+        console.log("testttttttt Contart List", responseData)
         openNotification('bottomRight')
         // handleAddContactClose(true)
-            
+
       }
 
       // Handle responseData if needed
@@ -551,15 +666,15 @@ const UploadContractList = () => {
             <StyledContactFormBtn
               type='primary'
               ghost
-              onClick={goBack} 
-          
+              onClick={goBack}
+
             >
               <IntlMessages id='common.cancel' />
             </StyledContactFormBtn>
             <StyledContactFormBtn
               type='primary'
               ghost
-              onClick={() => Update()} 
+              onClick={() => Update()}
             >
               <IntlMessages id='common.Edit' />
             </StyledContactFormBtn>
@@ -576,7 +691,7 @@ const UploadContractList = () => {
           </StyledContactFormFooter>
 
 
-        
+
         </Form>
 
       </>

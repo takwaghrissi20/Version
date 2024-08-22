@@ -1512,6 +1512,7 @@ const EditRecruitementAbove = () => {
                         <Input
                           style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
                           placeholder={comentPlaner}
+                          readOnly
                         />
                       </Form.Item>
                     </Col>

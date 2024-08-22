@@ -78,6 +78,8 @@ const ContratCategory = (props) => {
   const [showAlert, setShowAlert] = useState(false);
   const [showAlertError, setShowAlertError] = useState(false);
   const[newprimeProductivity,setNewprimeProductivity]=useState(primeProductivity)
+  const[finalSalary,setFinalSalary]=useState(0)
+  const[finaldailyRate,setFinaldailyRate]=useState(0)
   const [data, setData] = useState("");
   useEffect(() => {
     if (showAlert) {
@@ -611,7 +613,9 @@ const ContratCategory = (props) => {
       const requestBody = {
         contractType:selectedContratType,
         contractCategory:selectedContractCategorie,
-        primeProductivity:newprimeProductivity
+        primeProductivity:newprimeProductivity,
+        salary:finalSalary,
+        dailyRate:finaldailyRate
 
      
       };
@@ -742,10 +746,12 @@ const ContratCategory = (props) => {
               <span className='modallabel'> Salary :</span>
                 <FloatLabel  name="joinDate">
                   <Input
+                  type='number'
                     className='Input'
-                    value={ salary}
+                    value={finalSalary}
+                    onChange={(e) =>setFinalSalary(e.target.value)}
                     placeholder="Salary"
-                    readOnly
+                
                     
                   />
                 </FloatLabel>
@@ -759,10 +765,12 @@ const ContratCategory = (props) => {
               <span className='modallabel'> Daily Rate :</span>
                 <FloatLabel  name="Daily Rate">
                   <Input
+                   type='number'
                     className='Input'
-                     value={ dailyRate}
+                    value={finaldailyRate}
+                    onChange={(e) =>setFinaldailyRate(e.target.value)}
                     placeholder="Daily Rate"
-                    readOnly
+                   
                    
                   />
                 </FloatLabel>

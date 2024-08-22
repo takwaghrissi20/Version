@@ -37,7 +37,7 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
   const [category, setCategory] = useState("Management Staff")
   useEffect(() => {
 
-    console.log("categorykkkk", category)
+    
 
   }, [selectedGenderType]);
 
@@ -419,7 +419,8 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
     ]).then(values => {
       setIsModalVisible(true);
       if (selectedEmpTypeType === "Site") {
-        alert("Emplotees Site.");
+        // alert("Emplotees Site.");
+        console.log("Emplotees Site.")
       }
       // SaveVisa();
 
@@ -441,6 +442,7 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
             e.preventDefault();
           }
         }}>
+         
         {/* <Button onClick={handleSubmit3}>Submit</Button> */}
         <Row style={{ justifyContent: "flex-end" }}>
           <Col xs={24} lg={6} style={{

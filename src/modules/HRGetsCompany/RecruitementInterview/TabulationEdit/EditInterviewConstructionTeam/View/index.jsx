@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../../../../../../@crema/components/AppConfirmationModal';
 import { useLocation } from 'react-router-dom';
-const ViewInterviewConstructionTeam = ({ interviewCode,idViewConstruction}) => {
+const ViewInterviewConstructionTeam = ({ interviewCode, idViewConstruction }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [form] = Form.useForm();
@@ -21,7 +21,7 @@ const ViewInterviewConstructionTeam = ({ interviewCode,idViewConstruction}) => {
   const goBack = () => {
     navigate(-1)
   }
- 
+
 
 
   return (
@@ -612,24 +612,173 @@ const ViewInterviewConstructionTeam = ({ interviewCode,idViewConstruction}) => {
           </>
 
         }
-        {idViewConstruction.evalDesision &&
+        {idViewConstruction.evalDesision && (
+          <>
+
+            <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+            <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+              <Col xs={24} md={6}>
+                <Typography.Title level={5}>HSE Approval</Typography.Title>
+
+              </Col>
+              <Col xs={24} md={18}>
+                <StyledShadowWrapper>
+                  <AppRowContainer>
+
+                    <Col xs={24} md={24}>
+
+                      <Form.Item
+                        label='HSE Approval :'
+                        name='HSE Approval' >
+                        <Checkbox
+                          checked={idViewConstruction.hseDecision}
+                          readOnly
+                        >
+
+                          <IntlMessages id='validation.test' />
+                        </Checkbox>
+                        <Checkbox checked={!idViewConstruction.hseDecision}
+                        readOnly
+                        
+                        >
+                          <IntlMessages id='Refuse.test' />
+                        </Checkbox>
+                      </Form.Item>
+
+                    </Col>
+                    <Col xs={24} md={24}>
+                      <Form.Item label='Comments' name='Comments'
+
+                      >
+                        <Input
+                          className='InputComment'
+                          placeholder={idViewConstruction.hseComment}
+                          readOnly
+                        />
+                      </Form.Item>
+                    </Col>
+
+
+                  </AppRowContainer>
+                </StyledShadowWrapper>
+              </Col>
+
+            </AppRowContainer>
+
+          </>
+        )}
+
+
+        {idViewConstruction.hseDecision &&
           <>
             <Divider style={{ marginTop: 16, marginBottom: 16 }} />
             <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
               <Col xs={24} md={6}>
-                <Typography.Title level={5}>  Head of Department ApprovaL</Typography.Title>
+                <Typography.Title level={5}>HR Evaluation &&  Decision</Typography.Title>
 
               </Col>
               <Col xs={24} md={18}>
                 <StyledShadowWrapper>
                   <AppRowContainer>
                     <Col xs={24} md={12}>
+                      <Form.Item
+                        label='Personnality'
+                        name='Personnality' >
+                        <Input
+                          placeholder={idViewConstruction.hr_Person}
+                          readOnly
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label='Humain quality'
+                        name='Humain quality'
+                      >
+                        <Input
+                          placeholder={idViewConstruction.hr_HumQuality}
+                          readOnly
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label='Motivation/Ambition'
+                        name='Motivation/Ambition'
+
+
+                      >
+                        <Input
+                          placeholder={idViewConstruction.hr_motivation}
+                          readOnly
+                        />
+
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label='Intelligence'
+                        name='Intelligence'
+
+                      >
+                        <Input
+                          placeholder={idViewConstruction.hr_Intellig}
+                          readOnly
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label='Level'
+                        name='Level'>
+                        <Input
+                          placeholder={idViewConstruction.level}
+                          readOnly
+
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item label='Expected Join Date' name='Expected Join Date'>
+                        <Input
+                          placeholder={idViewConstruction.expectedJoinDate}
+                          readOnly
+                        />
+
+                      </Form.Item>
+                    </Col>
+
+
+                    <Col xs={24} md={12}>
+                      <Form.Item label='Proposed Office Salary' name='Proposed Salary'
+
+
+                      >
+                        <Input
+                          placeholder={idViewConstruction.propsedsalary}
+                          readOnly
+                        />
+
+
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item label='Proposed Site Daily Rate' name='Proposed Daily Rate'
+                      >
+                        <Input
+                          placeholder={idViewConstruction.dailyRate}
+                          readOnly
+                        />
+
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={24}>
 
                       <Form.Item
-                        label='Head of Department Approval :'
-                        name='Head of Department Approval' >
+                        label='HR Decision:'
+                        name='HR Evaluation' >
                         <Checkbox
-                          checked={idViewConstruction.headOfDepAprouv}
+                          checked={idViewConstruction.hrDesion}
                           readOnly
 
                         >
@@ -637,8 +786,8 @@ const ViewInterviewConstructionTeam = ({ interviewCode,idViewConstruction}) => {
                           <IntlMessages id='validation.test' />
                         </Checkbox>
                         <Checkbox
-                        checked={!idViewConstruction.headOfDepAprouv}
-                        readOnly
+                          checked={!idViewConstruction.hrDesion}
+                          readOnly
 
                         >
                           <IntlMessages id='Refuse.test' />
@@ -646,6 +795,19 @@ const ViewInterviewConstructionTeam = ({ interviewCode,idViewConstruction}) => {
                       </Form.Item>
 
                     </Col>
+                    <Col xs={24} md={24}>
+                      <Form.Item label='Comments' name='Comments'
+
+
+                      >
+                        <Input
+                          className='InputComment'
+                          placeholder={idViewConstruction.hrComentaire}
+                          readOnly
+                        />
+                      </Form.Item>
+                    </Col>
+
 
 
 
@@ -654,166 +816,8 @@ const ViewInterviewConstructionTeam = ({ interviewCode,idViewConstruction}) => {
               </Col>
             </AppRowContainer>
 
-
-
-
           </>
-
-
         }
-
-{idViewConstruction.headOfDepAprouv && 
-<>
-<Divider style={{ marginTop: 16, marginBottom: 16 }} />
-        <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-          <Col xs={24} md={6}>
-            <Typography.Title level={5}>HR Evaluation &&  Decision</Typography.Title>
-
-          </Col>
-          <Col xs={24} md={18}>
-            <StyledShadowWrapper>
-              <AppRowContainer>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label='Personnality'
-                    name='Personnality' >
-                    <Input
-                    placeholder={idViewConstruction.hr_Person}
-                      readOnly
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label='Humain quality'
-                    name='Humain quality'
-                  >
-                    <Input
-                    placeholder={idViewConstruction.hr_HumQuality}
-                    readOnly
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label='Motivation/Ambition'
-                    name='Motivation/Ambition'
-                  
-
-                  >
-                    <Input
-                     placeholder={idViewConstruction.hr_motivation}
-                     readOnly
-                    />
-
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label='Intelligence'
-                    name='Intelligence'
-
-                  >
-                    <Input
-                       placeholder={idViewConstruction.hr_Intellig}
-                       readOnly
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label='Level'
-                    name='Level'>
-                    <Input
-                     placeholder={idViewConstruction.level}
-                     readOnly
-
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Expected Join Date' name='Expected Join Date'>
-                    <Input
-                   placeholder={idViewConstruction.expectedJoinDate}
-                   readOnly
-                    />
-
-                  </Form.Item>
-                </Col>
-
-
-                <Col xs={24} md={12}>
-                  <Form.Item label='Proposed Office Salary' name='Proposed Salary'
-
-
-                  >
-                    <Input
-                   placeholder={idViewConstruction.propsedsalary}
-                   readOnly
-                    />
-
-
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Proposed Site Daily Rate' name='Proposed Daily Rate'
-                  >
-                    <Input
-                       placeholder={idViewConstruction.dailyRate}
-                       readOnly
-                    />
-
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={24}>
-
-                  <Form.Item
-                    label='HR Decision:'
-                    name='HR Evaluation' >
-                    <Checkbox  
-                     checked={idViewConstruction.hrDesion}
-                     readOnly
-                    
-                    >
-
-                      <IntlMessages id='validation.test' />
-                    </Checkbox>
-                    <Checkbox
-                     checked={!idViewConstruction.hrDesion}
-                     readOnly
-                    
-                    >
-                      <IntlMessages id='Refuse.test' />
-                    </Checkbox>
-                  </Form.Item>
-
-                </Col>
-                <Col xs={24} md={24}>
-                  <Form.Item label='Comments' name='Comments'
-
-
-
-                  >
-                    <Input
-                      className='InputComment'
-                      placeholder={idViewConstruction.hrComentaire}
-                      readOnly
-                    />
-                  </Form.Item>
-                </Col>
-
-
-
-
-              </AppRowContainer>
-            </StyledShadowWrapper>
-          </Col>
-        </AppRowContainer>
-
-</>
-}
-
-        
 
 
         <Space

@@ -611,6 +611,8 @@ const NotificationItem = ({ user }) => {
           leadership: findIdDataConstruction?.leadership,
           hseDecision: findIdDataConstruction?.hseDecision,
           hseComment: findIdDataConstruction?.hseComment,
+        
+      
 
 
 
@@ -691,7 +693,6 @@ const NotificationItem = ({ user }) => {
         throw new Error('Network response was not ok');
       }
       const responseData = await response.json();
-      console.log("responseDataConstruction", responseData)
       setFindIdDataConstruction(responseData)
       setIntCode(responseData?.interviewCode)
       // handleEditInterviewConstructionOpen(responseData?.interviewCode)

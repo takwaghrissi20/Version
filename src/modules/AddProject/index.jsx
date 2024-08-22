@@ -341,14 +341,10 @@ const AddProjectEmployees = () => {
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label='Project Leader Name ' name='Name'
-
-
-                  >
+                  <Form.Item label='Project Leader Name ' name='Name'>
                     <Input
                       className='Input'
                       placeholder={name}
-
                       readOnly
 
 

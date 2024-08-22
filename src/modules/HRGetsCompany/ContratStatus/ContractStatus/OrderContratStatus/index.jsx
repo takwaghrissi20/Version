@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { StyledOrderTable, StyledAction } from '../../../../../styles/index.styled';
 import ContratStatusView from "../../../../Model/ContratStatusView";
@@ -9,8 +9,8 @@ import { AiFillEdit } from "react-icons/ai";
 import { CiSaveDown2 } from "react-icons/ci";
 import { MoreOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-const OrderTable = ({ temployee, loading ,user}) => {
-  console.log("temployeerrrrrrr",temployee)
+const OrderTable = ({ temployee, loading, user }) => {
+  console.log("temployeerrrrrrr", temployee)
   const navigate = useNavigate();
   const [findIdData, setFindIdData] = useState("");
   const [contractCategory, setContractCategory] = useState("");
@@ -20,63 +20,130 @@ const OrderTable = ({ temployee, loading ,user}) => {
 
   const handleAddContratOpen1 = () => {
     onViewContrat(true);
-    setFindIdData(record) 
-    }
+    setFindIdData(record)
+  }
 
   const handleAddContratOpen = () => {
     // onViewContrat(true);
     // setFindIdData(record)   
-    navigate(`/Hr/View/Construction_Team/contractList/idGets=${getsId}`, { 
+    navigate(`/Hr/View/Construction_Team/contractList/idGets=${getsId}`, {
       state:
-       { id:getsId,
-        name:findIdData?.name,
-        departement:findIdData?.departement,
-        familyStatus:findIdData?.familyStatus,
-        position:findIdData?.position,
-        traveldate:findIdData?.traveldate,
-        destination:findIdData?.destination,
-        companyType:findIdData?.companyType,
-        contractCategory:findIdData?.contractCategory,
-        visaReady:findIdData?.visaReady,
-        contratctCopy:findIdData?.contratctCopy
+      {
+        id: getsId,
+        name: findIdData?.name,
+        departement: findIdData?.departement,
+        familyStatus: findIdData?.familyStatus,
+        position: findIdData?.position,
+        traveldate: findIdData?.traveldate,
+        destination: findIdData?.destination,
+        companyType: findIdData?.companyType,
+        contractCategory: findIdData?.contractCategory,
+        visaReady: findIdData?.visaReady,
+        contratctCopy: findIdData?.contratctCopy
 
-        }
+      }
     });
- 
+
   };
   const handleEditContratOpen1 = () => {
     // onViewContrat(true);
     // setFindIdData(record)   
-    navigate(`/Hr/Upload_Contract/Construction_Team/contractList/idGets=${getsId}`, { 
+    navigate(`/Hr/Upload_Contract/Construction_Team/contractList/idGets=${getsId}`, {
       state:
-       { id:getsId,
-        name:findIdData?.name,
-        departement:findIdData?.departement,
-        familyStatus:findIdData?.familyStatus,
-        position:findIdData?.position,
-        traveldate:findIdData?.traveldate,
-        destination:findIdData?.destination,
-        companyType:findIdData?.companyType,
-        contractCategory:findIdData?.contractCategory,
-        visaReady:findIdData?.visaReady,
-        contratctCopy:findIdData?.contratctCopy,
-        paymentCategory:findIdData?.paymentCategory,
-        bankName:findIdData?.bankName,
-        rib:findIdData?.rib,
-        altenativeNameBank:findIdData?.altenativeNameBank,
-        checkHolderName:findIdData?.checkHolderName,
-        PaymentType:findIdData?.PaymentType,
+      {
+        id: getsId,
+        name: findIdData?.name,
+        departement: findIdData?.departement,
+        familyStatus: findIdData?.familyStatus,
+        position: findIdData?.position,
+        traveldate: findIdData?.traveldate,
+        destination: findIdData?.destination,
+        companyType: findIdData?.companyType,
+        contractCategory: findIdData?.contractCategory,
+        visaReady: findIdData?.visaReady,
+        contratctCopy: findIdData?.contratctCopy,
+        paymentCategory: findIdData?.paymentCategory,
+        bankName: findIdData?.bankName,
+        rib: findIdData?.rib,
+        altenativeNameBank: findIdData?.altenativeNameBank,
+        checkHolderName: findIdData?.checkHolderName,
+        PaymentType: findIdData?.PaymentType,
+        contractType: findIdData?.contractType,
+        primeProductivity: findIdData?.primeProductivity,
+        salary: findIdData?.salary,
+        dailyRate: findIdData?.dailyRate,
+        actStatus: findIdData?.actStatus,
+        approvalStatus: findIdData?.approvalStatus,
+        arDestination: findIdData?.arDestination,
+        arName: findIdData?.arName,
+        arPosition: findIdData?.arPosition,
+        arResidenceAdress: findIdData?.arResidenceAdress,
+        birthDate: findIdData?.birthDate,
+        category: findIdData?.category,
+        cin: findIdData?.cin,
+        cinDate: findIdData?.cinDate,
+        cnss: findIdData?.cnss,
+        cnssCopy: findIdData?.cnssCopy,
+        contractNumb: findIdData?.contractNumb,
+        contratctCopy: findIdData?.contratctCopy,
+        cvCopy: findIdData?.cvCopy,
+        dateVisa: findIdData?.dateVisa,
+        deductionAmount: findIdData?.deductionAmount,
+        desertPass_finish_date: findIdData?.desertPass_finish_date,
+        desert_pass: findIdData?.desert_pass,
+        duration: findIdData?.duration,
+        email: findIdData?.email,
+        emergencyName: findIdData?.emergencyName,
+        emergencyRelation: findIdData?.emergencyRelation,
+        endTravelDate: findIdData?.endTravelDate,
+        exitRentryType: findIdData?.exitRentryType,
+        exitRentry_finish_date: findIdData?.exitRentry_finish_date,
+        exrentry_date: findIdData?.exrentry_date,
+        finalVisaReceive: findIdData?.finalVisaReceive,
+        finalVisaReceiveDate: findIdData?.finalVisaReceiveDate,
+        finishDate: findIdData?.finishDate,
+        finishDateVisa: findIdData?.finishDateVisa,
+        gender: findIdData?.gender,
+        joinDate: findIdData?.joinDate,
+        nationality: findIdData?.nationality,
+        nbExperience: findIdData?.nbExperience,
+        passportCopy: findIdData?.passportCopy,
+        passportSubmit: findIdData?.passportSubmit,
+        passportSubmitdate: findIdData?.passportSubmitdate,
+        passport_finish_date: findIdData?.passport_finish_date,
+        passportnumber: findIdData?.passportnumber,
+        paymentCategory: findIdData?.passportnumber,
+        paymentType: findIdData?.paymentType,
+        phoneEmergency: findIdData?.phoneEmergency,
+        phoneNumber: findIdData?.phoneNumber,
+        position: findIdData?.position,
+        primeProductivity: findIdData?.primeProductivity,
+        projName: findIdData?.projName,
+        requestSendVisa: findIdData?.requestSendVisa,
+        residance_finish_date: findIdData?.residance_finish_date,
+        residenceAdress: findIdData?.residenceAdress,
+        rib: findIdData?.rib,
+        salary: findIdData?.salary,
+        toApplyForVisa: findIdData?.toApplyForVisa,
+        traveldate: findIdData?.traveldate,
+        type_Emp: findIdData?.type_Emp,
+        vCableReceive: findIdData?.vCableReceive,
+        vCabledate: findIdData?.vCabledate,
+        visaReady: findIdData?.visaReady,
+        visa_Nb: findIdData?.visa_Nb
 
-        }
+
+
+      }
     });
- 
+
   };
 
   const handleEditContratOpen = () => {
     OnisEditContrat(true);
     setFindIdData(record)
- 
- 
+
+
   };
 
   const handleEditContratClose = () => {
@@ -98,19 +165,19 @@ const OrderTable = ({ temployee, loading ,user}) => {
         throw new Error('Network response was not ok');
       }
       const responseData = await response.json();
-      console.log("reeooooo",responseData.id )
-      setGetsId(responseData.id )
+      console.log("reeooooo", responseData)
+      setGetsId(responseData.id)
       setFindIdData(responseData);
       setContractCategory(findIdData?.contractCategory)
-      console.log("contractCategory 8888 0000",findIdData?.contractCategory)
+      console.log("contractCategory 8888 0000", findIdData?.contractCategory)
     } catch (error) {
       console.error("Erreur lors de la récupération du Employee :", error);
     }
   };
   useEffect(() => {
-    console.log("contractCategory 8888",contractCategory)
+    console.log("contractCategory 8888", contractCategory)
   }, [contractCategory]);
-  console.log("ttgggggaarrrr",contractCategory)
+  console.log("ttgggggaarrrr", contractCategory)
   //SelectionnerContract
   const SelectionnnerContrat = () => {
 
@@ -138,12 +205,12 @@ const OrderTable = ({ temployee, loading ,user}) => {
       ContratE1()
 
     }
-    else if (contractCategory=== "CAT-E2") {
+    else if (contractCategory === "CAT-E2") {
       console.log(" contractCategory  CAT -E2")
       ContratE2()
 
     }
-    else if (contractCategory=== "SERVICE1-E3") {
+    else if (contractCategory === "SERVICE1-E3") {
       console.log(" contractCategory  SERVICE 1-E3")
       ContratE3()
 
@@ -184,15 +251,15 @@ const OrderTable = ({ temployee, loading ,user}) => {
 
     navigate('/HRGetsCompany/ContartTypeB1', {
       state: {
-        fullName:findIdData?. arName,
+        fullName: findIdData?.arName,
         passportNumber: findIdData?.passportnumber,
         passportSubmitdate: findIdData?.passportSubmitdate,
         arResidenceAdress: findIdData?.arResidenceAdress,
         companyType: findIdData?.companyType,
         traveldate: findIdData?.traveldate,
-        endTravelDate:findIdData?.endTravelDate,
+        endTravelDate: findIdData?.endTravelDate,
         arDestination: findIdData?.arDestination,
-        arPosition: findIdData?. arPosition,
+        arPosition: findIdData?.arPosition,
         // lastId: LastIdIncremente,
         salary: findIdData?.salary,
         dailyRate: findIdData?.dailyRate,
@@ -208,10 +275,10 @@ const OrderTable = ({ temployee, loading ,user}) => {
         fullName: findIdData?.arName,
         passportNumber: findIdData?.passportnumber,
         passportSubmitdate: findIdData?.passportSubmitdate,
-        arResidenceAdress:findIdData?. arResidenceAdress,
+        arResidenceAdress: findIdData?.arResidenceAdress,
         companyType: findIdData?.companyType,
         traveldate: findIdData?.traveldate,
-        endTravelDate:findIdData?.endTravelDate,
+        endTravelDate: findIdData?.endTravelDate,
         arDestination: findIdData?.arDestination,
         arPosition: findIdData?.arPosition,
         // lastId: LastIdIncremente,
@@ -233,9 +300,9 @@ const OrderTable = ({ temployee, loading ,user}) => {
         passportNumber: findIdData?.passportnumber,
         passportSubmitdate: findIdData?.passportSubmitdate,
         arResidenceAdress: findIdData?.arResidenceAdress,
-        companyType:findIdData?.companyType,
+        companyType: findIdData?.companyType,
         traveldate: findIdData?.traveldate,
-        endTravelDate:findIdData?.endTravelDate,
+        endTravelDate: findIdData?.endTravelDate,
         arDestination: findIdData?.arDestination,
         arPosition: findIdData?.arPosition,
         // lastId: LastIdIncremente,
@@ -257,9 +324,9 @@ const OrderTable = ({ temployee, loading ,user}) => {
         passportNumber: findIdData?.passportnumber,
         passportSubmitdate: findIdData?.passportSubmitdate,
         arResidenceAdress: findIdData?.arResidenceAdress,
-        companyType:findIdData?.companyType,
+        companyType: findIdData?.companyType,
         traveldate: findIdData?.traveldate,
-        endTravelDate:findIdData?.endTravelDate,
+        endTravelDate: findIdData?.endTravelDate,
         arDestination: findIdData?.arDestination,
         arPosition: findIdData?.arPosition,
         // lastId: LastIdIncremente,
@@ -282,9 +349,9 @@ const OrderTable = ({ temployee, loading ,user}) => {
         passportNumber: findIdData?.passportnumber,
         passportSubmitdate: findIdData?.passportSubmitdate,
         arResidenceAdress: findIdData?.arResidenceAdress,
-        companyType:findIdData?.companyType,
+        companyType: findIdData?.companyType,
         traveldate: findIdData?.traveldate,
-        endTravelDate:findIdData?.endTravelDate,
+        endTravelDate: findIdData?.endTravelDate,
         arDestination: findIdData?.arDestination,
         arPosition: findIdData?.arPosition,
         // lastId: LastIdIncremente,
@@ -307,15 +374,15 @@ const OrderTable = ({ temployee, loading ,user}) => {
       state: {
         fullName: findIdData?.arName,
         passportNumber: findIdData?.passportnumber,
-        passportSubmitdate:findIdData?. passportSubmitdate,
+        passportSubmitdate: findIdData?.passportSubmitdate,
         arResidenceAdress: findIdData?.arResidenceAdress,
-        companyType:findIdData?.companyType,
-        traveldate:findIdData?.traveldate,
-        endTravelDate:findIdData?.endTravelDate,
+        companyType: findIdData?.companyType,
+        traveldate: findIdData?.traveldate,
+        endTravelDate: findIdData?.endTravelDate,
         arDestination: findIdData?.arDestination,
         arPosition: findIdData?.arPosition,
         // lastId: LastIdIncremente ,
-        dailyRate : findIdData?.dailyRate,
+        dailyRate: findIdData?.dailyRate,
         duration: findIdData?.duration,
         joinDate: findIdData?.joinDate
 
@@ -328,12 +395,12 @@ const OrderTable = ({ temployee, loading ,user}) => {
     navigate('/HRGetsCompany/StaffManagement/SERVICE2-E3', {
       state: {
         fullName: findIdData?.arName,
-        passportNumber:findIdData?. passportnumber,
+        passportNumber: findIdData?.passportnumber,
         passportSubmitdate: findIdData?.passportSubmitdate,
         arResidenceAdress: findIdData?.arResidenceAdress,
-        companyType:findIdData?.companyType,
-        traveldate:findIdData?.traveldate,
-        endTravelDate:findIdData?.endTravelDate,
+        companyType: findIdData?.companyType,
+        traveldate: findIdData?.traveldate,
+        endTravelDate: findIdData?.endTravelDate,
         arDestination: findIdData?.arDestination,
         arPosition: findIdData?.arPosition,
         // lastId: LastIdIncremente,
@@ -358,21 +425,21 @@ const OrderTable = ({ temployee, loading ,user}) => {
         passportNumber: findIdData?.passportnumber,
         passportSubmitdate: findIdData?.passportSubmitdate,
         arResidenceAdress: findIdData?.arResidenceAdress,
-        companyType:findIdData?.companyType,
-        traveldate:findIdData?.traveldate,
-        endTravelDate:findIdData?.endTravelDate,
+        companyType: findIdData?.companyType,
+        traveldate: findIdData?.traveldate,
+        endTravelDate: findIdData?.endTravelDate,
         arDestination: findIdData?.arDestination,
         arPosition: findIdData?.arPosition,
         // lastId: LastIdIncremente,
         salary: findIdData?.salary,
-        primeProductivity:findIdData?.primeProductivity
+        primeProductivity: findIdData?.primeProductivity
 
       }
 
 
     });
   };
- 
+
   const ContratB3 = () => {
     navigate('/HRGetsCompany/ContartTypeB3', {
       state: {
@@ -380,14 +447,14 @@ const OrderTable = ({ temployee, loading ,user}) => {
         passportNumber: findIdData?.passportnumber,
         passportSubmitdate: findIdData?.passportSubmitdate,
         arResidenceAdress: findIdData?.arResidenceAdress,
-        companyType:findIdData?.companyType,
-        traveldate:findIdData?.traveldate,
-        endTravelDate:findIdData?.endTravelDate,
+        companyType: findIdData?.companyType,
+        traveldate: findIdData?.traveldate,
+        endTravelDate: findIdData?.endTravelDate,
         arDestination: findIdData?.arDestination,
         arPosition: findIdData?.arPosition,
         // lastId: LastIdIncremente,
         salary: findIdData?.salary,
-        primeProductivity:findIdData?.primeProductivity
+        primeProductivity: findIdData?.primeProductivity
 
       }
 
@@ -398,18 +465,18 @@ const OrderTable = ({ temployee, loading ,user}) => {
     navigate('/HRGetsCompany/ContartTypeC', {
       state: {
         fullName: findIdData?.arName,
-        passportNumber:findIdData?. passportnumber,
-        passportSubmitdate:findIdData?. passportSubmitdate,
+        passportNumber: findIdData?.passportnumber,
+        passportSubmitdate: findIdData?.passportSubmitdate,
         arResidenceAdress: findIdData?.arResidenceAdress,
-        companyType:findIdData?.companyType,
-        traveldate:findIdData?.traveldate,
-        endTravelDate:findIdData?.endTravelDate,
+        companyType: findIdData?.companyType,
+        traveldate: findIdData?.traveldate,
+        endTravelDate: findIdData?.endTravelDate,
         arDestination: findIdData?.arDestination,
         arPosition: findIdData?.arPosition,
         // lastId: LastIdIncremente,
         salary: findIdData?.salary,
-        primeProductivity:findIdData?.primeProductivity,
-        dailyRate:findIdData?.dailyRate
+        primeProductivity: findIdData?.primeProductivity,
+        dailyRate: findIdData?.dailyRate
 
       }
 
@@ -419,19 +486,19 @@ const OrderTable = ({ temployee, loading ,user}) => {
   const ContratD = () => {
     navigate('/HRGetsCompany/ContartTypeD', {
       state: {
-        fullName:findIdData?. arName,
+        fullName: findIdData?.arName,
         passportNumber: findIdData?.passportnumber,
         passportSubmitdate: findIdData?.passportSubmitdate,
         arResidenceAdress: findIdData?.arResidenceAdress,
-        companyType:findIdData?.companyType,
-        traveldate:findIdData?.traveldate,
-        endTravelDate:findIdData?.endTravelDate,
+        companyType: findIdData?.companyType,
+        traveldate: findIdData?.traveldate,
+        endTravelDate: findIdData?.endTravelDate,
         arDestination: findIdData?.arDestination,
         arPosition: findIdData?.arPosition,
         // lastId: LastIdIncremente,
-        salary:findIdData?. salary,
-        primeProductivity:findIdData?.primeProductivity,
-        dailyRate:findIdData?.dailyRate
+        salary: findIdData?.salary,
+        primeProductivity: findIdData?.primeProductivity,
+        dailyRate: findIdData?.dailyRate
 
       }
 
@@ -441,20 +508,20 @@ const OrderTable = ({ temployee, loading ,user}) => {
   const ContratSIVP = () => {
     navigate('/HRGetsCompany/StaffManagement/ContratSIVP', {
       state: {
-        name:findIdData?.name,
-        fullName:findIdData?. arName,
+        name: findIdData?.name,
+        fullName: findIdData?.arName,
         passportNumber: findIdData?.passportnumber,
-        passportSubmitdate:findIdData?. passportSubmitdate,
+        passportSubmitdate: findIdData?.passportSubmitdate,
         arResidenceAdress: findIdData?.arResidenceAdress,
-        companyType:findIdData?.companyType,
-        traveldate:findIdData?.traveldate,
-        endTravelDate:findIdData?.endTravelDate,
+        companyType: findIdData?.companyType,
+        traveldate: findIdData?.traveldate,
+        endTravelDate: findIdData?.endTravelDate,
         arDestination: findIdData?.arDestination,
-        arPosition:findIdData?. arPosition,
+        arPosition: findIdData?.arPosition,
         // lastId: LastIdIncremente,
         salary: findIdData?.salary,
-        primeProductivity:findIdData?.primeProductivity,
-        dailyRate:findIdData?.dailyRate
+        primeProductivity: findIdData?.primeProductivity,
+        dailyRate: findIdData?.dailyRate
 
       }
 
@@ -521,25 +588,25 @@ const OrderTable = ({ temployee, loading ,user}) => {
       render: (text, record) => {
         let items = [];
 
-    if (user.includes('admin')) {
-    
-      items = [
-        { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleAddContratOpen },
-        { key: 2, label: <span style={{ fontSize: 14 }}>Upload Contract</span>, onClick: handleEditContratOpen1 }
-      ];
+        if (user.includes('admin')) {
 
-      if (record.contratctCopy) {
-        items.push({ key: 3, label: <span style={{ fontSize: 14 }}>Download</span>, onClick: SelectionnnerContrat });
-      }
-    } else if (user.includes('bod')) {
-      // BOD users get only the "View" option
-      items = [
-        { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleAddContratOpen }
-      ];
-    }
+          items = [
+            { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleAddContratOpen },
+            { key: 2, label: <span style={{ fontSize: 14 }}>Upload Contract</span>, onClick: handleEditContratOpen1 }
+          ];
+
+          if (record.contratctCopy) {
+            items.push({ key: 3, label: <span style={{ fontSize: 14 }}>Download</span>, onClick: SelectionnnerContrat });
+          }
+        } else if (user.includes('bod')) {
+          // BOD users get only the "View" option
+          items = [
+            { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleAddContratOpen }
+          ];
+        }
 
         return (
-          <div onClick={() => findId(record?.id)}>        
+          <div onClick={() => findId(record?.id)}>
             <Dropdown menu={{ items }} trigger={['click']}>
               <Button type='circle'>
                 <MoreOutlined />
@@ -547,92 +614,92 @@ const OrderTable = ({ temployee, loading ,user}) => {
             </Dropdown>
             {isEditContrat && (
               <ContratStatusEdit
-              isEditContrat={isEditContrat}
-              // isEditContrat={isEditContrat}
-              handleAddContactClose={handleEditContratClose}
-              id={findIdData?.id}
-              name={findIdData?.name}
-              position={findIdData?.position}
-              destination={findIdData?.destination}
-              traveldate={findIdData?.traveldate}
-              companyType={findIdData?.companyType}
-              contractCategory={findIdData?.contractCategory}
-              familyStatus={findIdData?.familyStatus}
-              contratctCopy={findIdData?.contratctCopy}
-              visaReady={findIdData?.visaReady}
-              departement={findIdData?.departement}
-              idVisa={findIdData?.idVisa}
-              arName={findIdData?.arName}
-              arPosition={findIdData?.arPosition}
-              arDestination={findIdData?.arDestination}
-              nbchildren={findIdData?.nbchildren}
-              actStatus={findIdData?.actStatus}
-              phoneNumber={findIdData?.phoneNumber}
-              email={findIdData?.email}
-              joinDate={findIdData?.joinDate}
-              finishDate={findIdData?.finishDate}
-              nationality={findIdData?.nationality}
-              passport_finish_date={findIdData?.passport_finish_date}
-              residance_finish_date={findIdData?.residance_finish_date}
-              exitRentry_finish_date={findIdData?.exitRentry_finish_date}
-              desertPass_finish_date={findIdData?.desertPass_finish_date}
-              exrentry_date={findIdData?.exrentry_date}
-              birthDate={findIdData?.birthDate}
-              nbExperience={findIdData?.nbExperience}
-              cnss={findIdData?.cnss}
-              passportnumber={findIdData?.passportnumber}
-              phoneEmergency={findIdData?.phoneEmergency}
-              contractType={findIdData?.contractType}
-              contractNumb={findIdData?.contractNumb}
-              getsEmail={findIdData?.getsEmail}
-              desert_pass={findIdData.desert_pass}
-              visa_Nb={findIdData?.visa_Nb}
-              type_Emp={findIdData?.type_Emp}
-              toApplyForVisa={findIdData?.toApplyForVisa}
-              requestSendVisa={findIdData?.requestSendVisa}
-              dateVisa={findIdData?.dateVisa}
-              vCableReceive={findIdData?.vCableReceive}
-              vCabledate={findIdData?.vCabledate}
-              passportSubmit={findIdData?.passportSubmit}
-              passportSubmitdate={findIdData?.passportSubmitdate}
-              endTravelDate={findIdData?.endTravelDate}
-              finalVisaReceive={findIdData?.finalVisaReceive}
-              finalVisaReceiveDate={findIdData?.finalVisaReceiveDate}
-              finishDateVisa={findIdData?.finishDateVisa}
-              idJoys={findIdData?.idJoys}
-              exitRentryType={findIdData?.exitRentryType}
-              cin={findIdData?.cin}
-              gender={findIdData?.gender}
-              residenceAdress={findIdData?.residenceAdress}
-              arResidenceAdress={findIdData?.arResidenceAdress}
-              salary={findIdData?.salary}
-              duration={findIdData?.duration}
-              emergencyName={findIdData?.emergencyName}
-              emergencyRelation={findIdData?.emergencyRelation}
-            />
-          )} 
-              {isViewContrat && (
-               <ContratStatusView
-               isViewContrat={isViewContrat}
-               handleAddContactClose={handleAddContartClose}
-               findIdData={findIdData}
-               id={findIdData?.id}
-               name={findIdData?.name}
-               position={findIdData?.position}
-               destination={findIdData?.destination}
-               traveldate={findIdData?.traveldate}
-               companyType={findIdData?.companyType}
-               contractCategory={findIdData?.contractCategory}
-               familyStatus={findIdData?.familyStatus}
-               contratctCopy={findIdData?.contratctCopy}
-               visaReady={findIdData?.visaReady}
-               departement={findIdData?.departement}
- 
-             />
-          )} 
-         
-                    
-          
+                isEditContrat={isEditContrat}
+                // isEditContrat={isEditContrat}
+                handleAddContactClose={handleEditContratClose}
+                id={findIdData?.id}
+                name={findIdData?.name}
+                position={findIdData?.position}
+                destination={findIdData?.destination}
+                traveldate={findIdData?.traveldate}
+                companyType={findIdData?.companyType}
+                contractCategory={findIdData?.contractCategory}
+                familyStatus={findIdData?.familyStatus}
+                contratctCopy={findIdData?.contratctCopy}
+                visaReady={findIdData?.visaReady}
+                departement={findIdData?.departement}
+                idVisa={findIdData?.idVisa}
+                arName={findIdData?.arName}
+                arPosition={findIdData?.arPosition}
+                arDestination={findIdData?.arDestination}
+                nbchildren={findIdData?.nbchildren}
+                actStatus={findIdData?.actStatus}
+                phoneNumber={findIdData?.phoneNumber}
+                email={findIdData?.email}
+                joinDate={findIdData?.joinDate}
+                finishDate={findIdData?.finishDate}
+                nationality={findIdData?.nationality}
+                passport_finish_date={findIdData?.passport_finish_date}
+                residance_finish_date={findIdData?.residance_finish_date}
+                exitRentry_finish_date={findIdData?.exitRentry_finish_date}
+                desertPass_finish_date={findIdData?.desertPass_finish_date}
+                exrentry_date={findIdData?.exrentry_date}
+                birthDate={findIdData?.birthDate}
+                nbExperience={findIdData?.nbExperience}
+                cnss={findIdData?.cnss}
+                passportnumber={findIdData?.passportnumber}
+                phoneEmergency={findIdData?.phoneEmergency}
+                contractType={findIdData?.contractType}
+                contractNumb={findIdData?.contractNumb}
+                getsEmail={findIdData?.getsEmail}
+                desert_pass={findIdData.desert_pass}
+                visa_Nb={findIdData?.visa_Nb}
+                type_Emp={findIdData?.type_Emp}
+                toApplyForVisa={findIdData?.toApplyForVisa}
+                requestSendVisa={findIdData?.requestSendVisa}
+                dateVisa={findIdData?.dateVisa}
+                vCableReceive={findIdData?.vCableReceive}
+                vCabledate={findIdData?.vCabledate}
+                passportSubmit={findIdData?.passportSubmit}
+                passportSubmitdate={findIdData?.passportSubmitdate}
+                endTravelDate={findIdData?.endTravelDate}
+                finalVisaReceive={findIdData?.finalVisaReceive}
+                finalVisaReceiveDate={findIdData?.finalVisaReceiveDate}
+                finishDateVisa={findIdData?.finishDateVisa}
+                idJoys={findIdData?.idJoys}
+                exitRentryType={findIdData?.exitRentryType}
+                cin={findIdData?.cin}
+                gender={findIdData?.gender}
+                residenceAdress={findIdData?.residenceAdress}
+                arResidenceAdress={findIdData?.arResidenceAdress}
+                salary={findIdData?.salary}
+                duration={findIdData?.duration}
+                emergencyName={findIdData?.emergencyName}
+                emergencyRelation={findIdData?.emergencyRelation}
+              />
+            )}
+            {isViewContrat && (
+              <ContratStatusView
+                isViewContrat={isViewContrat}
+                handleAddContactClose={handleAddContartClose}
+                findIdData={findIdData}
+                id={findIdData?.id}
+                name={findIdData?.name}
+                position={findIdData?.position}
+                destination={findIdData?.destination}
+                traveldate={findIdData?.traveldate}
+                companyType={findIdData?.companyType}
+                contractCategory={findIdData?.contractCategory}
+                familyStatus={findIdData?.familyStatus}
+                contratctCopy={findIdData?.contratctCopy}
+                visaReady={findIdData?.visaReady}
+                departement={findIdData?.departement}
+
+              />
+            )}
+
+
+
           </div>
         );
       },

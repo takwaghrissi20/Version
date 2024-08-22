@@ -79,7 +79,7 @@ const SignInJwtAuth = () => {
                     onFinish={signInUser}
                     onFinishFailed={onFinishFailed}
                   >
-                    <p>Version0</p>
+                    {/* <p>Version 1.0.2</p> */}
 
                     <Form.Item
                       name='username'

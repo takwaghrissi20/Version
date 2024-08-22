@@ -765,8 +765,7 @@ const AddRecruitementAbove = () => {
       }
       if (response.ok) {
 
-        const responseData = await response.json();
-   
+        const responseData = await response.json(); 
         openNotification('bottomRight')
         setTimeout(() => {
           window.location.reload();

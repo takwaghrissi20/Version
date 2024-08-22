@@ -116,7 +116,7 @@ const ViewInformationForm = (props) => {
 
       const requestBody = {
      
-       idVisa:LastIdIncremente,
+      //  idVisa:LastIdIncremente,
        category:"Construction Staff",     
        departement:departement,
        name:name,
@@ -150,8 +150,7 @@ const ViewInformationForm = (props) => {
       }
       const data = await response.json();
       
-      console.log("lastStaff",lastId)
-       console.log("datavisa",data)
+  
 
       // handleAddContactClose()
       // Traiter la réponse de l'API si nécessaire
@@ -241,6 +240,7 @@ const ViewInformationForm = (props) => {
       setEndTraveldatepdf(data.endTravelDate)
       setArDestinationpdf(data.arDestination)
       setArPositionpdf(data.arPosition)
+      console.log("data.id",data.id)
       setLastId(data.id)
       setShowAlert(true);
       handleAddContactClose()
@@ -266,8 +266,6 @@ const ViewInformationForm = (props) => {
     // Set grayBackground to true when generateBtnEnabled is false
     setGrayBackground(!generateBtnEnabled);
   }, [generateBtnEnabled]);
-
-
 
 
   const ContratB1 = () => {
@@ -516,7 +514,7 @@ const ViewInformationForm = (props) => {
     }
    
   };
-
+console.log("idVisaaaaa",LastIdIncremente)
 
   return (
     <StyledContactForm>

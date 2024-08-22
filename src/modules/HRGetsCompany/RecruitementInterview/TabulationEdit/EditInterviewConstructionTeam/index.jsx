@@ -661,6 +661,7 @@ const EditInterviewConstruction = ({ hseCertif,
 
       if (!response.ok) {
         openNotificationError('bottomRight')
+        
 
         throw new Error('Network response was not ok');
       }
@@ -669,7 +670,11 @@ const EditInterviewConstruction = ({ hseCertif,
         const responseData = await response.json();
         // form.resetFields();
         openNotification('bottomRight')
-        navigate(-1)
+        setTimeout(() => {
+          window.location.reload();
+          navigate(-1)
+        }, 2000);
+
       }
 
       // Handle responseData if needed
@@ -968,7 +973,12 @@ const EditInterviewConstruction = ({ hseCertif,
         const responseData = await response.json();
         // form.resetFields();
         openNotification('bottomRight')
-        navigate(-1)
+        setTimeout(() => {
+          window.location.reload();
+          navigate(-1)
+        }, 2000);
+        
+   
       }
 
       // Handle responseData if needed
@@ -1293,7 +1303,12 @@ const EditInterviewConstruction = ({ hseCertif,
         const responseData = await response.json();
         // form.resetFields();
         openNotification('bottomRight')
-        navigate(-1)
+        setTimeout(() => {
+          window.location.reload();
+          navigate(-1)
+        }, 2000);
+        
+      
       }
 
       // Handle responseData if needed
@@ -1414,7 +1429,11 @@ const EditInterviewConstruction = ({ hseCertif,
         const responseData = await response.json();
         // form.resetFields();
         openNotification('bottomRight')
-        navigate(-1)
+        setTimeout(() => {
+          window.location.reload();
+          navigate(-1)
+        }, 2000);
+
       }
 
       // Handle responseData if needed
@@ -2019,8 +2038,8 @@ const EditInterviewConstruction = ({ hseCertif,
                     <Form.Item
                       label='Head of Department Approval :'
                       name='Head of Department Approval' >
-                      <Checkbox checked={headOfDepAprouv}  >
-
+                      <Checkbox 
+                      checked={headOfDepAprouv}  >
                         <IntlMessages id='validation.test' />
                       </Checkbox>
                       <Checkbox checked={!headOfDepAprouv}>
@@ -3170,9 +3189,9 @@ const EditInterviewConstruction = ({ hseCertif,
 
                               >
                                 {personality.map((p, index) => (
-                                  <Select.Option key={index} value={p.personality}>
+                                  <Select key={index} value={p.personality}>
                                     {p.pesonality}
-                                  </Select.Option>
+                                  </Select>
                                 ))}
                               </Select>
                             </Form.Item>

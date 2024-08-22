@@ -9,6 +9,7 @@ import { MdLabelOutline } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
 const OrderTable = ({ orderData }) => {
+  console
   const [hoveredRow, setHoveredRow] = useState(null);
   const [findIdData, setFindIdData] = useState([]);
   const [idEmployee, setIdEmployee] = useState(null);
@@ -140,7 +141,7 @@ console.log("findIdData?.name",findIdData?.name)
       title: 'Position',
       dataIndex: 'position',
       key: 'position',
-      render: renderActions,
+     
     },
 
   ];

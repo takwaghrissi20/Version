@@ -19,7 +19,7 @@ const ContratList = () => {
   const [employees, setEmployees] = useState([]);
   const [employeesFiltrer, setEmployeesFiltrer] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(500);
   const [nameFilter, setNameFilter] = useState('');
   const [count, setCount] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -171,7 +171,7 @@ const ContratList = () => {
         >
          
             <OrderTable className={clsx("item-hover")} dataemployees={employees} />
-            <StyledOrderHeaderRight>
+            {/* <StyledOrderHeaderRight>
 
               <Pagination
                 currentPage={currentPage}
@@ -181,7 +181,7 @@ const ContratList = () => {
 
 
 
-            </StyledOrderHeaderRight>
+            </StyledOrderHeaderRight> */}
       
         </AppCard>
 
