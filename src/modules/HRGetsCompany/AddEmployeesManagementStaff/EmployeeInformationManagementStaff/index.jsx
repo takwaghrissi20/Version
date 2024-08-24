@@ -1318,7 +1318,6 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
              disabled={searchValue === '' || !selectedInterviews}>Save</Button> */}
 
         </Space>
-
       </Form>
       <ValidateEmployees
         isViewInfo={isModalVisible}

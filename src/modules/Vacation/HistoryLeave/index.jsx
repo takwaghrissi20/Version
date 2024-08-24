@@ -244,10 +244,7 @@ const Tables = () => {
         </AppRowContainer>
         <AppCard
           className='no-card-space-ltr-rtl'
-          title={messages['dashboard.LeaveRequests']}
-        >
-          
-    
+          title={messages['dashboard.LeaveRequests']}>   
             <Table
               columns={columns}
               dataSource={vacations}

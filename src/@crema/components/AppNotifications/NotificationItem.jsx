@@ -465,6 +465,11 @@ const NotificationItem = ({ user }) => {
       setFindIdData(responseData);
       setCodeJob(responseData.jobCode);
       handleEditRecruitementOpen(responseData);
+      setTimeout(() => {
+        window.location.reload();
+       
+      }, 100);
+    
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
     }
@@ -482,6 +487,10 @@ const NotificationItem = ({ user }) => {
       const responseData = await response.json();
       console.log("extention", responseData)
       handleEditExtentionOpen(responseData)
+      setTimeout(() => {
+        window.location.reload();
+       
+      }, 100);
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
     }
@@ -503,10 +512,15 @@ const NotificationItem = ({ user }) => {
         throw new Error('Network response was not ok');
       }
       const responseData = await response.json();
-      console.log("responseDataConstruction", responseData)
+      setTimeout(() => {
+        window.location.reload();    
+      }, 100);
+    
       setFindIdDataStaff(responseData)
       setIntCode(responseData?.interviewCode)
       handleEditInterviewConstructionOpen(responseData?.interviewCode)
+    
+  
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
     }
@@ -524,6 +538,10 @@ const NotificationItem = ({ user }) => {
       const responseData = await response.json();
  
       handleMobDemobOpen(responseData)
+      setTimeout(() => {
+        window.location.reload();
+       
+      }, 100);
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
     }
@@ -695,6 +713,11 @@ const NotificationItem = ({ user }) => {
       const responseData = await response.json();
       setFindIdDataConstruction(responseData)
       setIntCode(responseData?.interviewCode)
+      setTimeout(() => {
+        window.location.reload();
+       
+      }, 100);
+     
       // handleEditInterviewConstructionOpen(responseData?.interviewCode)
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
@@ -717,9 +740,11 @@ const NotificationItem = ({ user }) => {
           <p>Number All Notification </p>
           {notifBod.map((p, index) => (
             <div key={index}>
+                 {p?.type?.includes("recruitment") && (
               <button className='Notification' onClick={() => findId(p?.codejob)}>
                 Recruitment Request with Code Job: <span style={{ color: "red", fontWeight: "bold" }}>{p.codejob}</span>
               </button>
+                 )}
               <div className='Space'></div>
               {p?.type?.includes("Interview") && (
                 <div>

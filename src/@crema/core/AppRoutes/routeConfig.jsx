@@ -193,7 +193,7 @@ const routesConfig = [
           {
             id: "Vacation",
             title: "Vacation",
-            messageId: "sidebar.components.VacationLeave",
+            messageId: "sidebar.components.LeaveApplication",
             url: "/Hr/Vacation&Leave/Vacation",
           },
           {

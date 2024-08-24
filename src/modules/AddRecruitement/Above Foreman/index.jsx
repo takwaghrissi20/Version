@@ -258,7 +258,7 @@ const AddRecruitementAbove = () => {
 
   const BeforeSaveRecruitement = () => {
     //setIsModalVisible(true)
-    form.validateFields(['DateRequestor', 'ProjectName', 'ProjectCode'
+    form.validateFields([ 'ProjectName', 'ProjectCode'
       , 'DateDesiredRecruitement', 'position', 'RequiredLevel', 'Desiredyearsexperience', 'Numbervacancies',
 
     ]).then(values => {
@@ -1018,7 +1018,7 @@ const AddRecruitementAbove = () => {
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label='Recruitement Date' name='DateRecruitement'>
+                  <Form.Item label='Request Date' name='DateRecruitement'>
                     <Input
                       placeholder={formattedDate}
                       readOnly
@@ -1074,24 +1074,19 @@ const AddRecruitementAbove = () => {
                       readOnly={true} />
                   </Form.Item>
                 </Col>
-                <Col xs={24} md={12}>
+                {/* <Col xs={24} md={12}>
                   <Form.Item label='Request Date' name='DateRequestor'
                     rules={[
                       { required: true, message: 'Please input your Requestor Date!' },
-                    ]}
-
-
-                  >{/*Date et temp de Interview bu Hr*/}
+                    ]} >
                     <DatePicker
-                      //defaultValue={new Date()} 
-                      // defaultValue={dayjs(requestorDate, '2024-01-01')}
                       placeholder='YYYY-MM-DD'
                       style={{ width: "100%", height: "30px" }}
                       onChange={(value) => setRequestorDate(dayjs(value).format('YYYY-MM-DD'))}
                     />
 
                   </Form.Item>
-                </Col>
+                </Col> */}
 
 
 

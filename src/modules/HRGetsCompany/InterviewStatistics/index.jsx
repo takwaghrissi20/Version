@@ -61,8 +61,7 @@ const InterviewStatics = () => {
         if (!response.ok) {
           throw new Error('La requête a échoué avec le code ' + response.status);
         }
-        
-         
+             
         const responseDataInterview = await responseinterview.json();
         const numberOfTotalInterview = responseDataInterview.length.toString();
         setTotalInterviews(numberOfTotalInterview)

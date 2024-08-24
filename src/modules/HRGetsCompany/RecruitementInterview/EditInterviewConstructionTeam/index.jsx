@@ -2517,8 +2517,10 @@ const EditInterviewConstruction = () => {
               </>)}
             {roles.includes("Leader") && (
               <>
-                <Button onClick={UpdateProjectLeader}
-                >Save Project Leader</Button>
+                <Button style={{color:"green",borderColor:"green"}}onClick={UpdateProjectLeader}
+                >Approved</Button>
+                 <Button style={{color:"red",borderColor:"red"}}onClick={UpdateProjectLeader}
+                >Refuse</Button>
               </>)}
           </Space>
 

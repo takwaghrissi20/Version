@@ -47,6 +47,14 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
       width: 200,
       render: (name) => <Tooltip title={name}>{name}</Tooltip>,
     },
+    {
+      title: 'Position',
+      dataIndex: 'position',
+      key: 'position',
+      fixed: 'left',
+      width: 200,
+      render: (name) => <Tooltip title={name}>{name}</Tooltip>,
+    },
     ...currentMonthDays.map(day => {
       const date = moment({ year: selectedYear, month: selectedMonth - 1, day });
       const dayName = date.format('dddd');

@@ -120,6 +120,7 @@ const EditInterviewStaff = () => {
   const [proposedDaily2, setProposedDaily2] = useState('');
   const [commentareBod1, setCommentareBod1] = useState('');
   const [commentareBod2, setCommentareBod2] = useState('');
+  const [salarybod1, setSalarybod1] = useState('');
 
   const handleSalary1Change = (event) => {
     const value = event.target.value;
@@ -149,7 +150,7 @@ const EditInterviewStaff = () => {
     const value = event.target.value;
     setProposedSalary1(event.target.value);
   };
-  console.log("proposedSalary1", proposedSalary1)
+
   const handleproposedDaily1Change = (event) => {
     const value = event.target.value;
     setProposedDaily1(event.target.value);
@@ -511,6 +512,7 @@ const EditInterviewStaff = () => {
       console.log("findIdInterviewStaff", responseData)
       setIdIntStaff(responseData?.interviewCode)
       setIdStaff(responseData)
+      setSalarybod1(responseData?.propsedsalaryBod1)
 
 
     } catch (error) {
@@ -1353,7 +1355,7 @@ const EditInterviewStaff = () => {
     GetProfileEmployess()
     findIdInterviewStaff()
     fetchRole()
-  }, [interviewCode, idStaff]);
+  }, [interviewCode, idStaff, salarybod1]);
   //////////////////////
   const handleDecisionChange = (value) => {
     setSelectedbodDescition(value);
@@ -1990,7 +1992,8 @@ const EditInterviewStaff = () => {
 
                   </Col>
                   <Col xs={24} md={24}>
-                    <Form.Item label='Comments' name='Comments'
+                    <Form.Item label='Comments'
+                      name='Comments'
 
 
 
@@ -3209,7 +3212,7 @@ const EditInterviewStaff = () => {
 
                                       </Col>
                                       <Col xs={24} md={24}>
-                                        <Form.Item label='Comments' name='Comments'
+                                        <Form.Item label='Comments' name='Comments2d'
                                           rules={[
                                             { required: true, message: 'Please Select  your Comments!' },
 
@@ -3923,13 +3926,13 @@ const EditInterviewStaff = () => {
                         <StyledShadowWrapper>
                           <AppRowContainer>
 
-                            {idStaff.directSign1 !== "" &&
+                            {idStaff?.directSign1?.length === 0 ?
+                              <p></p> :
                               <>
                                 <Col xs={24} md={12}>
                                   <Form.Item
                                     label='Final Descision:'
-                                    name='Final DescisionNidhal: '
-                                  >
+                                    name='Final DescisionNidhal: '>
                                     <Input
                                       placeholder={idStaff.directSign1}
                                       readOnly>
@@ -3939,62 +3942,64 @@ const EditInterviewStaff = () => {
                                   </Form.Item>
                                 </Col>
                                 {idStaff.directSign1 === "Accepted" &&
-                                <>
-                                 <Col xs={24} md={12}>
-                                 <Form.Item
-                                   label='Salary'
-                                   name='proposedSalary1'
-                                 >
-                                   <Input
-                                     placeholder={idStaff.proposedSalary1}
-                                     readOnly>
+                                  <>
+                                    <Col xs={24} md={12}>
+                                      <Form.Item
+                                        label='Salary'
+                                        name='proposedSalary1'
+                                      >
+                                        <Input
 
-                                   </Input>
+                                          placeholder={idStaff.propsedsalaryBod1}
+                                          readOnly
+                                        >
 
-                                 </Form.Item>
-                               </Col>
-                               <Col xs={24} md={12}>
-                                 <Form.Item
-                                   label='Daily'
-                                   name='proposedDaily1'
-                                 >
-                                   <Input
-                                     placeholder={idStaff.proposedDaily1}
-                                     readOnly>
-                                   </Input>
+                                        </Input>
 
-                                 </Form.Item>
-                               </Col>
-                               </>
-                                
+                                      </Form.Item>
+                                    </Col>
+                                    <Col xs={24} md={12}>
+                                      <Form.Item
+                                        label='Daily'
+                                        name='proposedDaily1'>
 
+                                        <Input
+                                          placeholder={idStaff.dailyRateBod2}
+                                          readOnly>
+                                        </Input>
 
+                                      </Form.Item>
+                                    </Col>
+                                  </>
 
-                                }
-                                 {idStaff.directSign1 === "Not Accepted"  ||idStaff.directSign1 === "On Hold" &&
-                                <>
-                                 <Col xs={24} md={12}>
-                                 <Form.Item
-                                   label='Comment'
-                                   name='Comment1'
-                                 >
-                                   <Input
-                                     placeholder={idStaff.commentareBod1}
-                                     readOnly>
-
-                                   </Input>
-
-                                 </Form.Item>
-                               </Col>
-                              
-                               </>
-                                
 
 
 
                                 }
-                              </>
-                            }
+                                {idStaff.directSign1 === "Not Accepted" || idStaff.directSign1 === "On Hold" &&
+                                  <>
+                                    <Col xs={24} md={12}>
+                                      <Form.Item
+                                        label='Comment'
+                                        name='Comment1'
+                                      >
+                                        <Input
+                                          placeholder={idStaff.commentareBod1}
+                                          readOnly>
+
+                                        </Input>
+
+                                      </Form.Item>
+                                    </Col>
+
+                                  </>
+
+
+
+
+                                }
+                              </>}
+
 
                             <Col xs={24} md={12}>
                               <Form.Item
@@ -4091,12 +4096,13 @@ const EditInterviewStaff = () => {
                         <StyledShadowWrapper>
                           <AppRowContainer>
                             {/*Desicion de bod Ali */}
-                            {idStaff.directSign2 !== "" &&
+                            {idStaff.directSign2 === "" ?
+                              <p></p> :
                               <>
                                 <Col xs={24} md={12}>
                                   <Form.Item
                                     label='Final Descision:'
-                                    name='Final DescisionAli: '
+                                    name='Final DescisionAli'
                                   >
                                     <Input
                                       placeholder={idStaff.directSign2}
@@ -4107,62 +4113,62 @@ const EditInterviewStaff = () => {
                                   </Form.Item>
                                 </Col>
                                 {idStaff.directSign2 === "Accepted" &&
-                                <>
-                                 <Col xs={24} md={12}>
-                                 <Form.Item
-                                   label='Salary'
-                                   name='proposedSalary2'
-                                 >
-                                   <Input
-                                     placeholder={idStaff.proposedSalary2}
-                                     readOnly>
+                                  <>
+                                    <Col xs={24} md={12}>
+                                      <Form.Item
+                                        label='Salary'
+                                        name='proposedSalary2'
+                                      >
+                                        <Input
+                                          placeholder={idStaff.proposedSalary2}
+                                          readOnly>
 
-                                   </Input>
+                                        </Input>
 
-                                 </Form.Item>
-                               </Col>
-                               <Col xs={24} md={12}>
-                                 <Form.Item
-                                   label='Daily'
-                                   name='proposedDaily2'
-                                 >
-                                   <Input
-                                     placeholder={idStaff.proposedDaily2}
-                                     readOnly>
-                                   </Input>
+                                      </Form.Item>
+                                    </Col>
+                                    <Col xs={24} md={12}>
+                                      <Form.Item
+                                        label='Daily'
+                                        name='proposedDaily2'
+                                      >
+                                        <Input
+                                          placeholder={idStaff.proposedDaily2}
+                                          readOnly>
+                                        </Input>
 
-                                 </Form.Item>
-                               </Col>
-                               </>
-                                
+                                      </Form.Item>
+                                    </Col>
+                                  </>
 
-
-
-                                }
-                                 {idStaff.directSign2 === "Not Accepted"  ||idStaff.directSign2 === "On Hold" &&
-                                <>
-                                 <Col xs={24} md={12}>
-                                 <Form.Item
-                                   label='Comment'
-                                   name='Comment2'
-                                 >
-                                   <Input
-                                     placeholder={idStaff.commentareBod2}
-                                     readOnly>
-
-                                   </Input>
-
-                                 </Form.Item>
-                               </Col>
-                              
-                               </>
-                                
 
 
 
                                 }
-                              </>
-                            }
+                                {idStaff.directSign2 === "Not Accepted" || idStaff.directSign2 === "On Hold" &&
+                                  <>
+                                    <Col xs={24} md={12}>
+                                      <Form.Item
+                                        label='Comment'
+                                        name='Comment2'
+                                      >
+                                        <Input
+                                          placeholder={idStaff.commentareBod2}
+                                          readOnly>
+
+                                        </Input>
+
+                                      </Form.Item>
+                                    </Col>
+
+                                  </>
+
+
+
+
+                                }
+                              </>}
+
 
 
 

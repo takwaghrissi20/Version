@@ -45,6 +45,7 @@ const EmployeesStatus = React.lazy(() =>
 const Planification = React.lazy(() => import('../../../modules/HRGetsCompany/Planification'));
 const Intergration = React.lazy(() => import('../../../modules/HRGetsCompany/Integration'));
 const IntegrationStatistics = React.lazy(() =>import('../../../modules/HRGetsCompany/IntegrationStatistics'),);
+const AddIntergration = React.lazy(() => import('../../../modules/HRGetsCompany/Integration/AddIntegration'));
 
 const AddEmployeesConstructionStaff = React.lazy(() =>
   import('../../../modules/HRGetsCompany/AddEmployeesConstructionStaff'),
@@ -234,7 +235,11 @@ export const ecommerceConfig = [
     path: '/Hr/IntegrationStatistics',
     element: <Intergration />,
   },
- 
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/Hr/Integration/Add',
+    element: <AddIntergration />,
+  },
   {
     permittedRole: RoutePermittedRole.User,
     path: '/HRGetsCompany/AddEmployees/ConstructionStaff',

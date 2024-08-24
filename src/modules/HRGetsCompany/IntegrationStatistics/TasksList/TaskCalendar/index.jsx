@@ -53,7 +53,7 @@ const TaskCalender = ({taskList,onUpdateTask, onSetFilterText,integration }) => 
     }
   };
   const events = integration.map(integration => {
-    const dateTimeString = `${integration.integrationDate}`;
+    const dateTimeString = `${integration.toD}`;
     const integrationDateTime = moment(dateTimeString, 'YYYY-MM-DD HH:mm:ss');
     console.log("integrationDateTime", integrationDateTime)
 

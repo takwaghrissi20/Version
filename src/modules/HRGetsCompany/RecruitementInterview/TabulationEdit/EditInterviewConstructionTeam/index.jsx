@@ -988,6 +988,100 @@ const EditInterviewConstruction = ({ hseCertif,
 
   };
   //EndUpdataProjectLeader
+  //RefuseProjectLeader
+  const RefuseProjectLeader = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
+
+        method: 'PUT',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+          interviewCode: interviewCode,
+          jobCode: jobCode,
+          interviwDate: interviwDate,
+          totalAccept: totalAccept,
+          totalInterv: totalInterv,
+          totalReqPos: totalReqPos,
+          totalRequiredGrade: totalRequiredGrade,
+          idNumb: getsId,
+          department: department,
+          projname: projname,
+          requiredGrade: newrequiredGrade,
+          requiredQualification: newrequiredQualification,
+          positionToBeFilled: positionToBeFilled,
+          fullName: fullName,
+          birthayDate: birthayDate,
+          familySituation: familySituation,
+          experience: experience,
+          educationLevel: educationLevel,
+          diploma: diploma,
+          contactPhone: contactPhone,
+          contactEmail: contactEmail,
+          urlCv,
+          validatesFor: selectedValidation,
+          goTotest2: isOkChecked,
+          psy_Person: selectedPersonality,
+          psy_HumQuality: selectedHumainquality,
+          psy_motivation: selectedMotivation,
+          psy_Intellig: selectedIntelligence,
+          goToTest3: isOkChecked3,
+          techEnglishSkills: selectedSkillls,
+          evalDesision: isOkCheckedEvaluator,
+          techDate: evaluationDate,
+          meetDesision: isOkCheckedProfile,
+          techEvaluation: name,
+          techcommentaire: comment,
+          hr_Person,
+          hr_HumQuality,
+          hr_motivation,
+          hr_Intellig,
+          level,
+          headOfDepAprouv: isOkCheckedHead,
+          // agreedJoinedDate,
+          expectedJoinDate,
+          dailyRate,
+          hrDesion,
+          // feedback,
+          propsedsalary,
+          notif: 10,
+          time: time
+
+
+        })
+      });
+
+      if (!response.ok) {
+        openNotificationError('bottomRight')
+
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+
+        const responseData = await response.json();
+        // form.resetFields();
+        openNotification('bottomRight')
+        setTimeout(() => {
+          window.location.reload();
+          navigate(-1)
+        }, 2000);
+        
+   
+      }
+
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+    }
+
+  };
+
+
+  //End RefuseProjectLeader
   //UpdateHSE
   console.log("hseCertif0000", hseCertif)
 
@@ -3592,8 +3686,10 @@ const EditInterviewConstruction = ({ hseCertif,
               </>)}
             {roles.includes("Leader") && (
               <>
-                <Button onClick={UpdateProjectLeader}
-                >Save Project Leader</Button>
+                <Button style={{color:"green",borderColor:"green"}}onClick={UpdateProjectLeader}
+                >Approved</Button>
+                 <Button style={{color:"red",borderColor:"red"}}onClick={RefuseProjectLeader}
+                >Refuse</Button>
               </>)}
             {roles === "Human Ressource Manager" && (
               <>

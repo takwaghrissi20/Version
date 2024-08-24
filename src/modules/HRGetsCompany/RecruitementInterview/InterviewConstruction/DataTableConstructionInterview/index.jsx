@@ -374,12 +374,12 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
  
     
    
-    {
+    // {
     
-      title: 'Max Salary',
-      dataIndex: 'maxSalary',
-      key: 'maxSalary',
-    },
+    //   title: 'Max Salary',
+    //   dataIndex: 'maxSalary',
+    //   key: 'maxSalary',
+    // },
     {
       title: 'Actions',
       dataIndex: 'actions',
