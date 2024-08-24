@@ -3,33 +3,33 @@ import { Row, Col, Button } from 'antd';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
-import CustomerTableOffice from './CustomerTable';
+import CustomerTableSite from './CustomerTable';
 import AppPageMeta from '../../../@crema/components/AppPageMeta';
 import AppsContent from '../../../@crema/components/AppsContainer/AppsContent';
 import AppsContainer from '../../../@crema/components/AppsContainer';
 import AppCard from '../../../@crema/components/AppCard';
-const EmployeesStatus = () => {
-  const [employeesoffice, setEmployeesoffice] = useState([]);
-  const [OfficeWorkStatus, setOfficeWorkStatus] = useState([]);
+const MonthlySiteSummary = () => {
+
+  const [siteWorkStatus, setSiteWorkStatus] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState(moment().month() + 1);
   const [selectedYear, setSelectedYear] = useState(moment().year());
   const [pickerValue, setPickerValue] = useState(new Date(selectedYear, selectedMonth - 1));
 
   // Fetch OfficeWorkStatus with filters
-  const fetchEmployeesOfficeWorkStatus = async () => {
+  const fetchEmployeesSiteWorkStatus = async () => {
     try {
-      const url = `https://dev-gateway.gets-company.com/api/v1/OfficeWorkStatus/all`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/SiteWorkStatus/all`;
       const response = await fetch(url);
 
       if (!response.ok) {
         throw new Error('Failed to fetch office work status');
       }
       const data = await response.json();
-
+      console.log("Filtered Dataffff:", data);
       // Filter data based on selectedMonth and selectedYear
-      const filteredData = data.filter(item => item.month === moment(selectedMonth, 'M').format('MMMM').toUpperCase() && item.year === selectedYear);
+      const filteredData = data.filter(item => item.mois === moment(selectedMonth, 'M').format('MMMM').toUpperCase() && item.year === selectedYear);
       console.log("Filtered Data:", filteredData);
-      setOfficeWorkStatus(filteredData);
+      setSiteWorkStatus(filteredData);
     } catch (error) {
       console.error('Error fetching office work status:', error);
     }
@@ -47,18 +47,18 @@ const EmployeesStatus = () => {
 
   // Trigger fetch on month/year change
   useEffect(() => {
-    fetchEmployeesOfficeWorkStatus();
+    fetchEmployeesSiteWorkStatus();
   }, [selectedMonth, selectedYear]);
 
   // Handle filter button click
   const handleFilterClick = () => {
-    fetchEmployeesOfficeWorkStatus();
+    fetchEmployeesSiteWorkStatus();
   };
 
   return (
     <>
-     <AppPageMeta title='Monthly Office Summary' />
-     <AppCard title="Monthly Office Summary" heightFull>
+     <AppPageMeta title='Monthly Site Summary' />
+     <AppCard title="Monthly Site Summary" heightFull>
      <AppsContainer   type="bottom" fullView>
      <div style={{  display: 'flex',justifyContent: 'center', marginTop: '1rem', marginBottom: '2rem',
       }}>
@@ -91,11 +91,11 @@ const EmployeesStatus = () => {
       </Row>
       </div>
 
-      {/* Render OfficeWorkStatus Table */}
+      {/* Render SiteWorkStatus Table */}
       <AppsContent style={{ paddingTop: 10, paddingBottom: 10 }}>
-      <CustomerTableOffice 
-        employeesoffice={employeesoffice} 
-        OfficeWorkStatus={OfficeWorkStatus}
+      <CustomerTableSite
+
+        siteWorkStatus={siteWorkStatus}
       />
     
       </AppsContent>
@@ -105,4 +105,4 @@ const EmployeesStatus = () => {
   );
 };
 
-export default EmployeesStatus;
+export default MonthlySiteSummary;

@@ -882,7 +882,7 @@ console.log("timeeewss",interviewTime)
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item label='Date Interview' name='DateInterview' >
+                    <Form.Item label='Interview Date' name='DateInterview' >
                       <StyledTodoDetailDatePicker className='form-field'>
 
                         <DatePicker
@@ -1903,7 +1903,7 @@ console.log("timeeewss",interviewTime)
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item label='Date Interview' name='DateInterview'
+                    <Form.Item label='Interview Date' name='DateInterview'
 
                     >
                       <StyledTodoDetailDatePicker className='form-field'>

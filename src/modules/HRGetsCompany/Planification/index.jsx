@@ -1,133 +1,153 @@
-import React,{useState,useEffect} from 'react';;
+import React, { useState, useEffect } from 'react';
 import AppRowContainer from '@crema/components/AppRowContainer';
-import { Col } from 'antd';
-import { useGetDataApi } from '@crema/hooks/APIHooks';
-import LastRequestor from "../../Planificationhr/Planification"
+import { Col, Select } from 'antd';
+import LastRequestor from "../../Planificationhr/Planification";
 import AppComponentHeader from "../../../@crema/components/AppComponentHeader";
 import AppComponentCard from "../../../@crema/components/AppComponentCard";
 import InterviewCalendar from "../../VisaAndTravel/calendar/InterviewCalendar";
 import StaticsTotalRecruitement from '../RecruitementInterview/StaticsTotalRecruitement';
 import StaticsTotalInterview from '../RecruitementInterview/StaticsTotalInterview';
 import LastRequestorRecruitement from '../RecruitementInterview/LastRequestorRecruitement';
-
+import LastInterviewStaff from '../RecruitementInterview/LastInterviewStaffManagemnt';
+import LastInterviewConstruction from '../RecruitementInterview/LastInterviewConstructionManagement';
+const { Option } = Select;
 
 const Planification = () => {
-
-  const [{ apiData: academyData }] = useGetDataApi('/dashboard/academy');
   const [totalNumberInterview, setTotalNumberInterview] = useState(0);
   const [totalNumber, setTotalNumber] = useState(0);
   const [lastRecruitement, setLastRecruitement] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState('');
+  const [year] = useState(new Date().getFullYear());
+  const [allRecruitementData, setAllRecruitementData] = useState([]);
+  const [allInterviewData, setAllInterviewData] = useState([]);
+  const [lastStaffInterview, setLastStaffInterview] = useState([]);
+  const [lastConstructionInterview, setLastConstructionInterview] = useState([]);
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  // Fetch all data on initial load
+  const fetchAllData = async () => {
+    try {
+      const responseRecruitement = await fetch("https://dev-gateway.gets-company.com/api/v1/re/list");
+      const responseDataRecruitement = await responseRecruitement.json();
+      setAllRecruitementData(responseDataRecruitement);
+      setTotalNumber(responseDataRecruitement.length);
+      setLastRecruitement(responseDataRecruitement[responseDataRecruitement.length - 1]);
+
+      const responseInterview = await fetch("https://dev-gateway.gets-company.com/api/v1/int/list");
+      const responseDataInterview = await responseInterview.json();
+      setAllInterviewData(responseDataInterview);
+      setTotalNumberInterview(responseDataInterview.length);
+      setLastStaffInterview(responseDataInterview[responseDataInterview.length - 1])
+      ///Interview Constraction
+      const InterviewConstruction = await fetch("https://dev-gateway.gets-company.com/api/v1/intc/list");
+      const responseInterviewConstruction= await InterviewConstruction.json();
+      setLastConstructionInterview(responseInterviewConstruction[responseInterviewConstruction.length - 1])
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  // Filter data based on selected month
+  const filterDataByMonth = () => {
+    if (!selectedMonth) return;
+
+    const filteredRecruitment = allRecruitementData.filter(item => {
+      const itemMonth = new Date(item.dateInputRecrut).getMonth() + 1;
+      return itemMonth === parseInt(selectedMonth, 10);
+    });
+
+    setTotalNumber(filteredRecruitment.length);
+    setLastRecruitement(filteredRecruitment[filteredRecruitment.length - 1]);
+
+    const filteredInterview = allInterviewData.filter(item => {
+      const itemMonth = new Date(item.dateInputRecrut).getMonth() + 1;
+      return itemMonth === parseInt(selectedMonth, 10);
+    });
+
+    setTotalNumberInterview(filteredInterview.length);
+  };
+
   useEffect(() => {
-    const fetchDataStatiqueTotalInterviewRecruitement = async () => {
-      try {
-        const endPoint =
-          process.env.NODE_ENV === "development"
-            ? "https://dev-gateway.gets-company.com"
-            : "";
-
-        const response = await fetch("https://dev-gateway.gets-company.com/api/v1/int/list", {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error('La requête a échoué avec le code ' + response.status);
-        }
-
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-          throw new TypeError("La réponse n'est pas au format JSON");
-        }
-
-        const responseData = await response.json();
-        const numberOfInterview = responseData.length.toString();
-        setTotalNumberInterview(numberOfInterview)
-      
-       
-      
-        //Recruitement
-        const responseRecruitement = await fetch("https://dev-gateway.gets-company.com/api/v1/re/list", {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-        });
-
-        if (!responseRecruitement.ok) {
-          throw new Error('La requête a échoué avec le code ' + responseRecruitement.status);
-        }
-
-
-        const responseDataRecruitement = await responseRecruitement.json();
-        const numberOfRecruitement = responseDataRecruitement.length.toString();
-        setTotalNumber(numberOfRecruitement)
-        const lastRecruitment = responseDataRecruitement[responseDataRecruitement.length - 1];
-        setLastRecruitement(lastRecruitment)
-             //responseInterviewConstruction
-             const responseInterviewConstruction = await fetch("https://dev-gateway.gets-company.com/api/v1/intc/list", {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-            });
-        
-        if (!responseInterviewConstruction.ok) {
-          throw new Error('La requête a échoué avec le code ' + responseInterviewConstruction.status);
-        }
-
-
-        const responseDataInterview = await responseInterviewConstruction.json();
-        setAllinterviewConstructionTeam(responseDataInterview)
-        
-        
-
-
-      } catch (error) {
-        console.error("Erreur lors de la récupération des données:", error);
-      }
-    };
-
-    fetchDataStatiqueTotalInterviewRecruitement();
+    fetchAllData();
   }, []);
+
+  useEffect(() => {
+    if (selectedMonth) {
+      filterDataByMonth();
+    } else {
+      // Reset to all data if no month is selected
+      setTotalNumber(allRecruitementData.length);
+      setTotalNumberInterview(allInterviewData.length);
+    }
+  }, [selectedMonth]);
+
+  const handleMonthChange = (value) => {
+    setSelectedMonth(value);
+  };
 
   return (
     <>
- 
-      <AppComponentHeader
-        title="Planification Interview">
-        </AppComponentHeader>
-        <AppRowContainer>
+      <Select 
+      
+      style={{
+        marginBottom: "1rem",
+       
+        borderRadius: "10px",
+        boxShadow:"rgb(25, 25, 112) 0px 4px 8px",
+        width:"20%",
+    
+     
 
-        <Col  xs={24} sm={12} lg={6}>
-              <StaticsTotalRecruitement totalNumber={totalNumber}></StaticsTotalRecruitement>
-              </Col>
-              <Col xs={24} sm={12} lg={6}>
-                <StaticsTotalInterview totalNumberInterview={totalNumberInterview}></StaticsTotalInterview>
-              </Col>
-              <Col xs={24} sm={12} lg={10}>
-                <LastRequestorRecruitement lastRecruitement={lastRecruitement} ></LastRequestorRecruitement>
-              </Col>
 
-        {/* {academyData?.academicStats?.map((item, index) => (
-            <Col xs={24} sm={12} lg={6} key={'a' + index}>
-              <LastRequestor  stats={item} />
-            </Col>
-          ))} */}
-            <Col xs={24}>
+      }}
+      
+      
+      placeholder="Select a month"  onChange={handleMonthChange}>
+        <Option value="">All Months</Option>
+        {months.map((month, index) => (
+          <Option key={index} value={index + 1}>
+            {month}
+          </Option>
+        ))}
+      </Select>
+      <p>Year: {year}</p>
+      
+      {/* <AppRowContainer>
+        <Col xs={24} sm={12} lg={6}>
+          <StaticsTotalRecruitement totalNumber={totalNumber} />
+        </Col>
+        <Col xs={24} sm={12} lg={6}>
+          <StaticsTotalInterview totalNumberInterview={totalNumberInterview} />
+        </Col>
+      </AppRowContainer> */}
+
+      <AppComponentHeader title="Planification Interview" />
+      
+      <AppRowContainer>
+        <Col xs={24} sm={12} lg={6}>
+          <StaticsTotalRecruitement totalNumber={totalNumber} />
+        </Col>
+        <Col xs={24} sm={12} lg={6}>
+          <StaticsTotalInterview totalNumberInterview={totalNumberInterview} />
+        </Col>
+        <Col xs={24} sm={12} lg={12}>
+          <LastInterviewStaff lastStaffInterview={lastStaffInterview} lastConstructionInterview={lastConstructionInterview} />
+        </Col>
+      
+      
+        {/* <Col xs={24} sm={12} lg={6}>
+          <LastRequestorRecruitement lastRecruitement={lastRecruitement} />
+        </Col> */}
+        <Col xs={24}>
           <AppComponentCard
             title="Interview Calendar"
             component={InterviewCalendar}
-      
           />
         </Col>
-      
-
-          </AppRowContainer>
-
-   
- 
+      </AppRowContainer>
     </>
   );
 };

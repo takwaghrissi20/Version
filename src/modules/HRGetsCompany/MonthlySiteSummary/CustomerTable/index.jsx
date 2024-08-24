@@ -13,9 +13,7 @@ import { CiSaveDown2 } from "react-icons/ci";
 import { StyledOrderTable, StyledAction } from '../../../../styles/index.styled';
 import { all } from 'axios';
 
-const OrderTable = ({ employeesoffice, loading, user, OfficeWorkStatus }) => {
-  console.log("employeesoffice jjjj",employeesoffice)
-
+const OrderTable = ({  loading, user, siteWorkStatus }) => {
   const [findIdData, setFindIdData] = useState(null);
   const [isViewEmp, onViewEmp] = useState(false);
   const [isEditEmp, onEditEmp] = useState(false);
@@ -120,27 +118,57 @@ const OrderTable = ({ employeesoffice, loading, user, OfficeWorkStatus }) => {
 
     },
     {
-      title: 'Working Office Day',
-      dataIndex: 'workingDay',
-      key: 'workingDay',
+      title: 'StandBy',
+      dataIndex: 'standBy',
+      key: 'standBy',
       width: 80,
    
     },
     {
-      title: 'Working From Home',
-      dataIndex: 'workingHome',
-      key: 'workingHome',
+      title: 'Working Site',
+      dataIndex: '???',
+      key: '??',
+      width: 80,
+   
+    },
+    {
+      title: 'Work Site',
+      dataIndex: 'workSite',
+      key: 'workSite',
       width: 80,
  
  
     },
     {
-      title: 'Absend Day',
+      title: 'Work Home',
+      dataIndex: '',
+      key: '',
+      width: 80,
+   
+    },
+    {
+      title: 'Absent',
       dataIndex: 'absent',
       key: 'absent',
       width: 80,
    
     },
+    {
+      title: 'Travel Back',
+      dataIndex: 'travelBack',
+      key: 'travelBack',
+      width: 80,
+   
+    },
+    {
+      title: 'Travel Go',
+      dataIndex: 'travelGo',
+      key: 'travelGo',
+      width: 80,
+   
+    },
+   
+
     {
       title: 'Vacation',
       dataIndex: 'vacation',
@@ -163,20 +191,7 @@ const OrderTable = ({ employeesoffice, loading, user, OfficeWorkStatus }) => {
       width: 80,
      
     },
-    {
-      title: 'JA',
-      dataIndex: 'Working Office Day',
-      key: 'Working Office Day',
-      width: 80,
-     
-    },
-    {
-      title: 'WR',
-      dataIndex: 'workRecord',
-      key: 'workRecord',
-      width: 80,
-     
-    },
+    
     // {
     //   title: 'Actions',
     //   dataIndex: 'actions',
@@ -288,7 +303,7 @@ const OrderTable = ({ employeesoffice, loading, user, OfficeWorkStatus }) => {
     <>
       <StyledCustomerTable
         hoverColor
-        data={OfficeWorkStatus }
+        data={ siteWorkStatus  }
         loading={loading}
         columns={columns}
         scroll={{ x: 'auto', y: tableHeight}}

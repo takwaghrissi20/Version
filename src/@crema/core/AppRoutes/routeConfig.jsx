@@ -141,10 +141,16 @@ const routesConfig = [
      
         
           {
-            id: "Employee status",
-            title: "Employee status",
-            messageId: "sidebar.hr.EmployeesStatus",
-            url: "/Hr/EmployeesStatus",
+            id: "EmployeesOfficeSummary",
+            title: "EmployeesOfficeSummary",
+            messageId: "sidebar.hr.EmployeesOfficeSummary",
+            url: "/Hr/Employees_Office_Summary",
+          },
+          {
+            id: "EmployeesSiteSummary",
+            title: "EmployeesSiteSummary",
+            messageId: "sidebar.hr.EmployeesSiteSummary",
+            url: "/Hr/Employees_Site_Summary",
           },
          
         ],
