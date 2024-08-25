@@ -92,7 +92,7 @@ const Table = () => {
         throw new Error('Failed to fetch employees');
       }
       const data = await response.json();
-      console.log("datttttttt",data)
+
       setAllemployee(data); 
       const projectInfoSet = new Set();
       const costCenterSet = new Set();

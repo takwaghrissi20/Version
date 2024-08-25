@@ -11,7 +11,7 @@ import AppPageMeta from '../../../@crema/components/AppPageMeta';
 import AppCard from '../../../@crema/components/AppCard';
 const AddTimeSheetSite = () => {
   const [employeesSite, setEmployeesSite] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
   const [selectedMonth, setSelectedMonth] = useState(moment().month() + 1);
@@ -33,7 +33,7 @@ const AddTimeSheetSite = () => {
       const filteredData = data.filter(item => item.actStatus==="Active ");
       setTotalRecords(filteredData.length);
 
-      const startIndex = (currentPage - 1) * pageSize;
+      const startIndex = (currentPage ) * pageSize;
       const endIndex = startIndex + pageSize;
       const paginatedData = filteredData.slice(startIndex, endIndex);
       setEmployeesSite(paginatedData);
