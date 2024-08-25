@@ -42,6 +42,12 @@ const InterviewStatistics = React.lazy(() =>
 const EmployeesStatus = React.lazy(() =>
   import('../../../modules/HRGetsCompany/EmployeesStatus'),
 );
+const EmployeesStatusOffice = React.lazy(() =>
+  import('../../../modules/StatusEmployees/StatusEmployeesOffice'),
+);
+const EmployeesStatusSite = React.lazy(() =>
+  import('../../../modules/StatusEmployees/StatusEmployeesSite'),
+);
 const EmployeesSiteSummary = React.lazy(() =>
   import('../../../modules/HRGetsCompany/MonthlySiteSummary'),
 );
@@ -427,8 +433,7 @@ export const ecommerceConfig = [
   {
     permittedRole: RoutePermittedRole.User,
     path: '/Hr/Employees_Office_Summary',
-    element: <EmployeesStatus />,
-    
+    element: <EmployeesStatus/>,   
   },
   {
     permittedRole: RoutePermittedRole.User,
@@ -436,6 +441,20 @@ export const ecommerceConfig = [
     element: <EmployeesSiteSummary />,
     
   },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/Hr/Employees_Status_Office',
+    element: <EmployeesStatusOffice />,
+    
+  },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: 'Hr/Employees_Status_Site',
+    element: <EmployeesStatusSite />,
+    
+  },
+
+
 
   {
     permittedRole: RoutePermittedRole.User,

@@ -152,6 +152,19 @@ const routesConfig = [
             messageId: "sidebar.hr.EmployeesSiteSummary",
             url: "/Hr/Employees_Site_Summary",
           },
+          {
+            id: "EmployeesStatusOffice",
+            title: "EmployeesStatusOffice",
+            messageId: "sidebar.hr.OfficeEmployee",
+            url: "/Hr/Employees_Status_Office",
+          },
+          {
+            id: "EmployeesStatusOffice",
+            title: "EmployeesStatusOffice",
+            messageId: "sidebar.hr.SiteEmployee",
+            url: "/Hr/Employees_Status_Site",
+          },
+        
          
         ],
       },
@@ -183,8 +196,14 @@ const routesConfig = [
             id: "TimeSheetoffice",
             title: "TimeSheetoffice",
             messageId: "sidebar.hrRelation.TimeSheetoffice",
-            url: "/Hr/Attendances/OfficeTimeSheet",
+            url: "/Hr/Attendances/Office_Time_Sheet",
           },     
+          // {
+          //   id: "TimeSheetofficeTest",
+          //   title: "TimeSheetoffice",
+          //   messageId: "sidebar.hrRelation.TimeSheetoffice",
+          //   url: "/Hr/Attendances/OfficeTimeSheet",
+          // },   
          
         ],
       },
