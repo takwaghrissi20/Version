@@ -752,7 +752,7 @@ const AddRecruitementAbove = () => {
           notif: 8,
           dep: profile?.departement,
           dateInputRecrut: formattedDate,
-          status: "Pending Approved Operation Manager"
+          status: "Pending Approval Operation Manager"
 
         })
       });
@@ -842,7 +842,7 @@ const AddRecruitementAbove = () => {
           notif: 7,
           dep: profile?.departement,
           dateInputRecrut: formattedDate,
-          status: "Pending Approves BOD"
+          status: "Pending Approval BOD"
 
         })
       });
@@ -928,7 +928,7 @@ const AddRecruitementAbove = () => {
           notif: 6,
           dep: profile?.departement,
           dateInputRecrut: formattedDate,
-          status: "Pending Approved bY HOD"
+          status: "Pending Approval bY HOD"
 
         })
       });

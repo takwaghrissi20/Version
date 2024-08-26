@@ -561,7 +561,7 @@ const AddRecruitementForemanBelow = () => {
           notif: 8,
           dep: profile?.departement,
           dateInputRecrut: formattedDate,
-          status: "Pending Approves Operation Manager"
+          status: "Pending Approval Operation Manager"
 
         })
       });
@@ -652,7 +652,7 @@ const AddRecruitementForemanBelow = () => {
           notif: 7,
           dep: profile?.departement,
           dateInputRecrut: formattedDate,
-          status: "Pending Approved BOD"
+          status: "Pending Approval BOD"
 
         })
       });
@@ -743,8 +743,7 @@ const AddRecruitementForemanBelow = () => {
           notif: 6,
           dep: profile?.departement,
           dateInputRecrut: formattedDate,
-          status: "Pending Approved HOD"
-
+          status: "Pending Approval HOD"
         })
       });
 
@@ -1182,20 +1181,10 @@ const AddRecruitementForemanBelow = () => {
                     </StyledInput>
                   </Col>
 
-
-
-
-
-
-
-
                 </AppRowContainer>
               </StyledShadowWrapper>
             </Col>
           </AppRowContainer>
-
-
-
 
           : null}
         <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>

@@ -100,11 +100,6 @@ const AddDemobilization = () => {
   }, [getsId])
 
 
-  // Handle URL selection
-  const handleUrlSelection = () => {
-    const url = "https://cloud.gets-company.com.tn/index.php/f/1388374/";
-    setUrl(url);
-  };
 
   //Select Scan File Ticket :
   const thumbsContainer = {
@@ -435,8 +430,6 @@ const AddDemobilization = () => {
       console.log("Mission By Id", responseData)
 
       const lastTravel = responseData.travels.pop();
-      console.log("Dernier voyage:", lastTravel);
-
       setLastTravel(lastTravel?.dateMob)
       setIdLastTravel(lastTravel?.idTravel)
 

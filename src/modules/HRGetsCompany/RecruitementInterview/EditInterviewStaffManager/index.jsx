@@ -1151,7 +1151,7 @@ const EditInterviewStaff = () => {
           hrDesion: idStaff.hrDesion,
           // feedback,
           propsedsalary: proposedSalary,
-          notif: 5,
+          notif: 66,
           directSign1: selectedbodDescition,
           directSign2: selectedbodDescition2,
           propsedsalaryBod1: proposedSalary1,
@@ -1184,6 +1184,110 @@ const EditInterviewStaff = () => {
       console.error("Erreur lors de la récupération du Id :", error);
     }
   };
+
+  //Refused Bod Nidhal
+
+  const Refusebod = async () => {
+    // if (salaryError || dailyError) {
+    //   return;
+    // }
+
+    // if (parseFloat(proposedSalary) + parseFloat(proposedDailyRate) > totalMax) {
+    //   alert(`Total of Proposed Office Salary and Proposed Site Daily Rate exceeds the maximum allowed value of ${totalMax}`);
+    //   return;
+    // }
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}`, {
+
+        method: 'PUT',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+          interviewCode: interviewCode,
+          jobCode: jobCode,
+          interviwDate: newinterviwDate,
+          totalAccept: totalAccept,
+          totalInterv: totalInterv,
+          totalReqPos: totalReqPos,
+          totalRequiredGrade: totalRequiredGrade,
+          idNumb: getsId,
+          department: department,
+          projname: projname,
+          requiredGrade: newrequiredGrade,
+          requiredQualification: newrequiredQualification,
+          positionToBeFilled: positionToBeFilled,
+          fullName: fullName,
+          birthayDate: birthayDate,
+          familySituation: familySituation,
+          experience: experience,
+          educationLevel: educationLevel,
+          diploma: diploma,
+          telCondidate: telCondidate,
+          urlCv,
+          validatesFor: idStaff?.validatesFor,
+          goTotest2: idStaff.goTotest2,
+          psy_Person: idStaff.psy_Person,
+          psy_HumQuality: idStaff.psy_HumQuality,
+          psy_motivation: idStaff.psy_motivation,
+          psy_Intellig: idStaff.psy_Intellig,
+          goToTest3: idStaff.goToTest3,
+          techEnglishSkills: idStaff.techEnglishSkills,
+          evalDesision: idStaff.evalDesision,
+          techcommentaire: idStaff.techcommentaire,
+          techDate: idStaff.techDate,
+          meetDesision: idStaff.meetDesision,
+          hr_Person: idStaff.hr_Person,
+          hr_HumQuality: idStaff.hr_HumQuality,
+          hr_motivation: idStaff.hr_motivation,
+          hr_Intellig: idStaff.hr_Intellig,
+          level: idStaff.level,
+          headOfDepAprouv: idStaff.headOfDepAprouv,
+          // agreedJoinedDate,
+          expectedJoinDate: idStaff.expectedJoinDate,
+          dailyRate: idStaff.dailyRate,
+          hrDesion: idStaff.hrDesion,
+          // feedback,
+          propsedsalary: proposedSalary,
+          notif: 660,
+          directSign1: selectedbodDescition,
+          directSign2: selectedbodDescition2,
+          propsedsalaryBod1: proposedSalary1,
+          propsedsalaryBod2: proposedSalary2,
+          dailyRateBod1: proposedDaily1,
+          dailyRateBod2: proposedDaily2,
+          commentareBod1: commentareBod1,
+          commentareBod2: commentareBod2
+
+
+        })
+      });
+
+      if (!response.ok) {
+        openNotificationError('bottomRight')
+
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+
+        const responseData = await response.json();
+        console.log("responseData", responseData)
+        // form.resetFields();
+        openNotification('bottomRight')
+        navigate(-1)
+      }
+
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+    }
+  };
+
+
+
   ///////UpdateBODAli
   const Updatebod1 = async () => {
     // if (salaryError || dailyError) {
@@ -1274,6 +1378,104 @@ const EditInterviewStaff = () => {
         const responseData = await response.json();
         // form.resetFields();
         openNotification('bottomRight')
+        navigate(-1)
+      }
+
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+    }
+  };
+  //Refused By BOD Ali Refusedbod1
+  const Refusedbod1 = async () => {
+    // if (salaryError || dailyError) {
+    //   return;
+    // }
+
+    // if (parseFloat(proposedSalary) + parseFloat(proposedDailyRate) > totalMax) {
+    //   alert(`Total of Proposed Office Salary and Proposed Site Daily Rate exceeds the maximum allowed value of ${totalMax}`);
+    //   return;
+    // }
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}`, {
+
+        method: 'PUT',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+          interviewCode: interviewCode,
+          jobCode: jobCode,
+          interviwDate: newinterviwDate,
+          totalAccept: totalAccept,
+          totalInterv: totalInterv,
+          totalReqPos: totalReqPos,
+          totalRequiredGrade: totalRequiredGrade,
+          idNumb: getsId,
+          department: department,
+          projname: projname,
+          requiredGrade: newrequiredGrade,
+          requiredQualification: newrequiredQualification,
+          positionToBeFilled: positionToBeFilled,
+          fullName: fullName,
+          birthayDate: birthayDate,
+          familySituation: familySituation,
+          experience: experience,
+          educationLevel: educationLevel,
+          diploma: diploma,
+          telCondidate: telCondidate,
+          urlCv,
+          validatesFor: idStaff?.validatesFor,
+          goTotest2: idStaff.goTotest2,
+          psy_Person: idStaff.psy_Person,
+          psy_HumQuality: idStaff.psy_HumQuality,
+          psy_motivation: idStaff.psy_motivation,
+          psy_Intellig: idStaff.psy_Intellig,
+          goToTest3: idStaff.goToTest3,
+          techEnglishSkills: idStaff.techEnglishSkills,
+          evalDesision: idStaff.evalDesision,
+          techcommentaire: idStaff.techcommentaire,
+          techDate: idStaff.techDate,
+          meetDesision: idStaff.meetDesision,
+          hr_Person: idStaff.hr_Person,
+          hr_HumQuality: idStaff.hr_HumQuality,
+          hr_motivation: idStaff.hr_motivation,
+          hr_Intellig: idStaff.hr_Intellig,
+          level: idStaff.level,
+          headOfDepAprouv: idStaff.headOfDepAprouv,
+          // agreedJoinedDate,
+          expectedJoinDate: idStaff.expectedJoinDate,
+          dailyRate: idStaff.dailyRate,
+          hrDesion: idStaff.hrDesion,
+          // feedback,
+          propsedsalary: proposedSalary,
+          notif: 550,
+          directSign1: selectedbodDescition,
+          directSign2: selectedbodDescition2,
+          propsedsalaryBod1: proposedSalary1,
+          propsedsalaryBod2: proposedSalary2,
+          dailyRateBod1: proposedDaily1,
+          dailyRateBod2: proposedDaily2,
+          commentareBod1: commentareBod1,
+          commentareBod2: commentareBod2
+
+
+        })
+      });
+
+      if (!response.ok) {
+        openNotificationError('bottomRight')
+
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+
+        const responseData = await response.json();
+        // form.resetFields();
+        openNotificationRefuse('bottomRight')
         navigate(-1)
       }
 
@@ -4308,18 +4510,18 @@ const EditInterviewStaff = () => {
                   onClick={RefuseHumanRessource}
                 >Refuse </Button>
               </>)}
-            {name?.toLowerCase().includes("nidhal") && (
+               {name?.toLowerCase().includes("nidhal") && (
               <>
                 <Button style={{ color: "green", borderColor: "green" }} onClick={Updatebod}
                 >Approved</Button>
-                <Button style={{ color: "red", borderColor: "red" }}
+                <Button onClick={Refusebod} style={{ color: "red", borderColor: "red" }}
                 >Refuse</Button>
               </>)}
             {name?.toLowerCase().includes("ali") && (
               <>
                 <Button style={{ color: "green", borderColor: "green" }} onClick={Updatebod1}
                 >Approved </Button>
-                <Button style={{ color: "red", borderColor: "red" }}
+                <Button onClick={Refusedbod1} style={{ color: "red", borderColor: "red" }}
                 >Refuse</Button>
               </>)}
 

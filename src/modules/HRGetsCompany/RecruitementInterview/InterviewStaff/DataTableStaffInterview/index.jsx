@@ -343,16 +343,16 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
       key: 'notif',
     },
     {
-      title: ' HR  Approval',
+      title: 'HR  Approval',
       dataIndex: 'notif',
       key: 'notif',
       render: (text, record) => (
-        (record.notif === 2 || record.notif === 3) ? (
+        (record.notif === 5) ? (
           <StyledRecentPatientBadge
             style={{
               color: record.color,
-              backgroundColor: "#FF2400",
-              color: "black",
+              backgroundColor: "rgb(50, 205, 50)",
+              color: "white",
               fontFamily: "inherit"}}
           >
             Accepted

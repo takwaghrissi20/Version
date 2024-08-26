@@ -39,8 +39,6 @@ const EditRecruitementAbove = () => {
   const affectedTo = location.state ? location.state.affectedTo : null
   const notif = location.state ? location.state.notif : null
   const dateInputRecrut = location.state ? location.state.dateInputRecrut : null
-  console.log("testttt notif", notif)
-  console.log("testttt notif33333", dep)
   const userRoles = localStorage.getItem("role");
 
   const Back = async () => {
@@ -920,7 +918,7 @@ const EditRecruitementAbove = () => {
           </AppRowContainer>
 
 
-          {(dep.includes("Operation")) ?
+          {(dep?.includes("Operation")) ?
             <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
               <Col xs={24} md={6}>
                 <Typography.Title level={5}>PMO Controlling</Typography.Title>
@@ -1353,7 +1351,7 @@ const EditRecruitementAbove = () => {
             </Col>
           </AppRowContainer>
 
-          {(dep.includes("Operation") && notif === 6 && (!userRoles.includes("bod"))) || (dep.includes("Operation") && notif === 7 && (!userRoles.includes("bod")))
+          {(dep?.includes("Operation") && notif === 6 && (!userRoles?.includes("bod"))) || (dep?.includes("Operation") && notif === 7 && (!userRoles?.includes("bod")))
             ?
             <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
               <Col xs={24} md={6}>
@@ -1481,8 +1479,8 @@ const EditRecruitementAbove = () => {
             : null} */}
           {/*uPDATE BOD */}
 
-          {((dep.includes("Operation") && notif === 7
-            && (oDep === "true" || exDep === "true"))) || ((dep.includes("Operation")
+          {((dep?.includes("Operation") && notif === 7
+            && (oDep === "true" || exDep === "true"))) || ((dep?.includes("Operation")
               && notif === 4)) ? (
             <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
               <Col xs={24} md={6}>
@@ -1603,7 +1601,7 @@ const EditRecruitementAbove = () => {
             style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
           >
 
-            {userRoles.includes("PMO") ?
+            {userRoles?.includes("PMO") ?
 
               <>
                 <Button onClick={() => UpdatePlanner()}>

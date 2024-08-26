@@ -76,6 +76,41 @@ const AllRecruitementStaff = ({ allrecruitementabove,
 
     //onViewRecruitement(true);
   };
+  ////////////Gets Status
+  const getStatus = (notificationValue) => {
+    switch (notificationValue) {
+      case 2:
+        return 'Waiting';
+        case 6:
+          return 'Waiting';
+          case 8:
+            return 'Waiting';
+      case 3:
+        return 'Approved by BOD';
+      case 20:
+        return 'Refuse By BOD';
+      case 4:
+        return 'Checked By PMO';
+      case 7:
+        return 'Accepted By Operation Manager';
+        case 70:
+          return 'Refuse By Operation Manager';
+      default:
+        return 'Pending';
+    }
+  };
+  const getStatusClass = (notificationValue) => {
+    switch (notificationValue) {
+      case 2:
+      case 0:
+        return 'status-approved';
+      case 20:
+      case 10:
+        return 'status-rejected';
+      default:
+        return 'status-Pending';
+    }
+  }
 
   const [tableHeight, setTableHeight] = useState('auto');
   useEffect(() => {
@@ -188,145 +223,7 @@ const AllRecruitementStaff = ({ allrecruitementabove,
     // { key: 3, label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, onClick: handleInterview },
 
   ];
-  const columns0 = [
-    {
-      title: 'Recruitement Reference',
-      dataIndex: 'jobCode',
-      key: 'jobCode',
 
-    },
-
-    {
-      title: 'Requestor Name',
-      dataIndex: 'requestName',
-      key: 'requestName',
-    },
-
-
-    {
-      title: 'Requested Discipline',
-      dataIndex: 'requestedDicipline',
-      key: 'requestedDicipline',
-    },
-
-
-    {
-      title: 'Project Code/Office',
-      dataIndex: 'projRef',
-      key: 'projRef',
-    },
-    {
-      title: 'Desired Date',
-      dataIndex: 'desiredDate',
-      key: 'desiredDate',
-    },
-
-    {
-      title: 'Total Number',
-      dataIndex: 'totalNumber',
-      key: 'totalNumber',
-
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
-      render: (text, record) => (
-        <StyledRecentPatientBadge
-          style={{
-            color: record.color,
-            backgroundColor: record.color + '44',
-          }}
-        >
-          {record.status}
-        </StyledRecentPatientBadge>
-      ),
-    },
-
-    {
-      title: 'Status',
-      dataIndex: 'notif',
-      key: 'notif',
-      render: (text, record) => (
-        <StyledRecentPatientBadge
-          style={{
-            color: record.color,
-            backgroundColor: record.color + '44',
-          }}
-        >
-          {record.notif}
-        </StyledRecentPatientBadge>
-      ),
-    },
-
-    {
-      title: 'Actions',
-      dataIndex: 'actions',
-      key: 'actions',
-      fixed: 'right',
-      className: 'customer-table-actions',
-      render: (text, record) => (
-        <div onClick={() => findId(record?.jobCode)}>
-          <Dropdown menu={{ items }} trigger={['click']}  >
-            <Button type='circle'>
-              <MoreOutlined />
-            </Button>
-          </Dropdown>
-          {/* {isViewRecruitement && (
-            <RecruitementView
-              isViewRecruitement={isViewRecruitement}
-              handleAddContactClose={handleAddRecruitementClose}
-              JobCode={findIdData?.jobCode}
-              idemp={findIdData?.idemp}
-              dep={findIdData?.dep}
-              requestName={findIdData?.requestName}
-              position={findIdData?.position}
-              DesiredDate={findIdData?.desiredDate}
-              projectName={findIdData?.projectName}
-              projRef={findIdData?.projRef}
-              type={findIdData?.type}
-              affectedTo={findIdData?.affectedTo}
-              requestedDicipline={findIdData?.requestedDicipline}
-              Level={findIdData?.experience}
-              exDep={findIdData?.exDep}
-              Numbervacancies={findIdData?.totalNumber}
-              certif={findIdData?.certif}
-              nbExperience={findIdData?.nbExperience}
-            />
-          )}
-          {isEditRecruitement && (
-  
-            <RecruitementEdit
-              isEditRecruitement={isEditRecruitement}
-              handleAddContactClose={handleEditRecruitementClose}
-              JobCode={findIdData?.jobCode}
-              idemp={findIdData?.idemp}
-              dep={findIdData?.dep}
-              requestName={findIdData?.requestName}
-              position={findIdData?.position}
-              DesiredDate={findIdData?.desiredDate}
-              projectName={findIdData?.projectName}
-              projRef={findIdData?.projRef}
-              type={findIdData?.type}
-              affectedTo={findIdData?.affectedTo}
-              requestedDicipline={findIdData?.requestedDicipline}
-              Level={findIdData?.experience}
-              exDep={findIdData?.exDep}
-              Numbervacancies={findIdData?.totalNumber}
-              certif={findIdData?.certif}
-              nbExperience={findIdData?.nbExperience}
-            
-            />
-          )} */}
-
-        </div>
-
-      ),
-
-
-    },
-
-  ];
   const columns = [
     {
       title: 'Recruitement Reference',
@@ -406,6 +303,7 @@ const AllRecruitementStaff = ({ allrecruitementabove,
 
 
     },
+ 
     {
       title: 'Status',
       dataIndex: 'status',
@@ -422,7 +320,9 @@ const AllRecruitementStaff = ({ allrecruitementabove,
         } else if (status.includes('Refuse')) {
           backgroundColor = '#FF2400';
         }
-    
+        else if (status.includes('Cheked By PMO')) {
+          backgroundColor = '#FF2400';
+        }
         return (
           <div style={{ backgroundColor, color, padding: '4px', borderRadius: '4px', textAlign: 'center' }}>
             {status}

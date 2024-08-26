@@ -247,7 +247,6 @@ const RecruitementInterview = () => {
 
 
   return (
-
     <>
       <AppsContainer
         title={messages['sidebar.app.recruitementinterview']}
