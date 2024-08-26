@@ -341,6 +341,35 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
       title: 'Evaluator  Approval',
       dataIndex: 'notif',
       key: 'notif',
+      render: (text, record) => (
+        <>
+          {(record.notif === 2) && (
+            <StyledRecentPatientBadge
+              style={{
+                backgroundColor: "rgb(50, 205, 50)",
+                color: "white",
+                fontFamily: "inherit"
+              }}
+            >
+              Accepted
+            </StyledRecentPatientBadge>
+          )}
+          {(record.notif === 200) && (
+            <StyledRecentPatientBadge
+              style={{
+                backgroundColor: "rgb(50, 205, 50)",
+                color: "white",
+                fontFamily: "inherit"
+              }}
+            >
+              Not Approved
+            </StyledRecentPatientBadge>
+          )}
+        </>
+
+
+
+      ),
     },
     {
       title: 'HR  Approval',
@@ -382,8 +411,8 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
       key: 'notif',
       render: (text, record) => (
         <>
-          {((record.notif === 55 && record.directSign2 !== "") ||
-            (record.notif === 66 && record.directSign1 !== "")) && (
+          {((record.notif === 55 && record.directSign2 === "Accepted" && record.directSign1 === "Accepted") ||
+            (record.notif === 66 && record.directSign1 === "Accepted" && record.directSign === "Accepted")) && (
               <StyledRecentPatientBadge
                 style={{
                   backgroundColor: "rgb(50, 205, 50)",
@@ -394,16 +423,28 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
                 Accepted
               </StyledRecentPatientBadge>
             )}
-          {((record.notif === 55 && record.directSign2 !== "") ||
-            (record.notif === 66 && record.directSign1 !== "")) && (
+          {((record.notif === 550 && record.directSign2 === "Not Accepted") ||
+            (record.notif === 660 && record.directSign1 === "Not Accepted")) && (
               <StyledRecentPatientBadge
                 style={{
-                  backgroundColor: "rgb(50, 205, 50)",
+                  backgroundColor: "red",
                   color: "white",
                   fontFamily: "inherit"
-                }}
-              >
-                Accepted
+
+                }}>
+               Not Approved 
+              </StyledRecentPatientBadge>
+            )}
+                 {((record.notif === 550 && record.directSign2 === "On Hold") ||
+                  (record.notif === 660 && record.directSign1 === "On Hold")) && (
+              <StyledRecentPatientBadge
+                style={{
+                  backgroundColor: "red",
+                  color: "white",
+                  fontFamily: "inherit"
+
+                }}>
+               Not Approved 
               </StyledRecentPatientBadge>
             )}
         </>
