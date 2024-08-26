@@ -83,7 +83,7 @@ const EditRecruitementAbove = () => {
           signatureHod: null,
           signatureBod: null,
           notif: 20,
-          status: "Refuse By BOD"
+          status: "Not Approved By BOD"
         })
       });
 
@@ -531,7 +531,7 @@ const EditRecruitementAbove = () => {
           signatureHod: null,
           signatureBod: null,
           notif: 70,
-          status: "Refused By Operation Manager"
+          status: "Not Approved By Operation Manager"
 
 
         })

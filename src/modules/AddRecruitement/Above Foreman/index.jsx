@@ -377,7 +377,7 @@ const AddRecruitementAbove = () => {
           notif: 20,
           dep: profile?.departement,
           dateInputRecrut: formattedDate,
-          status: "Refuse By HOD"
+          status: "Not Approved By HOD"
         })
       });
 
@@ -449,7 +449,7 @@ const AddRecruitementAbove = () => {
           notif: 70,
           dep: profile?.departement,
           dateInputRecrut: formattedDate,
-          status: "Refuse By Operation Manager"
+          status: "Not Approved By Operation Manager"
         })
       });
 

@@ -1,10 +1,10 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 //import { StyledOrderTable, StyledAction } from '../index.styled';
 /// change 
 import { StyledOrderTable } from '../../../../../styles/index.styled';
 
-import { Button, Alert,Tooltip } from 'antd';
+import { Button, Alert, Tooltip } from 'antd';
 import InterviewView from "../../../../Model/InterviewView"
 import FeddbackEmployeesStaff from "../../../../Model/FeddbackEmployeesStaff"
 import InterviewEdit from "../../../../Model/InterviewEdit"
@@ -31,7 +31,7 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
   useEffect(() => {
     const updateTableHeight = () => {
       const pageHeight = window.innerHeight;
-      const tableHeight = pageHeight * 0.15; 
+      const tableHeight = pageHeight * 0.15;
       setTableHeight(tableHeight);
     };
     window.addEventListener('resize', updateTableHeight);
@@ -43,62 +43,62 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
   const navigate = useNavigate();
   const handleAddInterviewStaffOpen = () => {
     //onViewInterviewStaff(true);
-    console.log("findIdData",findIdData?.interviewCode)
-      navigate(`/Hr/Recruitement&Interview/View/${interviewCode}`, {
-        state: {
-          interviewCode:findIdData?.interviewCode,
-          jobCode:findIdData?.jobCode,
-          interviwDate:findIdData?.interviwDate,
-          totalAccept:findIdData?.totalAccept,
-          totalInterv:findId.totalInterv,
-          totalReqPos:findIdData?.totalReqPos,
-          totalRequiredGrade:findIdData?.totalRequiredGrade,
-          idNumb:findIdData?.idNumb,
-          department:findIdData?.department,
-          projname:findIdData?.projname,
-          requiredGrade:findIdData?.requiredGrade,
-          requiredQualification:findIdData?.requiredQualification,
-          positionToBeFilled:findIdData?.positionToBeFilled,
-          fullName:findIdData?.fullName,
-          birthayDate:findIdData?.birthayDate,
-          familySituation:findIdData?.familySituation,
-          experience:findIdData?.experience,
-          educationLevel:findIdData?.educationLevel,
-          diploma:findIdData?.diploma,
-          telCondidate:findIdData?.telCondidate,
-          urlCv:findIdData?.urlCv,
-          validatesFor:findIdData?.validatesFor,
-          goTotest2:findIdData?.goTotest2,
-          psy_Person:findIdData?.psy_Person,
-          psy_HumQuality:findIdData?.psy_HumQuality,
-          psy_motivation:findIdData?.psy_motivation,
-          psy_Intellig:findIdData?.psy_Intellig,
-          goToTest3:findIdData?.goToTest3,
-          techEnglishSkills:findIdData?.techEnglishSkills,
-          evalDesision:findIdData?.evalDesision,
-          techcommentaire:findIdData?.techcommentaire,
-          techDate:findIdData?.techDate,
-          hr_Person:findIdData?.hr_Person,
-          hr_HumQuality:findIdData?.hr_HumQuality,
-          hr_motivation:findIdData?.hr_motivation,
-          hr_Intellig:findIdData?.hr_Intellig,
-          level:findIdData?.level,
-          headOfDepAprouv:findIdData?.headOfDepAprouv,
-          agreedJoinedDate:findIdData?.agreedJoinedDate,
-          expectedJoinDate:findIdData?.expectedJoinDate,
-          dailyRate:findIdData?.dailyRate,
-          hrDesion:findIdData?.hrDesion,
-          feedback:findIdData?.feedback,
-          propsedsalary:findIdData?.propsedsalary,
-          finaldesision:findIdData?.finaldesision,
-          time:findIdData?.time,
-          hrComentaire:findIdData?.hrComentaire
-     
-                
-        }
-   
-      });
-     
+    console.log("findIdData", findIdData?.interviewCode)
+    navigate(`/Hr/Recruitement&Interview/View/${interviewCode}`, {
+      state: {
+        interviewCode: findIdData?.interviewCode,
+        jobCode: findIdData?.jobCode,
+        interviwDate: findIdData?.interviwDate,
+        totalAccept: findIdData?.totalAccept,
+        totalInterv: findId.totalInterv,
+        totalReqPos: findIdData?.totalReqPos,
+        totalRequiredGrade: findIdData?.totalRequiredGrade,
+        idNumb: findIdData?.idNumb,
+        department: findIdData?.department,
+        projname: findIdData?.projname,
+        requiredGrade: findIdData?.requiredGrade,
+        requiredQualification: findIdData?.requiredQualification,
+        positionToBeFilled: findIdData?.positionToBeFilled,
+        fullName: findIdData?.fullName,
+        birthayDate: findIdData?.birthayDate,
+        familySituation: findIdData?.familySituation,
+        experience: findIdData?.experience,
+        educationLevel: findIdData?.educationLevel,
+        diploma: findIdData?.diploma,
+        telCondidate: findIdData?.telCondidate,
+        urlCv: findIdData?.urlCv,
+        validatesFor: findIdData?.validatesFor,
+        goTotest2: findIdData?.goTotest2,
+        psy_Person: findIdData?.psy_Person,
+        psy_HumQuality: findIdData?.psy_HumQuality,
+        psy_motivation: findIdData?.psy_motivation,
+        psy_Intellig: findIdData?.psy_Intellig,
+        goToTest3: findIdData?.goToTest3,
+        techEnglishSkills: findIdData?.techEnglishSkills,
+        evalDesision: findIdData?.evalDesision,
+        techcommentaire: findIdData?.techcommentaire,
+        techDate: findIdData?.techDate,
+        hr_Person: findIdData?.hr_Person,
+        hr_HumQuality: findIdData?.hr_HumQuality,
+        hr_motivation: findIdData?.hr_motivation,
+        hr_Intellig: findIdData?.hr_Intellig,
+        level: findIdData?.level,
+        headOfDepAprouv: findIdData?.headOfDepAprouv,
+        agreedJoinedDate: findIdData?.agreedJoinedDate,
+        expectedJoinDate: findIdData?.expectedJoinDate,
+        dailyRate: findIdData?.dailyRate,
+        hrDesion: findIdData?.hrDesion,
+        feedback: findIdData?.feedback,
+        propsedsalary: findIdData?.propsedsalary,
+        finaldesision: findIdData?.finaldesision,
+        time: findIdData?.time,
+        hrComentaire: findIdData?.hrComentaire
+
+
+      }
+
+    });
+
 
   };
   const handleAddInterviewStaffClose = () => {
@@ -119,64 +119,64 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
   };
 
   const handleEditInterviewStaffOpen = () => {
-      console.log("findIdData",findIdData?.interviewCode)
-        navigate(`/Hr/Recruitement&Interview/Update/${interviewCode}`, {
-          state: {
-            interviewCode:findIdData?.interviewCode,
-            jobCode:findIdData?.jobCode,
-            interviwDate:findIdData?.interviwDate,
-            totalAccept:findIdData?.totalAccept,
-            totalInterv:findId.totalInterv,
-            totalReqPos:findIdData?.totalReqPos,
-            totalRequiredGrade:findIdData?.totalRequiredGrade,
-            idNumb:findIdData?.idNumb,
-            department:findIdData?.department,
-            projname:findIdData?.projname,
-            requiredGrade:findIdData?.requiredGrade,
-            requiredQualification:findIdData?.requiredQualification,
-            positionToBeFilled:findIdData?.positionToBeFilled,
-            fullName:findIdData?.fullName,
-            birthayDate:findIdData?.birthayDate,
-            familySituation:findIdData?.familySituation,
-            experience:findIdData?.experience,
-            educationLevel:findIdData?.educationLevel,
-            diploma:findIdData?.diploma,
-            telCondidate:findIdData?.telCondidate,
-            urlCv:findIdData?.urlCv,
-            validatesFor:findIdData?.validatesFor,
-            goTotest2:findIdData?.goTotest2,
-            psy_Person:findIdData?.psy_Person,
-            psy_HumQuality:findIdData?.psy_HumQuality,
-            psy_motivation:findIdData?.psy_motivation,
-            psy_Intellig:findIdData?.psy_Intellig,
-            goToTest3:findIdData?.goToTest3,
-            techEnglishSkills:findIdData?.techEnglishSkills,
-            evalDesision:findIdData?.evalDesision,
-            techcommentaire:findIdData?.techcommentaire,
-            techDate:findIdData?.techDate,
-            hr_Person:findIdData?.hr_Person,
-            hr_HumQuality:findIdData?.hr_HumQuality,
-            hr_motivation:findIdData?.hr_motivation,
-            hr_Intellig:findIdData?.hr_Intellig,
-            level:findIdData?.level,
-            headOfDepAprouv:findIdData?.headOfDepAprouv,
-            agreedJoinedDate:findIdData?.agreedJoinedDate,
-            expectedJoinDate:findIdData?.expectedJoinDate,
-            dailyRate:findIdData?.dailyRate,
-            hrDesion:findIdData?.hrDesion,
-            feedback:findIdData?.feedback,
-            propsedsalary:findIdData?.propsedsalary,
-            finaldesision:findIdData?.finaldesision,
-            time:findIdData?.time,
-            hrComentaire:findIdData?.hrComentaire
-       
-                  
-          }
-     
-        });
-       
-  
-   
+    console.log("findIdData", findIdData?.interviewCode)
+    navigate(`/Hr/Recruitement&Interview/Update/${interviewCode}`, {
+      state: {
+        interviewCode: findIdData?.interviewCode,
+        jobCode: findIdData?.jobCode,
+        interviwDate: findIdData?.interviwDate,
+        totalAccept: findIdData?.totalAccept,
+        totalInterv: findId.totalInterv,
+        totalReqPos: findIdData?.totalReqPos,
+        totalRequiredGrade: findIdData?.totalRequiredGrade,
+        idNumb: findIdData?.idNumb,
+        department: findIdData?.department,
+        projname: findIdData?.projname,
+        requiredGrade: findIdData?.requiredGrade,
+        requiredQualification: findIdData?.requiredQualification,
+        positionToBeFilled: findIdData?.positionToBeFilled,
+        fullName: findIdData?.fullName,
+        birthayDate: findIdData?.birthayDate,
+        familySituation: findIdData?.familySituation,
+        experience: findIdData?.experience,
+        educationLevel: findIdData?.educationLevel,
+        diploma: findIdData?.diploma,
+        telCondidate: findIdData?.telCondidate,
+        urlCv: findIdData?.urlCv,
+        validatesFor: findIdData?.validatesFor,
+        goTotest2: findIdData?.goTotest2,
+        psy_Person: findIdData?.psy_Person,
+        psy_HumQuality: findIdData?.psy_HumQuality,
+        psy_motivation: findIdData?.psy_motivation,
+        psy_Intellig: findIdData?.psy_Intellig,
+        goToTest3: findIdData?.goToTest3,
+        techEnglishSkills: findIdData?.techEnglishSkills,
+        evalDesision: findIdData?.evalDesision,
+        techcommentaire: findIdData?.techcommentaire,
+        techDate: findIdData?.techDate,
+        hr_Person: findIdData?.hr_Person,
+        hr_HumQuality: findIdData?.hr_HumQuality,
+        hr_motivation: findIdData?.hr_motivation,
+        hr_Intellig: findIdData?.hr_Intellig,
+        level: findIdData?.level,
+        headOfDepAprouv: findIdData?.headOfDepAprouv,
+        agreedJoinedDate: findIdData?.agreedJoinedDate,
+        expectedJoinDate: findIdData?.expectedJoinDate,
+        dailyRate: findIdData?.dailyRate,
+        hrDesion: findIdData?.hrDesion,
+        feedback: findIdData?.feedback,
+        propsedsalary: findIdData?.propsedsalary,
+        finaldesision: findIdData?.finaldesision,
+        time: findIdData?.time,
+        hrComentaire: findIdData?.hrComentaire
+
+
+      }
+
+    });
+
+
+
     //onEditInterviewStaff(true);
   };
 
@@ -262,7 +262,7 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
     });
     setData(updatedData);
   };
- 
+
 
   const columns = [
     {
@@ -284,7 +284,7 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
           {name}
         </Tooltip>
       ),
-   
+
     },
     {
       title: 'Interview Date  ',
@@ -347,28 +347,33 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
       dataIndex: 'notif',
       key: 'notif',
       render: (text, record) => (
-        (record.notif === 5) ? (
-          <StyledRecentPatientBadge
-            style={{
-              color: record.color,
-              backgroundColor: "rgb(50, 205, 50)",
-              color: "white",
-              fontFamily: "inherit"}}
-          >
-            Accepted
-          </StyledRecentPatientBadge>
-        ) : (
-          <StyledRecentPatientBadge
-          style={{
-            color: record.color,
-            backgroundColor: "#C0C0C0",
-            color: "black",
-            fontFamily: "inherit"
-          }}
-          >
-             Pending
-          </StyledRecentPatientBadge>
-        )
+        <>
+          {(record.notif === 5) && (
+            <StyledRecentPatientBadge
+              style={{
+                backgroundColor: "rgb(50, 205, 50)",
+                color: "white",
+                fontFamily: "inherit"
+              }}
+            >
+              Accepted
+            </StyledRecentPatientBadge>
+          )}
+          {(record.notif === 500) && (
+            <StyledRecentPatientBadge
+              style={{
+                backgroundColor: "rgb(50, 205, 50)",
+                color: "white",
+                fontFamily: "inherit"
+              }}
+            >
+              Not Approved
+            </StyledRecentPatientBadge>
+          )}
+        </>
+
+
+
       ),
     },
     {
@@ -376,29 +381,33 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
       dataIndex: 'notif',
       key: 'notif',
       render: (text, record) => (
-        record.notif === 3 ? (
-          <StyledRecentPatientBadge
-          style={{
-            color: record.color,
-            backgroundColor: "#32CD32",
-            color: "black",
-            fontFamily: "inherit"
-          }}
-          >
-            Accepted
-          </StyledRecentPatientBadge>
-        ) : (
-          <StyledRecentPatientBadge
-          style={{
-            color: record.color,
-            backgroundColor: "#C0C0C0",
-            color: "black",
-            fontFamily: "inherit"
-          }}
-          >
-             Pending
-          </StyledRecentPatientBadge>
-        )
+        <>
+          {((record.notif === 55 && record.directSign2 !== "") ||
+            (record.notif === 66 && record.directSign1 !== "")) && (
+              <StyledRecentPatientBadge
+                style={{
+                  backgroundColor: "rgb(50, 205, 50)",
+                  color: "white",
+                  fontFamily: "inherit"
+                }}
+              >
+                Accepted
+              </StyledRecentPatientBadge>
+            )}
+          {((record.notif === 55 && record.directSign2 !== "") ||
+            (record.notif === 66 && record.directSign1 !== "")) && (
+              <StyledRecentPatientBadge
+                style={{
+                  backgroundColor: "rgb(50, 205, 50)",
+                  color: "white",
+                  fontFamily: "inherit"
+                }}
+              >
+                Accepted
+              </StyledRecentPatientBadge>
+            )}
+        </>
+
       ),
     },
 
@@ -446,7 +455,7 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
           ...(userRoles.includes('admin') ? [
             { key: 3, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteInterviewStaff },
           ] : [])
-     
+
         ];
         if (record.notif === 3) {
           items.push({
@@ -470,8 +479,8 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
               <FeddbackEmployeesStaff
                 isFeedbackEmployee={isFeddbackEmployee}
                 handleFeedbackContactClose={handleFeedbackEmployeesClose}
-             
-              
+
+
               />
             )}
             {isViewInterviewStaff && (
@@ -578,7 +587,7 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
                 time={findIdData?.time}
               />
             )}
-         
+
           </div>
         );
       },

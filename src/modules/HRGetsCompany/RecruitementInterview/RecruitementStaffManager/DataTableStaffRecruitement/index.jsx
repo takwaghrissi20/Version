@@ -317,7 +317,7 @@ const AllRecruitementStaff = ({ allrecruitementabove,
           backgroundColor = '#C0C0C0';
         } else if (status.includes('Approved')) {
           backgroundColor = '#32CD32';
-        } else if (status.includes('Refuse')) {
+        } else if (status.includes('Not Approved')) {
           backgroundColor = '#FF2400';
         }
         else if (status.includes('Cheked By PMO')) {
