@@ -492,7 +492,7 @@ const EditRecruitementAbove = () => {
 
   //End Update UpdateOperation
   ///Cancel Recruitement Oprartion
-  const   CancelRecruitementOperation = async () => {
+  const CancelRecruitementOperation = async () => {
 
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}`, {
@@ -728,7 +728,7 @@ const EditRecruitementAbove = () => {
                         readOnly={true} />
                     </Form.Item>
                   </Col>
-                  <Col xs={24} md={12}>
+                  {/* <Col xs={24} md={12}>
                     <Form.Item label='Requestor Date' name='DateRequestor'
 
                     >
@@ -739,7 +739,7 @@ const EditRecruitementAbove = () => {
 
 
                     </Form.Item>
-                  </Col>
+                  </Col> */}
 
 
 
@@ -1617,17 +1617,19 @@ const EditRecruitementAbove = () => {
               <Button onClick={() => Update(newdesiredDate, newdep, newidemp, newrequestName, newposition, newprojectName,
                 newprojRef, newexDep, newaffectedTo, newLevel, newrequestedDicipline, newnbExperience, newNumbervacancies, newcertif)}>
                 Update
-              </Button> : null}
-            {userRoles.includes("Operation") ?
+              </Button> :
+              
+              null}
+              {userRoles.includes("Operation") ?
               <>
                 <Button style={{ color: "green", borderColor: "green" }} onClick={() => UpdateOperation()}>
                   Approved
                 </Button>
                 <Button style={{ color: "red", borderColor: "red" }} onClick={() => CancelRecruitementOperation()}>
-                 Refuse
+                  Refuse
                 </Button>
-                <Button  onClick={Back}>
-               Cancel
+                <Button onClick={Back}>
+                  Cancel
                 </Button>
               </>
 

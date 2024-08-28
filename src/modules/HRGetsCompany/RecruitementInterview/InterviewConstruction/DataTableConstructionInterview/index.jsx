@@ -16,7 +16,7 @@ import {
 import ConfirmationModal from '../../../../../@crema/components/AppConfirmationModal';
 import IntlMessages from '../../../../../@crema/helpers/IntlMessages';
 import { useNavigate } from "react-router-dom";
-
+import FeddbackEmployeesConstruction from "../../../../Model/FeddbackEmployeesConstruction"
 const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,  
   findId, setFindIdData,open,handleInterview,codeJob,interviewCode}) => {
   //const [findIdData, setFindIdData] = useState(null);
@@ -25,6 +25,10 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
   const [isEditInterviewStaff, onEditInterviewStaff] = useState(false);
   const [isDelteInterviewStaff, onDeleteInterviewStaff] = useState(false)
   const [isAddEmployees, onAddEmployees] = useState(false);
+  const [isFeddbackEmployee, onFeddbackEmployee] = useState(false);
+  const handleFeedbackEmployeesOpen = (code) => {
+   onFeddbackEmployee(true);
+  };
   const navigate = useNavigate();
   const userRoles = localStorage.getItem("role");
   const [tableHeight, setTableHeight] = useState('auto');
@@ -399,6 +403,10 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
         if (record.notif === 5 ) {
           items.push({ key: 4, label: <span style={{ fontSize: 14 }}>Add Employees</span>, 
           onClick:handleAddEmployees });
+          items.push({
+            key: 5, label: <span style={{ fontSize: 14 }}>Feddback Employees</span>,
+            onClick: handleFeedbackEmployeesOpen
+          });
         }
     
         return (
@@ -408,6 +416,15 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
                 <MoreOutlined />
               </Button>
             </Dropdown>
+            {isFeddbackEmployee && (
+              <FeddbackEmployeesConstruction
+                isFeedbackEmployee={isFeddbackEmployee}
+                handleFeedbackContactClose={handleFeedbackEmployeesClose}
+                findIdData={findIdData}
+
+
+              />
+            )}
             {/* {isViewInterviewStaff && (
              <InterviewView
              isViewInterviewStaff={isViewInterviewStaff}

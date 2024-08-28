@@ -21,6 +21,25 @@ import {
 } from './index.styled';
 import { useGetDataApi } from '../../../@crema/hooks/APIHooks';
 const Dashboards = () => {
+  const [notificationPermission, setNotificationPermission] = useState(null);
+  const requestNotificationPermission = () => {
+    if ('Notification' in window) {
+      Notification.requestPermission().then(permission => {
+        setNotificationPermission(permission);
+      });
+    } else {
+      alert('Your browser does not support desktop notifications.');
+    }
+  };
+
+  const showNotification = () => {
+    if (notificationPermission === 'granted') {
+      new Notification('Afficher Recrutement');
+    } else if (notificationPermission !== 'denied') {
+      requestNotificationPermission();
+    }
+  };
+
   const dropdownRef = useRef(null);
   const { messages } = useIntl();
 
@@ -476,6 +495,11 @@ console.log("passportExperedProjet",passportExperedProjet)
   return (
     <>
       <AppPageMeta title='Dashboards' />
+      <div>
+      {/* <button onClick={showNotification}>
+        Desktop Notifications
+      </button> */}
+    </div>
       <>
         {(user.includes("admin") || user.includes("bod")) && metricsData && (
           <AppRowContainer ease={'easeInSine'}>

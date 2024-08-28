@@ -1051,7 +1051,6 @@ const EditInterviewConstruction = ({ hseCertif,
           notif: 10,
           time: time
 
-
         })
       });
 

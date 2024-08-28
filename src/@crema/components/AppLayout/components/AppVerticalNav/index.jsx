@@ -277,7 +277,7 @@ const AppVerticalNav = ({ routesConfig }) => {
         }
       }
       if (userRole.includes("Administrator")) {
-        if (item.id === "VisaHealth" ||
+        if (
           item.id === "attendance" ||
           item.id === "ManpowerLocation" ||
           item.id === "ManpowerEvaluation" ||
@@ -285,7 +285,10 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "PROJECTS TRIP TRACK RECORD " ||
           item.id === "Payroll" ||
           item.id === "Vacation" ||
-          item.id === "My Leave History"
+          item.id === "My Leave History" ||
+          item.id === "Add Travel" ||
+          item.id === "AddCorona"
+         
 
           // item.id === "Employees"  ||
           // item.id === "attendance" ||

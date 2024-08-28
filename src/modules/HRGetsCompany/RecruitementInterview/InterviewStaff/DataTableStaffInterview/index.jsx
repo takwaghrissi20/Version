@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
   findId, setFindIdData, open, handleInterview, codeJob, interviewCode }) => {
   //const [findIdData, setFindIdData] = useState(null);
+  console.log("FindBuIdddd",findIdData?.agreedJoinedDate)
   const [isViewInterviewStaff, onViewInterviewStaff] = useState(false);
   const [isEditInterviewStaff, onEditInterviewStaff] = useState(false);
   const [isDelteInterviewStaff, onDeleteInterviewStaff] = useState(false);
@@ -43,7 +44,7 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
   const navigate = useNavigate();
   const handleAddInterviewStaffOpen = () => {
     //onViewInterviewStaff(true);
-    console.log("findIdData", findIdData?.interviewCode)
+  
     navigate(`/Hr/Recruitement&Interview/View/${interviewCode}`, {
       state: {
         interviewCode: findIdData?.interviewCode,
@@ -113,13 +114,11 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
     setFindIdData(null);
     onFeddbackEmployee(false);
   };
-  const handleFeedbackEmployeesOpen = () => {
-    console.log("Feddback Close")
+  const handleFeedbackEmployeesOpen = (code) => {
     onFeddbackEmployee(true);
   };
 
   const handleEditInterviewStaffOpen = () => {
-    console.log("findIdData", findIdData?.interviewCode)
     navigate(`/Hr/Recruitement&Interview/Update/${interviewCode}`, {
       state: {
         interviewCode: findIdData?.interviewCode,
@@ -469,8 +468,8 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
     {
 
       title: 'Agreed Join Date',
-      dataIndex: 'agreedJoinedDat',
-      key: 'agreedJoinedDat',
+      dataIndex: 'agreedJoinedDate',
+      key: 'agreedJoinedDate',
       ellipsis: {
         showTitle: false,
       },
@@ -498,7 +497,8 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
           ] : [])
 
         ];
-        if (record.notif === 3) {
+        if (((record.notif === 55 && record.directSign2 === "Accepted" && record.directSign1 === "Accepted") ||
+        (record.notif === 66 && record.directSign1 === "Accepted" && record.directSign === "Accepted"))) {
           items.push({
             key: 4, label: <span style={{ fontSize: 14 }}>Add Employees</span>,
             onClick: handleAddEmployees
@@ -508,7 +508,6 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
             onClick: handleFeedbackEmployeesOpen
           });
         }
-
         return (
           <div onClick={() => findId(record?.interviewCode)}>
             <Dropdown menu={{ items }} trigger={['click']}>
@@ -520,6 +519,7 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
               <FeddbackEmployeesStaff
                 isFeedbackEmployee={isFeddbackEmployee}
                 handleFeedbackContactClose={handleFeedbackEmployeesClose}
+                findIdData={findIdData}
 
 
               />

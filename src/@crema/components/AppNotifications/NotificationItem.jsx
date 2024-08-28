@@ -6,7 +6,7 @@ import {
   StyledNotifyMsgAvatar,
 } from './NotificationItem.styled';
 import { useNavigate } from "react-router-dom";
-
+import { ToastContainer, toast } from 'react-toastify';
 const NotificationItem = ({ user }) => {
 
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ const NotificationItem = ({ user }) => {
   const [intCode, setIntCode] = useState("");
 
 
-
+  const notify = () => toast("This is a toast notification !");
 
   // Project By email
   const fetchProjectEmail = async () => {
@@ -111,8 +111,28 @@ const NotificationItem = ({ user }) => {
     }
   };
 
-  //End Fetch Recruitement
+  const [notificationPermission, setNotificationPermission] = useState(null);
 
+  const requestNotificationPermission = () => {
+    if ('Notification' in window) {
+      Notification.requestPermission().then(permission => {
+        setNotificationPermission(permission);
+      });
+    } else {
+      alert('Your browser does not support desktop notifications.');
+    }
+  };
+
+  const showNotification = () => {
+    if (notificationPermission === 'granted') {
+      setTimeout(() => {
+        new Notification('Afficher Recrutement');
+      }, 1000);
+     
+    } else if (notificationPermission !== 'denied') {
+      requestNotificationPermission();
+    }
+  };
   const AllNotif = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/notif/list`, {
@@ -142,7 +162,8 @@ const NotificationItem = ({ user }) => {
         (item.notfi === 7 &&
           item.dep.includes('Engineering')
         ) ||
-        (item.notfi === 2) ||
+        (item.notfi === 2 )
+         ||
         (item.notfi === 7 &&
           item.dep.includes('Operation') &&
           (item.oDep || item.xDep) &&
@@ -157,13 +178,6 @@ const NotificationItem = ({ user }) => {
         (item.notfi === 37) ||
         (item.notfi === 17 && item.type.includes("Demob"))
       );
-
-
-
-      // const filteredData = data.filter(item => ((!item.dep.includes('Operation')&& (!item.dep.includes('Engineering'))) &&
-      //   item.notfi === 2) || (item.notfi === 7 && item.dep.includes('Operation')) || 
-      //   (item.notfi === 7 && item.dep.includes('Engineering'))
-      // );
 
       setNotifBod(filteredData);
       //////NotifffHrAdminstrotor
@@ -185,7 +199,8 @@ const NotificationItem = ({ user }) => {
             item.positionInterv?.includes('Manager'))
         ) ||
         ((item.notfi === 35) && item.type.includes("Extension")) ||
-        (item.notfi === 17 && item.type.includes("Demob"))
+        (item.notfi === 17 && item.type.includes("Demob")) ||
+        (item.notfi === 7 && (item.type.includes("Interview")) && item.dep.includes('Operation')) 
 
       ));
 
@@ -207,7 +222,7 @@ const NotificationItem = ({ user }) => {
       /////////////////Notif HSE
       const filteredDataHSE = data.filter(item => (
         (item.notfi === 1 && item.dep.includes('Operation')) && (item.type.includes("construction")) ||
-        (item.notfi === 2 && (item.type.includes("construction")))
+        (item.notfi === 2 && (item.type.includes("construction")))  
 
 
       ));
@@ -733,6 +748,12 @@ const NotificationItem = ({ user }) => {
 
   }, [project, notifPlanner, idgets, id, findIdDataConstruction, intCode, findIdDataStaff]);
   console.log("user", user)
+  const notify1 = () => {
+    toast("This is a toast notification!", {
+      autoClose: 2000, 
+      position: toast.POSITION.TOP_RIGHT
+    });
+  };
   return (
     <>
       {user.includes("bod") ?
@@ -820,10 +841,13 @@ const NotificationItem = ({ user }) => {
           <>
             {notifOperation.map((p, index) => (
               <>
+               {p?.type?.includes("recruitment") && (
+            
                 <button className='Notification' onClick={() => findId(p?.codejob)}>
                   Recruitment Request with Code Job:
                   <span style={{ color: "red", fontWeight: "bold" }}>{p.codejob}</span>
                 </button>
+                 )}
                 {p?.type?.includes("Interview") && (
                   <div>
                     <button
@@ -931,7 +955,7 @@ const NotificationItem = ({ user }) => {
       {/* ///Notificationnn de Project Leader*/}
       {user.includes("Leader") ?
         <StyledNotifyListItem className='item-hover'>
-          <p>Number All Notification(ProjectlEADERS) </p>
+          <p>Number All Notification</p>
           {notifProjetLeader.map((p, index) => (
             <>
               <div key={index}>
@@ -979,7 +1003,7 @@ const NotificationItem = ({ user }) => {
       {/*QC Lead */}
       {user.includes("QC Lead") ?
         <StyledNotifyListItem className='item-hover'>
-          <p>Number All Notification(QCLead) </p>
+          <p>Number All Notification </p>
           {notifQCLead.map((p, index) => (
             <>
               <div key={index}>
@@ -1000,7 +1024,7 @@ const NotificationItem = ({ user }) => {
       {/*notifLogistic*/}
       {user.toLowerCase().includes("LOGISTIC") ?
         <StyledNotifyListItem className='item-hover'>
-          <p>Number All Notification(LOGISTIC) </p>
+          <p>Number All Notification </p>
           {notifLogistic.map((p, index) => (
             <>
               <div key={index}>
@@ -1020,16 +1044,10 @@ const NotificationItem = ({ user }) => {
       }
 
 
-      {/*notifLogistic*/}
-
-
-
-
-      {/*End QC LEAD*/}
       {/*Construction Manager toLowerCase() */}
       {user.includes("Construction") ?
         <StyledNotifyListItem className='item-hover'>
-          <p>Number All Notification(Construction) </p>
+          <p>Number All Notification </p>
           {notifConstruction.map((p, index) => (
             <>
               <div key={index}>

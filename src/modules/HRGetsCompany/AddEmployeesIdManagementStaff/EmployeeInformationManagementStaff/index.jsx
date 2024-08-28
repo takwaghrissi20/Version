@@ -306,6 +306,7 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview,interviewCode,
 
 
     });
+    navigate(-1)
 
   };
 

@@ -329,7 +329,9 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
         setDataInterview(data)
         openNotification('bottomRight')
         setTimeout(() => {
-          window.location.reload();
+          navigate(`/Hr/Recruitement&Interview/ConstructionStaffInterview/Update/${interviewCode}`, { 
+            
+          });
           // navigate(-1)
         }, 2000);
 
