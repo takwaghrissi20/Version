@@ -30,9 +30,10 @@ const Sammuary = () => {
 
   const fetchEmployees = async () => {
     try {
-      const countEmployees = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/countAll`);
+      const countEmployees = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list`);
       const datacount = await countEmployees.json();
-      setCount(datacount);
+      console.log("datacount", datacount.length)
+      setCount(datacount.length);
 
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/listBypage?page=${currentPage}&size=${pageSize}`);
 
@@ -103,7 +104,7 @@ const Sammuary = () => {
   return (
     <div>
       <AppPageMeta title='Sammary' />
-      <div style={{ backgroundColor: "white", borderRadius: "20px" }}>
+      <div style={{ backgroundColor: "white", borderRadius: "20px"}}>
         <AppsHeader>
           <StyledOrderHeader>
             <div style={{ marginRight: 20, boxShadow: "none !important", width: "20%" }}>
@@ -144,22 +145,22 @@ const Sammuary = () => {
 
           <OrderTable className={clsx("item-hover")} dataemployees={employees} />
         </AppCard>
-
-        <StyledOrderHeaderRight>
-
-          <Pagination
-            currentPage={currentPage}
-            totalPages={Math.ceil(count / pageSize)}
-            handlePageChange={handlePageChange}
-          />
-
+        
+          <StyledOrderHeaderRight >
+            <Pagination
+              currentPage={currentPage}
+              totalPages={Math.ceil(count / pageSize)}
+              handlePageChange={handlePageChange}
+            />
 
 
-        </StyledOrderHeaderRight>
 
+          </StyledOrderHeaderRight>
 
+          <div style={{height:"10px"}}></div>
 
       </div>
+     
     </div>
   );
 };
