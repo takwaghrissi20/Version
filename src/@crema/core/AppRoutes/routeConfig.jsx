@@ -140,30 +140,19 @@ const routesConfig = [
           },
      
         
-          {
-            id: "EmployeesOfficeSummary",
-            title: "EmployeesOfficeSummary",
-            messageId: "sidebar.hr.EmployeesOfficeSummary",
-            url: "/Hr/Employees_Office_Summary",
-          },
-          {
-            id: "EmployeesSiteSummary",
-            title: "EmployeesSiteSummary",
-            messageId: "sidebar.hr.EmployeesSiteSummary",
-            url: "/Hr/Employees_Site_Summary",
-          },
-          {
-            id: "EmployeesStatusOffice",
-            title: "EmployeesStatusOffice",
-            messageId: "sidebar.hr.OfficeEmployee",
-            url: "/Hr/Employees_Status_Office",
-          },
-          {
-            id: "EmployeesStatusOffice",
-            title: "EmployeesStatusOffice",
-            messageId: "sidebar.hr.SiteEmployee",
-            url: "/Hr/Employees_Status_Site",
-          },
+       
+          // {
+          //   id: "EmployeesStatusOffice",
+          //   title: "EmployeesStatusOffice",
+          //   messageId: "sidebar.hr.OfficeEmployee",
+          //   url: "/Hr/Employees_Status_Office",
+          // },
+          // {
+          //   id: "EmployeesStatusOffice",
+          //   title: "EmployeesStatusOffice",
+          //   messageId: "sidebar.hr.SiteEmployee",
+          //   url: "/Hr/Employees_Status_Site",
+          // },
         
          
         ],
@@ -197,7 +186,19 @@ const routesConfig = [
             title: "TimeSheetoffice",
             messageId: "sidebar.hrRelation.TimeSheetoffice",
             url: "/Hr/Attendances/Office_Time_Sheet",
-          },     
+          },   
+          {
+            id: "EmployeesOfficeSummary",
+            title: "EmployeesOfficeSummary",
+            messageId: "sidebar.hr.EmployeesOfficeSummary",
+            url: "/Hr/Employees_Office_Summary",
+          },
+          {
+            id: "EmployeesSiteSummary",
+            title: "EmployeesSiteSummary",
+            messageId: "sidebar.hr.EmployeesSiteSummary",
+            url: "/Hr/Employees_Site_Summary",
+          },  
           // {
           //   id: "TimeSheetofficeTest",
           //   title: "TimeSheetoffice",
@@ -433,8 +434,7 @@ const routesConfig = [
           //   url: "/ManpowerLocation/DemobPermissionSite",
           // },
   
-    
-    
+  
        
         ],
       },

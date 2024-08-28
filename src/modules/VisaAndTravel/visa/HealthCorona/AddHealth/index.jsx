@@ -37,15 +37,16 @@ const AddHeath = () => {
   const [fetnessSelect, setFetnessSelect] = useState("");
   const [heapatiteSelect, setHeapatiteSelect] = useState("");
   const [heapatiteDate, setHeapatiteDate] = useState("");
-  const [idzDate,setIdzDate] = useState("");
+  const [idzDate, setIdzDate] = useState("");
   const [idzSelect, setIdzSelect] = useState("");
   const [covidfirstdosedate, setCovidfirstdosedate] = useState("");
   const [covidfirstdosetype, setCovidfirstdosetype] = useState("");
   const [covidseconddosedate, setCovidseconddosedate] = useState("");
   const [covidseconddosetype, setCovidseconddosetype] = useState("");
+  const [dateInput, setDateInput] = useState(new Date());
   const [form] = Form.useForm();
   const { messages } = useIntl();
-  
+
 
   const handleCommentsChange = (event) => {
     setComments(event.target.value);
@@ -58,13 +59,13 @@ const AddHeath = () => {
     setCovidfirstdosetype(event.target.value);
   };
   const handlecovidseconddosetypeChange = (event) => {
-    
+
     setCovidseconddosetype(event.target.value)
   };
 
 
- 
- 
+
+
   //   try {
   //     const response = await fetch(`https://dev-gateway.gets-company.com/vacin/last`, {
   //       method: 'GET',
@@ -120,13 +121,13 @@ const AddHeath = () => {
     { type: 'Fetness Certificate' },
     { type: 'Hepatitie' },
     { type: 'IDZ/HIV' },
-  
+
 
   ];
-  const Result= [
+  const Result = [
     { type: 'Positive' },
     { type: 'Negative' },
-  
+
 
   ];
   const handleAddVacin = async () => {
@@ -142,21 +143,21 @@ const AddHeath = () => {
         },
         body: JSON.stringify({
 
-          projName:selectedProject,
-          typeVccin:selectedVaccin,
-          resultFitness:fetnessDate,
-          dateTestWork:fetnessDate,
+          projName: selectedProject,
+          typeVccin: selectedVaccin,
+          resultFitness: fetnessDate,
+          dateTestWork: fetnessDate,
           hypatitDar: heapatiteDate,
-          hepatitResult:heapatiteSelect,
+          hepatitResult: heapatiteSelect,
           idzdate: idzDate,
-          idzresult:idzSelect,
-          corona1Date:covidfirstdosedate,
-          typeCorona:covidfirstdosetype,
-          corona2Date:covidseconddosedate,
-          corona2Result:covidseconddosetype,
+          idzresult: idzSelect,
+          corona1Date: covidfirstdosedate,
+          typeCorona: covidfirstdosetype,
+          corona2Date: covidseconddosedate,
+          corona2Result: covidseconddosetype,
 
 
-        
+
 
         })
       });
@@ -178,18 +179,18 @@ const AddHeath = () => {
   };
 
   useEffect(() => {
-  
-    if (getsId) {
-      findId();
-    }
-  
-  }, [getsId]);
-   useEffect(() => {
 
     if (getsId) {
       findId();
     }
- 
+
+  }, [getsId]);
+  useEffect(() => {
+
+    if (getsId) {
+      findId();
+    }
+
   }, [getsId]);
 
   const handleProjectChange = (value, option) => {
@@ -216,7 +217,7 @@ const AddHeath = () => {
     setIdzSelect(value)
 
   };
- 
+
 
   const goBack = () => {
     navigate(-1)
@@ -240,8 +241,9 @@ const AddHeath = () => {
   const handleCancelVaccin = () => {
     onCancel(true);
   }
+  const formattedDate = dayjs(dateInput).format('YYYY-MM-DD');
   return (
-    <>  
+    <>
       <AppPageMeta title='Add Heath' />
       <Form
         form={form}
@@ -275,12 +277,14 @@ const AddHeath = () => {
                 <Col xs={24} md={12}>
                   <Form.Item label='Date' name='Date :'
                   >
-                    <DatePicker
-                      style={{ width: "100%", height: "30px" }}
-
-
-
+                    <Input
+                      placeholder={formattedDate}
+                      readOnly
                     />
+
+                    {/* <DatePicker
+                      style={{ width: "100%", height: "30px" }}
+                    /> */}
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
@@ -309,7 +313,7 @@ const AddHeath = () => {
                       placeholder={position} />
                   </Form.Item>
                 </Col>
-  
+
 
 
               </AppRowContainer>
@@ -328,7 +332,7 @@ const AddHeath = () => {
                 <Col xs={24} md={12}>
                   <Form.Item className='form-field'
                     name='projectName'
-              
+
                   >
                     <FloatLabel >
                       <span className='modallabel'>Project Name:</span>
@@ -351,7 +355,7 @@ const AddHeath = () => {
                 <Col xs={24} md={12}>
                   <Form.Item className='form-field'
                     name='type'
-              
+
                   >
                     <FloatLabel >
                       <span className='modallabel'>Type Vaccin:</span>
@@ -362,7 +366,7 @@ const AddHeath = () => {
                         onChange={handleVaccinChange}
                         value={selectedVaccin}
                       >
-                        { Vaccin.map(p => (
+                        {Vaccin.map(p => (
                           <Option key={p.type} value={p.type}>
                             {p.type}
                           </Option>
@@ -373,125 +377,125 @@ const AddHeath = () => {
                 </Col>
                 {selectedVaccin === 'Fetness Certificate' && (
                   <>
-             <Col xs={24} md={12}>
-                  <Form.Item label='Date Of Health Fetness Test' name='Date :'
-                  >
-                    <DatePicker
-                      style={{ width: "100%", height: "30px" }}
-                      placeholder="YYYY-MM-DD"
-                      onChange={(value) =>setFetnessDate(dayjs(value).format('YYYY-MM-DD'))}
-
-                    />
-                  </Form.Item>
-                </Col>      
-                <Col xs={24} md={12}>
-                  <Form.Item name='Result'
-                  >
-                  
-                    <FloatLabel >
-                      <span className='modallabel'>Result:</span>
-                      <Select
-                        style={{ marginTop: "10px" }}
-                        placeholder="Select Your Result"
-                        onChange={handleResultChange}
-                        value={fetnessSelect}
+                    <Col xs={24} md={12}>
+                      <Form.Item label='Date Of Health Fetness Test' name='Date :'
                       >
-                        {Result.map(p => (
-                          <Option key={p.type} value={p.type}>
-                            {p.type}
-                          </Option>
-                        ))}
-                      </Select>
-                    </FloatLabel>
-                  </Form.Item>
-                
-                </Col>   
-                  
-                  
+                        <DatePicker
+                          style={{ width: "100%", height: "30px" }}
+                          placeholder="YYYY-MM-DD"
+                          onChange={(value) => setFetnessDate(dayjs(value).format('YYYY-MM-DD'))}
+
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item name='Result'
+                      >
+
+                        <FloatLabel >
+                          <span className='modallabel'>Result:</span>
+                          <Select
+                            style={{ marginTop: "10px" }}
+                            placeholder="Select Your Result"
+                            onChange={handleResultChange}
+                            value={fetnessSelect}
+                          >
+                            {Result.map(p => (
+                              <Option key={p.type} value={p.type}>
+                                {p.type}
+                              </Option>
+                            ))}
+                          </Select>
+                        </FloatLabel>
+                      </Form.Item>
+
+                    </Col>
+
+
                   </>
-       
-      )}
-                 {selectedVaccin === 'Hepatitie' && (
+
+                )}
+                {selectedVaccin === 'Hepatitie' && (
                   <>
-             <Col xs={24} md={12}>
-                  <Form.Item label='Date Of Hepatitie Test' name='Date :'
-                  >
-                    <DatePicker
-                      style={{ width: "100%", height: "30px" }}
-                      placeholder="YYYY-MM-DD"
-                      onChange={(value) =>setHeapatiteDate(dayjs(value).format('YYYY-MM-DD'))}
-
-                    />
-                  </Form.Item>
-                </Col>      
-                <Col xs={24} md={12}>
-                  <Form.Item name='Result'>
-                  
-                    <FloatLabel >
-                      <span className='modallabel'>Result:</span>
-                      <Select
-                        style={{ marginTop: "10px" }}
-                        placeholder="Select Your Result Hepatitie Test"
-
-                        onChange={handleResultHeapatiteChange}
-                        value={heapatiteSelect}
+                    <Col xs={24} md={12}>
+                      <Form.Item label='Date Of Hepatitie Test' name='Date :'
                       >
-                        {Result.map(p => (
-                          <Option key={p.type} value={p.type}>
-                            {p.type}
-                          </Option>
-                        ))}
-                      </Select>
-                    </FloatLabel>
-                  </Form.Item>
-                
-                </Col>   
-                  
-                  
+                        <DatePicker
+                          style={{ width: "100%", height: "30px" }}
+                          placeholder="YYYY-MM-DD"
+                          onChange={(value) => setHeapatiteDate(dayjs(value).format('YYYY-MM-DD'))}
+
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item name='Result'>
+
+                        <FloatLabel >
+                          <span className='modallabel'>Result:</span>
+                          <Select
+                            style={{ marginTop: "10px" }}
+                            placeholder="Select Your Result Hepatitie Test"
+
+                            onChange={handleResultHeapatiteChange}
+                            value={heapatiteSelect}
+                          >
+                            {Result.map(p => (
+                              <Option key={p.type} value={p.type}>
+                                {p.type}
+                              </Option>
+                            ))}
+                          </Select>
+                        </FloatLabel>
+                      </Form.Item>
+
+                    </Col>
+
+
                   </>
-       
-      )}
-                   {selectedVaccin === 'IDZ/HIV' && (
+
+                )}
+                {selectedVaccin === 'IDZ/HIV' && (
                   <>
-                  <Col xs={24} md={12}>
-                    <Form.Item label='Date Of IDZ/HIV Test' name='Date :'
-                  >
-                    <DatePicker
-                      style={{ width: "100%", height: "30px" }}
-                      placeholder="YYYY-MM-DD"
-                      onChange={(value) =>setIdzDate(dayjs(value).format('YYYY-MM-DD'))}
-
-                    />
-                  </Form.Item>
-                </Col>      
-                <Col xs={24} md={12}>
-                  <Form.Item name='Result'>
-                  
-                    <FloatLabel >
-                      <span className='modallabel'>Result:</span>
-                      <Select
-                        style={{ marginTop: "10px" }}
-                        placeholder="Select Your Result IDZ/HIV Test"
-
-                        onChange={handleResultidzSelectChange}
-                        value={idzSelect}
+                    <Col xs={24} md={12}>
+                      <Form.Item label='Date Of IDZ/HIV Test' name='Date :'
                       >
-                        {Result.map(p => (
-                          <Option key={p.type} value={p.type}>
-                            {p.type}
-                          </Option>
-                        ))}
-                      </Select>
-                    </FloatLabel>
-                  </Form.Item>
-                
-                </Col>   
-                  
-                  
+                        <DatePicker
+                          style={{ width: "100%", height: "30px" }}
+                          placeholder="YYYY-MM-DD"
+                          onChange={(value) => setIdzDate(dayjs(value).format('YYYY-MM-DD'))}
+
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item name='Result'>
+
+                        <FloatLabel >
+                          <span className='modallabel'>Result:</span>
+                          <Select
+                            style={{ marginTop: "10px" }}
+                            placeholder="Select Your Result IDZ/HIV Test"
+
+                            onChange={handleResultidzSelectChange}
+                            value={idzSelect}
+                          >
+                            {Result.map(p => (
+                              <Option key={p.type} value={p.type}>
+                                {p.type}
+                              </Option>
+                            ))}
+                          </Select>
+                        </FloatLabel>
+                      </Form.Item>
+
+                    </Col>
+
+
                   </>
-       
-      )}
-                  {/* {selectedVaccin === 'COVID VACCINE' && (
+
+                )}
+                {/* {selectedVaccin === 'COVID VACCINE' && (
                   <>
                   <Col xs={24} md={12}>
                     <Form.Item label='Date Of Covid Vaccin First Dose Date ' name='Date :'
@@ -561,17 +565,17 @@ const AddHeath = () => {
             </StyledShadowWrapper>
           </Col>
         </AppRowContainer>
-     
+
         <Space
           size={15}
           style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
         >
           <Button onClick={handleCancelVaccin}>Cancel</Button>
           <Button
-             onClick={BeforeSaveVaccin}
+            onClick={BeforeSaveVaccin}
             // onClick={handleAddVacin }
             type='primary'
-             disabled={ !selectedProject }
+            disabled={!selectedProject}
             htmlType='submit'>
             Save
           </Button>
@@ -587,7 +591,7 @@ const AddHeath = () => {
           handleConfirmationAddVaccin={handleConfirmationAddVaccin}
         />
       ) : null}
-        {isCancel? (
+      {isCancel ? (
         <ConfirmationModal
           open={isCancel}
           paragraph={'Are you sure you canceled All data is lost?'}
@@ -597,7 +601,7 @@ const AddHeath = () => {
           handleVaccin={handleCancelVaccin}
         />
       ) : null}
-  
+
     </>
   );
 };

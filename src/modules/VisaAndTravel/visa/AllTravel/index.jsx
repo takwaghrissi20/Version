@@ -118,7 +118,9 @@ const AllTravel = () => {
           />
         </StyledOrderHeaderRight>
 }
+<div style={{height:"10px"}}></div>
       </div>
+     
     </div>
   );
 };

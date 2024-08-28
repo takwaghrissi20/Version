@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 /// change 
 import { StyledOrderTable} from '../../../../../../../../styles/index.styled';
 
-import { Button,Alert} from 'antd';
+import { Button,Alert,Tooltip } from 'antd';
 import { Dropdown } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 
@@ -142,6 +142,7 @@ const  handleViewHealth = () => {
       title: 'ID',
       dataIndex: 'getsId',
       key: 'getsId',
+      width: 80
     
     },
   
@@ -149,38 +150,46 @@ const  handleViewHealth = () => {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
+      width: 80
     },
     {
-      title: 'project Name',
+      title: 'Project Name',
       dataIndex: 'projName',
       key: 'projName',
-      render: (text) => text === null || text === undefined ? 'null' : text
+      width: 150,
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (name) => (
+        <Tooltip placement='topLeft' title={name}>
+          {name}
+        </Tooltip>
+      ),
     },
-   
   
     {
       title: 'VACCINE TYPE',
       dataIndex: 'typeVccin',
       key: 'typeVccin',
-      render: (text) => text === null || text === undefined ? 'null' : text
+   
     },
     {
-      title: 'type Covid',
+      title: 'Type Covid',
       dataIndex: 'typeCorona',
       key: 'typeCorona',
-      render: (text) => text === null || text === undefined ? 'null' : text
+  
     },
     {
       title: 'Date First Dose',
       dataIndex: 'corona1Date',
       key: 'corona1Date',
-      render: (text) => text === null || text === undefined ? 'null' : text
+
     },
     {
       title: 'Date Second Dose',
       dataIndex: 'corona2Date',
       key: 'corona2Date',
-      render: (text) => text === null || text === undefined ? 'null' : text
+
     },
    
    

@@ -16,17 +16,7 @@ const ProfileConnection = ({ profileConnection }) => {
       <StyledProfileConnectionTitle>
         <IntlMessages id='userProfile.profileConnections' />
       </StyledProfileConnectionTitle>
-      <AppRowContainer gutter={16}>
-        {profileConnection.map((member, index) => {
-          return (
-            <Col key={index} xs={24} md={12} lg={8} xl={12} xxl={8}>
-              <StyledMemberItem>
-                <Member member={member} />
-              </StyledMemberItem>
-            </Col>
-          );
-        })}
-      </AppRowContainer>
+    
     </StyledProfileConnection>
   );
 };
