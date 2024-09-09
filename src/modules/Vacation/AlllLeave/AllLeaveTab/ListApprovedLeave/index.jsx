@@ -24,6 +24,7 @@ const ListApprovedLeave  = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [count, setCount] = useState(0);
+  const token = localStorage.getItem("token");
   //const [reason , setreason]=useState("");
   const navigate = useNavigate();
   const getStatus = (notificationValue) => {
@@ -69,7 +70,7 @@ const ListApprovedLeave  = () => {
   }, []);
   const showVaclistBypage = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/listBypage?page=${currentPage}&size=${pageSize}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/listBypage?page=${currentPage}&size=${pageSize}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -91,7 +92,7 @@ const ListApprovedLeave  = () => {
 
   const showVac = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/list`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/list?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -175,7 +176,7 @@ const ListApprovedLeave  = () => {
   };
   const deleteVac = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/delete?id=${idv}&code=${getsId}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/delete?id=${idv}&code=${getsId}&token=${token}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

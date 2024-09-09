@@ -4,8 +4,7 @@ import { Table, Tooltip } from 'antd';
 import moment from 'moment';
 
 const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
-  console.log("selectedMonth",selectedMonth)
-  console.log("selectedYear",selectedYear)
+
   const currentDate = moment({ year: selectedYear, month: selectedMonth - 1 });
   const currentMonthDays = Array.from({ length: currentDate.daysInMonth() }, (v, k) => k + 1);
   const currentMonthName = currentDate.format('MMMM').toUpperCase();

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import AppsContainer from '../../../@crema/components/AppsContainer';
 import { useIntl } from 'react-intl';
 import AppsHeader from '../../../@crema/components/AppsContainer/AppsHeader';
@@ -20,6 +20,7 @@ import {
 
 } from './index.styled';
 import { useGetDataApi } from '../../../@crema/hooks/APIHooks';
+
 const Dashboards = () => {
   const [notificationPermission, setNotificationPermission] = useState(null);
   const requestNotificationPermission = () => {
@@ -69,10 +70,12 @@ const Dashboards = () => {
   const user = localStorage.getItem("role");
   const [project, setProject] = useState([]);
   const userEmail = localStorage.getItem("email");
+  const token = localStorage.getItem("token");
    // Project By email
+
    const fetchProjectEmail = async () => {
     try {
-      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getProjectByMail?mail=${userEmail}`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getProjectByMail?mail=${userEmail}&token=${token}`;
       const response = await fetch(url, {
         method: "GET",
       });
@@ -89,6 +92,7 @@ const Dashboards = () => {
     }
   };
   {/*Get Profile*/ }
+ 
   const GetProfileEmployess = async () => {
     const storedemail = window.localStorage.getItem("email");
     console.log("storedemail", storedemail)
@@ -97,7 +101,7 @@ const Dashboards = () => {
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -157,7 +161,7 @@ const Dashboards = () => {
 
   const fetchFilteredRecruitement = async (filterValue) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/filterByPosition?position=${filterValue}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/filterByPosition?position=${filterValue}&token=${token}`);
       if (!response.ok) {
         throw new Error('Failed to filter employees');
       }
@@ -184,7 +188,7 @@ const Dashboards = () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -199,7 +203,6 @@ const Dashboards = () => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
-      console.log("POMMM",data)
       setCount(data.length)
       //////Filter les count de Data de idem
       const dataRecruitement = data.filter(p => p.idemp === idRec);
@@ -216,38 +219,32 @@ const Dashboards = () => {
     }
   };
 
-  const fetchEmployeesByType = async () => {
+  const fetchRecruitementByType = async () => {
     try {
-      const endPoint = process.env.NODE_ENV === 'development' ? 'https://dev-gateway.gets-company.com' : '';
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/listBypage?page=${currentPage}&size=${pageSize}&sortBy=recruttrequestDate`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-        });
+
+      const url = `https://dev-gateway.gets-company.com/api/v1/re/listBypage?page=${currentPage}&sortBy=recruttrequestDate&size=${pageSize}&token=${token}`;
+      const response = await fetch(url);
+
 
       if (!response.ok) {
-        throw new Error('Failed to fetch employees');
+        throw new Error('Failed to fetch Recruitement');
       }
       const data = await response.json();
       setDatarecruitement(data);
+    } catch (error) {
+      console.error(`Error fetching ${type} Recruitement:`, error);
 
-      return data;
 
     }
-    catch (error) {
-      console.error(`Error fetching ${type} employees:`, error);
-      return [];
-    }
+
+   
 
   };
-
 
   // Project By email
   const fetchEmployeesEmail = async () => {
     try {
-      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${userEmail}`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${userEmail}&token=${token}`;
       const response = await fetch(url, {
         method: "GET",
       });
@@ -264,7 +261,7 @@ const Dashboards = () => {
   };
   const fetchEmployeesByEmployees = async () => {
     try {
-      console.log("idRec", idRec)
+     
       const endPoint = process.env.NODE_ENV === 'development' ? 'https://dev-gateway.gets-company.com' : '';
       ///const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list`,
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/getRecByGetsId?id=${idRec}&page=${currentPage}&size=${pageSize}`,
@@ -294,27 +291,34 @@ const Dashboards = () => {
 
   };
   useEffect(() => {
-    if (user.includes("admin") || (user.includes('Administrator')) ||(user.includes('PMO'))) {
-      fetchEmployeesByType();
-      fetchCountRecruitement()
-   
-      // fetchCountRecruitement()
-    }
-    else if ((!user.includes("admin") ||user.includes("Leader") )) {
-      fetchEmployeesEmail()
+    if ( user.includes('PMO')) {
+      fetchCountRecruitement();
+      fetchRecruitementByType();
+    } else if ( (user.includes("Leader"))) {
+      fetchEmployeesEmail();
       fetchEmployeesByEmployees();
-      fetchExpiredVisa ()
-      fetchProjectEmail()
-      
+      fetchExpiredVisa();
+      fetchProjectEmail();
 
     }
+    else if (user.includes("admin") ||user.includes("bod")||  user.includes("Administrator") ) {
+      fetchCountRecruitement();
+      fetchRecruitementByType();
+      fetchEmployeesEmail();
+      fetchEmployeesByEmployees();
+      fetchExpiredVisa();
+      fetchProjectEmail();
 
-  }, [currentPage, pageSize, idRec]);
+      
+    }
+  }, [user, currentPage, pageSize, idRec]);
+  
   //Passport Expired
   const fetchExpiredVisa = async () => {
+
     try {
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list?token=${token}`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch employees');
@@ -331,7 +335,7 @@ const Dashboards = () => {
           return false;
         }
       });
-      console.log("Données des visas expirés :", expiredVisaData);
+      console.log("Données des visas expirés", expiredVisaData);
       const ProjexpiredVisaData = expiredVisaData.filter(employee =>
         project.includes(employee.projName)
       );
@@ -343,18 +347,16 @@ const Dashboards = () => {
           const PassportDate = new Date(employee.passport_finish_date);
           return PassportDate < currentDate;
         } else {
-          // Si la date de fin de visa n'est pas définie ou vide, exclure l'employé
           return false;
         }
       });
-      console.log("Données des visas expirés :", passportfinishdate);
+      console.log("Données des visas expirés fff :", passportfinishdate);
  
        // Filtrer les employés dont le projet est inclus dans le tableau project
        const Projpassportfinishdate = passportfinishdate.filter(employee =>
         project.includes(employee.projName)
       );
 
-      console.log("Employés avec visas expirés et projets correspondants :", Projpassportfinishdate);
       setPassportExperedProjet(Projpassportfinishdate)
       setPassportExpered(passportfinishdate)
       setVisaExpered(expiredVisaData)
@@ -369,8 +371,6 @@ const Dashboards = () => {
   }
 
   //End Passourt Expired
-
-console.log("passportExperedProjet",passportExperedProjet)
   const items = [
     {
       label: 'Recruitment',
@@ -445,20 +445,9 @@ console.log("passportExperedProjet",passportExperedProjet)
       ),
     },
 
-    // ...((!user?.includes('Manager') || user?.includes('Planner') || user?.includes('Leader') ||
-    //      user?.includes('Administrator')) || user?.includes('Human Ressource')  || !user?.includes('Construction') ? 
-    //  [{
-    //   label: 'Passport Expired',
-    //   key: '2',
-    //   children: (
-    //     <>
-    //       <AppsHeader key={'wrap'}></AppsHeader>
-    //       <PassportExpired loading={loading} passportExpered={passportExpered} />
-    //     </>
-    //   ),
-    // }] : []),
+
     ...(((!(user?.includes('Manager') || user?.includes('PMO') ||
-      user?.includes('Administrator') || user?.includes('Construction'))) || user?.includes('Human Ressource')) || user?.includes('Human Ressource') ? [{
+ user?.includes('Construction'))) || user?.includes('Human Ressource')|| user?.includes('bod')|| user?.includes('admin') ||user?.includes('Administrator'))? [{
         label: 'Passport Expired',
         key: '2',
         children: (
@@ -467,13 +456,17 @@ console.log("passportExperedProjet",passportExperedProjet)
             <PassportExpired 
             passportExperedProjet={passportExperedProjet}
             loading={loading} 
-            passportExpered={passportExpered} />
+            passportExpered={passportExpered}
+            user={user}
+            
+            
+            />
           </>
         ),
       }] : []),
 
-    ...(((!(user?.includes('Manager') || user?.includes('PMO')  ||
-      user?.includes('Administrator') || user?.includes('Construction'))) || user?.includes('Human Ressource')) ? [{
+    ...(((!(user?.includes('Manager') || user?.includes('PMO')  || user?.includes('Construction'))) || user?.includes('Human Ressource') || user?.includes('bod')|| user?.includes('admin')||
+    user?.includes('Administrator'))  ? [{
         label: 'Visa Expired',
         key: '3',
         children:
@@ -484,7 +477,9 @@ console.log("passportExperedProjet",passportExperedProjet)
             <VisaExpired 
             visaExperedProjet={visaExperedProjet}
             loading={loading}
-             VisaExpired={visaExpered} />
+             VisaExpired={visaExpered}
+             user={user}
+             />
 
           </>,
       }] : []),
@@ -493,12 +488,35 @@ console.log("passportExperedProjet",passportExperedProjet)
   ];
   /////////////////
 
+  useEffect(() => {
+    if (!("Notification" in window)) {
+      console.log("Browser does not support desktop notification");
+    } else {
+      Notification.requestPermission();
+    }
+  }, []);
+
+  // Define the showNotification function
+  const showNotification2 = useCallback(() => {
+    new Notification('Hello World');
+  }, []);
+
+  // const showNotification = () => {
+  //   if (notificationPermission === 'granted') {
+  //     new Notification('Afficher Recrutement');
+  //   } else if (notificationPermission !== 'denied') {
+  //     requestNotificationPermission();
+  //   }
+  // };
 
   return (
     <>
       <AppPageMeta title='Dashboards' />
       <div>
-    
+{/*     
+      <div>
+      <button onClick={showNotification2}>Show notification</button>
+    </div> */}
    
     </div>
       <>

@@ -39,7 +39,7 @@ const ViewInformationForm = (props) => {
   const [arDestinationpdf, setArDestinationpdf] = useState("");
   const [arPositionpdf, setArPositionpdf] = useState("");
   const [idT, setIdT] = useState(0);
-
+  const token = localStorage.getItem("token")
 
   const [lastId, setLastId] = useState(0);
 
@@ -127,7 +127,7 @@ const ViewInformationForm = (props) => {
     
           
           };
-          const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/add`, {
+          const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/add?token=${token}`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -209,7 +209,7 @@ const ViewInformationForm = (props) => {
         category
       };
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/create`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/create?token=${token}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

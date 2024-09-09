@@ -28,7 +28,7 @@ const DemobilizationDirect = () => {
   const [count, setCount] = useState(0); 
    const [countMobilization, setCountMobilization] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     fetchDemobilization();
     fetchCountMobilization()
@@ -41,7 +41,7 @@ const DemobilizationDirect = () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/getAll`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/getAll?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -77,7 +77,7 @@ const DemobilizationDirect = () => {
       // setCountMobilization(datacountMobilization);
 
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/list?page=${currentPage}&size=${pageSize}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/list?page=${currentPage}&size=${pageSize}&token=${token}`);
 
 
       if (!response.ok) {
@@ -90,11 +90,11 @@ const DemobilizationDirect = () => {
       console.error('Error fetching employees:', error);
     }
   };
-
+ 
   const handleSearch = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${nameFilter}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${nameFilter}&token=${token}`);
       if (!response.ok) {
         throw new Error('Failed to filter employees');
       }
@@ -121,13 +121,14 @@ const DemobilizationDirect = () => {
     handleSearch({ target: { value: item.name } }); // Simuler l'événement pour le filtrage
     setIsDropdownOpen(false)
   };
+
   const handleNameFilterChange = async (event) => {
     const filterValue = event.target.value.trim(); // Trim whitespace from input value
     setNameFilter(filterValue);
 
     if (filterValue !== '') {
       try {
-        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${filterValue}`);
+        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${filterValue}&token=${token}`);
         if (!response.ok) {
           throw new Error('Failed to filter mobilization');
         }

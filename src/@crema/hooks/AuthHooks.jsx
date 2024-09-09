@@ -1,4 +1,4 @@
-// ForJWT Auth
+
 import { getUserFromJwtAuth } from '../../@crema/helpers/AuthHelper';
 
 import {

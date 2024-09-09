@@ -55,19 +55,19 @@ const AddRecruitementAbove = () => {
   const [form] = Form.useForm();
   const [dateInput, setDateInput] = useState(new Date());
   const userRole = localStorage.getItem("role");
-  console.log("userRole", userRole)
+  const token = localStorage.getItem("token")
   const handleValidateEmployeeClose = () => {
     setIsModalVisible(false);
   };
   const GetProfileEmployess = async () => {
     const storedemail = window.localStorage.getItem("email");
-    console.log("storedemail", storedemail)
+    const token = localStorage.getItem("token");
     try {
       const endPoint =
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -181,7 +181,7 @@ const AddRecruitementAbove = () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/last`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/last?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -336,7 +336,7 @@ const AddRecruitementAbove = () => {
   //cANCEL Bod 
   const UpdateHod = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${LastIndexRecruitementIncremente}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${LastIndexRecruitementIncremente}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -408,7 +408,7 @@ const AddRecruitementAbove = () => {
 
   const CancelOperation = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${LastIndexRecruitementIncremente}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${LastIndexRecruitementIncremente}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -622,7 +622,7 @@ const AddRecruitementAbove = () => {
     try {
 
       const params = new URLSearchParams({ name: selectedProject, id: profile?.getsId });
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -681,6 +681,10 @@ const AddRecruitementAbove = () => {
         const responseData = await response.json();
         form.resetFields();
         openNotification('bottomRight')
+        setTimeout(() => {
+          window.location.reload();
+          form.resetFields();
+      }, 2000)
 
         const email = 'rihemhassounanjim90@gmail.com';
         const secondApiResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/bodNotif?email=${encodeURIComponent(email)}`, {
@@ -711,7 +715,7 @@ const AddRecruitementAbove = () => {
     try {
 
       const params = new URLSearchParams({ name: selectedProject, id: profile?.getsId });
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -801,7 +805,7 @@ const AddRecruitementAbove = () => {
     try {
 
       const params = new URLSearchParams({ name: selectedProject, id: profile?.getsId });
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -887,7 +891,7 @@ const AddRecruitementAbove = () => {
     try {
 
       const params = new URLSearchParams({ name: selectedProject, id: profile?.getsId });
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}&token=${token}`, {
 
         method: 'POST',
         headers: {

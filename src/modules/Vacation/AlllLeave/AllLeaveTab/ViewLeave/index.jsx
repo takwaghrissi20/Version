@@ -14,6 +14,7 @@ const ViewLeave = () => {
   const location = useLocation();
   const state = location.state || {};
   const [selectedStatus, setSelectedStatus] = useState("Default");
+  const token = localStorage.getItem("token");
   const id = state.id || null;
   const getsId = state.getsid || null;
   const name = state.name || null;
@@ -101,7 +102,7 @@ const ViewLeave = () => {
     }
 
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/update`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/update?token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -163,7 +164,7 @@ const ViewLeave = () => {
 
   const findEmp = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}&token=${token}`, {
         method: "GET",
         headers: {
           'Content-Type': 'application/json',

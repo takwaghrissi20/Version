@@ -14,6 +14,7 @@ import AppsHeader from '../../../@crema/components/AppsContainer/AppsHeader';
 import EmployeeInformationConstruction from './EmployeeInformationConstructionStaff'
 
 const AddEmployeesConstructionStaff = () => {
+  const token = localStorage.getItem("token")
   const [listInterview, setListInterview] = useState([]);
   const [findIdInterview, setFindIdInterview] = useState([]);
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const AddEmployeesConstructionStaff = () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/list`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/list?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'

@@ -31,7 +31,7 @@ const AllRecruitementStaff = ({ allrecruitementabove,
   const [isEditRecruitement, onEditRecruitement] = useState(false);
   const [isDelteRecruitement, onDeleteRecruitement] = useState(false);
   const navigate = useNavigate();
-
+  const token = localStorage.getItem("token");
   const handleAddRecruitementOpen = () => {
     navigate(`/Hr/Recruitement&Interview/Recruitement/View/codeJob=${id}`, {
       state: {
@@ -52,7 +52,7 @@ const AllRecruitementStaff = ({ allrecruitementabove,
         nbExperience: findIdData?.nbExperience,
         recruttrequestDate: findIdData?.recruttrequestDate,
         projCode: findIdData?.projRef,
-        type: findIdData?.type,
+        // type: findIdData?.type,
         exDep: findIdData?.exDep,
         oDep: findIdData?.oDep,
         comentPlaner: findIdData?.comentPlaner,
@@ -176,7 +176,7 @@ const AllRecruitementStaff = ({ allrecruitementabove,
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`${endPoint}/api/v1/re/delete?code=${id}`, {
+      const response = await fetch(`${endPoint}/api/v1/re/delete?code=${id}&token=${token}`, {
         method: 'DELETE',
       });
 
@@ -190,7 +190,7 @@ const AllRecruitementStaff = ({ allrecruitementabove,
       if (response.ok) {
 
 
-        const data = await response.text();
+        const data = await response.json();
         console.log("deletee", data);
         alert(data);
         onDeleteRecruitement(false);
@@ -211,7 +211,7 @@ const AllRecruitementStaff = ({ allrecruitementabove,
       { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditRecruitementOpen },
       { key: 2, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteRecruitement },
     ] : []),
-    ...(roles.includes('Administrator') || roles.includes('admin')  ? [
+    ...(roles?.includes('Administrator') || roles?.includes('admin')  ? [
       ...(findIdData?.status === 'Approved By BOD' ? [
         { key: 2, label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, onClick: handleInterview }
            
@@ -313,14 +313,14 @@ const AllRecruitementStaff = ({ allrecruitementabove,
         let backgroundColor;
         let color = 'white'; 
     
-        if (status.includes('Pending')) {
+        if (status?.includes('Pending')) {
           backgroundColor = '#C0C0C0';
-        } else if (status.includes('Approved')) {
+        } else if (status?.includes('Approved')) {
           backgroundColor = '#32CD32';
-        } else if (status.includes('Not Approved')) {
-          backgroundColor = '#FF2400';
+        } else if (status?.includes('Not Approved ')) {
+          backgroundColor = 'red';
         }
-        else if (status.includes('Cheked By PMO')) {
+        else if (status?.includes('Cheked By PMO')) {
           backgroundColor = '#FF2400';
         }
         return (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../../@crema/components/AppRowContainer';
-import { Button, Col, Divider, Form, Input, Space, Typography, Select,notification } from 'antd';
+import { Button, Col, Divider, Form, Input, Space, Typography, Select, notification } from 'antd';
 import {
   StyledShadowWrapper,
   StyledInput,
@@ -8,7 +8,7 @@ import {
 import {
 
   StyledContactFormBtn,
-  
+
   StyledContactFormFooter,
 
 } from './index.styled';
@@ -20,6 +20,7 @@ const UploadContractList = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [form] = Form.useForm();
+  const token = localStorage.getItem("token");
   const id = location.state ? location.state.id : null;
   const name = location.state ? location.state.name : null;
   const departement = location.state ? location.state.departement : null;
@@ -35,9 +36,23 @@ const UploadContractList = () => {
   const rib = location.state ? location.state.rib : null;
   const bankName = location.state ? location.state.bankName : null;
   const altenativeNameBank = location.state ? location.state.altenativeNameBank : null;
-  const checkHolderName = location.state ? location.state.checkHolderName: null;
-
-
+  const checkHolderName = location.state ? location.state.checkHolderName : null;
+  //////////////////
+  const joinDate = location.state ? location.state.joinDate : null;
+  const finishDate = location.state ? location.state.finishDate : null;
+  const birthDate = location.state ? location.state.birthDate : null;
+  const nbExperience = location.state ? location.state.nbExperience : null;
+  const phoneEmergency = location.state ? location.state.phoneEmergency : null;
+  const endTravelDate = location.state ? location.state.endTravelDate : null;
+  const gender = location.state ? location.state.gender : null;
+  const residenceAdress = location.state ? location.state.residenceAdress : null;
+  const emergencyName = location.state ? location.state.emergencyName : null;
+  const emergencyRelation = location.state ? location.state.emergencyRelation : null;
+  const projName = location.state ? location.state.projName : null;
+  ///////////////
+  const salary = location.state ? location.state.salary : null;
+  const  duration = location.state ? location.state. duration : null;
+  const  dailyRate = location.state ? location.state. dailyRate : null;
   const [selectedTypePayment, setSelectedTypePayment] = useState("Default");
   const [selectedBankName, setSelectedBankName] = useState("");
   const [selectedCompanyType, setSelectedCompanyType] = useState(companyType);
@@ -160,7 +175,7 @@ const UploadContractList = () => {
   ];
   const Update = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/update?id=${id}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/update?id=${id}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -170,19 +185,31 @@ const UploadContractList = () => {
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
         body: JSON.stringify({
-          id:id,
+          id: id,
           name: name,
-          position:position,
-          destination:destination,
-          traveldate:traveldate,
-          companyType:selectedCompanyType,
-          contractCategory:contractCategory,
-          familyStatus:familyStatus,
-          contratctCopy:newcontratctCopy,
-          visaReady:visaReady,
-          departement:departement,
-          checkHolderName:newcheckHolderName,
-          PaymentType:selectedTypePayment,
+          position: position,
+          destination: destination,
+          traveldate: traveldate,
+          companyType: selectedCompanyType,
+          contractCategory: contractCategory,
+          familyStatus: familyStatus,
+          contratctCopy: newcontratctCopy,
+          visaReady: visaReady,
+          departement: departement,
+          checkHolderName: newcheckHolderName,
+          PaymentType: selectedTypePayment,
+          joinDate: joinDate,
+          finishDate: finishDate,
+          birthDate: birthDate ,
+          nbExperience :nbExperience,
+          phoneEmergency :phoneEmergency ,
+          endTravelDate : endTravelDate ,
+          gender :gender, 
+          residenceAdress :residenceAdress ,
+          emergencyName :emergencyName,
+          emergencyRelation:emergencyRelation ,
+          projName:projName ,
+        
           // idVisa,
           // arName,
           // arPosition,
@@ -225,8 +252,8 @@ const UploadContractList = () => {
           // cin, gender, residenceAdress,
           // arResidenceAdress, salary, duration,
           // emergencyName, emergencyRelation,
-          rib:newrib,
-          bankName:selectedBankName
+          rib: newrib,
+          bankName: selectedBankName
 
         })
       });
@@ -240,7 +267,7 @@ const UploadContractList = () => {
         const responseData = await response.json();
         openNotificationUpdate('bottomRight')
         // setDataEdit(responseData)
-       // window.location.reload();
+        // window.location.reload();
         //handleAddContactClose(true)
       }
 
@@ -252,7 +279,7 @@ const UploadContractList = () => {
   //Add Employee Gets 
   const AddEmployeesGets = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/create`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/create?token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -261,24 +288,39 @@ const UploadContractList = () => {
           'Content-Type': 'application/json',
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
-      
+
         body: JSON.stringify({
-         
-          name:name ,
-          departement:departement,
-          familyStatus:familyStatus,
-          position:position,
-           destination:destination,
-           traveldate:traveldate,
-          companyType:selectedCompanyType,
-          paymentCategory:newpaymentCategory,
-          visaReady:visaReady,
-          bankName:selectedBankName,
-          rib:newrib,
+
+          name: name,
+          departement: departement,
+          familyStatus: familyStatus,
+          position: position,
+          destination: destination,
+          traveldate: traveldate,
+          companyType: selectedCompanyType,
+          paymentCategory: newpaymentCategory,
+          visaReady: visaReady,
+          bankName: selectedBankName,
+          rib: newrib,
           altenativeNameBank: newAlternativename,
-          contratctCopy:newcontratctCopy,
-          contractCategory:contractCategory
-      
+          contratctCopy: newcontratctCopy,
+          contractCategory: contractCategory,
+          joinDate: joinDate,
+          finishDate:finishDate,
+          birthDate: birthDate,
+          nbExperience: nbExperience,
+          phoneEmergency: phoneEmergency,
+          endTravelDate: endTravelDate,
+          gender: gender,
+          residenceAdress: residenceAdress,
+          emergencyName: emergencyName,
+          emergencyRelation:emergencyRelation,
+          projName:projName,
+          salary:salary,
+          duration:duration,
+          dailyRate:dailyRate
+
+
           // idVisa,
           // arName,
           // arPosition,
@@ -332,10 +374,10 @@ const UploadContractList = () => {
       if (response.ok) {
 
         const responseData = await response.json();
-        console.log("testttttttt Contart List",responseData)
+        console.log("testttttttt Contart List", responseData)
         openNotification('bottomRight')
         // handleAddContactClose(true)
-            
+
       }
 
       // Handle responseData if needed
@@ -553,15 +595,15 @@ const UploadContractList = () => {
             <StyledContactFormBtn
               type='primary'
               ghost
-              onClick={goBack} 
-          
+              onClick={goBack}
+
             >
               <IntlMessages id='common.cancel' />
             </StyledContactFormBtn>
             <StyledContactFormBtn
               type='primary'
               ghost
-              onClick={() => Update()} 
+              onClick={() => Update()}
             >
               <IntlMessages id='common.Edit' />
             </StyledContactFormBtn>
@@ -578,7 +620,7 @@ const UploadContractList = () => {
           </StyledContactFormFooter>
 
 
-        
+
         </Form>
 
       </>

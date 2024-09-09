@@ -32,6 +32,7 @@ const AddIntegration = () => {
   const [datefrom, setDatefrom] = useState("");
   const [selectedPType, setSelectedPType] = useState('')
   const [integrationTime, setIntegrationTime] = useState(dayjs().format('HH:mm:ss.SSS'));
+  const token = localStorage.getItem("token")
   const P = [
     {
       type: "Great Knowledge ",
@@ -57,7 +58,7 @@ const AddIntegration = () => {
 
   const LastIndexIntegartion = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/integration/last`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/integration/last?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -179,7 +180,7 @@ const AddIntegration = () => {
 
   const handleAddIntegration = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/integration/save?id=${LastIntegarionData}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/integration/save?id=${LastIntegarionData}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -262,11 +263,9 @@ const AddIntegration = () => {
   const [formItems, setFormItems] = useState([{ key: Date.now() }]);
 
 
-
-
   const findIdIntegration = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}&token=${token}`, {
         method: 'GET',
       });
 

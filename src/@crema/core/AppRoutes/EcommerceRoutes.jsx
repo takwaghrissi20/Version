@@ -4,6 +4,10 @@ import { Navigate } from "react-router-dom";
 const RecruitementInterview  = React.lazy(() =>
   import('../../../modules/HRGetsCompany/RecruitementInterview'),
 );
+const VisaAndPassportExpired  = React.lazy(() =>
+  import('../../../modules/HRGetsCompany/VisaAnd PassportExpired'),
+);
+
 const ViewInterview  = React.lazy(() =>
   import('../../../modules/HRGetsCompany/RecruitementInterview/ViewInterviewStaffManager'),
 );
@@ -113,6 +117,10 @@ const Sammuary = React.lazy(() =>
 const AddProject = React.lazy(() =>
   import('../../../modules/AddProject'),
 );
+const AddProjectOffice = React.lazy(() =>
+  import('../../../modules/AddProjectOffice'),
+);
+
 const AffectedProject = React.lazy(() =>
   import('../../../modules/AffectedProject'),
 );
@@ -176,6 +184,11 @@ export const ecommerceConfig = [
     permittedRole: RoutePermittedRole.User,
     path: '/Hr/Recruitement&Interview',
     element: <RecruitementInterview  />,
+  },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/Hr/VisaAndPassportExpired',
+    element: <VisaAndPassportExpired  />,
   },
   {
     permittedRole: RoutePermittedRole.User,
@@ -383,6 +396,11 @@ export const ecommerceConfig = [
     path: '/HrDataBase/Add_Project',
     element: <AddProject/>,
   },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/HrDataBase/Add_Project_Office',
+    element: <AddProjectOffice/>,
+  },
 
 
   {
@@ -461,5 +479,8 @@ export const ecommerceConfig = [
     path: '/apps/ecommerce-admin/edit-products/:id',
     element:<EmployeesStatus />,
   },
+  //Visa & Passport Expired 
+  
+
 
 ];

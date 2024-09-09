@@ -34,6 +34,7 @@ const Integration = () => {
   const [numberNewEmployees, setNumberNewEmployees] = useState(0);
   const [last14DaysIntegration, setLast14DaysIntegration] = useState([]);
   const [getsId, setGetsId] = useState("");
+  const token = localStorage.getItem("token");
   //Add Integration
   const   AddIntegration= () => { 
     navigate(`/Hr/Integration/Add`, {
@@ -51,7 +52,7 @@ const Integration = () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/integration/list`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/integration/list?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'

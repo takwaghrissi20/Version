@@ -15,12 +15,12 @@ const OrderTable = ({ orderData }) => {
   const [hoveredRow, setHoveredRow] = useState(null);
   const [isViewTravel, onViewTravel] = useState(false);
   const [findIdData, setFindIdData] = useState(null);
-  
+  const token = localStorage.getItem("token");
 
   //Find By Id
   const findId = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/getById?id=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/getById?id=${code}&token=${token}`, {
         method: 'Get',
       });
       if (!response.ok) {

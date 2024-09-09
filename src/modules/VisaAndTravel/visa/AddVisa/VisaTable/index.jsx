@@ -12,7 +12,7 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
   const [editingRow, setEditingRow] = useState(null);
   const [editingData, setEditingData] = useState({});
   const [backgroundColor, setBackgroundColor] = useState('transparent');
-
+  const token = localStorage.getItem("token");
   const { Option } = Select;
 
   const startEdit = (record) => {
@@ -99,7 +99,7 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
   };
   const saveEdit2 = async (id) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/update?id=${id}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/update?id=${id}&token=${token}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -147,8 +147,9 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
           dataIndex: 'idVisa',
           key: 'idVisa',
           width: '10%',
-          render: (text) => <StyledAnChar>V-{text}</StyledAnChar>,
+          render: (text) => text ? <StyledAnChar>V-{text}</StyledAnChar> :null,
         },
+        
         {
           title: 'Name',
           dataIndex: 'name',

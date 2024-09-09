@@ -24,14 +24,14 @@ const SummarymobTrip = () => {
   const [demopTrips, setDemopTrips] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedDate, setSelectedDate] = useState(moment());
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     fetchDemobTrips();
   }, [currentPage, pageSize, selectedProject, selectedDate]);
 
   const fetchDemobTrips = async () => {
     try {
-      let url = `https://dev-gateway.gets-company.com/api/v1/travel/list?page=${currentPage}&size=${pageSize}`;
+      let url = `https://dev-gateway.gets-company.com/api/v1/travel/listByPage?page=${currentPage}&size=${pageSize}&token=${token}`;
 
       if (selectedProject) {
         url += `&project=${selectedProject}`;
@@ -52,7 +52,7 @@ const SummarymobTrip = () => {
       }
 
       const data = await response.json();
-      const filteredData = data.filter(item => item.goBack === true);
+      const filteredData = data.filter(item => item.goBack === false);
       setDemopTrips(filteredData);
       setCount(data.length); // Update the count with the total data length
     } catch (error) {
@@ -83,7 +83,8 @@ const SummarymobTrip = () => {
           className='no-card-space-ltr-rtl'
           title={messages['dashboard.SummarymobTrip']}
         >
-          <OrderTable className={clsx("item-hover")} demopTrips={demopTrips} />
+          <OrderTable className={clsx("item-hover")} 
+          demopTrips={demopTrips} />
         </AppCard>
         <StyledOrderHeader>
             <div style={{ marginRight: 20, boxShadow: "none !important", width: "20%" }}>

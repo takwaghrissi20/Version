@@ -29,16 +29,16 @@ const AddVisa = () => {
   const [requestSend, setRequestSend] = useState(0);
   const [passportSubmit, setPassportSubmit] = useState(0);
   const [numberFinalVisa, setNumberFinalVisa] = useState(0);
-
+  const token = localStorage.getItem("token");
 
 
   const fetchEmployees = async () => {
     try {
-      const countEmployees = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/list`);
+      const countEmployees = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/list?token=${token}`);
       const datacount = await countEmployees.json();
       setCount(datacount.length);
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/listBypage?page=${currentPage}&size=${pageSize}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/listBypage?page=${currentPage}&size=${pageSize}&token=${token}`);
 
 
       if (!response.ok) {
@@ -84,13 +84,14 @@ const AddVisa = () => {
     handleSearch({ target: { value: item.name } }); // Simuler l'événement pour le filtrage
     setIsDropdownOpen(false)
   };
+
   const handleNameFilterChange = async (event) => {
     const filterValue = event.target.value.trim(); // Trim whitespace from input value
     setNameFilter(filterValue);
 
     if (filterValue !== '') {
       try {
-        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${filterValue}`);
+        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${filterValue}&token=${token}`);
         if (!response.ok) {
           throw new Error('Failed to filter employees');
         }
@@ -105,14 +106,12 @@ const AddVisa = () => {
       setIsDropdownOpen(false); // Close dropdown if filter is empty
     }
   };
-
-
   const fetchCountVisa = async () => {
 
     try {
 
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list?token=${token}`);
 
 
       if (!response.ok) {

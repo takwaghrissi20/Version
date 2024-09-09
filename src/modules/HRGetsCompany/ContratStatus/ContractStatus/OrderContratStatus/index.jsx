@@ -10,14 +10,13 @@ import { CiSaveDown2 } from "react-icons/ci";
 import { MoreOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 const OrderTable = ({ temployee, loading, user }) => {
-  console.log("temployeerrrrrrr", temployee)
   const navigate = useNavigate();
   const [findIdData, setFindIdData] = useState("");
   const [contractCategory, setContractCategory] = useState("");
   const [getsId, setGetsId] = useState("");
   const [isViewContrat, onViewContrat] = useState(false);
   const [isEditContrat, OnisEditContrat] = useState(false);
-
+  const token = localStorage.getItem("token")
   const handleAddContratOpen1 = () => {
     onViewContrat(true);
     setFindIdData(record)
@@ -85,7 +84,7 @@ const OrderTable = ({ temployee, loading, user }) => {
         cnss: findIdData?.cnss,
         cnssCopy: findIdData?.cnssCopy,
         contractNumb: findIdData?.contractNumb,
-        contratctCopy: findIdData?.contratctCopy,
+        // contratctCopy: findIdData?.contratctCopy,
         cvCopy: findIdData?.cvCopy,
         dateVisa: findIdData?.dateVisa,
         deductionAmount: findIdData?.deductionAmount,
@@ -112,24 +111,23 @@ const OrderTable = ({ temployee, loading, user }) => {
         passportSubmitdate: findIdData?.passportSubmitdate,
         passport_finish_date: findIdData?.passport_finish_date,
         passportnumber: findIdData?.passportnumber,
-        paymentCategory: findIdData?.passportnumber,
         paymentType: findIdData?.paymentType,
         phoneEmergency: findIdData?.phoneEmergency,
         phoneNumber: findIdData?.phoneNumber,
-        position: findIdData?.position,
-        primeProductivity: findIdData?.primeProductivity,
+        // position: findIdData?.position,
+        // primeProductivity: findIdData?.primeProductivity,
         projName: findIdData?.projName,
         requestSendVisa: findIdData?.requestSendVisa,
         residance_finish_date: findIdData?.residance_finish_date,
         residenceAdress: findIdData?.residenceAdress,
-        rib: findIdData?.rib,
-        salary: findIdData?.salary,
+        // rib: findIdData?.rib,
+        // salary: findIdData?.salary,
         toApplyForVisa: findIdData?.toApplyForVisa,
-        traveldate: findIdData?.traveldate,
+        // traveldate: findIdData?.traveldate,
         type_Emp: findIdData?.type_Emp,
         vCableReceive: findIdData?.vCableReceive,
         vCabledate: findIdData?.vCabledate,
-        visaReady: findIdData?.visaReady,
+        // visaReady: findIdData?.visaReady,
         visa_Nb: findIdData?.visa_Nb
 
 
@@ -158,7 +156,7 @@ const OrderTable = ({ temployee, loading, user }) => {
 
   const findId = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/getById?id=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/getById?id=${code}&token=${token}`, {
         method: 'GET',
       });
       if (!response.ok) {
@@ -357,7 +355,7 @@ const OrderTable = ({ temployee, loading, user }) => {
         // lastId: LastIdIncremente,
         dailyRate: findIdData?.dailyRate,
         duration: findIdData?.duration,
-        arPosition: findIdData?.arPosition,
+        // arPosition: findIdData?.arPosition,
         joinDate: findIdData?.joinDate,
         finishDate: findIdData?.finishDate,
 
@@ -408,7 +406,7 @@ const OrderTable = ({ temployee, loading, user }) => {
         duration: findIdData?.duration,
         CIN: findIdData?.cin,
         cinDate: findIdData?.cinDate,
-        duration: findIdData?.duration,
+        // duration: findIdData?.duration,
         salary: findIdData?.salary,
         joinDate: findIdData?.joinDate,
         finishDate: findIdData?.finishDate

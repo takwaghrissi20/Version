@@ -13,7 +13,7 @@ import {
   StyledGeneralStats
 
 } from '../../../../styles/index.styled';
-
+import { Image } from 'antd';
 
 import { FcReading } from 'react-icons/fc';
 
@@ -28,7 +28,13 @@ const StatsTotalInterview = ({ totalNumberInterview }) => {
           backgroundColor: '#e6f0ff',
           marginLeft: 15
         }}>
-          < FcReading color='#9E49E6' className='icon' />
+             <Image
+      width={25}
+      src='/assets/images/TotalInterviewStatics.png'
+     alt="Total Interview"
+     />
+        
+          {/* < FcReading color='#9E49E6' className='icon' /> */}
         </StyledGeneralStatsAvatar>
         <StyledFlexWrapper>
           <div style={{ marginRight: 8, overflow: 'hidden' }}>

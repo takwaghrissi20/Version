@@ -56,7 +56,7 @@ const AddVisa = () => {
   const [isSaveDisabled, setIsSaveDisabled] = useState(true);
   const navigate = useNavigate();
   
-
+  const token = localStorage.getItem("token");
   const handleRequestVisaChange = (value) => {
     console.log('Select  :', value);
     setSelectedRequestVisa(value);
@@ -86,7 +86,7 @@ const AddVisa = () => {
 
   const findId = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${id}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${id}&token=${token}`, {
         method: 'GET',
 
       });
@@ -140,7 +140,7 @@ const AddVisa = () => {
 
 
       };
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/add`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/add?token=${token}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

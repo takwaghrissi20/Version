@@ -68,7 +68,7 @@ const ContratCategory = (props) => {
       setUserImage(URL.createObjectURL(acceptedFiles[0]));
     },
   });
-
+  const token = localStorage.getItem("token")
   const { messages } = useIntl();
   const [selectedContratType, setSelectedContratType] = useState(contractType);
   const [isReadOnly, setIsReadOnly] = useState(false);
@@ -269,7 +269,6 @@ const ContratCategory = (props) => {
         lastId: LastIdIncremente,
         salary: salary,
         dailyRate: dailyRate,
-
       }
 
     });
@@ -363,7 +362,7 @@ const ContratCategory = (props) => {
         lastId: LastIdIncremente,
         dailyRate: dailyRate,
         duration: duration,
-        arPosition: arPosition,
+        // arPosition: arPosition,
         joinDate: joinDate,
         finishDate: finishDate,
 
@@ -414,7 +413,7 @@ const ContratCategory = (props) => {
         duration: duration,
         CIN: cin,
         cinDate: cinDate,
-        duration: duration,
+
         salary: salary,
         joinDate: joinDate,
         finishDate: finishDate
@@ -544,7 +543,6 @@ const ContratCategory = (props) => {
       ContratB1();
     } else if (selectedContractCategorie === "CAT-A1") {
       console.log(" contractCategory A1")
-      //ContratA1()
       ContratA1()
     } else if (selectedContractCategorie === "CAT-A2") {
       console.log(" contractCategory A2")
@@ -632,7 +630,7 @@ const ContratCategory = (props) => {
 
       };
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/update?id=${getsId}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/update?id=${getsId}&token=${token}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'

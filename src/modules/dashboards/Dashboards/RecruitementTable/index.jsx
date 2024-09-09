@@ -12,13 +12,13 @@ import { useNavigate } from "react-router-dom";
 import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
 import IntlMessages from '../../../../@crema/helpers/IntlMessages';
 const OrderTable = ({ loading,AllRecruitement, listRecruitementId,listRecruitementPMO}) => {
-  console.log("all recruitement",AllRecruitement)
   const [findIdData, setFindIdData] = useState(null);
   const [isViewRecruitement, onViewRecruitement] = useState(false);
   const [isEditRecruitement, onEditRecruitement] = useState(false);
   const [id, setId] = useState();
   const navigate = useNavigate();
   const [isDelteRecruitement, onDeleteRecruitement] = useState(false);
+  const token = localStorage.getItem("token");
   //TabHeight
   const [tableHeight, setTableHeight] = useState('auto');
   useEffect(() => {
@@ -54,7 +54,7 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId,listRecruiteme
           nbExperience:findIdData?.nbExperience,
           recruttrequestDate:findIdData?.recruttrequestDate,
           projCode:findIdData?.projRef,
-          type:findIdData?.type,
+          // type:findIdData?.type,
           exDep:findIdData?.exDep,
           oDep:findIdData?.oDep,
           comentPlaner:findIdData?.comentPlaner,
@@ -110,7 +110,7 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId,listRecruiteme
 
   const findId = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/findId?code=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/findId?code=${code}&token=${token}`, {
         method: 'POST',
 
       });
@@ -210,7 +210,7 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId,listRecruiteme
                 ? "https://dev-gateway.gets-company.com"
                 : "";
 
-        const response = await fetch(`${endPoint}/api/v1/re/delete?code=${id}`, {
+        const response = await fetch(`${endPoint}/api/v1/re/delete?code=${id}&token=${token}`, {
             method: 'DELETE',
         });
 
@@ -447,7 +447,7 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId,listRecruiteme
     }
   ];
   const user = localStorage.getItem("role");
-  console.log("listRecruitementId",listRecruitementId)
+  console.log("listRecruitementId", user)
   return (
     <> 
 {/* {(!user.includes('admin')) ||(!user.includes('Administrator')) && (
@@ -472,9 +472,9 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId,listRecruiteme
   )} */}
 {/**/}
 { 
-  (user.includes('admin') || user.includes('Administrator') || user.includes('bod')) && 
-  !user.includes('PMO') && 
-  !user.includes('Manager')   && (
+  (user.includes('admin') || user.includes('Administrator') || user.includes('bod')) &&
+  !user.includes('PMO') &&
+  !user.includes('Manager') && (
     <StyledOrderTable
       hoverColor
       data={AllRecruitement}
@@ -484,6 +484,7 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId,listRecruiteme
     />
   )
 }
+
 
          
 

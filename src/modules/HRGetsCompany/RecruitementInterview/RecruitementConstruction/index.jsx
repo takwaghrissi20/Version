@@ -15,9 +15,8 @@ import Pagination from '../../../../@crema/components/AppsPagination';
 import clsx from 'clsx';
 import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
 import { useNavigate } from "react-router-dom";
-const RecruitementConstruction = ({ allrecruitementbelow, roles, recruitementTypeIdbelow }) => {
+const RecruitementConstruction = ({ allrecruitementbelow, roles, recruitementTypeIdbelow, token }) => {
   const navigate = useNavigate();
-  console.log("recruitementTypeIdbelowzzzz", recruitementTypeIdbelow)
   const [recruitementbelow, setRecruitementbelow] = useState([]);
   const [recruitementbelowid, setRecruitementbelowid] = useState(recruitementTypeIdbelow);
   const [recruitementbelowFiltrer, setRecruitementbelowFiltrer] = useState([]);
@@ -76,7 +75,7 @@ const RecruitementConstruction = ({ allrecruitementbelow, roles, recruitementTyp
     setNameFilter(filterValue);
     if (filterValue !== '') {
       try {
-        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/filterByPosition?position=$${filterValue}`);
+        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/filterByPosition?position=$${filterValue}&token=${token}`);
         if (!response.ok) {
           throw new Error('Failed to filter Recruitement');
         }
@@ -123,7 +122,7 @@ const RecruitementConstruction = ({ allrecruitementbelow, roles, recruitementTyp
   //Fin Bu Id 
   const findId = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/findId?code=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/findId?code=${code}&token=${token}`, {
         method: 'POST',
 
       });
@@ -133,7 +132,6 @@ const RecruitementConstruction = ({ allrecruitementbelow, roles, recruitementTyp
 
       if (response.ok) {
         const responseData = await response.json();
-          console.log("responseData333",responseData)
         setFindIdData(responseData);
         setId(responseData.jobCode)
 

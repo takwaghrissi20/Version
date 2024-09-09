@@ -22,7 +22,7 @@ const PaymentOrderRequest  = () => {
   const filteredEmployees = location.state ? location.state.filteredEmployees : null;
   const  costCenter = location.state ? location.state. costCenter : null;
   const  selectedProject = location.state ? location.state.selectedProject : null;
- console.log("filterrrrrr",filteredEmployees)
+ const token = localStorage.getItem("token")
   //////////////////////////////
 ;
   const [getsId, setGetsId] = useState("");
@@ -39,7 +39,6 @@ const PaymentOrderRequest  = () => {
   const [form] = Form.useForm();
   const [dateInput, setDateInput] = useState(new Date());
   const userRole = localStorage.getItem("role");
-  console.log("userRole", userRole)
 
   const GetProfileEmployess = async () => {
     const storedemail = window.localStorage.getItem("email");
@@ -49,7 +48,7 @@ const PaymentOrderRequest  = () => {
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -184,7 +183,7 @@ const PaymentOrderRequest  = () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/RequestPayment/last`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/RequestPayment/last?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -239,7 +238,7 @@ const PaymentOrderRequest  = () => {
   //Save Request Order
   const SaveRequest = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/RequestPayment/add`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/RequestPayment/add?token=${token}`, {
 
         method: 'POST',
         headers: {

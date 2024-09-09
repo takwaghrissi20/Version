@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../../@crema/components/AppRowContainer';
-import { Button, Col, Divider, Form, Input, Space, Typography, Select } from 'antd';
+import { Button, Col, Divider, Form, Input, Space, Typography, Select,notification } from 'antd';
 import { MdEdit } from 'react-icons/md';
 import {
   StyledContactForm,
@@ -42,6 +42,7 @@ const AddVisa = () => {
   const [finalVisaReceiveDate, setFinalVisaReceiveDate] = useState("")
   const [finishDateVisa, setFinishDateVisa] = useState("")
   const [isSaveDisabled, setIsSaveDisabled] = useState(true);
+  const token = localStorage.getItem("token")
   const navigate = useNavigate();
 
   const handleRequestVisaChange = (value) => {
@@ -63,6 +64,58 @@ const AddVisa = () => {
   const handleFinalVisaChange = (value) => {
 
     setSelectedFinalVisa(value);
+  };
+  const openNotification = () => {
+    notification.open({
+      message: 'Success',
+      description: 'Success Add Visa',
+      style: {
+        backgroundColor: '#28a745',
+        border: '1px solid #28a745',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #1f8838',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
+  const openNotificationError = () => {
+    notification.open({
+      message: 'Error',
+      description: 'Error Add Visa',
+      style: {
+        backgroundColor: 'red',
+        border: '1px solid #dc3545',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #bd1120',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
   };
 
   const Visa = [
@@ -92,10 +145,9 @@ const AddVisa = () => {
     setPassportnumber(event.target.value);
   };
 
-
   const findId = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}&token=${token}`, {
         method: 'GET',
 
       });
@@ -137,7 +189,7 @@ const AddVisa = () => {
 
 
       };
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/add`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/addg?token=${token}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -147,7 +199,7 @@ const AddVisa = () => {
 
       // Gérer la réponse du serveur
       if (!response.ok) {
-       alert("Request failed")
+        openNotificationError('bottomRight')
         throw new Error('La requête a échoué avec le code ' + response.status);
 
       }
@@ -157,7 +209,7 @@ const AddVisa = () => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
-      alert("Success Visa")
+      openNotification('bottomRight')
        navigate(-1)
 
     

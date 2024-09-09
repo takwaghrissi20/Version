@@ -6,10 +6,11 @@ import 'jspdf-autotable';
 import axios from 'axios';
 
 const MyComponent = () => {
+  const token = localStorage.getItem("token");
   const handleGeneratePDF = async () => {
     try {
       // Fetch data from the API
-      const response = await axios.get('https://dev-gateway.gets-company.com/api/v1/emp/list');
+      const response = await axios.get(`https://dev-gateway.gets-company.com/api/v1/emp/list?token=${token}`);
       const employees = response.data;
 
       // Create a new jsPDF instance with landscape orientation

@@ -32,7 +32,7 @@ const AddTravel = () => {
   const [selectedType, setSelectedType] = useState("");
   const [selectedTrip, setSelectedTrip] = useState("");
   const [selectedRound, setSelectedRound] = useState("");
-  const [selectTypeValue, setSelectTypeValue] = useState(null);
+  const [selectTypeValue, setSelectTypeValue] = useState("");
   const [mobDate, setMobDate] = useState("");
   const [travelDesert, setTravelDesert] = useState("");
 
@@ -54,7 +54,7 @@ const AddTravel = () => {
   const [dateInput, setDateInput] = useState(new Date());
   const formattedDate = dayjs(dateInput).format('YYYY-MM-DD');
   const [endDateMiss, setEndDateMiss] = useState(null);
-
+  const token = localStorage.getItem("token");
   // Handle URL selection
   const handleUrlSelection = () => {
     const url = "https://cloud.gets-company.com.tn/index.php/f/1388374/";
@@ -111,7 +111,7 @@ const AddTravel = () => {
     },
   });
 
-
+ 
   const thumbs = files.map((file) => {
     if (file.type === 'application/pdf') {
       return (
@@ -147,7 +147,7 @@ const AddTravel = () => {
 
   const Type = [
     { type: 'Mobilzation' },
-    { type: 'Demobilization' },
+    { type: 'DeMobilization' },
 
   ];
   const round = [
@@ -186,7 +186,7 @@ const AddTravel = () => {
 
   const LastIndexTravel = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/last`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/last?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -205,9 +205,10 @@ const AddTravel = () => {
   };
 
   const LastTravel = lastIdTravel + 1;
+
   const findId = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}&token=${token}`, {
         method: 'GET',
       });
 
@@ -234,7 +235,7 @@ const AddTravel = () => {
   };
   const GetIdProject = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/getByname?name=${selectedProject}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/getByname?name=${selectedProject}&token=${token}`, {
         method: 'GET',
       });
 
@@ -253,7 +254,7 @@ const AddTravel = () => {
   };
   const GetMissionByProjName = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getByProjName?name=${selectedProject}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getByProjName?name=${selectedProject}&token=${token}`, {
         method: 'GET',
       });
 
@@ -278,7 +279,7 @@ const AddTravel = () => {
 
   const handleAddTravel = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/adTr?id=${selectedMission}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/adTr?id=${selectedMission}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -306,6 +307,7 @@ const AddTravel = () => {
           idendityCopy: urlCopy,
           inputDate:formattedDate,
           endDateMiss:endDateMiss
+        
           // exitrentry //Ajouter
 
 
@@ -321,6 +323,10 @@ const AddTravel = () => {
         const responseData = await response.json();
         form.resetFields();
         openNotification('bottomRight')
+        setTimeout(() => {
+          window.location.reload();
+          navigate("/Hr/Visa/AllTravel")
+        }, 2000);
 
         //alert("Success Travel Add")
         //confirmationTravel(false
@@ -373,7 +379,7 @@ const AddTravel = () => {
     setSelectedRound(value);
   };
 
-
+console.log("selectTypeValue",selectTypeValue)
   const handleActualLocation = (event) => {
     const value = event.target.value;
     setActualLocation(value);
@@ -530,7 +536,7 @@ const AddTravel = () => {
   
   const findMisssionId = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getById?id=${selectedMission}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getById?id=${selectedMission}&token=${token}`, {
         method: 'Get',
 
       });

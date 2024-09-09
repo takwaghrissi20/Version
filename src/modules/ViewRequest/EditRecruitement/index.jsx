@@ -40,14 +40,14 @@ const EditRecruitementAbove = () => {
   const notif = location.state ? location.state.notif : null
   const dateInputRecrut = location.state ? location.state.dateInputRecrut : null
   const userRoles = localStorage.getItem("role");
-
+  const token = localStorage.getItem("token");
   const Back = async () => {
     navigate(-1)
 
   };
   const CancelRecruitementBod = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -298,12 +298,9 @@ const EditRecruitementAbove = () => {
     setComentPlanerUpdate(event.target.value)
   };
   // Helper function to remove circular references
-  const Update = async (newdesiredDate, newdep, newidemp, newrequestName, newposition, newprojectName,
-    newprojRef, newaffectedTo, newLevel, newrequestedDicipline,
-    newexDep, newoDep, newCheckedHod,
-    newnbExperience, newNumbervacancies, newcertif) => {
+  const Update = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -345,7 +342,7 @@ const EditRecruitementAbove = () => {
       }
       if (response.ok) {
 
-        const responseData = await response.text();
+        const responseData = await response.json();
         openNotification('bottomRight')
         navigate(-1)
 
@@ -361,7 +358,7 @@ const EditRecruitementAbove = () => {
   const UpdatePlanner = async () => {
 
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -424,7 +421,7 @@ const EditRecruitementAbove = () => {
   const UpdateOperation = async () => {
 
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -495,7 +492,7 @@ const EditRecruitementAbove = () => {
   const CancelRecruitementOperation = async () => {
 
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -567,7 +564,7 @@ const EditRecruitementAbove = () => {
   //Updata BOD
   const UpdateBOD = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -613,7 +610,11 @@ const EditRecruitementAbove = () => {
 
         const responseData = await response.text();
         openNotification('bottomRight')
-        console.log("updataaaa planner", responseData)
+        setTimeout(() => {
+          window.location.reload();
+          navigate(-1)
+        }, 2000);
+     
         // navigate(-1)
 
         //handleAddContactClose(true)
@@ -1179,7 +1180,7 @@ const EditRecruitementAbove = () => {
                         readOnly={true} />
                     </Form.Item>
                   </Col>
-                  <Col xs={24} md={12}>
+                  {/* <Col xs={24} md={12}>
                     <Form.Item label='Requestor Date' name='DateRequestor'
 
                     >
@@ -1190,7 +1191,7 @@ const EditRecruitementAbove = () => {
 
 
                     </Form.Item>
-                  </Col>
+                  </Col> */}
 
 
                 </AppRowContainer>
@@ -1614,8 +1615,7 @@ const EditRecruitementAbove = () => {
 
             }
             {userRoles.includes("admin") ?
-              <Button onClick={() => Update(newdesiredDate, newdep, newidemp, newrequestName, newposition, newprojectName,
-                newprojRef, newexDep, newaffectedTo, newLevel, newrequestedDicipline, newnbExperience, newNumbervacancies, newcertif)}>
+              <Button onClick={() => Update()}>
                 Update
               </Button> :
               

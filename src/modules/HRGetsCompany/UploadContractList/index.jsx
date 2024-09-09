@@ -20,6 +20,7 @@ const UploadContractList = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [form] = Form.useForm();
+  const token = localStorage.getItem("token")
   const id = location.state ? location.state.id : null;
   const name = location.state ? location.state.name : null;
   const departement = location.state ? location.state.departement : null;
@@ -214,7 +215,7 @@ const UploadContractList = () => {
   ];
   const Update = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/update?id=${id}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/update?id=${id}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -309,9 +310,10 @@ const UploadContractList = () => {
     }
   };
   //Add Employee Gets 
+
   const AddEmployeesGets = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/create`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/create?&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -354,7 +356,6 @@ const UploadContractList = () => {
           cvCopy: cvCopy,
           dailyRate: dailyRate,
           dateVisa: dateVisa,
-          departement: departement,
           deductionAmount: deductionAmount,
           desertPass_finish_date: desertPass_finish_date,
           desert_pass: desert_pass,

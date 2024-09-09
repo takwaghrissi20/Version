@@ -101,7 +101,7 @@ const ContratEditForm = (props) => {
   const { Option } = Select;
 
   const { RangePicker } = DatePicker;
-
+  const token = localStorage.getItem("token");
 
   const [newName, setNewName] = useState(name);
   const [newfamilyStatus, setNewfamilyStatus] = useState(familyStatus);
@@ -124,7 +124,7 @@ const ContratEditForm = (props) => {
   const Update = async (newName, newfamilyStatus, newcontratCopy, newposition,
     newEndtravelDate,newtravelDate,newdistination,newTypeCompany,newVisaReady) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/update?id=${id}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/update?id=${id}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -213,7 +213,7 @@ const ContratEditForm = (props) => {
   //Save Employeee Gets 
   const AddEmployeesGets = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/create`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/create?token=${token}`, {
 
         method: 'POST',
         headers: {

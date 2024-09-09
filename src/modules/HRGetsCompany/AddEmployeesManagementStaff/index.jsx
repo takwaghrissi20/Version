@@ -16,7 +16,7 @@ import EmployeeInformation from './EmployeeInformationManagementStaff'
 const AddEmployeesManagementStaff= () => {
   const [listInterview, setListInterview] = useState([]);
   const navigate = useNavigate();
-
+  const token = localStorage.getItem("token");
 
   const fetchDataList = async () => {
     try {
@@ -25,7 +25,7 @@ const AddEmployeesManagementStaff= () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/list`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/list?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'

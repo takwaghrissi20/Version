@@ -21,6 +21,7 @@ const ViewMission = () => {
   const formattedDate = dayjs(dateInput).format('YYYY-MM-DD');
   const location = useLocation();
   const [pdfVisible, setPdfVisible] = useState(false);
+  const token = localStorage.getItem("token");
   //////////////////
   const handleGeneratePDF = () => {
     setPdfVisible(true);
@@ -37,7 +38,7 @@ const ViewMission = () => {
   const [getsId, setGetsId] = useState("");
   const findIdMission = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getById?id=${id}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getById?id=${id}&token=${token}`, {
         method: 'Get',
       });
       if (!response.ok) {
@@ -54,11 +55,10 @@ const ViewMission = () => {
       console.error("Erreur lors de la récupération du id Mission:", error);
     }
   };
-
   //Find By ID Profile
   const findId = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}&token=${token}`, {
         method: 'GET',
 
       });

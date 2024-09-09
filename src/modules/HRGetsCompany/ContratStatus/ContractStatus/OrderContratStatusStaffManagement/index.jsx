@@ -17,7 +17,7 @@ const OrderTable = ({ temployee, loading,user }) => {
   const [getsId, setGetsId] = useState("");
   const [isViewContrat, onViewContrat] = useState(false);
   const [isEditContrat, OnisEditContrat] = useState(false);
-
+  const token = localStorage.getItem("token");
   const handleAddContratOpen1 = () => {
     onViewContrat(true);
     setFindIdData(record) 
@@ -66,6 +66,23 @@ const OrderTable = ({ temployee, loading,user }) => {
         altenativeNameBank:findIdData?.altenativeNameBank,
         checkHolderName:findIdData?.checkHolderName?
         PaymentType:findIdData?.PaymentType,
+        ////
+        joinDate:findIdData?.joinDate,
+        finishDate:findIdData?.finishDate,
+        birthDate:findIdData?.birthDate,
+        nbExperience:findIdData?.nbExperience,
+        // familyStatus:findIdData?.familyStatus,
+        phoneEmergency:findIdData?.phoneEmergency,
+        // traveldate:findIdData?.traveldate,
+        endTravelDate:findIdData?.endTravelDate,
+        gender:findIdData?.gender,
+        residenceAdress:findIdData?.residenceAdress,
+        emergencyName:findIdData?.emergencyName,
+        emergencyRelation:findIdData?.emergencyRelation,
+        projName:findIdData?.projName
+         
+
+
 
 
         }
@@ -92,7 +109,7 @@ const OrderTable = ({ temployee, loading,user }) => {
 
   const findId = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/getById?id=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/getById?id=${code}&token=${token}`, {
         method: 'GET',
       });
       if (!response.ok) {
@@ -291,7 +308,7 @@ const OrderTable = ({ temployee, loading,user }) => {
         // lastId: LastIdIncremente,
         dailyRate: findIdData?.dailyRate,
         duration: findIdData?.duration,
-        arPosition: findIdData?.arPosition,
+        // arPosition: findIdData?.arPosition,
         joinDate: findIdData?.joinDate,
         finishDate: findIdData?.finishDate,
 
@@ -342,7 +359,7 @@ const OrderTable = ({ temployee, loading,user }) => {
         duration: findIdData?.duration,
         CIN: findIdData?.cin,
         cinDate: findIdData?.cinDate,
-        duration: findIdData?.duration,
+        // duration: findIdData?.duration,
         salary: findIdData?.salary,
         joinDate: findIdData?.joinDate,
         finishDate: findIdData?.finishDate

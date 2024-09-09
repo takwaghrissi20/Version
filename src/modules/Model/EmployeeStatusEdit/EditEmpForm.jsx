@@ -65,11 +65,11 @@ const EmpEditForm = (props) => {
   const [newactStatus,setNewactStatus]=useState(actStatus)
   const [newposition,setNewposition]=useState(position)
   const [dataEdit, setDataEdit] = useState([])
-  
+  const token = localStorage.getItem("token");
 
   const handleEdit = async (maritalStatus,newTelNumber,newFinishDate,newactStatus,newposition) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/update`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/update?token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -90,7 +90,7 @@ const EmpEditForm = (props) => {
           companyType,
           finishDate:newFinishDate,
           actStatus:newactStatus,
-          position:newposition,
+          // position:newposition,
           getsEmail:getsEmail,
           passportnumber:passportnumber,
           cnss:cnss,

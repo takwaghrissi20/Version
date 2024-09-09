@@ -4,6 +4,7 @@ import { AiFillEdit } from "react-icons/ai";
 import { CiSaveDown2 } from "react-icons/ci";
 
 const OrderActions = ({id}) => {
+  const token = localStorage.getItem("token")
 //View By Id 
 const fetchViewTEmployee = async () => {
   try {
@@ -12,7 +13,7 @@ const fetchViewTEmployee = async () => {
         ? "https://dev-gateway.gets-company.com"
         : "";
 
-        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/getById?id=${id}`, {
+        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/getById?id=${id}&token=${token}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'

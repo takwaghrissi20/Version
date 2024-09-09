@@ -10,7 +10,7 @@ import {
 const TasksList = () => {
 
   const { reCallAPI } = useCalendarActionsContext();
-
+  const token = localStorage.getItem("token");
   const [filterText, onSetFilterText] = useState('');
   const [integration, setIntegration] = useState([]);
   useEffect(() => {
@@ -21,7 +21,7 @@ const TasksList = () => {
             ? "https://dev-gateway.gets-company.com"
             : "";
 
-        const response = await fetch("https://dev-gateway.gets-company.com/api/v1/integration/list", {
+        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/integration/list?token=${token}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'

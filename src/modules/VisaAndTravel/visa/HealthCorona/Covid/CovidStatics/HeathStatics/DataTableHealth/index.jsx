@@ -21,7 +21,7 @@ const TableCovidHealth = ({vaccin}) => {
   const [data, setData] = useState("");
 
   const navigate = useNavigate();
-
+  const token = localStorage.getItem("token");
   const   handleEditHealth= () => {
     navigate(`/Hr/VisaHealth/EditCovid/idV=${idv}`, {
       state: {
@@ -57,7 +57,7 @@ const TableCovidHealth = ({vaccin}) => {
                 ? "https://dev-gateway.gets-company.com"
                 : "";
 //Ajouter delete par type
-        const response = await fetch(`${endPoint}/api/v1/vacin/delete?code=${getsId}&id=${idv}`, {
+        const response = await fetch(`${endPoint}/api/v1/vacin/delete?code=${getsId}&id=${idv}&token=${token}`, {
             method: 'DELETE',
         });
 
@@ -86,7 +86,7 @@ const TableCovidHealth = ({vaccin}) => {
 }
 const findId = async (code) => {
   try {
-    const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vacin/findId?code=${code}`, {
+    const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vacin/findId?code=${code}&token=${token}`, {
       method: 'Get',
 
     });

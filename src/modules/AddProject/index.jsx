@@ -107,9 +107,10 @@ const AddProjectEmployees = () => {
       color: '#FFFFFF !important',
     });
   };
+  const token = localStorage.getItem("token");
   const findId = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}&token=${token}`, {
         method: 'GET',
 
       });
@@ -134,7 +135,7 @@ const AddProjectEmployees = () => {
   const SaveProject = async () => {
     try {
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/off/addproject?id=${getsId}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/off/addproject?id=${getsId}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -159,7 +160,7 @@ const AddProjectEmployees = () => {
 
 
 
-
+     
         })
       });
 
@@ -169,10 +170,15 @@ const AddProjectEmployees = () => {
       }
       if (response.ok) {
 
-        const responseData = await response.json();
-        console.log("add projecttt",responseData)
-        form.resetFields();
+        const responseData = await response.json();       
         openNotification('bottomRight')
+        setTimeout(() => {
+          form.resetFields();
+          window.location.reload();
+        }, 1000);
+     
+
+      
 
 
 
@@ -220,6 +226,7 @@ const AddProjectEmployees = () => {
 
   }
   const Location = [
+    // { location: 'Office' },
     { location: 'Brega' },
     { location: 'Benghazi' },
     { location: 'Messla' },
@@ -234,6 +241,7 @@ const AddProjectEmployees = () => {
   ];
   const country = [
     { count: 'Libya' },
+    // { count: 'Tunis/Sfax' },
 
   ];
   const handleprojLocation = (value) => {
@@ -323,7 +331,7 @@ const AddProjectEmployees = () => {
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label='Projet Leader Gets Id' name='GetsId'
+                  <Form.Item label='Projet Leader /Manager  Gets Id' name='GetsId'
                     rules={[
                       { required: true, message: 'Please input your Gets Id!' },
                     ]}

@@ -22,11 +22,11 @@ const OrderTable = ({ orderData }) => {
   const handleRowLeave = () => {
     setHoveredRow(null);
   };
-
+  const token = localStorage.getItem("token");
   //Find By Id
   const findId = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${code}&token=${token}`, {
         method: 'Get',
       });
       if (!response.ok) {

@@ -58,11 +58,11 @@ const Table = () => {
       console.error('Error fetching employees:', error);
     }
   };
-
+  const token = localStorage.getItem("token");
   const fetchListEmployee = async () => {
     try {
       setLoading(true);  // Set loading to true before fetch
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/listBypage?page=${currentPage}&size=${pageSize}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/listBypage?page=${currentPage}&size=${pageSize}&token=${token}`);
       if (!response.ok) {
         throw new Error('Failed to fetch employees');
       }
@@ -78,7 +78,7 @@ const Table = () => {
   const fetchAllListEmployee = async () => {
     try {
       setLoading(true);  // Set loading to true before fetch
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list?token=${token}`);
     
       if (!response.ok) {
         throw new Error('Failed to fetch employees');

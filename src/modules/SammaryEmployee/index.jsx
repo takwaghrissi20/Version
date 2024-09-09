@@ -27,15 +27,15 @@ const Sammuary = () => {
   useEffect(() => {
     fetchEmployees();
   }, [currentPage, pageSize, nameFilter]);
-
+  const token = localStorage.getItem("token");
   const fetchEmployees = async () => {
     try {
-      const countEmployees = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list`);
+      const countEmployees = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list?token=${token}`);
       const datacount = await countEmployees.json();
       console.log("datacount", datacount.length)
       setCount(datacount.length);
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/listBypage?page=${currentPage}&size=${pageSize}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/listBypage?page=${currentPage}&size=${pageSize}&token=${token}`);
 
 
       if (!response.ok) {
@@ -48,11 +48,11 @@ const Sammuary = () => {
       console.error('Error fetching employees:', error);
     }
   };
-
+ 
   const handleSearch = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${nameFilter}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${nameFilter}&token=${token}`);
       if (!response.ok) {
         throw new Error('Failed to filter employees');
       }
@@ -85,7 +85,7 @@ const Sammuary = () => {
 
     if (filterValue !== '') {
       try {
-        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${filterValue}`);
+        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${filterValue}&token=${token}`);
         if (!response.ok) {
           throw new Error('Failed to filter employees');
         }
@@ -143,7 +143,8 @@ const Sammuary = () => {
           title={messages['dashboard.Sammary']}
         >
 
-          <OrderTable className={clsx("item-hover")} dataemployees={employees} />
+          <OrderTable className={clsx("item-hover")}
+           dataemployees={employees} />
         </AppCard>
         
           <StyledOrderHeaderRight >

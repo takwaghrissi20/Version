@@ -25,9 +25,10 @@ const ViewMission = () => {
   const id = location.state ? location.state.id: null;
   const [mission, setMission] = useState("")
   const [getsId, setGetsId] = useState("");
+  const token = localStorage.getItem("token")
   const findIdMission = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getById?id=${id}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getById?id=${id}&token=${token}`, {
         method: 'Get',
       });
       if (!response.ok) {
@@ -50,7 +51,7 @@ const ViewMission = () => {
   //Find By ID Profile
   const findId = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}&token=${token}`, {
         method: 'GET',
 
       });

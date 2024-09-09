@@ -22,13 +22,14 @@ const HealthInformation = ({HeatlStatics, user}) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [vaccin, setVaccin] = useState("");
+  const token = localStorage.getItem("token");
   useEffect(() => {
     fetchDataVaciin();
   }, [currentPage, pageSize]);
   const fetchDataVaciin = async () => {
     try {
 
-      const url = `https://dev-gateway.gets-company.com/api/v1/vacin/list?size=${pageSize}&page=${currentPage}&sortBy=dateTestWork`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/vacin/list?size=${pageSize}&page=${currentPage}&sortBy=dateTestWork&token=${token}`;
       const response = await fetch(url);
      
       if (!response.ok) {
@@ -36,7 +37,7 @@ const HealthInformation = ({HeatlStatics, user}) => {
       }
 
       const data = await response.json();
-      console.log("datavacin",data)
+    
       setVaccin(data);
     } catch (error) {
       console.error('Error fetching employees:', error);
@@ -75,7 +76,8 @@ const HealthInformation = ({HeatlStatics, user}) => {
               }}
               className='no-card-space-ltr-rtl'
               title={messages['dashboard.Health']}>
-              <OrderTable vaccin={vaccin}   user={user}/>
+              <OrderTable vaccin={vaccin}  
+               user={user}/>
             </AppCard>
       
             </StyledCoinsWrapper>

@@ -36,6 +36,7 @@ const TimeSheetOffice = () => {
   const [pickerValue, setPickerValue] = useState(new Date(selectedYear, selectedMonth - 1));
   const [tempSelectedMonth, setTempSelectedMonth] = useState(selectedMonth);
   const [tempSelectedYear, setTempSelectedYear] = useState(selectedYear);
+  const token = localStorage.getItem("token");
   const navigate = useNavigate();
   useEffect(() => {
     fetchEmployeesByType();
@@ -44,7 +45,7 @@ const TimeSheetOffice = () => {
 
   const fetchEmployeesByType = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getEmByTypeStatus?type=office&status=Active &page=${currentPage}&size=${pageSize}&month=${selectedMonth}&year=${selectedYear}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getEmByTypeStatus?type=office&status=Active &page=${currentPage}&size=${pageSize}&token=${token}&month=${selectedMonth}&year=${selectedYear}`);
       const data = await response.json();
       setEmployeesOffice(data);
 
@@ -74,7 +75,7 @@ const TimeSheetOffice = () => {
 
   const fetchFilteredEmployees = async (filterValue) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${filterValue}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${filterValue}&token=${token}`);
       if (!response.ok) {
         throw new Error('Failed to filter employees');
       }
@@ -137,7 +138,7 @@ const TimeSheetOffice = () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -154,7 +155,7 @@ const TimeSheetOffice = () => {
       }
       const data = await response.json();
 
-      const dataOffice = data.filter(p => p.type_Emp === "office" && p.actStatus === "Active ")
+      const dataOffice = data.filter(p => p.type_Emp === "office" && p.actStatus === "Active")
 
       setTotalRecords(dataOffice.length)
 
@@ -167,7 +168,7 @@ const TimeSheetOffice = () => {
 
   const handleGeneratePDF = async () => {
     try {
-      const response = await axios.get('https://dev-gateway.gets-company.com/api/v1/emp/list');
+      const response = await axios.get(`https://dev-gateway.gets-company.com/api/v1/emp/list?token=${token}`);
       const employees = response.data;
       // const dataOffice=employees.filter(p=>p.type_Emp==="office" && p.actStatus==="Active ")
 
@@ -347,7 +348,8 @@ const TimeSheetOffice = () => {
         <OrderTable
           currentMonthName={currentMonthName}
           orderData={nameFilter ? employeesFiltered : employeesOffice}
-          selectedMonth={selectedMonth} selectedYear={selectedYear} />
+          selectedMonth={selectedMonth} 
+          selectedYear={selectedYear} />
       </AppCard>
       <StyledOrderHeaderRight>
         <Pagination

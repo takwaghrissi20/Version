@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyledCustomerTable } from '../index.styled';
 import { useNavigate } from "react-router-dom";
-const ExpiredVisaData = ({ VisaExpired, loading, AllRecruitement, visaExperedProjet }) => {
+const ExpiredVisaData = ({ VisaExpired, loading, AllRecruitement, visaExperedProjet,user }) => {
   const [findIdData, setFindIdData] = useState(null);
   const [isViewRecruitement, onViewRecruitement] = useState(false);
   const [isEditRecruitement, onEditRecruitement] = useState(false);
@@ -46,14 +46,14 @@ const ExpiredVisaData = ({ VisaExpired, loading, AllRecruitement, visaExperedPro
 
 
   ];
-  const user = localStorage.getItem("role");
+ 
   return (
     <>
       {user.includes('It') && (
         <p>IT</p>
 
       )}
-      {user.includes('admin') && (
+      {(user.includes('admin') ||user.includes('bod')|| user?.includes('Administrator')) && (
         <StyledCustomerTable
           hoverColor
           data={VisaExpired}

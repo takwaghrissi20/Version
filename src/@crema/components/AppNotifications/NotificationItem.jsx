@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { List } from 'antd';
 import {
@@ -7,6 +7,7 @@ import {
 } from './NotificationItem.styled';
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
+import { StyledBuyCellCard, StyledTabs } from '../../../styles/index.styled';
 const NotificationItem = ({ user }) => {
 
   const navigate = useNavigate();
@@ -35,14 +36,77 @@ const NotificationItem = ({ user }) => {
   const [listOperationproject, setListOperationproject] = useState([]);
   const [ListInterviewNotif, setListInterviewNotif] = useState([]);
   const [intCode, setIntCode] = useState("");
+  const token = localStorage.getItem("token")
+  const [visaExpired, setVisaExpired] = useState("");
+  const [passportExpired, setPassportExpired] = useState("");
+  const [contartExpired, setContratExpired] = useState("");
 
 
-  const notify = () => toast("This is a toast notification !");
+  //Fetch Employees Expired Passport et Visa 
+  const fetchExpiredVisa = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list?token=${token}`);
 
+      if (!response.ok) {
+        throw new Error('Failed to fetch employees');
+      }
+
+      // Get the current date and date 15 days from now
+      const data = await response.json();
+      const activeEmployees = data.filter(employee => employee.actStatus === "Active");
+
+      const currentDate = new Date();
+      const dateInFifteenDays = new Date();
+      dateInFifteenDays.setDate(currentDate.getDate() + 15);
+      // Filter employees whose visa expires within 15 days
+      const expiredVisaData = activeEmployees.filter(employee => {
+        if (employee.finishDateVisa) {
+          const visaDate = new Date(employee.finishDateVisa);
+          return visaDate > currentDate;
+        } else {
+          return false;
+        }
+      });
+
+
+      setVisaExpired(expiredVisaData)
+      // Filter employees whose passport expires within 15 days
+      const passportFinishDate = activeEmployees.filter(employee => {
+        if (employee.passport_finish_date) {
+          const passportDate = new Date(employee.passport_finish_date);
+          return passportDate <= dateInFifteenDays && passportDate > currentDate;
+        } else {
+          return false;
+        }
+      });
+      console.log("passsportttExpired 000 222 ",passportExpired )
+      setPassportExpired(passportFinishDate)
+      // Filter employees whose Contract expires within 15 days
+      const contratFinishDate = activeEmployees.filter(employee => {
+        if (employee.finishDate) {
+          const contartDate = new Date(employee.finishDate);
+          return contartDate <= dateInFifteenDays && contartDate > currentDate;
+        } else {
+          return false;
+        }
+      });
+
+      setContratExpired(contratFinishDate)
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+    }
+  };
+
+
+
+
+
+
+  //End Fetch Employee expired passport et Visa 
   // Project By email
   const fetchProjectEmail = async () => {
     try {
-      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getProjectByMail?mail=${userEmail}`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getProjectByMail?mail=${userEmail}&token=${token}`;
       const response = await fetch(url, {
         method: "GET",
       });
@@ -65,7 +129,7 @@ const NotificationItem = ({ user }) => {
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${userEmail}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${userEmail}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -90,7 +154,7 @@ const NotificationItem = ({ user }) => {
   const fetchRecruitementByEmployees = async () => {
     try {
 
-      const url = `https://dev-gateway.gets-company.com/api/v1/re/list`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/re/list?token=${token}`;
       const response = await fetch(url, {
         method: "GET",
       });
@@ -98,9 +162,9 @@ const NotificationItem = ({ user }) => {
         const data = await response.json();
         const filterRecruitement = data.filter(p => p.idemp === id)
         setRecrutementInterviewNotif(filterRecruitement)
-       
+
         const FilterNotification = filterRecruitement.map(item => item.jobCode)
-      
+
         setListInterviewNotif(FilterNotification)
         // console.log("filterRecruitement",filterRecruitement)
       } else {
@@ -112,27 +176,30 @@ const NotificationItem = ({ user }) => {
   };
 
   const [notificationPermission, setNotificationPermission] = useState(null);
-
-  const requestNotificationPermission = () => {
-    if ('Notification' in window) {
-      Notification.requestPermission().then(permission => {
-        setNotificationPermission(permission);
-      });
+  useEffect(() => {
+    if (!("Notification" in window)) {
+      // console.log("Browser does not support desktop notifications");
     } else {
-      alert('Your browser does not support desktop notifications.');
+      Notification.requestPermission();
     }
+  }, []);
+
+  const showNotification = (message) => {
+    if (Notification.permission === "granted") {
+      new Notification(message);
+    }
+  }
+  const sortNotifications = (notifications) => {
+    return notifications.sort((a, b) => {
+      const isVisaOrPassportA = a.type.includes("Visa") || a.type.includes("Passport");
+      const isVisaOrPassportB = b.type.includes("Visa") || b.type.includes("Passport");
+
+      if (isVisaOrPassportA && !isVisaOrPassportB) return -1;
+      if (!isVisaOrPassportA && isVisaOrPassportB) return 1;
+      return 0;
+    });
   };
 
-  const showNotification = () => {
-    if (notificationPermission === 'granted') {
-      setTimeout(() => {
-        new Notification('Afficher Recrutement');
-      }, 1000);
-     
-    } else if (notificationPermission !== 'denied') {
-      requestNotificationPermission();
-    }
-  };
   const AllNotif = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/notif/list`, {
@@ -145,7 +212,7 @@ const NotificationItem = ({ user }) => {
         throw new Error('La requête a échoué avec le code ' + response.status);
       }
       const data = await response.json();
-    
+
 
       /////includes codejob
       const NotifInterveiw = data.filter(item => item?.type?.includes("Interview"));
@@ -159,11 +226,14 @@ const NotificationItem = ({ user }) => {
           (item.oDep || item.xDep) &&
           item?.positionRec?.includes('Manager')
         ) ||
+        (item.notfi === 55
+        ) ||
+        (item.notfi === 66) ||
         (item.notfi === 7 &&
           item.dep.includes('Engineering')
         ) ||
-        (item.notfi === 2 )
-         ||
+        (item.notfi === 2)
+        ||
         (item.notfi === 7 &&
           item.dep.includes('Operation') &&
           (item.oDep || item.xDep) &&
@@ -181,6 +251,13 @@ const NotificationItem = ({ user }) => {
 
       setNotifBod(filteredData);
       //////NotifffHrAdminstrotor
+      // filteredData.forEach(item => {
+      //   if (item.notfi === 2 && !displayedNotifications.has(item.id)) {
+      //     showNotification(`Recruitment Request with code Job ${item.jobcode}`);
+      //     setDisplayedNotifications(prev => new Set(prev).add(item.id));
+      //   }
+      // });
+
 
 
       const filteredDataHrAdministartor = data.filter(item => (item.notfi === 3) ||
@@ -200,7 +277,7 @@ const NotificationItem = ({ user }) => {
         ) ||
         ((item.notfi === 35) && item.type.includes("Extension")) ||
         (item.notfi === 17 && item.type.includes("Demob")) ||
-        (item.notfi === 7 && (item.type.includes("Interview")) && item.dep.includes('Operation')) 
+        (item.notfi === 7 && (item.type.includes("Interview")) && item.dep.includes('Operation'))
 
       ));
 
@@ -222,7 +299,7 @@ const NotificationItem = ({ user }) => {
       /////////////////Notif HSE
       const filteredDataHSE = data.filter(item => (
         (item.notfi === 1 && item.dep.includes('Operation')) && (item.type.includes("construction")) ||
-        (item.notfi === 2 && (item.type.includes("construction")))  
+        (item.notfi === 2 && (item.type.includes("construction")))
 
 
       ));
@@ -297,7 +374,7 @@ const NotificationItem = ({ user }) => {
         console.log('item.notfi:', item.notfi);
         console.log('ListInterviewNotif.includes(item.interviewCodeJobInt):', ListInterviewNotif.includes(item.interviewCodeJobInt));
         console.log('item?.type?.includes("Interview"):', item?.type?.includes("Interview"));
-      
+
 
         return (
           (item.notfi === 0 &&
@@ -470,7 +547,7 @@ const NotificationItem = ({ user }) => {
   //demob
   const findId = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/findId?code=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/findId?code=${code}&token=${token}`, {
         method: 'POST',
       });
       if (!response.ok) {
@@ -482,18 +559,24 @@ const NotificationItem = ({ user }) => {
       handleEditRecruitementOpen(responseData);
       setTimeout(() => {
         window.location.reload();
-       
+
       }, 100);
-    
+
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
     }
   };
+  const VisaExpired = async () => {
+    navigate(`/Hr/VisaAndPassportExpired`);
+    window.location.reload();
+
+  };
+
   ///////////////////
   ///////////////////////////ExtentionId
   const findIdExtention = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getById?id=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getById?id=${code}&token=${token}`, {
         method: 'GET',
       });
       if (!response.ok) {
@@ -504,23 +587,17 @@ const NotificationItem = ({ user }) => {
       handleEditExtentionOpen(responseData)
       setTimeout(() => {
         window.location.reload();
-       
+
       }, 100);
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
     }
   };
 
-
-
-
-
-
-
   /////////////////End Extentiondid
   const findIdInterview = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/findId?code=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/findId?code=${code}&token=${token}`, {
         method: 'GET',
       });
       if (!response.ok) {
@@ -528,14 +605,14 @@ const NotificationItem = ({ user }) => {
       }
       const responseData = await response.json();
       setTimeout(() => {
-        window.location.reload();    
+        window.location.reload();
       }, 100);
-    
+
       setFindIdDataStaff(responseData)
       setIntCode(responseData?.interviewCode)
       handleEditInterviewConstructionOpen(responseData?.interviewCode)
-    
-  
+
+
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
     }
@@ -544,18 +621,18 @@ const NotificationItem = ({ user }) => {
   ///////////////////FindIDDEMOB
   const findIdDemob = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/getById?id=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/getById?id=${code}&token=${token}`, {
         method: 'GET',
       });
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const responseData = await response.json();
- 
+
       handleMobDemobOpen(responseData)
       setTimeout(() => {
         window.location.reload();
-       
+
       }, 100);
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
@@ -608,7 +685,7 @@ const NotificationItem = ({ user }) => {
           hr_HumQuality: findIdDataConstruction?.hr_HumQuality,
           hr_motivation: findIdDataConstruction?.hr_motivation,
           hr_Intellig: findIdDataConstruction?.hr_Intellig,
-          level: findIdDataConstruction?.level,
+          intvlevel: findIdDataConstruction?.intvlevel,
           headOfDepAprouv: findIdDataConstruction?.headOfDepAprouv,
           agreedJoinedDate: findIdDataConstruction?.agreedJoinedDate,
           expectedJoinDate: findIdDataConstruction?.expectedJoinDate,
@@ -617,7 +694,7 @@ const NotificationItem = ({ user }) => {
           feedback: findIdDataConstruction?.feedback,
           propsedsalary: findIdDataConstruction?.propsedsalary,
           finaldesision: findIdDataConstruction?.finaldesision,
-          time: findIdDataConstruction?.time,
+          time: findIdDataConstruction?.INTERVTIME,
           hrComentaire: findIdDataConstruction?.hrComentaire,
           contactEmail: findIdDataConstruction?.contactEmail,
           contactPhone: findIdDataConstruction?.contactPhone,
@@ -644,15 +721,6 @@ const NotificationItem = ({ user }) => {
           leadership: findIdDataConstruction?.leadership,
           hseDecision: findIdDataConstruction?.hseDecision,
           hseComment: findIdDataConstruction?.hseComment,
-        
-      
-
-
-
-
-
-
-
 
 
 
@@ -702,7 +770,7 @@ const NotificationItem = ({ user }) => {
           hr_HumQuality: findIdDataStaff?.hr_HumQuality,
           hr_motivation: findIdDataStaff?.hr_motivation,
           hr_Intellig: findIdDataStaff?.hr_Intellig,
-          level: findIdDataStaff?.level,
+          NLEVEL: findIdDataStaff?.NLEVEL,
           headOfDepAprouv: findIdDataStaff?.headOfDepAprouv,
           agreedJoinedDate: findIdDataStaff?.agreedJoinedDate,
           expectedJoinDate: findIdDataStaff?.expectedJoinDate,
@@ -711,15 +779,17 @@ const NotificationItem = ({ user }) => {
           feedback: findIdDataStaff?.feedback,
           propsedsalary: findIdDataStaff?.propsedsalary,
           finaldesision: findIdDataStaff?.finaldesision,
-          time: findIdDataStaff?.time,
-          hrComentaire: findIdDataStaff?.hrComentaire
+          intervtime: findIdDataStaff?.intervtime,
+          hrComentaire: findIdDataStaff?.hrComentaire,
+
         }
       });
     }
   }, [navigate, findIdDataStaff]);
+
   const findIdInterviewConstruction = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${code}&token=${token}`, {
         method: 'POST',
       });
       if (!response.ok) {
@@ -730,9 +800,9 @@ const NotificationItem = ({ user }) => {
       setIntCode(responseData?.interviewCode)
       setTimeout(() => {
         window.location.reload();
-       
+
       }, 100);
-     
+
       // handleEditInterviewConstructionOpen(responseData?.interviewCode)
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
@@ -744,28 +814,35 @@ const NotificationItem = ({ user }) => {
     fetchProjectEmail();
     fetchRecruitementByEmployees()
     GetProfileEmployess()
+    fetchExpiredVisa()
     // findIdInterviewConstruction(intCode)
 
   }, [project, notifPlanner, idgets, id, findIdDataConstruction, intCode, findIdDataStaff]);
   console.log("user", user)
-  const notify1 = () => {
-    toast("This is a toast notification!", {
-      autoClose: 2000, 
-      position: toast.POSITION.TOP_RIGHT
-    });
-  };
+
+
   return (
     <>
+      {/* NOTIF BOD */}
       {user.includes("bod") ?
         <StyledNotifyListItem className='item-hover'>
           <p>Number All Notification </p>
           {notifBod.map((p, index) => (
             <div key={index}>
-                 {p?.type?.includes("recruitment") && (
-              <button className='Notification' onClick={() => findId(p?.codejob)}>
-                Recruitment Request with Code Job: <span style={{ color: "red", fontWeight: "bold" }}>{p.codejob}</span>
-              </button>
-                 )}
+              {p?.type?.includes("recruitment") && (
+                <div className='NotifTotal' onClick={() => findId(p?.codejob)}>
+                  <div
+                    className='NotifRecruitement' >
+                    R
+                  </div>
+                  <button className='Notification' onClick={() => findId(p?.codejob)}>
+                    Notification Recruitement Request  <br></br>
+                    <span className='IndexNotif'>RRS-</span>
+                    <span className='IndexNotif'>{p.codejob}</span>
+                  </button>
+                </div>
+
+              )}
               <div className='Space'></div>
               {p?.type?.includes("Interview") && (
                 <div>
@@ -803,22 +880,72 @@ const NotificationItem = ({ user }) => {
 
         : null
       }
+      {/* NOTIF ADMINISTARTOR */}
       {user.includes("Administrator") ?
         <StyledNotifyListItem className='item-hover'>
-          <p>Number All Notification </p>
+          <p>Number All Notification :{notifHR?.length} </p>
+          {visaExpired?.length > 0 && (
+                <div className='NotifTotal' onClick={() => VisaExpired()}>
+                  <div
+                    className='NotifVisa' >
+                    V
+                  </div>
+                  <div style={{ color: "black" }}>
+                    Visa Will Be Expired Of Employees :<span className='IndexNotif'>{visaExpired?.length}</span>
+                  </div>
+                </div>
+              )}
+              {passportExpired?.length > 0 && (
+                <div className='NotifTotal' onClick={() => VisaExpired()}>
+                  <div
+                    className='NotiPassport' >
+                    P
+                  </div>
+                  <div style={{ color: "black" }}>
+                    Passport Will Be Expired Of Employees  : <span className='IndexNotif'>{passportExpired?.length}</span>
+                  </div>
+                </div>
+              )}
+              {/*Empl Finish Contrat*/}
+              {/* {passportExpired?.length > 0 && ( */}
+              {contartExpired?.length > 0 && (
+                <div className='NotifTotal' onClick={() => VisaExpired()}>
+                  <div
+                    className='NotiFinishContart' >
+                    C
+                  </div>
+                  <div style={{ color: "black" }}>
+                    Contract Will Be Expired Of Employees  :
+                    <span className='IndexNotif'>{contartExpired?.length}</span>
+                  </div>
+                </div>
+              )}
+              {/* )} */}
+              {/*End Empl Finish Contrat*/}
           {notifHR.map((p, index) => (
             <div key={index}>
-              <button className='Notification' onClick={() => findId(p?.codejob)}>
-                Recruitement Request with Code Job :<span style={{ color: "red", fontWeight: "bold" }}>{p.codejob}</span> </button>
-              <div className='Space'></div>
-
+            
+          
+              <div className='NotifTotal' onClick={() => findId(p?.codejob)}>
+                <div
+                  className='NotifRecruitement' >
+                  R
+                </div>
+                <button className='Notification' onClick={() => findId(p?.codejob)}>
+                  Notification Recruitement Request  <br></br>
+                  <span className='IndexNotif'>RRS-</span>
+                  <span className='IndexNotif'>{p.codejob}</span>
+                </button>
+              </div>
 
             </div>
           ))}
+
+
         </StyledNotifyListItem>
         : null
       }
-
+      {/* Notif ADMIN */}
       {user.includes("admin") ?
         <StyledNotifyListItem className='item-hover'>
           <p>Number All Notification </p>
@@ -834,20 +961,27 @@ const NotificationItem = ({ user }) => {
         : null
       }
 
-
+      {/* Notif Operation  Manager*/}
       {user === "Operation  Manager" ? (
         <StyledNotifyListItem className='item-hover'>
           <p>Number All Notification (Operation Manager)</p>
           <>
             {notifOperation.map((p, index) => (
               <>
-               {p?.type?.includes("recruitment") && (
-            
-                <button className='Notification' onClick={() => findId(p?.codejob)}>
-                  Recruitment Request with Code Job:
-                  <span style={{ color: "red", fontWeight: "bold" }}>{p.codejob}</span>
-                </button>
-                 )}
+                {p?.type?.includes("recruitment") && (
+
+                  <div className='NotifTotal' onClick={() => findId(p?.codejob)}>
+                    <div
+                      className='NotifRecruitement' >
+                      R
+                    </div>
+                    <button className='Notification' onClick={() => findId(p?.codejob)}>
+                      Notification Recruitement Request  <br></br>
+                      <span className='IndexNotif'>RRS-</span>
+                      <span className='IndexNotif'>{p.codejob}</span>
+                    </button>
+                  </div>
+                )}
                 {p?.type?.includes("Interview") && (
                   <div>
                     <button
@@ -888,16 +1022,24 @@ const NotificationItem = ({ user }) => {
       ) : null}
 
 
-      {/*PLanner */}
+      {/* Notif PMO*/}
       {user.includes("PMO") || notifPlanner?.dep?.includes('Operation') ?
         <StyledNotifyListItem className='item-hover'>
           <p>Number All Notification</p>
           {notifPlanner.map((p, index) => (
             <React.Fragment key={index}>
               <div>
-                <button className='Notification' onClick={() => findId(p?.codejob)}>
-                  Recruitment Request with Code Job: <span style={{ color: "red", fontWeight: "bold" }}>RRS-{p.codejob}</span>
-                </button>
+              <div className='NotifTotal' onClick={() => findId(p?.codejob)}>
+                  <div
+                    className='NotifRecruitement' >
+                    R
+                  </div>
+                  <button className='Notification' onClick={() => findId(p?.codejob)}>
+                    Notification Recruitement Request  <br></br>
+                    <span className='IndexNotif'>RRS-</span>
+                    <span className='IndexNotif'>{p.codejob}</span>
+                  </button>
+                </div>
               </div>
               <div className='Space'></div>
               {p?.type?.includes("Extension") && (
@@ -911,6 +1053,7 @@ const NotificationItem = ({ user }) => {
 
         : null
       }
+      {/* Notif Manager*/}
       {(user.includes("Manager") && !user.includes("Construction") && !dep?.includes('Operation')) && (
         <StyledNotifyListItem className='item-hover'>
           <p>Number All Notification</p>
@@ -952,7 +1095,7 @@ const NotificationItem = ({ user }) => {
 
       )}
 
-      {/* ///Notificationnn de Project Leader*/}
+      {/* Notif Leader*/}
       {user.includes("Leader") ?
         <StyledNotifyListItem className='item-hover'>
           <p>Number All Notification</p>
@@ -1000,7 +1143,7 @@ const NotificationItem = ({ user }) => {
         </StyledNotifyListItem>
         : null
       }
-      {/*QC Lead */}
+      {/* Notif QC Lead*/}
       {user.includes("QC Lead") ?
         <StyledNotifyListItem className='item-hover'>
           <p>Number All Notification </p>
@@ -1044,7 +1187,7 @@ const NotificationItem = ({ user }) => {
       }
 
 
-      {/*Construction Manager toLowerCase() */}
+      {/*Construction Manager NOTIF toLowerCase() */}
       {user.includes("Construction") ?
         <StyledNotifyListItem className='item-hover'>
           <p>Number All Notification </p>

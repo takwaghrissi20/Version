@@ -10,10 +10,10 @@ const CalendarInterview = () => {
   const [idgets, setIdgets] = useState("");
   const [interviews, setInterviews] = useState([]);
   const [interviewsConstruction, setInterviewsConstruction] = useState([]);
-
+  const token = localStorage.getItem("token");
   const fetchProjectEmail = async () => {
     try {
-      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getProjectByMail?mail=${userEmail}`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getProjectByMail?mail=${userEmail}&token=${token}`;
       const response = await fetch(url, { method: "GET" });
       if (response.ok) {
         const data = await response.json();
@@ -34,7 +34,7 @@ const CalendarInterview = () => {
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-      const url = `${endPoint}/api/v1/int/list`;
+      const url = `${endPoint}/api/v1/int/list?token=${token}`;
       const response = await fetch(url, { method: "GET" });
 
       if (response.ok) {
@@ -46,7 +46,7 @@ const CalendarInterview = () => {
         setInterviews(InterviewsAccepted);
 
         // Fetch Interview Construction
-        const urlConstruction = `${endPoint}/api/v1/intc/list`;
+        const urlConstruction = `${endPoint}/api/v1/intc/list?token=${token}`;
         const responseConstruction = await fetch(urlConstruction, { method: "GET" });
   
         if (responseConstruction.ok) {

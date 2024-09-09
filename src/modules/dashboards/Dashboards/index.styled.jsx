@@ -69,7 +69,7 @@ export const StyledEditCustomerForm = styled(Form)`
 export const StyledCustomerTable = styled(AppTableContainer)`
   & .ant-table table {
     table-layout: auto !important;
-    text-align: center;
+   
   }
 
   & .ant-table-thead > tr > th {
@@ -95,7 +95,6 @@ export const StyledCustomerTable = styled(AppTableContainer)`
 
     &.customer-table-actions {
       margin-right:2rem
-      text-align: center;
       background-color: ${({ theme }) =>
         theme.palette.background.paper} !important;
     }
@@ -103,7 +102,7 @@ export const StyledCustomerTable = styled(AppTableContainer)`
 
   & .ant-table-tbody > tr > td {
     font-size: 13px;
-    text-align: center;
+
 
     &:first-child {
       text-align: center;
@@ -115,11 +114,11 @@ export const StyledCustomerTable = styled(AppTableContainer)`
     }
 
     &:last-child {
-      text-align: center;
+  
     }
 
     &.customer-table-actions {
-      text-align: center;
+    
       background-color: ${({ theme }) =>
         theme.palette.background.paper} !important;
     }

@@ -14,11 +14,11 @@ const MonthlySiteSummary = () => {
   const [selectedMonth, setSelectedMonth] = useState(moment().month() + 1);
   const [selectedYear, setSelectedYear] = useState(moment().year());
   const [pickerValue, setPickerValue] = useState(new Date(selectedYear, selectedMonth - 1));
-
+  const token = localStorage.getItem("token");
   // Fetch OfficeWorkStatus with filters
   const fetchEmployeesSiteWorkStatus = async () => {
     try {
-      const url = `https://dev-gateway.gets-company.com/api/v1/SiteWorkStatus/all`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/SiteWorkStatus/all?token=${token}`;
       const response = await fetch(url);
 
       if (!response.ok) {

@@ -18,7 +18,7 @@ import {
 } from '../../../styles/index.styled';
 
 const StatsDirCard = ({ latestDeMobilization }) => {
-  console.log("latestDeMobilization", latestDeMobilization);
+
   return (
     <AppCard className='card-hover no-card-space'>
       <StyledFlexWrapper>
@@ -59,6 +59,7 @@ const StatsDirCard = ({ latestDeMobilization }) => {
                 className='icon-btn icon-btn-eye'
                 style={{ color: "#9AC8EB" }}
                 icon={<AiOutlineEye />}
+                
               />
             </StyledViewer>
           </StyledDurationWrapper>

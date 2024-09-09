@@ -15,7 +15,7 @@ import Pagination from '../../../../@crema/components/AppsPagination';
 import clsx from 'clsx';
 import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal'; 
 import { useNavigate } from "react-router-dom";
-const StaffInterview = ({ allinterviewStaffManagement }) => {
+const StaffInterview = ({ allinterviewStaffManagement,token }) => {
   const navigate = useNavigate();
   const [interviewStaff, setInterviewStaff] = useState([]);
   const [interviewStaffFiltrer, setInterviewStaffFiltrer] = useState([]);
@@ -28,6 +28,7 @@ const StaffInterview = ({ allinterviewStaffManagement }) => {
   const [codeJob, setCodeJob] = useState(0);
   const [interviewCode, setInterviewCode] = useState(0);
   const count = allinterviewStaffManagement.length
+
   useEffect(() => {
     fetchInterviewStaff();
   }, [currentPage, pageSize, nameFilter, count, id]);
@@ -35,7 +36,7 @@ const StaffInterview = ({ allinterviewStaffManagement }) => {
   const fetchInterviewStaff = async () => {
     try {
 
-      const url = `https://dev-gateway.gets-company.com/api/v1/int/listBypage?size=${pageSize}&page=${currentPage}&sortBy=interviwDate`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/int/listBypage?size=${pageSize}&page=${currentPage}&sortBy=interviwDate&token=${token}`;
       const response = await fetch(url);
 
 
@@ -75,7 +76,7 @@ const StaffInterview = ({ allinterviewStaffManagement }) => {
     setNameFilter(filterValue);
     if (filterValue !== '') {
       try {
-        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/filterByName?projname=$${filterValue}`);
+        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/filterByName?projname=$${filterValue}&token=${token}`);
         if (!response.ok) {
           throw new Error('Failed to filter Recruitement');
         }
@@ -102,7 +103,7 @@ const StaffInterview = ({ allinterviewStaffManagement }) => {
   //Fin Bu Id 
   const findId = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/findId?code=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/findId?code=${code}&token=${token}`, {
         method: 'GET',
 
       });

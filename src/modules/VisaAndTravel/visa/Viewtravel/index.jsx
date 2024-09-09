@@ -22,7 +22,7 @@ const ViewTravel = () => {
   const [dateInput, setDateInput] = useState(new Date());
   const formattedDate = dayjs(dateInput).format('YYYY-MM-DD');
   const location = useLocation();
-
+  const token = localStorage.getItem("token");
 
   const [profile, setProfile] = useState("")
   const id = location.state ? location.state.id : null;
@@ -30,7 +30,7 @@ const ViewTravel = () => {
   const [getsId, setGetsId] = useState("");
   const findIdTravel = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/getById?id=${id}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/getById?id=${id}&token=${token}`, {
         method: 'Get',
       });
       if (!response.ok) {

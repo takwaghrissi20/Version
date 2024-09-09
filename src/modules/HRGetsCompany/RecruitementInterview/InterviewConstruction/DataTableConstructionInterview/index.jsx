@@ -26,6 +26,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
   const [isDelteInterviewStaff, onDeleteInterviewStaff] = useState(false)
   const [isAddEmployees, onAddEmployees] = useState(false);
   const [isFeddbackEmployee, onFeddbackEmployee] = useState(false);
+  const token = localStorage.getItem("token")
   const handleFeedbackEmployeesOpen = (code) => {
    onFeddbackEmployee(true);
   };
@@ -85,7 +86,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
           hr_HumQuality:findIdData?.hr_HumQuality,
           hr_motivation:findIdData?.hr_motivation,
           hr_Intellig:findIdData?.hr_Intellig,
-          level:findIdData?.level,
+          intvlevel:findIdData?.intvlevel,
           headOfDepAprouv:findIdData?.headOfDepAprouv,
           agreedJoinedDate:findIdData?.agreedJoinedDate,
           expectedJoinDate:findIdData?.expectedJoinDate,
@@ -154,7 +155,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
             hr_HumQuality:findIdData?.hr_HumQuality,
             hr_motivation:findIdData?.hr_motivation,
             hr_Intellig:findIdData?.hr_Intellig,
-            level:findIdData?.level,
+            intvlevel:findIdData?.intvlevel,
             headOfDepAprouv:findIdData?.headOfDepAprouv,
             agreedJoinedDate:findIdData?.agreedJoinedDate,
             expectedJoinDate:findIdData?.expectedJoinDate,
@@ -163,7 +164,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
             feedback:findIdData?.feedback,
             propsedsalary:findIdData?.propsedsalary,
             finaldesision:findIdData?.finaldesision,
-            time:findIdData?.time,
+            intervtime:findIdData?.intervtime,
             hrComentaire:findIdData?.hrComentaire,
         
            
@@ -211,14 +212,12 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
   }
 
   const DeleteInterviewStaff = async () => {
-
- 
     try {
         const endPoint =
             process.env.NODE_ENV === "development"
                 ? "https://dev-gateway.gets-company.com"
                 : "";
-                const response = await fetch(`${endPoint}/api/v1/intc/delete?code=${codeJob}&id=${id}`, {
+                const response = await fetch(`${endPoint}/api/v1/intc/delete?code=${codeJob}&id=${id}&token=${token}`, {
                   method: 'DELETE',
               });
 
@@ -310,7 +309,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
           return (
             <StyledRecentPatientBadge
             style={{
-              color: record.color,
+             
               backgroundColor:"#32CD32",
               color:"white",
               fontFamily:"inherit"
@@ -323,7 +322,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
           return (
             <StyledRecentPatientBadge
             style={{
-              color: record.color,
+              
               backgroundColor:"#32CD32",
               color:"white",
               fontFamily:"inherit"
@@ -346,7 +345,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
           return (
             <StyledRecentPatientBadge
             style={{
-              color: record.color,
+           
               backgroundColor:"#32CD32",
               color:"white",
               fontFamily:"inherit"

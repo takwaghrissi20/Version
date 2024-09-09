@@ -74,7 +74,7 @@ const AddDemobilization = () => {
   const [demobmonth, setDemobmonth] = useState("");
   const [dateInput, setDateInput] = useState(new Date());
   const userRole = localStorage.getItem("role")
-  console.log("rolessss", userRole)
+  const token = localStorage.getItem("token");
   const formattedDate = dayjs(dateInput).format('YYYY-MM-DD');
   useEffect(() => {
     // Reset employee-related state variables
@@ -236,7 +236,7 @@ const AddDemobilization = () => {
 
   const LastIndexTravel = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/last?type=${type}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/last?type=${type}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -248,7 +248,7 @@ const AddDemobilization = () => {
       }
 
       const data = await response.json();
-      console.log("data?.idMd",data?.idMd)
+      console.log("data?.idMd", data?.idMd)
       setLastDemobilization(data?.idMd)
 
     } catch (error) {
@@ -257,10 +257,9 @@ const AddDemobilization = () => {
   };
 
   const LastDemobId = lastDemobilization + 1;
-
   const findId = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}&token=${token}`, {
         method: 'GET',
       });
 
@@ -292,7 +291,7 @@ const AddDemobilization = () => {
   };
   const GetIdProject = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/getByname?name=${selectedProject}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/getByname?name=${selectedProject}&token=${token}`, {
         method: 'GET',
       });
 
@@ -311,7 +310,7 @@ const AddDemobilization = () => {
 
   const GetMissionByProjName = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getByProjName?name=${selectedProject}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getByProjName?name=${selectedProject}&token=${token}`, {
         method: 'GET',
       });
 
@@ -419,7 +418,7 @@ const AddDemobilization = () => {
   const GetMissionById = async () => {
     console.log("selecteesss", selectedMission)
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getById?id=${selectedMission}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getById?id=${selectedMission}&token=${token}`, {
         method: 'GET',
       });
 
@@ -443,7 +442,7 @@ const AddDemobilization = () => {
   //Site Clerck
   const handleAddDemobSiteClerck = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/add?id=${idlastTravel}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/add?id=${idlastTravel}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -454,17 +453,18 @@ const AddDemobilization = () => {
         },
         body: JSON.stringify({
           inputDate: formattedDate,
-         // idMd:LastDemobId ,
+          // idMd:LastDemobId ,
           getsId: getsId,
           name: name,
           position: position,
           actualLocation: actualLocation,
+          toLocation: tolocation,
           projName: selectedProject,
           dateMob: lastTravel,
           totalWorkingDays: totalWorking,
           dateDemob: demobDate,
-          type:"Demob",
-          notif:13
+          type: type,
+          notif: 13
 
         })
       });
@@ -477,9 +477,11 @@ const AddDemobilization = () => {
       if (response.ok) {
 
         const responseData = await response.json();
-        console.log("testttttdemonMob",responseData)
         openNotification('bottomRight')
-
+        setTimeout(() => {
+          window.location.reload();
+          navigate("/ManpowerLocation/DemobPermissionSite")
+        }, 2000);
 
 
       }
@@ -494,7 +496,7 @@ const AddDemobilization = () => {
 
   const handleAddDemob = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/add?id=${idlastTravel}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/add?id=${idlastTravel}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -514,13 +516,24 @@ const AddDemobilization = () => {
           dateDemob: demobDate,
           dateMob: lastTravel,
           type: type,
+          toLocation: tolocation,
           demobForMonth: demobmonth,
           officeBackToback: isNeedoffice,
           backToBackType: isNeedsite,
           newRecruitment: isNewRecruitement,
-          inputDate: dateInput,
+          // inputDate: dateInput,
           backToBackNeed: isBackNeed,
-          backToBackType: isNoBackNeed,
+          name: name,
+
+          // idMd:LastDemobId ,
+          getsId: getsId,
+
+          position: position,
+          actualLocation: actualLocation,
+          projName: selectedProject,
+
+
+          // backToBackType: isNoBackNeed,
 
 
 
@@ -537,6 +550,12 @@ const AddDemobilization = () => {
 
         const responseData = await response.json();
         openNotification('bottomRight')
+        setTimeout(() => {
+          window.location.reload();
+          navigate("/ManpowerLocation/DemobPermissionSite")
+        }, 2000);
+
+
 
 
 
@@ -599,6 +618,12 @@ const AddDemobilization = () => {
     setActualLocation(value);
     console.log(value);
   };
+  const handleToLocation = (event) => {
+    const value = event.target.value;
+    setTolocation(value);
+
+  };
+
   const handleExistRentry = (event) => {
     const value = event.target.value;
     setExitrentry(value);
@@ -613,7 +638,7 @@ const AddDemobilization = () => {
     setComments(event.target.value);
   };
 
-  console.log("colmme", comments)
+
 
 
   const goBack = () => {
@@ -623,6 +648,10 @@ const AddDemobilization = () => {
     //const comment = form.getFieldValue('comments');
     const TotalWorkingDays = form.getFieldValue('TotalWorkingDays');
     const demobDate = form.getFieldValue('demobDate');
+    if (visatype === 'Final Exit' && !reason) {
+      alert('Please fill in the Reason field for Final Exit.');
+      return;
+    }
     // const DemobDecision = form.getFieldValue('DemobDecision');
     // const Reason = form.getFieldValue('Reason');
     // const demobMonth = form.getFieldValue('demobMonth');
@@ -658,6 +687,10 @@ const AddDemobilization = () => {
     // const DesiredDate = form.getFieldValue('DesiredDate');
 
     // if (!TotalWorkingDays || !demobDate || !DemobDecision || !Reason || !demobMonth || !visatype ) {
+    if (visatype === 'Final Exit' && !reason) {
+      alert('Please fill in the Reason field for Final Exit.');
+      return;
+    }
     if (!TotalWorkingDays || !demobDate) {
       openNotificationWarning('bottomRight')
 
@@ -820,7 +853,20 @@ const AddDemobilization = () => {
                       />
                     </Form.Item>
                   </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item
+                      label='To Location' name='toLocation'
+                      rules={[{ required: true, message: 'Please select To  Location ' }]}>
 
+
+                      <Input
+                        className='Input'
+                        placeholder="To  Location"
+                        value={tolocation}
+                        onChange={handleToLocation}
+                      />
+                    </Form.Item>
+                  </Col>
 
                 </AppRowContainer>
               </StyledShadowWrapper>
@@ -883,9 +929,10 @@ const AddDemobilization = () => {
                         <span className='modallabel'>Reference Mision Order:</span>
                         <Select
                           style={{ marginTop: "10px" }}
-                          placeholder="Select Your Mision Order"
+                          placeholder={`MAO - ${idlastTravel}`}
                           onChange={handleMissionChange}
-                          value={selectedMission}
+                          value={selectedMission || idlastTravel}
+                        // value={selectedMission}
                         >
                           {missionOrder.map(p => (
                             <Option key={p.missionId} value={p.missionId}>
@@ -975,8 +1022,26 @@ const AddDemobilization = () => {
                     </Form.Item>
                   </Col>
 
-
                   <Col xs={24} md={12}>
+                    <Form.Item
+                      name='Reason'
+                      label="Reason"
+                      rules={[
+                        {
+                          required: visatype === 'Final Exit',
+                          message: 'Please provide a reason for Final Exit'
+                        }
+                      ]}
+                    >
+                      <Input
+                        className='Input'
+                        placeholder="Reason"
+                        value={reason}
+                        onChange={handleReason}
+                      />
+                    </Form.Item>
+                  </Col>
+                  {/* <Col xs={24} md={12}>
                     <Form.Item className='form-field'
                       name='Reason'
                       label="Reason :"
@@ -993,7 +1058,7 @@ const AddDemobilization = () => {
 
 
                     </Form.Item>
-                  </Col>
+                  </Col> */}
                   <Col xs={24} md={12}>
                     <Form.Item
                       label='Demobilization For the Month'
@@ -1025,17 +1090,6 @@ const AddDemobilization = () => {
                       </Select>
                     </Form.Item>
                   </Col>
-
-                  {/* <Col xs={24} md={12}>
-                   <Form.Item label='Demobilization For the Month' name='demobMonth'
-                     rules={[{ required: true, message: 'Please select Date Demobilization of the month' }]}>
-                     <DatePicker
-                       style={{ width: "100%", height: "30px" }}
-                       value={demobmonth ? dayjs(demobmonth, 'YYYY-MM-DD') : null}
-                       onChange={(value) => setDemobmonth(value ? dayjs(value).format('YYYY-MM-DD') : '')}
-                     />
-                   </Form.Item>
-                 </Col> */}
 
                   <Col xs={24} md={24}>
                     <StyledInput>
@@ -1149,7 +1203,7 @@ const AddDemobilization = () => {
             <Col xs={24} md={18}>
               <StyledShadowWrapper>
                 <AppRowContainer>
-               
+
                   <Col xs={24} md={12}>
                     <Form.Item label='Reference' name='refdemob'>
                       <Input placeholder={"DP -" + LastDemobId} readOnly={true} />
@@ -1162,19 +1216,6 @@ const AddDemobilization = () => {
                         placeholder={formattedDate}
                         readOnly
                       />
-                      {/* <DatePicker
-                    style={{ width: "100%", height: "30px" }}
-                    defaultValue={dateInput ? dayjs(formattedDate, 'YYYY-MM-DD') : null}
-                    value={formattedDate ? dayjs(formattedDate, 'YYYY-MM-DD') : null}
-                    onChange={(value) => setDateInput(value ? dayjs(value).format('YYYY-MM-DD') : '')}
-                  /> */}
-                      {/* <DatePicker
-                    style={{ width: "100%", height: "30px" }}
-                    placeholder='YYYY-MM-DD'
-                    value={dateInput ? dayjs(dateInput, 'YYYY-MM-DD') : null}
-                    onChange={(value) => setDateInput(value ? dayjs(value).format('YYYY-MM-DD') : '')}
-
-                  /> */}
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
@@ -1230,6 +1271,20 @@ const AddDemobilization = () => {
                       />
                     </Form.Item>
                   </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item
+                      label='To Location' name='toLocation'
+                      rules={[{ required: true, message: 'Please select To  Location ' }]}>
+
+
+                      <Input
+                        className='Input'
+                        placeholder="To  Location"
+                        value={tolocation}
+                        onChange={handleToLocation}
+                      />
+                    </Form.Item>
+                  </Col>
 
 
                 </AppRowContainer>
@@ -1276,16 +1331,12 @@ const AddDemobilization = () => {
                         placeholder={projectRef}
                         readOnly
 
-
-
-
                       />
 
 
 
                     </Form.Item>
                   </Col>
-
 
                   <Col xs={24} md={12}>
                     <Form.Item className='form-field'
@@ -1295,9 +1346,9 @@ const AddDemobilization = () => {
                         <span className='modallabel'>Reference Mision Order:</span>
                         <Select
                           style={{ marginTop: "10px" }}
-                          placeholder="Select Your Mision Order"
+                          placeholder={`MAO - ${idlastTravel}`}
                           onChange={handleMissionChange}
-                          value={selectedMission}
+                          value={selectedMission || idlastTravel}
                         >
                           {missionOrder.map(p => (
                             <Option key={p.missionId} value={p.missionId}>

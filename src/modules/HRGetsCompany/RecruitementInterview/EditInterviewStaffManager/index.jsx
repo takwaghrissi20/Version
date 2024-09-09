@@ -33,7 +33,7 @@ const EditInterviewStaff = () => {
   const fullName = location.state ? location.state.fullName : null
   const birthayDate = location.state ? location.state.birthayDate : null
   const familySituation = location.state ? location.state.familySituation : null
-  const experience = location.state ? location.state.experience : null
+  const experience = location.state ? location.state.educationLevel : null
   const educationLevel = location.state ? location.state.educationLevel : null
   const diploma = location.state ? location.state.diploma : null
   const telCondidate = location.state ? location.state.telCondidate : null
@@ -61,6 +61,8 @@ const EditInterviewStaff = () => {
   const hrDesion = location.state ? location.state.hrDesion : null
   const hrComentaire = location.state ? location.state.hrComentaire : null
   const finaldesision = location.state ? location.state.finaldesision : null
+  const inputInterview = location.state ? location.state.inputInterview : null
+  const intervtime = location.state ? location.state.intervtime : null
   const [selectedValidation, setSelectedValidation] = useState('');
   const [isOkChecked, setIsOkChecked] = useState(false);
   const [isNoChecked, setIsNoChecked] = useState(false);
@@ -121,7 +123,7 @@ const EditInterviewStaff = () => {
   const [commentareBod1, setCommentareBod1] = useState('');
   const [commentareBod2, setCommentareBod2] = useState('');
   const [salarybod1, setSalarybod1] = useState('');
-
+  const token = localStorage.getItem("token")
   const handleSalary1Change = (event) => {
     const value = event.target.value;
     setSalary1(event.target.value);
@@ -180,7 +182,7 @@ const EditInterviewStaff = () => {
   const fetchRole = async () => {
     try {
       const params = new URLSearchParams({ roles: storedrole });
-      const url = `https://dev-gateway.gets-company.com/api/v1/auth/editProfile?${params}`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/auth/editProfile?${params}&token=${token}`;
       const response = await fetch(url, {
         method: "GET",
       });
@@ -199,6 +201,7 @@ const EditInterviewStaff = () => {
   };
 
   //////////////////////////////
+
   const GetProfileEmployess = async () => {
     const storedemail = window.localStorage.getItem("email");
     console.log("storedemail", storedemail)
@@ -207,7 +210,7 @@ const EditInterviewStaff = () => {
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -502,7 +505,7 @@ const EditInterviewStaff = () => {
   };
   const findIdInterviewStaff = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/findId?code=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/findId?code=${interviewCode}&token=${token}`, {
         method: 'Get',
       });
       if (!response.ok) {
@@ -524,6 +527,7 @@ const EditInterviewStaff = () => {
     window.location.reload();
     navigate(-1)
   }
+
   const [newinterviwDate, setNewinterviwDate] = useState(interviwDate);
   const [newdep, setNewdep] = useState(department);
   const [newprojname, setNewprojname] = useState(projname);
@@ -637,7 +641,7 @@ const EditInterviewStaff = () => {
   ///Update
   const Update = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -720,7 +724,7 @@ const EditInterviewStaff = () => {
   const UpdateManager = async () => {
 
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -760,7 +764,6 @@ const EditInterviewStaff = () => {
           goToTest3: isOkChecked3,
           techEnglishSkills: selectedSkillls,
           evalDesision: isOkCheckedEvaluator,
-          techcommentaire,
           techDate: evaluationDate,
           meetDesision: isOkCheckedProfile,
           techcommentaire: comment,
@@ -777,8 +780,9 @@ const EditInterviewStaff = () => {
           // feedback,
           propsedsalary,
           notif: 2,
-          evalName: name,
-          evalId: getsId,
+          evalName: idStaff?.evalId,
+          evalId: idStaff?.evalId,
+
 
 
 
@@ -787,7 +791,6 @@ const EditInterviewStaff = () => {
 
       if (!response.ok) {
         openNotificationError('bottomRight')
-
         throw new Error('Network response was not ok');
       }
       if (response.ok) {
@@ -798,7 +801,7 @@ const EditInterviewStaff = () => {
           form.resetFields()
           window.location.reload();
           navigate(-1)
-        }, 2000);
+        }, 100);
         // form.resetFields();
 
 
@@ -815,7 +818,7 @@ const EditInterviewStaff = () => {
   const RefuseManager = async () => {
 
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -855,7 +858,6 @@ const EditInterviewStaff = () => {
           goToTest3: isOkChecked3,
           techEnglishSkills: selectedSkillls,
           evalDesision: isOkCheckedEvaluator,
-          techcommentaire,
           techDate: evaluationDate,
           meetDesision: isOkCheckedProfile,
           techcommentaire: comment,
@@ -905,7 +907,7 @@ const EditInterviewStaff = () => {
   const UpdateLeader = async () => {
 
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -945,7 +947,6 @@ const EditInterviewStaff = () => {
           goToTest3: isOkChecked3,
           techEnglishSkills: selectedSkillls,
           evalDesision: isOkCheckedEvaluator,
-          techcommentaire,
           techDate: evaluationDate,
           meetDesision: isOkCheckedProfile,
           techcommentaire: comment,
@@ -998,7 +999,7 @@ const EditInterviewStaff = () => {
   const RefuseLeader = async () => {
 
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -1038,7 +1039,6 @@ const EditInterviewStaff = () => {
           goToTest3: isOkChecked3,
           techEnglishSkills: selectedSkillls,
           evalDesision: isOkCheckedEvaluator,
-          techcommentaire,
           techDate: evaluationDate,
           meetDesision: isOkCheckedProfile,
           techcommentaire: comment,
@@ -1100,7 +1100,7 @@ const EditInterviewStaff = () => {
     //   return;
     // }
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -1147,7 +1147,7 @@ const EditInterviewStaff = () => {
           hr_HumQuality: selectedHumainqualityHR,
           hr_motivation: selectedMotivationHR,
           hr_Intellig: selectedIntelligenceHR,
-          level: selectedLevelHR,
+          NLEVEL: selectedLevelHR,
           headOfDepAprouv: idStaff.headOfDepAprouv,
           // agreedJoinedDate,
           expectedJoinDate: expectedJoinDatehr,
@@ -1156,8 +1156,6 @@ const EditInterviewStaff = () => {
           // feedback,
           propsedsalary: proposedSalary,
           notif: 5,
-
-
 
 
         })
@@ -1173,7 +1171,11 @@ const EditInterviewStaff = () => {
         const responseData = await response.json();
         // form.resetFields();
         openNotification('bottomRight')
-        navigate(-1)
+        setTimeout(() => {
+          navigate(-1)
+        }, 1000);
+
+
       }
 
       // Handle responseData if needed
@@ -1191,7 +1193,7 @@ const EditInterviewStaff = () => {
     //   return;
     // }
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -1284,7 +1286,7 @@ const EditInterviewStaff = () => {
     //   return;
     // }
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -1385,7 +1387,7 @@ const EditInterviewStaff = () => {
     //   return;
     // }
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -1487,7 +1489,7 @@ const EditInterviewStaff = () => {
     //   return;
     // }
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -1585,7 +1587,7 @@ const EditInterviewStaff = () => {
     //   return;
     // }
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -1691,6 +1693,7 @@ const EditInterviewStaff = () => {
   ///////////////End Save HumanManager
   const roles = localStorage.getItem("role");
 
+
   ///FetchMasSalary
   const fetchMaxValues = async () => {
     try {
@@ -1698,8 +1701,8 @@ const EditInterviewStaff = () => {
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/rateMnStaff/filterByPosition?position=${positionToBeFilled}`, {
+      const encodedPosition = encodeURIComponent(positionToBeFilled);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/rateMnStaff/filterByPosition?position=${encodedPosition}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -1715,19 +1718,20 @@ const EditInterviewStaff = () => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
-      if (level === 'junior') {
+      if (requiredGrade === 'junior') {
         setOfficeSalaryMax(data?.[0]?.officeSalaryJun);
         const dalyrate = data[0].dailyrateJun;
         const dailyRateMonth = dalyrate / 30;
         setDailyRateMax(dailyRateMonth);
         setTotalMax(data?.[0]?.totalJun);
-      } else if (level === 'Meduim') {
+      } else if (requiredGrade === 'Medium') {
         setOfficeSalaryMax(data?.[0]?.officeSalaryMid);
-        const dalyrate = data[0].dailyRateMid;
+        const dalyrate = data?.[0]?.dailyrateMid;
+        console.log("hhhhhhh339999hhhhhhh339999", dalyrate)
         const dailyRateMonth = dalyrate / 30;
         setDailyRateMax(dailyRateMonth);
         setTotalMax(data?.[0]?.totalMid);
-      } else if (level === 'senior') {
+      } else if (requiredGradel === 'Senior') {
         setOfficeSalaryMax(data?.[0]?.officeSalarySen);
         const dalyrate = data[0].dailyRateSen;
         const dailyRateMonth = dalyrate / 30;
@@ -1749,14 +1753,13 @@ const EditInterviewStaff = () => {
   //////////////////////
   const handleDecisionChange = (value) => {
     setSelectedbodDescition(value);
-    console.log('Final Descision ', value);
+
   };
   const handleDecision2Change = (value) => {
     setSelectedbodDescition2(value);
-    console.log('Final Descision ', value);
+
   };
-  console.log("selectedbodDescition2", selectedbodDescition2)
-  console.log("selectedbodDescition1", selectedbodDescition)
+
   return (
     <div style={{ paddingLeft: "0.5rem", paddingRight: "0.5rem" }}>
       {/**All Fied not empty */}
@@ -1794,7 +1797,7 @@ const EditInterviewStaff = () => {
                       <Input
                         className='Input'
 
-                        placeholder={interviewCode}
+                        placeholder={"MSIS-" + interviewCode}
                         classNames="ViewInput"
                         readOnly={true} />
                     </Form.Item>
@@ -2485,18 +2488,44 @@ const EditInterviewStaff = () => {
                       <Input
                         className='Input'
 
-                        placeholder={interviewCode}
+                        placeholder={"MSIS-" + interviewCode}
                         classNames="ViewInput"
                         readOnly={true} />
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
+                    <Form.Item label=' Date' name='Date'>
+                      <Input
+                        className='Input'
+                        placeholder={inputInterview}
+                        readOnly
+
+
+                      />
+                    </Form.Item>
+                  </Col>
+
+                  <Col xs={24} md={12}>
                     <Form.Item label='Interview Date' name='Interview Date'>
                       <Input
                         className='Input'
-                        placeholder={newinterviwDate}
-                        value={newinterviwDate}
-                        onChange={() => setNewinterviwDate()}
+                        placeholder={interviwDate}
+
+                        readOnly
+
+
+                      />
+                    </Form.Item>
+                  </Col>
+
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Time Interview' name='Time Interview'>
+                      <Input
+                        className='Input'
+                        placeholder={intervtime}
+
+                        readOnly
+
 
                       />
                     </Form.Item>
@@ -2692,7 +2721,7 @@ const EditInterviewStaff = () => {
           </AppRowContainer>
           <Divider style={{ marginTop: 16, marginBottom: 16 }} />
           {(roles.includes("Manager") && !roles.includes("Leader")) && !roles.includes("Human Ressource") &&
-            idStaff?.validatesFor === ""
+            idStaff?.validatesFor === null
             && (
               <>
                 <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
@@ -3037,6 +3066,7 @@ const EditInterviewStaff = () => {
             )}
           {/*Sauf Manager */}
           {/*Project Leader*/}
+
           {(!roles.includes("Manager") && roles.includes("Leader")) && !roles.includes("Human Ressource") && (
             <>
               <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
@@ -3383,10 +3413,10 @@ const EditInterviewStaff = () => {
           {/*End Project Leader*/}
           {/*Operation if validatesFor not null*/}
           {(roles.includes("Manager") && !roles.includes("Leader")) && !roles.includes("Human Ressource") &&
-            idStaff?.validatesFor
+            !idStaff?.validatesFor === null
             && (
               <>
-                <p>Operation Manger </p>
+                {/* <p>nger </p> */}
                 <Divider style={{ marginTop: 16, marginBottom: 16 }} />
 
                 <>
@@ -4966,7 +4996,6 @@ const EditInterviewStaff = () => {
                               <Col xs={24} md={12}>
                                 <Form.Item label='ID Number' name='idgets'>
                                   <Input
-
                                     placeholder={idStaff.evalId}
                                     readOnly />
                                 </Form.Item>
@@ -6035,7 +6064,7 @@ const EditInterviewStaff = () => {
                                       >
                                         <Input
 
-                                          placeholder={idStaff.propsedsalaryBod1}
+                                          placeholder={idStaff.propsedsalaryBod2}
                                           readOnly
                                         >
 

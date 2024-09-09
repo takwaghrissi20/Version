@@ -462,6 +462,7 @@
   width: 25px;
   height: 25px;
   cursor: pointer;
+
 }
 
 .iconeEditTimeSheet {
@@ -682,7 +683,10 @@
   padding-bottom: 1rem;
 }
 
-.table-cell-center {}
+.table-cell-center {
+z-index: 100;
+
+}
 
 .InputDate {
   height: 2rem !important;
@@ -907,7 +911,17 @@ input {
   height: 3rem;
   background-color: #eeeeee;
   color: black;
-  padding-left: 1rem
+  padding-left: 1rem;
+  z-index: 1000 !important;
+  
+  
+}
+.custom-datepickerEdit .react-datepicker-popper {
+  z-index: 1000 !important; 
+}
+
+.custom-datepickerEdit .react-datepicker-popper[data-placement^='top'] {
+  transform: translateY(-100%) !important; 
 }
 
 .custom-datepicker {
@@ -973,10 +987,11 @@ input {
   border: none;
   background-color: transparent;
   margin-bottom: 0.5rem;
-  border-bottom: 0.2mm ridge #2997ff;
+  /* border-bottom: 0.2mm ridge #2997ff; */
   padding: 0.5rem;
   text-align: center;
   cursor: pointer;
+
 
 
 
@@ -1101,4 +1116,124 @@ input {
 
 .IconeButton:hover {
   opacity: 0.5;
+}
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full page height */
+}
+
+.ball {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin: 0 10px;
+  animation: bounce 0.6s infinite alternate;
+}
+
+.red {
+  background-color: #5784BA;
+}
+
+.yellow {
+  background-color: #00353F;
+}
+
+@keyframes bounce {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(20px);
+  }
+}
+@media screen and (min-width: 576px) {
+ .header-notify-messages {
+      width: 400px !important;
+  }
+}
+.NotifVisa{
+  background-color: #06668C;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-Radius: 50%;
+  display: flex ;
+  justify-content: center; 
+  align-items: center;
+  font-size: 20px; 
+  font-weight: bold; 
+  margin-right: 10px 
+}
+.NotiPassport{
+  background-color: #427AA1;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-Radius: 50%;
+  display: flex ;
+  justify-content: center; 
+  align-items: center;
+  font-size: 20px; 
+  font-weight: bold; 
+  margin-right: 10px ;
+
+
+}
+.NotiFinishContart{
+  background-color: #B6D8F2;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-Radius: 50%;
+  display: flex ;
+  justify-content: center; 
+  align-items: center;
+  font-size: 20px; 
+  font-weight: bold; 
+  margin-right: 10px ;
+
+
+}
+
+.NotifTotal{
+  display: flex;
+  align-items: center;
+   cursor: pointer;
+   margin-top: 10px;
+
+   box-shadow: 0 6px 16px 0 rgba(186, 180, 180, 0.05), 0 3px 6px -4px rgba(186, 180, 180, 0.05),
+   0 9px 28px 8px rgba(186, 180, 180, 0.05);
+   padding: 0.5rem;
+}
+.NotifTotal:hover{
+  background-color: #e5e7e6;
+  border-radius: 5%;
+
+ 
+}
+.NotifRecruitement{
+  background-color: #0B162C;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-Radius: 50%;
+  display: flex ;
+  justify-content: center; 
+  align-items: center;
+  font-size: 20px; 
+  font-weight: bold; 
+  margin-right: 10px ;
+
+
+  
+}
+.IndexNotif{
+  font-weight: bolder;
+  color: #212E53;
+ 
+}
+.item-hover:hover {
+  background-color: white !important;
 }

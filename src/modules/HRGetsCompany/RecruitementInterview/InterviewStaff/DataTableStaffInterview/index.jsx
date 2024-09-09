@@ -21,7 +21,6 @@ import { useNavigate } from "react-router-dom";
 const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
   findId, setFindIdData, open, handleInterview, codeJob, interviewCode }) => {
   //const [findIdData, setFindIdData] = useState(null);
-  console.log("FindBuIdddd",findIdData?.agreedJoinedDate)
   const [isViewInterviewStaff, onViewInterviewStaff] = useState(false);
   const [isEditInterviewStaff, onEditInterviewStaff] = useState(false);
   const [isDelteInterviewStaff, onDeleteInterviewStaff] = useState(false);
@@ -29,6 +28,7 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
   const [isFeddbackEmployee, onFeddbackEmployee] = useState(false);
   const [tableHeight, setTableHeight] = useState('auto');
   const userRoles = localStorage.getItem("role");
+  const token = localStorage.getItem("token");
   useEffect(() => {
     const updateTableHeight = () => {
       const pageHeight = window.innerHeight;
@@ -44,7 +44,7 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
   const navigate = useNavigate();
   const handleAddInterviewStaffOpen = () => {
     //onViewInterviewStaff(true);
-  
+
     navigate(`/Hr/Recruitement&Interview/View/${interviewCode}`, {
       state: {
         interviewCode: findIdData?.interviewCode,
@@ -83,7 +83,7 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
         hr_HumQuality: findIdData?.hr_HumQuality,
         hr_motivation: findIdData?.hr_motivation,
         hr_Intellig: findIdData?.hr_Intellig,
-        level: findIdData?.level,
+        intvlevel: findIdData?.intvlevel,
         headOfDepAprouv: findIdData?.headOfDepAprouv,
         agreedJoinedDate: findIdData?.agreedJoinedDate,
         expectedJoinDate: findIdData?.expectedJoinDate,
@@ -92,7 +92,7 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
         feedback: findIdData?.feedback,
         propsedsalary: findIdData?.propsedsalary,
         finaldesision: findIdData?.finaldesision,
-        time: findIdData?.time,
+        intervtime: findIdData?.intervtime,
         hrComentaire: findIdData?.hrComentaire
 
 
@@ -157,7 +157,7 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
         hr_HumQuality: findIdData?.hr_HumQuality,
         hr_motivation: findIdData?.hr_motivation,
         hr_Intellig: findIdData?.hr_Intellig,
-        level: findIdData?.level,
+        intvlevel: findIdData?.intvlevel,
         headOfDepAprouv: findIdData?.headOfDepAprouv,
         agreedJoinedDate: findIdData?.agreedJoinedDate,
         expectedJoinDate: findIdData?.expectedJoinDate,
@@ -166,8 +166,9 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
         feedback: findIdData?.feedback,
         propsedsalary: findIdData?.propsedsalary,
         finaldesision: findIdData?.finaldesision,
-        time: findIdData?.time,
-        hrComentaire: findIdData?.hrComentaire
+        intervtime: findIdData?.intervtime,
+        hrComentaire: findIdData?.hrComentaire,
+        
 
 
       }
@@ -219,7 +220,7 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-      const response = await fetch(`${endPoint}/api/v1/int/delete?code=${codeJob}&id=${id}`, {
+      const response = await fetch(`${endPoint}/api/v1/int/delete?code=${codeJob}&id=${id}&token=${token}`, {
         method: 'DELETE',
       });
 
@@ -271,20 +272,20 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
       width: 80,
 
     },
-    {
-      title: 'Evalutor Name ',
-      dataIndex: 'fullName',
-      key: 'fullName',
-      ellipsis: {
-        showTitle: false,
-      },
-      render: (name) => (
-        <Tooltip placement='topLeft' title={name}>
-          {name}
-        </Tooltip>
-      ),
+    // {
+    //   title: 'Evalutor Name ',
+    //   dataIndex: 'fullName',
+    //   key: 'fullName',
+    //   ellipsis: {
+    //     showTitle: false,
+    //   },
+    //   render: (name) => (
+    //     <Tooltip placement='topLeft' title={name}>
+    //       {name}
+    //     </Tooltip>
+    //   ),
 
-    },
+    // },
     {
       title: 'Interview Date  ',
       dataIndex: 'interviwDate',
@@ -342,7 +343,7 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
       key: 'notif',
       render: (text, record) => (
         <>
-          {(record.notif === 2) && (
+          {(record.notif === 2 || record?.evalDesision) && (
             <StyledRecentPatientBadge
               style={{
                 backgroundColor: "rgb(50, 205, 50)",
@@ -350,10 +351,10 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
                 fontFamily: "inherit"
               }}
             >
-              Accepted
+              Approved
             </StyledRecentPatientBadge>
           )}
-          {(record.notif === 200) && (
+          {(record.notif === 200 && !record?.evalDesision) && (
             <StyledRecentPatientBadge
               style={{
                 backgroundColor: "rgb(50, 205, 50)",
@@ -362,6 +363,17 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
               }}
             >
               Not Approved
+            </StyledRecentPatientBadge>
+          )}
+          {(record.notif === 0) && (
+            <StyledRecentPatientBadge
+              style={{
+                backgroundColor: "rgb(192, 192, 192)",
+                color: "white",
+                fontFamily: "inherit"
+              }}
+            >
+              Pending
             </StyledRecentPatientBadge>
           )}
         </>
@@ -376,7 +388,7 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
       key: 'notif',
       render: (text, record) => (
         <>
-          {(record.notif === 5) && (
+          {(record.notif === 5 && record?.hrDesion) && (
             <StyledRecentPatientBadge
               style={{
                 backgroundColor: "rgb(50, 205, 50)",
@@ -384,10 +396,11 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
                 fontFamily: "inherit"
               }}
             >
-              Accepted
+              Approved
             </StyledRecentPatientBadge>
           )}
-          {(record.notif === 500) && (
+
+          {record.notif === 500 && (
             <StyledRecentPatientBadge
               style={{
                 backgroundColor: "rgb(50, 205, 50)",
@@ -398,6 +411,21 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
               Not Approved
             </StyledRecentPatientBadge>
           )}
+
+          {(record.notif === 0) && (
+            <StyledRecentPatientBadge
+              style={{
+                backgroundColor: "rgb(192, 192, 192)",
+                color: "white",
+                fontFamily: "inherit"
+              }}
+            >
+           Pending
+            </StyledRecentPatientBadge>
+          )}
+
+
+
         </>
 
 
@@ -431,11 +459,11 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
                   fontFamily: "inherit"
 
                 }}>
-               Not Approved 
+                Not Approved
               </StyledRecentPatientBadge>
             )}
-                 {((record.notif === 550 && record.directSign2 === "On Hold") ||
-                  (record.notif === 660 && record.directSign1 === "On Hold")) && (
+          {((record.notif === 550 && record.directSign2 === "On Hold") ||
+            (record.notif === 660 && record.directSign1 === "On Hold")) && (
               <StyledRecentPatientBadge
                 style={{
                   backgroundColor: "red",
@@ -443,12 +471,27 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
                   fontFamily: "inherit"
 
                 }}>
-               Not Approved 
+                Not Approved
               </StyledRecentPatientBadge>
             )}
         </>
 
       ),
+    },
+    {
+
+      title: 'Expected Join Date',
+      dataIndex: 'expectedJoinDate',
+      key: 'expectedJoinDate',
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (name) => (
+        <Tooltip placement='topLeft' title={name}>
+          {name}
+        </Tooltip>
+      ),
+
     },
 
     {
@@ -466,20 +509,40 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
 
     },
     {
-
       title: 'Agreed Join Date',
       dataIndex: 'agreedJoinedDate',
       key: 'agreedJoinedDate',
       ellipsis: {
         showTitle: false,
       },
-      render: (name) => (
-        <Tooltip placement='topLeft' title={name}>
-          {name}
-        </Tooltip>
+      render: (name, record) => (
+        record.feedback === "Accepted Offer" ? (
+          <Tooltip placement='topLeft' title={name}>
+            {name}
+          </Tooltip>
+        ) : null
       ),
-
     },
+
+
+
+    // {
+
+    //   title: 'Agreed Join Date',
+    //   dataIndex: 'agreedJoinedDate',
+    //   key: 'agreedJoinedDate',
+    //   ellipsis: {
+    //     showTitle: false,
+    //   },
+    //   render: (name) => (
+    //     <Tooltip placement='topLeft' title={name}>
+    //       {name}
+    //     </Tooltip>
+    //   ),
+
+    // },
+
+
 
 
     {
@@ -491,23 +554,29 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
       render: (text, record) => {
         const items = [
           { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleAddInterviewStaffOpen },
-          { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditInterviewStaffOpen },
+
           ...(userRoles.includes('admin') ? [
+            { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditInterviewStaffOpen },
             { key: 3, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteInterviewStaff },
           ] : [])
 
         ];
-        if (((record.notif === 55 && record.directSign2 === "Accepted" && record.directSign1 === "Accepted") ||
-        (record.notif === 66 && record.directSign1 === "Accepted" && record.directSign === "Accepted"))) {
+        if (((record.notif === 55 && record.directSign2 === "Accepted" && record.directSign1 === "Accepted" && record.feedback === "Accepted Offer") ||
+          (record.notif === 66 && record.directSign1 === "Accepted" && record.directSign === "Accepted" && record.feedback === "Accepted Offer"))) {
           items.push({
             key: 4, label: <span style={{ fontSize: 14 }}>Add Employees</span>,
             onClick: handleAddEmployees
           });
+        }
+        if (((record.notif === 55 && record.directSign2 === "Accepted" && record.directSign1 === "Accepted") ||
+          (record.notif === 66 && record.directSign1 === "Accepted" && record.directSign === "Accepted"))) {
           items.push({
             key: 5, label: <span style={{ fontSize: 14 }}>Feddback Employees</span>,
             onClick: handleFeedbackEmployeesOpen
           });
         }
+
+
         return (
           <div onClick={() => findId(record?.interviewCode)}>
             <Dropdown menu={{ items }} trigger={['click']}>

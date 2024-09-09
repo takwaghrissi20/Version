@@ -25,9 +25,10 @@ const OrderTable = ({ orderData }) => {
   };
 
   //Find By Id
+  const token = localStorage.getItem("token");
   const findId = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${code}&token=${token}`, {
         method: 'Get',
       });
       if (!response.ok) {

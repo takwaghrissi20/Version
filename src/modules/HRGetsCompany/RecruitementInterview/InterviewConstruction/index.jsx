@@ -15,7 +15,7 @@ import Pagination from '../../../../@crema/components/AppsPagination';
 import clsx from 'clsx';
 import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal'; 0
 import { useNavigate } from "react-router-dom";
-const InterviewConstruction = ({ allinterviewConstructionTeam }) => {
+const InterviewConstruction = ({ allinterviewConstructionTeam,token }) => {
   const navigate = useNavigate();
   const [interviewConstructionTeam, setInterviewConstructionTeam] = useState([]);
   const [interviewConstructionTeamFiltrer, setInterviewConstructionTeamFiltrer] = useState([]);
@@ -31,11 +31,10 @@ const InterviewConstruction = ({ allinterviewConstructionTeam }) => {
   useEffect(() => {
     fetchInterviewConstructionTeam();
   }, [currentPage, pageSize, nameFilter, count, id]);
-
   const fetchInterviewConstructionTeam = async () => {
     try {
 
-      const url = `https://dev-gateway.gets-company.com/api/v1/intc/listBypage?size=${pageSize}&page=${currentPage}&sortBy=interviwDate`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/intc/listBypage?size=${pageSize}&page=${currentPage}&sortBy=interviwDate&token=${token}`;
       const response = await fetch(url);
 
 
@@ -69,12 +68,13 @@ const InterviewConstruction = ({ allinterviewConstructionTeam }) => {
     handleSearch({ target: { value: item.name } });
     setIsDropdownOpen(false)
   };
+  
   const handleNameFilterChange = async (event) => {
     const filterValue = event.target.value.trim(); // Trim whitespace from input value
     setNameFilter(filterValue);
     if (filterValue !== '') {
       try {
-        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/filterByName?name=$${filterValue}`);
+        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/filterByName?name=$${filterValue}&token=${token}`);
         if (!response.ok) {
           throw new Error('Failed to filter Recruitement');
         }
@@ -99,9 +99,10 @@ const InterviewConstruction = ({ allinterviewConstructionTeam }) => {
   };
 
   //Fin Bu Id 
+ 
   const findId = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${code}&token=${token}`, {
         method: 'Post',
 
       });

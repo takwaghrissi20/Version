@@ -61,11 +61,11 @@ const InterviewSheetById = () => {
   const hseComment = location.state ? location.state.hseComment : null;
   const propsedsalary = location.state ? location.state.propsedsalary : null;
   const dailyRate = location.state ? location.state.dailyRate : null;
-  
+  const token = localStorage.getItem("token")
   const [idViewConstruction, setIdViewConstruction] = useState([]);
   const findIdInterviewConstruction = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${interviewCode}&token=${token}`, {
         method: 'POST',
       });
       if (!response.ok) {

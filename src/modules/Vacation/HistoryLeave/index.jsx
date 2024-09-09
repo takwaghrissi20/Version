@@ -33,6 +33,7 @@ const Tables = () => {
 
  //Get profile By Email
  const userEmail = localStorage.getItem("email");
+ const token = localStorage.getItem("token");
  const GetProfileEmployess = async () => {
 
   try {
@@ -40,7 +41,7 @@ const Tables = () => {
       process.env.NODE_ENV === "development"
         ? "https://dev-gateway.gets-company.com"
         : "";
-    const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${userEmail}`, {
+    const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${userEmail}&token=${token}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -64,7 +65,7 @@ const Tables = () => {
 
   const getVacations = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/listByEmp?id=${idgets}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/listByEmp?id=${idgets}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

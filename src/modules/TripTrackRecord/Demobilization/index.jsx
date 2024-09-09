@@ -43,8 +43,7 @@ const UpdateDemobilization = () => {
   const newRecruitment = location.state ? location.state.newRecruitment : null;
   const desiredDate = location.state ? location.state.desiredDate : null;
   const commentaire = location.state ? location.state.commentaire : null;
-
-  console.log("demobDesisionZ", demobDesision)
+  const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const [lastDemobilization, setLastDemobilization] = useState(0);
   const [getsId, setGetsId] = useState("");
@@ -266,7 +265,7 @@ const UpdateDemobilization = () => {
 
   const LastIndexTravel = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/last?type=${type}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/last?type=${type}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -287,10 +286,9 @@ const UpdateDemobilization = () => {
   };
 
   const LastDemobId = lastDemobilization + 1;
-
   const findId = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}&token=${token}`, {
         method: 'GET',
       });
 
@@ -322,7 +320,7 @@ const UpdateDemobilization = () => {
   };
   const GetIdProject = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/getByname?name=${selectedProject}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/getByname?name=${selectedProject}&token=${token}`, {
         method: 'GET',
       });
 
@@ -341,7 +339,7 @@ const UpdateDemobilization = () => {
 
   const GetMissionByProjName = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getByProjName?name=${selectedProject}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getByProjName?name=${selectedProject}&token=${token}`, {
         method: 'GET',
       });
 
@@ -449,7 +447,7 @@ const UpdateDemobilization = () => {
   const GetMissionById = async () => {
     console.log("selecteesss", selectedMission)
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getById?id=${selectedMission}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getById?id=${selectedMission}&token=${token}`, {
         method: 'GET',
       });
 
@@ -475,7 +473,7 @@ const UpdateDemobilization = () => {
   //Site Clerck
   const handleAddDemobSiteClerck = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/add?id=${idlastTravel}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/add?id=${idlastTravel}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -526,7 +524,7 @@ const UpdateDemobilization = () => {
 
   const handleUpdateDemob = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/update?id=${idMd}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/update?id=${idMd}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -557,7 +555,7 @@ const UpdateDemobilization = () => {
           backToBackType: isNeedsite,
           newRecruitment: isNewRecruitement,
           backToBackNeed: isBackNeed,
-          backToBackType: isNoBackNeed,
+          // backToBackType: isNoBackNeed,
           notif: 19
 
         })
@@ -584,7 +582,7 @@ const UpdateDemobilization = () => {
   };
   const handleUpdateConstruction = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/update?id=${idMd}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/update?id=${idMd}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -643,7 +641,7 @@ const UpdateDemobilization = () => {
   {/*QC LEAD*/ }
   const handleQCLEAD = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/update?id=${idMd}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/update?id=${idMd}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -707,7 +705,7 @@ const UpdateDemobilization = () => {
   {/*handleLOGISTIC*/}
   const handleLOGISTIC = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/update?id=${idMd}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/update?id=${idMd}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -768,7 +766,7 @@ const UpdateDemobilization = () => {
   {/*handleLOGISTIC*/}
   const handleUpdateLeader = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/update?id=${idMd}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/update?id=${idMd}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -826,7 +824,7 @@ const UpdateDemobilization = () => {
   };
   const handleUpdateOperation = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/update?id=${idMd}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/update?id=${idMd}&token=${token}`, {
 
         method: 'PUT',
         headers: {

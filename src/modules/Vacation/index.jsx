@@ -23,7 +23,7 @@ const Vacation = () => {
   const [isSave, onSave] = useState(false);
   const [isCancel, onCancel] = useState(false);
   const [modalError, setModalError] = useState(false);
- 
+  const token = localStorage.getItem("token");
 
   const getCurrentTime = () => {
     return moment();
@@ -207,7 +207,7 @@ const Vacation = () => {
     console.log('Request payload:', bodyData);
 
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/add?type=${leaveType}&id=${id}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/add?type=${leaveType}&id=${id}&token=${token}`, {
         method: 'POST',
         headers: {
           "Access-Control-Allow-Headers": "Content-Type",
@@ -236,7 +236,7 @@ const Vacation = () => {
 
   const findEmployeeById = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${id}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${id}&token=${token}`, {
         method: 'GET',
       });
 

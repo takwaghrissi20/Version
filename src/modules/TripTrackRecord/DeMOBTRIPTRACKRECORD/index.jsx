@@ -25,8 +25,7 @@ const DemobTripTrack = () => {
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [demopTrips, setDemopTrips] = useState([]);
-
-
+  const token = localStorage.getItem("token");
   const handlePageChangeSite = (page) => {
     setCurrentPage(page);
   };
@@ -39,7 +38,7 @@ const DemobTripTrack = () => {
  
   const fetchTravel = async () => {
     try {
-      let url = `https://dev-gateway.gets-company.com/api/v1/mobDemob/list?page=${currentPage}&size=${pageSize}`;
+      let url = `https://dev-gateway.gets-company.com/api/v1/mobDemob/list?page=${currentPage}&size=${pageSize}&token=${token}`;
 
 
 

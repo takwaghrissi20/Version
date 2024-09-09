@@ -15,6 +15,7 @@ const OrderTableOffice = ({ allemployee, loading, deductionMonth, costCenter,
   const [filterType, setFilterType] = useState('');
   const [filterProject, setFilterProject] = useState('');
   const [filteredEmployees, setFilteredEmployees] = useState([]);
+  const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const handleRequestPayment = () => {
       navigate(`/Payroll/office/PAYMENT_ORDER_REQUESTS`, {
@@ -88,7 +89,7 @@ const OrderTableOffice = ({ allemployee, loading, deductionMonth, costCenter,
   };
   const Calculate = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/sheetOffice/calculate?id=${code}&month=${monthName}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/sheetOffice/calculate?id=${code}&month=${monthName}&token=${token}`, {
         method: 'GET',
       });
       if (!response.ok) {

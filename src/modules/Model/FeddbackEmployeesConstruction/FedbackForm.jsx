@@ -155,7 +155,7 @@ const FedbackForm = (props) => {
           hr_HumQuality: findIdData?.hr_HumQuality,
           hr_motivation: findIdData?.hr_motivation,
           hr_Intellig: findIdData?.hr_Intellig,
-          level: findIdData?.level,
+          intvlevel: findIdData?.intvlevel,
           headOfDepAprouv: findIdData?.headOfDepAprouv,
           // agreedJoinedDate,
           expectedJoinDate: findIdData?.expectedJoinDate,

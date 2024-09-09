@@ -61,7 +61,7 @@ const TabsInformationRecruitement = (props) => {
       setUserImage(URL.createObjectURL(acceptedFiles[0]));
     },
   });
-
+  const token = localStorage.getItem("token");
   const { messages } = useIntl();
 
   const { Option } = Select;
@@ -75,7 +75,7 @@ const TabsInformationRecruitement = (props) => {
     try {
       const params = new URLSearchParams({ name: projname, id: id });
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}&token=${token}`, {
 
         method: 'POST',
         headers: {

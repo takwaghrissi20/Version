@@ -10,7 +10,7 @@ const AllDemob = ({ employeessite, findIdData, id, findId,handleInterview }) => 
   const [isDelteRecruitement, onDeleteRecruitement] = useState(false);
   const navigate = useNavigate();
   const [filteredEmployees, setFilteredEmployees] = useState([]);
-console.log("employeessiteccc",employeessite)
+  const token = localStorage.getItem("token")
 useEffect(() => {
   const extractFilteredEmployees = () => {
     return employeessite.filter(employee => {
@@ -59,7 +59,7 @@ console.log("filteredEmployees",filteredEmployees)
         nbExperience: findIdData?.nbExperience,
         recruttrequestDate: findIdData?.recruttrequestDate,
         projCode: findIdData?.projRef,
-        type: findIdData?.type,
+        // type: findIdData?.type,
         exDep: findIdData?.exDep,
         oDep: findIdData?.oDep,
         comentPlaner: findIdData?.comentPlaner,
@@ -109,7 +109,7 @@ console.log("filteredEmployees",filteredEmployees)
   const DeleteRecruitement = async () => {
     try {
       const endPoint = process.env.NODE_ENV === "development" ? "https://dev-gateway.gets-company.com" : "";
-      const response = await fetch(`${endPoint}/api/v1/re/delete?code=${id}`, {
+      const response = await fetch(`${endPoint}/api/v1/re/delete?code=${id}&token=${token}`, {
         method: 'DELETE',
       });
 

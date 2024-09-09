@@ -129,6 +129,7 @@ const JWTAuthProvider = ({ children }) => {
     localStorage.removeItem('token');
     localStorage.removeItem('email');
     setAuthToken(null);
+    window.location.reload();
     setAuthData({
       user: null,
       isLoading: false,

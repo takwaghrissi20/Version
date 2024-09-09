@@ -22,6 +22,7 @@ const RecentActivity = (props) => {
         </Button>
       }
     >
+      
       <StyledRecentActivityScrollbar>
         <List
           dataSource={data}

@@ -42,7 +42,7 @@ const FedbackForm = (props) => {
       setUserImage(URL.createObjectURL(acceptedFiles[0]));
     },
   });
-  console.log("findIdData", findIdData)
+  const token = localStorage.getItem("token")
   const { messages } = useIntl();
   const [newDateJointCandidate, setnewDateJointCandidate] = useState(findIdData?.agreedJoinedDate);
   const [selectedFedback, setSelectedFedback] = useState("Default");
@@ -108,7 +108,7 @@ const FedbackForm = (props) => {
   const update = async () => {
  
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${findIdData?.interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?id=${findIdData?.interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -155,7 +155,7 @@ const FedbackForm = (props) => {
           hr_HumQuality: findIdData?.hr_HumQuality,
           hr_motivation: findIdData?.hr_motivation,
           hr_Intellig: findIdData?.hr_Intellig,
-          level: findIdData?.level,
+          intvlevel: findIdData?.intvlevel,
           headOfDepAprouv: findIdData?.headOfDepAprouv,
           // agreedJoinedDate,
           expectedJoinDate: findIdData?.expectedJoinDate,

@@ -16,10 +16,10 @@ const EmployeesStatusOffice = () => {
   useEffect(() => {
     fetchEmployees();
   }, []);
-
+  const token = localStorage.getItem("token");
   const fetchEmployees = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list?token=${token}`);
       const data = await response.json();
 
       const dataFiter = data.filter(p => p.type_Emp === "office");

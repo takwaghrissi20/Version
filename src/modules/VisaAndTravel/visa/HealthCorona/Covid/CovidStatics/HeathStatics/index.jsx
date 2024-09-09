@@ -21,13 +21,14 @@ const HealthCovidInformation = ({ CovidStatics}) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [vaccin, setVaccin] = useState("");
+  const token = localStorage.getItem("token")
   useEffect(() => {
     fetchDataVaciin();
   }, [currentPage, pageSize]);
   const fetchDataVaciin = async () => {
     try {
 
-      const url = `https://dev-gateway.gets-company.com/api/v1/vacin/filterByType?size=${pageSize}&page=${currentPage}&type=COVID VACCINE`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/vacin/filterByType?size=${pageSize}&page=${currentPage}&type=COVID VACCINE&token=${token}`;
       const response = await fetch(url);
      
       if (!response.ok) {

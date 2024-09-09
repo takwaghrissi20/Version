@@ -37,12 +37,14 @@ const TimeSheetSite = () => {
   const [tempSelectedYear, setTempSelectedYear] = useState(selectedYear);
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null); 
+  const token = localStorage.getItem("token");
   useEffect(() => {
     fetchEmployeesByType();
     fetchCountEmployeesSite()
     fetchAllProjet()
     
   }, [currentPage, pageSize, selectedMonth, selectedYear, filterType]);
+
   const fetchCountEmployeesSite = async () => {
     try {
       const endPoint =
@@ -50,7 +52,7 @@ const TimeSheetSite = () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -67,7 +69,7 @@ const TimeSheetSite = () => {
       }
       const data = await response.json();
 
-      const dataSite = data.filter(p => p.type_Emp === "site" && p.actStatus === "Active ")
+      const dataSite = data.filter(p => p.type_Emp === "site" && p.actStatus === "Active")
 
       setTotalRecords(dataSite.length)
 
@@ -80,7 +82,7 @@ const TimeSheetSite = () => {
   //Fetch All Projet
   const fetchAllProjet = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/list`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/list?token=${token}`);
       const data = await response.json();
       const projectNames = [...new Set(data
         .map(item => item.projName)
@@ -97,7 +99,7 @@ const TimeSheetSite = () => {
   //End Fetch All Projet
   const fetchEmployeesByType = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getEmByTypeStatus?type=site&status=Active &page=${currentPage}&size=${pageSize}&month=${selectedMonth}&year=${selectedYear}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getEmByTypeStatus?type=site&status=Active &page=${currentPage}&size=${pageSize}&token=${token}&month=${selectedMonth}&year=${selectedYear}`);
       const data = await response.json();
 
       setEmployeesOffice(data);
@@ -131,7 +133,7 @@ const TimeSheetSite = () => {
 
   const fetchFilteredEmployees = async (filterValue) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${filterValue}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${filterValue}&token=${token}`);
       if (!response.ok) {
         throw new Error('Failed to filter employees');
       }
@@ -189,9 +191,10 @@ const TimeSheetSite = () => {
     setSelectedYear(tempSelectedYear);
     setOkClicked(!okClicked);
   };
+
   const handleGeneratePDF = async () => {
     try {
-      const response = await axios.get('https://dev-gateway.gets-company.com/api/v1/emp/list');
+      const response = await axios.get(`https://dev-gateway.gets-company.com/api/v1/emp/list?token=${token}`);
       const employees = response.data;
       const doc = new jsPDF('landscape');
       const now = new Date();

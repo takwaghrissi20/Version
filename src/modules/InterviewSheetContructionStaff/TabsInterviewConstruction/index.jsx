@@ -107,7 +107,7 @@ const TabsInterviewSheetConstructionId = () => {
   const [salaryError, setSalaryError] = useState('');
   const [dailyError, setDailyError] = useState('');
   const [form] = Form.useForm();
-  console.log("interviewDate", interviewDate)
+  const token = localStorage.getItem("token")
 
   const [evaluationDate, setEvaluationDate] = useState(dayjs().format('DD/MM/YYYY'));
   const [dateInput, setDateInput] = useState(new Date());
@@ -256,7 +256,7 @@ console.log("timeeewss",interviewTime)
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/last`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/last?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -499,7 +499,7 @@ console.log("timeeewss",interviewTime)
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/addintv?id=${JobCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/addintv?id=${JobCode}&token=${token}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -585,7 +585,7 @@ console.log("timeeewss",interviewTime)
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/addintv?id=${JobCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/addintv?id=${JobCode}&token=${token}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -615,11 +615,11 @@ console.log("timeeewss",interviewTime)
           //familySituation:selectedSituation,
           diploma: diploma,
           educationLevel: educationLevel,
-          requiredExperinece: requiredExperinece,
+          // requiredExperinece: requiredExperinece,
           notif: 0,
           inputInterview: formattedDate,
           birthayDate: scheduleDate,
-          time:interviewTime
+          INTERVTIME:interviewTime
           // interviwDate: interviewDate,
           // fullName: fullname,
           // projname: projectName,
@@ -873,9 +873,7 @@ console.log("timeeewss",interviewTime)
                       <Input
 
                         placeholder={formattedDate}
-                        readOnly
-
-                      />
+                        readOnly />
 
 
 

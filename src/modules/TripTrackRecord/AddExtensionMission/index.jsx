@@ -50,6 +50,7 @@ const AddExtensionMission = () => {
   const [isOrDep, setIsOrDep] = useState(false);
   const userRole = localStorage.getItem("role");
   const userEmail = localStorage.getItem("email");
+  const token = localStorage.getItem("token");
   const GetProfileEmployess = async () => {
 
     try {
@@ -57,7 +58,7 @@ const AddExtensionMission = () => {
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${userEmail}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${userEmail}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -109,7 +110,7 @@ console.log("nameConstruction",nameConstruction)
 
   const LastIndexmissionEx = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/last`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/last&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -209,7 +210,7 @@ console.log("nameConstruction",nameConstruction)
 
   const handleAddMisssionExtention = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/add?id=${searchValue}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/add?id=${searchValue}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -254,6 +255,10 @@ console.log("nameConstruction",nameConstruction)
         const responseData = await response.json();
         form.resetFields();
         openNotification('bottomRight')
+        setTimeout(() => {
+          window.location.reload();
+          navigate(-1)
+        }, 2000);
 
 
       }
@@ -315,7 +320,7 @@ console.log("nameConstruction",nameConstruction)
 
   const GetALLMission = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getAll`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getAll?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -366,7 +371,7 @@ console.log("nameConstruction",nameConstruction)
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getById?id=${searchValue}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getById?id=${searchValue}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'

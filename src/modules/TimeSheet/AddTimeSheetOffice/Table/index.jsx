@@ -9,43 +9,8 @@ const { Option } = Select;
 const OrderTable = ({ orderData, filterDate, setSelectedPointage, selectedPointage, loading }) => {
   const [editingRecord, setEditingRecord] = useState(null);
   const formattedPickerValue = moment(filterDate).format('YYYY-MM-DD');
-  const [tableHeight, setTableHeight] = useState('auto');
-  const [allpointage, setAllpointage] = useState('');
 
-  useEffect(() => {
-    GetAllPointage();
-    const updateTableHeight = () => {
-      const pageHeight = window.innerHeight;
-      const tableHeight = pageHeight * 0.3;
-      setTableHeight(tableHeight);
-    };
-    window.addEventListener('resize', updateTableHeight);
-    updateTableHeight();
-    return () => {
-      window.removeEventListener('resize', updateTableHeight);
-    };
-  }, []);
-
-  useEffect(() => {
-    fetchPointages();
-  }, [filterDate]);
-
-  const fetchPointages = async () => {
-    try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/sheetOffice/all`);
-      const data = await response.json();
-      const testdate = moment(filterDate).format('YYYY-MM-DD');
-      const filteredData = data.filter(item => item.date === testdate);
-      const pointageData = filteredData.reduce((acc, item) => {
-        acc[item.getsId] = item.pointage;
-        return acc;
-      }, {});
-      setSelectedPointage(pointageData);
-    } catch (error) {
-      console.error('Error fetching pointages:', error);
-    }
-  };
-
+  // Gérer le changement du pointage
   const handlePointageChange = async (value, record) => {
     try {
       if (!selectedPointage[record.getsId]) {
@@ -60,15 +25,16 @@ const OrderTable = ({ orderData, filterDate, setSelectedPointage, selectedPointa
     }
   };
 
+  // Ajouter un pointage
   const handleAddPointage = async (code, pointage) => {
     try {
       const bodyData = {
-        date: formattedPickerValue,
+        odate: formattedPickerValue,
         pointage: pointage,
+        getsId: code,
       };
-
       const response = await fetch(
-        `https://dev-gateway.gets-company.com/api/v1/sheetOffice/add?id=${code}`,
+        `https://dev-gateway.gets-company.com/api/v1/sheetOffice/add?id=${code}&token=${localStorage.getItem("token")}`,
         {
           method: 'POST',
           headers: {
@@ -77,27 +43,29 @@ const OrderTable = ({ orderData, filterDate, setSelectedPointage, selectedPointa
           body: JSON.stringify(bodyData),
         }
       );
-
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
 
       const responseData = await response.json();
+      console.log("ttyhhhh",responseData)
       setEditingRecord(code);
+
+        setEditingRecord(code);
     } catch (error) {
       console.error("Erreur lors de l'ajout du pointage:", error);
     }
   };
 
+  // Mettre à jour un pointage
   const handleUpdatePointage = async (code, pointage) => {
     try {
       const bodyData = {
-        date: formattedPickerValue,
+        odate: formattedPickerValue,
         pointage: pointage,
       };
-
       const response = await fetch(
-        `https://dev-gateway.gets-company.com/api/v1/sheetOffice/update?id=${code}`,////Afaire Api
+        `https://dev-gateway.gets-company.com/api/v1/sheetOffice/update?id=${code}&token=${localStorage.getItem("token")}`,
         {
           method: 'PUT',
           headers: {
@@ -106,12 +74,7 @@ const OrderTable = ({ orderData, filterDate, setSelectedPointage, selectedPointa
           body: JSON.stringify(bodyData),
         }
       );
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const responseData = await response.json();
+      if (!response.ok) throw new Error('Erreur lors de la mise à jour du pointage');
       setEditingRecord(null);
     } catch (error) {
       console.error("Erreur lors de la mise à jour du pointage:", error);
@@ -140,109 +103,76 @@ const OrderTable = ({ orderData, filterDate, setSelectedPointage, selectedPointa
       key: 'Pointages',
       fixed: 'left',
       render: (text, record) => {
-        const currentDate = moment().format('YYYY-MM-DD');
         const pointage = selectedPointage[record.getsId];
         return (
-          <div>
-            {editingRecord === record.getsId ? (
-              <Select
-                style={{ width: 120 }}
-                defaultValue={pointage}
-                onChange={(value) => handlePointageChange(value, record)}
-              >
-                <Option value="WO">Working Office</Option>
-                <Option value="WH">Working Home</Option>
-                <Option value="A">Absent</Option>
-                <Option value="V">Vacation</Option>
-                <Option value="R">Site Rest</Option>
-                <Option value="JA">Justified Absence</Option>
-                <Option value="WR">Work Record</Option>
-              </Select>
-            ) : (
-              <div className='pointageContainer'>
-                {pointage || (
-                  <Select
-                    style={{ width: 120 }}
-                    defaultValue="Select Time Sheet"
-                    onChange={(value) => handlePointageChange(value, record)}
-                  >
-                    <Option value="Select Time Sheet" disabled>
-                      Default
-                    </Option>
-                    <Option value="WO">Working Office</Option>
-                    <Option value="WH">Working Home</Option>
-                    <Option value="A">Absent</Option>
-                    <Option value="V">Vacation</Option>
-                    <Option value="R">Site Rest</Option>
-                    <Option value="JA">Justified Absence</Option>
-                    <Option value="WR">Work Record</Option>
-                  </Select>
-                )}
-              </div>
-            )}
-          </div>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+          {editingRecord === record.getsId ? (
+            <Select
+              style={{ width: 120 }}
+              value={pointage} // Use value instead of defaultValue
+              onChange={(value) => handlePointageChange(value, record)}
+            >
+              <Option value="WO">Working Office</Option>
+              <Option value="WH">Working Home</Option>
+              <Option value="A">Absent</Option>
+              <Option value="V">Vacation</Option>
+              <Option value="R">Site Rest</Option>
+              <Option value="JA">Justified Absence</Option>
+              <Option value="WR">Work Recorded</Option>
+            </Select>
+          ) : (
+            <span
+              onClick={() => handleEditClick(record.getsId)}
+              style={{ display: 'flex', alignItems: 'center', cursor: 'pointer'}}
+            >
+              <span style={{ color: pointage ? '#384454' : 'black',fontWeight: pointage ? 'bold' : 'normal' }}>
+              {pointage || 'Select Pointing'}
+              </span>
+           
+              {/* <EditOutlined className="iconeEditTime" style={{ marginLeft: 8 }} /> */}
+            </span>
+          )}
+        </div>
+        
         );
       },
     },
     {
       title: 'Action',
-      key: 'action',
-      render: (text, record) => (
-        <EditOutlined
-          className="iconeEditTime"
-          onClick={() => handleEditClick(record.getsId)}
-          style={{ marginLeft: 8 }}
-        />
-      ),
-    },
+      dataIndex: 'Action',
+      key: 'Action',
+      render: (text, record) => {
+        const pointage = selectedPointage[record.getsId];
+        return (
+          <span
+            onClick={() => handleEditClick(record.getsId)}
+            style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+          >
+         
+         {pointage && (
+        <EditOutlined className="iconeEditTime" style={{ marginLeft: 8 }} />
+      )}
+          </span>
+        );
+      },
+    }
+    
   ];
 
-  const GetAllPointage = async () => {
-    try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/sheetOffice/all`, {
-        method: 'Get',
-      });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      if (response.ok) {
-        const responseData = await response.json();
-        setAllpointage(responseData);
-      }
-    } catch (error) {
-      console.error("Erreur lors de la récupération all Pointage:", error);
-    }
-  };
-
   return (
-    <>
-      {loading ? (
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',
-          color: "#2997ff"
-        }}>
-          <p>Loading...</p>
-        </div>
-      ) : (
-        <Table
-          columns={columns}
-          dataSource={orderData}
-          scroll={{ x: 'auto', y: tableHeight }}
-          pagination={false}
-          rowKey="getsId"
-          bordered
-        />
-      )}
-    </>
+    <Table
+      dataSource={orderData}
+      columns={columns}
+      loading={loading}
+      pagination={false}
+      rowKey={(record) => record.getsId}
+    />
   );
 };
 
 OrderTable.propTypes = {
   orderData: PropTypes.array.isRequired,
-  filterDate: PropTypes.instanceOf(Date).isRequired,
+  filterDate: PropTypes.any.isRequired,
   setSelectedPointage: PropTypes.func.isRequired,
   selectedPointage: PropTypes.object.isRequired,
   loading: PropTypes.bool.isRequired,

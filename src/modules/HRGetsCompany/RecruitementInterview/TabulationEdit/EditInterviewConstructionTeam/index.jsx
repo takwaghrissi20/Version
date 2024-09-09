@@ -150,9 +150,10 @@ const EditInterviewConstruction = ({ hseCertif,
   const [isNoCheckedHRDecision, setIsNoCheckedHRDecision] = useState(false);
   const [commentHr, setCommentsHr] = useState("");
   const [idConstruction, setIdConstruction] = useState("");
+  const token = localStorage.getItem("token");
   const findIdInterviewConstruction = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${interviewCode}&token=${token}`, {
         method: 'POST',
       });
       if (!response.ok) {
@@ -596,9 +597,10 @@ const EditInterviewConstruction = ({ hseCertif,
     });
   };
   ///Update
+ 
   const Update = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -695,10 +697,10 @@ const EditInterviewConstruction = ({ hseCertif,
 
   //EndgoAssesmentSheet
   //UpdateManager
-  console.log("evaluationDatellll", evaluationDate)
+
   const UpdateManager = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -739,7 +741,6 @@ const EditInterviewConstruction = ({ hseCertif,
           goToTest3: isOkChecked3,
           techEnglishSkills: selectedSkillls,
           evalDesision: isOkCheckedEvaluator,
-          techcommentaire,
           techDate: evaluationDate,
           meetDesision: isOkCheckedProfile,
           techcommentaire: comment,
@@ -785,9 +786,10 @@ const EditInterviewConstruction = ({ hseCertif,
     }
   };
   //Refused Manager
+
   const RefuseManager = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -828,7 +830,6 @@ const EditInterviewConstruction = ({ hseCertif,
           goToTest3: isOkChecked3,
           techEnglishSkills: selectedSkillls,
           evalDesision: isOkCheckedEvaluator,
-          techcommentaire,
           techDate: evaluationDate,
           meetDesision: isOkCheckedProfile,
           techcommentaire: comment,
@@ -897,9 +898,10 @@ const EditInterviewConstruction = ({ hseCertif,
 
   //   });
   // };
+  
   const UpdateProjectLeader = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -989,9 +991,10 @@ const EditInterviewConstruction = ({ hseCertif,
   };
   //EndUpdataProjectLeader
   //RefuseProjectLeader
+  
   const RefuseProjectLeader = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -1082,12 +1085,11 @@ const EditInterviewConstruction = ({ hseCertif,
 
   //End RefuseProjectLeader
   //UpdateHSE
-  console.log("hseCertif0000", hseCertif)
 
   const UpdateHSE = async () => {
 
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -1184,10 +1186,10 @@ const EditInterviewConstruction = ({ hseCertif,
 
   };
   //Refuse HSE
-
+ 
   const RefuseHSE = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -1289,7 +1291,7 @@ const EditInterviewConstruction = ({ hseCertif,
 
   const UpdateHumanRessource = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -1335,7 +1337,6 @@ const EditInterviewConstruction = ({ hseCertif,
           techcommentaire: idConstruction?.techcommentaire,
           headOfDepAprouv: idConstruction?.headOfDepAprouv,
           // agreedJoinedDate,
-          expectedJoinDate,
           dailyRate,
           // feedback,
           propsedsalary,
@@ -1360,8 +1361,8 @@ const EditInterviewConstruction = ({ hseCertif,
           physicPres: idConstruction?.physicPres,
           leadership: idConstruction?.leadership,
           notif: 5,
-          hseDecision: isOkCheckedHSE,
-          hseComment: commentHSE,
+          // hseDecision: isOkCheckedHSE,
+          // hseComment: commentHSE,
           hseCertif: idConstruction?.hseCertif,
           siteHazCont: idConstruction?.siteHazCont,
           properUse: idConstruction?.properUse,
@@ -1370,17 +1371,17 @@ const EditInterviewConstruction = ({ hseCertif,
           ptw: idConstruction?.ptw,
           hsePolicies: idConstruction?.hsePolicies,
           others: idConstruction?.others,
-          educAndTrain: idConstruction?.educAndTrain,
-          workExp: idConstruction?.workExp,
-          DiversityTal: idConstruction?.DiversityTal,
-          intellCap: idConstruction?.intellCap,
-          emotIntellij: idConstruction?.emotIntellij,
-          selfConf: idConstruction?.selfConf,
-          comunicSkills: idConstruction?.comunicSkills,
-          passion: idConstruction?.passion,
-          creativity: idConstruction?.creativity,
-          physicPres: idConstruction?.physicPres,
-          leadership: idConstruction?.leadership,
+          // educAndTrain: idConstruction?.educAndTrain,
+          // workExp: idConstruction?.workExp,
+          // DiversityTal: idConstruction?.DiversityTal,
+          // intellCap: idConstruction?.intellCap,
+          // emotIntellij: idConstruction?.emotIntellij,
+          // selfConf: idConstruction?.selfConf,
+          // comunicSkills: idConstruction?.comunicSkills,
+          // passion: idConstruction?.passion,
+          // creativity: idConstruction?.creativity,
+          // physicPres: idConstruction?.physicPres,
+          // leadership: idConstruction?.leadership,
 
 
         })
@@ -1415,7 +1416,7 @@ const EditInterviewConstruction = ({ hseCertif,
   {/*RefuseHumanRessource*/ }
   const  RefuseHumanRessource= async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -1461,7 +1462,6 @@ const EditInterviewConstruction = ({ hseCertif,
           techcommentaire: idConstruction?.techcommentaire,
           headOfDepAprouv: idConstruction?.headOfDepAprouv,
           // agreedJoinedDate,
-          expectedJoinDate,
           dailyRate,
           // feedback,
           propsedsalary,
@@ -1477,7 +1477,7 @@ const EditInterviewConstruction = ({ hseCertif,
           educAndTrain: idConstruction?.educAndTrain,
           workExp: idConstruction?.workExp,
           DiversityTal: idConstruction?.DiversityTal,
-          intellCap: idConstruction?.intellCap,
+          // intellCap: idConstruction?.intellCap,
           selfConf: idConstruction?.selfConf,
           emotIntellij: idConstruction?.emotIntellij,
           comunicSkills: idConstruction?.comunicSkills,
@@ -1486,8 +1486,8 @@ const EditInterviewConstruction = ({ hseCertif,
           physicPres: idConstruction?.physicPres,
           leadership: idConstruction?.leadership,
           notif: 54,
-          hseDecision: isOkCheckedHSE,
-          hseComment: commentHSE,
+          // hseDecision: isOkCheckedHSE,
+          // hseComment: commentHSE,
           hseCertif: idConstruction?.hseCertif,
           siteHazCont: idConstruction?.siteHazCont,
           properUse: idConstruction?.properUse,
@@ -1496,17 +1496,17 @@ const EditInterviewConstruction = ({ hseCertif,
           ptw: idConstruction?.ptw,
           hsePolicies: idConstruction?.hsePolicies,
           others: idConstruction?.others,
-          educAndTrain: idConstruction?.educAndTrain,
-          workExp: idConstruction?.workExp,
-          DiversityTal: idConstruction?.DiversityTal,
+          // educAndTrain: idConstruction?.educAndTrain,
+          // workExp: idConstruction?.workExp,
+          // DiversityTal: idConstruction?.DiversityTal,
           intellCap: idConstruction?.intellCap,
-          emotIntellij: idConstruction?.emotIntellij,
-          selfConf: idConstruction?.selfConf,
-          comunicSkills: idConstruction?.comunicSkills,
-          passion: idConstruction?.passion,
-          creativity: idConstruction?.creativity,
-          physicPres: idConstruction?.physicPres,
-          leadership: idConstruction?.leadership,
+          // emotIntellij: idConstruction?.emotIntellij,
+          // selfConf: idConstruction?.selfConf,
+          // comunicSkills: idConstruction?.comunicSkills,
+          // passion: idConstruction?.passion,
+          // creativity: idConstruction?.creativity,
+          // physicPres: idConstruction?.physicPres,
+          // leadership: idConstruction?.leadership,
 
 
         })
@@ -1542,7 +1542,7 @@ const EditInterviewConstruction = ({ hseCertif,
   const roles = localStorage.getItem("role");
   const findIdInterview = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/findId?code=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/findId?code=${code}&token=${token}`, {
         method: 'POST',
       });
       if (!response.ok) {
@@ -1595,15 +1595,16 @@ const EditInterviewConstruction = ({ hseCertif,
 
 
   ];
+
   const GetProfileEmployess = async () => {
     const storedemail = window.localStorage.getItem("email");
-    console.log("storedemail", storedemail)
+
     try {
       const endPoint =
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'

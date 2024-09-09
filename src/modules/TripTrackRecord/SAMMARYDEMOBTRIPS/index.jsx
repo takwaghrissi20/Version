@@ -24,14 +24,14 @@ const SummaryDemobTrip = () => {
   const [demopTrips, setDemopTrips] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedDate, setSelectedDate] = useState(moment());
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     fetchDemobTrips();
   }, [currentPage, pageSize, selectedProject, selectedDate]);
 
   const fetchDemobTrips = async () => {
     try {
-      let url = `https://dev-gateway.gets-company.com/api/v1/travel/list?page=${currentPage}&size=${pageSize}`;
+      let url = `https://dev-gateway.gets-company.com/api/v1/travel/listByPage?page=${currentPage}&size=${pageSize}&token=${token}`;
 
       if (selectedProject) {
         url += `&project=${selectedProject}`;

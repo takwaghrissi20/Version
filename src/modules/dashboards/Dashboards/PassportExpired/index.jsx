@@ -12,11 +12,7 @@ import { StyledOrderTable, StyledAction } from '../../../../styles/index.styled'
 import { all } from 'axios';
 import { Table, Tooltip } from 'antd';
 import { useNavigate } from "react-router-dom";
-const ExpiredPassportData = ({passportExpered ,loading,AllRecruitement, passportExperedProjet}) => {
-
-  const [findIdData, setFindIdData] = useState(null);
-  const [isViewRecruitement, onViewRecruitement] = useState(false);
-  const [isEditRecruitement, onEditRecruitement] = useState(false);
+const ExpiredPassportData = ({passportExpered ,loading, passportExperedProjet,user}) => {
   const [id, setId] = useState();
   const navigate = useNavigate();
   //TabHeight
@@ -62,31 +58,29 @@ const ExpiredPassportData = ({passportExpered ,loading,AllRecruitement, passport
 
   
   ];
-  const user = localStorage.getItem("role");
+ 
+
   return (
     <>
       {user.includes('It') && (
-    <p>IT</p>
+    <p></p>
    
   )}
-  {user.includes('admin')  && (
+  {( user?.includes('bod') ||user?.includes('Administrator'))   && (
       <StyledCustomerTable
       hoverColor
       data={passportExpered}
       loading={loading}
       columns={columns}
       scroll={{ x: 'auto',  y: tableHeight }}
-      //scroll={{ x: 'auto', y: 150 }}
-
-
+  
     />
    
   )}
   {user.includes('Leader') && (
       <StyledCustomerTable
       hoverColor
-      data={
-        passportExperedProjet}
+      data={passportExperedProjet}
       loading={loading}
       columns={columns}
       scroll={{ x: 'auto',  y: tableHeight }}
@@ -96,6 +90,20 @@ const ExpiredPassportData = ({passportExpered ,loading,AllRecruitement, passport
     />
    
   )}
+    {(user.includes('bod') || user?.includes('admin'))  && (
+      <StyledCustomerTable
+      hoverColor
+      data={passportExpered}
+      loading={loading}
+      columns={columns}
+      scroll={{ x: 'auto',  y: tableHeight }}
+      
+
+
+    />
+   
+  )}
+ 
 
 
     </>

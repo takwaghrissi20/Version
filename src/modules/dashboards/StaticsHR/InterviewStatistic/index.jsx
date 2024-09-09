@@ -20,6 +20,7 @@ const InfoDataHrRecruitement = ({ listInerview, staticsDataaccepted }) => {
   const [pageSize, setPageSize] = useState(10);
   const [recruitementStaff, setRecruitementStaff] = useState([]);
   const [recruitementConstruction, setRecruitementConstruction] = useState([]);
+  const token = localStorage.getItem("token")
   const handleChange = (value) => {
     setSelectedOption(value);
   };
@@ -44,7 +45,7 @@ const InfoDataHrRecruitement = ({ listInerview, staticsDataaccepted }) => {
   };
   const getRecruitement = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

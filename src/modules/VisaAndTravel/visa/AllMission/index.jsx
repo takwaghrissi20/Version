@@ -24,14 +24,14 @@ const AllMission = () => {
   const user = localStorage.getItem("role");
   const [projetUserName, setProjetUserName] = useState([]);
   const [filteredMissionUser, setFilteredMissionUser] = useState([]);
-
+  const token = localStorage.getItem("token")
   useEffect(() => {
     fetchMission();
     fetchProjectEmail ()
   }, [currentPage, pageSize, nameFilter]);
   const fetchProjectEmail = async () => {
     try {
-      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getProjectByMail?mail=${userEmail}`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getProjectByMail?mail=${userEmail}&token=${token}`;
       const response = await fetch(url, {
         method: "GET",
       });
@@ -50,9 +50,8 @@ const AllMission = () => {
   };
   const fetchMission = async () => {
     try {
-      const countMission = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getAll`);
+      const countMission = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getAll?token=${token}`);
       const datacount = await countMission.json();
-      console.log('datacount 3333',datacount)
       setCount(datacount.length);
         {/*Project List*/ }
         const filteredProjet = datacount.filter(item => projetUserName.includes(item.projName));
@@ -60,7 +59,7 @@ const AllMission = () => {
   
         /////////////////////////////////
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/list?page=${currentPage}&size=${pageSize}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/list?page=${currentPage}&size=${pageSize}&token=${token}`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch Mission');
@@ -87,7 +86,7 @@ const AllMission = () => {
 
     if (filterValue !== '') {
       try {
-        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getByName?name=${filterValue}`);
+        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getByName?name=${filterValue}&token=${token}`);
         if (!response.ok) {
           throw new Error('Failed to filter employees');
         }
@@ -106,7 +105,7 @@ const AllMission = () => {
   const handleSearch = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/filterByName?name=${nameFilter}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/filterByName?name=${nameFilter}&token=${token}`);
       if (!response.ok) {
         throw new Error('Failed to filter employees');
       }

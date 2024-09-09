@@ -53,7 +53,7 @@ const AddRecruitementForemanBelow = () => {
   const [dateInput, setDateInput] = useState(new Date());
   const [selectedLieu, setSelectedLieu] = useState('');
   const userRole = localStorage.getItem("role")
-
+  const token = localStorage.getItem("token");
   const handlePlaceSelect = (value) => {
     setSelectedLieu(value);
 
@@ -61,6 +61,7 @@ const AddRecruitementForemanBelow = () => {
   const handleValidateEmployeeClose = () => {
     setIsModalVisible(false);
   };
+
   const GetProfileEmployess = async () => {
     const storedemail = window.localStorage.getItem("email");
 
@@ -69,7 +70,7 @@ const AddRecruitementForemanBelow = () => {
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -182,7 +183,7 @@ const AddRecruitementForemanBelow = () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/last`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/last?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -424,7 +425,7 @@ const AddRecruitementForemanBelow = () => {
     try {
 
       const params = new URLSearchParams({ name: selectedProject, id: profile?.getsId });
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -521,7 +522,7 @@ const AddRecruitementForemanBelow = () => {
     try {
 
       const params = new URLSearchParams({ name: selectedProject, id: profile?.getsId });
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -612,7 +613,7 @@ const AddRecruitementForemanBelow = () => {
     try {
 
       const params = new URLSearchParams({ name: selectedProject, id: profile?.getsId });
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -703,7 +704,7 @@ const AddRecruitementForemanBelow = () => {
     try {
 
       const params = new URLSearchParams({ name: selectedProject, id: profile?.getsId });
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -1065,10 +1066,7 @@ const AddRecruitementForemanBelow = () => {
                     <Select
                       placeholder='Select Position'
                       value={positionRecruitement}
-                      onChange={handlePositionRecruitement}
-
-
-                    >
+                      onChange={handlePositionRecruitement} >
 
                       {position && position.map((p, index) => (
                         <Select.Option key={index} value={p}>

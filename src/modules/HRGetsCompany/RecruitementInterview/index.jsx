@@ -26,13 +26,15 @@ const RecruitementInterview = () => {
   const [allinterviewConstructionTeam, setAllinterviewConstructionTeam] = useState([]);
   const [recruitementTypeIdAbove, setRecruitementTypeIdAbove] = useState([]);
   const [recruitementTypeIdbelow, setRecruitementTypeIdbelow] = useState("");
+  const [interTypeIdManagement, setInterTypeIdManagement] = useState([]);
+  const [interTypeIdConstruction, setInterTypeIdConstruction] = useState("");
   // Gets Id BY Profile:
   const userEmail = localStorage.getItem("email");
   const roles = localStorage.getItem("role");
-
+  const token = localStorage.getItem("token");
   const fetchEmployeesEmail = async () => {
     try {
-      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${userEmail}`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${userEmail}&token=${token}`;
       const response = await fetch(url, { method: "GET" });
       if (response.ok) {
         const data = await response.json();
@@ -46,7 +48,7 @@ const RecruitementInterview = () => {
   };
   const fetchRecruitementTypeProfile = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -77,7 +79,7 @@ const RecruitementInterview = () => {
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-          const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list`, {
+          const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list?token=${token}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json'
@@ -107,6 +109,32 @@ const RecruitementInterview = () => {
       console.error('Erreur lors de la récupération all Recruitement', error);
     }
   };
+  // const fetchInterviewTypeProfileManagement = async () => {
+  //   try {
+  //     const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/list?token=${token}`, {
+  //       method: 'GET',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error('La requête a échoué avec le code ' + response.status);
+  //     }
+
+  //     const data = await response.json();
+  //     const filteredData = data.filter(item => item?.idemp === idProfile);
+  //     const filteredDataType = filteredData.filter(item => item?.type === "Above Foreman");
+  //     setRecruitementTypeIdAbove(filteredDataType)
+
+  //     ///If Foreman & Below
+  //     const filteredDataTypeForman = filteredData.filter(item => item?.type === "Foreman & Below");
+  //     setRecruitementTypeIdbelow(filteredDataTypeForman)
+    
+  //   } catch (error) {
+  //     console.error('Erreur lors de la récupération List Recruitement', error);
+  //   }
+  // };
 
   const items = [
     {
@@ -117,15 +145,18 @@ const RecruitementInterview = () => {
         recruitementTypeIdAbove={recruitementTypeIdAbove}
         roles={roles}
         allrecruitementabove={allrecruitementabove}
+        token={token}
 
       />,
     },
     {
       label: 'Constructuction Staff Recruitment',
       key: '2',
-      children: <RecruitementConstruction allrecruitementbelow={allrecruitementbelow}
+      children: <RecruitementConstruction
+       allrecruitementbelow={allrecruitementbelow}
         recruitementTypeIdbelow={recruitementTypeIdbelow}
         roles={roles}
+        token={token}
 
       />,
     },
@@ -134,7 +165,11 @@ const RecruitementInterview = () => {
       label: 'Staff Management Interview',
       key: '3',
       children: <InterviewStaff
-        allinterviewStaffManagement={allinterviewStaffManagement} />
+        allinterviewStaffManagement={allinterviewStaffManagement}
+        token={token}
+        
+        
+        />
 
     }] : []),
     // {
@@ -149,7 +184,10 @@ const RecruitementInterview = () => {
     ...((roles?.includes('Administrator') || roles?.includes('admin') || roles?.includes('bod') || roles?.includes('Ressource')) ? [{
       label: 'Construction Staff Interview',
       key: '4',
-      children: <InterviewConstruction allinterviewConstructionTeam={allinterviewConstructionTeam} />
+      children: <InterviewConstruction 
+      allinterviewConstructionTeam={allinterviewConstructionTeam} 
+      token={token}
+      />
 
     }] : []),
     // {
@@ -167,7 +205,7 @@ const RecruitementInterview = () => {
             ? "https://dev-gateway.gets-company.com"
             : "";
 
-        const response = await fetch("https://dev-gateway.gets-company.com/api/v1/int/list", {
+        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/list?token=${token}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
@@ -189,11 +227,9 @@ const RecruitementInterview = () => {
 
 
 
-
-
         //End Interview bu Id 
 
-        const responseRecruitement = await fetch("https://dev-gateway.gets-company.com/api/v1/re/list", {
+        const responseRecruitement = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list?token=${token}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
@@ -209,13 +245,13 @@ const RecruitementInterview = () => {
         const resulttypebelove = responseDataRecruitement.filter(p => p.type === "Above Foreman");
         setAllrecruitementabove(resulttypebelove);
 
-        const ItRecruitement = resulttypebelove.filter(p => p.dep && p.dep.includes('IT'));
+        const ItRecruitement = resulttypebelove.filter(p => p.dep && p?.dep?.includes('IT'));
         setAllrecruitementaboveItRecruitement(ItRecruitement.length);
 
         const resulttypebelow = responseDataRecruitement.filter(p => p.type === "Foreman & Below");
         setAllrecruitementbelow(resulttypebelow);
 
-        const responseInterviewConstruction = await fetch("https://dev-gateway.gets-company.com/api/v1/intc/list", {
+        const responseInterviewConstruction = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/list?token=${token}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
@@ -235,7 +271,7 @@ const RecruitementInterview = () => {
   }, []);
 
   useEffect(() => {
-    if (!roles.includes("admin")) {
+    if (!roles?.includes("admin")) {
       console.log("Not Admin");
       fetchEmployeesEmail().then(() => {
         if (idProfile) {

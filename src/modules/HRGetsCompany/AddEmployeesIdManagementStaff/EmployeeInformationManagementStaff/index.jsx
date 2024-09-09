@@ -34,7 +34,7 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview,interviewCode,
   const [selectedContratType, setSelectedContratType] = useState('');
   const [selectedContractCategorie, setSelectedContractCategorie] = useState('');
   const [isReadOnly, setIsReadOnly] = useState(false);
-
+  const token = localStorage.getItem("token");
   const [category, setCategory] = useState("Management Staff")
   useEffect(() => {
 
@@ -160,7 +160,7 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview,interviewCode,
           : "";
       const CodeInterview = parseInt(searchValue) + 1; // Increment intCode by 1
       console.log("CodeInterview=", searchValue);
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/findId?code=${searchValue}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/findId?code=${searchValue}?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -191,6 +191,7 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview,interviewCode,
   useEffect(() => {
     fetchPositionTranslate();
   }, [findIdInterview?.positionToBeFilled]);
+
   const fetchPositionTranslate = async () => {
     try {
       const endPoint =
@@ -198,7 +199,7 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview,interviewCode,
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/trans/get?description=${findIdInterview?.positionToBeFilled}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/trans/get?description=${findIdInterview?.positionToBeFilled}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -345,7 +346,7 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview,interviewCode,
         {/* <Button onClick={handleSubmit3}>Submit</Button> */}
         <Row style={{ justifyContent: "flex-end" }}>
           <Col xs={24} lg={6} style={{
-            border: '1px solid red', paddingTop: "15px", paddingBottom: "15px", paddingLeft: "5px",
+          paddingTop: "15px", paddingBottom: "15px", paddingLeft: "5px",
             display: "Flex",
 
             position: "relative",
@@ -363,6 +364,8 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview,interviewCode,
             <input
               style={{
                 borderRight: '1px solid grey',
+                marginTop:"-0.5rem",
+                fontSize:"1rem",
                 border: '1px solid transparent', // Bordure transparente par défaut
                 outline: 'none', // Supprime la bordure de focus par défaut
                 '&:focus': {
@@ -783,7 +786,7 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview,interviewCode,
               
 
                 <Col xs={24} md={12}>
-                  <Form.Item label='Travel Date ' name='traveldate'
+                  <Form.Item label='Travel Date' name='traveldate'
                     rules={[
                       {
                         required: true,
@@ -808,9 +811,6 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview,interviewCode,
                       },
 
                     ]}
-
-
-
 
                   >
                     <StyledScrumBoardDatePicker  />
@@ -863,8 +863,6 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview,interviewCode,
                       },
 
                     ]}
-
-
 
 
                   >

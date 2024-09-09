@@ -22,6 +22,7 @@ const Planification = () => {
   const [allInterviewData, setAllInterviewData] = useState([]);
   const [lastStaffInterview, setLastStaffInterview] = useState([]);
   const [lastConstructionInterview, setLastConstructionInterview] = useState([]);
+  const token = localStorage.getItem("token")
   const months = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
@@ -30,19 +31,19 @@ const Planification = () => {
   // Fetch all data on initial load
   const fetchAllData = async () => {
     try {
-      const responseRecruitement = await fetch("https://dev-gateway.gets-company.com/api/v1/re/list");
+      const responseRecruitement = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list?token=${token}`);
       const responseDataRecruitement = await responseRecruitement.json();
       setAllRecruitementData(responseDataRecruitement);
       setTotalNumber(responseDataRecruitement.length);
       setLastRecruitement(responseDataRecruitement[responseDataRecruitement.length - 1]);
 
-      const responseInterview = await fetch("https://dev-gateway.gets-company.com/api/v1/int/list");
+      const responseInterview = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/list?token=${token}`);
       const responseDataInterview = await responseInterview.json();
       setAllInterviewData(responseDataInterview);
       setTotalNumberInterview(responseDataInterview.length);
       setLastStaffInterview(responseDataInterview[responseDataInterview.length - 1])
-      ///Interview Constraction
-      const InterviewConstruction = await fetch("https://dev-gateway.gets-company.com/api/v1/intc/list");
+      ///Interview Constraction  
+      const InterviewConstruction = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/list?token=${token}`);
       const responseInterviewConstruction= await InterviewConstruction.json();
       setLastConstructionInterview(responseInterviewConstruction[responseInterviewConstruction.length - 1])
     } catch (error) {

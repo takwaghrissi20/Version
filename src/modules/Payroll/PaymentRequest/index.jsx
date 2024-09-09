@@ -43,7 +43,7 @@ const PaymentRequest  = () => {
 
     },
   ]
-
+  const token = localStorage.getItem("token");
   const GetProfileEmployess = async () => {
     const storedemail = window.localStorage.getItem("email");
     console.log("storedemail", storedemail)
@@ -52,7 +52,7 @@ const PaymentRequest  = () => {
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -209,7 +209,7 @@ const PaymentRequest  = () => {
     try {
 
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/AdvSalary/add?id=${getsId}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/AdvSalary/add?id=${getsId}&token=${token}`, {
 
         method: 'POST',
         headers: {

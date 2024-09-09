@@ -12,21 +12,21 @@ const columns = [
     dataIndex: 'dateOfTravel',//Table Travel
     key: 'dateOfTravel',
     align: 'center',
-    render: (text) => text === null || text === undefined ? 'null' : text
+   
   },
   {
     title: 'From /To ',
     dataIndex: 'travelFromTo',
     key: 'travelFromTo',
     align: 'center',
-    render: (text) => text === null || text === undefined ? 'null' : text
+  
   },
   {
     title: 'Project Work',
     dataIndex: 'projName',
     key: 'projName',
     align: 'center',
-    render: (text) => text === null || text === undefined ? 'null' : text
+  
   },
 ];
 

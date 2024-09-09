@@ -13,13 +13,14 @@ const EmployeesStatusSite = () => {
   const [selectedPosition, setSelectedPosition] = useState('');
   const [departmentCount, setDepartmentCount] = useState([]);
   const [total, setTotal] = useState([]);
+  const token = localStorage.getItem("token");
   useEffect(() => {
     fetchEmployees();
   }, []);
 
   const fetchEmployees = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list?token=${token}`);
       const data = await response.json();
       const dataFiter = data.filter(p => p.type_Emp === "office & site" || p.type_Emp === "site");
 

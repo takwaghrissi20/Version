@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../../../../@crema/components/AppRowContainer';
-import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox, DatePicker, } from 'antd';
+import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox, DatePicker,notification } from 'antd';
 import { MdEdit } from 'react-icons/md';
 import {
   StyledShadowWrapper,
@@ -16,6 +16,7 @@ import AppPageMeta from '../../../../../@crema/components/AppPageMeta';
 const AddHeath = () => {
   const navigate = useNavigate();
   const [lastIdVacin, setLastIdVacin] = useState(0);
+  const [lastVacin, setLastVacin] = useState("");
   const [getsId, setGetsId] = useState("");
   const [name, setName] = useState("");
   const [position, setPosition] = useState("");
@@ -46,7 +47,7 @@ const AddHeath = () => {
   const [dateInput, setDateInput] = useState(new Date());
   const [form] = Form.useForm();
   const { messages } = useIntl();
-
+  const token = localStorage.getItem("token");
 
   const handleCommentsChange = (event) => {
     setComments(event.target.value);
@@ -63,7 +64,37 @@ const AddHeath = () => {
     setCovidseconddosetype(event.target.value)
   };
 
-
+  const LastIndexVaccin = async () => {
+    try {
+      const endPoint =
+        process.env.NODE_ENV === "development"
+          ? "https://dev-gateway.gets-company.com"
+          : "";
+  
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vacin/last?token=${token}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error('La requête a échoué avec le code ' + response.status);
+      }
+  
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
+      }
+      const data = await response.json();
+      console.log("data vaccin",data)
+      setLastVacin(data?.idv)
+  
+  
+    } catch (error) {
+      console.error('Erreur lors de la récupération Last Recruitement', error);
+    }
+  };
 
 
   //   try {
@@ -87,10 +118,10 @@ const AddHeath = () => {
   // };
 
   // const LastMission = lastIdMission + 1;
-
+ 
   const findId = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}&token=${token}`, {
         method: 'GET',
       });
 
@@ -130,9 +161,61 @@ const AddHeath = () => {
 
 
   ];
+  const openNotificationWarning = () => {
+    notification.open({
+      message: 'Warning',
+      description: 'All Fields Not Complete',
+      style: {
+        backgroundColor: '#eab000',
+        border: '1px solid #eab000',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #ce9c09',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
+  const openNotification = () => {
+    notification.open({
+      message: 'Success',
+      description: 'Success Add Vaccin',
+      style: {
+        backgroundColor: '#28a745',
+        border: '1px solid #28a745',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #1f8838',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
   const handleAddVacin = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vacin/add?id=${getsId}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vacin/add?id=${getsId}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -142,12 +225,12 @@ const AddHeath = () => {
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
         body: JSON.stringify({
-
+        
           projName: selectedProject,
           typeVccin: selectedVaccin,
-          resultFitness: fetnessDate,
+          resultFitness: fetnessSelect,/////
           dateTestWork: fetnessDate,
-          hypatitDar: heapatiteDate,
+          hypatitDare: heapatiteDate,
           hepatitResult: heapatiteSelect,
           idzdate: idzDate,
           idzresult: idzSelect,
@@ -155,6 +238,7 @@ const AddHeath = () => {
           typeCorona: covidfirstdosetype,
           corona2Date: covidseconddosedate,
           corona2Result: covidseconddosetype,
+          inputDate:formattedDate
 
 
 
@@ -168,7 +252,14 @@ const AddHeath = () => {
       if (response.ok) {
 
         const responseData = await response.json();
-        alert("Vaccin Employee Success")
+        openNotification('bottomRight')
+         setTimeout(() => {
+        window.location.reload();
+        navigate(-1)
+      }, 2000);
+
+       
+       
 
 
       }
@@ -179,19 +270,13 @@ const AddHeath = () => {
   };
 
   useEffect(() => {
-
+    LastIndexVaccin()
     if (getsId) {
       findId();
     }
 
   }, [getsId]);
-  useEffect(() => {
 
-    if (getsId) {
-      findId();
-    }
-
-  }, [getsId]);
 
   const handleProjectChange = (value, option) => {
 
@@ -208,7 +293,7 @@ const AddHeath = () => {
     setFetnessSelect(value);
 
   };
-  const handleResultHeapatiteChange = (value, option) => {
+  const handleResultHeapatiteChange = (value) => {
 
     setHeapatiteSelect(value);
 
@@ -225,11 +310,11 @@ const AddHeath = () => {
   const BeforeSaveVaccin = () => {
     form.validateFields(['type'])
       .then(values => {
-        alert("all fields are complete.");
-        setConfirmationVaccin(true)
+        handleAddVacin()
+       
       })
       .catch(errorInfo => {
-        alert("Please complete all fields");
+        openNotificationWarning('bottomRight')
 
 
       });
@@ -242,6 +327,7 @@ const AddHeath = () => {
     onCancel(true);
   }
   const formattedDate = dayjs(dateInput).format('YYYY-MM-DD');
+  const LastIndexVaccinIncrement = lastVacin + 1
   return (
     <>
       <AppPageMeta title='Add Heath' />
@@ -271,7 +357,7 @@ const AddHeath = () => {
               <AppRowContainer>
                 <Col xs={24} md={12}>
                   <Form.Item label='Reference' name='interviewCode'>
-                    <Input placeholder={"Vaccin-" + 1} readOnly={true} />
+                    <Input placeholder={"Vaccin-" + LastIndexVaccinIncrement} readOnly={true} />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
@@ -436,7 +522,6 @@ const AddHeath = () => {
                           <Select
                             style={{ marginTop: "10px" }}
                             placeholder="Select Your Result Hepatitie Test"
-
                             onChange={handleResultHeapatiteChange}
                             value={heapatiteSelect}
                           >
