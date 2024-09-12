@@ -45,7 +45,7 @@ const TimeSheetOffice = () => {
 
   const fetchEmployeesByType = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getEmByTypeStatus?type=office&status=Active &page=${currentPage}&size=${pageSize}&token=${token}&month=${selectedMonth}&year=${selectedYear}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getEmByTypeStatus?type=office&status=Active&page=${currentPage}&size=${pageSize}&token=${token}&month=${selectedMonth}&year=${selectedYear}`);
       const data = await response.json();
       setEmployeesOffice(data);
 

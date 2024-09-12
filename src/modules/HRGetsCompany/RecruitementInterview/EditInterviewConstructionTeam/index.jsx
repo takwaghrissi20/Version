@@ -613,6 +613,14 @@ const EditInterviewConstruction = () => {
           propsedsalary,
           notif: 2,
           hseDecision:isOkCheckedHSE,
+          hseCertif: idConstruction?.hseCertif,
+          siteHazCont: idConstruction?.siteHazCont,
+          properUse: idConstruction?.properUse,
+          hzardousMater: idConstruction?.hzardousMater,
+          emergency: idConstruction?.emergency,
+          ptw: idConstruction?.ptw,
+          hsePolicies: idConstruction?.hsePolicies,
+          others: idConstruction?.others,
         
 
         })

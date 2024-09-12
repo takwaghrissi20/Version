@@ -28,7 +28,14 @@ function App() {
   //Fetch Employees Expired Passport et Visa 
   const fetchExpiredVisa = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list?token=${token}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list?token=${token}`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+          ' Content-Encoding': 'chunked'
+        }
+      });
+    
 
       if (!response.ok) {
         throw new Error('Failed to fetch employees');
@@ -76,7 +83,7 @@ function App() {
 
       setContratExpired(contratFinishDate)
     } catch (error) {
-      console.error('Error fetching employees:', error);
+      console.error('Error fetching All employees :', error);
     }
   };
   //End Fetch Employees Expired Passport et Visa 
@@ -124,9 +131,8 @@ function App() {
 
       }
     };
-
     fetchRole();
-    if(user.includes("Administrator")){
+    if(user?.includes("Administrator") && !user?.includes("Cordinator")){
       handleTokenCheck();
 
     }else null
@@ -152,12 +158,12 @@ function App() {
                   onCancel={() => setVisible(false)}
                   width={1000}
                 >
-                  {contartExpired?.length > 0 &&
+                  {/* {contartExpired?.length > 0 &&
                   <>
                     <p>You Have {contartExpired?.length} Employees Will Contrat Expired</p>
                     <a href='/Hr/VisaAndPassportExpired'>Link:</a>
                     </>
-                  }
+                  } */}
                    {passportExpired?.length > 0 &&
                    <>
                     <p>You Have {passportExpired?.length} Employees Will Passport Expired</p>

@@ -66,8 +66,8 @@ const ExpiredPassportData = ({passportExpered ,loading, passportExperedProjet,us
     <p></p>
    
   )}
-  {( user?.includes('bod') ||user?.includes('Administrator'))   && (
-      <StyledCustomerTable
+  {( user?.includes('bod') || !user?.includes('Cordinator'))   && (
+    <StyledCustomerTable
       hoverColor
       data={passportExpered}
       loading={loading}

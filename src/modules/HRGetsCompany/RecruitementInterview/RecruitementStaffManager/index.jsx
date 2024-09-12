@@ -193,7 +193,7 @@ const RecruitementStaff = ({ allrecruitementabove, recruitementTypeIdAbove, role
 
         }}>
         {/*admin*/}
-        {(roles.includes("admin")) || (roles.includes("Administrator")) ?
+        {(roles.includes("admin")) || (roles.includes("Cordinator"))|| (roles.includes("Administrator")) ?
           <>
             <OrderTable
               allrecruitementabove={recruitementabove}
@@ -242,7 +242,7 @@ const RecruitementStaff = ({ allrecruitementabove, recruitementTypeIdAbove, role
               </StyledCustomerHeaderRight>
             </div>
           </>}
-        {(!roles.includes("admin")) || (!roles.includes("Administrator")) ?
+        {(!roles.includes("admin")) || (!roles.includes("Cordinator")) ?
 
           <></>
           : <p>null</p>}

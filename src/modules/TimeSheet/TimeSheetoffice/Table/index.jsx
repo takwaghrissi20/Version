@@ -190,15 +190,13 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
         return currentMonthStatus ? currentMonthStatus.workRecord : 0;
       },
     },
-
-  
   ];
 
   const data = orderData?.map(employee => {
     const employeeData = { ...employee };
     currentMonthDays.forEach(day => {
       const date = moment({ year: selectedYear, month: selectedMonth - 1, day });
-      const pointage = employee.officepointages.find(p => moment(p.date).isSame(date, 'day'));
+      const pointage = employee?.officepointages?.find(p => moment(p.date).isSame(date, 'day'));
       employeeData[`day${day}`] = pointage ? pointage.pointage : '';
     });
     return employeeData;

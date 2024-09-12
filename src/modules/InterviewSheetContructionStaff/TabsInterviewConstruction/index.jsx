@@ -556,8 +556,8 @@ console.log("timeeewss",interviewTime)
   };
   const BeforeSaveInterview = () => {
     //setIsModalVisible(true)
-    form.validateFields(['fullName', 'telCondidate', 'ContactEmail', 'FamilySituation', 'diploma', 'educationLevel', 'experience'
-
+    form.validateFields(['fullName', 'telCondidate', 'ContactEmail', 'FamilySituation', 'diploma'
+   
     ]).then(values => {
 
       SaveHRADMONISTRTOR()
@@ -619,7 +619,7 @@ console.log("timeeewss",interviewTime)
           notif: 0,
           inputInterview: formattedDate,
           birthayDate: scheduleDate,
-          INTERVTIME:interviewTime
+          intervtime:interviewTime
           // interviwDate: interviewDate,
           // fullName: fullname,
           // projname: projectName,
@@ -880,7 +880,14 @@ console.log("timeeewss",interviewTime)
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item label='Interview Date' name='DateInterview' >
+                    <Form.Item label='Interview DateInterview Date' name='DateInterview'
+                        rules={[
+                          { required: true, message: 'Please input your Interview Date!' },
+                        ]}
+  
+                    
+                    
+                    >
                       <StyledTodoDetailDatePicker className='form-field'>
 
                         <DatePicker
@@ -1849,7 +1856,7 @@ console.log("timeeewss",interviewTime)
         </Form>
       )}
       {/*HR Adminstrator*/}
-      {roles.includes("Administrator") && (
+      {roles.includes("Cordinator") && (
         <Form
           layout='vertical'
           style={{ backgroundColor: "white", marginBottom: "20px", padding: "10px", borderRadius: "20px" }}
@@ -1902,13 +1909,17 @@ console.log("timeeewss",interviewTime)
                   </Col>
                   <Col xs={24} md={12}>
                     <Form.Item label='Interview Date' name='DateInterview'
+                    rules={[
+                      { required: true, message: 'Please input your Interview Date!' },
+                    ]}
+
 
                     >
                       <StyledTodoDetailDatePicker className='form-field'>
 
                         <DatePicker
                           //defaultValue={new Date()} 
-                          defaultValue={dayjs(interviewDate, '16 06,1990')}
+                          // defaultValue={dayjs(interviewDate, '16 06,1990')}
                           style={{ width: "100%", height: "34px" }}
                           onChange={(value) => setInterviewDate(dayjs(value).format('YYYY-MM-DD'))}
                         />
@@ -1918,11 +1929,15 @@ console.log("timeeewss",interviewTime)
                   {/*Time*/}
 
                   <Col xs={24} md={12}>
-                    <Form.Item label='Time Interview' name='TimeInterview'>
+                    <Form.Item label='Time Interview' name='TimeInterview'
+                      rules={[
+                        { required: true, message: 'Please input your Time Interview!' },
+                      ]}
+                    >
                       <StyledTodoDetailDatePicker
                         className='form-field'>
                         <TimePicker
-                          defaultValue={dayjs('12:00:00.000', 'HH:mm:ss.SSS')}
+                         
                           format='HH:mm:ss.SSS'
                           style={{ width: "100%", height: "34px" }}
                           onChange={handleTimeChange}

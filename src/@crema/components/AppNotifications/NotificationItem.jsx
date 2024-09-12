@@ -14,6 +14,7 @@ const NotificationItem = ({ user }) => {
   const [allnotif, setAllNotif] = useState([]);
   const [notifBod, setNotifBod] = useState([]);
   const [notifHR, setNotifHR] = useState([]);
+  const [notifHRAdministrator, setNotifHRAdministrator] = useState([]);
   const [notifOperation, setNotifOperation] = useState([]);
   const [notifHSE, setNotifHSE] = useState([]);
   const [notifPlanner, setNotifPlanner] = useState([]);
@@ -46,7 +47,6 @@ const NotificationItem = ({ user }) => {
   const fetchExpiredVisa = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list?token=${token}`);
-
       if (!response.ok) {
         throw new Error('Failed to fetch employees');
       }
@@ -79,7 +79,7 @@ const NotificationItem = ({ user }) => {
           return false;
         }
       });
-      console.log("passsportttExpired 000 222 ",passportExpired )
+      console.log("passsportttExpired 000 222 ", passportFinishDate)
       setPassportExpired(passportFinishDate)
       // Filter employees whose Contract expires within 15 days
       const contratFinishDate = activeEmployees.filter(employee => {
@@ -358,7 +358,11 @@ const NotificationItem = ({ user }) => {
           (item.notfi === 2 && item.type === "Interview") ||
 
           (item.notfi === 34 && user.includes("Project")) ||
-          (item.notfi === 37 && user.includes("Human Resource"))
+          (item.notfi === 37 && user.includes("Human Resource")) ||
+          (
+            (item.notfi === 2) &&
+            item?.dep?.includes("QHSE") &&
+            item.type.includes("construction"))
 
 
         );
@@ -818,7 +822,7 @@ const NotificationItem = ({ user }) => {
     // findIdInterviewConstruction(intCode)
 
   }, [project, notifPlanner, idgets, id, findIdDataConstruction, intCode, findIdDataStaff]);
-  console.log("user", user)
+
 
 
   return (
@@ -880,52 +884,15 @@ const NotificationItem = ({ user }) => {
 
         : null
       }
-      {/* NOTIF ADMINISTARTOR */}
-      {user.includes("Administrator") ?
+      {/* NOTIF Cordinator */}
+      {user.includes("Cordinator") ?
         <StyledNotifyListItem className='item-hover'>
           <p>Number All Notification :{notifHR?.length} </p>
-          {visaExpired?.length > 0 && (
-                <div className='NotifTotal' onClick={() => VisaExpired()}>
-                  <div
-                    className='NotifVisa' >
-                    V
-                  </div>
-                  <div style={{ color: "black" }}>
-                    Visa Will Be Expired Of Employees :<span className='IndexNotif'>{visaExpired?.length}</span>
-                  </div>
-                </div>
-              )}
-              {passportExpired?.length > 0 && (
-                <div className='NotifTotal' onClick={() => VisaExpired()}>
-                  <div
-                    className='NotiPassport' >
-                    P
-                  </div>
-                  <div style={{ color: "black" }}>
-                    Passport Will Be Expired Of Employees  : <span className='IndexNotif'>{passportExpired?.length}</span>
-                  </div>
-                </div>
-              )}
-              {/*Empl Finish Contrat*/}
-              {/* {passportExpired?.length > 0 && ( */}
-              {contartExpired?.length > 0 && (
-                <div className='NotifTotal' onClick={() => VisaExpired()}>
-                  <div
-                    className='NotiFinishContart' >
-                    C
-                  </div>
-                  <div style={{ color: "black" }}>
-                    Contract Will Be Expired Of Employees  :
-                    <span className='IndexNotif'>{contartExpired?.length}</span>
-                  </div>
-                </div>
-              )}
-              {/* )} */}
-              {/*End Empl Finish Contrat*/}
+
           {notifHR.map((p, index) => (
             <div key={index}>
-            
-          
+
+
               <div className='NotifTotal' onClick={() => findId(p?.codejob)}>
                 <div
                   className='NotifRecruitement' >
@@ -945,6 +912,69 @@ const NotificationItem = ({ user }) => {
         </StyledNotifyListItem>
         : null
       }
+      {/*Notif Administartor*/}
+      {(!user.includes("Cordinator") && user.includes("Administrator")) ?
+        <StyledNotifyListItem className='item-hover'>
+          <p>Number All Notification :{notifHRAdministrator?.length} </p>
+
+          {visaExpired?.length > 0 && (
+            <div className='NotifTotal' onClick={() => VisaExpired()}>
+              <div
+                className='NotifVisa' >
+                V
+              </div>
+              <div style={{ color: "black" }}>
+                Visa Will Be Expired Of Employees :<span className='IndexNotif'>{visaExpired?.length}</span>
+              </div>
+            </div>
+          )}
+          {passportExpired?.length > 0 && (
+
+            <div className='NotifTotal' onClick={() => VisaExpired()}>
+              <div
+                className='NotiPassport' >
+                P
+              </div>
+              <div style={{ color: "black" }}>
+                Passport Will Be Expired Of Employees  : <span className='IndexNotif'>{passportExpired?.length}</span>
+              </div>
+            </div>
+
+          )}
+
+          {notifHRAdministrator.map((p, index) => (
+            <div key={index}>
+
+
+              {/*Empl Finish Contrat*/}
+              {/* {passportExpired?.length > 0 && ( */}
+              {/* {contartExpired?.length > 0 && (    //Notif Payroll
+            <div className='NotifTotal' onClick={() => VisaExpired()}>
+              <div
+                className='NotiFinishContart' >
+                C
+              </div>
+              <div style={{ color: "black" }}>
+                Contract Will Be Expired Of Employees  :
+                <span className='IndexNotif'>{contartExpired?.length}</span>
+              </div>
+            </div>
+          )} */}
+              {/* )} */}
+              {/*End Empl Finish Contrat*/}
+
+            </div>
+          ))}
+
+
+        </StyledNotifyListItem>
+        : null
+      }
+
+
+
+
+      {/*End Notif Administartor */}
       {/* Notif ADMIN */}
       {user.includes("admin") ?
         <StyledNotifyListItem className='item-hover'>
@@ -962,7 +992,7 @@ const NotificationItem = ({ user }) => {
       }
 
       {/* Notif Operation  Manager*/}
-      {user === "Operation  Manager" ? (
+      {user === "Operation Manager" ? (
         <StyledNotifyListItem className='item-hover'>
           <p>Number All Notification (Operation Manager)</p>
           <>
@@ -1029,7 +1059,7 @@ const NotificationItem = ({ user }) => {
           {notifPlanner.map((p, index) => (
             <React.Fragment key={index}>
               <div>
-              <div className='NotifTotal' onClick={() => findId(p?.codejob)}>
+                <div className='NotifTotal' onClick={() => findId(p?.codejob)}>
                   <div
                     className='NotifRecruitement' >
                     R
@@ -1061,18 +1091,27 @@ const NotificationItem = ({ user }) => {
             <div key={index}>
               {p?.type?.includes("Interview") && (
                 <div >
-                  <button
-                    className='Notification'
+                  <div className='NotifTotal'
                     onClick={() =>
                       p.type.includes("Interview of construction team")
                         ? findIdInterviewConstruction(p?.interviewCode)
                         : findIdInterview(p?.interviewCode)
-                    }>
-                    Notification {p.type} Code  {p.interviewCode}:
-                    <span style={{ color: "red", fontWeight: "bold" }}>
-                      {p.type.includes("Interview of construction team") ? `CIS-${p.interviewCodeJobInt}` : `RRS-${p.interviewCodeJobInt}`}
-                    </span>
-                  </button>
+                    }
+
+                  >
+                    <div
+                      className='NotifInterview' >
+                      I
+                    </div>
+                    <button className='Notification' onClick={() => findId(p?.codejob)}>
+                      Notification {p.type} Code  {p.interviewCode}:  <br></br>
+                      <span lassName='IndexNotif'>
+                        {p.type.includes("Interview of construction team") ? `CIS-${p.interviewCodeJobInt}` : `RRS-${p.interviewCodeJobInt}`}
+                      </span>
+                      <span className='IndexNotif'>{p.codejob}</span>
+                    </button>
+                  </div>
+
                 </div>
               )}
               {p?.type?.includes("Extension") && user.includes("Human Ressource") && (

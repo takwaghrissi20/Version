@@ -31,6 +31,10 @@ const ASSESMENTSHEET  = React.lazy(() =>
 const ViewRecruitementInterview  = React.lazy(() =>
   import('../../../modules/ViewRequest/ViewRecruitement'),
 );
+const ViewIdTraining  = React.lazy(() =>
+  import('../../../modules/ViewTraining'),
+);
+
 const EditRecruitementInterview  = React.lazy(() =>
   import('../../../modules/ViewRequest/EditRecruitement')
 );
@@ -39,6 +43,12 @@ const EditAllRecruitementInterview  = React.lazy(() =>
 );
 const AddRecruitement = React.lazy(() =>
   import('../../../modules/AddRecruitement'),
+);
+const AddTraining = React.lazy(() =>
+  import('../../../modules/AddTraining'),
+);
+const AllTraining = React.lazy(() =>
+  import('../../../modules/AllTraining'),
 );
 const InterviewStatistics = React.lazy(() =>
   import('../../../modules/HRGetsCompany/InterviewStatistics'),
@@ -182,6 +192,17 @@ export const ecommerceConfig = [
   },
   {
     permittedRole: RoutePermittedRole.User,
+    path: '/Hr/AddTraining',
+    element: <AddTraining />,
+  },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/Hr/AllTraining',
+    element: <AllTraining/>,
+  },
+
+  {
+    permittedRole: RoutePermittedRole.User,
     path: '/Hr/Recruitement&Interview',
     element: <RecruitementInterview  />,
   },
@@ -209,6 +230,11 @@ export const ecommerceConfig = [
     permittedRole: RoutePermittedRole.User,
     path: '/Hr/Recruitement&Interview/Recruitement/View/:id',
     element: < ViewRecruitementInterview />,
+  },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/Hr/AllTraining/View/:id',
+    element: < ViewIdTraining />,
   },
   {
     permittedRole: RoutePermittedRole.User,

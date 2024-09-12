@@ -11,7 +11,8 @@ import { Table, Tooltip,notification } from 'antd';
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
 import IntlMessages from '../../../../@crema/helpers/IntlMessages';
-const OrderTable = ({ loading,AllRecruitement, listRecruitementId,listRecruitementPMO}) => {
+const OrderTable = ({ loading,AllRecruitement, listRecruitementId,listRecruitementPMO,user}) => {
+ 
   const [findIdData, setFindIdData] = useState(null);
   const [isViewRecruitement, onViewRecruitement] = useState(false);
   const [isEditRecruitement, onEditRecruitement] = useState(false);
@@ -134,11 +135,11 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId,listRecruiteme
 
     onDeleteRecruitement(true);
   };
-  const userRoles = localStorage.getItem("role");
+
 
   const items = [
     { key: 1, label: <span style={{ fontSize: 14 }}>View </span>, onClick: handleAddRecruitementOpen },
-    ...(userRoles.includes('admin') ? [
+    ...(user.includes('admin') ? [
       { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditRecruitementOpen },
       { key: 3, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteRecruitement }
     ] : [])
@@ -266,17 +267,7 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId,listRecruiteme
   const handleEditEmpClose = () => {
     onEditEmp(false);
   };
-  // const calculateVacationDays = (vacations) => {
-  //   const congeVacations = vacations?.filter(vacation => vacation?.type === 'congé');
-    
-  
-  //   const totalDays = congeVacations?.reduce((sum, vacation) => sum + vacation.nuberdays, 0);
-  
-  //   return totalDays;
-  // };
 
-
- 
   const getDesiredDateColor = (desiredDate) => {
     const daysDifference = desiredDate ? Math.ceil((new Date(desiredDate) - new Date()) / (1000 * 60 * 60 * 24)) : '';
     return daysDifference < 0 ? 'red' : 'green';
@@ -393,52 +384,6 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId,listRecruiteme
               <MoreOutlined />
             </Button>
           </Dropdown>
-          {/* {isViewRecruitement && (
-            <RecruitementView
-            
-              isViewRecruitement={isViewRecruitement}
-              handleAddContactClose={handleAddRecruitementClose}
-              JobCode={findIdData?.jobCode}
-              idemp={findIdData?.idemp}
-              dep={findIdData?.dep}
-              requestName={findIdData?.requestName}
-              position={findIdData?.position}
-              DesiredDate={findIdData?.desiredDate}
-              projectName={findIdData?.projectName}
-              projRef={findIdData?.projRef}
-              type={findIdData?.type}
-              affectedTo={findIdData?.affectedTo}
-              requestedDicipline={findIdData?.requestedDicipline}
-              Level={findIdData?.experience}
-              exDep={findIdData?.exDep}
-              Numbervacancies={findIdData?.totalNumber}
-              certif={findIdData?.certif}
-              nbExperience={findIdData?.nbExperience}
-            />
-          )} */}
-          {/* {isEditRecruitement && (
-  
-            <RecruitementEdit
-              isEditRecruitement={isEditRecruitement}
-              handleAddContactClose={handleEditRecruitementClose}
-              JobCode={findIdData?.jobCode}
-              idemp={findIdData?.idemp}
-              dep={findIdData?.dep}
-              requestName={findIdData?.requestName}
-              position={findIdData?.position}
-              DesiredDate={findIdData?.desiredDate}
-              projectName={findIdData?.projectName}
-              projRef={findIdData?.projRef}
-              type={findIdData?.type}
-              affectedTo={findIdData?.affectedTo}
-              requestedDicipline={findIdData?.requestedDicipline}
-              Level={findIdData?.experience}
-              exDep={findIdData?.exDep}
-              Numbervacancies={findIdData?.totalNumber}
-              certif={findIdData?.certif}
-              nbExperience={findIdData?.nbExperience}
-            />
-          )} */}
   
         </div>
   
@@ -446,8 +391,7 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId,listRecruiteme
   
     }
   ];
-  const user = localStorage.getItem("role");
-  console.log("listRecruitementId", user)
+ 
   return (
     <> 
 {/* {(!user.includes('admin')) ||(!user.includes('Administrator')) && (
@@ -472,9 +416,9 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId,listRecruiteme
   )} */}
 {/**/}
 { 
-  (user.includes('admin') || user.includes('Administrator') || user.includes('bod')) &&
-  !user.includes('PMO') &&
-  !user.includes('Manager') && (
+  (user?.includes('admin') || user?.includes('Cordinator') || !user?.toUpperCase().includes("RELATION AND TRAINING") || user?.includes('Administrator') || user?.includes('bod')) &&
+  !user?.includes('PMO') && 
+  !user?.includes('Manager') && (
     <StyledOrderTable
       hoverColor
       data={AllRecruitement}
@@ -486,7 +430,7 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId,listRecruiteme
 }
 
 
-         
+
 
 
 {/*PMO*/}

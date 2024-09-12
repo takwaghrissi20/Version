@@ -1918,7 +1918,7 @@ const InterviewSheetById = () => {
         </Form>
       )}
       {/*HR Adminstrator*/}
-      {roles.includes("Administrator") && (
+      {roles.includes("Cordinator") && (
         <Form
           layout='vertical'
           style={{ backgroundColor: "white", marginBottom: "20px", padding: "10px", borderRadius: "20px" }}

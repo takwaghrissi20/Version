@@ -53,7 +53,7 @@ const ExpiredVisaData = ({ VisaExpired, loading, AllRecruitement, visaExperedPro
         <p>IT</p>
 
       )}
-      {(user.includes('admin') ||user.includes('bod')|| user?.includes('Administrator')) && (
+      {(user.includes('admin') || user.includes('bod')|| user?.includes('Administrator')) && (
         <StyledCustomerTable
           hoverColor
           data={VisaExpired}

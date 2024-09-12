@@ -38,13 +38,13 @@ const TimeSheetSite = () => {
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null); 
   const token = localStorage.getItem("token");
+
   useEffect(() => {
     fetchEmployeesByType();
     fetchCountEmployeesSite()
     fetchAllProjet()
     
   }, [currentPage, pageSize, selectedMonth, selectedYear, filterType]);
-
   const fetchCountEmployeesSite = async () => {
     try {
       const endPoint =
@@ -69,7 +69,7 @@ const TimeSheetSite = () => {
       }
       const data = await response.json();
 
-      const dataSite = data.filter(p => p.type_Emp === "site" && p.actStatus === "Active")
+      const dataSite = data.filter(p => p.type_Emp === "site" && p.actStatus === "Active ")
 
       setTotalRecords(dataSite.length)
 
@@ -99,7 +99,7 @@ const TimeSheetSite = () => {
   //End Fetch All Projet
   const fetchEmployeesByType = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getEmByTypeStatus?type=site&status=Active &page=${currentPage}&size=${pageSize}&token=${token}&month=${selectedMonth}&year=${selectedYear}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getEmByTypeStatus?token=${token}&type=site&status=Active&page=${currentPage}&size=${pageSize}&month=${selectedMonth}&year=${selectedYear}`);
       const data = await response.json();
 
       setEmployeesOffice(data);
@@ -133,7 +133,7 @@ const TimeSheetSite = () => {
 
   const fetchFilteredEmployees = async (filterValue) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${filterValue}&token=${token}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?token=${token}&name=${filterValue}`);
       if (!response.ok) {
         throw new Error('Failed to filter employees');
       }

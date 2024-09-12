@@ -15,7 +15,7 @@ import {
 } from '../../../../../styles/index.styled';
 import { useIntl } from 'react-intl';
 import AppsHeader from '../../../../../@crema/components/AppsContainer/AppsHeader';
-const ListRejectedLeave = () => {
+const ListRejectedLeave = ({user}) => {
   const { messages } = useIntl();
   const [vacations, setVacations] = useState([]);
   const [isDeleteVac, setDeleteVac] = useState(false);
@@ -224,7 +224,10 @@ const ListRejectedLeave = () => {
 
   const items = (record) => [
     { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: () => handleViewVac(record) },
-    { key: 3, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: () => handleDeleteVac(record) },
+    ...(user.includes('admin') ? [
+      { key: 3, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: () => handleDeleteVac(record) },
+    ] : [])
+   
   ];
 
   const getLeaveData = (record, field) => {

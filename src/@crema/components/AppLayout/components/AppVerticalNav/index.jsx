@@ -46,7 +46,8 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "ManpowerEvaluation" ||
           item.id === "Site Clerk" ||
           item.id === "PROJECTS TRIP TRACK RECORD " ||
-          item.id === "Payroll"
+          item.id === "Payroll"  ||
+          item.id === "Training"
 
 
         ) {
@@ -74,7 +75,8 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "Add Mission" ||
           item.id === "Add Internal  Mission" ||
           item.id === "AddExtensoinMission" ||
-          item.id === "AddDemobInput"
+          item.id === "AddDemobInput"  ||
+          item.id === "Training"
 
 
         ) {
@@ -101,8 +103,9 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "Add Internal  Mission" ||
           item.id === "AddExtensoinMission" ||
           item.id === "AddDemobInput" ||
-          item.id === "Add Mission"  ||
-          item.id === "ADDVisaHealth" 
+          item.id === "Add Mission" ||
+          item.id === "ADDVisaHealth" ||
+          item.id === "Training"
 
 
         ) {
@@ -126,7 +129,9 @@ const AppVerticalNav = ({ routesConfig }) => {
 
           item.id === "Payroll" ||
           item.id === "recruitement" ||
-          item.id === "VacationLeave"
+          item.id === "VacationLeave" ||
+          item.id === "Training"
+         
 
         ) {
           return false;
@@ -159,7 +164,8 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "DemobTripTrackRecord" ||
           item.id === "SummaryDemobTrip" ||
           item.id === "SummarymobTrip" ||
-          item.id === "AddExtensoinMission"
+          item.id === "AddExtensoinMission" ||
+          item.id === "Training"
 
 
         ) {
@@ -191,7 +197,8 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "DemobPermissionSite" ||
           item.id === "DemobTripTrackRecord" ||
           item.id === "SummaryDemobTrip" ||
-          item.id === "AddExtensoinMission"
+          item.id === "AddExtensoinMission"  ||
+          item.id === "Training"
 
 
 
@@ -212,12 +219,11 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "attendance" ||
           item.id === "VacationLeave" ||
           item.id === "ManpowerEvaluation" ||
-         
           item.id === "recruitement" ||
-        
           item.id === "Site Clerk" ||
           item.id === "PROJECTS TRIP TRACK RECORD " ||
-          item.id === "Payroll"
+          item.id === "Payroll" ||
+          item.id === "Training"
 
 
         ) {
@@ -237,7 +243,8 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "dashboards" ||
           item.id === "Site Clerk" ||
           item.id === "PROJECTS TRIP TRACK RECORD " ||
-          item.id === "Payroll"
+          item.id === "Payroll" ||
+          item.id === "Training"
 
 
         ) {
@@ -257,26 +264,27 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "Add Project" ||
           item.id === "Affect a project to employee" ||
           item.id === "AddEmployees" ||
-          item.id === "CategoryContract" ||     
+          item.id === "CategoryContract" ||
           item.id === "attendance" ||
           item.id === "Vacation" ||
           item.id === "My Leave History" ||
           item.id === "AddDemobInput" ||
-          
+
           item.id === "ManpowerEvaluation" ||
           item.id === "Add Recruitment" ||
           item.id === "Site Clerk" ||
           item.id === "Add Mission" ||
           item.id === "Add Internal  Mission" ||
           item.id === "AddExtensoinMission" ||
-          item.id === "Payroll"
+          item.id === "Payroll" ||
+          item.id === "Add Training"
 
 
         ) {
           return false;
         }
       }
-      if (userRole.includes("Administrator")) {
+      if (userRole.includes("Cordinator")) {
         if (
           item.id === "attendance" ||
           item.id === "ManpowerLocation" ||
@@ -287,8 +295,13 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "Vacation" ||
           item.id === "My Leave History" ||
           item.id === "Add Travel" ||
-          item.id === "AddCorona"
-         
+          item.id === "AddCorona" ||
+          item.id === "VacationLeave" ||
+          item.id === "VisaHealth"    ||
+          item.id === "Training"
+
+
+
 
           // item.id === "Employees"  ||
           // item.id === "attendance" ||
@@ -300,6 +313,60 @@ const AppVerticalNav = ({ routesConfig }) => {
           return false;
         }
       }
+      //Hr Administartor
+      if (!userRole.includes("Cordinator") && userRole.includes("Administrator")) {
+        if (item.id === "attendance" ||
+          item.id === "ManpowerLocation" ||
+          item.id === "ManpowerEvaluation" ||
+          item.id === "Site Clerk" ||
+          item.id === "Payroll" ||
+          item.id === "Vacation" ||
+          item.id === "My Leave History" ||
+          item.id === "Add Travel" ||
+          item.id === "AddCorona" ||
+          item.id === "VacationLeave"||
+          item.id === "AddDemobInput" ||
+          item.id === "AddExtensoinMission" ||
+            item.id === "Training"
+          
+          
+
+        ) {
+          return false;
+        }
+      }
+
+      //EndHr ADministartor
+        //Hr Employees
+        if (userRole?.toUpperCase().includes("RELATION AND TRAINING")) {
+          if (item.id === "Add Recruitment" ||
+            item.id === "Recruitement & Interview Sheet" ||
+            item.id === "Interview Statistics" ||
+            item.id === "Planification" ||
+            item.id === "Add Project" ||
+            item.id === "Affect a project to employee" ||
+            item.id === "AddEmployees" ||
+            item.id === "CategoryContract" ||
+            item.id === "contractList" ||       
+            item.id === "HRCordinator" ||
+            item.id === "ManpowerEvaluation" ||
+            item.id === "Site Clerk" ||
+            item.id === "Payroll" ||
+            item.id === "Add Travel" ||
+            item.id === "AddCorona"  ||
+            item.id === "My Leave History"  ||
+            item.id === "Add Training" ||
+            item.id === "Vacation" 
+           
+           
+           
+         
+
+          ) {
+            return false;
+          }
+        }
+  
       if (userRole.includes("Site Klerk")) {
         if (
           item.id === "HR Administrator" ||
@@ -335,6 +402,7 @@ const AppVerticalNav = ({ routesConfig }) => {
           return false;
         }
       }
+
 
       else if (userRole.includes("admin")) {
         if (
@@ -380,14 +448,33 @@ const AppVerticalNav = ({ routesConfig }) => {
       }
 
 
-
       ////End Construction
-      else if (userRole.includes("Administrator")) {
+      else if (userRole.includes("Cordinator")) {
         if (item.id === "Add Project" ||
           item.id === "AddEmployees" ||
           item.id === "CategoryContract" ||
           item.id === "contractList" ||
-          item.id === "Add Recruitment"
+          item.id === "Add Recruitment" ||
+          item.id === "Integration" ||
+          item.id === "IntegrationStatistics" ||
+          item.id === "Affect a project to employee"
+
+        ) {
+          return false;
+        }
+      }
+      if (!userRole.includes("Cordinator") && userRole.includes("Administrator")) {
+        if (item.id === "Add Project" ||
+          item.id === "AddEmployees" ||
+          item.id === "CategoryContract" ||
+          item.id === "contractList" ||
+          item.id === "Add Recruitment" ||
+          item.id === "Integration" ||
+          item.id === "IntegrationStatistics" ||
+          item.id === "Planification"
+
+
+
         ) {
           return false;
         }

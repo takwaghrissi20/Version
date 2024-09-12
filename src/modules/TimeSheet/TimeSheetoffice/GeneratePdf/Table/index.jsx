@@ -8,6 +8,7 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
   const currentMonthDays = Array.from({ length: currentDate.daysInMonth() }, (v, k) => k + 1);
   const currentMonthName = currentDate.format('MMMM').toUpperCase();
 
+
   const columns = [
     {
       title: 'Gets Id',
@@ -164,7 +165,7 @@ const OrderTable = ({ orderData, selectedMonth, selectedYear }) => {
     const employeeData = { ...employee };
     currentMonthDays.forEach(day => {
       const date = moment({ year: selectedYear, month: selectedMonth - 1, day });
-      const pointage = employee.officepointages.find(p => moment(p.date).isSame(date, 'day'));
+      const pointage = employee?.officepointages?.find(p => moment(p.date).isSame(date, 'day'));
       employeeData[`day${day}`] = pointage ? pointage.pointage : '';
     });
     return employeeData;

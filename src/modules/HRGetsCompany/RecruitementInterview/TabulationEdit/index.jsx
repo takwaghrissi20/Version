@@ -81,13 +81,14 @@ const InterviewSheetById = () => {
   };
   useEffect(() => {
     findIdInterviewConstruction()
-  }, []);
+  }, [idViewConstruction]);
   const items = [
     {
       label: 'INTERVIEW SHEET CONSTRUCTION TEAM ',
       key: '1',
       children: 
-      <InterviewSheet JobCode={JobCode}
+      <InterviewSheet 
+      JobCode={JobCode}
         idViewConstruction={idViewConstruction}
 
         // isSaveDisabled={activeTabKey !== '1'}

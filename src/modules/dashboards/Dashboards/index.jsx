@@ -7,6 +7,7 @@ import { Input, List, Col } from 'antd';
 import AppPageMeta from '../../../@crema/components/AppPageMeta';
 import Pagination from '../../../@crema/components/AppsPagination';
 import RecruitementTable from './RecruitementTable';
+import TrainingTable from './TrainingTable';
 import PassportExpired from './PassportExpired';
 import VisaExpired from './VisaExpired';
 import AppRowContainer from '../../../@crema/components/AppRowContainer';
@@ -71,16 +72,16 @@ const Dashboards = () => {
   const [project, setProject] = useState([]);
   const userEmail = localStorage.getItem("email");
   const token = localStorage.getItem("token");
-   // Project By email
+  // Project By email
 
-   const fetchProjectEmail = async () => {
+  const fetchProjectEmail = async () => {
     try {
       const url = `https://dev-gateway.gets-company.com/api/v1/emp/getProjectByMail?mail=${userEmail}&token=${token}`;
       const response = await fetch(url, {
         method: "GET",
       });
       if (response.ok) {
-        const data = await response.json();       
+        const data = await response.json();
         const ProjectName = data.map(project => project.projName);
         console.log("projet profile", ProjectName)
         setProject(ProjectName);
@@ -92,7 +93,7 @@ const Dashboards = () => {
     }
   };
   {/*Get Profile*/ }
- 
+
   const GetProfileEmployess = async () => {
     const storedemail = window.localStorage.getItem("email");
     console.log("storedemail", storedemail)
@@ -208,8 +209,6 @@ const Dashboards = () => {
       const dataRecruitement = data.filter(p => p.idemp === idRec);
       const dataRecruitementPMO = data.filter(p => p.notif === 4);
       setListRecruitementPMO(dataRecruitementPMO)
-      console.log("lenght", dataRecruitementPMO)
-
       setCountId(dataRecruitement)
 
 
@@ -237,7 +236,7 @@ const Dashboards = () => {
 
     }
 
-   
+
 
   };
 
@@ -261,7 +260,7 @@ const Dashboards = () => {
   };
   const fetchEmployeesByEmployees = async () => {
     try {
-     
+
       const endPoint = process.env.NODE_ENV === 'development' ? 'https://dev-gateway.gets-company.com' : '';
       ///const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list`,
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/getRecByGetsId?id=${idRec}&page=${currentPage}&size=${pageSize}`,
@@ -276,10 +275,6 @@ const Dashboards = () => {
         throw new Error('Failed to fetch employees');
       }
       const data = await response.json();
-
-      console.log("idRec", idRec)
-      console.log("Filtered Data List", data);
-      console.log("data List", data)
       setListRecruitementId(data)
       return data;
 
@@ -291,17 +286,18 @@ const Dashboards = () => {
 
   };
   useEffect(() => {
-    if ( user.includes('PMO')) {
+    if (user.includes('PMO')) {
       fetchCountRecruitement();
       fetchRecruitementByType();
-    } else if ( (user.includes("Leader"))) {
+    } else if ((user.includes("Leader"))) {
       fetchEmployeesEmail();
       fetchEmployeesByEmployees();
       fetchExpiredVisa();
       fetchProjectEmail();
 
     }
-    else if (user.includes("admin") ||user.includes("bod")||  user.includes("Administrator") ) {
+    else if (user.includes("admin") || user.includes("bod") || !user.includes("Cordinator")
+      || user.includes("Administrator")) {
       fetchCountRecruitement();
       fetchRecruitementByType();
       fetchEmployeesEmail();
@@ -309,10 +305,10 @@ const Dashboards = () => {
       fetchExpiredVisa();
       fetchProjectEmail();
 
-      
+
     }
   }, [user, currentPage, pageSize, idRec]);
-  
+
   //Passport Expired
   const fetchExpiredVisa = async () => {
 
@@ -335,7 +331,7 @@ const Dashboards = () => {
           return false;
         }
       });
-      console.log("Données des visas expirés", expiredVisaData);
+
       const ProjexpiredVisaData = expiredVisaData.filter(employee =>
         project.includes(employee.projName)
       );
@@ -350,17 +346,17 @@ const Dashboards = () => {
           return false;
         }
       });
-      console.log("Données des visas expirés fff :", passportfinishdate);
- 
-       // Filtrer les employés dont le projet est inclus dans le tableau project
-       const Projpassportfinishdate = passportfinishdate.filter(employee =>
+
+
+      // Filtrer les employés dont le projet est inclus dans le tableau project
+      const Projpassportfinishdate = passportfinishdate.filter(employee =>
         project.includes(employee.projName)
       );
 
       setPassportExperedProjet(Projpassportfinishdate)
       setPassportExpered(passportfinishdate)
       setVisaExpered(expiredVisaData)
-      
+
 
 
 
@@ -372,7 +368,7 @@ const Dashboards = () => {
 
   //End Passourt Expired
   const items = [
-    {
+    ...(!user?.toUpperCase().includes("RELATION AND TRAINING") ? [{
       label: 'Recruitment',
       key: '1',
       children: (
@@ -406,12 +402,13 @@ const Dashboards = () => {
               AllRecruitement={datarecruitement}
               listRecruitementPMO={listRecruitementPMO}
               listRecruitementId={listRecruitementId}
+              user={user}
             />
-            {user.includes('admin') || user.includes('bod') || user.includes('Administrator') || !user?.includes('Construction') 
-            || !user.includes('PMO') 
-            
-            && (
-              <>
+
+            {(user.includes('admin') || user.includes('bod') || user.includes('Cordinator') || !user?.includes('Construction')
+              || !user.includes('PMO') || user?.includes('Administrator') || !user?.toUpperCase().includes("RELATION AND TRAINING"))
+
+              && (
                 <div className='Pagination' >
                   <StyledCustomerHeaderRight>
                     <Pagination
@@ -421,10 +418,9 @@ const Dashboards = () => {
                     />
                   </StyledCustomerHeaderRight>
                 </div>
-              </>
-            )}
-            {!user.includes('admin') || !user.includes('Administrator')  || !user.includes('PMO') && (
 
+              )}
+            {!user.includes('admin') || !user.includes('Cordinator') || !user.includes('PMO') && (
 
               <div className='Pagination' >
                 <StyledCustomerHeaderRight>
@@ -443,46 +439,97 @@ const Dashboards = () => {
 
         </>
       ),
-    },
-
-
-    ...(((!(user?.includes('Manager') || user?.includes('PMO') ||
- user?.includes('Construction'))) || user?.includes('Human Ressource')|| user?.includes('bod')|| user?.includes('admin') ||user?.includes('Administrator'))? [{
-        label: 'Passport Expired',
+    }] : []),
+    ...(user?.toUpperCase().includes("RELATION AND TRAINING") || user?.includes("admin")
+      || user?.includes("bod") ? [{
+        label: 'Training',
         key: '2',
-        children: (
-          <>
-            <AppsHeader key={'wrap'}></AppsHeader>
-            <PassportExpired 
-            passportExperedProjet={passportExperedProjet}
-            loading={loading} 
-            passportExpered={passportExpered}
-            user={user}
+        children: (          
+            <>
             
-            
-            />
+              <TrainingTable
+                loading={loading}
+                user={user}
+              />
+
+          
+
+
           </>
         ),
       }] : []),
 
-    ...(((!(user?.includes('Manager') || user?.includes('PMO')  || user?.includes('Construction'))) || user?.includes('Human Ressource') || user?.includes('bod')|| user?.includes('admin')||
-    user?.includes('Administrator'))  ? [{
-        label: 'Visa Expired',
+
+
+
+
+    // ...(((!(user?.includes('Manager') || user?.includes('PMO') ||
+    //   user?.includes('Construction') )) || user?.includes('Human Ressource') ||
+    //   user?.includes('bod') || user?.includes('admin')
+    //   || user?.includes('Administrator')) ? [{
+    //     label: 'Passport Expired',
+    //     key: '2',
+    //     children: (
+    //       <>
+    //         <AppsHeader key={'wrap'}>
+
+    //         </AppsHeader>
+    //         <PassportExpired
+    //           passportExperedProjet={passportExperedProjet}
+    //           loading={loading}
+    //           passportExpered={passportExpered}
+    //           user={user}
+
+
+    //         />
+    //       </>
+    //     ),
+    //   }] : []),
+    /////////////////////Passport Expired
+    ...((user?.includes('PMO') || user?.includes('Construction') || user?.includes('Human Ressource') ||
+      user?.includes('bod') || user?.includes('admin')
+      || (user?.includes('Administrator') && !user?.includes('Cordinator'))) ? [{
+        label: 'Passport Expired',
         key: '3',
-        children:
+        children: (
           <>
             <AppsHeader key={'wrap'}>
 
             </AppsHeader>
-            <VisaExpired 
+            <PassportExpired
+              passportExperedProjet={passportExperedProjet}
+              loading={loading}
+              passportExpered={passportExpered}
+              user={user}
+
+
+            />
+          </>
+        ),
+      }] : []),
+    /////////////////////End Passport Expired
+    ...((user?.includes('PMO') || user?.includes('Construction') || user?.includes('Human Ressource') ||
+      user?.includes('bod') || user?.includes('admin')
+      || (user?.includes('Administrator') && !user?.includes('Cordinator'))
+
+    ) ? [{
+      label: 'Visa Expired',
+      key: '4',
+      children:
+        <>
+          <AppsHeader key={'wrap'}>
+
+          </AppsHeader>
+          <VisaExpired
             visaExperedProjet={visaExperedProjet}
             loading={loading}
-             VisaExpired={visaExpered}
-             user={user}
-             />
+            VisaExpired={visaExpered}
+            user={user}
+          />
 
-          </>,
-      }] : []),
+        </>,
+    }] : []),
+
 
 
   ];
@@ -513,12 +560,12 @@ const Dashboards = () => {
     <>
       <AppPageMeta title='Dashboards' />
       <div>
-{/*     
+        {/*     
       <div>
       <button onClick={showNotification2}>Show notification</button>
     </div> */}
-   
-    </div>
+
+      </div>
       <>
         {(user.includes("admin") || user.includes("bod")) && metricsData && (
           <AppRowContainer ease={'easeInSine'}>
@@ -540,7 +587,7 @@ const Dashboards = () => {
           </AppRowContainer>
         )}
         {/**Leader */}
-        { user.includes("PMO")&& metricsData && (
+        {user.includes("PMO") && metricsData && (
           <AppRowContainer ease={'easeInSine'}>
             {crmData?.stateDataManager?.map((data) => (
               <Col key={data.id} xs={24} sm={12} lg={6}>
@@ -549,7 +596,7 @@ const Dashboards = () => {
             ))}
           </AppRowContainer>
         )}
-        {user.includes("Leader") || user.includes("Operation")&& metricsData && (
+        {user.includes("Leader") || user.includes("Operation") && metricsData && (
           <AppRowContainer ease={'easeInSine'}>
             {crmData?.stateDataManagerOpearation?.map((data) => (
               <Col key={data.id} xs={24} sm={12} lg={6}>
@@ -560,9 +607,29 @@ const Dashboards = () => {
         )}
         {/*End Project*/}
         {/* //hrAdministrator */}
-        {user.includes("Administrator") && metricsData && (
+        {user.includes("Cordinator") && metricsData && (
           <AppRowContainer ease={'easeInSine'}>
-            {crmData?.stateDataHRAdministrator?.map((data) => (
+            {crmData?.stateDataHRCordinator?.map((data) => (
+              <Col key={data.id} xs={24} sm={12} lg={6}>
+                <StatsDirCard data={data} />
+              </Col>
+            ))}
+          </AppRowContainer>
+        )
+        }
+        {(user.includes("Administrator") && !user.includes("Cordinator")) && metricsData && (
+          <AppRowContainer ease={'easeInSine'}>
+            {crmData?.stateDataHRAdministartor?.map((data) => (
+              <Col key={data.id} xs={24} sm={12} lg={6}>
+                <StatsDirCard data={data} />
+              </Col>
+            ))}
+          </AppRowContainer>
+        )
+        }
+        {(user.toUpperCase().includes("RELATION AND TRAINING")) && metricsData && (
+          <AppRowContainer ease={'easeInSine'}>
+            {crmData?.stateDataHREmplyees?.map((data) => (
               <Col key={data.id} xs={24} sm={12} lg={6}>
                 <StatsDirCard data={data} />
               </Col>
@@ -571,7 +638,7 @@ const Dashboards = () => {
         )
         }
       </>
-      { user?.includes('Construction') || user?.includes('Site Klerk') ||
+      {user?.includes('Construction') || user?.includes('Site Klerk') ||
         user.includes("QC") || user.includes("ASSET AND LOGISTIC ")
 
         ?

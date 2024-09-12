@@ -197,7 +197,7 @@ console.log("allrecruitementbelow",findIdData)
     // { key: 3, label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, onClick: handleInterview },
   
     //Approved Hr 
-    ...(roles?.includes('Administrator') || roles?.includes('admin') ? [
+    ...(roles?.includes('Cordinator') || roles?.includes('admin') ? [
       ...(findIdData?.status === 'Approved By BOD' ? [
         { 
           key: 2, 

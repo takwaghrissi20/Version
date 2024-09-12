@@ -1018,7 +1018,8 @@ const AddRecruitementAbove = () => {
               <AppRowContainer>
                 <Col xs={24} md={12}>
                   <Form.Item label='Job Code' name='JobCode'>
-                    <Input placeholder={"RRS-" + LastIndexRecruitementIncremente} readOnly={true} />
+                    <Input placeholder={"RRS-" + LastIndexRecruitementIncremente} 
+                    readOnly={true} />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>

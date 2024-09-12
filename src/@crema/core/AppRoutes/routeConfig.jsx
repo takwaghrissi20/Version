@@ -18,6 +18,7 @@ import { FaCreditCard } from 'react-icons/fa';
 import { FaPlane } from 'react-icons/fa';
 import { BiBriefcase } from 'react-icons/bi';
 import { MdAttachMoney } from 'react-icons/md';
+import { FcCollaboration } from "react-icons/fc";
 const routesConfig = [
   {
     id: "dashboards",
@@ -163,6 +164,42 @@ const routesConfig = [
          
         ],
       },
+      
+    ],
+  },
+  {
+    id: "Training",
+    title: "Training",
+    messageId: "",
+    type: "group",
+    children: [
+     
+      {
+        id: "Training",
+        title: "Training",
+        messageId: "sidebar.training",
+        icon: <FcCollaboration />,
+        type: "collapse",
+        children: [
+          {
+            id: "Add Training",
+            title: "Add Training",
+            messageId: "sidebar.Recruitement.AddTraining",
+            url: "/Hr/AddTraining",
+          },
+          {
+            id: "AllTraining",
+            title: "All Training",
+            messageId: "sidebar.Recruitement.AllTraining",
+            url: "/Hr/AllTraining",
+          },
+        
+        
+        
+          
+        ],
+      },
+     
       
     ],
   },

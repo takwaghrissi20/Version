@@ -161,7 +161,7 @@ const RecruitementInterview = () => {
       />,
     },
     {/*Interview Sheet**/ },
-    ...((roles?.includes('Administrator') || roles?.includes('admin') || roles?.includes('bod') || roles?.includes('Ressource Manager')) ? [{
+    ...((roles?.includes('Cordinator') || roles?.includes('admin') || roles?.includes('bod') || roles?.includes('Ressource Manager')) ? [{
       label: 'Staff Management Interview',
       key: '3',
       children: <InterviewStaff
@@ -181,7 +181,7 @@ const RecruitementInterview = () => {
 
     //   />,
     // },
-    ...((roles?.includes('Administrator') || roles?.includes('admin') || roles?.includes('bod') || roles?.includes('Ressource')) ? [{
+    ...((roles?.includes('Cordinator') || roles?.includes('admin') || roles?.includes('bod') || roles?.includes('Ressource')) ? [{
       label: 'Construction Staff Interview',
       key: '4',
       children: <InterviewConstruction 

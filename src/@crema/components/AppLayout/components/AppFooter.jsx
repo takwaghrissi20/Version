@@ -12,7 +12,11 @@ const AppFooter = () => {
 
     return (
       <StyledMainFooter style={{marginTop:"2rem"}}>
-        <p>ERP  @GetsCompany 2024 -Version 1.0.3</p>
+        <p>
+
+        Copyright© 2024 — ERP GETS COMPANY. All rights reserved-
+        Version 1.0.3
+        </p>
         <StyledFooterBtnView>
           <StyledFooterBtn type='link' color='primary'>
            

@@ -19,7 +19,7 @@ import ViewAssignement from "../TabsAssignementConstruction/View";
 
 const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, validatesFor, goTotest2, psy_Person, psy_HumQuality
   , psy_motivation, psy_Intellig, goToTest3, techEnglishSkills, techDate, techEvaluation, idNumb, meetDesision, evalDesision,
-  techcommentaire, hseCertif, siteHazCont,propsedsalary,dailyRate,
+  techcommentaire, hseCertif, siteHazCont, propsedsalary, dailyRate,
   properUse,
   hzardousMater,
   emergency,
@@ -128,6 +128,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
   const [selectedPTWknowledge, setSelectedPTWknowledge] = useState('');
   const [selectedHSEPolicies, setSelectedHSEPolicies] = useState('');
   const [selectedOthers, setSelectedOthers] = useState('');
+  const [findInterviewConstruction, setFindInterviewConstruction] = useState('');
   const currentYear = new Date().getFullYear();
   const token = localStorage.getItem("token");
   const fetchData = async () => {
@@ -137,7 +138,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc?token=${token}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/last?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -154,19 +155,35 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
       }
       const data = await response.json();
       setDatalastIdinterview(data.interviewCode)
-      setTimeout(() => {
-        window.location.reload();
-        navigate(-1)
-      }, 2000);
+      // setTimeout(() => {
+      //   window.location.reload();
+      //   navigate(-1)
+      // }, 2000);
 
     } catch (error) {
       console.error('Erreur lors de la récupération des données:', error);
     }
   };
+  const findIdInterviewConstruction = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${interviewCode}&token=${token}`, {
+        method: 'POST',
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const responseData = await response.json();
+      setFindInterviewConstruction(responseData)
+      console.log("testteee", responseData)
+
+    } catch (error) {
+      console.error("Erreur lors de la récupération du jobcode:", error);
+    }
+  };
   useEffect(() => {
     fetchData()
-
-  }, []);
+    findIdInterviewConstruction()
+  }, [interviewCode]);
   const NewLastInterview = datalastIdinterview + 1
   //Save InterViewSheet
 
@@ -198,7 +215,6 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
   ];
   const gobackTest = () => {
     navigate(-1)
-
   }
   const goback = () => {
     navigate(`/Hr/Recruitement&Interview/ConstructionStaffInterview/Update/${interviewCode}`, {
@@ -288,19 +304,6 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
         body: JSON.stringify({
           interviewCode: interviewCode,
-          validatesFor: validatesFor,
-          goTotest2: goTotest2,
-          psy_Person: psy_Person,
-          psy_HumQuality: psy_HumQuality,
-          psy_motivation: psy_motivation,
-          psy_Intellig: psy_Intellig,
-          goToTest3: goToTest3,
-          techEnglishSkills: techEnglishSkills,
-          techDate: techDate,
-          techEvaluation: techEvaluation,
-          idNumb: idNumb,
-          meetDesision: meetDesision,
-          evalDesision: evalDesision,
           techcommentaire: techcommentaire,
           hseCertif: selectedHSECertificates,
           siteHazCont: selectedSitehazardscontrol,
@@ -310,9 +313,76 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
           ptw: selectedPTWknowledge,
           hsePolicies: selectedHSEPolicies,
           others: selectedOthers,
-          propsedsalary:propsedsalary,
-          dailyRate:dailyRate,
+          projname: findInterviewConstruction?.projname,
           notif: 100,
+          jobCod: findInterviewConstruction?.jobCod,
+          totalReqPos: findInterviewConstruction?.totalReqPos,
+          intervtime: findInterviewConstruction?.intervtime,
+          totalInterv: findInterviewConstruction?.totalInterv,
+          totalAccept: findInterviewConstruction?.totalAccept,
+          totalRequiredGrade: findInterviewConstruction?.totalRequiredGrade,
+          department: findInterviewConstruction?.department,
+          requiredExperinece: findInterviewConstruction?.requiredExperinece,
+          requiredQualification: findInterviewConstruction?.requiredQualification,
+          positionToBeFilled: findInterviewConstruction?.positionToBeFilled,
+          interviwDate: findInterviewConstruction?.interviwDate,
+          birthayDate: findInterviewConstruction?.birthayDate,
+          fullName: findInterviewConstruction?.fullName,
+          familySituation: findInterviewConstruction?.familySituation,
+          educationLevel: findInterviewConstruction?.educationLevel,
+          diploma: findInterviewConstruction?.diploma,
+          experience: findInterviewConstruction?.experience,
+          requiredGrade: findInterviewConstruction?.requiredGrade,
+          validatesFor: findInterviewConstruction?.validatesFor,
+          goTotest2: findInterviewConstruction?.goTotest2,
+          psy_Person: findInterviewConstruction?.psy_Person,
+          psy_HumQuality: findInterviewConstruction?.psy_HumQuality,
+          psy_motivation: findInterviewConstruction?.psy_motivation,
+          psy_Intellig: findInterviewConstruction?.psy_Intellig,
+          goToTest3: findInterviewConstruction?.goToTest3,
+          techEnglishSkills: findInterviewConstruction?.techEnglishSkills,
+          techDate: findInterviewConstruction?.techDate,
+          techEvaluation: findInterviewConstruction?.techEvaluation,
+          idNumb: findInterviewConstruction?.idNumb,
+          meetDesision: findInterviewConstruction?.meetDesision,
+          evalDesision: findInterviewConstruction?.evalDesision,
+          evalName: findInterviewConstruction?.evalName,
+          evalId: findInterviewConstruction?.evalId,
+          evalDesisionSign: findInterviewConstruction?.evalDesisionSign,
+          techcommentaire: findInterviewConstruction?.techcommentaire,
+          headOfDepAprouv: findInterviewConstruction?.headOfDepAprouv,
+          headOfDepAprouvSign: findInterviewConstruction?.headOfDepAprouvSign,
+          hr_Person: findInterviewConstruction?.hr_Person,
+          hr_HumQuality: findInterviewConstruction?.hr_HumQuality,
+          hr_motivation: findInterviewConstruction?.hr_motivation,
+          hr_Intellig: findInterviewConstruction?.hr_Intellig,
+          nlevel: findInterviewConstruction?.nlevel,
+          hrDesion: findInterviewConstruction?.hrDesion,
+          hrComentaire: findInterviewConstruction?.hrComentaire,
+          expectedJoinDate: findInterviewConstruction?.expectedJoinDate,
+          propsedsalary: findInterviewConstruction?.propsedsalary,
+          dailyRate: findInterviewConstruction?.dailyRate,
+          finaldesision: findInterviewConstruction?.finaldesision,
+          finaldesision2: findInterviewConstruction?.finaldesision2,
+          directSign1: findInterviewConstruction?.directSign1,
+          directSign2: findInterviewConstruction?.directSign2,
+          educAndTrain: findInterviewConstruction?.educAndTrain,
+          workExp: findInterviewConstruction?.workExp,
+          intellCap: findInterviewConstruction?.intellCap,
+          emotIntellij: findInterviewConstruction?.emotIntellij,
+          selfConf: findInterviewConstruction?.selfConf,
+          comunicSkills: findInterviewConstruction?.comunicSkills,
+          refAssign: findInterviewConstruction?.refAssign,
+          passion: findInterviewConstruction?.passion,
+          creativity: findInterviewConstruction?.creativity,
+          leadership: findInterviewConstruction?.leadership,
+          physicPres: findInterviewConstruction?.physicPres,
+          contactEmail: findInterviewConstruction?.contactEmail,
+          contactPhone: findInterviewConstruction?.contactPhone,
+          inputInterview: findInterviewConstruction?.inputInterview,
+          feedback: findInterviewConstruction?.feedback,
+          agreedJoinedDate: findInterviewConstruction?.agreedJoinedDate,
+          diversityTal: findInterviewConstruction?.diversityTal,
 
         })
       });
@@ -331,8 +401,8 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
         setDataInterview(data)
         openNotification('bottomRight')
         setTimeout(() => {
-          navigate(`/Hr/Recruitement&Interview/ConstructionStaffInterview/Update/${interviewCode}`, { 
-            
+          navigate(`/Hr/Recruitement&Interview/ConstructionStaffInterview/Update/${interviewCode}`, {
+
           });
           // navigate(-1)
         }, 2000);
@@ -363,51 +433,89 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
         },
 
         body: JSON.stringify({
+
           interviewCode: interviewCode,
-          validatesFor: validatesFor,
-          goTotest2: goTotest2,
-          psy_Person: psy_Person,
-          psy_HumQuality: psy_HumQuality,
-          psy_motivation: psy_motivation,
-          psy_Intellig: psy_Intellig,
-          goToTest3: goToTest3,
-          techEnglishSkills: techEnglishSkills,
-          techDate: techDate,
-          techEvaluation: techEvaluation,
-          idNumb: idNumb,
-          meetDesision: meetDesision,
-          evalDesision: evalDesision,
           techcommentaire: techcommentaire,
-          hseCertif: hseCertif,
-          siteHazCont: siteHazCont,
-          properUse: properUse,
-          hzardousMater: hzardousMater,
-          emergency: emergency,
-          ptw: ptw,
-          hsePolicies: hsePolicies,
-          others: others,
+          hseCertif: findInterviewConstruction?.hseCertif,
+          siteHazCont: findInterviewConstruction?.siteHazCont,
+          properUse: findInterviewConstruction?.properUse,
+          hzardousMater: findInterviewConstruction?.hzardousMater,
+          emergency: findInterviewConstruction?.emergency,
+          ptw: findInterviewConstruction?.ptw,
+          hsePolicies: findInterviewConstruction?.hsePolicies,
+          hseDecision: findInterviewConstruction?.hseDecision,
+          hseComment: findInterviewConstruction?.hseComment,
+          others: findInterviewConstruction?.others,
+          projname: findInterviewConstruction?.projname,
+          notif: 600,
+          jobCod: findInterviewConstruction?.jobCod,
+          totalReqPos: findInterviewConstruction?.totalReqPos,
+          intervtime: findInterviewConstruction?.intervtime,
+          totalInterv: findInterviewConstruction?.totalInterv,
+          totalAccept: findInterviewConstruction?.totalAccept,
+          totalRequiredGrade: findInterviewConstruction?.totalRequiredGrade,
+          department: findInterviewConstruction?.department,
+          requiredExperinece: findInterviewConstruction?.requiredExperinece,
+          requiredQualification: findInterviewConstruction?.requiredQualification,
+          positionToBeFilled: findInterviewConstruction?.positionToBeFilled,
+          interviwDate: findInterviewConstruction?.interviwDate,
+          birthayDate: findInterviewConstruction?.birthayDate,
+          fullName: findInterviewConstruction?.fullName,
+          familySituation: findInterviewConstruction?.familySituation,
+          educationLevel: findInterviewConstruction?.educationLevel,
+          diploma: findInterviewConstruction?.diploma,
+          experience: findInterviewConstruction?.experience,
+          requiredGrade: findInterviewConstruction?.requiredGrade,
+          validatesFor: findInterviewConstruction?.validatesFor,
+          goTotest2: findInterviewConstruction?.goTotest2,
+          psy_Person: findInterviewConstruction?.psy_Person,
+          psy_HumQuality: findInterviewConstruction?.psy_HumQuality,
+          psy_motivation: findInterviewConstruction?.psy_motivation,
+          psy_Intellig: findInterviewConstruction?.psy_Intellig,
+          goToTest3: findInterviewConstruction?.goToTest3,
+          techEnglishSkills: findInterviewConstruction?.techEnglishSkills,
+          techDate: findInterviewConstruction?.techDate,
+          techEvaluation: findInterviewConstruction?.techEvaluation,
+          idNumb: findInterviewConstruction?.idNumb,
+          meetDesision: findInterviewConstruction?.meetDesision,
+          evalDesision: findInterviewConstruction?.evalDesision,
+          evalName: findInterviewConstruction?.evalName,
+          evalId: findInterviewConstruction?.evalId,
+          evalDesisionSign: findInterviewConstruction?.evalDesisionSign,
+          techcommentaire: findInterviewConstruction?.techcommentaire,
+          headOfDepAprouv: findInterviewConstruction?.headOfDepAprouv,
+          headOfDepAprouvSign: findInterviewConstruction?.headOfDepAprouvSign,
+          hr_Person: findInterviewConstruction?.hr_Person,
+          hr_HumQuality: findInterviewConstruction?.hr_HumQuality,
+          hr_motivation: findInterviewConstruction?.hr_motivation,
+          hr_Intellig: findInterviewConstruction?.hr_Intellig,
+          nlevel: findInterviewConstruction?.nlevel,
+          hrDesion: findInterviewConstruction?.hrDesion,
+          hrComentaire: findInterviewConstruction?.hrComentaire,
+          expectedJoinDate: findInterviewConstruction?.expectedJoinDate,
+          propsedsalary: findInterviewConstruction?.propsedsalary,
+          dailyRate: findInterviewConstruction?.dailyRate,
+          finaldesision: findInterviewConstruction?.finaldesision,
+          finaldesision2: findInterviewConstruction?.finaldesision2,
+          directSign1: findInterviewConstruction?.directSign1,
+          directSign2: findInterviewConstruction?.directSign2,
           educAndTrain: selectedEducationTraining,
           workExp: selectedworkExperience,
-          DiversityTal: selectedDiversity,
           intellCap: selectedIntellectualCapability,
-          selfConf: selectedSelfconfidence,
           emotIntellij: selectedEmotionalIntelligence,
+          selfConf: selectedSelfconfidence,
           comunicSkills: selectedCommunicationSkills,
+          refAssign: findInterviewConstruction?.refAssign,
           passion: selectedPassion,
           creativity: selectedCreativity,
-          physicPres: selectedPhysicalpresentation,
           leadership: selectedLeadershipQualities,
-          notif: 600,
-          hseDecision: hseDecision,
-          hseComment: hseComment,
-          dailyRate:dailyRate
-
-
-
-
-
-
-
+          physicPres: selectedPhysicalpresentation,
+          contactEmail: findInterviewConstruction?.contactEmail,
+          contactPhone: findInterviewConstruction?.contactPhone,
+          inputInterview: findInterviewConstruction?.inputInterview,
+          feedback: findInterviewConstruction?.feedback,
+          agreedJoinedDate: findInterviewConstruction?.agreedJoinedDate,
+          diversityTal: selectedDiversity,
 
 
 
@@ -425,24 +533,16 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
       }
       if (response.ok) {
         const data = await response.json();
-        console.log("dattaaammmmm", data)
         openNotification('bottomRight')
         setDataInterview(data)
-        setTimeout(() => {
-          window.location.reload();
-          navigate(-1)
-        }, 2000);
-        // navigate(-1);
+
+
       }
 
     } catch (error) {
       console.error('Erreur lors de la récupération des données:', error);
     }
   };
-
-
-
-
 
 
   const CheckedFinalGotest2 = isOkChecked ? 1 : 0;
@@ -536,7 +636,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                   >{/*Date et temp de Interview bu Hr*/}
                     <Input
-                      placeholder={inputInterview}
+                      placeholder={findInterviewConstruction?.inputInterview}
                       readOnly
 
                     ></Input>
@@ -653,7 +753,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                           label="HSE Certificates:Working at hight/ H2S/ First Aid"
                           name='attribut'>
                           <Input
-                            placeholder={hseCertif}
+                            placeholder={findInterviewConstruction?.hseCertif}
 
                             readOnly
                           ></Input>
@@ -667,7 +767,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                         >
                           <Input
-                            placeholder={siteHazCont}
+                            placeholder={findInterviewConstruction?.siteHazCont}
 
                             readOnly
                           ></Input>
@@ -681,7 +781,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                         >
                           <Input
-                            placeholder={properUse}
+                            placeholder={findInterviewConstruction?.properUse}
 
                             readOnly
                           ></Input>
@@ -695,7 +795,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                         >
                           <Input
-                            placeholder={hzardousMater}
+                            placeholder={findInterviewConstruction?.hzardousMater}
 
                             readOnly
                           ></Input>
@@ -709,7 +809,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                         >
                           <Input
-                            placeholder={emergency}
+                            placeholder={findInterviewConstruction?.emergency}
 
                             readOnly
                           ></Input>
@@ -723,7 +823,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                         >
                           <Input
-                            placeholder={ptw}
+                            placeholder={findInterviewConstruction?.ptw}
 
                             readOnly
                           ></Input>
@@ -737,7 +837,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                         >
                           <Input
-                            placeholder={hsePolicies}
+                            placeholder={findInterviewConstruction?.hsePolicies}
 
                             readOnly
                           ></Input>
@@ -751,7 +851,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                         >
                           <Input
-                            placeholder={others}
+                            placeholder={findInterviewConstruction?.others}
 
                             readOnly
                           ></Input>
@@ -795,8 +895,10 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                         </Select>
                       </Form.Item>
                     </Col>
-                    <Col xs={24} md={12}>
+                    <Col xs={24} md={12}
+                    >
                       <Form.Item
+
                         label='Work Experience achievements, relevance to position applied For'
                         name='attribut2'
                         rules={[
@@ -806,7 +908,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                       >
                         <Select
-
+                          style={{ marginTop:"20px"}}
                           placeholder='Select Education and Training'
 
                           onChange={(value) => setSelectedWorkExperience(value)}
@@ -898,7 +1000,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                       </Form.Item>
                     </Col>
 
-                    <Col xs={24} md={12}>
+                    <Col xs={24} md={12} style={{ marginTop: "1rem" }}>
                       <Form.Item
                         label="Self-confidence  self- assurance ; belief in one’s potential and
                            capability"
@@ -925,7 +1027,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                     </Col>
                     <Col xs={24} md={12}>
                       <Form.Item
-                       style={{ marginTop: "1.2rem" }}
+                        style={{ marginTop: "1.2rem" }}
                         label="Communication Skills ability to express/present ideas in clear ,concise manner
                 "
                         name='attribut7'
@@ -948,7 +1050,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                         </Select>
                       </Form.Item>
                     </Col>
-                    <Col xs={24} md={12}>
+                    <Col xs={24} md={12} style={{ marginTop: "1rem" }}>
                       <Form.Item
                         label="Passion/Enthusiasm - energy & vitality in pursuing goals & 
                  objectives"
@@ -978,7 +1080,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                     </Col>
                     <Col xs={24} md={12}>
                       <Form.Item
-                       style={{ marginTop: "1.2rem" }}
+                        style={{ marginTop: "1.2rem" }}
                         label="   
                   Creativity / Imagination - ability to work/find solutions 
                        outside the boundaries of conventions."
@@ -1002,7 +1104,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                         </Select>
                       </Form.Item>
                     </Col>
-                    <Col xs={24} md={12}>
+                    <Col xs={24} md={12} style={{ marginTop: "1rem" }}>
                       <Form.Item
                         label="   
                   Ladership Qualities – initiative, ability to lead others; decisiveness"

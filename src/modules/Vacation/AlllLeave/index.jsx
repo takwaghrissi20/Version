@@ -7,22 +7,22 @@ import ListRejectedLeave from "./AllLeaveTab/ListRejectedLeave";
 
 
 const AllLeave = () => {
-  
+  const user = localStorage.getItem("role");
   const items = [
     {
       label: 'Pending Leave ',
       key: '1',
-      children: <AllLeaveTab/>,
+      children: <AllLeaveTab user={user}/>,
     }, // remember to pass the key prop
     {
       label: 'Approved Leave',
       key: '2',
-      children: <ListApprovedLeave /> ,
+      children: <ListApprovedLeave user={user} /> ,
     },
     {
       label: 'Rjected Leave',
       key: '3',
-      children: <ListRejectedLeave/> ,
+      children: <ListRejectedLeave user={user}/> ,
     },
 
   ];

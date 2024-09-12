@@ -16,7 +16,34 @@ const EmployeesStatus = () => {
   const [pickerValue, setPickerValue] = useState(new Date(selectedYear, selectedMonth - 1));
   const token = localStorage.getItem("token")
   // Fetch OfficeWorkStatus with filters
-  const fetchEmployeesOfficeWorkStatus = async () => {
+  /////////////////
+  const fetchEmployeesOfficeWorkStatus  = async () => {
+    try {
+
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/OfficeWorkStatus/all?token=${token}`);
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch training List By Page');
+      }
+      if (response.ok) {
+        const data = await response.json();
+
+        // Filter data based on selectedMonth and selectedYear
+        const filteredData = data.filter(item => item.month === moment(selectedMonth, 'M').format('MMMM').toUpperCase() && item.year === selectedYear);
+  
+        setOfficeWorkStatus(filteredData);
+      }
+
+
+
+    } catch (error) {
+      console.error('Error fetching training By Pageess:', error);
+    }
+  };
+
+
+  //////////////////
+  const fetchEmployeesOfficeWorkStatus0 = async () => {
     try {
       const url = `https://dev-gateway.gets-company.com/api/v1/OfficeWorkStatus/all?token=${token}`;
       const response = await fetch(url);
@@ -28,7 +55,7 @@ const EmployeesStatus = () => {
 
       // Filter data based on selectedMonth and selectedYear
       const filteredData = data.filter(item => item.month === moment(selectedMonth, 'M').format('MMMM').toUpperCase() && item.year === selectedYear);
-      console.log("Filtered Data:", filteredData);
+
       setOfficeWorkStatus(filteredData);
     } catch (error) {
       console.error('Error fetching office work status:', error);

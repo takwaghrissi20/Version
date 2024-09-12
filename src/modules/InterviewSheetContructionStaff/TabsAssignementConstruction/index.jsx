@@ -17,14 +17,13 @@ import dayjs from 'dayjs';
 import IntlMessages from '../../../@crema/helpers/IntlMessages';
 
 const TabsAssignement = ({ isSaveDisabled,inputInterview }) => {
-  console.log("isSaveDisabled2", isSaveDisabled)
+ 
 
   const location = useLocation();
   const roles = window.localStorage.getItem("role");
 
   const JobCode = location.state ? location.state.JobCode : null;
   const interviewCode = location.state ? location.state.interviewCode: null;
-  console.log("interviewCode",interviewCode)
   const level = location.state ? location.state.level : null;
   const projectName = location.state ? location.state.projectName : null;
   const position = location.state ? location.state.position : null;
