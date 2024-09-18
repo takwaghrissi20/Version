@@ -679,8 +679,8 @@
 
 } */
 * .InputComment {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 .table-cell-center {
@@ -1222,6 +1222,18 @@ input {
   font-weight: bold; 
 
 }
+.NotifDemob{
+  background-color: #5784BA;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-Radius: 50%;
+  display: flex ;
+  justify-content: center; 
+  align-items: center;
+  font-weight: bold; 
+
+}
 .NotifInterview{
   background-color: #317AC1;
   color: white;
@@ -1243,3 +1255,18 @@ input {
 .item-hover:hover {
   background-color: white !important;
 }
+.btnstyle2{
+
+  text-align: center;
+  background-color: transparent;
+  border-radius: 3px;  border: 2px solid #2997ff;
+  border-radius: 0.5rem;
+}
+.btnstyle2 :hover{
+opacity: 0.5;
+
+}
+.btnstyle2 :focus{
+  opacity: 0.5;
+  
+  }

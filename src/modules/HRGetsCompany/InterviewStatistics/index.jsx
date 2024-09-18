@@ -98,7 +98,8 @@ const InterviewStatics = () => {
           <AppViewStatic>
          
           
-            <InfoDataHrRecruitement staticsDataaccepted ={staticsDataaccepted}
+            <InfoDataHrRecruitement 
+            staticsDataaccepted ={staticsDataaccepted}
             listInerview={listInerview}/>
             </AppViewStatic>
       

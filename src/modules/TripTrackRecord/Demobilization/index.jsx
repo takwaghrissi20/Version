@@ -43,6 +43,8 @@ const UpdateDemobilization = () => {
   const newRecruitment = location.state ? location.state.newRecruitment : null;
   const desiredDate = location.state ? location.state.desiredDate : null;
   const commentaire = location.state ? location.state.commentaire : null;
+  const referenceMisionOrder = location.state ? location.state.referenceMisionOrder : null;
+  const lsteDateDemob = location.state ? location.state.lsteDateDemob : null;
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const [lastDemobilization, setLastDemobilization] = useState(0);
@@ -98,9 +100,43 @@ const UpdateDemobilization = () => {
   const [demobmonth, setDemobmonth] = useState("");
   const [dateInput, setDateInput] = useState(new Date());
   const userRole = localStorage.getItem("role")
-  console.log("rolessss", userRole)
+  const [getId, setGetId] = useState("");
   const formattedDate = dayjs(dateInput).format('YYYY-MM-DD');
+  //////////////////Find By id 
+  const findIdDemob = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/getById?id=${idMd}&token=${token}`, {
+        method: 'GET',
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const responseData = await response.json();
+      console.log("reeesssss", responseData)
+      setGetId(responseData)
+
+
+
+
+    } catch (error) {
+      console.error("Erreur lors de la récupération du jobcode:", error);
+    }
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+  /////////////End Find By Id
   useEffect(() => {
+    findIdDemob()
     // Reset employee-related state variables
     setName("");
     setPosition("");
@@ -121,6 +157,7 @@ const UpdateDemobilization = () => {
     setProjRef("");
     setTypetripdessert("");
     setUrlCopy("");
+
   }, [getsId])
 
 
@@ -507,7 +544,6 @@ const UpdateDemobilization = () => {
       if (response.ok) {
 
         const responseData = await response.json();
-        console.log("testttttdemonMob", responseData)
         openNotification('bottomRight')
 
 
@@ -515,7 +551,7 @@ const UpdateDemobilization = () => {
       }
 
     } catch (error) {
-      console.error("Erreur lors de la récupération du Id Mission:", error);
+      console.error("Erreur lors de la récupération du Update Demobilation:", error);
     }
   };
 
@@ -577,7 +613,7 @@ const UpdateDemobilization = () => {
       }
 
     } catch (error) {
-      console.error("Erreur lors de la récupération du Id Mission:", error);
+      console.error("Erreur lors de la récupération du Update Demob:", error);
     }
   };
   const handleUpdateConstruction = async () => {
@@ -702,7 +738,7 @@ const UpdateDemobilization = () => {
 
 
   {/*END handleQCLEAD*/ }
-  {/*handleLOGISTIC*/}
+  {/*handleLOGISTIC*/ }
   const handleLOGISTIC = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/update?id=${idMd}&token=${token}`, {
@@ -763,7 +799,7 @@ const UpdateDemobilization = () => {
       console.error("Erreur lors de la récupération du Id Mission:", error);
     }
   };
-  {/*handleLOGISTIC*/}
+  {/*handleLOGISTIC*/ }
   const handleUpdateLeader = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/update?id=${idMd}&token=${token}`, {
@@ -1039,10 +1075,20 @@ const UpdateDemobilization = () => {
   }, [backToBackNeed]);
   function BackNeed(e) {
     setIsBackNeed(e.target.checked)
+    if (e.target.checked) {
+      setNoIsBackNeed(false);
+
+    }
+
+
   }
 
   function NoBackNeed(e) {
     setNoIsBackNeed(e.target.checked)
+    if (e.target.checked) {
+      setIsBackNeed(false);
+
+    }
 
   }
   useEffect(() => {
@@ -1238,7 +1284,7 @@ const UpdateDemobilization = () => {
                       name='Mission'
                     >
                       <FloatLabel >
-                        <span className='modallabel'>Reference Mision Order:</span>
+                        <span className='modallabel'>Reference Mision Order</span>
                         <Select
                           style={{ marginTop: "10px" }}
                           placeholder="Select Your Mision Order"
@@ -1640,10 +1686,8 @@ const UpdateDemobilization = () => {
                     >
                       <Input
                         className='Input'
-                        placeholder="Reference Mision Order"
+                        placeholder={getId?.referenceMisionOrder}
                         readOnly
-
-
 
                       />
                     </Form.Item>
@@ -1655,7 +1699,7 @@ const UpdateDemobilization = () => {
 
                       <Input
                         className='Input'
-                        placeholder="Last Mob Date"
+                        placeholder={getId?.lsteDateDemob}
                         readOnly
 
 
@@ -2033,7 +2077,7 @@ const UpdateDemobilization = () => {
                     >
                       <Input
                         className='Input'
-                        placeholder="Reference Mision Order"
+                        placeholder={getId?.referenceMisionOrder}
                         readOnly
 
 
@@ -2048,7 +2092,7 @@ const UpdateDemobilization = () => {
 
                       <Input
                         className='Input'
-                        placeholder="Last Mob Date"
+                        placeholder={getId?.lsteDateDemob}
                         readOnly
 
 
@@ -2279,7 +2323,7 @@ const UpdateDemobilization = () => {
                 Update LOGISTIC
               </Button>
             )}
-        
+
           </Space>
         </Form>
       )
@@ -2446,7 +2490,7 @@ const UpdateDemobilization = () => {
                     >
                       <Input
                         className='Input'
-                        placeholder="Reference Mision Order"
+                        placeholder={"MAO-" + getId?.referenceMisionOrder}
                         readOnly
 
 
@@ -2461,7 +2505,7 @@ const UpdateDemobilization = () => {
 
                       <Input
                         className='Input'
-                        placeholder="Last Mob Date"
+                        placeholder={getId?.lsteDateDemob}
                         readOnly
 
 
@@ -2536,13 +2580,30 @@ const UpdateDemobilization = () => {
                     </Form.Item>
                   </Col>
 
-
                   <Col xs={24} md={12}>
+                    <Form.Item
+                      name='Reason'
+                      label="Reason"
+                      rules={[
+                        {
+                          required: visatype === 'Final Exit',
+                          message: 'Please provide a reason for Final Exit'
+                        }
+                      ]}
+                    >
+                      <Input
+                        className='Input'
+                        placeholder="Reason"
+                        value={reason}
+                        onChange={handleReason}
+                      />
+                    </Form.Item>
+                  </Col>
+
+                  {/* <Col xs={24} md={12}>
                     <Form.Item className='form-field'
                       name='Reason'
-                      label="Reason :"
-
-                    >
+                      label="Reason" >
                       <Input
                         className='Input'
                         placeholder={reasonDemob}
@@ -2551,7 +2612,7 @@ const UpdateDemobilization = () => {
                       />
 
                     </Form.Item>
-                  </Col>
+                  </Col> */}
                   <Col xs={24} md={12}>
                     <Form.Item
                       label='Demobilization For the Month'
@@ -2671,7 +2732,7 @@ const UpdateDemobilization = () => {
             </Col>
           </AppRowContainer>
 
-
+          {/* UpdateConstruction**/}
           <Space
             size={15}
             style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
@@ -2681,12 +2742,14 @@ const UpdateDemobilization = () => {
               onClick={handleUpdateConstruction}
               type='primary'
               htmlType='submit'>
-              UpdateConstruction
+              Save
             </Button>
           </Space>
         </Form>
+
       }
-      {/*End Construction Manager*/}
+      {/* EndUpdateConstruction**/}
+
       {/*Project Leader*/}
       {(userRole.includes("bod")) && (
         < Form
@@ -2835,7 +2898,8 @@ const UpdateDemobilization = () => {
                     >
                       <Input
                         className='Input'
-                        placeholder="Reference Mision Order"
+                        placeholder={getId?.referenceMisionOrder}
+
                         readOnly
 
 
@@ -2850,7 +2914,7 @@ const UpdateDemobilization = () => {
 
                       <Input
                         className='Input'
-                        placeholder="Last Mob Date"
+                        placeholder={getId?.lsteDateDemob}
                         readOnly
 
 
@@ -3219,7 +3283,7 @@ const UpdateDemobilization = () => {
                     >
                       <Input
                         className='Input'
-                        placeholder="Reference Mision Order"
+                        placeholder={getId?.referenceMisionOrder}
                         readOnly
 
 
@@ -3234,7 +3298,7 @@ const UpdateDemobilization = () => {
 
                       <Input
                         className='Input'
-                        placeholder="Last Mob Date"
+                        placeholder={getId?.lsteDateDemob}
                         readOnly
 
 
@@ -3377,14 +3441,9 @@ const UpdateDemobilization = () => {
                     <StyledInput>
                       <Form.Item
                         label='Type of Back To Back (In Case of Need back to back please specify the type)'
-                        name='Back'
-
-
-                      >
+                        name='Back' >
                         <Checkbox style={{ margin: "8px" }}
-
-
-                          checked={officeBackToback} readOnly>
+                          checked={officeBackToback} readOnly >
 
                           <IntlMessages id='demob.Needoffice' />
                         </Checkbox>

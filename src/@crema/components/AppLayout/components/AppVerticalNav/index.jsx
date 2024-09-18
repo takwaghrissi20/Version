@@ -37,7 +37,8 @@ const AppVerticalNav = ({ routesConfig }) => {
   const filterMenuItems = (items) => {
     console.log("filterMenuItemspp", items)
     return items.filter(item => {
-      if (userRole.includes("Manager") && !userRole.includes("Human Ressource ") && !userRole.includes("Construction") && !userRole.includes("Operation") &&
+      if (userRole.includes("Manager") && !userRole.includes("Human Ressource ") && 
+      !userRole.includes("Construction") && !userRole.includes("Operation") &&
         !userRole.includes("Project") && !userRole.includes("Site")) {
         if (item.id === "VisaHealth" ||
           item.id === "ManpowerLocation" ||
@@ -56,7 +57,7 @@ const AppVerticalNav = ({ routesConfig }) => {
       }
       //User==Human Ressource MANAGER
       if (userRole.includes("Manager") && userRole.includes("Human Ressource ") && !userRole.includes("Construction") && !userRole.includes("Operation") &&
-        !userRole.includes("Project") && !userRole.includes("Site")) {
+        !userRole.includes("Project") && !userRole.includes("Leader")&& !userRole.includes("Site")) {
         if (
           item.id === "ManpowerLocation" ||
           item.id === "Add Project" ||
@@ -89,7 +90,7 @@ const AppVerticalNav = ({ routesConfig }) => {
       if (userRole.includes("Manager") && userRole.includes("Operation") &&
         !userRole.includes("Project") && !userRole.includes("Site")) {
         if (
-          item.id === "ManpowerLocation" ||
+        
           item.id === "Employees" ||
           item.id === "attendance" ||
           item.id === "ManpowerEvaluation" ||
@@ -105,7 +106,12 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "AddDemobInput" ||
           item.id === "Add Mission" ||
           item.id === "ADDVisaHealth" ||
-          item.id === "Training"
+          item.id === "Training"   ||
+          item.id === "ManpowerLocationTrackRecord" ||
+          item.id === "ManpowerAllocationPerProject" ||
+          item.id === "DemobilizationDirectEmployeesSite" ||
+          item.id === "PersononBoard"  ||
+          item.id === "HeadOfficeEmployees"  
 
 
         ) {
@@ -130,7 +136,12 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "Payroll" ||
           item.id === "recruitement" ||
           item.id === "VacationLeave" ||
-          item.id === "Training"
+          item.id === "Training" ||
+          item.id === "SALARYINCREASEAndPositionChange" ||
+          item.id === "SiteSALARYINCREASEAndPositionChange" ||
+          item.id === "ListSALARYINCREASEAndPositionChange" 
+          
+          
          
 
         ) {
@@ -142,7 +153,7 @@ const AppVerticalNav = ({ routesConfig }) => {
       //Project Manager
       if (userRole.includes("Project")) {
         if (
-          item.id === "ManpowerLocation" ||
+        
           item.id === "Employees" ||
           item.id === "attendance" ||
           item.id === "ManpowerEvaluation" ||
@@ -165,7 +176,17 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "SummaryDemobTrip" ||
           item.id === "SummarymobTrip" ||
           item.id === "AddExtensoinMission" ||
-          item.id === "Training"
+          item.id === "Training" ||
+          item.id === "ManpowerLocationTrackRecord" ||
+          item.id === "ManpowerAllocationPerProject" ||
+          item.id === "DemobilizationDirectEmployeesSite" ||
+          item.id === "PersononBoard"  ||
+          item.id === "HeadOfficeEmployees"  ||
+          item.id === "SALARYINCREASEAndPositionChange" ||
+          item.id === "SiteSALARYINCREASEAndPositionChange" ||
+          item.id === "ListSALARYINCREASEAndPositionChange" 
+         
+          
 
 
         ) {
@@ -176,7 +197,7 @@ const AppVerticalNav = ({ routesConfig }) => {
       //Project Manager
       if (userRole.includes("Leader")) {
         if (
-          item.id === "ManpowerLocation" ||
+         
           item.id === "Employees" ||
           item.id === "attendance" ||
           item.id === "ManpowerEvaluation" ||
@@ -198,13 +219,17 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "DemobTripTrackRecord" ||
           item.id === "SummaryDemobTrip" ||
           item.id === "AddExtensoinMission"  ||
-          item.id === "Training"
-
-
-
-
-
-
+          item.id === "Training" ||
+          item.id === "ManpowerLocationTrackRecord" ||
+          item.id === "ManpowerAllocationPerProject" ||
+          item.id === "DemobilizationDirectEmployeesSite" ||
+          item.id === "PersononBoard"  ||
+          item.id === "HeadOfficeEmployees"  ||
+          item.id === "SALARYINCREASEAndPositionChange" ||
+          item.id === "SiteSALARYINCREASEAndPositionChange" ||
+          item.id === "ListSALARYINCREASEAndPositionChange" 
+        
+          
 
 
 
@@ -223,7 +248,10 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "Site Clerk" ||
           item.id === "PROJECTS TRIP TRACK RECORD " ||
           item.id === "Payroll" ||
-          item.id === "Training"
+          item.id === "Training" ||
+          item.id === "SALARYINCREASEAndPositionChange" ||
+          item.id === "SiteSALARYINCREASEAndPositionChange" ||
+          item.id === "ListSALARYINCREASEAndPositionChange" 
 
 
         ) {
@@ -244,7 +272,10 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "Site Clerk" ||
           item.id === "PROJECTS TRIP TRACK RECORD " ||
           item.id === "Payroll" ||
-          item.id === "Training"
+          item.id === "Training" ||
+          item.id === "SALARYINCREASEAndPositionChange" ||
+          item.id === "SiteSALARYINCREASEAndPositionChange" ||
+          item.id === "ListSALARYINCREASEAndPositionChange" 
 
 
         ) {
@@ -277,7 +308,10 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "Add Internal  Mission" ||
           item.id === "AddExtensoinMission" ||
           item.id === "Payroll" ||
-          item.id === "Add Training"
+          item.id === "Add Training" ||
+          item.id === "SALARYINCREASEAndPositionChange" ||
+          item.id === "SiteSALARYINCREASEAndPositionChange" 
+        
 
 
         ) {
@@ -298,7 +332,11 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "AddCorona" ||
           item.id === "VacationLeave" ||
           item.id === "VisaHealth"    ||
-          item.id === "Training"
+          item.id === "Training"     ||
+          item.id === "SALARYINCREASEAndPositionChange" ||
+          item.id === "SiteSALARYINCREASEAndPositionChange" ||
+          item.id === "ListSALARYINCREASEAndPositionChange" 
+          
 
 
 
@@ -316,7 +354,7 @@ const AppVerticalNav = ({ routesConfig }) => {
       //Hr Administartor
       if (!userRole.includes("Cordinator") && userRole.includes("Administrator")) {
         if (item.id === "attendance" ||
-          item.id === "ManpowerLocation" ||
+          
           item.id === "ManpowerEvaluation" ||
           item.id === "Site Clerk" ||
           item.id === "Payroll" ||
@@ -327,7 +365,16 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "VacationLeave"||
           item.id === "AddDemobInput" ||
           item.id === "AddExtensoinMission" ||
-            item.id === "Training"
+          item.id === "Training"  ||
+          item.id === "ManpowerLocationTrackRecord" ||
+          item.id === "ManpowerAllocationPerProject" ||
+          item.id === "DemobilizationDirectEmployeesSite" ||
+          item.id === "PersononBoard"  ||
+          item.id === "HeadOfficeEmployees"  ||
+          item.id === "SALARYINCREASEAndPositionChange" ||
+          item.id === "SiteSALARYINCREASEAndPositionChange" ||
+          item.id === "ListSALARYINCREASEAndPositionChange" 
+
           
           
 
@@ -356,7 +403,8 @@ const AppVerticalNav = ({ routesConfig }) => {
             item.id === "AddCorona"  ||
             item.id === "My Leave History"  ||
             item.id === "Add Training" ||
-            item.id === "Vacation" 
+            item.id === "Vacation"  
+           
            
            
            
@@ -374,7 +422,12 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "ManpowerLocation" ||
           item.id === "ManpowerEvaluation" ||
           item.id === "VisaHealth" ||
-          item.id === "VacationLeave"
+          item.id === "VacationLeave" ||
+          item.id === "Training"   ||
+          item.id === "EmpTransfertPermission"   ||
+          item.id === "TransfertPermission"   
+          
+         
           // item.id === "Payroll"
 
         ) {

@@ -134,8 +134,22 @@ const AddProjectOffice = React.lazy(() =>
 const AffectedProject = React.lazy(() =>
   import('../../../modules/AffectedProject'),
 );
-
-
+const OFFICESalary = React.lazy(() =>
+  import('../../../modules/AddOfficePositionChangeSalaryIncrease'),
+);
+const SiteSalary = React.lazy(() =>
+  import('../../../modules/AddSitePositionChangeSalaryIncrease'),
+);
+const ListSalary = React.lazy(() =>
+  import('../../../modules/ListSalaryIncreaseAndChangePosition'),
+);
+const ViewListSalary = React.lazy(() =>
+  import('../../../modules/ViewPositionChangeSalaryIncrease'),
+);
+const UpdateListSalary = React.lazy(() =>
+  import('../../../modules/UpdatePositionChangeSalaryIncrease'),
+);
+ 
 const AddEmployees = React.lazy(() =>
   import('../../../modules/HRGetsCompany/AddEmployees/ScrumBoard'),
 );
@@ -417,6 +431,32 @@ export const ecommerceConfig = [
     path: '/HrDataBase/Affectaprojecttoemployee',
     element: <AffectedProject />,
   },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/HrDataBase/Office_SALARY_INCREASE_And_Position_Change',
+    element: <OFFICESalary/>,
+  },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/HrDataBase/Site_SALARY_INCREASE_And_Position_Change',
+    element: <SiteSalary />,
+  },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/HrDataBase/SALARY_INCREASE_And_Position_Change',
+    element: <ListSalary  />,
+  },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/HrDataBase/SALARY_INCREASE_And_Position_Change/View/:id',
+    element: <ViewListSalary  />,
+  },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/HrDataBase/SALARY_INCREASE_And_Position_Change/Update/:id',
+    element: <UpdateListSalary  />,
+  },
+  
   {
     permittedRole: RoutePermittedRole.User,
     path: '/HrDataBase/Add_Project',

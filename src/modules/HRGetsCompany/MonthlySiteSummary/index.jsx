@@ -18,7 +18,7 @@ const MonthlySiteSummary = () => {
   // Fetch OfficeWorkStatus with filters
   const fetchEmployeesSiteWorkStatus1 = async () => {
     try {
-      const url = `https://dev-gateway.gets-company.com/api/v1/SiteWorkStatus/all?token=${token}`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/SiteWorkStatus/all?token=${token}https://dev-gateway.gets-company.com/api/v1/SiteWorkStatus/all?token=${token}`;
       const response = await fetch(url);
 
       if (!response.ok) {
@@ -43,11 +43,11 @@ const MonthlySiteSummary = () => {
       }
       if (response.ok) {
         const data = await response.json();
-        console.log("rrrtttt",data)
+       console.log("testttttt",data)
         // Filter data based on selectedMonth and selectedYear
         const filteredData = data.filter(item => item.mois === moment(selectedMonth, 'M').format('MMMM').toUpperCase() && item.year === selectedYear);
-    console.log("rrrtttt",filteredData)
-        setOfficeWorkStatus(filteredData);
+        console.log("testttttt 1111",data)
+        setSiteWorkStatus(filteredData);
       }
 
 

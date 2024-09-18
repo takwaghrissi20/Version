@@ -247,12 +247,11 @@ const ContratCategory = (props) => {
 
 
   }, [selectedContractCategorie, selectedContratType]);
-  console.log("selectedContratType", selectedContratType)
   const handleCategoryChange = (value) => {
-    console.log("valueee", value)
+
     setSelectedContractCategorie(value);
   };
-  console.log("valueee2222", selectedContractCategorie)
+
   const ContratB1 = () => {
 
     navigate('/HRGetsCompany/ContartTypeB1', {

@@ -464,8 +464,11 @@ const AddDemobilization = () => {
           totalWorkingDays: totalWorking,
           dateDemob: demobDate,
           type: type,
-          notif: 13
-
+          referenceMisionOrder:selectedMission,
+          lsteDateDemob:lastTravel,
+          notif: 13,
+          
+         
         })
       });
 
@@ -893,9 +896,9 @@ const AddDemobilization = () => {
                           onChange={handleProjectChange}
                           value={selectedProject}
                         >
-                          {projects.map(project => (
-                            <Option key={project.projId} value={project.projName}>
-                              {project.projName}
+                          {projects?.map(project => (
+                            <Option key={project?.projId} value={project?.projName}>
+                              {project?.projName}
                             </Option>
                           ))}
                         </Select>
@@ -1312,9 +1315,9 @@ const AddDemobilization = () => {
                           onChange={handleProjectChange}
                           value={selectedProject}
                         >
-                          {projects.map(project => (
-                            <Option key={project.projId} value={project.projName}>
-                              {project.projName}
+                          {projects?.map(project => (
+                            <Option key={project?.projId} value={project?.projName}>
+                              {project?.projName}
                             </Option>
                           ))}
                         </Select>
@@ -1422,7 +1425,7 @@ const AddDemobilization = () => {
               // disabled={!selectedMission || !selectedProject || !getsId}
               type='primary'
               htmlType='submit'>
-              Save Site Clerck
+              Save
             </Button>
           </Space>
         </Form>

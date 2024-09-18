@@ -67,6 +67,7 @@ const ExpiredPassportData = ({passportExpered ,loading, passportExperedProjet,us
    
   )}
   {( user?.includes('bod') || !user?.includes('Cordinator'))   && (
+    <>
     <StyledCustomerTable
       hoverColor
       data={passportExpered}
@@ -75,6 +76,8 @@ const ExpiredPassportData = ({passportExpered ,loading, passportExperedProjet,us
       scroll={{ x: 'auto',  y: tableHeight }}
   
     />
+   
+    </>
    
   )}
   {user.includes('Leader') && (
@@ -90,19 +93,9 @@ const ExpiredPassportData = ({passportExpered ,loading, passportExperedProjet,us
     />
    
   )}
-    {(user.includes('bod') || user?.includes('admin'))  && (
-      <StyledCustomerTable
-      hoverColor
-      data={passportExpered}
-      loading={loading}
-      columns={columns}
-      scroll={{ x: 'auto',  y: tableHeight }}
-      
 
-
-    />
    
-  )}
+
  
 
 

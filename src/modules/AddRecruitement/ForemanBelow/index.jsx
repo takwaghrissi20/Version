@@ -450,7 +450,6 @@ const AddRecruitementForemanBelow = () => {
           totalNumber: vacancie,
           oDep: isOrDep,
           exDep: isExDep,
-          jobCode: LastIndexRecruitementIncremente,
           // type: "For Foreman & Below",
           // oDep: asper,
           // // exDep: "",
@@ -546,7 +545,6 @@ const AddRecruitementForemanBelow = () => {
           totalNumber: vacancie,
           oDep: isOrDep,
           exDep: isExDep,
-          jobCode: LastIndexRecruitementIncremente,
           // type: "For Foreman & Below",
           // oDep: asper,
           // // exDep: "",
@@ -637,7 +635,7 @@ const AddRecruitementForemanBelow = () => {
           totalNumber: vacancie,
           oDep: isOrDep,
           exDep: isExDep,
-          jobCode: LastIndexRecruitementIncremente,
+      
           // type: "For Foreman & Below",
           // oDep: asper,
           // // exDep: "",
@@ -728,7 +726,7 @@ const AddRecruitementForemanBelow = () => {
           totalNumber: vacancie,
           oDep: isOrDep,
           exDep: isExDep,
-          jobCode: LastIndexRecruitementIncremente,
+        
           // type: "For Foreman & Below",
           // oDep: asper,
           // // exDep: "",

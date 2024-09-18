@@ -20,7 +20,6 @@ import FeddbackEmployeesConstruction from "../../../../Model/FeddbackEmployeesCo
 const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,  
   findId, setFindIdData,open,handleInterview,codeJob,interviewCode}) => {
   //const [findIdData, setFindIdData] = useState(null);
-  console.log("findIdData",findIdData)
   const [isViewInterviewStaff, onViewInterviewStaff] = useState(false);
   const [isEditInterviewStaff, onEditInterviewStaff] = useState(false);
   const [isDelteInterviewStaff, onDeleteInterviewStaff] = useState(false)
@@ -30,6 +29,11 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
   const handleFeedbackEmployeesOpen = (code) => {
    onFeddbackEmployee(true);
   };
+  const handleFeedbackEmployeesClose = (code) => {
+    onFeddbackEmployee(false);
+   };
+ 
+
   const navigate = useNavigate();
   const userRoles = localStorage.getItem("role");
   const [tableHeight, setTableHeight] = useState('auto');

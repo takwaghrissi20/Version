@@ -117,10 +117,26 @@ const routesConfig = [
             title: "Affect a project to employee",
             messageId: "sidebar.hr.Affectaprojecttoemployee",
             url: "/HrDataBase/Affectaprojecttoemployee",
+          },        
+          {
+            id: "SALARYINCREASEAndPositionChange",
+            title: "SALARYINCREASEAndPositionChange",
+            messageId: "sidebar.hr.SALARYINCREASEAndPositionChange",
+            url: "/HrDataBase/Office_SALARY_INCREASE_And_Position_Change",
           },
-
-
-
+          {
+            id: "SiteSALARYINCREASEAndPositionChange",
+            title: "SiteSALARYINCREASEAndPositionChange",
+            messageId: "sidebar.hr.SiteSALARYINCREASEAndPositionChange",
+            url: "/HrDataBase/Site_SALARY_INCREASE_And_Position_Change",
+          },
+          {
+            id: "ListSALARYINCREASEAndPositionChange",
+            title: "ListSALARYINCREASEAndPositionChange",
+            messageId: "sidebar.hr.SALARYINCREASEAndPositionChang",
+            url: "/HrDataBase/SALARY_INCREASE_And_Position_Change",
+          },
+         
           {
             id: "SAMMARY",
             title: "SAMMARY",
@@ -467,8 +483,19 @@ const routesConfig = [
             messageId: "sidebar.general.SummaryMobTrip",
             url: "/ManpowerLocation/SummaryMobTrip",
           },
-
-
+          {
+            id: "TransfertPermission",
+            title: "TransfertPermission",
+            messageId: "sidebar.general.TRANSFERTpERMISSION",
+            url: "/ManpowerLocation/Employee_Transfer_Permission",
+          },
+          {
+            id: "EmpTransfertPermission",
+            title: "EmpTransfertPermission",
+            messageId: "sidebar.general.LISTTRANSFERTpERMISSION",
+            url: "/ManpowerLocation/List_Employee_Transfer_Permission",
+          },
+          
          
           // {
           //   id: "manpowerenxtension",
@@ -519,6 +546,12 @@ const routesConfig = [
             title: "HeadOfficeEmployees",
             messageId: "sidebar.general.HeadOfficeEmployees",
             url: "/ManpowerLocation/HeadOfficeEmployees",
+          },
+          {
+            id: "PROJECTSLOCATIONTRACKRECORD ",
+            title: "PROJECTS LOCATION TRACK RECORD",
+            messageId: "sidebar.general.PROJECTSLOCATIONTRACKRECORD",
+            url: "/ManpowerLocation/PROJECTSLOCATIONTRACKRECORD",
           },
           // {
           //   id: "ManpowerHystograms",

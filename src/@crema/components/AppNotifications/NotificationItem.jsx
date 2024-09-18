@@ -79,7 +79,6 @@ const NotificationItem = ({ user }) => {
           return false;
         }
       });
-      console.log("passsportttExpired 000 222 ", passportFinishDate)
       setPassportExpired(passportFinishDate)
       // Filter employees whose Contract expires within 15 days
       const contratFinishDate = activeEmployees.filter(employee => {
@@ -98,10 +97,6 @@ const NotificationItem = ({ user }) => {
   };
 
 
-
-
-
-
   //End Fetch Employee expired passport et Visa 
   // Project By email
   const fetchProjectEmail = async () => {
@@ -114,6 +109,7 @@ const NotificationItem = ({ user }) => {
         const data = await response.json();
         setIdgets(data?.getsId)
         const ProjectName = data.map(project => project.projName);
+        console.log("testttt projjjjj", ProjectName)
         setProject(ProjectName);
       } else {
         console.error("Erreur lors de la récupération du email:", response.status);
@@ -404,23 +400,25 @@ const NotificationItem = ({ user }) => {
           // Fourth group of conditions
           (item.notfi === 13 &&
             item.type.includes("Demob") &&
-            item.positionDemob.includes('HSE') &&
-            project.includes(item.projName)) ||
+            !['HSE', 'QC', 'LOGISTIC'].some(substring => item.positionDemob.toLowerCase().includes(substring.toLowerCase())) &&
+            project.includes(item.projName)
+          )
+          ||
           // Fifth group of conditions
           (item.notfi === 19 &&
-            item.type.includes("Demob") &&
+            item.type.includes("DeMobilization") &&
             project.includes(item.projName)) ||
           (item.notfi === 13 &&
-            item.type.includes("Demob") &&
+            item.type.includes("DeMobilization") &&
             !item.positionDemob.includes('HSE') &&
             project.includes(item.projName) &&
             !item.positionDemob.includes('QC') &&
             !item.positionDemob.includes('Office Logistic')) ||
-          (item.notfi === 13 && item.type.includes("Demob")
+          (item.notfi === 13 && item.type.includes("DeMobilization")
             && project.includes(item.projName)) ||
           (item.notfi === 15 &&
             item.positionDemob.includes('QC') &&
-            item.type.includes("Demob") &&
+            item.type.includes("DeMobilization") &&
             project.includes(item.projName))
 
         );
@@ -542,7 +540,9 @@ const NotificationItem = ({ user }) => {
         backToBackType: code?.backToBackType,
         newRecruitment: code?.newRecruitment,
         desiredDate: code?.desiredDate,
-        commentaire: code?.commentaire
+        commentaire: code?.commentaire,
+        referenceMisionOrder:code?.referenceMisionOrder,
+        lsteDateDemob:code?.lsteDateDemob
 
 
       }
@@ -891,8 +891,6 @@ const NotificationItem = ({ user }) => {
 
           {notifHR.map((p, index) => (
             <div key={index}>
-
-
               <div className='NotifTotal' onClick={() => findId(p?.codejob)}>
                 <div
                   className='NotifRecruitement' >
@@ -970,8 +968,6 @@ const NotificationItem = ({ user }) => {
         </StyledNotifyListItem>
         : null
       }
-
-
 
 
       {/*End Notif Administartor */}
@@ -1231,22 +1227,36 @@ const NotificationItem = ({ user }) => {
         <StyledNotifyListItem className='item-hover'>
           <p>Number All Notification </p>
           {notifConstruction.map((p, index) => (
-            <>
-              <div key={index}>
-                {/*Demob Flow Project Leader*/}
+            <div key={index}>
+              <div>
+                <div className='NotifTotal' onClick={() => findId(p?.codejob)}>
+                  <div
+                    className='NotifDemob' >
+                    D
+                  </div>
+                  <button className='Notification' onClick={() => findIdDemob(p?.idMd)}>
+                    Demobilization Permission <br></br>
+                    <span className='IndexNotif'>DP-</span>
+                    <span className='IndexNotif'>{p?.idMd}</span>
+                  </button>
+                </div>
+              </div>
+              {/* <div key={index}>
+
                 {p?.type?.includes("Demob") && user.includes("Construction") && (
                   <button className='Notification' onClick={() => findIdDemob(p?.idMd)} >
                     Demobilization Permission Notification:
+
                     <span style={{ color: "red", fontWeight: "bold" }}>DP-{p?.idMd}</span>
                   </button>
                 )}
-              </div>
+              </div> */}
               {/* <div key={index}>
               <button className='Notification' onClick={() => findId(p?.codejob)}>
                 Recruitement Request with Code Job :<span style={{ color: "red",fontWeight:"bold" }}>RRS-{p.codejob}</span> </button>
             </div> */}
               <div className='Space'></div>
-            </>
+            </div>
           ))}
         </StyledNotifyListItem>
         : null

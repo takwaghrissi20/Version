@@ -161,7 +161,7 @@ const FedbackForm = (props) => {
           expectedJoinDate: findIdData?.expectedJoinDate,
           dailyRate: findIdData?.dailyRate,
           hrDesion: findIdData?.hrDesion,
-        
+          salary:findIdData?.salary,
           propsedsalary: findIdData?.propsedsalary,
           notif: findIdData?. notif,
           directSign1: findIdData?.directSign1,

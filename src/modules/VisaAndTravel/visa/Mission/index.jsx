@@ -175,14 +175,16 @@ const Mission = () => {
         const responseData = await response.json();
         setName(responseData?.name);
         setPosition(responseData?.position);
-        // setCountry(responseData?.destination);
+      
   
         const projectsData = responseData?.projects?.map(project => ({
           projName: project.projName,
           projId: project.projId
         }));
   
-        const projectscountry = responseData?.projects?.flatMap(project => project.country);
+        const projectscountry = responseData?.projects?.flatMap(project => 
+          project.locations?.map(location => location.lieu)
+        );
         setProjectsCountry(projectscountry);
         setProjects(projectsData);
 

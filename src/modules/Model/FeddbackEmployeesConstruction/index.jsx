@@ -12,8 +12,6 @@ const ModalView = ({
   findIdData
 
 }) => {
-
-
   return (
 
     <StyledContactModal
