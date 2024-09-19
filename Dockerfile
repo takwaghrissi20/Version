@@ -2,8 +2,8 @@
 FROM node:lts-alpine as build-stage
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
-RUN npm install next
+RUN npm install --force
+RUN npm install next --force
 ARG BUILD_PROFILE
 COPY . .
 RUN npm run build
