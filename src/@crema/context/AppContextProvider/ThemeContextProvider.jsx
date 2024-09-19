@@ -22,7 +22,7 @@ const ThemeContextProvider = ({ children }) => {
   const [themeStyle, updateThemeStyle] = useState(defaultConfig.themeStyle);
 
   const updateTheme = useCallback((theme) => {
-    console.log("updateTheme th", theme);
+  
     setTheme(theme);
   }, []);
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import OrderActions from './OrderActions';
 import { StyledOrderId, StyledOrderTable } from '../index.styled';
@@ -23,13 +23,13 @@ const columns = [
   },
   {
     title: 'DATE START',
-    dataIndex: 'fromD',
-    key: 'fromD',
+    dataIndex: 'toD',
+    key: 'toD',
   },
   {
     title: 'DATE End',
-    dataIndex: 'integPeriod',
-    key: 'integPeriod',
+    dataIndex: 'fromD',
+    key: 'fromD',
   },
   {
     title: 'Section',
@@ -66,6 +66,20 @@ const columns = [
     render: () => <OrderActions />,
   },
 ];
+//
+// useEffect(() => {
+//   const updateTableHeight = () => {
+//     const pageHeight = window.innerHeight;
+//     const tableHeight = pageHeight * 0.3; 
+//     setTableHeight(tableHeight);
+//   };
+//   window.addEventListener('resize', updateTableHeight);
+//   updateTableHeight();
+//   return () => {
+//     window.removeEventListener('resize', updateTableHeight);
+//   };
+// }, []);
+
 const OrderTable = ({ orderIntegration, loading }) => {
   return (
     <StyledOrderTable
@@ -74,7 +88,7 @@ const OrderTable = ({ orderIntegration, loading }) => {
       loading={loading}
       columns={columns}
       
-      scroll={{ x: 'auto',y:200 }}
+      scroll={{ x: 'auto',  y: 200 }}
     />
   );
 };

@@ -13,7 +13,8 @@ import { CiSaveDown2 } from "react-icons/ci";
 import { StyledOrderTable, StyledAction } from '../../../../styles/index.styled';
 import { all } from 'axios';
 
-const OrderTable = ({ employeesoffice, loading, user }) => {
+const OrderTable = ({ employeesoffice, loading, user, OfficeWorkStatus }) => {
+  console.log("employeesoffice jjjj",employeesoffice)
 
   const [findIdData, setFindIdData] = useState(null);
   const [isViewEmp, onViewEmp] = useState(false);
@@ -22,7 +23,19 @@ const OrderTable = ({ employeesoffice, loading, user }) => {
   const [findIdDataMatriel, setFindIdDataMatriel] = useState(null);
   const [findIdDataTravel, setFindIdDataTravel] = useState(null);
   const [allConge, setAllConge] = useState(0);
-
+  const [tableHeight, setTableHeight] = useState('auto');
+  useEffect(() => {
+    const updateTableHeight = () => {
+      const pageHeight = window.innerHeight;
+      const tableHeight = pageHeight * 0.25; 
+      setTableHeight(tableHeight);
+    };
+    window.addEventListener('resize', updateTableHeight);
+    updateTableHeight();
+    return () => {
+      window.removeEventListener('resize', updateTableHeight);
+    };
+  }, []);
   const handleAddEmpOpen = () => {
 
     onViewEmp(true);
@@ -47,10 +60,10 @@ const OrderTable = ({ employeesoffice, loading, user }) => {
 
   //   return totalDays;
   // };
-
+  const token = localStorage.getItem("token");
   const findId = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${code}&token=${token}`, {
         method: 'GET',
 
       });
@@ -85,170 +98,177 @@ const OrderTable = ({ employeesoffice, loading, user }) => {
 
   // }, [allConge]);
 
-
   const columns = [
     {
       title: 'Gets Id',
       dataIndex: 'getsId',
       key: 'getsId',
+      width: 80,
     },
     {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      render: (text) => text === null || text === undefined ? 'null' : text
+      width: 80,
+     
     },
     {
       title: 'Position',
       dataIndex: 'position',
       key: 'position',
-      render: (text) => text === null || text === undefined ? 'null' : text
+      width: 150,
+
     },
     {
       title: 'Working Office Day',
-      dataIndex: 'Working Office Day',
-      key: 'Working Office Day',
-      render: (text) => text === null || text === undefined ? 'null' : text
+      dataIndex: 'workingDay',
+      key: 'workingDay',
+      width: 80,
+   
     },
     {
       title: 'Working From Home',
-      dataIndex: 'Working From Home',
-      key: 'Working From Home',
-      render: (text) => text === null || text === undefined ? 'null' : text
-      // render: (actStatus) => (
-      //   <>
-      //     <span className={`badge ${actStatus === "Resigned " ? 'red' : ''}`}>
-      //       {actStatus} {actStatus === "Active " && <StarFilled />}
-
-      //     </span>
-      //   </>
-      // ),
+      dataIndex: 'workingHome',
+      key: 'workingHome',
+      width: 80,
+ 
+ 
     },
     {
       title: 'Absend Day',
-      dataIndex: 'Absend Day',
-      key: 'Absend Day',
-      render: (text) => text === null || text === undefined ? 'null' : text
+      dataIndex: 'absent',
+      key: 'absent',
+      width: 80,
+   
     },
     {
       title: 'Vacation',
-      key: 'Vacation',
-      render: (text, record) => (
-        <p>{record?.allConge}</p>
-
-
-      ),
+      dataIndex: 'vacation',
+      key: 'vacation',
+      width: 80,
+  
 
     },
     {
       title: 'Rest',
-      dataIndex: 'Working Office Day',
-      key: 'Working Office Day',
-      render: (text) => text === null || text === undefined ? 'null' : text
+      dataIndex: 'rest',
+      key: 'rest',
+      width: 80,
+   
+    },
+    {
+      title: 'Over Time',
+      dataIndex: 'overTime',
+      key: 'overTime',
+      width: 80,
+     
     },
     {
       title: 'JA',
       dataIndex: 'Working Office Day',
       key: 'Working Office Day',
-      render: (text) => text === null || text === undefined ? 'null' : text
+      width: 80,
+     
     },
     {
       title: 'WR',
-      dataIndex: 'Working Office Day',
-      key: 'Working Office Day',
-      render: (text) => text === null || text === undefined ? 'null' : text
+      dataIndex: 'workRecord',
+      key: 'workRecord',
+      width: 80,
+     
     },
-    {
-      title: 'Actions',
-      dataIndex: 'actions',
-      key: 'actions',
-      fixed: 'right',
-      className: 'customer-table-actions',
-      render: (text, record) => (
+    // {
+    //   title: 'Actions',
+    //   dataIndex: 'actions',
+    //   key: 'actions',
+    //   fixed: 'right',
+    //   className: 'customer-table-actions',
+    //   width: 80,
+    //   render: (text, record) => (
 
-        <StyledAction onClick={() => findId(record?.getsId)}>
-          <GrFormView className='iconeView'
-            onClick={handleAddEmpOpen}
-          ></GrFormView>
-          <EmployeeView
-            isViewEmployee={isViewEmp}
-            handleAddContactClose={handleAddEmpClose}
-            getsId={findIdData?.getsId}
-            nationality={findIdData?.nationality}
-            birthDate={findIdData?.birthDate}
-            phoneNumber={findIdData?.phoneNumber}
-            joinDate={findIdData?.joinDate}
-            companyType={findIdData?.companyType}
-            finishDate={findIdData?.finishDate}
-            actStatus={findIdData?.actStatus}
-            position={findIdData?.position}
-            getsEmail={findIdData?.getsEmail}
-            name={findIdData?.name}
-            passportnumber={findIdData?.passportnumber}
-            cnss={findIdData?.cnss}
-            contractNumb={findIdData?.contractNumb}
-            cvCopy={findIdData?.cvCopy}
-            passportCopy={findIdData?.passportCopy}
-            //corona1Date={findIdData?.vaccins}
-            traveldate={findIdData?.traveldate}
-            destination={findIdData?.destination}
-            projName={findIdData?.projName}
+    //     <StyledAction onClick={() => findId(record?.getsId)}>
+    //       <GrFormView className='iconeView'
+    //         onClick={handleAddEmpOpen}
+    //       ></GrFormView>
+    //       <EmployeeView
+    //         isViewEmployee={isViewEmp}
+    //         handleAddContactClose={handleAddEmpClose}
+    //         getsId={findIdData?.getsId}
+    //         nationality={findIdData?.nationality}
+    //         birthDate={findIdData?.birthDate}
+    //         phoneNumber={findIdData?.phoneNumber}
+    //         joinDate={findIdData?.joinDate}
+    //         companyType={findIdData?.companyType}
+    //         finishDate={findIdData?.finishDate}
+    //         actStatus={findIdData?.actStatus}
+    //         position={findIdData?.position}
+    //         getsEmail={findIdData?.getsEmail}
+    //         name={findIdData?.name}
+    //         passportnumber={findIdData?.passportnumber}
+    //         cnss={findIdData?.cnss}
+    //         contractNumb={findIdData?.contractNumb}
+    //         cvCopy={findIdData?.cvCopy}
+    //         passportCopy={findIdData?.passportCopy}
+    //         //corona1Date={findIdData?.vaccins}
+    //         traveldate={findIdData?.traveldate}
+    //         destination={findIdData?.destination}
+    //         projName={findIdData?.projName}
 
-          />
-          {/* <AiFillEdit
-            onClick={handleEditEmpOpen}
-
-
-            className='iconeEdit'></AiFillEdit> */}
-          {user?.includes('admin') && (
-            <AiFillEdit
-              onClick={() => {
-                findId(record?.getsId);
-                handleEditEmpOpen();
-              }}
-              className='iconeEdit'
-            />
-          )}
-
-          <EmployeeStatusEdit
-            isEditEmployee={isEditEmp}
-            handleAddContactClose={handleEditEmpClose}
-            getsId={findIdData?.getsId}
-            nationality={findIdData?.nationality}
-            birthDate={findIdData?.birthDate}
-            phoneNumber={findIdData?.phoneNumber}
-            joinDate={findIdData?.joinDate}
-            companyType={findIdData?.companyType}
-            finishDate={findIdData?.finishDate}
-            actStatus={findIdData?.actStatus}
-            position={findIdData?.position}
-            getsEmail={findIdData?.getsEmail}
-            name={findIdData?.name}
-            passportnumber={findIdData?.passportnumber}
-            cnss={findIdData?.cnss}
-            contractNumb={findIdData?.contractNumb}
-            cvCopy={findIdData?.cvCopy}
-            passportCopy={findIdData?.passportCopy}
-            //corona1Date={findIdData?.vaccins}
-            traveldate={findIdData?.traveldate}
-            destination={findIdData?.destination}
-            projName={findIdData?.projName}
+    //       />
+    //       {/* <AiFillEdit
+    //         onClick={handleEditEmpOpen}
 
 
+    //         className='iconeEdit'></AiFillEdit> */}
+    //       {user?.includes('admin') && (
+    //         <AiFillEdit
+    //           onClick={() => {
+    //             findId(record?.getsId);
+    //             handleEditEmpOpen();
+    //           }}
+    //           className='iconeEdit'
+    //         />
+    //       )}
 
-          />
+    //       <EmployeeStatusEdit
+    //         isEditEmployee={isEditEmp}
+    //         handleAddContactClose={handleEditEmpClose}
+    //         getsId={findIdData?.getsId}
+    //         nationality={findIdData?.nationality}
+    //         birthDate={findIdData?.birthDate}
+    //         phoneNumber={findIdData?.phoneNumber}
+    //         joinDate={findIdData?.joinDate}
+    //         companyType={findIdData?.companyType}
+    //         finishDate={findIdData?.finishDate}
+    //         actStatus={findIdData?.actStatus}
+    //         position={findIdData?.position}
+    //         getsEmail={findIdData?.getsEmail}
+    //         name={findIdData?.name}
+    //         passportnumber={findIdData?.passportnumber}
+    //         cnss={findIdData?.cnss}
+    //         contractNumb={findIdData?.contractNumb}
+    //         cvCopy={findIdData?.cvCopy}
+    //         passportCopy={findIdData?.passportCopy}
+    //         //corona1Date={findIdData?.vaccins}
+    //         traveldate={findIdData?.traveldate}
+    //         destination={findIdData?.destination}
+    //         projName={findIdData?.projName}
 
 
 
-          {/* <AiFillEdit 
-             onClick={handleEditContratOpen}
+    //       />
+
+
+
+    //       {/* <AiFillEdit 
+    //          onClick={handleEditContratOpen}
            
-           className='iconeEdit'></AiFillEdit> */}
+    //        className='iconeEdit'></AiFillEdit> */}
 
 
 
 
-        </StyledAction>
+    //     </StyledAction>
 
 
 
@@ -258,20 +278,20 @@ const OrderTable = ({ employeesoffice, loading, user }) => {
 
 
 
-      ),
+    //   ),
 
 
-    }
+    // }
   ];
 
   return (
     <>
       <StyledCustomerTable
         hoverColor
-        data={employeesoffice}
+        data={OfficeWorkStatus }
         loading={loading}
         columns={columns}
-        scroll={{ x: 'auto', y: 200 }}
+        scroll={{ x: 'auto', y: tableHeight}}
 
 
       />

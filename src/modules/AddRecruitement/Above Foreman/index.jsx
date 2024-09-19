@@ -33,6 +33,7 @@ const AddRecruitementAbove = () => {
   const [selectedLevel, setSelectedLevel] = useState('');
   const [selectedLieu, setSelectedLieu] = useState('');
   const [vacancie, setVacancie] = useState(0);
+  const [desertExperience, setDesertExperience] = useState(0);
   const [asper, setAsper] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [certif, setCertif] = useState("");
@@ -54,19 +55,19 @@ const AddRecruitementAbove = () => {
   const [form] = Form.useForm();
   const [dateInput, setDateInput] = useState(new Date());
   const userRole = localStorage.getItem("role");
-  console.log("userRole", userRole)
+  const token = localStorage.getItem("token")
   const handleValidateEmployeeClose = () => {
     setIsModalVisible(false);
   };
   const GetProfileEmployess = async () => {
     const storedemail = window.localStorage.getItem("email");
-    console.log("storedemail", storedemail)
+    const token = localStorage.getItem("token");
     try {
       const endPoint =
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -81,7 +82,6 @@ const AddRecruitementAbove = () => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
-      console.log("dataprofile", data)
       setDep(data.departement)
       setProfile(data)
       setProjets(data.projects)
@@ -181,7 +181,7 @@ const AddRecruitementAbove = () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/last`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/last?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -197,7 +197,7 @@ const AddRecruitementAbove = () => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
-      console.log(data.jobCode)
+ 
       setLastJobCode(data.jobCode)
 
 
@@ -258,7 +258,7 @@ const AddRecruitementAbove = () => {
 
   const BeforeSaveRecruitement = () => {
     //setIsModalVisible(true)
-    form.validateFields(['DateRequestor', 'ProjectName', 'ProjectCode'
+    form.validateFields([ 'ProjectName', 'ProjectCode'
       , 'DateDesiredRecruitement', 'position', 'RequiredLevel', 'Desiredyearsexperience', 'Numbervacancies',
 
     ]).then(values => {
@@ -268,17 +268,17 @@ const AddRecruitementAbove = () => {
       }
 
       else if (dep?.includes('Engineering') && userRole?.includes('Engineering')) {
-        console.log("Engineering")
+   
         SaverecrutementEngineer()
 
       }
       else if (dep?.includes("Operation") && userRole?.includes('Operation')) {
-        console.log("Operation  Manager")
+       
         Saverecrutementopeartion()
 
       }
       else if (dep?.includes("Operation") && userRole?.includes('Leader')) {
-        console.log("Operation  Manager")
+     
         SaverecrutementProjectLeader()
 
       }
@@ -336,7 +336,7 @@ const AddRecruitementAbove = () => {
   //cANCEL Bod 
   const UpdateHod = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${LastIndexRecruitementIncremente}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${LastIndexRecruitementIncremente}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -377,7 +377,7 @@ const AddRecruitementAbove = () => {
           notif: 20,
           dep: profile?.departement,
           dateInputRecrut: formattedDate,
-          status: "Refuse By HOD"
+          status: "Not Approved By HOD"
         })
       });
 
@@ -408,7 +408,7 @@ const AddRecruitementAbove = () => {
 
   const CancelOperation = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${LastIndexRecruitementIncremente}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${LastIndexRecruitementIncremente}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -449,7 +449,7 @@ const AddRecruitementAbove = () => {
           notif: 70,
           dep: profile?.departement,
           dateInputRecrut: formattedDate,
-          status: "Refuse By Operation Manager"
+          status: "Not Approved By Operation Manager"
         })
       });
 
@@ -460,7 +460,6 @@ const AddRecruitementAbove = () => {
 
         const responseData = await response.text();
         openRefuseNotification('bottomRight')
-        console.log("UpdateHod", responseData)
         goBack()
         // navigate(-1)
 
@@ -510,7 +509,7 @@ const AddRecruitementAbove = () => {
 
     }
     else if (profile?.departement?.includes('operation') && userRole?.includes('Leader')) {
-      console.log("Operation  Leader")
+    
 
 
     }
@@ -623,7 +622,7 @@ const AddRecruitementAbove = () => {
     try {
 
       const params = new URLSearchParams({ name: selectedProject, id: profile?.getsId });
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -639,6 +638,7 @@ const AddRecruitementAbove = () => {
           //jobCode: JobCode,
           certif: certif,
           experience: selectedLevel,
+          // nbExperience:desertExperience,
           type: type,
           position: positionRecruitement,
           projectName: selectedProject,
@@ -647,12 +647,11 @@ const AddRecruitementAbove = () => {
           totalNumber: vacancie,
           oDep: isOrDep,
           exDep: isExDep,
-          jobCode: LastIndexRecruitementIncremente,
           // type: "For Foreman & Below",
           // oDep: asper,
           // // exDep: "",
           // // status:"0",
-          nbExperience: desiredExperience,
+          nbExperience: desertExperience,
           projRef: projectCode,
           // bod: isOkBod,
           idemp: profile?.getsId,
@@ -681,6 +680,10 @@ const AddRecruitementAbove = () => {
         const responseData = await response.json();
         form.resetFields();
         openNotification('bottomRight')
+        setTimeout(() => {
+          window.location.reload();
+          form.resetFields();
+      }, 2000)
 
         const email = 'rihemhassounanjim90@gmail.com';
         const secondApiResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/bodNotif?email=${encodeURIComponent(email)}`, {
@@ -711,7 +714,7 @@ const AddRecruitementAbove = () => {
     try {
 
       const params = new URLSearchParams({ name: selectedProject, id: profile?.getsId });
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -735,12 +738,12 @@ const AddRecruitementAbove = () => {
           totalNumber: vacancie,
           oDep: isOrDep,
           exDep: isExDep,
-          jobCode: LastIndexRecruitementIncremente,
+          nbExperience: desertExperience,
           // type: "For Foreman & Below",
           // oDep: asper,
           // // exDep: "",
           // // status:"0",
-          nbExperience: desiredExperience,
+          // nbExperience: desiredExperience,
           projRef: projectCode,
           // bod: isOkBod,
           idemp: profile?.getsId,
@@ -751,7 +754,7 @@ const AddRecruitementAbove = () => {
           notif: 8,
           dep: profile?.departement,
           dateInputRecrut: formattedDate,
-          status: "Pending Approved Operation Manager"
+          status: "Pending Approval Operation Manager"
 
         })
       });
@@ -764,9 +767,13 @@ const AddRecruitementAbove = () => {
       }
       if (response.ok) {
 
-        const responseData = await response.json();
-        form.resetFields();
+        const responseData = await response.json(); 
         openNotification('bottomRight')
+        setTimeout(() => {
+          window.location.reload();
+          form.resetFields();
+      }, 2000);
+
 
         const email = 'rihemhassounanjim90@gmail.com';
         const secondApiResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/bodNotif?email=${encodeURIComponent(email)}`, {
@@ -796,7 +803,7 @@ const AddRecruitementAbove = () => {
     try {
 
       const params = new URLSearchParams({ name: selectedProject, id: profile?.getsId });
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -820,12 +827,12 @@ const AddRecruitementAbove = () => {
           totalNumber: vacancie,
           oDep: isOrDep,
           exDep: isExDep,
-          jobCode: LastIndexRecruitementIncremente,
           // type: "For Foreman & Below",
           // oDep: asper,
           // // exDep: "",
           // // status:"0",
-          nbExperience: desiredExperience,
+          // nbExperience: desiredExperience,
+          nbExperience: desertExperience,
           projRef: projectCode,
           // bod: isOkBod,
           idemp: profile?.getsId,
@@ -836,7 +843,7 @@ const AddRecruitementAbove = () => {
           notif: 7,
           dep: profile?.departement,
           dateInputRecrut: formattedDate,
-          status: "Pending Approves BOD"
+          status: "Pending Approval BOD"
 
         })
       });
@@ -881,7 +888,7 @@ const AddRecruitementAbove = () => {
     try {
 
       const params = new URLSearchParams({ name: selectedProject, id: profile?.getsId });
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -905,12 +912,12 @@ const AddRecruitementAbove = () => {
           totalNumber: vacancie,
           oDep: isOrDep,
           exDep: isExDep,
-          jobCode: LastIndexRecruitementIncremente,
           // type: "For Foreman & Below",
           // oDep: asper,
           // // exDep: "",
           // // status:"0",
-          nbExperience: desiredExperience,
+          // nbExperience: desiredExperience,
+          nbExperience: desertExperience,
           projRef: projectCode,
           // bod: isOkBod,
           idemp: profile?.getsId,
@@ -921,7 +928,7 @@ const AddRecruitementAbove = () => {
           notif: 6,
           dep: profile?.departement,
           dateInputRecrut: formattedDate,
-          status: "Pending Approved bY HOD"
+          status: "Pending Approval bY HOD"
 
         })
       });
@@ -1007,11 +1014,12 @@ const AddRecruitementAbove = () => {
               <AppRowContainer>
                 <Col xs={24} md={12}>
                   <Form.Item label='Job Code' name='JobCode'>
-                    <Input placeholder={"RRS-" + LastIndexRecruitementIncremente} readOnly={true} />
+                    <Input placeholder={"RRS-" + LastIndexRecruitementIncremente} 
+                    readOnly={true} />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label='Recruitement Date' name='DateRecruitement'>
+                  <Form.Item label='Request Date' name='DateRecruitement'>
                     <Input
                       placeholder={formattedDate}
                       readOnly
@@ -1067,24 +1075,19 @@ const AddRecruitementAbove = () => {
                       readOnly={true} />
                   </Form.Item>
                 </Col>
-                <Col xs={24} md={12}>
+                {/* <Col xs={24} md={12}>
                   <Form.Item label='Request Date' name='DateRequestor'
                     rules={[
                       { required: true, message: 'Please input your Requestor Date!' },
-                    ]}
-
-
-                  >{/*Date et temp de Interview bu Hr*/}
+                    ]} >
                     <DatePicker
-                      //defaultValue={new Date()} 
-                      // defaultValue={dayjs(requestorDate, '2024-01-01')}
                       placeholder='YYYY-MM-DD'
                       style={{ width: "100%", height: "30px" }}
                       onChange={(value) => setRequestorDate(dayjs(value).format('YYYY-MM-DD'))}
                     />
 
                   </Form.Item>
-                </Col>
+                </Col> */}
 
 
 
@@ -1164,7 +1167,6 @@ const AddRecruitementAbove = () => {
                     <DatePicker
                       //defaultValue={new Date()} 
                       placeholder="YYYY-MM-DD"
-
                       style={{ width: "100%", height: "30px" }}
                       onChange={(value) => setDesiredrecruitementDate(dayjs(value).format('YYYY-MM-DD'))}
                     />
@@ -1229,7 +1231,6 @@ const AddRecruitementAbove = () => {
 
                     rules={[
                       { required: true, message: 'Please Select your Select Required Level!' },
-
                     ]}
                   >
                     <Select
@@ -1248,13 +1249,19 @@ const AddRecruitementAbove = () => {
                 <Col xs={24} md={12}>
                   <Form.Item
                     type="number"
-                    label='Desired years of experience'
+                    label='Desired years of experience '
                     name='Desiredyearsexperience'
+                    rules={[
+                      { required: true, message: 'Please Select your Select Desired years of experience!' },
+                    ]}
 
                   >
-
                     <Input
-                      placeholder={desiredExperience}
+                      type="number"
+                      placeholder="Desired years of experience"
+                      value={desertExperience}
+                      onChange={(e) =>setDesertExperience(e.target.value)}
+
                     />
 
                   </Form.Item>
@@ -1304,10 +1311,10 @@ const AddRecruitementAbove = () => {
           </Col>
         </AppRowContainer>
 
-        {dep === "operation" && user.includes('Planner') ?
+        {dep === "operation" && user.includes('PMO') ?
           <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
             <Col xs={24} md={6}>
-              <Typography.Title level={5}>Planner Review </Typography.Title>
+              <Typography.Title level={5}>PMO Controlling </Typography.Title>
 
             </Col>
             <Col xs={24} md={18}>
@@ -1379,7 +1386,7 @@ const AddRecruitementAbove = () => {
 
               >
                 <Form.Item
-                  label='Planner Comments'
+                  label='PMO Comments'
                   name='PlannerComments'
                  
                  
@@ -1392,7 +1399,7 @@ const AddRecruitementAbove = () => {
                 >
                 <Input
                 style={{paddingTop:"1rem",paddingBottom:"1rem"}}
-                    placeholder="Planner Comments"
+                    placeholder="PMO Comments"
                     value={commentplanner}
                     onChange={(e) => setCommentPlanner(e.target.value)}
                  

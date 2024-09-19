@@ -18,7 +18,7 @@ const LocationTripTrack = () => {
   const [count, setCount] = useState(0);
   const [selectedProject, setSelectedProject] = useState('All Projects');
   const [allProjects, setAllProjects] = useState([]);
-
+  const token = localStorage.getItem("token")
   const openNotificationError = () => {
     notification.open({
       message: 'Error',
@@ -50,7 +50,7 @@ const LocationTripTrack = () => {
 
   const fetchEmployees = async () => {
     try {
-      const countEmployeesResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/list`);
+      const countEmployeesResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/list?token=${token}`);
       const data = await countEmployeesResponse.json();
       const latestMobPerEmployee = {};
 
@@ -80,7 +80,7 @@ const LocationTripTrack = () => {
 
   const fetchEmployees3 = async () => {
     try {
-      const countEmployeesResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/list`);
+      const countEmployeesResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/list?token=${token}`);
       const data = await countEmployeesResponse.json();
   
       data.sort((a, b) => {
@@ -120,7 +120,7 @@ const LocationTripTrack = () => {
   const fetchAllProjects = async () => {
     try {
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/list`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/list?token=${token}`);
       if (!response.ok) {
 
         throw new Error('Failed to fetch Projects');

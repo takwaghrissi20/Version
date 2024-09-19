@@ -78,10 +78,10 @@ const TimeSheetOffice = () => {
   };
 
   const currentMonthName = moment().month(selectedMonth - 1).format('MMMM').toUpperCase();
-
+ 
   const fetchFilteredEmployees = async (filterValue) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${filterValue}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${filterValue}&token=${token}`);
       if (!response.ok) {
         throw new Error('Failed to filter employees');
       }
@@ -122,10 +122,10 @@ const TimeSheetOffice = () => {
   const handleOkClick = () => {
     setOkClicked(!okClicked);
   };
-
+  const token = localStorage.getItem("token");
   const fetchCountEmployeesOffice = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -139,7 +139,7 @@ const TimeSheetOffice = () => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
-      const dataOffice = data.filter(p => p.type_Emp === "office" && p.actStatus === "Active ");
+      const dataOffice = data.filter(p => p.type_Emp === "office" && p.actStatus === "Active");
       setTotalRecords(dataOffice.length);
     } catch (error) {
       console.error('Erreur lors de la récupération list Employees', error);
@@ -148,7 +148,7 @@ const TimeSheetOffice = () => {
 
   const handleGeneratePDF = async () => {
     try {
-      const response = await axios.get('https://dev-gateway.gets-company.com/api/v1/emp/list');
+      const response = await axios.get(`https://dev-gateway.gets-company.com/api/v1/emp/list?token=${token}`);
       const employees = response.data;
       const doc = new jsPDF('landscape');
       const now = new Date();

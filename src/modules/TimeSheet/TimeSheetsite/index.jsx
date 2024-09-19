@@ -35,10 +35,15 @@ const TimeSheetSite = () => {
   const [pickerValue, setPickerValue] = useState(new Date(selectedYear, selectedMonth - 1));
   const [tempSelectedMonth, setTempSelectedMonth] = useState(selectedMonth);
   const [tempSelectedYear, setTempSelectedYear] = useState(selectedYear);
+  const [projects, setProjects] = useState([]);
+  const [selectedProject, setSelectedProject] = useState(null); 
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     fetchEmployeesByType();
     fetchCountEmployeesSite()
+    fetchAllProjet()
+    
   }, [currentPage, pageSize, selectedMonth, selectedYear, filterType]);
   const fetchCountEmployeesSite = async () => {
     try {
@@ -47,7 +52,7 @@ const TimeSheetSite = () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -74,9 +79,27 @@ const TimeSheetSite = () => {
       console.error('Erreur lors de la récupération list Employees', error);
     }
   };
+  //Fetch All Projet
+  const fetchAllProjet = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/list?token=${token}`);
+      const data = await response.json();
+      const projectNames = [...new Set(data
+        .map(item => item.projName)
+        .filter(name => name !== null && name !== undefined))]; 
+       setProjects(['All Projects', ...projectNames]);
+ 
+    
+    } catch (error) {
+      console.error('Error fetching site employees:', error);
+    }
+  };
+
+
+  //End Fetch All Projet
   const fetchEmployeesByType = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getEmByTypeStatus?type=site&status=Active &page=${currentPage}&size=${pageSize}&month=${selectedMonth}&year=${selectedYear}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getEmByTypeStatus?token=${token}&type=site&status=Active&page=${currentPage}&size=${pageSize}&month=${selectedMonth}&year=${selectedYear}`);
       const data = await response.json();
 
       setEmployeesOffice(data);
@@ -84,6 +107,9 @@ const TimeSheetSite = () => {
     } catch (error) {
       console.error('Error fetching site employees:', error);
     }
+  };
+  const handleProjectChange = (value) => {
+    setSelectedProject(value); 
   };
 
   const handlePageChange = (page) => {
@@ -107,12 +133,15 @@ const TimeSheetSite = () => {
 
   const fetchFilteredEmployees = async (filterValue) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${filterValue}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?token=${token}&name=${filterValue}`);
       if (!response.ok) {
         throw new Error('Failed to filter employees');
       }
       const data = await response.json();
-      setEmployeesFiltered(data);
+      const filteredEmployees = selectedProject === 'All Projects' || !selectedProject
+      ? data
+      : data.filter(employee => employee.project === selectedProject);
+      setEmployeesFiltered(filteredEmployees);
       setIsDropdownOpen(true);
     } catch (error) {
       console.error('Error filtering employees:', error);
@@ -162,9 +191,10 @@ const TimeSheetSite = () => {
     setSelectedYear(tempSelectedYear);
     setOkClicked(!okClicked);
   };
+
   const handleGeneratePDF = async () => {
     try {
-      const response = await axios.get('https://dev-gateway.gets-company.com/api/v1/emp/list');
+      const response = await axios.get(`https://dev-gateway.gets-company.com/api/v1/emp/list?token=${token}`);
       const employees = response.data;
       const doc = new jsPDF('landscape');
       const now = new Date();
@@ -229,6 +259,18 @@ const TimeSheetSite = () => {
 
         <Row className="row" gutter={16} style={{ marginTop: "1rem", marginBottom: "2rem", zIndex: 1 }}>
           <Col span={8}>
+          <Select
+              style={{ width: '80%',marginRight:"1rem",marginLeft:"1rem" }}
+              placeholder="Select a project"
+              onChange={handleProjectChange}
+              value={selectedProject}
+            >
+              {projects.map((project) => (
+                <Option key={project} value={project}>
+                  {project}
+                </Option>
+              ))}
+            </Select>
 
           </Col>
           <Col className="calendar" style={{ display: "flex", zIndex: 10 }} span={15}>

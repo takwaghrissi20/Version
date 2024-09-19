@@ -82,7 +82,7 @@ const InterviewForm = (props) => {
   } = props;
 
 
-  console.log("timmeee", time)
+  const token = localStorage.getItem("token");
   const { messages } = useIntl();
   const [newinterviewCode, setNewinterviewCode] = useState(interviewCode);
   const [newinterviwDate, setNewinterviwDate] = useState(dayjs(interviwDate));
@@ -93,7 +93,7 @@ const InterviewForm = (props) => {
   const Update = async (newinterviewCode, newinterviwDate, interviewTime) => {
     try {
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/updateintv?token=${token}`, {
 
         method: 'PUT',
         headers: {

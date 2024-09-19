@@ -36,7 +36,7 @@ const AppHeader = ({ isCollapsed, onToggleSidebar }) => {
       <StyledHeaderSearch placeholder={messages['common.searchHere']} />
       <StyledAppHeaderSectionDesk>
         {allowMultiLanguage && <AppLanguageSwitcher />}
-        
+  
         <AppNotifications />
       </StyledAppHeaderSectionDesk>
       <StyledAppHeaderSectionMobile>

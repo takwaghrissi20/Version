@@ -21,11 +21,11 @@ const OrderTable = ({ orderData }) => {
   const handleRowLeave = () => {
     setHoveredRow(null);
   };
-
+  const token = localStorage.getItem("token");
   //Find By Id
   const findId = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${code}&token=${token}`, {
         method: 'Get',
       });
       if (!response.ok) {
@@ -115,23 +115,23 @@ const OrderTable = ({ orderData }) => {
     },
     {
       title: 'Position',
-      dataIndex: 'projName',
-      key: 'projName',
+      dataIndex: 'position',
+      key: 'position',
     },
     {
       title: 'Actual Location',
-      dataIndex: 'Actual Location',//???? a jouter
-      key: 'Actual Location',
+      dataIndex: 'actualLocation',
+      key: 'actualLocation',
     },
     {
       title: 'To Location',
-      dataIndex: 'To Location',
-      key: 'To Location',//Ajouterrr
+      dataIndex: 'toLocation',
+      key: 'toLocation',
     },
     {
       title: 'Back To Back Requirement',
       dataIndex: 'backToBackNeed',
-      key: 'backToBackNeed',//Ajouterrr
+      key: 'backToBackNeed',
     },
     {
       title: 'Office Back To Back',
@@ -154,14 +154,14 @@ const OrderTable = ({ orderData }) => {
       key: 'desiredDate',
     },
 
-    {
-      title: 'Actions',
-      dataIndex: 'actions',
-      key: 'actions',
-      fixed: 'center',
-      className: 'customer-table-actions',
-      render: renderActions,
-    }
+    // {
+    //   title: 'Actions',
+    //   dataIndex: 'actions',
+    //   key: 'actions',
+    //   fixed: 'center',
+    //   className: 'customer-table-actions',
+    //   render: renderActions,
+    // }
   ];
   const [tableHeight, setTableHeight] = useState('auto');
 

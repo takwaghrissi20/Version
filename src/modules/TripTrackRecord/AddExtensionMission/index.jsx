@@ -23,7 +23,7 @@ const { MonthPicker } = DatePicker;
 const AddExtensionMission = () => {
   const navigate = useNavigate();
   const [lastMission, setLastMission] = useState(0);
-  const [missionExtentionId, setMissionExtentionId] = useState("");
+  const [missionExtentionId, setMissionExtentionId] = useState(0);
   const [list, setList] = useState("");
   const [missionId, setMissionId] = useState("");
 
@@ -50,6 +50,7 @@ const AddExtensionMission = () => {
   const [isOrDep, setIsOrDep] = useState(false);
   const userRole = localStorage.getItem("role");
   const userEmail = localStorage.getItem("email");
+  const token = localStorage.getItem("token");
   const GetProfileEmployess = async () => {
 
     try {
@@ -57,7 +58,7 @@ const AddExtensionMission = () => {
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${userEmail}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${userEmail}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -73,7 +74,7 @@ const AddExtensionMission = () => {
       }
       const data = await response.json();
       setNameConstruction(data?.name)
-    
+
     } catch (error) {
       console.error('Erreur lors de la récupération getByEmail', error);
     }
@@ -90,7 +91,7 @@ const AddExtensionMission = () => {
 
   }
 
-console.log("nameConstruction",nameConstruction)
+  console.log("nameConstruction", nameConstruction)
 
   const handleReason = (event) => {
     setReason(event.target.value);
@@ -109,7 +110,7 @@ console.log("nameConstruction",nameConstruction)
 
   const LastIndexmissionEx = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/last`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/last?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -209,7 +210,7 @@ console.log("nameConstruction",nameConstruction)
 
   const handleAddMisssionExtention = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/add?id=${searchValue}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/add?id=${searchValue}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -223,20 +224,19 @@ console.log("nameConstruction",nameConstruction)
           actualLocation: location,
           comments: comments,
           position: position,
-          dateinput:formattedDate,
-           refMiss:searchValue,
-           projectTitle:projname,
-          //  projRef:projref,
-            name: name,
-            contractMangerName:nameConstruction,
+          dateinput: formattedDate,
+          refMiss: searchValue,
+          projectTitle: projname,
+          name: name,
+          contractMangerName: nameConstruction,
           // projRef: projref,
           // projectTitle: projname,
-           reasonForExtension: reason,
+          reasonForExtension: reason,
           // refMiss: missionId,
           // name: name,
-           old_mission: endMission,
+          old_mission: endMission,
           new_mission: newMission,
-          notif:33
+          notif: 33
           // plannerInput: isOrDep,
           // extraProject: isExDep,
           // dateinput: formattedDate
@@ -254,6 +254,10 @@ console.log("nameConstruction",nameConstruction)
         const responseData = await response.json();
         form.resetFields();
         openNotification('bottomRight')
+        setTimeout(() => {
+          window.location.reload();
+          navigate(-1)
+        }, 2000);
 
 
       }
@@ -284,6 +288,8 @@ console.log("nameConstruction",nameConstruction)
 
 
   const LastMissionExtentionId = missionExtentionId + 1;
+  console.log("gggggg",LastMissionExtentionId)
+  console.log("gggggg 33",missionExtentionId)
   const goBack = () => {
     navigate(-1)
   }
@@ -315,7 +321,7 @@ console.log("nameConstruction",nameConstruction)
 
   const GetALLMission = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getAll`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getAll?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -366,7 +372,7 @@ console.log("nameConstruction",nameConstruction)
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getById?id=${searchValue}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getById?id=${searchValue}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -498,9 +504,9 @@ console.log("nameConstruction",nameConstruction)
                     label='Mission Reference'
                     name='NumeroMission '>
                     <Input
-                     onChange={(e) => handleSearch(e.target.value)}                
-                    //  value={searchValue}
-                    placeholder={"MAO-" + searchValue}
+                      onChange={(e) => handleSearch(e.target.value)}
+                      //  value={searchValue}
+                      placeholder={"MAO-" + searchValue}
 
                     // onChange={handleSearch}
                     />
@@ -665,55 +671,55 @@ console.log("nameConstruction",nameConstruction)
             </StyledShadowWrapper>
           </Col>
         </AppRowContainer>
-      {userRole.includes("Planner") &&
-      <>
-       <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-        <AppRowContainer>
-          <Col xs={24} md={6}>
-            <Typography.Title level={5}>Planner Input</Typography.Title>
-          </Col>
+        {userRole.includes("PMO") &&
+          <>
+            <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+            <AppRowContainer>
+              <Col xs={24} md={6}>
+                <Typography.Title level={5}>Planner Input</Typography.Title>
+              </Col>
 
-          <Col xs={24} md={18}>
-            <StyledShadowWrapper>
-              <AppRowContainer>
-
-
-                <Col xs={24} md={24}>
-                  <StyledInput>
-                    <Form.Item
-                      label='As per :'
-                      name='As per'
+              <Col xs={24} md={18}>
+                <StyledShadowWrapper>
+                  <AppRowContainer>
 
 
-                    >
-                      <Checkbox checked={isExDep} onChange={ExDep}>
-
-                        <IntlMessages id='Exdep.plannerExtention' />
-                      </Checkbox>
-                      <Checkbox checked={isOrDep} onClick={OrDep}>
-                        <IntlMessages id='Ordep.plannerExtention' />
-                      </Checkbox>
-                    </Form.Item>
-                  </StyledInput>
-                </Col>
+                    <Col xs={24} md={24}>
+                      <StyledInput>
+                        <Form.Item
+                          label='As per :'
+                          name='As per'
 
 
+                        >
+                          <Checkbox checked={isExDep} onChange={ExDep}>
+
+                            <IntlMessages id='Exdep.plannerExtention' />
+                          </Checkbox>
+                          <Checkbox checked={isOrDep} onClick={OrDep}>
+                            <IntlMessages id='Ordep.plannerExtention' />
+                          </Checkbox>
+                        </Form.Item>
+                      </StyledInput>
+                    </Col>
 
 
 
 
 
 
-              </AppRowContainer>
-            </StyledShadowWrapper>
-          </Col>
-        </AppRowContainer>
-      </>
-      
-      
-      
-      } 
-       
+
+
+                  </AppRowContainer>
+                </StyledShadowWrapper>
+              </Col>
+            </AppRowContainer>
+          </>
+
+
+
+        }
+
 
 
         <Space
@@ -723,7 +729,7 @@ console.log("nameConstruction",nameConstruction)
           <Button onClick={goBack}>Cancel</Button>
           <Button
             onClick={BeforeSaveExtention}
-             disabled={!searchValue}
+            disabled={!searchValue}
 
             type='primary'
             htmlType='submit'>

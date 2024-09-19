@@ -15,7 +15,7 @@ const InterviewStatics = () => {
   const [filterinterviewaccepted, setFilterinterviewaccepted] = useState(0);
   const [filteroffresrejected, setFilteroffresrejected] = useState(0);
   const [ staticsDataaccepted, setStaticsDataaccepted] = useState([]);
- 
+  const token = localStorage.getItem("token");
   useEffect(() => {
     const fetchDataStatique = async () => {
       try {
@@ -24,7 +24,7 @@ const InterviewStatics = () => {
             ? "https://dev-gateway.gets-company.com"
             : "";
 
-            const response = await fetch("https://dev-gateway.gets-company.com/api/v1/re/list", {
+            const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list?token=${token}`, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json'
@@ -51,7 +51,7 @@ const InterviewStatics = () => {
         setFilteroffresrejected(numberOfJobrejected)
         //Count Total Interview
         //Api Interview List 
-        const responseinterview = await fetch("https://dev-gateway.gets-company.com/api/v1/int/list", {
+        const responseinterview = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/list?token=${token}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
@@ -61,8 +61,7 @@ const InterviewStatics = () => {
         if (!response.ok) {
           throw new Error('La requête a échoué avec le code ' + response.status);
         }
-        
-         
+             
         const responseDataInterview = await responseinterview.json();
         const numberOfTotalInterview = responseDataInterview.length.toString();
         setTotalInterviews(numberOfTotalInterview)
@@ -99,7 +98,8 @@ const InterviewStatics = () => {
           <AppViewStatic>
          
           
-            <InfoDataHrRecruitement staticsDataaccepted ={staticsDataaccepted}
+            <InfoDataHrRecruitement 
+            staticsDataaccepted ={staticsDataaccepted}
             listInerview={listInerview}/>
             </AppViewStatic>
       

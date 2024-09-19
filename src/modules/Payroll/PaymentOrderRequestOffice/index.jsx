@@ -43,9 +43,7 @@ const PaymentOrderRequestOffice  = () => {
   const [form] = Form.useForm();
   const [dateInput, setDateInput] = useState(new Date());
   const userRole = localStorage.getItem("role");
-  console.log("userRole", userRole)
-
-
+  const token = localStorage.getItem("token");
   const GetProfileEmployess = async () => {
     const storedemail = window.localStorage.getItem("email");
     console.log("storedemail", storedemail)
@@ -54,7 +52,7 @@ const PaymentOrderRequestOffice  = () => {
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -189,7 +187,7 @@ const PaymentOrderRequestOffice  = () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/RequestPayment/last`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/RequestPayment/last?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -244,7 +242,7 @@ const PaymentOrderRequestOffice  = () => {
   //Save Request Order
   const SaveRequest = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/RequestPayment/add`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/RequestPayment/add?token=${token}`, {
 
         method: 'POST',
         headers: {

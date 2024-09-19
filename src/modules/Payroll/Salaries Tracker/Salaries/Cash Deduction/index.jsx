@@ -53,7 +53,7 @@ const CashDeduction = () => {
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -75,10 +75,11 @@ const CashDeduction = () => {
       console.error('Erreur lors de la récupération Last Recruitement', error);
     }
   };
+  const token = localStorage.getItem("token");
     //FindId
     const findId = async () => {
       try {
-        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsInput}`, {
+        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsInput}&token=${token}`, {
           method: 'GET',
   
         });
@@ -235,7 +236,7 @@ const CashDeduction = () => {
     try {
 
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/AdvSalary/add?id=${getsInput}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/AdvSalary/add?id=${getsInput}&token=${token}`, {
 
         method: 'POST',
         headers: {

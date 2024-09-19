@@ -107,7 +107,7 @@ const TabsInterviewSheetConstructionId = () => {
   const [salaryError, setSalaryError] = useState('');
   const [dailyError, setDailyError] = useState('');
   const [form] = Form.useForm();
-  console.log("interviewDate", interviewDate)
+  const token = localStorage.getItem("token")
 
   const [evaluationDate, setEvaluationDate] = useState(dayjs().format('DD/MM/YYYY'));
   const [dateInput, setDateInput] = useState(new Date());
@@ -256,7 +256,7 @@ console.log("timeeewss",interviewTime)
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/last`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/last?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -499,7 +499,7 @@ console.log("timeeewss",interviewTime)
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/addintv?id=${JobCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/addintv?id=${JobCode}&token=${token}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -556,8 +556,8 @@ console.log("timeeewss",interviewTime)
   };
   const BeforeSaveInterview = () => {
     //setIsModalVisible(true)
-    form.validateFields(['fullName', 'telCondidate', 'ContactEmail', 'FamilySituation', 'diploma', 'educationLevel', 'experience'
-
+    form.validateFields(['fullName', 'telCondidate', 'ContactEmail', 'FamilySituation', 'diploma'
+   
     ]).then(values => {
 
       SaveHRADMONISTRTOR()
@@ -585,7 +585,7 @@ console.log("timeeewss",interviewTime)
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/addintv?id=${JobCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/addintv?id=${JobCode}&token=${token}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -615,11 +615,11 @@ console.log("timeeewss",interviewTime)
           //familySituation:selectedSituation,
           diploma: diploma,
           educationLevel: educationLevel,
-          requiredExperinece: requiredExperinece,
+          // requiredExperinece: requiredExperinece,
           notif: 0,
           inputInterview: formattedDate,
           birthayDate: scheduleDate,
-          time:interviewTime
+          intervtime:interviewTime
           // interviwDate: interviewDate,
           // fullName: fullname,
           // projname: projectName,
@@ -873,16 +873,21 @@ console.log("timeeewss",interviewTime)
                       <Input
 
                         placeholder={formattedDate}
-                        readOnly
-
-                      />
+                        readOnly />
 
 
 
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item label='Date Interview' name='DateInterview' >
+                    <Form.Item label='Interview DateInterview Date' name='DateInterview'
+                        rules={[
+                          { required: true, message: 'Please input your Interview Date!' },
+                        ]}
+  
+                    
+                    
+                    >
                       <StyledTodoDetailDatePicker className='form-field'>
 
                         <DatePicker
@@ -1851,7 +1856,7 @@ console.log("timeeewss",interviewTime)
         </Form>
       )}
       {/*HR Adminstrator*/}
-      {roles.includes("Administrator") && (
+      {roles.includes("Cordinator") && (
         <Form
           layout='vertical'
           style={{ backgroundColor: "white", marginBottom: "20px", padding: "10px", borderRadius: "20px" }}
@@ -1903,14 +1908,18 @@ console.log("timeeewss",interviewTime)
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item label='Date Interview' name='DateInterview'
+                    <Form.Item label='Interview Date' name='DateInterview'
+                    rules={[
+                      { required: true, message: 'Please input your Interview Date!' },
+                    ]}
+
 
                     >
                       <StyledTodoDetailDatePicker className='form-field'>
 
                         <DatePicker
                           //defaultValue={new Date()} 
-                          defaultValue={dayjs(interviewDate, '16 06,1990')}
+                          // defaultValue={dayjs(interviewDate, '16 06,1990')}
                           style={{ width: "100%", height: "34px" }}
                           onChange={(value) => setInterviewDate(dayjs(value).format('YYYY-MM-DD'))}
                         />
@@ -1920,11 +1929,15 @@ console.log("timeeewss",interviewTime)
                   {/*Time*/}
 
                   <Col xs={24} md={12}>
-                    <Form.Item label='Time Interview' name='TimeInterview'>
+                    <Form.Item label='Time Interview' name='TimeInterview'
+                      rules={[
+                        { required: true, message: 'Please input your Time Interview!' },
+                      ]}
+                    >
                       <StyledTodoDetailDatePicker
                         className='form-field'>
                         <TimePicker
-                          defaultValue={dayjs('12:00:00.000', 'HH:mm:ss.SSS')}
+                         
                           format='HH:mm:ss.SSS'
                           style={{ width: "100%", height: "34px" }}
                           onChange={handleTimeChange}

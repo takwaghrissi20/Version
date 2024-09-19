@@ -7,11 +7,12 @@ import { EditOutlined } from '@ant-design/icons';
 const { Option } = Select;
 
 const OrderTable = ({ orderData, filterDate, setSelectedPointage, selectedPointage, loading }) => {
+  console.log("orderDataffff",selectedPointage)
   const [editingRecord, setEditingRecord] = useState(null);
   const formattedPickerValue = moment(filterDate).format('YYYY-MM-DD');
   const [tableHeight, setTableHeight] = useState('auto');
   const [allpointage, setAllpointage] = useState('');
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     GetAllPointage();
     const updateTableHeight = () => {
@@ -32,7 +33,7 @@ const OrderTable = ({ orderData, filterDate, setSelectedPointage, selectedPointa
 
   const fetchPointages = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/sheetSite/all`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/sheetSite/all?token=${token}`);
       const data = await response.json();
       const testdate = moment(filterDate).format('YYYY-MM-DD');
       const filteredData = data.filter(item => item.date === testdate);
@@ -63,12 +64,12 @@ const OrderTable = ({ orderData, filterDate, setSelectedPointage, selectedPointa
   const handleAddPointage = async (code, pointage) => {
     try {
       const bodyData = {
-        date: formattedPickerValue,
+        pdate: formattedPickerValue,
         pointage: pointage,
       };
 
       const response = await fetch(
-        `https://dev-gateway.gets-company.com/api/v1/sheetSite/add?id=${code}`,
+        `https://dev-gateway.gets-company.com/api/v1/sheetSite/add?id=${code}&token=${token}`,
         {
           method: 'POST',
           headers: {
@@ -83,6 +84,7 @@ const OrderTable = ({ orderData, filterDate, setSelectedPointage, selectedPointa
       }
 
       const responseData = await response.json();
+      console.log("gggggggg",responseData)    
       setEditingRecord(code);
     } catch (error) {
       console.error("Erreur lors de l'ajout du pointage:", error);
@@ -97,7 +99,7 @@ const OrderTable = ({ orderData, filterDate, setSelectedPointage, selectedPointa
       };
 
       const response = await fetch(
-        `https://dev-gateway.gets-company.com/api/v1/sheetSite/update?id=${code}`,
+        `https://dev-gateway.gets-company.com/api/v1/sheetSite/update?id=${code}&token=${token}`,
         {
           method: 'PUT',
           headers: {
@@ -112,6 +114,7 @@ const OrderTable = ({ orderData, filterDate, setSelectedPointage, selectedPointa
       }
 
       const responseData = await response.json();
+      console.log("UpdateReponse",responseData)
       setEditingRecord(null);
     } catch (error) {
       console.error("Erreur lors de la mise à jour du pointage:", error);
@@ -197,7 +200,7 @@ const OrderTable = ({ orderData, filterDate, setSelectedPointage, selectedPointa
 
   const GetAllPointage = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/sheetSite/all`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/sheetSite/all?token=${token}`, {
         method: 'Get',
       });
       if (!response.ok) {

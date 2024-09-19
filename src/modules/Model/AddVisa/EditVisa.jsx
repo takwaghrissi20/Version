@@ -106,11 +106,10 @@ const VisaEditForm = (props) => {
   const handleInputPassortNumberChange = (event) => {
     setPassportnumber(event.target.value);
   };
-
-  console.log("setGetsId", getsId)
+  const token = localStorage.getItem("token");
   const findId = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}&token=${token}`, {
         method: 'GET',
 
       });

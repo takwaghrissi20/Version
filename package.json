@@ -92,6 +92,8 @@
     "react-share": "^4.4.1",
     "react-slick": "^0.29.0",
     "react-to-pdf": "^1.0.1",
+    "react-toast-notifications": "^2.5.1",
+    "react-toastify": "^10.0.5",
     "react-tooltip": "^5.18.1",
     "react-trello": "^2.2.11",
     "recharts": "^2.7.2",

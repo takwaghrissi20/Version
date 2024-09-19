@@ -23,7 +23,7 @@ const AllTravel = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [projetUserName, setProjetUserName] = useState([]);
   const user = localStorage.getItem("role");
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     fetchMission();
     fetchProjectEmail()
@@ -33,7 +33,7 @@ const AllTravel = () => {
   // Project By email
   const fetchProjectEmail = async () => {
     try {
-      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getProjectByMail?mail=${userEmail}`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getProjectByMail?mail=${userEmail}&token=${token}`;
       const response = await fetch(url, {
         method: "GET",
       });
@@ -52,7 +52,7 @@ const AllTravel = () => {
   };
   const fetchMission = async () => {
     try {
-      const countMission = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/list`);
+      const countMission = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/list?token=${token}`);
       const datacount = await countMission.json();
   
       setCount(datacount.length);
@@ -64,7 +64,7 @@ const AllTravel = () => {
 
       /////////////////////////////////
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/listByPage?page=${currentPage}&size=${pageSize}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/listByPage?page=${currentPage}&size=${pageSize}&token=${token}`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch Mission');
@@ -118,7 +118,9 @@ const AllTravel = () => {
           />
         </StyledOrderHeaderRight>
 }
+<div style={{height:"10px"}}></div>
       </div>
+     
     </div>
   );
 };

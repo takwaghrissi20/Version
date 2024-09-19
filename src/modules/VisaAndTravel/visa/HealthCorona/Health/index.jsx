@@ -14,10 +14,10 @@ const HealthCertification = () => {
   const [totalVaccinHepatite, setTotalVaccinHepatite] = useState(0);
   const [totalVaccinIdz, setTotalVaccinIdz] = useState(0);
   const user = localStorage.getItem("role");
-
+  const token = localStorage.getItem("token");
   const fetchVaccin = async () => {
     try {
-      const countVaccin = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/list`);
+      const countVaccin = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/list?token=${token}`);
       const data = await countVaccin.json();
       setTotalVaccin(data.length)
       const filteredDataFetness = data.filter(item => item.typeVccin === "Fetness Certificate");

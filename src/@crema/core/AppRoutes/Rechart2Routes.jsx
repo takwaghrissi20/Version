@@ -14,6 +14,7 @@ import EditHealth from '../../../modules/VisaAndTravel/visa/HealthCorona/Health/
 import EditCovid from '../../../modules/VisaAndTravel/visa/HealthCorona/Covid/EditCovid';
 import LocationTripTrack from '../../../modules/VisaAndTravel/visa/LocationTripTrack';
 import HeadOfficeEmployees from '../../../modules/HeadEmployeesSite';
+import ProjectLocation from '../../../modules/ProjectLocation';
 import ManpowerAllocationPerProject from '../../../modules/VisaAndTravel/visa/ManpowerAllocationPerProject';
 import PersonOnBoard from '../../../modules/PersonOnBoard';
 import Mission from '../../../modules/VisaAndTravel/visa/Mission';
@@ -48,12 +49,33 @@ import CalculateSalaryOffice from '../../../modules/Payroll/CalculateSalaryOffic
 import PAYMENTORDERREQUESTS from '../../../modules/Payroll/PaymentOrderRequest';
 import PaymentOrderRequestOffice from '../../../modules/Payroll/PaymentOrderRequestOffice';
 import CashAdvance from '../../../modules/Payroll/CashAdvance';
- 
+import EmployeeTransferPermission from '../../../modules/VisaAndTravel/visa/EmployeeTransferPermission';
+import TransferPermissionEmp from '../../../modules/VisaAndTravel/visa/TransferPermissionEmp';
+import ViewTransfer from '../../../modules/VisaAndTravel/visa/ViewTransfer';
+import UpdateTransfer from '../../../modules/VisaAndTravel/visa/UpdateTransferPermissionEmp';
+
 export const recharts2Configs = [
   {
     path: '/Hr/Visa/Mission',
     element: <Mission/>,
   },
+  {
+    path: '/ManpowerLocation/Employee_Transfer_Permission',
+    element: <EmployeeTransferPermission />,
+  },
+  {
+    path: '/ManpowerLocation/List_Employee_Transfer_Permission',
+    element: <TransferPermissionEmp  />,
+  },
+  {
+    path: '/Hr/ManpowerLocation/Employee_Transfer_Permission/ViewTransferEmployee/:id',
+    element: <ViewTransfer/>,
+  },
+  {
+    path: '/Hr/ManpowerLocation/Employee_Transfer_Permission/UpdateTransferEmployee/:id',
+    element: <UpdateTransfer />,
+  },
+
   {
     path: '/Hr/Visa/AllTravel',
     element: <Travel/>,
@@ -203,6 +225,11 @@ export const recharts2Configs = [
     path: '/ManpowerLocation/HeadOfficeEmployees',
     element: <HeadOfficeEmployees />,
   },
+  {
+    path: '/ManpowerLocation/PROJECTSLOCATIONTRACKRECORD',
+    element: <ProjectLocation />,
+  },
+ 
  
   {
     path: '/ManpowerLocation/ManpowerAllocationPerProject',

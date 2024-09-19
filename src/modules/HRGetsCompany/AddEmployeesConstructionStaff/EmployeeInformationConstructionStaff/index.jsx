@@ -16,6 +16,7 @@ import ValidateEmployees from "../../../Model/ModalValidateInfoEmployee"
 import moment from 'moment';
 const { Option } = Select;
 const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
+  const token = localStorage.getItem("token")
   const navigate = useNavigate();
   const { messages } = useIntl();
   const [intCode, setIntCode] = useState("Code Interview Sheet");
@@ -190,7 +191,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
           : "";
       const CodeInterview = parseInt(searchValue) + 1; // Increment intCode by 1
       console.log("CodeInterview=", searchValue);
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${searchValue}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${searchValue}&token=${token}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -221,6 +222,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
   useEffect(() => {
     fetchPositionTranslate();
   }, [findIdInterview?.positionToBeFilled]);
+
   const fetchPositionTranslate = async () => {
     try {
       const endPoint =
@@ -374,7 +376,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
         }}>
         <Row style={{ justifyContent: "flex-end" }}>
           <Col xs={24} lg={6} style={{
-            border: '1px solid red', paddingTop: "15px", paddingBottom: "15px", paddingLeft: "5px",
+            paddingTop: "15px", paddingBottom: "15px", paddingLeft: "5px",
             display: "Flex",
 
             position: "relative",

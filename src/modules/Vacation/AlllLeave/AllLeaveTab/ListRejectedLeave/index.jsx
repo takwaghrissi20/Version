@@ -15,7 +15,7 @@ import {
 } from '../../../../../styles/index.styled';
 import { useIntl } from 'react-intl';
 import AppsHeader from '../../../../../@crema/components/AppsContainer/AppsHeader';
-const ListRejectedLeave = () => {
+const ListRejectedLeave = ({user}) => {
   const { messages } = useIntl();
   const [vacations, setVacations] = useState([]);
   const [isDeleteVac, setDeleteVac] = useState(false);
@@ -26,6 +26,7 @@ const ListRejectedLeave = () => {
   const [count, setCount] = useState(0);
   //const [reason , setreason]=useState("");
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
   const getStatus = (notificationValue) => {
     switch (notificationValue) {
       case 2:
@@ -69,7 +70,7 @@ const ListRejectedLeave = () => {
   }, []);
   const showVaclistBypage = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/listBypage?page=${currentPage}&size=${pageSize}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/listBypage?page=${currentPage}&size=${pageSize}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -91,7 +92,7 @@ const ListRejectedLeave = () => {
 
   const showVac = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/list`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/list?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -175,7 +176,7 @@ const ListRejectedLeave = () => {
   };
   const deleteVac = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/delete?id=${idv}&code=${getsId}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/delete?id=${idv}&code=${getsId}&token=${token}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -223,7 +224,10 @@ const ListRejectedLeave = () => {
 
   const items = (record) => [
     { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: () => handleViewVac(record) },
-    { key: 3, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: () => handleDeleteVac(record) },
+    ...(user.includes('admin') ? [
+      { key: 3, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: () => handleDeleteVac(record) },
+    ] : [])
+   
   ];
 
   const getLeaveData = (record, field) => {

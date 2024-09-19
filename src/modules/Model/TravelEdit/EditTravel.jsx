@@ -77,7 +77,7 @@ const EditTravel = (props) => {
   });
 
   const { messages } = useIntl();
-
+  const token = localStorage.getItem("token");
  console.log("josIdnnnnn",josId)
   const [newidjos, setNewidjos] = useState(josId);
   const [newExpiryDate, setNewExpiryDate] = useState(desertPassfinishdate);
@@ -162,7 +162,7 @@ const EditTravel = (props) => {
   const Update = async () => {
     console.log("uodate")
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/updateTr?id=${idTravel}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/updateTr?id=${idTravel}&token=${token}`, {
 
         method: 'PUT',
         headers: {

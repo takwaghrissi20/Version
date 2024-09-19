@@ -51,7 +51,7 @@ const EditInterviewConstruction = () => {
   const [selectedPersonalityHR, setSelectedPersonalityHR] = useState('');
   const [idConstruction, setIdConstruction] = useState("");
   const [commentHSE, setCommentHSE] = useState("");
- 
+  const token = localStorage.getItem("token");
   const GetProfileEmployess = async () => {
     const storedemail = window.localStorage.getItem("email");
     console.log("storedemail", storedemail)
@@ -60,7 +60,7 @@ const EditInterviewConstruction = () => {
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -456,9 +456,10 @@ const EditInterviewConstruction = () => {
     });
   };
   ///Update
+  
   const Update = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -552,10 +553,10 @@ const EditInterviewConstruction = () => {
   
   //EndgoAssesmentSheet
   //UpdateManager
-  console.log("evaluationDatellll", evaluationDate)
+
   const UpdateManager = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -595,7 +596,6 @@ const EditInterviewConstruction = () => {
           goToTest3: isOkChecked3,
           techEnglishSkills: selectedSkillls,
           evalDesision: isOkCheckedEvaluator,
-          techcommentaire,
           techDate: evaluationDate,
           meetDesision: isOkCheckedProfile,
           techcommentaire: comment,
@@ -613,6 +613,14 @@ const EditInterviewConstruction = () => {
           propsedsalary,
           notif: 2,
           hseDecision:isOkCheckedHSE,
+          hseCertif: idConstruction?.hseCertif,
+          siteHazCont: idConstruction?.siteHazCont,
+          properUse: idConstruction?.properUse,
+          hzardousMater: idConstruction?.hzardousMater,
+          emergency: idConstruction?.emergency,
+          ptw: idConstruction?.ptw,
+          hsePolicies: idConstruction?.hsePolicies,
+          others: idConstruction?.others,
         
 
         })
@@ -638,10 +646,11 @@ const EditInterviewConstruction = () => {
   };
 
   //UpdateProjectLeader
+  
   const UpdateProjectLeader = async () => {
 
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -681,7 +690,6 @@ const EditInterviewConstruction = () => {
           goToTest3: isOkChecked3,
           techEnglishSkills: selectedSkillls,
           evalDesision: isOkCheckedEvaluator,
-          techcommentaire,
           techDate: evaluationDate,
           meetDesision: isOkCheckedProfile,
           techcommentaire: comment,
@@ -727,7 +735,7 @@ const EditInterviewConstruction = () => {
   const roles = localStorage.getItem("role");
   const findIdInterview = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/findId?code=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/findId?code=${code}&token=${token}`, {
         method: 'POST',
       });
       if (!response.ok) {
@@ -742,7 +750,7 @@ const EditInterviewConstruction = () => {
   };
   const findIdInterviewConstruction = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${interviewCode}&token=${token}`, {
         method: 'POST',
       });
       if (!response.ok) {
@@ -2507,7 +2515,7 @@ const EditInterviewConstruction = () => {
             {roles.includes("Manager") && !roles.includes("HSE") && (
               <>
                 <Button onClick={UpdateManager}
-                >Save mANAGER
+                >Save 
                 </Button>
               </>)}
               {roles.includes("HSE") && (
@@ -2517,8 +2525,10 @@ const EditInterviewConstruction = () => {
               </>)}
             {roles.includes("Leader") && (
               <>
-                <Button onClick={UpdateProjectLeader}
-                >Save Project Leader</Button>
+                <Button style={{color:"green",borderColor:"green"}}onClick={UpdateProjectLeader}
+                >Approved</Button>
+                 <Button style={{color:"red",borderColor:"red"}}onClick={UpdateProjectLeader}
+                >Refuse</Button>
               </>)}
           </Space>
 

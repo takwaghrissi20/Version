@@ -22,7 +22,7 @@ const InterviewSheetById = () => {
   const [isSaveDisabled, setIsSaveDisabled] = useState(false);
   const roles = localStorage.getItem("role");
   const storedrole = window.localStorage.getItem("role");
-  console.log("roledddd",storedrole)
+
   const items = [
     {
       label: 'INTERVIEW SHEET CONSTRUCTION TEAM ',

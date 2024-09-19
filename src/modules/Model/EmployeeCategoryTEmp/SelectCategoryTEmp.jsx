@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useIntl } from 'react-intl';
 import IntlMessages from '@crema/helpers/IntlMessages';
-import { Form, Input, Select, Row, Col,Alert} from 'antd';
+import { Form, Input, Select, Row, Col, Alert, DatePicker } from 'antd';
 
 import {
   StyledContactForm,
@@ -21,7 +21,7 @@ import {
 } from './index.styled';
 import FloatLabel from "./FloatLabel";
 import { useNavigate } from "react-router-dom";
-
+import dayjs from 'dayjs';
 
 
 const ContratCategory = (props) => {
@@ -68,7 +68,7 @@ const ContratCategory = (props) => {
       setUserImage(URL.createObjectURL(acceptedFiles[0]));
     },
   });
-
+  const token = localStorage.getItem("token")
   const { messages } = useIntl();
   const [selectedContratType, setSelectedContratType] = useState(contractType);
   const [isReadOnly, setIsReadOnly] = useState(false);
@@ -77,8 +77,14 @@ const ContratCategory = (props) => {
   const [grayBackground, setGrayBackground] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [showAlertError, setShowAlertError] = useState(false);
-  const[newprimeProductivity,setNewprimeProductivity]=useState(primeProductivity)
+  const [newprimeProductivity, setNewprimeProductivity] = useState(primeProductivity)
+  const [finalSalary, setFinalSalary] = useState(0)
+  const [finaldailyRate, setFinaldailyRate] = useState(0)
   const [data, setData] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [datetravel, setDatetravel] = useState("");
+  const [dateendtravel, setDateendtravel] = useState("");
   useEffect(() => {
     if (showAlert) {
       setGenerateBtnEnabled(true);
@@ -136,28 +142,28 @@ const ContratCategory = (props) => {
 
   ]
   const ListContratConstruction = [
-   
-      {
-        type: "CAT-B2",
-  
-      },
-      {
-        type: "CAT-B3",
-  
-      },
-      {
-        type: "CAT-C",
-  
-      },
-      {
-        type: "CAT-D",
-  
-      },
-  
+
+    {
+      type: "CAT-B2",
+
+    },
+    {
+      type: "CAT-B3",
+
+    },
+    {
+      type: "CAT-C",
+
+    },
+    {
+      type: "CAT-D",
+
+    },
+
 
 
   ]
- 
+
   useEffect(() => {
     if (selectedContractCategorie === "CAT-B1") {
       console.log(" contractCategory", selectedContractCategorie)
@@ -235,18 +241,17 @@ const ContratCategory = (props) => {
       console.log("Contrat SIVP")
       setSelectedContratType('CDD');
       setIsReadOnly(true);
-     
+
     }
 
 
 
   }, [selectedContractCategorie, selectedContratType]);
-  console.log("selectedContratType", selectedContratType)
   const handleCategoryChange = (value) => {
-    console.log("valueee",value)
+
     setSelectedContractCategorie(value);
   };
-  console.log("valueee2222",selectedContractCategorie)
+
   const ContratB1 = () => {
 
     navigate('/HRGetsCompany/ContartTypeB1', {
@@ -257,13 +262,12 @@ const ContratCategory = (props) => {
         arResidenceAdress: arResidenceAdress,
         companyType: companyType,
         traveldate: traveldate,
-        endTravelDate:endTravelDate,
+        endTravelDate: endTravelDate,
         arDestination: arDestination,
-        arPosition:  arPosition,
+        arPosition: arPosition,
         lastId: LastIdIncremente,
         salary: salary,
         dailyRate: dailyRate,
-
       }
 
     });
@@ -278,7 +282,7 @@ const ContratCategory = (props) => {
         arResidenceAdress: arResidenceAdress,
         companyType: companyType,
         traveldate: traveldate,
-        endTravelDate:endTravelDate,
+        endTravelDate: endTravelDate,
         arDestination: arDestination,
         arPosition: arPosition,
         lastId: LastIdIncremente,
@@ -300,9 +304,9 @@ const ContratCategory = (props) => {
         passportNumber: passportnumber,
         passportSubmitdate: passportSubmitdate,
         arResidenceAdress: arResidenceAdress,
-        companyType:companyType,
+        companyType: companyType,
         traveldate: traveldate,
-        endTravelDate:endTravelDate,
+        endTravelDate: endTravelDate,
         arDestination: arDestination,
         arPosition: arPosition,
         lastId: LastIdIncremente,
@@ -324,9 +328,9 @@ const ContratCategory = (props) => {
         passportNumber: passportnumber,
         passportSubmitdate: passportSubmitdate,
         arResidenceAdress: arResidenceAdress,
-        companyType:companyType,
+        companyType: companyType,
         traveldate: traveldate,
-        endTravelDate:endTravelDate,
+        endTravelDate: endTravelDate,
         arDestination: arDestination,
         arPosition: arPosition,
         lastId: LastIdIncremente,
@@ -349,15 +353,15 @@ const ContratCategory = (props) => {
         passportNumber: passportnumber,
         passportSubmitdate: passportSubmitdate,
         arResidenceAdress: arResidenceAdress,
-        companyType:companyType,
+        companyType: companyType,
         traveldate: traveldate,
-        endTravelDate:endTravelDate,
+        endTravelDate: endTravelDate,
         arDestination: arDestination,
         arPosition: arPosition,
         lastId: LastIdIncremente,
         dailyRate: dailyRate,
         duration: duration,
-        arPosition: arPosition,
+        // arPosition: arPosition,
         joinDate: joinDate,
         finishDate: finishDate,
 
@@ -376,13 +380,13 @@ const ContratCategory = (props) => {
         passportNumber: passportnumber,
         passportSubmitdate: passportSubmitdate,
         arResidenceAdress: arResidenceAdress,
-        companyType:companyType,
-        traveldate:traveldate,
-        endTravelDate:endTravelDate,
+        companyType: companyType,
+        traveldate: traveldate,
+        endTravelDate: endTravelDate,
         arDestination: arDestination,
         arPosition: arPosition,
-        lastId: LastIdIncremente ,
-        dailyRate : dailyRate,
+        lastId: LastIdIncremente,
+        dailyRate: dailyRate,
         duration: duration,
         joinDate: joinDate
 
@@ -398,9 +402,9 @@ const ContratCategory = (props) => {
         passportNumber: passportnumber,
         passportSubmitdate: passportSubmitdate,
         arResidenceAdress: arResidenceAdress,
-        companyType:companyType,
-        traveldate:traveldate,
-        endTravelDate:endTravelDate,
+        companyType: companyType,
+        traveldate: traveldate,
+        endTravelDate: endTravelDate,
         arDestination: arDestination,
         arPosition: arPosition,
         lastId: LastIdIncremente,
@@ -408,7 +412,7 @@ const ContratCategory = (props) => {
         duration: duration,
         CIN: cin,
         cinDate: cinDate,
-        duration: duration,
+
         salary: salary,
         joinDate: joinDate,
         finishDate: finishDate
@@ -425,21 +429,21 @@ const ContratCategory = (props) => {
         passportNumber: passportnumber,
         passportSubmitdate: passportSubmitdate,
         arResidenceAdress: arResidenceAdress,
-        companyType:companyType,
-        traveldate:traveldate,
-        endTravelDate:endTravelDate,
+        companyType: companyType,
+        traveldate: traveldate,
+        endTravelDate: endTravelDate,
         arDestination: arDestination,
         arPosition: arPosition,
         lastId: LastIdIncremente,
         salary: salary,
-        primeProductivity:primeProductivity
+        primeProductivity: primeProductivity
 
       }
 
 
     });
   };
- 
+
   const ContratB3 = () => {
     navigate('/HRGetsCompany/ContartTypeB3', {
       state: {
@@ -447,14 +451,14 @@ const ContratCategory = (props) => {
         passportNumber: passportnumber,
         passportSubmitdate: passportSubmitdate,
         arResidenceAdress: arResidenceAdress,
-        companyType:companyType,
-        traveldate:traveldate,
-        endTravelDate:endTravelDate,
+        companyType: companyType,
+        traveldate: traveldate,
+        endTravelDate: endTravelDate,
         arDestination: arDestination,
         arPosition: arPosition,
         lastId: LastIdIncremente,
         salary: salary,
-        primeProductivity:primeProductivity
+        primeProductivity: primeProductivity
 
       }
 
@@ -468,15 +472,15 @@ const ContratCategory = (props) => {
         passportNumber: passportnumber,
         passportSubmitdate: passportSubmitdate,
         arResidenceAdress: arResidenceAdress,
-        companyType:companyType,
-        traveldate:traveldate,
-        endTravelDate:endTravelDate,
+        companyType: companyType,
+        traveldate: traveldate,
+        endTravelDate: endTravelDate,
         arDestination: arDestination,
         arPosition: arPosition,
         lastId: LastIdIncremente,
         salary: salary,
-        primeProductivity:primeProductivity,
-        dailyRate:dailyRate
+        primeProductivity: primeProductivity,
+        dailyRate: dailyRate
 
       }
 
@@ -490,15 +494,15 @@ const ContratCategory = (props) => {
         passportNumber: passportnumber,
         passportSubmitdate: passportSubmitdate,
         arResidenceAdress: arResidenceAdress,
-        companyType:companyType,
-        traveldate:traveldate,
-        endTravelDate:endTravelDate,
+        companyType: companyType,
+        traveldate: traveldate,
+        endTravelDate: endTravelDate,
         arDestination: arDestination,
         arPosition: arPosition,
         lastId: LastIdIncremente,
         salary: salary,
-        primeProductivity:primeProductivity,
-        dailyRate:dailyRate
+        primeProductivity: primeProductivity,
+        dailyRate: dailyRate
 
       }
 
@@ -508,20 +512,20 @@ const ContratCategory = (props) => {
   const ContratSIVP = () => {
     navigate('/HRGetsCompany/StaffManagement/ContratSIVP', {
       state: {
-        name:name,
+        name: name,
         fullName: arName,
         passportNumber: passportnumber,
         passportSubmitdate: passportSubmitdate,
         arResidenceAdress: arResidenceAdress,
-        companyType:companyType,
-        traveldate:traveldate,
-        endTravelDate:endTravelDate,
+        companyType: companyType,
+        traveldate: traveldate,
+        endTravelDate: endTravelDate,
         arDestination: arDestination,
         arPosition: arPosition,
         lastId: LastIdIncremente,
         salary: salary,
-        primeProductivity:primeProductivity,
-        dailyRate:dailyRate
+        primeProductivity: primeProductivity,
+        dailyRate: dailyRate
 
       }
 
@@ -538,7 +542,6 @@ const ContratCategory = (props) => {
       ContratB1();
     } else if (selectedContractCategorie === "CAT-A1") {
       console.log(" contractCategory A1")
-      //ContratA1()
       ContratA1()
     } else if (selectedContractCategorie === "CAT-A2") {
       console.log(" contractCategory A2")
@@ -556,12 +559,12 @@ const ContratCategory = (props) => {
       ContratE1()
 
     }
-    else if (selectedContractCategorie=== "CAT-E2") {
+    else if (selectedContractCategorie === "CAT-E2") {
       console.log(" contractCategory  CAT -E2")
       ContratE2()
 
     }
-    else if (selectedContractCategorie=== "SERVICE1-E3") {
+    else if (selectedContractCategorie === "SERVICE1-E3") {
       console.log(" contractCategory  SERVICE 1-E3")
       ContratE3()
 
@@ -600,23 +603,33 @@ const ContratCategory = (props) => {
   };
   ///UpdateEmployees
   const UpdateEmployees = async () => {
-    
+
     try {
-   
+
       const endPoint =
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
 
       const requestBody = {
-        contractType:selectedContratType,
-        contractCategory:selectedContractCategorie,
-        primeProductivity:newprimeProductivity
+        contractType: selectedContratType,
+        contractCategory: selectedContractCategorie,
+        primeProductivity: newprimeProductivity,
+        salary: finalSalary,
+        dailyRate: finaldailyRate,
+        joinDate: startDate,
+        finishDate: finishDate,
+        traveldate:datetravel,
+        endTravelDate:dateendtravel
 
-     
+
+
+
+
+
       };
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/update?id=${getsId}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/update?id=${getsId}&token=${token}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -626,8 +639,8 @@ const ContratCategory = (props) => {
 
       // Gérer la réponse du serveur
       if (!response.ok) {
-    
-       setShowAlertError(true)
+
+        setShowAlertError(true)
         throw new Error('La requête a échoué avec le code ' + response.status);
 
       }
@@ -638,7 +651,7 @@ const ContratCategory = (props) => {
       // }
       const data = await response.text();
       setData(data)
-     setShowAlert(true)
+      setShowAlert(true)
       // handleAddContactClose()
       // Traiter la réponse de l'API si nécessaire
     } catch (error) {
@@ -705,131 +718,177 @@ const ContratCategory = (props) => {
                   </Form.Item>
                 </Col>
               </Row>
-              <Row gutter={16}>
-                <Col span={12}>
-                <Form.Item className='form-field'>
-              <span className='modallabel'> Contract start date :</span>
-                <FloatLabel  name="joinDate">
-                  <Input
-                    className='Input'
-                    value={joinDate}
-                    placeholder="Contract start date"
-                    readOnly={true}
-                  />
-                </FloatLabel>
-              </Form.Item>
+              {category?.includes("Construction") ?
+               <Row gutter={16}>
+               <Col span={12}>
+                 <Form.Item className='form-field'>
+                   <span className='modallabel'> Contract start date :</span>
+                   <FloatLabel name="joinDate">
+                     <DatePicker
+                       style={{ width: "100%", height: "30px" }}
+                       placeholder='YYYY-MM-DD'
+                       value={datetravel ? dayjs(datetravel, 'YYYY-MM-DD') : null}
+                       onChange={(value) => setDatetravel(value ? dayjs(value).format('YYYY-MM-DD') : '')}
+                     />
 
-                </Col>
-                <Col span={12}>
-                <Form.Item className='form-field'>
-              <span className='modallabel'> Contract Finish date :</span>
-                <FloatLabel  name="joinDate">
-                  <Input
-                    className='Input'
-                    value={finishDate}
-                    placeholder="Contract Finish date"
-                    readOnly={true}
-                  />
-                </FloatLabel>
-              </Form.Item>
+                   </FloatLabel>
+                 </Form.Item>
 
-                </Col>
-                </Row>
-                
+               </Col>
+               <Col span={12}>
+                 <Form.Item className='form-field'>
+                   <span className='modallabel'> Contract Finish date :</span>
+                   <FloatLabel name="joinDate">
+                     <DatePicker
+                       style={{ width: "100%", height: "30px" }}
+                       placeholder='YYYY-MM-DD'
+                       value={dateendtravel ? dayjs(dateendtravel, 'YYYY-MM-DD') : null}
+                       onChange={(value) => setDateendtravel(value ? dayjs(value).format('YYYY-MM-DD') : '')}
+                     />
+
+                   </FloatLabel>
+                 </Form.Item>
+
+               </Col>
+             </Row>
+
+
+
+
+                :
+
                 <Row gutter={16}>
-                <Col span={12}>
-                <Form.Item className='form-field'>
-              <span className='modallabel'> Salary :</span>
-                <FloatLabel  name="joinDate">
-                  <Input
-                    className='Input'
-                    value={ salary}
-                    placeholder="Salary"
-                    readOnly
-                    
-                  />
-                </FloatLabel>
-              </Form.Item>
+                  <Col span={12}>
+                    <Form.Item className='form-field'>
+                      <span className='modallabel'> Contract start date :</span>
+                      <FloatLabel name="joinDate">
+                        <DatePicker
+                          style={{ width: "100%", height: "30px" }}
+                          placeholder='YYYY-MM-DD'
+                          value={startDate ? dayjs(startDate, 'YYYY-MM-DD') : null}
+                          onChange={(value) => setStartDate(value ? dayjs(value).format('YYYY-MM-DD') : '')}
+                        />
 
-                </Col>
-                <Col span={12}>
-                <Form.Item
-                
-                className='form-field'>
-              <span className='modallabel'> Daily Rate :</span>
-                <FloatLabel  name="Daily Rate">
-                  <Input
-                    className='Input'
-                     value={ dailyRate}
-                    placeholder="Daily Rate"
-                    readOnly
-                   
-                  />
-                </FloatLabel>
-              </Form.Item>
+                      </FloatLabel>
+                    </Form.Item>
 
-                </Col>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item className='form-field'>
+                      <span className='modallabel'> Contract Finish date :</span>
+                      <FloatLabel name="joinDate">
+                        <DatePicker
+                          style={{ width: "100%", height: "30px" }}
+                          placeholder='YYYY-MM-DD'
+                          value={endDate ? dayjs(endDate, 'YYYY-MM-DD') : null}
+                          onChange={(value) => setEndDate(value ? dayjs(value).format('YYYY-MM-DD') : '')}
+                        />
+
+                      </FloatLabel>
+                    </Form.Item>
+
+                  </Col>
                 </Row>
-             
+              }
+
               <Row gutter={16}>
-              {category === "Management Staff" ?
-             <Col span={12}>
-                  <Form.Item label='Contract Category' name='contractCategory'
-                  >
-                    <Select
-                      placeholder="Select Contract Type"
-                      onChange={handleCategoryChange}
-                      style={{ minWidth: 150 }}
-                    >
-                      <Option value="">Select Contract Type</Option>
-                      {ListContrat.map((staff) => (
-                        <Option value={staff.type} key={staff.type}>
-                          {staff.type}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </Col>
-
-
-                :  <Col span={12} >
-                <Form.Item  name='contractCategory'
-                >
-                   <span className='modallabel'> Contract Category :</span>
-                  <Select
-                    placeholder="Select Contract Type"
-                    onChange={handleCategoryChange}
-                    style={{ minWidth: 150 }}
-                  >
-                    <Option value="">Select Contract Type</Option>
-                    {ListContratConstruction.map((staff) => (
-                      <Option value={staff.type} key={staff.type}>
-                        {staff.type}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </Col>}
-              {selectedContractCategorie==="CAT-B2" ?
                 <Col span={12}>
-                <Form.Item className='form-field'>
-                  <FloatLabel name="PrimeProductivity">
-                    <span className='modallabel'> Prime Productivity :</span>
-                    <Input
-                      className='Input'
-                      placeholder="Prime Productivity"
-                      value={newprimeProductivity}
-                      onChange={(e) => setNewprimeProductivity(e.target.value)}
-                    />
-                  </FloatLabel>
-                </Form.Item>
-              </Col>
+                  <Form.Item className='form-field'>
+                    <span className='modallabel'> Salary :</span>
+                    <FloatLabel name="joinDate">
+                      <Input
+                        type='number'
+                        className='Input'
+                        value={finalSalary}
+                        onChange={(e) => setFinalSalary(e.target.value)}
+                        placeholder="Salary"
+
+
+                      />
+                    </FloatLabel>
+                  </Form.Item>
+
+                </Col>
+                <Col span={12}>
+                  <Form.Item
+
+                    className='form-field'>
+                    <span className='modallabel'> Daily Rate :</span>
+                    <FloatLabel name="Daily Rate">
+                      <Input
+                        type='number'
+                        className='Input'
+                        value={finaldailyRate}
+                        onChange={(e) => setFinaldailyRate(e.target.value)}
+                        placeholder="Daily Rate"
+
+
+                      />
+                    </FloatLabel>
+                  </Form.Item>
+
+                </Col>
+              </Row>
+
+              <Row gutter={16}>
+                {category === "Management Staff" ?
+                  <Col span={12}>
+                    <Form.Item label='Contract Category' name='contractCategory'
+                    >
+                      <Select
+                        placeholder="Select Contract Type"
+                        onChange={handleCategoryChange}
+                        style={{ minWidth: 150 }}
+                      >
+                        <Option value="">Select Contract Type</Option>
+                        {ListContrat.map((staff) => (
+                          <Option value={staff.type} key={staff.type}>
+                            {staff.type}
+                          </Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+
+
+                  : <Col span={12} >
+                    <Form.Item name='contractCategory'
+                    >
+                      <span className='modallabel'> Contract Category :</span>
+                      <Select
+                        placeholder="Select Contract Type"
+                        onChange={handleCategoryChange}
+                        style={{ minWidth: 150 }}
+                      >
+                        <Option value="">Select Contract Type</Option>
+                        {ListContratConstruction.map((staff) => (
+                          <Option value={staff.type} key={staff.type}>
+                            {staff.type}
+                          </Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  </Col>}
+                {selectedContractCategorie === "CAT-B2" ?
+                  <Col span={12}>
+                    <Form.Item className='form-field'>
+                      <FloatLabel name="PrimeProductivity">
+                        <span className='modallabel'> Prime Productivity :</span>
+                        <Input
+                          className='Input'
+                          placeholder="Prime Productivity"
+                          value={newprimeProductivity}
+                          onChange={(e) => setNewprimeProductivity(e.target.value)}
+                        />
+                      </FloatLabel>
+                    </Form.Item>
+                  </Col>
 
 
 
 
-                 :null }
-              
+                  : null}
+
               </Row>
 
 
@@ -848,16 +907,16 @@ const ContratCategory = (props) => {
               <IntlMessages id='common.cancel' />
             </StyledContactFormBtn>
             <StyledValidateContactFormBtn
-            type='button'
-            ghost
-           onClick={UpdateEmployees}
-          >
-            <IntlMessages id='common.Validate' />
-          </StyledValidateContactFormBtn>
+              type='button'
+              ghost
+              onClick={UpdateEmployees}
+            >
+              <IntlMessages id='common.Validate' />
+            </StyledValidateContactFormBtn>
             < StyledContactGenerationFormBtn
               type='button'
               ghost
-             disabled={!generateBtnEnabled}
+              disabled={!generateBtnEnabled}
               onClick={SelectionnnerContrat}
             >
               Generate
@@ -869,31 +928,31 @@ const ContratCategory = (props) => {
 
         </StyledContactFormContent>
         {showAlert && (
-        <Alert
-          message="Success"
-          description="Employee Contract  saved successfully"
-          type="success"
-          showIcon
-          closable
-          onClose={() => setShowAlert(false)}
+          <Alert
+            message="Success"
+            description="Employee Contract  saved successfully"
+            type="success"
+            showIcon
+            closable
+            onClose={() => setShowAlert(false)}
           // style={{ marginBottom: 16, marginTop: 20, height: 100 }}
-        />
-      )}
-      {showAlertError && (
-        <Alert
-          message="Failed"
-          description="Employee Contract data saved Failed"
-          type="error"
-          showIcon
-          closable
-          onClose={() => setShowAlertError(false)}
-         
-        />
-      )}
+          />
+        )}
+        {showAlertError && (
+          <Alert
+            message="Failed"
+            description="Employee Contract data saved Failed"
+            type="error"
+            showIcon
+            closable
+            onClose={() => setShowAlertError(false)}
+
+          />
+        )}
 
 
       </StyledContactModalScrollbar>
-      
+
     </StyledContactForm>
   );
 };

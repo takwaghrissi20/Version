@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import { Dropdown,Image } from 'antd';
 import { FaChevronDown } from 'react-icons/fa';
-import { useThemeContext } from '@crema/context/AppContextProvider/ThemeContextProvider';
-import { useAuthMethod, useAuthUser } from '@crema/hooks/AuthHooks';
-import { useSidebarContext } from '@crema/context/AppContextProvider/SidebarContextProvider';
+import { useThemeContext } from '../../../../../@crema/context/AppContextProvider/ThemeContextProvider';
+import { useAuthMethod, useAuthUser } from '../../../../../@crema/hooks/AuthHooks';
+import { useSidebarContext } from '../../../../../@crema/context/AppContextProvider/SidebarContextProvider';
 import PropTypes from 'prop-types';
 import {
   StyledCrUserDesignation,

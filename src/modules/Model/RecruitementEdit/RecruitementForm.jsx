@@ -70,7 +70,7 @@ const RecruitementEditForm = (props) => {
   const [newNumbervacancies, setNewNumbervacancies] = useState(Numbervacancies);
   const [newcertif, setNewcertif] = useState(certif);
   const { messages } = useIntl();
-  
+  const token = localStorage.getItem("token")
 
   //const [newdesiredDate, setNewDesiredDate] = useState(DesiredDate);
   const [dataEdit, setDataEdit] = useState(props.name)
@@ -83,7 +83,7 @@ const RecruitementEditForm = (props) => {
 
   ) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?token=${token}&id=${JobCode}`, {
 
         method: 'PUT',
         headers: {

@@ -33,7 +33,7 @@ const Mission = () => {
   const [form] = Form.useForm();
   const [dateInput, setDateInput] = useState(new Date());
   const formattedDate = dayjs(dateInput).format('YYYY-MM-DD');
-  
+  const token = localStorage.getItem("token");
   
 
 
@@ -62,7 +62,7 @@ const Mission = () => {
 
   const LastIndexMission = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/last`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/last?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -160,10 +160,11 @@ const Mission = () => {
       color: '#FFFFFF !important',
     });
   };
+ 
   const findId = async () => {
     try {
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}&token=${token}`, {
         method: 'GET',
       });
 
@@ -174,14 +175,16 @@ const Mission = () => {
         const responseData = await response.json();
         setName(responseData?.name);
         setPosition(responseData?.position);
-        // setCountry(responseData?.destination);
+      
   
         const projectsData = responseData?.projects?.map(project => ({
           projName: project.projName,
           projId: project.projId
         }));
   
-        const projectscountry = responseData?.projects?.flatMap(project => project.country);
+        const projectscountry = responseData?.projects?.flatMap(project => 
+          project.locations?.map(location => location.lieu)
+        );
         setProjectsCountry(projectscountry);
         setProjects(projectsData);
 
@@ -222,7 +225,7 @@ const Mission = () => {
   }, [getsId, selectedProject, idProject,name]);
   const GetIdProject = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/getByname?name=${selectedProject}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/getByname?name=${selectedProject}&token=${token}`, {
         method: 'GET',
       });
 
@@ -242,7 +245,7 @@ const Mission = () => {
 
   const handleAddMission = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/add?id=${idProject}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/add?id=${idProject}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -298,7 +301,7 @@ const Mission = () => {
   };
 
   const handleProjectLocationChange = (value) => {
-    console.log('Select project :', value);
+  
     setSelectedProjectCountry(value);
   };
   const goBack = () => {
@@ -419,7 +422,7 @@ const Mission = () => {
                       placeholder="Destination"
                       onChange={(value) => setCountry(value)} >
 
-                      {Destination.map((p) => {
+                      {Destination?.map((p) => {
                         return (
                           <Option value={p.des} key={p.des}>
                             <div className='ant-row ant-row-middle'>
@@ -510,7 +513,7 @@ const Mission = () => {
                         onChange={handleProjectChange}
                         value={selectedProject}
                       >
-                        {projects.map(project => (
+                        {projects?.map(project => (
                           <Option key={project.projId} value={project.projName}>
                             {project.projName}
                           </Option>
@@ -533,7 +536,7 @@ const Mission = () => {
                         placeholder="Select Projects"
                         onChange={handleProjectLocationChange}
                         value={selectedProjectCountry} >
-                        {projectsCountry.map(project => (
+                        {projectsCountry?.map(project => (
                           <Option key={project} value={project}>
                             {project}
                           </Option>
@@ -559,7 +562,7 @@ const Mission = () => {
                     <Input
                       className='InputComment'
                       value={comments}
-                      onChange={handleCommentsChange}
+                      onChange={(e) =>setComments(e.target.value)}
                       placeholder="Comments"
                     />
                   </Form.Item>

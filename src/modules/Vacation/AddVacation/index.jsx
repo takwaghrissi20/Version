@@ -27,6 +27,7 @@ const Vacation = () => {
   const [restVacation, setRestVacation] = useState(0)
   const [restMaternity, setRestMaternity] = useState(0)
   const userRole = localStorage.getItem("role")
+  const token = localStorage.getItem("token");
   const GetProfileEmployess = async () => {
     const storedemail = window.localStorage.getItem("email");
     console.log("storedemail", storedemail)
@@ -35,7 +36,7 @@ const Vacation = () => {
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -68,7 +69,7 @@ const Vacation = () => {
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-      const response = await fetch(` https://dev-gateway.gets-company.com/api/v1/vac/listByEmp?id=${id}`, {
+      const response = await fetch(` https://dev-gateway.gets-company.com/api/v1/vac/listByEmp?id=${id}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -349,7 +350,7 @@ const Vacation = () => {
     console.log('Request payload:', bodyData);
 
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/add?type=${leaveType}&id=${id}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/add?type=${leaveType}&id=${id}&token=${token}`, {
         method: 'POST',
         headers: {
           "Access-Control-Allow-Headers": "Content-Type",
@@ -368,6 +369,11 @@ const Vacation = () => {
       const result = await response.json();
       console.log("result",result)
       openNotification('bottomRight')
+      setTimeout(() => {
+        window.location.reload();
+       
+      }, 1000);
+ 
     
     }
 
@@ -449,8 +455,6 @@ const Vacation = () => {
               <AppRowContainer>
                 <Col xs={24} md={12}>
                   <Form.Item label='GETS ID' name='GETS ID'>
-
-
                     <Input
                       className='Input'
                       placeholder={profile?.getsId}

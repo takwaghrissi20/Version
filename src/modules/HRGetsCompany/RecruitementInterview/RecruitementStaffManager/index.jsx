@@ -12,7 +12,7 @@ import AppsContent from '../../../../@crema/components/AppsContainer/AppsContent
 import Pagination from '../../../../@crema/components/AppsPagination';
 import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
 import { useNavigate } from "react-router-dom";
-const RecruitementStaff = ({ allrecruitementabove, recruitementTypeIdAbove, roles }) => {
+const RecruitementStaff = ({ allrecruitementabove, recruitementTypeIdAbove, roles, token }) => {
   const navigate = useNavigate();
   const [recruitementabove, setRecruitementabove] = useState([]);
   const [recruitementaboveFiltrer, setRecruitementaboveFiltrer] = useState([]);
@@ -23,6 +23,7 @@ const RecruitementStaff = ({ allrecruitementabove, recruitementTypeIdAbove, role
   const [isGenerateInterview, onGenerateInterview] = useState(false);
   const [findIdData, setFindIdData] = useState(null);
   const [id, setId] = useState(0);
+
   const count = allrecruitementabove.length
 
   useEffect(() => {
@@ -71,7 +72,7 @@ const RecruitementStaff = ({ allrecruitementabove, recruitementTypeIdAbove, role
     setNameFilter(filterValue);
     if (filterValue !== '') {
       try {
-        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/filterByPosition?position=$${filterValue}`);
+        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/filterByPosition?position=$${filterValue}&token=${token}`);
         if (!response.ok) {
           throw new Error('Failed to filter Recruitement');
         }
@@ -121,7 +122,7 @@ const RecruitementStaff = ({ allrecruitementabove, recruitementTypeIdAbove, role
   //Fin Bu Id 
   const findId = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/findId?code=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/findId?code=${code}&token=${token}`, {
         method: 'POST',
 
       });
@@ -192,7 +193,7 @@ const RecruitementStaff = ({ allrecruitementabove, recruitementTypeIdAbove, role
 
         }}>
         {/*admin*/}
-        {(roles.includes("admin")) || (roles.includes("Administrator")) ?
+        {(roles.includes("admin")) || (roles.includes("Cordinator"))|| (roles.includes("Administrator")) ?
           <>
             <OrderTable
               allrecruitementabove={recruitementabove}
@@ -241,7 +242,7 @@ const RecruitementStaff = ({ allrecruitementabove, recruitementTypeIdAbove, role
               </StyledCustomerHeaderRight>
             </div>
           </>}
-        {(!roles.includes("admin")) || (!roles.includes("Administrator")) ?
+        {(!roles.includes("admin")) || (!roles.includes("Cordinator")) ?
 
           <></>
           : <p>null</p>}

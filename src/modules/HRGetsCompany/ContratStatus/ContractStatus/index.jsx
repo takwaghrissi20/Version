@@ -18,7 +18,7 @@ import { StyledBuyCellCard, StyledTabs } from '../../../../styles/index.styled';
 import { useIntl } from "react-intl";
 const Table = ({user}) => {
   const { messages } = useIntl();
-  
+  const token = localStorage.getItem("token")
 
   const [page, setPage] = useState(1);
   const [search, setSearchQuery] = useState('');
@@ -60,7 +60,7 @@ const fetchListEmployee = async () => {
         ? "https://dev-gateway.gets-company.com"
         : "";
 
-    const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/list`, {
+    const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/list?token=${token}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

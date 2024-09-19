@@ -10,7 +10,7 @@ const items = [
 
 function NestedTable({ dataemployeesVisa }) {
   const [expandedData, setExpandedData] = useState();
-  console.log("dataemployeesVisa  testt", dataemployeesVisa)
+
   const expandedRowRender = () => {
     const columns = [
       { title: 'Fetness Certificate', dataIndex: 'resultFitness', key: 'resultFitness' },
@@ -63,9 +63,10 @@ function NestedTable({ dataemployeesVisa }) {
     },
 
   ];
+  const token = localStorage.getItem("token");
   const findId = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${code}&token=${token}`, {
         method: 'Get',
       });
       if (!response.ok) {
@@ -81,7 +82,7 @@ function NestedTable({ dataemployeesVisa }) {
         //onEditVisa(true)
       }
     } catch (error) {
-      console.error("Erreur lors de la récupération du id eMPLOYEE:", error);
+      console.error("Erreur lors de la récupération du id EMPLOYEE:", error);
     }
   }
     return (

@@ -28,7 +28,7 @@ const EditCovid = () => {
   const [newcorona1Date, setnewcorona1Date] = useState(corona1Date);
   const [newcorona2Date, setnewcorona2Date] = useState(corona2Date);
   const [ confirmationUpdate, setConfirmationUpdate] = useState(false);
-
+  const token = localStorage.getItem("token");
  
   const navigate = useNavigate();
   
@@ -42,7 +42,7 @@ const EditCovid = () => {
 
   const handleUpdate = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vacin/update`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vacin/update?token=${token}`, {
         method: 'PUT',
         headers: {
           "Access-Control-Allow-Headers": "Content-Type",

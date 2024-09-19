@@ -33,10 +33,8 @@ const InternalMission = () => {
   const [form] = Form.useForm();
   const [dateInput, setDateInput] = useState(new Date());
   const formattedDate = dayjs(dateInput).format('YYYY-MM-DD');
-
   const [expenseBlocks, setExpenseBlocks] = useState([{ expence: '', amount: '' }]);
-
-
+  const token = localStorage.getItem("token");
 
 
   useEffect(() => {
@@ -91,7 +89,7 @@ const InternalMission = () => {
 
   const LastIndexMission = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intMission/last`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intMission/last?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -189,10 +187,11 @@ const InternalMission = () => {
       color: '#FFFFFF !important',
     });
   };
+
   const findId = async () => {
     try {
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}&token=${token}`, {
         method: 'GET',
       });
 
@@ -241,7 +240,7 @@ const InternalMission = () => {
   
   const handleAddMission = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intMission/add`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intMission/add?token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -279,6 +278,13 @@ const InternalMission = () => {
         const responseData = await response.json();
         form.resetFields();
         openNotification('bottomRight')
+        setTimeout(() => {
+          window.location.reload();
+          navigate(-1)
+
+         
+        }, 100);
+      
 
 
 

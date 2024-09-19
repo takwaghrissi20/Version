@@ -18,6 +18,7 @@ import { FaCreditCard } from 'react-icons/fa';
 import { FaPlane } from 'react-icons/fa';
 import { BiBriefcase } from 'react-icons/bi';
 import { MdAttachMoney } from 'react-icons/md';
+import { FcCollaboration } from "react-icons/fc";
 const routesConfig = [
   {
     id: "dashboards",
@@ -106,14 +107,36 @@ const routesConfig = [
             url: "/HrDataBase/Add_Project",
           },
           {
+            id: "Add Project",
+            title: "Add Project",
+            messageId: "sidebar.hr.AddProjectOffice",
+            url: "/HrDataBase/Add_Project_Office",
+          },
+          {
             id: "Affect a project to employee",
             title: "Affect a project to employee",
             messageId: "sidebar.hr.Affectaprojecttoemployee",
             url: "/HrDataBase/Affectaprojecttoemployee",
+          },        
+          {
+            id: "SALARYINCREASEAndPositionChange",
+            title: "SALARYINCREASEAndPositionChange",
+            messageId: "sidebar.hr.SALARYINCREASEAndPositionChange",
+            url: "/HrDataBase/Office_SALARY_INCREASE_And_Position_Change",
           },
-
-
-
+          {
+            id: "SiteSALARYINCREASEAndPositionChange",
+            title: "SiteSALARYINCREASEAndPositionChange",
+            messageId: "sidebar.hr.SiteSALARYINCREASEAndPositionChange",
+            url: "/HrDataBase/Site_SALARY_INCREASE_And_Position_Change",
+          },
+          {
+            id: "ListSALARYINCREASEAndPositionChange",
+            title: "ListSALARYINCREASEAndPositionChange",
+            messageId: "sidebar.hr.SALARYINCREASEAndPositionChang",
+            url: "/HrDataBase/SALARY_INCREASE_And_Position_Change",
+          },
+         
           {
             id: "SAMMARY",
             title: "SAMMARY",
@@ -140,15 +163,59 @@ const routesConfig = [
           },
      
         
-          {
-            id: "Employee status",
-            title: "Employee status",
-            messageId: "sidebar.hr.EmployeesStatus",
-            url: "/Hr/EmployeesStatus",
-          },
+       
+          // {
+          //   id: "EmployeesStatusOffice",
+          //   title: "EmployeesStatusOffice",
+          //   messageId: "sidebar.hr.OfficeEmployee",
+          //   url: "/Hr/Employees_Status_Office",
+          // },
+          // {
+          //   id: "EmployeesStatusOffice",
+          //   title: "EmployeesStatusOffice",
+          //   messageId: "sidebar.hr.SiteEmployee",
+          //   url: "/Hr/Employees_Status_Site",
+          // },
+        
          
         ],
       },
+      
+    ],
+  },
+  {
+    id: "Training",
+    title: "Training",
+    messageId: "",
+    type: "group",
+    children: [
+     
+      {
+        id: "Training",
+        title: "Training",
+        messageId: "sidebar.training",
+        icon: <FcCollaboration />,
+        type: "collapse",
+        children: [
+          {
+            id: "Add Training",
+            title: "Add Training",
+            messageId: "sidebar.Recruitement.AddTraining",
+            url: "/Hr/AddTraining",
+          },
+          {
+            id: "AllTraining",
+            title: "All Training",
+            messageId: "sidebar.Recruitement.AllTraining",
+            url: "/Hr/AllTraining",
+          },
+        
+        
+        
+          
+        ],
+      },
+     
       
     ],
   },
@@ -177,8 +244,26 @@ const routesConfig = [
             id: "TimeSheetoffice",
             title: "TimeSheetoffice",
             messageId: "sidebar.hrRelation.TimeSheetoffice",
-            url: "/Hr/Attendances/OfficeTimeSheet",
-          },     
+            url: "/Hr/Attendances/Office_Time_Sheet",
+          },   
+          {
+            id: "EmployeesOfficeSummary",
+            title: "EmployeesOfficeSummary",
+            messageId: "sidebar.hr.EmployeesOfficeSummary",
+            url: "/Hr/Employees_Office_Summary",
+          },
+          {
+            id: "EmployeesSiteSummary",
+            title: "EmployeesSiteSummary",
+            messageId: "sidebar.hr.EmployeesSiteSummary",
+            url: "/Hr/Employees_Site_Summary",
+          },  
+          // {
+          //   id: "TimeSheetofficeTest",
+          //   title: "TimeSheetoffice",
+          //   messageId: "sidebar.hrRelation.TimeSheetoffice",
+          //   url: "/Hr/Attendances/OfficeTimeSheet",
+          // },   
          
         ],
       },
@@ -193,7 +278,7 @@ const routesConfig = [
           {
             id: "Vacation",
             title: "Vacation",
-            messageId: "sidebar.components.VacationLeave",
+            messageId: "sidebar.components.LeaveApplication",
             url: "/Hr/Vacation&Leave/Vacation",
           },
           {
@@ -398,8 +483,19 @@ const routesConfig = [
             messageId: "sidebar.general.SummaryMobTrip",
             url: "/ManpowerLocation/SummaryMobTrip",
           },
-
-
+          {
+            id: "TransfertPermission",
+            title: "TransfertPermission",
+            messageId: "sidebar.general.TRANSFERTpERMISSION",
+            url: "/ManpowerLocation/Employee_Transfer_Permission",
+          },
+          {
+            id: "EmpTransfertPermission",
+            title: "EmpTransfertPermission",
+            messageId: "sidebar.general.LISTTRANSFERTpERMISSION",
+            url: "/ManpowerLocation/List_Employee_Transfer_Permission",
+          },
+          
          
           // {
           //   id: "manpowerenxtension",
@@ -408,8 +504,7 @@ const routesConfig = [
           //   url: "/ManpowerLocation/DemobPermissionSite",
           // },
   
-    
-    
+  
        
         ],
       },
@@ -451,6 +546,12 @@ const routesConfig = [
             title: "HeadOfficeEmployees",
             messageId: "sidebar.general.HeadOfficeEmployees",
             url: "/ManpowerLocation/HeadOfficeEmployees",
+          },
+          {
+            id: "PROJECTSLOCATIONTRACKRECORD ",
+            title: "PROJECTS LOCATION TRACK RECORD",
+            messageId: "sidebar.general.PROJECTSLOCATIONTRACKRECORD",
+            url: "/ManpowerLocation/PROJECTSLOCATIONTRACKRECORD",
           },
           // {
           //   id: "ManpowerHystograms",
@@ -502,8 +603,8 @@ const routesConfig = [
     ],
   },
   {
-    id: "HRCordinator",
-    title: "HRCordinator",
+    id: "Payroll",
+    title: "Payroll",
     messageId: "",
     type: "group",
     children: [

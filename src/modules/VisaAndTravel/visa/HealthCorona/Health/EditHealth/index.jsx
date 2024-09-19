@@ -26,7 +26,6 @@ const EditHeath = () => {
   const hepatitResult = location.state ? location.state.hepatitResult : null;
   const idzresult = location.state ? location.state.idzresult : null;
   const idzdate = location.state ? location.state.idzdate : null;
-
   const [newDateFetness, setnewDateFetness] = useState(DateFetness);
   const [newresultFitness, setnewresultFitness] = useState(resultFitness);
   const [newDateHepatitie, setnewDateHepatitie] = useState(hypatitDare);
@@ -34,6 +33,7 @@ const EditHeath = () => {
   const [newDateidz, setnewDateidz] = useState(idzdate);
   const [newresultidz, setnewresultidz] = useState(idzresult);
   const [confirmationUpdate, setConfirmationUpdate] = useState(false);
+  const token = localStorage.getItem("token");
   const navigate = useNavigate();
   
   const goBack = () => {
@@ -46,7 +46,7 @@ const EditHeath = () => {
 
   const handleUpdate = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vacin/update`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vacin/update?token=${token}`, {
         method: 'PUT',
         headers: {
           "Access-Control-Allow-Headers": "Content-Type",
@@ -168,6 +168,7 @@ const EditHeath = () => {
                   <Form.Item label='Date Of Health Fetness Test:' name='Date Of Health Fetness Test:'>
                     <DatePicker
                       style={{ width: "100%", height: "30px" }}
+                      placeholder={DateFetness}
                       value={newDateFetness ? dayjs(newDateFetness) : null}
                       onChange={(date, dateString) => setnewDateFetness(dateString)}
                     />
@@ -175,8 +176,8 @@ const EditHeath = () => {
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Result Fetness Test:' name='Result Fetness Test:'>
-                    <Input
-                      placeholder="Result Fetness Test"
+                    <Input                    
+                      placeholder={resultFitness}
                       value={newresultFitness}
                       onChange={(e) => setnewresultFitness(e.target.value)}
                     />
@@ -187,15 +188,15 @@ const EditHeath = () => {
                     <DatePicker
                       style={{ width: "100%", height: "30px" }}
                       value={newDateHepatitie ? dayjs(newDateHepatitie) : null}
+                      placeholder={hypatitDare}
                       onChange={(date, dateString) => setnewDateHepatitie(dateString)}
                     />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Result Hepatitie Test:' name='Result Hepatitie Test:'>
-                    <Input
-                      placeholder="Result Hepatitie Test"
-                      value={newresultHepatitie}
+                    <Input                
+                      placeholder={hepatitResult}               
                       onChange={(e) => setnewresultHepatitie(e.target.value)}
                     />
                   </Form.Item>
@@ -203,6 +204,7 @@ const EditHeath = () => {
                 <Col xs={24} md={12}>
                   <Form.Item label='Date Of IDZ/HIV Test:' name='Date Of IDZ/HIV Test:'>
                     <DatePicker
+                      placeholder={idzdate}
                       style={{ width: "100%", height: "30px" }}
                       value={newDateidz ? dayjs(newDateidz) : null}
                       onChange={(date, dateString) => setnewDateidz(dateString)}
@@ -212,7 +214,7 @@ const EditHeath = () => {
                 <Col xs={24} md={12}>
                   <Form.Item label='Result IDZ/HIV Test:' name='Result IDZ/HIV Test:'>
                     <Input
-                      placeholder="Result IDZ/HIV Test"
+                     placeholder={idzresult}
                       value={newresultidz}
                       onChange={(e) => setnewresultidz(e.target.value)}
                     />

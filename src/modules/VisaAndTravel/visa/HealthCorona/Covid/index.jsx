@@ -12,10 +12,10 @@ const CovidCertification = () => {
   const [totalVaccinCorona, setTotalVaccinCorona] = useState(0);
   const [totalVaccinFirstCorona, setTotalVaccinFirstCorona] = useState(0);
   const [totalVaccinSecondCorona, setTotalVaccinSecondCorona] = useState(0);
-  
+  const token = localStorage.getItem("token")
   const fetchVaccin = async () => {
     try {
-      const countVaccin = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/list`);
+      const countVaccin = await fetch(`https://dev-gateway.gets-company.com/api/v1/vac/list?token=${token}`);
         
       const filteredDataCovid = data.filter(item => item.typeVccin === "COVID VACCINE");
       setTotalVaccinCorona(filteredDataCovid.lenght)

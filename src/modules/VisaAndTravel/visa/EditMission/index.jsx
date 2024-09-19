@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../../../@crema/components/AppRowContainer';
-import { Button, Col, Divider, Form, Input, Space, Typography, DatePicker,notification } from 'antd';
+import { Button, Col, Divider, Form, Input, Space, Typography, DatePicker, notification } from 'antd';
 import {
   StyledShadowWrapper,
 } from './index.styled';
@@ -17,8 +17,7 @@ const UpdateMission = () => {
   const [newprojName, setNewprojName] = useState("");
   const [starTDateMis, setStarTDateMis] = useState(null);
   const [comments, setComments] = useState("");
-
-
+  const [missionId, setMissionId] = useState(null);
 
   const [isCancel, onCancel] = useState(false);
   const [form] = Form.useForm();
@@ -27,32 +26,31 @@ const UpdateMission = () => {
   const location = useLocation();
   const [profile, setProfile] = useState("");
   const id = location.state ? location.state.id : null;
+  const token = localStorage.getItem("token");
   const [mission, setMission] = useState("");
   const handleComments = (event) => {
     setComments(event.target.value);
   };
   const findIdMission = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getById?id=${id}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getById?id=${id}&token=${token}`, {
         method: 'GET',
       });
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const responseData = await response.json();
-      setMission(responseData);
-      setGetsId(responseData?.getsId);
-      setStarTDateMis(responseData?.starTDateMiss);
-
+      setMissionId(responseData)
+      console.log("idMission", responseData)
     } catch (error) {
       console.error("Erreur lors de la récupération du id Mission:", error);
     }
   };
   const [newstarTDateMis, setNewstarTDateMis] = useState(starTDateMis);
-
+ 
   const findId = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}&token=${token}`, {
         method: 'GET',
       });
       if (!response.ok) {
@@ -77,91 +75,110 @@ const UpdateMission = () => {
   };
   useEffect(() => {
     findIdMission();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (getsId) {
       findId();
       setNewGetsId(getsId);
     }
-  }, [getsId,starTDateMis]);
+  }, [getsId, starTDateMis]);
   const handleInputGetsIdChange = (event) => {
     setGetsId(event.target.value);
   };
-    ////////////////////////////////
-    const openNotificationError = () => {
-      notification.open({
-        message: 'Error',
-        description: 'Error',
-        style: {
-          backgroundColor: 'red',
-          border: '1px solid #dc3545',
-          color: '#FFFFFF',
-          borderRadius: '3px',
-          boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
-          cursor: 'pointer',
-          height: "102px",
-          width: "500px",
-          borderLeft: '8px solid #bd1120',
-        },
-        placement: 'topRight',
-      });
-    };
-    const openNotification = () => {
-      notification.open({
-        message: 'Success',
-        description: 'Success Update Mission Assignment Order',
-        style: {
-          backgroundColor: '#28a745',
-          border: '1px solid #28a745',
-          color: '#FFFFFF !important',
-          borderRadius: '3px',
-          boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
-          cursor: 'pointer',
-          display: 'flex',
-          height: "102px",
-          width: "500px",
-          borderLeft: '8px solid #1f8838',
-          fontsize: '30px',
-          lineheight: '150%',
-          marginbottom: 0,
-          margintop: 0,
-          maxwidth: 'calc(100% - 15px)',
-          position: 'relative',
-        },
-        placement: 'topRight',
+  ////////////////////////////////
+  const openNotificationError = () => {
+    notification.open({
+      message: 'Error',
+      description: 'Error',
+      style: {
+        backgroundColor: 'red',
+        border: '1px solid #dc3545',
+        color: '#FFFFFF',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #bd1120',
+      },
+      placement: 'topRight',
+    });
+  };
+  const openNotification = () => {
+    notification.open({
+      message: 'Success',
+      description: 'Success Update Mission Assignment Order',
+      style: {
+        backgroundColor: '#28a745',
+        border: '1px solid #28a745',
         color: '#FFFFFF !important',
-      });
-    };
-    const openNotificationWarning = () => {
-      notification.open({
-        message: 'Warning',
-        description: 'All Fields Not Complete',
-        style: {
-          backgroundColor: '#eab000',
-          border: '1px solid #eab000',
-          color: '#FFFFFF !important',
-          borderRadius: '3px',
-          boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
-          cursor: 'pointer',
-          display: 'flex',
-          height: "102px",
-          width: "500px",
-          borderLeft: '8px solid #ce9c09',
-          fontsize: '30px',
-          lineheight: '150%',
-          marginbottom: 0,
-          margintop: 0,
-          maxwidth: 'calc(100% - 15px)',
-          position: 'relative',
-        },
-        placement: 'topRight',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #1f8838',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
+  const openNotificationWarning = () => {
+    notification.open({
+      message: 'Warning',
+      description: 'All Fields Not Complete',
+      style: {
+        backgroundColor: '#eab000',
+        border: '1px solid #eab000',
         color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #ce9c09',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
+  const GetMissionById = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/getById?id=${id}&token=${token}`, {
+        method: 'GET',
       });
-    };
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const responseData = await response.json();
+      console.log("Mission By Id", responseData)
+
+
+
+    } catch (error) {
+      console.error("Erreur lors de la récupération du MissionId:", error);
+    }
+  };
+
   const Update = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/update?id=${id}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mission/update?id=${id}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -171,11 +188,22 @@ const UpdateMission = () => {
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
         body: JSON.stringify({
-          idMiss: id,
+          idMiss:id,
           getsId: getsId,
-          starTDateMiss:newstarTDateMis,
-          comentaire:comments
-
+          starTDateMiss: newstarTDateMis,
+          comentaire: comments,
+          refMiss: missionId?.refMiss,
+          idproj:missionId?.idproj,
+          location:missionId?.location,
+          empName:missionId?. empName,
+          fonct:missionId?.fonct,
+          destination: missionId?.destination,
+          projRef:missionId?.projRef,
+          missOrdre:missionId?.missOrdre,
+          projName:missionId?.projName,
+          endDateMiss:missionId?.endDateMiss,
+          inputMiss:missionId?.inputMiss,
+          dureMiss:missionId?.dureMiss
 
         })
       });
@@ -227,7 +255,7 @@ const UpdateMission = () => {
                     <Input placeholder={"MAO-" + id} readOnly={true} />
                   </Form.Item>
                 </Col>
-       
+
                 <Col xs={24} md={12}>
                   <Form.Item label='Date' name='Date'>
                     <Input
@@ -241,9 +269,11 @@ const UpdateMission = () => {
                     <Input
                       type='number'
                       className='Input'
-                      placeholder={getsId}
+                      placeholder={missionId?.getsId}
                       value={newgetsId}
                       onChange={handleInputGetsIdChange}
+                      readOnly
+                      
 
                     />
                   </Form.Item>
@@ -252,7 +282,7 @@ const UpdateMission = () => {
                   <Form.Item label='Person Name' name='Person Name'>
                     <Input
                       className='Input'
-                      placeholder={profile?.name}
+                      placeholder={missionId?.empName}
                       readOnly />
                   </Form.Item>
                 </Col>
@@ -262,7 +292,8 @@ const UpdateMission = () => {
                     <Input
                       readOnly={true}
                       className='Input'
-                      placeholder={profile?.position} />
+                      placeholder={missionId?.fonct}
+                       />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
@@ -270,31 +301,31 @@ const UpdateMission = () => {
                     label='Destination ' name='Destination'>
                     <Input
                       className='Input'
-                      placeholder={mission?.location}
+                      placeholder={missionId?.location}
                       name='Destination'
                       readOnly={true}
                     />
                   </Form.Item>
                 </Col>
-                <Col style={{marginTop:"0.78rem"}}xs={24} md={12}>
-                <span >Mission Start Date</span>
+                <Col style={{ marginTop: "0.78rem" }} xs={24} md={12}>
+                  <span >Mission Start Date</span>
                   <Form.Item >
 
                     <DatePicker
-                    style={{height:"30px",width:'100%',marginTop:"1px"}}
-                      placeholder={mission?.starTDateMiss}
+                      style={{ height: "30px", width: '100%', marginTop: "1px" }}
+                      placeholder={missionId?.starTDateMiss}
                       onChange={(value) => setNewstarTDateMis(dayjs(value))}
                       value={newstarTDateMis} />
 
                   </Form.Item>
 
                 </Col>
-              
+
 
                 <Col xs={24} md={12}>
                   <Form.Item label='Duration' name='Duration'>
                     <Input
-                      placeholder={mission?.dureMiss}
+                      placeholder={missionId?.dureMiss}
                       readOnly={true} />
                   </Form.Item>
                 </Col>
@@ -313,7 +344,7 @@ const UpdateMission = () => {
                 <Col xs={24} md={12}>
                   <Form.Item label='projectName' name='projectName'>
                     <Input
-                      placeholder={mission?.projName}
+                      placeholder={missionId?.projName}
                       readOnly
 
                     />
@@ -322,7 +353,7 @@ const UpdateMission = () => {
                 <Col xs={24} md={12}>
                   <Form.Item label='Location' name='Location'>
                     <Input
-                      placeholder={mission?.location}
+                      placeholder={missionId?.location}
                       readOnly={true} />
                   </Form.Item>
                 </Col>
@@ -342,10 +373,11 @@ const UpdateMission = () => {
                   <Form.Item label='Comments' name='Comments'>
                     <Input
                       className='InputComment'
-                      placeholder="Comments"
+                      placeholder={comments}
                       value={comments}
-                      onChange={handleComments}
-                                         
+                      onChange={(e) =>setComments(e.target.value)}
+                    
+                  
                     />
                   </Form.Item>
                 </Col>

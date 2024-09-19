@@ -19,11 +19,11 @@ const ContratList = () => {
   const [employees, setEmployees] = useState([]);
   const [employeesFiltrer, setEmployeesFiltrer] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(500);
   const [nameFilter, setNameFilter] = useState('');
   const [count, setCount] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
+  const token = localStorage.getItem("token")
   useEffect(() => {
     fetchEmployees();
   }, [currentPage, pageSize, nameFilter]);
@@ -41,7 +41,7 @@ const ContratList = () => {
   
       try {
         // const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/list`);
-        const response= await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/contract?page=${currentPage}&size=${pageSize}`);
+        const response= await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/contract?page=${currentPage}&size=${pageSize}&token=${token}`);
         if (!response.ok) {
           throw new Error('Failed to fetch employees');
         }
@@ -79,7 +79,7 @@ const ContratList = () => {
   const handleSearch = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/filterByName?name=${nameFilter}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/filterByName?name=${nameFilter}&token=${token}`);
       if (!response.ok) {
         throw new Error('Failed to filter employees');
       }
@@ -112,7 +112,7 @@ const ContratList = () => {
 
     if (filterValue !== '') {
       try {
-        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/filterByName?name=${filterValue}`);
+        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/filterByName?name=${filterValue}&token=${token}`);
         if (!response.ok) {
           throw new Error('Failed to filter employees');
         }
@@ -171,7 +171,7 @@ const ContratList = () => {
         >
          
             <OrderTable className={clsx("item-hover")} dataemployees={employees} />
-            <StyledOrderHeaderRight>
+            {/* <StyledOrderHeaderRight>
 
               <Pagination
                 currentPage={currentPage}
@@ -181,7 +181,7 @@ const ContratList = () => {
 
 
 
-            </StyledOrderHeaderRight>
+            </StyledOrderHeaderRight> */}
       
         </AppCard>
 

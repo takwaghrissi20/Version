@@ -128,7 +128,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
   const [selectedHSEPolicies, setSelectedHSEPolicies] = useState('');
   const [selectedOthers, setSelectedOthers] = useState('');
   const currentYear = new Date().getFullYear();
-  console.log("selectedHSECertificates", selectedHSECertificates)
+  const token = localStorage.getItem("token");
   const fetchData = async () => {
     try {
       const endPoint =
@@ -136,7 +136,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/last`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/last?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -271,7 +271,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}&token=${token}`, {
         method: 'PUT',
         headers: {
           "Access-Control-Allow-Headers": "Content-Type",
@@ -338,7 +338,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}&token=${token}`, {
         method: 'PUT',
         headers: {
           "Access-Control-Allow-Headers": "Content-Type",

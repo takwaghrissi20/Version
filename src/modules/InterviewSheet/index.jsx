@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../@crema/components/AppRowContainer';
-import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, Checkbox, notification, DatePicker, } from 'antd';
+import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert,TimePicker, Checkbox, notification, DatePicker, } from 'antd';
 import { MdEdit } from 'react-icons/md';
 import {
   StyledSecondaryText,
@@ -86,8 +86,14 @@ const InterviewSheetById = () => {
   const [salaryError, setSalaryError] = useState('');
   const [dailyError, setDailyError] = useState('');
   const [form] = Form.useForm();
-  console.log("interviewDate",interviewDate)
-
+  const token = localStorage.getItem("token")
+  const [interviewTime, setInterviewTime] = useState(dayjs().format('HH:mm:ss.SSS'));
+  //////////////Time
+  const handleTimeChange = (value) => {
+    if (value) {
+      setInterviewTime(dayjs(value).format('HH:mm:ss.SSS'));
+    }
+  };
   const [evaluationDate, setEvaluationDate] = useState(dayjs().format('DD/MM/YYYY'));
   const [dateInput, setDateInput] = useState(new Date());
   const formattedDate = dayjs(dateInput).format('YYYY-MM-DD');
@@ -230,7 +236,7 @@ const InterviewSheetById = () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/last`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/last?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -437,7 +443,7 @@ const InterviewSheetById = () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/addintv?id=${JobCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/addintv?id=${JobCode}&token=${token}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -447,10 +453,6 @@ const InterviewSheetById = () => {
           interviewCode: NewLastInterview,
           jobcode1: JobCode,
           jobCode: JobCode,
-
-
-
-
           // interviwDate: interviewDate,
           // fullName: fullname,
           // projname: projectName,
@@ -497,7 +499,8 @@ const InterviewSheetById = () => {
   };
   const BeforeSaveInterview = () => {
     //setIsModalVisible(true)
-    form.validateFields(['fullName','telCondidate','ContactEmail','FamilySituation','diploma','educationLevel','experience'
+    form.validateFields(['fullName','telCondidate','ContactEmail','FamilySituation',
+      'diploma','educationLevel','experience',
 
     ]).then(values => {
     
@@ -527,7 +530,7 @@ const InterviewSheetById = () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/addintv?id=${JobCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/addintv?id=${JobCode}&token=${token}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -556,11 +559,12 @@ const InterviewSheetById = () => {
           // birthayDate:scheduleDate,
           //familySituation:selectedSituation,
           diploma: diploma,
-          educationLevel: educationLevel,
-          requiredExperinece: requiredExperinece,
+          educationLevel: educationLevel,       
           notif: 0,
           inputInterview: formattedDate,
-          birthayDate:scheduleDate
+          birthayDate:scheduleDate,
+          intervtime:interviewTime
+      
 
           // interviwDate: interviewDate,
           // fullName: fullname,
@@ -824,18 +828,34 @@ const InterviewSheetById = () => {
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item label='Date Interview' name='DateInterview' >
+                    <Form.Item label='Interview Date' name='DateInterview' >
                       <StyledTodoDetailDatePicker className='form-field'>
 
                         <DatePicker
                           //defaultValue={new Date()} 
-                          defaultValue={dayjs(interviewDate, '16 06,1990')}
+                          // defaultValue={dayjs(interviewDate, '16 06,1990')}
                           style={{ width: "100%", height: "34px" }}
                           onChange={(value) => setInterviewDate(dayjs(value).format('YYYY/MM/DD'))}
                         />
                       </StyledTodoDetailDatePicker>
                     </Form.Item>
                   </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Time Interview' name='TimeInterview'>
+                      <StyledTodoDetailDatePicker
+                        className='form-field'>
+                        <TimePicker
+                          defaultValue={dayjs('12:00:00.000', 'HH:mm:ss.SSS')}
+                          format='HH:mm:ss.SSS'
+                          style={{ width: "100%", height: "34px" }}
+                          onChange={handleTimeChange}
+                        />
+                      </StyledTodoDetailDatePicker >
+                    </Form.Item>
+                  </Col>
+
+
+                  
                   <Col xs={24} md={12}>
                     <Form.Item label='JOB CODE:' name='jobcode1'>
                       <Input placeholder={JobCode} readOnly={true} />{/*Ajout le MSIS OU cis*/}
@@ -1898,7 +1918,7 @@ const InterviewSheetById = () => {
         </Form>
       )}
       {/*HR Adminstrator*/}
-      {roles.includes("Administrator") && (
+      {roles.includes("Cordinator") && (
         <Form
           layout='vertical'
           style={{ backgroundColor: "white", marginBottom: "20px", padding: "10px", borderRadius: "20px" }}
@@ -1955,23 +1975,48 @@ const InterviewSheetById = () => {
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item label='Date Interview' name='DateInterview'
+                    <Form.Item label='Interview Date' name='DateInterview'
+                       rules={[
+                        { required: true, message: 'Please Select your Interview Date!' },
+  
+                      ]}
                      
                     >
                       <StyledTodoDetailDatePicker className='form-field'>
 
                         <DatePicker
                           //defaultValue={new Date()} 
-                          defaultValue={dayjs(interviewDate, '16 06,1990')}
+                          // defaultValue={dayjs(interviewDate, '16 06,1990')}
                           style={{ width: "100%", height: "34px" }}
                           onChange={(value) => setInterviewDate(dayjs(value).format('YYYY-MM-DD'))}
                         />
                       </StyledTodoDetailDatePicker>
                     </Form.Item>
                   </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Time Interview' name='TimeInterview'
+                     rules={[
+                      { required: true, message: 'Please Select your Time Interview!' },
+
+                    ]}
+
+                    >
+                      <StyledTodoDetailDatePicker
+                        className='form-field'>
+                        <TimePicker
+                          // defaultValue={dayjs('12:00:00.000', 'HH:mm:ss.SSS')}
+                          format='HH:mm:ss.SSS'
+                          style={{ width: "100%", height: "34px" }}
+                          onChange={handleTimeChange}
+                        />
+                      </StyledTodoDetailDatePicker >
+                    </Form.Item>
+                  </Col>
+
+
                
                   <Col xs={24} md={12}>
-                    <Form.Item label='JOB CODE:' name='jobcode1'>
+                    <Form.Item label='JOB CODE' name='jobcode1'>
                       <Input placeholder={JobCode} readOnly={true} />{/*Ajout le MSIS OU cis*/}
                     </Form.Item>
                   </Col>

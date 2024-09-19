@@ -16,7 +16,7 @@ import {
 import {  FcReading } from 'react-icons/fc';
 
 
-const StatsTotalRecruitement = ({lastRecruitement}) => {
+const StatsLastStaffInterview = ({lastStaffInterview}) => {
 
 
   return (
@@ -30,11 +30,11 @@ const StatsTotalRecruitement = ({lastRecruitement}) => {
         </StyledGeneralStatsAvatar>
       <StyledFlexWrapper>
       <div style={{ marginRight: 8, overflow: 'hidden' }}>
-            <Typography.Title level={5}>Last Requestor:{lastRecruitement?.requestName}</Typography.Title>
+            <Typography.Title level={5}>Last Interview Staff Management:{lastStaffInterview?.evalName}</Typography.Title>
             <Row>
-            <StyledTitleWrapperRecruitement>JobCode:{lastRecruitement?.jobCode}</StyledTitleWrapperRecruitement>
-            <StyledTitleWrapperRecruitement>TotalNumber:{lastRecruitement?.totalNumber}</StyledTitleWrapperRecruitement>
-            <StyledTitleWrapperRecruitement>Date:{lastRecruitement?.recruttrequestDate}</StyledTitleWrapperRecruitement>
+            <StyledTitleWrapperRecruitement>Interview Code:{lastStaffInterview?.interviewCode}</StyledTitleWrapperRecruitement>
+            <StyledTitleWrapperRecruitement>job Code of Interview:{lastStaffInterview?.jobCode}</StyledTitleWrapperRecruitement>
+            <StyledTitleWrapperRecruitement>Date:{lastStaffInterview?.interviwDate }</StyledTitleWrapperRecruitement>
             </Row>
 
           </div>
@@ -45,6 +45,6 @@ const StatsTotalRecruitement = ({lastRecruitement}) => {
   );
 };
 
-export default StatsTotalRecruitement ;
+export default StatsLastStaffInterview  ;
 
 

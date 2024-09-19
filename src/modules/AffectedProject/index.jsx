@@ -24,6 +24,7 @@ const Affectaprojecttoemployee = () => {
   const [selectedProjet, setSelectedProjet] = useState("Default");
   const [getsInput, setGetsInput] = useState("");
   const [position, setPosition] = useState("");
+  const token = localStorage.getItem("token")
   const handleInputGetsId = (event) => {
     setGetsInput(event.target.value);
   };
@@ -116,7 +117,7 @@ const Affectaprojecttoemployee = () => {
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/list`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/list?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -132,9 +133,7 @@ const Affectaprojecttoemployee = () => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
-      console.log("daaattttt proj", data)
       const uniqueProjects = [...new Set(data.map(proj => proj.projName))];
-      console.log("uniqueProjects", uniqueProjects)
       setAllprojet(uniqueProjects);
    
 
@@ -149,7 +148,8 @@ const Affectaprojecttoemployee = () => {
   const SaveProjectEmployee = async () => {
     try {
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/off/affect?id=${getsInput}&name=${selectedProjet}`, {
+
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/off/affect?id=${getsInput}&name=${encodeURIComponent(selectedProjet)}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -168,7 +168,6 @@ const Affectaprojecttoemployee = () => {
       if (response.ok) {
 
         const responseData = await response.json();
-        console.log("add projecttt", responseData)
         form.resetFields();
         openNotification('bottomRight')
 
@@ -210,7 +209,7 @@ const Affectaprojecttoemployee = () => {
   //FindId
   const findId = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsInput}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsInput}&token=${token}`, {
         method: 'GET',
 
       });

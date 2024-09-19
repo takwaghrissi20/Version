@@ -38,6 +38,7 @@ const AppHeader = ({ showDrawer }) => {
         {allowMultiLanguage && <AppLanguageSwitcher />}
   
         <AppNotifications />
+        
       </StyledDrawerLayoutHeaderDesk>
       <StyledDrawerLayoutHeaderMobile>
         <StyledDropdownWrapper>

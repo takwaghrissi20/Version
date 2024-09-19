@@ -28,7 +28,7 @@ const AllocationPerProject = () => {
   const [allProjects, setAllProjects] = useState([]);
   const [locationCounts, setLocationCounts] = useState({});
   const [totalTravels, setTotalTravels] = useState(0);
-
+  const token = localStorage.getItem("token")
   const openNotificationError = () => {
     notification.open({
       message: 'Error',
@@ -60,11 +60,11 @@ const AllocationPerProject = () => {
 
   const fetchMobTest = async () => {
     try {
-      const countResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/countGoBack?type=0`);
+      const countResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/countGoBack?type=0&token=${token}`);
       const datacount = await countResponse.json();
       setCount(datacount);
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/listByPage?page=${currentPage}&size=${pageSize}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/listByPage?page=${currentPage}&size=${pageSize}&token=${token}`);
       if (!response.ok) {
         openNotificationError();
         throw new Error('Failed to fetch mob');
@@ -82,11 +82,11 @@ const AllocationPerProject = () => {
   };
   const fetchMob = async () => {
     try {
-      const countResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/countGoBack?type=0`);
+      const countResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/countGoBack?type=0&token=${token}`);
       const datacount = await countResponse.json();
       setCount(datacount);
   
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/list`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/list?token=${token}`);
       if (!response.ok) {
         openNotificationError();
         throw new Error('Failed to fetch mob');
@@ -122,7 +122,7 @@ const AllocationPerProject = () => {
 
   const fetchFiveDemobilization = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/fiveLast?type=DeMobilization`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/fiveLast?type=DeMobilization&token=${token}`);
       if (!response.ok) {
         throw new Error('Failed to fetch MobDemob');
       }
@@ -143,7 +143,7 @@ const AllocationPerProject = () => {
 
   const fetchAllProjects = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/list`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/list?token=${token}`);
       if (!response.ok) {
         throw new Error('Failed to fetch Projects');
       }
@@ -158,7 +158,7 @@ const AllocationPerProject = () => {
 
   const fetchTravel = async () => {
     try {
-      const countEmployeesResponse = await fetch('https://dev-gateway.gets-company.com/api/v1/travel/list');
+      const countEmployeesResponse = await fetch('https://dev-gateway.gets-company.com/api/v1/travel/list?token=${token}');
       const data = await countEmployeesResponse.json();
 
       const counts = {};

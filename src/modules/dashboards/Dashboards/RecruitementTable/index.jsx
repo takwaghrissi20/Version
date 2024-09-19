@@ -11,13 +11,15 @@ import { Table, Tooltip,notification } from 'antd';
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
 import IntlMessages from '../../../../@crema/helpers/IntlMessages';
-const OrderTable = ({ loading,AllRecruitement, listRecruitementId}) => {
+const OrderTable = ({ loading,AllRecruitement, listRecruitementId,listRecruitementPMO,user}) => {
+ 
   const [findIdData, setFindIdData] = useState(null);
   const [isViewRecruitement, onViewRecruitement] = useState(false);
   const [isEditRecruitement, onEditRecruitement] = useState(false);
   const [id, setId] = useState();
   const navigate = useNavigate();
   const [isDelteRecruitement, onDeleteRecruitement] = useState(false);
+  const token = localStorage.getItem("token");
   //TabHeight
   const [tableHeight, setTableHeight] = useState('auto');
   useEffect(() => {
@@ -53,7 +55,7 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId}) => {
           nbExperience:findIdData?.nbExperience,
           recruttrequestDate:findIdData?.recruttrequestDate,
           projCode:findIdData?.projRef,
-          type:findIdData?.type,
+          // type:findIdData?.type,
           exDep:findIdData?.exDep,
           oDep:findIdData?.oDep,
           comentPlaner:findIdData?.comentPlaner,
@@ -109,7 +111,7 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId}) => {
 
   const findId = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/findId?code=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/findId?code=${code}&token=${token}`, {
         method: 'POST',
 
       });
@@ -133,11 +135,11 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId}) => {
 
     onDeleteRecruitement(true);
   };
-  const userRoles = localStorage.getItem("role");
+
 
   const items = [
     { key: 1, label: <span style={{ fontSize: 14 }}>View </span>, onClick: handleAddRecruitementOpen },
-    ...(userRoles.includes('admin') ? [
+    ...(user.includes('admin') ? [
       { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditRecruitementOpen },
       { key: 3, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteRecruitement }
     ] : [])
@@ -209,7 +211,7 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId}) => {
                 ? "https://dev-gateway.gets-company.com"
                 : "";
 
-        const response = await fetch(`${endPoint}/api/v1/re/delete?code=${id}`, {
+        const response = await fetch(`${endPoint}/api/v1/re/delete?code=${id}&token=${token}`, {
             method: 'DELETE',
         });
 
@@ -265,24 +267,14 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId}) => {
   const handleEditEmpClose = () => {
     onEditEmp(false);
   };
-  // const calculateVacationDays = (vacations) => {
-  //   const congeVacations = vacations?.filter(vacation => vacation?.type === 'congé');
-    
-  
-  //   const totalDays = congeVacations?.reduce((sum, vacation) => sum + vacation.nuberdays, 0);
-  
-  //   return totalDays;
-  // };
 
-
- 
   const getDesiredDateColor = (desiredDate) => {
     const daysDifference = desiredDate ? Math.ceil((new Date(desiredDate) - new Date()) / (1000 * 60 * 60 * 24)) : '';
     return daysDifference < 0 ? 'red' : 'green';
   };
   const columns = [
     {
-      title: 'JobCode',
+      title: 'Recrutement Requet Num',
       dataIndex: 'jobCode',
       key: 'jobCode',
       width: 80,
@@ -392,52 +384,6 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId}) => {
               <MoreOutlined />
             </Button>
           </Dropdown>
-          {/* {isViewRecruitement && (
-            <RecruitementView
-            
-              isViewRecruitement={isViewRecruitement}
-              handleAddContactClose={handleAddRecruitementClose}
-              JobCode={findIdData?.jobCode}
-              idemp={findIdData?.idemp}
-              dep={findIdData?.dep}
-              requestName={findIdData?.requestName}
-              position={findIdData?.position}
-              DesiredDate={findIdData?.desiredDate}
-              projectName={findIdData?.projectName}
-              projRef={findIdData?.projRef}
-              type={findIdData?.type}
-              affectedTo={findIdData?.affectedTo}
-              requestedDicipline={findIdData?.requestedDicipline}
-              Level={findIdData?.experience}
-              exDep={findIdData?.exDep}
-              Numbervacancies={findIdData?.totalNumber}
-              certif={findIdData?.certif}
-              nbExperience={findIdData?.nbExperience}
-            />
-          )} */}
-          {/* {isEditRecruitement && (
-  
-            <RecruitementEdit
-              isEditRecruitement={isEditRecruitement}
-              handleAddContactClose={handleEditRecruitementClose}
-              JobCode={findIdData?.jobCode}
-              idemp={findIdData?.idemp}
-              dep={findIdData?.dep}
-              requestName={findIdData?.requestName}
-              position={findIdData?.position}
-              DesiredDate={findIdData?.desiredDate}
-              projectName={findIdData?.projectName}
-              projRef={findIdData?.projRef}
-              type={findIdData?.type}
-              affectedTo={findIdData?.affectedTo}
-              requestedDicipline={findIdData?.requestedDicipline}
-              Level={findIdData?.experience}
-              exDep={findIdData?.exDep}
-              Numbervacancies={findIdData?.totalNumber}
-              certif={findIdData?.certif}
-              nbExperience={findIdData?.nbExperience}
-            />
-          )} */}
   
         </div>
   
@@ -445,8 +391,7 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId}) => {
   
     }
   ];
-  const user = localStorage.getItem("role");
-  console.log("listRecruitementId",listRecruitementId)
+ 
   return (
     <> 
 {/* {(!user.includes('admin')) ||(!user.includes('Administrator')) && (
@@ -470,36 +415,43 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId}) => {
    
   )} */}
 {/**/}
-{(user.includes('admin') || user.includes('Administrator') )?
-  <StyledOrderTable
+{ 
+  (user?.includes('admin') || user?.includes('Cordinator') || !user?.toUpperCase().includes("RELATION AND TRAINING") || user?.includes('Administrator') || user?.includes('bod')) &&
+  !user?.includes('PMO') && 
+  !user?.includes('Manager') && (
+    <StyledOrderTable
       hoverColor
       data={AllRecruitement}
       loading={loading}
       columns={columns}
-      scroll={{ x: 'auto',  y: tableHeight }}
-      //scroll={{ x: 'auto', y: 150 }
+      scroll={{ x: 'auto', y: tableHeight }}
     />
-
-
-:
-<StyledOrderTable
-hoverColor
-data={listRecruitementId}
-loading={loading}
-columns={columns}
-scroll={{ x: 'auto', y: tableHeight }}
-/> 
-
-
-
+  )
 }
 
 
 
 
-{/**/}
 
-
+{/*PMO*/}
+{user.includes('PMO') && 
+  <StyledOrderTable
+        hoverColor
+        data={listRecruitementPMO}
+        loading={loading}
+        columns={columns}
+        scroll={{ x: 'auto', y: tableHeight }}
+      />
+}
+{user.includes('Manager') && 
+  <StyledOrderTable
+        hoverColor
+        data={listRecruitementId}
+        loading={loading}
+        columns={columns}
+        scroll={{ x: 'auto', y: tableHeight }}
+      />
+}
 
 
    {isDelteRecruitement? (

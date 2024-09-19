@@ -38,7 +38,7 @@ const EditRecruitement = () => {
   const signatureBod = location.state ? location.state.signatureBod : null
   const requestedDicipline = location.state ? location.state.requestedDicipline : null
   const affectedTo = location.state ? location.state.affectedTo : null
-
+  const token = localStorage.getItem("token");
   const userRoles = localStorage.getItem("role");
   const Back = () => {
     navigate(-1)
@@ -110,16 +110,9 @@ const EditRecruitement = () => {
     setNewCheckedBod(e.target.checked)
 
   }
-  newCheckedBod
-
-
-  // Helper function to remove circular references
-  const Update = async (newdesiredDate, newdep, newidemp, newrequestName, newposition, newprojectName,
-    newprojRef, newaffectedTo, newLevel, newrequestedDicipline,
-    newexDep, newoDep, newCheckedHod,
-    newnbExperience, newNumbervacancies, newcertif) => {
+  const Update = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${id}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -130,27 +123,29 @@ const EditRecruitement = () => {
         },
         body: JSON.stringify({
 
-          jobCode: id,
-          desiredDate: newdesiredDate,
-          dep: newdep,
-          idemp: newidemp,
-          position: newposition,
-          requestName: newrequestName,
-          requestedDicipline: newrequestedDicipline,
-          approuvedRecrutRequestNumber: 1,
-          projectName: newprojectName,
-          totalNumber: newNumbervacancies,
-          experience: newLevel,
-          nbExperience: newnbExperience,
-          type: type,
-          affectedTo: newaffectedTo,
-          certif: newcertif,
-          bod: null,
-          oDep: newoDep,
-          exDep: newexDep,
-          signatureHod: newCheckedHod,
-          signatureBod: null,
-          projRef: newprojRef,
+      
+          dep: "IT33",
+          // desiredDate: newdesiredDate,
+          // dep: newdep,
+          // idemp: newidemp,
+          // position: newposition,
+          // requestName: newrequestName,
+          // requestedDicipline: newrequestedDicipline,
+          // approuvedRecrutRequestNumber: 1,
+          // projectName: newprojectName,
+          // totalNumber: newNumbervacancies,
+          // experience: newLevel,
+          // nbExperience: newnbExperience,
+          // type: type,
+          // affectedTo: newaffectedTo,
+          // certif: newcertif,
+          // bod: null,
+          // oDep: newoDep,
+          // exDep: newexDep,
+          // signatureHod: newCheckedHod,
+          // signatureBod: null,
+          // projRef: newprojRef,
+
 
         })
       });
@@ -160,18 +155,21 @@ const EditRecruitement = () => {
       }
       if (response.ok) {
 
-        const responseData = await response.text();
-        // alert(" Update Recruitement succeed")
+        const responseData = await response.json();
         openNotification('bottomRight')
-        console.log("responseData ", responseData);
-        //handleAddContactClose(true)
+        setTimeout(() => {
+          window.location.reload();
+          navigate(-1)
+        }, 2000);
+      
       }
 
-      // Handle responseData if needed
     } catch (error) {
       console.error("Erreur lors de la récupération du Id :", error);
     }
-  };
+  }
+
+
 
 
 
@@ -479,7 +477,7 @@ const EditRecruitement = () => {
         {dep === "operation" ?
           <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
             <Col xs={24} md={6}>
-              <Typography.Title level={5}>Planner Review </Typography.Title>
+              <Typography.Title level={5}>PMO Controlling</Typography.Title>
 
             </Col>
             <Col xs={24} md={18}>
@@ -516,14 +514,14 @@ const EditRecruitement = () => {
 
                   >
                     <Form.Item
-                      label='Planner Comments'
+                      label='PMO Comments'
                       name='PlannerComments'
 
 
                     >
                       <Input
                         style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
-                        placeholder="Planner Comments"
+                        placeholder="PMO Comments"
                         value={newcomentPlaner}
                         onChange={() => setNewcomentPlaner()}
 
@@ -642,8 +640,7 @@ const EditRecruitement = () => {
           style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
         >
           <Button onClick={Back}>Cancel</Button>
-          <Button onClick={() => Update(newdesiredDate, newdep, newidemp, newrequestName, newposition, newprojectName,
-            newprojRef, newexDep, newaffectedTo, newLevel, newrequestedDicipline, newnbExperience, newNumbervacancies, newcertif)}>
+          <Button onClick={Update}>
             Update
           </Button>
           {/* <Button

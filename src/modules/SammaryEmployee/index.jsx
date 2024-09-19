@@ -25,33 +25,54 @@ const Sammuary = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
-    fetchEmployees();
+
+    fetchEmployeesList()
+    fetchEmployeesCount()
   }, [currentPage, pageSize, nameFilter]);
-
-  const fetchEmployees = async () => {
+  const token = localStorage.getItem("token");
+  const fetchEmployeesList = async () => {
     try {
-      const countEmployees = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/countAll`);
-      const datacount = await countEmployees.json();
-      setCount(datacount);
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/listBypage?page=${currentPage}&size=${pageSize}`);
-
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/listBypage?page=${currentPage}&size=${pageSize}&token=${token}`);
 
       if (!response.ok) {
-        throw new Error('Failed to fetch employees');
+        throw new Error('Failed to fetch training List By Page');
+      }
+      if (response.ok) {
+        const data = await response.json();
+        setEmployees(data);
       }
 
-      const data = await response.json();
-      setEmployees(data);
+
+
     } catch (error) {
-      console.error('Error fetching employees:', error);
+      console.error('Error fetching training By Pageess:', error);
     }
   };
+  const fetchEmployeesCount = async () => {
+    try {
+
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/countAll?token=${token}`);
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch training List By Page');
+      }
+      if (response.ok) {
+        const data = await response.text();
+       setCount(data)
+     
+      }
+
+    } catch (error) {
+      console.error('Error fetching Count Employees:', error);
+    }
+  };
+
 
   const handleSearch = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${nameFilter}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${nameFilter}&token=${token}`);
       if (!response.ok) {
         throw new Error('Failed to filter employees');
       }
@@ -84,7 +105,7 @@ const Sammuary = () => {
 
     if (filterValue !== '') {
       try {
-        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${filterValue}`);
+        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${filterValue}&token=${token}`);
         if (!response.ok) {
           throw new Error('Failed to filter employees');
         }
@@ -142,11 +163,11 @@ const Sammuary = () => {
           title={messages['dashboard.Sammary']}
         >
 
-          <OrderTable className={clsx("item-hover")} dataemployees={employees} />
+          <OrderTable className={clsx("item-hover")}
+            dataemployees={employees} />
         </AppCard>
 
-        <StyledOrderHeaderRight>
-
+        <StyledOrderHeaderRight >
           <Pagination
             currentPage={currentPage}
             totalPages={Math.ceil(count / pageSize)}
@@ -157,9 +178,10 @@ const Sammuary = () => {
 
         </StyledOrderHeaderRight>
 
-
+        <div style={{ height: "10px" }}></div>
 
       </div>
+
     </div>
   );
 };

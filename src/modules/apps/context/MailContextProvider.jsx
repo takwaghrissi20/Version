@@ -24,7 +24,7 @@ export const MailContextProvider = ({ children }) => {
     { apiData: mailList, loading },
     { setQueryParams, setData: setMailData },
   ] = useGetDataApi("/api/mailApp/folder/mail/List", undefined, {}, false);
-  console.log("apiData mailList", mailList);
+
   useEffect(() => {
     setPage(0);
   }, [pathname]);

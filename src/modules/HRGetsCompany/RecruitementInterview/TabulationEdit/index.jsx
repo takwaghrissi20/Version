@@ -9,7 +9,6 @@ import dayjs from 'dayjs';
 import InterviewSheet from './EditInterviewConstructionTeam';
 import AssignementConstruction from './TabsAssignementConstruction';
 
-
 const InterviewSheetById = () => {
   const location = useLocation();
   const DesiredDate = location.state ? location.state.DesiredDate : null;
@@ -60,10 +59,13 @@ const InterviewSheetById = () => {
   const leadership = location.state ? location.state.leadership : null;
   const hseDecision = location.state ? location.state.hseDecision : null;
   const hseComment = location.state ? location.state.hseComment : null;
+  const propsedsalary = location.state ? location.state.propsedsalary : null;
+  const dailyRate = location.state ? location.state.dailyRate : null;
+  const token = localStorage.getItem("token")
   const [idViewConstruction, setIdViewConstruction] = useState([]);
   const findIdInterviewConstruction = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${interviewCode}&token=${token}`, {
         method: 'POST',
       });
       if (!response.ok) {
@@ -79,13 +81,14 @@ const InterviewSheetById = () => {
   };
   useEffect(() => {
     findIdInterviewConstruction()
-  }, []);
+  }, [idViewConstruction]);
   const items = [
     {
       label: 'INTERVIEW SHEET CONSTRUCTION TEAM ',
       key: '1',
       children: 
-      <InterviewSheet JobCode={JobCode}
+      <InterviewSheet 
+      JobCode={JobCode}
         idViewConstruction={idViewConstruction}
 
         // isSaveDisabled={activeTabKey !== '1'}
@@ -113,6 +116,8 @@ const InterviewSheetById = () => {
         hseDecision={hseDecision}
         hseComment={hseComment}
         hseCertif={hseCertif}
+        propsedsalary={propsedsalary}
+        dailyRate={dailyRate}
 
         roles={roles} ></InterviewSheet>,
     },
@@ -179,6 +184,8 @@ const InterviewSheetById = () => {
           leadership={leadership}
           hseDecision={hseDecision}
           hseComment={hseComment}
+          propsedsalary={propsedsalary}
+          dailyRate={dailyRate}
         />
       ),
     }] : [])
@@ -192,8 +199,6 @@ const InterviewSheetById = () => {
     // setIsSaveDisabled(activeTabKey === '2'); 
 
   }, [activeTabKey]);
-
-
 
 
   return (

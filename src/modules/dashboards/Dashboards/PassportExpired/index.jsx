@@ -12,10 +12,7 @@ import { StyledOrderTable, StyledAction } from '../../../../styles/index.styled'
 import { all } from 'axios';
 import { Table, Tooltip } from 'antd';
 import { useNavigate } from "react-router-dom";
-const ExpiredPassportData = ({passportExpered ,loading,AllRecruitement}) => {
-  const [findIdData, setFindIdData] = useState(null);
-  const [isViewRecruitement, onViewRecruitement] = useState(false);
-  const [isEditRecruitement, onEditRecruitement] = useState(false);
+const ExpiredPassportData = ({passportExpered ,loading, passportExperedProjet,user}) => {
   const [id, setId] = useState();
   const navigate = useNavigate();
   //TabHeight
@@ -42,7 +39,7 @@ const ExpiredPassportData = ({passportExpered ,loading,AllRecruitement}) => {
       title: 'Gets Id',
       dataIndex: 'getsId',
       key: 'getsId',
-      width: 150,
+   
   
     },
     {
@@ -50,28 +47,43 @@ const ExpiredPassportData = ({passportExpered ,loading,AllRecruitement}) => {
       dataIndex: 'name',
       key: 'name',
       render: (text) => <a>{text}</a>,
-      width: 150,
+
     },
     {
       title: 'Passport Finish Date',
       dataIndex: 'passport_finish_date',
       key: 'passport_finish_date',
-      width: 150,
+     
     },
 
   
   ];
-  const user = localStorage.getItem("role");
+ 
+
   return (
     <>
       {user.includes('It') && (
-    <p>IT</p>
+    <p></p>
    
   )}
-  {user.includes('admin') && (
-      <StyledCustomerTable
+  {( user?.includes('bod') || !user?.includes('Cordinator'))   && (
+    <>
+    <StyledCustomerTable
       hoverColor
       data={passportExpered}
+      loading={loading}
+      columns={columns}
+      scroll={{ x: 'auto',  y: tableHeight }}
+  
+    />
+   
+    </>
+   
+  )}
+  {user.includes('Leader') && (
+      <StyledCustomerTable
+      hoverColor
+      data={passportExperedProjet}
       loading={loading}
       columns={columns}
       scroll={{ x: 'auto',  y: tableHeight }}
@@ -81,7 +93,10 @@ const ExpiredPassportData = ({passportExpered ,loading,AllRecruitement}) => {
     />
    
   )}
-     
+
+   
+
+ 
 
 
     </>

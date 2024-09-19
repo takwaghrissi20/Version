@@ -26,7 +26,7 @@ const UpdateMission = () => {
   const [isExDep, setIsExDep] = useState(false);
   const [isOrDep, setIsOrDep] = useState(false);
   const [idExtention, setIdExtention] = useState([]);
-
+  const token = localStorage.getItem("token");
   function ExDep(e) {
     console.log(`checkedHead = ${e.target.checked}`);
     setIsExDep(e.target.checked)
@@ -75,11 +75,10 @@ const UpdateMission = () => {
   const comments = location.state ? location.state.comments : null;
   const extraProjectPlanner = location.state ? location.state.extraProjectPlanner : null;
   const plannerInputPlanner = location.state ? location.state.plannerInputPlanner : null;
-  console.log("extraProjectPlanner", extraProjectPlanner)
-  console.log("plannerInputPlanner", plannerInputPlanner)
+
   const findIdExtention = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getById?id=${ref}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getById?id=${ref}&token=${token}`, {
         method: 'GET',
       });
       if (!response.ok) {
@@ -94,11 +93,19 @@ const UpdateMission = () => {
   };
   function ExtraProject(e) {
     setNewExtraProject(e.target.checked)
+    if (e.target.checked) {
+      setNewPlannerInput(false)
+    }
+
 
   }
   function PlannerInput(e) {
 
     setNewPlannerInput(e.target.checked)
+    if (e.target.checked) {
+      setNewPlannerInput(false)
+    }
+
 
   }
 
@@ -106,7 +113,7 @@ const UpdateMission = () => {
 
   const findIdMission = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getById?id=${id}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getById?id=${id}&token=${token}`, {
         method: 'Get',
       });
       if (!response.ok) {
@@ -133,7 +140,7 @@ const UpdateMission = () => {
   //Find By ID Profile
   const findId = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}&token=${token}`, {
         method: 'GET',
 
       });
@@ -232,9 +239,59 @@ const UpdateMission = () => {
   };
 
   ///Update
+  const Update = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/updateTr?id=${ref}&token=${token}`, {
+
+        method: 'PUT',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+          ref: ref,
+          dateinput: dateinput,
+          refMiss: mission_idMiss,
+          projectTitle: projectTitle,
+          projRef: projRef,
+          name: name,
+          position: position,
+          actualLocation: actualLocation,
+          old_mission: old_mission,
+          new_mission: new_mission,
+          reasonForExtension: newreason,
+          comments:newcommentaire,
+          extraProject: isExDep,
+          plannerInput: isOrDep,
+          notif: 34
+
+
+
+
+        })
+      });
+
+      if (!response.ok) {
+        openNotificationError('bottomRight')
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+
+        const responseData = await response.text();
+
+        openNotification('bottomRight')
+      }
+
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+    }
+  };
   const UpdatePlanner = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/updateTr?id=${ref}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/updateTr?id=${ref}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -284,7 +341,7 @@ const UpdateMission = () => {
   };
   const UpdateProject = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/updateTr?id=${ref}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/updateTr?id=${ref}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -333,7 +390,7 @@ const UpdateMission = () => {
   //Operation
   const UpdateOperation = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/updateTr?id=${ref}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/updateTr?id=${ref}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -384,7 +441,7 @@ const UpdateMission = () => {
   //hrManager
   const  Updatehr = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/updateTr?id=${ref}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/updateTr?id=${ref}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -435,7 +492,7 @@ const UpdateMission = () => {
  //BOD
  const   UpdateBOD = async () => {
   try {
-    const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/updateTr?id=${ref}`, {
+    const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/updateTr?id=${ref}&token=${token}`, {
 
       method: 'PUT',
       headers: {
@@ -689,9 +746,7 @@ const UpdateMission = () => {
                           name='As per'
 
                         >
-                          <Checkbox checked={mission?.extraProject} onChange={ExtraProject}
-
-                          >
+                          <Checkbox checked={newextraProject} onChange={ExtraProject}>
                             Extra Project Time Shedule
                           </Checkbox>
 
@@ -705,7 +760,7 @@ const UpdateMission = () => {
                           name='Asper'
 
                         >
-                          <Checkbox checked={mission?.plannerInput} onChange={PlannerInput}>
+                          <Checkbox checked={newplannerInput} onChange={PlannerInput}>
                             As per Project Time Schedule
                           </Checkbox>
 
@@ -939,7 +994,7 @@ const UpdateMission = () => {
               </Col>
             </AppRowContainer>
             {/*Cheked Planner*/}
-            {roles.includes("Planner") &&
+            {roles.includes("PMO") &&
               <>
                 <Divider style={{ marginTop: 16, marginBottom: 16 }} />
                 <AppRowContainer>
@@ -984,7 +1039,7 @@ const UpdateMission = () => {
                 </AppRowContainer>
               </>
             }
-            {!roles.includes("Planner") &&
+            {!roles.includes("PMO") &&
               <>
                 <Divider style={{ marginTop: 16, marginBottom: 16 }} />
                 <AppRowContainer>
@@ -1087,7 +1142,7 @@ const UpdateMission = () => {
             style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
           >
             <Button onClick={handleCancelMission}>Cancel</Button>
-            {roles.includes("Planner") &&
+            {roles.includes("PMO") &&
               <Button
                 onClick={UpdatePlanner}
               >Save Planner</Button>

@@ -9,12 +9,13 @@ import { MdLabelOutline } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
 const OrderTable = ({ orderData }) => {
+
   const [hoveredRow, setHoveredRow] = useState(null);
   const [findIdData, setFindIdData] = useState([]);
   const [idEmployee, setIdEmployee] = useState(null);
   const [isCategoryTEmployee, onCategoryTEmployee] = useState(false);
   const [lastId, setLastId] = useState(0);
-
+  const token = localStorage.getItem("token")
   const navigate = useNavigate();
   
   const handleRowHover = (record) => {
@@ -28,7 +29,7 @@ const OrderTable = ({ orderData }) => {
   //Find By Id
   const findId = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/getById?id=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/getById?id=${code}&token=${token}`, {
         method: 'Get',
       });
       if (!response.ok) {
@@ -45,6 +46,7 @@ const OrderTable = ({ orderData }) => {
       console.error("Erreur lors de la récupération du id eMPLOYEE:", error);
     }
   };
+  ///Find 
   const handleRowClickPage = (index) => {
     findId(index)
     navigate(`/Hr/EmployeesCategoryContract/${index}`, {
@@ -70,7 +72,7 @@ const OrderTable = ({ orderData }) => {
         joinDate:findIdData?.joinDate,
         cin:findIdData?.cin,
         cinDate:findIdData?.cinDate,
-        id:findIdData?.id,
+        // id:findIdData?.id,
         name:findIdData?.name,
 
 
@@ -140,7 +142,7 @@ console.log("findIdData?.name",findIdData?.name)
       title: 'Position',
       dataIndex: 'position',
       key: 'position',
-      render: renderActions,
+     
     },
 
   ];

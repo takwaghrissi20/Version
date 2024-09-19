@@ -15,12 +15,13 @@ import IntlMessages from '../../../../../@crema/helpers/IntlMessages';
 import { useNavigate } from "react-router-dom";
 import { Button, Tooltip, Dropdown } from 'antd';
 const AllRecruitementStaff = ({ roles,allrecruitementbelow, findIdData, id, findId, setFindIdData, open, handleInterview }) => {
-
+console.log("allrecruitementbelow",findIdData)
   //const [findIdData, setFindIdData] = useState(null);
   const [isViewRecruitement, onViewRecruitement] = useState(false);
   const [isEditRecruitement, onEditRecruitement] = useState(false);
   const [isDelteRecruitement, onDeleteRecruitement] = useState(false);
   const [tableHeight, setTableHeight] = useState('auto');
+  const token = localStorage.getItem("token")
   useEffect(() => {
     const updateTableHeight = () => {
       const pageHeight = window.innerHeight;
@@ -58,7 +59,7 @@ const AllRecruitementStaff = ({ roles,allrecruitementbelow, findIdData, id, find
         nbExperience: findIdData?.nbExperience,
         recruttrequestDate: findIdData?.recruttrequestDate,
         projCode: findIdData?.projRef,
-        type: findIdData?.type,
+        // type: findIdData?.type,
         exDep: findIdData?.exDep,
         oDep: findIdData?.oDep,
         comentPlaner: findIdData?.comentPlaner,
@@ -162,7 +163,7 @@ const AllRecruitementStaff = ({ roles,allrecruitementbelow, findIdData, id, find
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`${endPoint}/api/v1/re/delete?code=${id}`, {
+      const response = await fetch(`${endPoint}/api/v1/re/delete?code=${id}&token=${token}`, {
         method: 'DELETE',
       });
 
@@ -196,11 +197,14 @@ const AllRecruitementStaff = ({ roles,allrecruitementbelow, findIdData, id, find
     // { key: 3, label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, onClick: handleInterview },
   
     //Approved Hr 
-    ...(roles.includes('Administrator') || roles.includes('admin')  ? [
+    ...(roles?.includes('Cordinator') || roles?.includes('admin') ? [
       ...(findIdData?.status === 'Approved By BOD' ? [
-        { key: 2, label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, onClick: handleInterview }
-           
-      ] : []),
+        { 
+          key: 2, 
+          label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, 
+          onClick: handleInterview 
+        }
+      ] : [])
     ] : []),
     ...(roles.includes('admin') ? [
       { key: 3, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditRecruitementOpen },
@@ -283,11 +287,11 @@ const AllRecruitementStaff = ({ roles,allrecruitementbelow, findIdData, id, find
         let backgroundColor;
         let color = 'white'; 
     
-        if (status.includes('Pending')) {
+        if (status?.includes('Pending')) {
           backgroundColor = '#C0C0C0';
-        } else if (status.includes('Approved')) {
+        } else if (status?.includes('Approved')) {
           backgroundColor = '#32CD32';
-        } else if (status.includes('Refuse')) {
+        } else if (status?.includes('Refuse')) {
           backgroundColor = '#FF2400';
         }
     
@@ -348,7 +352,6 @@ const AllRecruitementStaff = ({ roles,allrecruitementbelow, findIdData, id, find
         columns={columns}
         scroll={{ x: 'auto', y: tableHeight }}
       //scroll={{ x: 'auto', y: 200 }}
-
 
       />
 

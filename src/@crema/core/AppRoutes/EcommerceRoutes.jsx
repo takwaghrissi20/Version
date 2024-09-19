@@ -4,6 +4,10 @@ import { Navigate } from "react-router-dom";
 const RecruitementInterview  = React.lazy(() =>
   import('../../../modules/HRGetsCompany/RecruitementInterview'),
 );
+const VisaAndPassportExpired  = React.lazy(() =>
+  import('../../../modules/HRGetsCompany/VisaAnd PassportExpired'),
+);
+
 const ViewInterview  = React.lazy(() =>
   import('../../../modules/HRGetsCompany/RecruitementInterview/ViewInterviewStaffManager'),
 );
@@ -27,6 +31,10 @@ const ASSESMENTSHEET  = React.lazy(() =>
 const ViewRecruitementInterview  = React.lazy(() =>
   import('../../../modules/ViewRequest/ViewRecruitement'),
 );
+const ViewIdTraining  = React.lazy(() =>
+  import('../../../modules/ViewTraining'),
+);
+
 const EditRecruitementInterview  = React.lazy(() =>
   import('../../../modules/ViewRequest/EditRecruitement')
 );
@@ -36,15 +44,31 @@ const EditAllRecruitementInterview  = React.lazy(() =>
 const AddRecruitement = React.lazy(() =>
   import('../../../modules/AddRecruitement'),
 );
+const AddTraining = React.lazy(() =>
+  import('../../../modules/AddTraining'),
+);
+const AllTraining = React.lazy(() =>
+  import('../../../modules/AllTraining'),
+);
 const InterviewStatistics = React.lazy(() =>
   import('../../../modules/HRGetsCompany/InterviewStatistics'),
 );
 const EmployeesStatus = React.lazy(() =>
   import('../../../modules/HRGetsCompany/EmployeesStatus'),
 );
+const EmployeesStatusOffice = React.lazy(() =>
+  import('../../../modules/StatusEmployees/StatusEmployeesOffice'),
+);
+const EmployeesStatusSite = React.lazy(() =>
+  import('../../../modules/StatusEmployees/StatusEmployeesSite'),
+);
+const EmployeesSiteSummary = React.lazy(() =>
+  import('../../../modules/HRGetsCompany/MonthlySiteSummary'),
+);
 const Planification = React.lazy(() => import('../../../modules/HRGetsCompany/Planification'));
 const Intergration = React.lazy(() => import('../../../modules/HRGetsCompany/Integration'));
 const IntegrationStatistics = React.lazy(() =>import('../../../modules/HRGetsCompany/IntegrationStatistics'),);
+const AddIntergration = React.lazy(() => import('../../../modules/HRGetsCompany/Integration/AddIntegration'));
 
 const AddEmployeesConstructionStaff = React.lazy(() =>
   import('../../../modules/HRGetsCompany/AddEmployeesConstructionStaff'),
@@ -103,11 +127,29 @@ const Sammuary = React.lazy(() =>
 const AddProject = React.lazy(() =>
   import('../../../modules/AddProject'),
 );
+const AddProjectOffice = React.lazy(() =>
+  import('../../../modules/AddProjectOffice'),
+);
+
 const AffectedProject = React.lazy(() =>
   import('../../../modules/AffectedProject'),
 );
-
-
+const OFFICESalary = React.lazy(() =>
+  import('../../../modules/AddOfficePositionChangeSalaryIncrease'),
+);
+const SiteSalary = React.lazy(() =>
+  import('../../../modules/AddSitePositionChangeSalaryIncrease'),
+);
+const ListSalary = React.lazy(() =>
+  import('../../../modules/ListSalaryIncreaseAndChangePosition'),
+);
+const ViewListSalary = React.lazy(() =>
+  import('../../../modules/ViewPositionChangeSalaryIncrease'),
+);
+const UpdateListSalary = React.lazy(() =>
+  import('../../../modules/UpdatePositionChangeSalaryIncrease'),
+);
+ 
 const AddEmployees = React.lazy(() =>
   import('../../../modules/HRGetsCompany/AddEmployees/ScrumBoard'),
 );
@@ -164,8 +206,24 @@ export const ecommerceConfig = [
   },
   {
     permittedRole: RoutePermittedRole.User,
+    path: '/Hr/AddTraining',
+    element: <AddTraining />,
+  },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/Hr/AllTraining',
+    element: <AllTraining/>,
+  },
+
+  {
+    permittedRole: RoutePermittedRole.User,
     path: '/Hr/Recruitement&Interview',
     element: <RecruitementInterview  />,
+  },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/Hr/VisaAndPassportExpired',
+    element: <VisaAndPassportExpired  />,
   },
   {
     permittedRole: RoutePermittedRole.User,
@@ -186,6 +244,11 @@ export const ecommerceConfig = [
     permittedRole: RoutePermittedRole.User,
     path: '/Hr/Recruitement&Interview/Recruitement/View/:id',
     element: < ViewRecruitementInterview />,
+  },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/Hr/AllTraining/View/:id',
+    element: < ViewIdTraining />,
   },
   {
     permittedRole: RoutePermittedRole.User,
@@ -234,7 +297,11 @@ export const ecommerceConfig = [
     path: '/Hr/IntegrationStatistics',
     element: <Intergration />,
   },
- 
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/Hr/Integration/Add',
+    element: <AddIntergration />,
+  },
   {
     permittedRole: RoutePermittedRole.User,
     path: '/HRGetsCompany/AddEmployees/ConstructionStaff',
@@ -366,8 +433,39 @@ export const ecommerceConfig = [
   },
   {
     permittedRole: RoutePermittedRole.User,
+    path: '/HrDataBase/Office_SALARY_INCREASE_And_Position_Change',
+    element: <OFFICESalary/>,
+  },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/HrDataBase/Site_SALARY_INCREASE_And_Position_Change',
+    element: <SiteSalary />,
+  },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/HrDataBase/SALARY_INCREASE_And_Position_Change',
+    element: <ListSalary  />,
+  },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/HrDataBase/SALARY_INCREASE_And_Position_Change/View/:id',
+    element: <ViewListSalary  />,
+  },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/HrDataBase/SALARY_INCREASE_And_Position_Change/Update/:id',
+    element: <UpdateListSalary  />,
+  },
+  
+  {
+    permittedRole: RoutePermittedRole.User,
     path: '/HrDataBase/Add_Project',
     element: <AddProject/>,
+  },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/HrDataBase/Add_Project_Office',
+    element: <AddProjectOffice/>,
   },
 
 
@@ -418,15 +516,37 @@ export const ecommerceConfig = [
 
   {
     permittedRole: RoutePermittedRole.User,
-    path: '/Hr/EmployeesStatus',
-    element: <EmployeesStatus />,
+    path: '/Hr/Employees_Office_Summary',
+    element: <EmployeesStatus/>,   
+  },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/Hr/Employees_Site_Summary',
+    element: <EmployeesSiteSummary />,
     
   },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/Hr/Employees_Status_Office',
+    element: <EmployeesStatusOffice />,
+    
+  },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: 'Hr/Employees_Status_Site',
+    element: <EmployeesStatusSite />,
+    
+  },
+
+
 
   {
     permittedRole: RoutePermittedRole.User,
     path: '/apps/ecommerce-admin/edit-products/:id',
     element:<EmployeesStatus />,
   },
+  //Visa & Passport Expired 
+  
+
 
 ];

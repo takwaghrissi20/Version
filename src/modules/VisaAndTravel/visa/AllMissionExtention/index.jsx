@@ -21,18 +21,18 @@ const AllMission = () => {
   const [nameFilter, setNameFilter] = useState('');
   const [count, setCount] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     fetchMission();
   }, [currentPage, pageSize, nameFilter]);
 
   const fetchMission = async () => {
     try {
-      const countMission = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getAll`);
+      const countMission = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getAll?token=${token}`);
       const datacount = await countMission.json();
       setCount(datacount.length);
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/list?page=${currentPage}&size=${pageSize}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/list?page=${currentPage}&size=${pageSize}&token=${token}`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch Mission');
@@ -59,7 +59,7 @@ const AllMission = () => {
 
     if (filterValue !== '') {
       try {
-        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getByName?name=${filterValue}`);
+        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getByName?name=${filterValue}&token=${token}`);
         if (!response.ok) {
           throw new Error('Failed to filter employees');
         }
@@ -78,7 +78,7 @@ const AllMission = () => {
   const handleSearch = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getByName?name=${nameFilter}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getByName?name=${nameFilter}&token=${token}`);
       if (!response.ok) {
         throw new Error('Failed to filter employees');
       }
@@ -136,7 +136,7 @@ const AllMission = () => {
         </AppsHeader>
         <AppCard
           className='no-card-space-ltr-rtl'
-          title={messages['dashboard.MissionOrder']}
+          title={messages['dashboard.MissionExtentionOrder']}
         >
           <OrderTable className={clsx("item-hover")} datamission={filteredMission.length > 0 ? filteredMission : mission} />
         </AppCard>

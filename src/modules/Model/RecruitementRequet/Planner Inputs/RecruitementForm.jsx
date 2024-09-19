@@ -90,11 +90,11 @@ const TabsInformationRecruitement  = (props) => {
               </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
-              <FloatLabel name="Planner Comments">
-                <span className='modallabel'>Planner Comments:</span>
+              <FloatLabel name="PMO Comments">
+                <span className='modallabel'>PMO Comments:</span>
                 <Input
                   className='Input'
-                  placeholder="Planner Comments"
+                  placeholder="PMO Comments"
                   value={ commentplanner}
                   readOnly
                 />

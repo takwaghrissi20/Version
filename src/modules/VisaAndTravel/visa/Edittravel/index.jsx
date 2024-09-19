@@ -35,6 +35,8 @@ const UpdateTravel = () => {
   const [selectedRound, setSelectedRound] = useState("");
   const [ newactualLocationFrom, setNewactualLocationFrom] = useState("");
   const [ newactualLocationTo, setNewactualLocationTo] = useState("");
+
+  const token = localStorage.getItem("token");
   const handleTraveltrip = (value) => {
     setSelectedTrip(value)
   };
@@ -46,7 +48,7 @@ const UpdateTravel = () => {
 
   const findIdTravel = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/getById?id=${id}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/getById?id=${id}&token=${token}`, {
         method: 'Get',
       });
       if (!response.ok) {
@@ -130,7 +132,7 @@ const UpdateTravel = () => {
   /////Update 
   const Update = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/updateTr?id=${id}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/updateTr?id=${id}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -141,25 +143,33 @@ const UpdateTravel = () => {
         },
         body: JSON.stringify({
           // dateOfTravel:travel?.dateOfTravel,
-          
-          projName:"tettt",
+          inputDate:travel?.inputDate,
+          josId:travel?.josId,
+          getsId:travel?.getsId,
+          name:travel?.name,
+          position: travel?.position,
+          projName:travel?.projName,
+          goBack:travel?.goBack,
+          dateMob:newdateMob,
+          dateDemob:newdateDeMob,
+          dateTravelDesert:newDateTravel,
+          ticketRef:newTicketReference,
+          tripTypeDesert:selectedTrip,
+          actualLocationFrom:newactualLocationFrom,
+          actualLocationTo:newactualLocationTo,
           // ticketRef:newTicketReference,
           // name:travel?.name,
           // position:travel?.position,
           // josId:travel?.josId,
           // getsId:travel?.getsId,
           // goBack:travel?.goBack,
-          // dateMob:newdateMob,
-         
+          // dateMob:newdateMob,       
           // dateDemob:newdateDeMob,
 
           // type:selectedTrip,
           // refTicket:newTicketReference,
-          // round:selectedRound,
-
-         
-          
-          // actualLocationTo:newactualLocationTo,
+           round:selectedRound,   
+      
           // actualLocationFrom:newactualLocationFrom,
 
           // rich_DateToSite,
@@ -169,7 +179,7 @@ const UpdateTravel = () => {
           // bookingStatusJoys,
 
           // dateTravelJoys,
-          inputDate:travel?.inputDate,
+         
           // tripTypeJoys,
           // idendityCopy,
 
@@ -186,12 +196,16 @@ const UpdateTravel = () => {
 
         const responseData = await response.text();
         openNotification('bottomRight')
+        setTimeout(() => {
+          window.location.reload();
+          navigate(-1)
+        }, 2000);
 
       }
 
       // Handle responseData if needed
     } catch (error) {
-      console.error("Erreur lors de la récupération du Id :", error);
+      console.error("Erreur lors de la récupération du Id Travel:", error);
     }
   }
   const handleTravelType = (value) => {
@@ -330,9 +344,12 @@ const UpdateTravel = () => {
                     name='projectName'
                   >
                     <Input
-                      readOnly={true}
                       className='Input'
-                      placeholder={travel?.projName} />
+                      placeholder={travel?.projName} 
+                      readOnly
+                      
+                      
+                      />
 
                   </Form.Item>
                 </Col>
@@ -480,13 +497,12 @@ const UpdateTravel = () => {
                   <Form.Item
                     label='Actual Location' name='ActualLocation'
                   >
-
-
                     <Input
                       className='Input'
                       placeholder={travel?.actualLocationFrom}
-                      value={travel?.actualLocationFrom}
-                      onChange={handlenewactualLocationFrom}
+                      value={newactualLocationFrom}
+                      onChange={(e) =>setNewactualLocationFrom(e.target.value)}
+                    
 
                     />
                   </Form.Item>
@@ -510,16 +526,12 @@ const UpdateTravel = () => {
 
                 <Col xs={24} md={12}>
                   <Form.Item
-                    label='To Location' name='ToLocation'
-                  >
-
-
+                    label='To Location' name='ToLocation' >
                     <Input
                       className='Input'
-
                       placeholder={travel?.actualLocationTo}
-                      value={travel?.actualLocationTo}
-                      onChange={handlenewactualLocationTo}
+                      value={newactualLocationTo}
+                      onChange={(e) =>setNewactualLocationTo(e.target.value)}
                     // value={exit}
 
 
@@ -532,9 +544,8 @@ const UpdateTravel = () => {
 
                     <Input
                       className='Input'
-
-                      placeholder={travel?.dateTravelDesert
-                      }
+                      placeholder={travel?.dateTravelDesert }
+                      readOnly
                     // value={exit}
 
 
@@ -547,7 +558,7 @@ const UpdateTravel = () => {
                     <Input
                       className='Input'
                       placeholder={travel?.tripTypeDesert}
-
+                      readOnly
 
                     />
                   </Form.Item>
@@ -560,8 +571,8 @@ const UpdateTravel = () => {
                     <Input
                       className='Input'
 
-                      placeholder={travel?.idendityCopy
-                      }
+                      placeholder={travel?.idendityCopy}
+                      readOnly
 
 
 

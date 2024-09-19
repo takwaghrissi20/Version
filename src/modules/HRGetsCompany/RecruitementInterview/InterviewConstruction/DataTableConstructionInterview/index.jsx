@@ -16,15 +16,24 @@ import {
 import ConfirmationModal from '../../../../../@crema/components/AppConfirmationModal';
 import IntlMessages from '../../../../../@crema/helpers/IntlMessages';
 import { useNavigate } from "react-router-dom";
-
+import FeddbackEmployeesConstruction from "../../../../Model/FeddbackEmployeesConstruction"
 const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,  
   findId, setFindIdData,open,handleInterview,codeJob,interviewCode}) => {
   //const [findIdData, setFindIdData] = useState(null);
-  console.log("findIdData",findIdData)
   const [isViewInterviewStaff, onViewInterviewStaff] = useState(false);
   const [isEditInterviewStaff, onEditInterviewStaff] = useState(false);
   const [isDelteInterviewStaff, onDeleteInterviewStaff] = useState(false)
   const [isAddEmployees, onAddEmployees] = useState(false);
+  const [isFeddbackEmployee, onFeddbackEmployee] = useState(false);
+  const token = localStorage.getItem("token")
+  const handleFeedbackEmployeesOpen = (code) => {
+   onFeddbackEmployee(true);
+  };
+  const handleFeedbackEmployeesClose = (code) => {
+    onFeddbackEmployee(false);
+   };
+ 
+
   const navigate = useNavigate();
   const userRoles = localStorage.getItem("role");
   const [tableHeight, setTableHeight] = useState('auto');
@@ -81,7 +90,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
           hr_HumQuality:findIdData?.hr_HumQuality,
           hr_motivation:findIdData?.hr_motivation,
           hr_Intellig:findIdData?.hr_Intellig,
-          level:findIdData?.level,
+          intvlevel:findIdData?.intvlevel,
           headOfDepAprouv:findIdData?.headOfDepAprouv,
           agreedJoinedDate:findIdData?.agreedJoinedDate,
           expectedJoinDate:findIdData?.expectedJoinDate,
@@ -150,7 +159,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
             hr_HumQuality:findIdData?.hr_HumQuality,
             hr_motivation:findIdData?.hr_motivation,
             hr_Intellig:findIdData?.hr_Intellig,
-            level:findIdData?.level,
+            intvlevel:findIdData?.intvlevel,
             headOfDepAprouv:findIdData?.headOfDepAprouv,
             agreedJoinedDate:findIdData?.agreedJoinedDate,
             expectedJoinDate:findIdData?.expectedJoinDate,
@@ -159,7 +168,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
             feedback:findIdData?.feedback,
             propsedsalary:findIdData?.propsedsalary,
             finaldesision:findIdData?.finaldesision,
-            time:findIdData?.time,
+            intervtime:findIdData?.intervtime,
             hrComentaire:findIdData?.hrComentaire,
         
            
@@ -207,14 +216,12 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
   }
 
   const DeleteInterviewStaff = async () => {
-
- 
     try {
         const endPoint =
             process.env.NODE_ENV === "development"
                 ? "https://dev-gateway.gets-company.com"
                 : "";
-                const response = await fetch(`${endPoint}/api/v1/intc/delete?code=${codeJob}&id=${id}`, {
+                const response = await fetch(`${endPoint}/api/v1/intc/delete?code=${codeJob}&id=${id}&token=${token}`, {
                   method: 'DELETE',
               });
 
@@ -306,7 +313,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
           return (
             <StyledRecentPatientBadge
             style={{
-              color: record.color,
+             
               backgroundColor:"#32CD32",
               color:"white",
               fontFamily:"inherit"
@@ -319,7 +326,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
           return (
             <StyledRecentPatientBadge
             style={{
-              color: record.color,
+              
               backgroundColor:"#32CD32",
               color:"white",
               fontFamily:"inherit"
@@ -342,7 +349,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
           return (
             <StyledRecentPatientBadge
             style={{
-              color: record.color,
+           
               backgroundColor:"#32CD32",
               color:"white",
               fontFamily:"inherit"
@@ -374,12 +381,12 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
  
     
    
-    {
+    // {
     
-      title: 'Max Salary',
-      dataIndex: 'maxSalary',
-      key: 'maxSalary',
-    },
+    //   title: 'Max Salary',
+    //   dataIndex: 'maxSalary',
+    //   key: 'maxSalary',
+    // },
     {
       title: 'Actions',
       dataIndex: 'actions',
@@ -399,6 +406,10 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
         if (record.notif === 5 ) {
           items.push({ key: 4, label: <span style={{ fontSize: 14 }}>Add Employees</span>, 
           onClick:handleAddEmployees });
+          items.push({
+            key: 5, label: <span style={{ fontSize: 14 }}>Feddback Employees</span>,
+            onClick: handleFeedbackEmployeesOpen
+          });
         }
     
         return (
@@ -408,6 +419,15 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
                 <MoreOutlined />
               </Button>
             </Dropdown>
+            {isFeddbackEmployee && (
+              <FeddbackEmployeesConstruction
+                isFeedbackEmployee={isFeddbackEmployee}
+                handleFeedbackContactClose={handleFeedbackEmployeesClose}
+                findIdData={findIdData}
+
+
+              />
+            )}
             {/* {isViewInterviewStaff && (
              <InterviewView
              isViewInterviewStaff={isViewInterviewStaff}

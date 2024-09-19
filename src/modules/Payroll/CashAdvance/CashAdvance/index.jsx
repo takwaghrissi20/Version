@@ -69,10 +69,10 @@ const Table = () => {
       console.error('Error fetching employees:', error);
     }
   };
-
+  const token = localStorage.getItem("token");
   const fetchListEmployee = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/AdvSalary/list?page=${currentPage}&size=${pageSize}&sortBy=month`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/AdvSalary/list?page=${currentPage}&size=${pageSize}&token=${token}&sortBy=month`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch AdvSalary');
@@ -117,7 +117,7 @@ const Table = () => {
               <div style={{ flex: 1 }}>
                 <CashAdvance employee={employee} />
               </div>
-              <div style={{ marginTop: "auto", marginBottom: "10px",marginTop:"10px" ,display: "flex", justifyContent: "flex-end" }}>
+              <div style={{ marginBottom: "10px",marginTop:"10px" ,display: "flex", justifyContent: "flex-end" }}>
                 <Pagination
                   currentPage={currentPage}
                   totalPages={Math.ceil(20 / pageSize)}

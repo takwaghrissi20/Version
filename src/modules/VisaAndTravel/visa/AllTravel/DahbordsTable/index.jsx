@@ -14,11 +14,11 @@ const OrderTable = ({ orderData,user }) => {
   const [id, setId] = useState("");
   const [getsid, setGetsid] = useState("");
   const navigate = useNavigate();
-
+  const token = localStorage.getItem("token");
   // Find By Id
   const findId = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/getById?id=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/getById?id=${code}&token=${token}`, {
         method: 'GET',
       });
       if (!response.ok) {

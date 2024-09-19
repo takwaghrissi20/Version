@@ -44,7 +44,7 @@ const ViewInformationForm = (props) => {
   const [endtraveldatepdf, setEndTraveldatepdf] = useState("");
   const [arDestinationpdf, setArDestinationpdf] = useState("");
   const [arPositionpdf, setArPositionpdf] = useState("");
-
+  const token = localStorage.getItem("token")
  
   const [lastId, setLastId] = useState(0);
 
@@ -116,7 +116,7 @@ const ViewInformationForm = (props) => {
 
       const requestBody = {
      
-       idVisa:LastIdIncremente,
+      //  idVisa:LastIdIncremente,
        category:"Construction Staff",     
        departement:departement,
        name:name,
@@ -129,7 +129,7 @@ const ViewInformationForm = (props) => {
 
       
       };
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/add`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/add?token=${token}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -150,8 +150,7 @@ const ViewInformationForm = (props) => {
       }
       const data = await response.json();
       
-      console.log("lastStaff",lastId)
-       console.log("datavisa",data)
+  
 
       // handleAddContactClose()
       // Traiter la réponse de l'API si nécessaire
@@ -214,7 +213,7 @@ const ViewInformationForm = (props) => {
         category
       };
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/create`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/create?token=${token}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -241,6 +240,7 @@ const ViewInformationForm = (props) => {
       setEndTraveldatepdf(data.endTravelDate)
       setArDestinationpdf(data.arDestination)
       setArPositionpdf(data.arPosition)
+      console.log("data.id",data.id)
       setLastId(data.id)
       setShowAlert(true);
       handleAddContactClose()
@@ -266,8 +266,6 @@ const ViewInformationForm = (props) => {
     // Set grayBackground to true when generateBtnEnabled is false
     setGrayBackground(!generateBtnEnabled);
   }, [generateBtnEnabled]);
-
-
 
 
   const ContratB1 = () => {
@@ -357,7 +355,7 @@ const ViewInformationForm = (props) => {
         lastId: LastIdIncremente,
         dailyRate:dailyRate,
         duration:duration,
-        arPosition: arPositionpdf,
+        // arPosition: arPositionpdf,
         joinDate:joinDate,
         finishDate:finishDate,
       
@@ -406,7 +404,7 @@ const ViewInformationForm = (props) => {
         duration:duration,
         CIN:CIN,
         cinDate:cinDate,
-        duration:duration,
+        // duration:duration,
         salary: salary,
         joinDate: joinDate,
         finishDate:finishDate
@@ -459,7 +457,6 @@ const ViewInformationForm = (props) => {
         duration:duration,
         CIN:CIN,
         cinDate:cinDate,
-        duration:duration,
         salary: salary,
         joinDate: joinDate,
         finishDate:finishDate
@@ -516,7 +513,7 @@ const ViewInformationForm = (props) => {
     }
    
   };
-
+console.log("idVisaaaaa",LastIdIncremente)
 
   return (
     <StyledContactForm>

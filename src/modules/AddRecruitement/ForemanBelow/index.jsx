@@ -53,7 +53,7 @@ const AddRecruitementForemanBelow = () => {
   const [dateInput, setDateInput] = useState(new Date());
   const [selectedLieu, setSelectedLieu] = useState('');
   const userRole = localStorage.getItem("role")
-
+  const token = localStorage.getItem("token");
   const handlePlaceSelect = (value) => {
     setSelectedLieu(value);
 
@@ -61,15 +61,16 @@ const AddRecruitementForemanBelow = () => {
   const handleValidateEmployeeClose = () => {
     setIsModalVisible(false);
   };
+
   const GetProfileEmployess = async () => {
     const storedemail = window.localStorage.getItem("email");
-    console.log("storedemail", storedemail)
+
     try {
       const endPoint =
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -85,7 +86,7 @@ const AddRecruitementForemanBelow = () => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
-      console.log("data profile", data)
+
       setDep(data.departement)
 
       setProfile(data)
@@ -124,7 +125,6 @@ const AddRecruitementForemanBelow = () => {
       const data = await response.json();
 
       const Position = data.map(p => p.description)
-      console.log("GetPositions", Position)
       setPosition(Position)
 
 
@@ -183,7 +183,7 @@ const AddRecruitementForemanBelow = () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/last`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/last?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -199,7 +199,6 @@ const AddRecruitementForemanBelow = () => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
-      console.log(data.jobCode)
       setLastJobCode(data.jobCode)
 
 
@@ -426,7 +425,7 @@ const AddRecruitementForemanBelow = () => {
     try {
 
       const params = new URLSearchParams({ name: selectedProject, id: profile?.getsId });
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -446,12 +445,11 @@ const AddRecruitementForemanBelow = () => {
           type: type,
           position: positionRecruitement,
           projectName: selectedProject,
-          recruttrequestDate: requestorDate,
+          // recruttrequestDate: requestorDate,
           requestedDicipline: positionRecruitement,
           totalNumber: vacancie,
           oDep: isOrDep,
           exDep: isExDep,
-          jobCode: LastIndexRecruitementIncremente,
           // type: "For Foreman & Below",
           // oDep: asper,
           // // exDep: "",
@@ -467,7 +465,8 @@ const AddRecruitementForemanBelow = () => {
           notif: 2,
           dep: profile?.departement,
           dateInputRecrut: formattedDate,
-          status: "Pending"
+          status: "Pending",
+    
 
         })
       });
@@ -483,7 +482,10 @@ const AddRecruitementForemanBelow = () => {
         //window.location.reload();
         openNotification('bottomRight')
         setTimeout(() => {
+          
           window.location.reload();
+          navigate(-1)
+
         }, 2000);
         //onSave(false)
         const email = 'rihemhassounanjim90@gmail.com';
@@ -519,7 +521,7 @@ const AddRecruitementForemanBelow = () => {
     try {
 
       const params = new URLSearchParams({ name: selectedProject, id: profile?.getsId });
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -538,12 +540,11 @@ const AddRecruitementForemanBelow = () => {
           type: type,
           position: profile?.position,
           projectName: selectedProject,
-          recruttrequestDate: requestorDate,
+          // recruttrequestDate: requestorDate,
           requestedDicipline: positionRecruitement,
           totalNumber: vacancie,
           oDep: isOrDep,
           exDep: isExDep,
-          jobCode: LastIndexRecruitementIncremente,
           // type: "For Foreman & Below",
           // oDep: asper,
           // // exDep: "",
@@ -559,7 +560,7 @@ const AddRecruitementForemanBelow = () => {
           notif: 8,
           dep: profile?.departement,
           dateInputRecrut: formattedDate,
-          status: "Pending Approves Operation Manager"
+          status: "Pending Approval Operation Manager"
 
         })
       });
@@ -575,6 +576,12 @@ const AddRecruitementForemanBelow = () => {
         const responseData = await response.json();
         form.resetFields();
         openNotification('bottomRight')
+        setTimeout(() => {
+          
+          window.location.reload();
+          navigate(-1)
+
+        }, 2000);
 
         const email = 'rihemhassounanjim90@gmail.com';
         const secondApiResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/bodNotif?email=${encodeURIComponent(email)}`, {
@@ -604,7 +611,7 @@ const AddRecruitementForemanBelow = () => {
     try {
 
       const params = new URLSearchParams({ name: selectedProject, id: profile?.getsId });
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -623,12 +630,12 @@ const AddRecruitementForemanBelow = () => {
           type: type,
           position: profile?.position,
           projectName: selectedProject,
-          recruttrequestDate: requestorDate,
+          // recruttrequestDate: requestorDate,
           requestedDicipline: positionRecruitement,
           totalNumber: vacancie,
           oDep: isOrDep,
           exDep: isExDep,
-          jobCode: LastIndexRecruitementIncremente,
+      
           // type: "For Foreman & Below",
           // oDep: asper,
           // // exDep: "",
@@ -644,7 +651,7 @@ const AddRecruitementForemanBelow = () => {
           notif: 7,
           dep: profile?.departement,
           dateInputRecrut: formattedDate,
-          status: "Pending Approved BOD"
+          status: "Pending Approval BOD"
 
         })
       });
@@ -660,6 +667,12 @@ const AddRecruitementForemanBelow = () => {
         const responseData = await response.json();
         form.resetFields();
         openNotification('bottomRight')
+        setTimeout(() => {
+          
+          window.location.reload();
+          navigate(-1)
+
+        }, 2000);
 
         const email = 'rihemhassounanjim90@gmail.com';
         const secondApiResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/bodNotif?email=${encodeURIComponent(email)}`, {
@@ -689,7 +702,7 @@ const AddRecruitementForemanBelow = () => {
     try {
 
       const params = new URLSearchParams({ name: selectedProject, id: profile?.getsId });
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/addrecrutt?${params}&token=${token}`, {
 
         method: 'POST',
         headers: {
@@ -708,12 +721,12 @@ const AddRecruitementForemanBelow = () => {
           type: type,
           position: profile?.position,
           projectName: selectedProject,
-          recruttrequestDate: requestorDate,
+          // recruttrequestDate: requestorDate,
           requestedDicipline: positionRecruitement,
           totalNumber: vacancie,
           oDep: isOrDep,
           exDep: isExDep,
-          jobCode: LastIndexRecruitementIncremente,
+        
           // type: "For Foreman & Below",
           // oDep: asper,
           // // exDep: "",
@@ -729,8 +742,7 @@ const AddRecruitementForemanBelow = () => {
           notif: 6,
           dep: profile?.departement,
           dateInputRecrut: formattedDate,
-          status: "Pending Approved HOD"
-
+          status: "Pending Approval HOD"
         })
       });
 
@@ -745,6 +757,12 @@ const AddRecruitementForemanBelow = () => {
         const responseData = await response.json();
         console.log("opration reponse project Leader", responseData)
         form.resetFields();
+        setTimeout(() => {
+          window.location.reload();        
+          navigate(-1)
+  
+       
+        }, 2000);
         openNotification('bottomRight')
 
         const email = 'rihemhassounanjim90@gmail.com';
@@ -771,30 +789,26 @@ const AddRecruitementForemanBelow = () => {
   };
 
   const BeforeSaveRecruitement = () => {
-    console.log("dep", dep)
     //setIsModalVisible(true)
-    form.validateFields(['DateRequestor', 'ProjectName', 'ProjectCode'
+    form.validateFields(['ProjectName', 'ProjectCode'
       , 'DateDesiredRecruitement', 'position', 'RequiredLevel', 'Desiredyearsexperience', 'Numbervacancies',
 
     ]).then(values => {
       //onSave(true)
       if ((!dep?.includes('Operation')) && (!dep?.includes('Engineering'))) {
-        console.log("dep33eee", dep)
         Saverecrutement();
       }
 
       else if (dep?.includes('Engineering') && userRole?.includes('Engineering')) {
-        console.log("Engineering")
+
         SaverecrutementEngineer()
 
       }
       else if (dep?.includes("Operation") && userRole?.includes('Operation')) {
-        console.log("Operation  Manager", dep)
         Saverecrutementopeartion()
 
       }
       else if (dep?.includes("Operation") && userRole?.includes('Leader')) {
-        console.log("dep33", dep)
         SaverecrutementProjectLeader()
       }
       else
@@ -857,7 +871,7 @@ const AddRecruitementForemanBelow = () => {
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label='Recruitement Date' name='DateRecruitement'
+                  <Form.Item label='Request Date' name='DateRecruitement'
 
 
                   >{/*Date et temp de Interview bu Hr*/}
@@ -915,25 +929,20 @@ const AddRecruitementForemanBelow = () => {
                       readOnly={true} />
                   </Form.Item>
                 </Col>
-                <Col xs={24} md={12}>
+                {/* <Col xs={24} md={12}>
                   <Form.Item label='Request Date' name='DateRequestor'
                     rules={[
                       { required: true, message: 'Please input your Requestor Date!' },
-                    ]}
-
-
-                  >{/*Date et temp de Interview bu Hr*/}
+                    ]}>
                     <DatePicker
-                      //defaultValue={new Date()} 
+                    //defaultValue={new Date()} 
                       placeholder='YYYY-MM-DD'
-                      //defaultValue={dayjs(requestorDate, '2024-01-01')}
-
                       style={{ width: "100%", height: "30px" }}
                       onChange={(value) => setRequestorDate(dayjs(value).format('YYYY-MM-DD'))}
                     />
 
                   </Form.Item>
-                </Col>
+                </Col> */}
 
 
 
@@ -1055,10 +1064,7 @@ const AddRecruitementForemanBelow = () => {
                     <Select
                       placeholder='Select Position'
                       value={positionRecruitement}
-                      onChange={handlePositionRecruitement}
-
-
-                    >
+                      onChange={handlePositionRecruitement} >
 
                       {position && position.map((p, index) => (
                         <Select.Option key={index} value={p}>
@@ -1096,11 +1102,11 @@ const AddRecruitementForemanBelow = () => {
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item
-                    label='Desired years of 
-                  experience'
+                    label='Desired years of experience'
                     name='Desiredyearsexperience'
-
-                  >
+                    rules={[
+                      { required: true, message: 'Please Select your Select Desired years of experience!' },
+                    ]}>
 
                     <Input
                       value={desiredExperienceLevel}
@@ -1143,10 +1149,10 @@ const AddRecruitementForemanBelow = () => {
 
         </AppRowContainer>
 
-        {dep === "operation" && user.includes('Planner') ?
+        {dep === "operation" && user.includes('PMO') ?
           <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
             <Col xs={24} md={6}>
-              <Typography.Title level={5}>Planner Review </Typography.Title>
+              <Typography.Title level={5}>PMO Controlling </Typography.Title>
 
             </Col>
             <Col xs={24} md={18}>
@@ -1159,9 +1165,7 @@ const AddRecruitementForemanBelow = () => {
                       <Form.Item
                         label='As per :'
                         name='As per'
-
-
-                      >
+ >
                         <Checkbox checked={isExDep} onChange={ExDep}>
 
                           <IntlMessages id='Exdep.planner' />
@@ -1173,20 +1177,10 @@ const AddRecruitementForemanBelow = () => {
                     </StyledInput>
                   </Col>
 
-
-
-
-
-
-
-
                 </AppRowContainer>
               </StyledShadowWrapper>
             </Col>
           </AppRowContainer>
-
-
-
 
           : null}
         <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
@@ -1299,7 +1293,7 @@ const AddRecruitementForemanBelow = () => {
         id={profile?.getsId}
         name={profile?.name}
         position={profile?.position}
-        DateRequestor={requestorDate}
+        // DateRequestor={requestorDate}
         projname={selectedProject}
         projCode={projectCode}
         DateDesiredRecruitement={desiredrecruitementDate}

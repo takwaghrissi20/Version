@@ -31,7 +31,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
   const [contratType, setContratType] = useState("CDD");
   const [employeeType, setEmployeeType] = useState("Site");
   const [category, setCategory] = useState("Construction Staff")
-  console.log("interviewCode", interviewCode)
+  const token = localStorage.getItem("token")
   const handleValidateEmployeeClose = () => {
     setIsModalVisible(false);
   };
@@ -162,6 +162,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
   };
 
   ////////////////////////////////////////////
+  
   const fetchDataId = async (searchValue) => {
     try {
       const endPoint =
@@ -170,7 +171,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
           : "";
       const CodeInterview = parseInt(searchValue) + 1; // Increment intCode by 1
       console.log("CodeInterview=", searchValue);
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${searchValue}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${searchValue}&token=${token}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -201,6 +202,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
   useEffect(() => {
     fetchPositionTranslate();
   }, [findIdInterview?.positionToBeFilled]);
+
   const fetchPositionTranslate = async () => {
     try {
       const endPoint =
@@ -208,7 +210,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/trans/get?description=${findIdInterview?.positionToBeFilled}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/trans/get?description=${findIdInterview?.positionToBeFilled}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -355,7 +357,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
     
         <Row style={{ justifyContent: "flex-end" }}>
           <Col xs={24} lg={6} style={{
-            border: '1px solid red', paddingTop: "15px", paddingBottom: "15px", paddingLeft: "5px",
+           paddingTop: "15px", paddingBottom: "15px", paddingLeft: "5px",
             display: "Flex",
 
             position: "relative",

@@ -91,64 +91,7 @@ const ViewRecruitementAbove = () => {
   }
 
 
-  const Update = async () => {
 
-    try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update`, {
-
-        method: 'PUT',
-        headers: {
-          "Access-Control-Allow-Headers": "Content-Type",
-          "Access-Control-Allow-Origin": "*",
-          'Content-Type': 'application/json',
-          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
-        },
-
-        body: JSON.stringify({
-          jobCode: id,
-          // desiredDate,
-          dep: dep,
-          idemp: idemp,
-          position: position,
-          requestName: requestName,
-          requestedDicipline: requestedDicipline,
-          approuvedRecrutRequestNumber: 1,
-          projectName: projectName,
-          totalNumber: Numbervacancies,
-          experience: Level,
-          nbExperience: nbExperience,
-          type: type,
-          affectedTo: affectedTo,
-          certif: certif,
-          bod: null, //Bod1
-          oDep: oDep,
-          exDep: exDep,
-          // signatureHod: newCheckedHod, 
-          signatureBod: ischecked1,//Bod1
-          signatureBod2: ischecked2,//Bod2
-          projRef: projCode,
-          notif: 3
-
-
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      if (response.ok) {
-        const responseData = await response.text();
-        alert("Update Recruitement succeed")
-
-        console.log("responseData ", responseData);
-        //handleAddContactClose(true)
-      }
-
-      // Handle responseData if needed
-    } catch (error) {
-      console.error("Erreur lors de la récupération du Id :", error);
-    }
-  };
   const userRoles = localStorage.getItem("role");
 
   return (
@@ -435,7 +378,7 @@ const ViewRecruitementAbove = () => {
         {dep === "operation" ?
           <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
             <Col xs={24} md={6}>
-              <Typography.Title level={5}>Planner Review </Typography.Title>
+              <Typography.Title level={5}>PMO Controlling </Typography.Title>
 
             </Col>
             <Col xs={24} md={18}>
@@ -473,7 +416,7 @@ const ViewRecruitementAbove = () => {
 
                   >
                     <Form.Item
-                      label='Planner Comments'
+                      label='PMO Comments'
                       name='PlannerComments'
 
 

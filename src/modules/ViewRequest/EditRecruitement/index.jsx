@@ -39,17 +39,15 @@ const EditRecruitementAbove = () => {
   const affectedTo = location.state ? location.state.affectedTo : null
   const notif = location.state ? location.state.notif : null
   const dateInputRecrut = location.state ? location.state.dateInputRecrut : null
-  console.log("testttt notif", notif)
-  console.log("testttt notif33333", dep)
   const userRoles = localStorage.getItem("role");
-
+  const token = localStorage.getItem("token");
   const Back = async () => {
-   navigate(-1)
-   
+    navigate(-1)
+
   };
   const CancelRecruitementBod = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -85,7 +83,7 @@ const EditRecruitementAbove = () => {
           signatureHod: null,
           signatureBod: null,
           notif: 20,
-          status: "Refuse By BOD"
+          status: "Not Approved By BOD"
         })
       });
 
@@ -99,9 +97,9 @@ const EditRecruitementAbove = () => {
         setTimeout(() => {
           window.location.reload();
           navigate(-1)
-      }, 2000);
+        }, 2000);
 
-       
+
 
         //handleAddContactClose(true)
       }
@@ -300,12 +298,9 @@ const EditRecruitementAbove = () => {
     setComentPlanerUpdate(event.target.value)
   };
   // Helper function to remove circular references
-  const Update = async (newdesiredDate, newdep, newidemp, newrequestName, newposition, newprojectName,
-    newprojRef, newaffectedTo, newLevel, newrequestedDicipline,
-    newexDep, newoDep, newCheckedHod,
-    newnbExperience, newNumbervacancies, newcertif) => {
+  const Update = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -347,7 +342,7 @@ const EditRecruitementAbove = () => {
       }
       if (response.ok) {
 
-        const responseData = await response.text();
+        const responseData = await response.json();
         openNotification('bottomRight')
         navigate(-1)
 
@@ -363,7 +358,7 @@ const EditRecruitementAbove = () => {
   const UpdatePlanner = async () => {
 
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -426,7 +421,7 @@ const EditRecruitementAbove = () => {
   const UpdateOperation = async () => {
 
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -476,6 +471,11 @@ const EditRecruitementAbove = () => {
         const responseData = await response.text();
         openNotification('bottomRight')
         console.log("updataaaa planner", responseData)
+        setTimeout(() => {
+          window.location.reload();
+          navigate(-1)
+        }, 2000);
+
         // navigate(-1)
 
         //handleAddContactClose(true)
@@ -488,10 +488,83 @@ const EditRecruitementAbove = () => {
   }
 
   //End Update UpdateOperation
+  ///Cancel Recruitement Oprartion
+  const CancelRecruitementOperation = async () => {
+
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}&token=${token}`, {
+
+        method: 'PUT',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+
+          jobCode: jobCode,
+          dateInputRecrut: dateInputRecrut,
+          desiredDate: DesiredDate,
+          dep: dep,
+          idemp: idemp,
+          position: position,
+          recruttrequestDate: recruttrequestDate,
+          requestName: requestName,
+          requestedDicipline: requestedDicipline,
+          approuvedRecrutRequestNumber: 1,
+          projectName: projectName,
+          projRef: projRef,
+          totalNumber: Numbervacancies,
+          experience: Level,
+          nbExperience: nbExperience,
+          type: type,
+          affectedTo: affectedTo,
+          certif: certif,
+          bod: null,
+          oDep: oDep,
+          exDep: exDep,
+          comentPlaner: comentPlaner,
+          signatureHod: null,
+          signatureBod: null,
+          notif: 70,
+          status: "Not Approved By Operation Manager"
+
+
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+
+        const responseData = await response.text();
+        openRefuseNotificationBOD('bottomRight')
+        setTimeout(() => {
+          window.location.reload();
+          navigate(-1)
+        }, 2000);
+
+        // navigate(-1)
+
+        //handleAddContactClose(true)
+      }
+
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+    }
+  }
+
+
+
+
+  //End Cancel Recruitement Oprartion
   //Updata BOD
   const UpdateBOD = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -537,7 +610,11 @@ const EditRecruitementAbove = () => {
 
         const responseData = await response.text();
         openNotification('bottomRight')
-        console.log("updataaaa planner", responseData)
+        setTimeout(() => {
+          window.location.reload();
+          navigate(-1)
+        }, 2000);
+     
         // navigate(-1)
 
         //handleAddContactClose(true)
@@ -652,7 +729,7 @@ const EditRecruitementAbove = () => {
                         readOnly={true} />
                     </Form.Item>
                   </Col>
-                  <Col xs={24} md={12}>
+                  {/* <Col xs={24} md={12}>
                     <Form.Item label='Requestor Date' name='DateRequestor'
 
                     >
@@ -663,7 +740,7 @@ const EditRecruitementAbove = () => {
 
 
                     </Form.Item>
-                  </Col>
+                  </Col> */}
 
 
 
@@ -842,10 +919,10 @@ const EditRecruitementAbove = () => {
           </AppRowContainer>
 
 
-          {(dep.includes("Operation")) ?
+          {(dep?.includes("Operation")) ?
             <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
               <Col xs={24} md={6}>
-                <Typography.Title level={5}>Planner Review </Typography.Title>
+                <Typography.Title level={5}>PMO Controlling</Typography.Title>
 
               </Col>
               <Col xs={24} md={18}>
@@ -878,14 +955,14 @@ const EditRecruitementAbove = () => {
 
                     >
                       <Form.Item
-                        label='Planner Comments'
+                        label='PMO Comments'
                         name='PlannerComments'
 
 
                       >
                         <Input
                           style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
-                          placeholder="Planner Comments"
+                          placeholder="PMO Comments"
                           value={newcomentPlaner}
                           onChange={() => setNewcomentPlaner()}
 
@@ -1103,7 +1180,7 @@ const EditRecruitementAbove = () => {
                         readOnly={true} />
                     </Form.Item>
                   </Col>
-                  <Col xs={24} md={12}>
+                  {/* <Col xs={24} md={12}>
                     <Form.Item label='Requestor Date' name='DateRequestor'
 
                     >
@@ -1114,7 +1191,7 @@ const EditRecruitementAbove = () => {
 
 
                     </Form.Item>
-                  </Col>
+                  </Col> */}
 
 
                 </AppRowContainer>
@@ -1275,11 +1352,11 @@ const EditRecruitementAbove = () => {
             </Col>
           </AppRowContainer>
 
-          {(dep.includes("Operation") && notif === 6 && (!userRoles.includes("bod"))) || (dep.includes("Operation") && notif === 7 && (!userRoles.includes("bod")))
+          {(dep?.includes("Operation") && notif === 6 && (!userRoles?.includes("bod"))) || (dep?.includes("Operation") && notif === 7 && (!userRoles?.includes("bod")))
             ?
             <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
               <Col xs={24} md={6}>
-                <Typography.Title level={5}>Planner Review </Typography.Title>
+                <Typography.Title level={5}>PMO Controlling </Typography.Title>
               </Col>
               <Col xs={24} md={18}>
                 <StyledShadowWrapper>
@@ -1309,14 +1386,14 @@ const EditRecruitementAbove = () => {
                     </Col>
                     <Col xs={24} md={24} >
                       <Form.Item
-                        label='Planner Comments'
+                        label='PMO Comments'
                         name='PlannerComments'
 
 
                       >
                         <Input
                           style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
-                          placeholder="Planner Comments"
+                          placeholder="PMO Comments"
                           value={comentPlanerUpdate}
                           onChange={handleComments}
 
@@ -1337,7 +1414,7 @@ const EditRecruitementAbove = () => {
           {/* {(dep === "operation" && notif === 4) ?
             <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
               <Col xs={24} md={6}>
-                <Typography.Title level={5}>Planner Review </Typography.Title>
+                <Typography.Title level={5}>PMO Controlling</Typography.Title>
 
               </Col>
               <Col xs={24} md={18}>
@@ -1403,45 +1480,46 @@ const EditRecruitementAbove = () => {
             : null} */}
           {/*uPDATE BOD */}
 
-          {((dep.includes("Operation") && notif === 7 
-          && (oDep==="true" || exDep==="true"))) || ((dep.includes("Operation") 
-          && notif === 4)) ? (
+          {((dep?.includes("Operation") && notif === 7
+            && (oDep === "true" || exDep === "true"))) || ((dep?.includes("Operation")
+              && notif === 4)) ? (
             <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-            <Col xs={24} md={6}>
-              <Typography.Title level={5}>Planner Review</Typography.Title>
-            </Col>
-            <Col xs={24} md={18}>
-              <StyledShadowWrapper>
-                <AppRowContainer>
-                  <Col xs={24} md={12}>
-                    <Form.Item label="As per :" name="Asper">
-                      <Checkbox checked={exDep === "true"}
-                       readOnly>
-                        Extra Deployment Schedule
-                      </Checkbox>
-                    </Form.Item>
-                  </Col>
-                  <Col xs={24} md={12}>
-                    <Form.Item label=" " name="Asper">
-                      <Checkbox checked={oDep === "true"} 
-                      readOnly>
-                        Original Deployment Schedule
-                      </Checkbox>
-                    </Form.Item>
-                  </Col>
-                  <Col xs={24} md={24}>
-                    <Form.Item label="Planner Comments" name="PlannerComments">
-                      <Input
-                        style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
-                        placeholder={comentPlaner}
-                      />
-                    </Form.Item>
-                  </Col>
-                </AppRowContainer>
-              </StyledShadowWrapper>
-            </Col>
-          </AppRowContainer>
-        ) : null}
+              <Col xs={24} md={6}>
+                <Typography.Title level={5}>PMO Controlling</Typography.Title>
+              </Col>
+              <Col xs={24} md={18}>
+                <StyledShadowWrapper>
+                  <AppRowContainer>
+                    <Col xs={24} md={12}>
+                      <Form.Item label="As per :" name="Asper">
+                        <Checkbox checked={exDep === "true"}
+                          readOnly>
+                          Extra Deployment Schedule
+                        </Checkbox>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item label=" " name="Asper">
+                        <Checkbox checked={oDep === "true"}
+                          readOnly>
+                          Original Deployment Schedule
+                        </Checkbox>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={24}>
+                      <Form.Item label="PMO Comments" name="PlannerComments">
+                        <Input
+                          style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
+                          placeholder={comentPlaner}
+                          readOnly
+                        />
+                      </Form.Item>
+                    </Col>
+                  </AppRowContainer>
+                </StyledShadowWrapper>
+              </Col>
+            </AppRowContainer>
+          ) : null}
 
           {/*End uPDATE BOD */}
           {/* <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
@@ -1524,7 +1602,7 @@ const EditRecruitementAbove = () => {
             style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
           >
 
-            {userRoles.includes("Planner") ?
+            {userRoles?.includes("PMO") ?
 
               <>
                 <Button onClick={() => UpdatePlanner()}>
@@ -1537,24 +1615,33 @@ const EditRecruitementAbove = () => {
 
             }
             {userRoles.includes("admin") ?
-              <Button onClick={() => Update(newdesiredDate, newdep, newidemp, newrequestName, newposition, newprojectName,
-                newprojRef, newexDep, newaffectedTo, newLevel, newrequestedDicipline, newnbExperience, newNumbervacancies, newcertif)}>
+              <Button onClick={() => Update()}>
                 Update
-              </Button> : null}
-            {userRoles.includes("Operation") ?
+              </Button> :
+              
+              null}
+              {userRoles.includes("Operation") ?
+              <>
+                <Button style={{ color: "green", borderColor: "green" }} onClick={() => UpdateOperation()}>
+                  Approved
+                </Button>
+                <Button style={{ color: "red", borderColor: "red" }} onClick={() => CancelRecruitementOperation()}>
+                  Refuse
+                </Button>
+                <Button onClick={Back}>
+                  Cancel
+                </Button>
+              </>
 
-              <Button onClick={() => UpdateOperation()}>
-                Save
-              </Button>
 
               : null
             }
             {userRoles.includes("bod") ?
               <>
-                <Button style={{color:"green",borderColor:"green"}} onClick={() => UpdateBOD()}>
+                <Button style={{ color: "green", borderColor: "green" }} onClick={() => UpdateBOD()}>
                   Approved
                 </Button>
-                <Button style={{color:"red",borderColor:"red"}}onClick={() =>CancelRecruitementBod ()}>
+                <Button style={{ color: "red", borderColor: "red" }} onClick={() => CancelRecruitementBod()}>
                   Refuse
                 </Button>
                 <Button onClick={Back}>Cancel</Button>

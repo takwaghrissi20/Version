@@ -60,11 +60,11 @@ const Table = () => {
       console.error('Error fetching employees:', error);
     }
   };
-
+  const token = localStorage.getItem("token");
   const fetchListEmployee = async () => {
     try {
       setLoading(true);  // Set loading to true before fetch
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/listBypage?page=${currentPage}&size=${pageSize}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/listBypage?page=${currentPage}&size=${pageSize}&token=${token}`);
       if (!response.ok) {
         throw new Error('Failed to fetch employees');
       }
@@ -80,7 +80,7 @@ const Table = () => {
     try {
       
       const endPoint = process.env.NODE_ENV === 'development' ? 'https://dev-gateway.gets-company.com' : '';
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getEmByTypeWithoutPage?type=site`,
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getEmByTypeWithoutPage?type=site&token=${token}`,
 
         {
           method: 'GET',
@@ -92,7 +92,7 @@ const Table = () => {
         throw new Error('Failed to fetch employees');
       }
       const data = await response.json();
-      console.log("datttttttt",data)
+
       setAllemployee(data); 
       const projectInfoSet = new Set();
       const costCenterSet = new Set();

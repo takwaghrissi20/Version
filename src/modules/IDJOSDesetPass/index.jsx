@@ -23,18 +23,18 @@ const IdJosDesertPass = () => {
   const [nameFilter, setNameFilter] = useState('');
   const [count, setCount] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     fetchEmployees();
   }, [currentPage, pageSize, nameFilter]);
 
   const fetchEmployees = async () => {
     try {
-      const countMob = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/countGoBack?type=0`);
+      const countMob = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/countGoBack?type=0&token=${token}`);
       const datacount = await countMob.json();
       setCount(datacount);
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/goBackBypage?type=0&page=${currentPage}&size=${pageSize}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/goBackBypage?type=0&page=${currentPage}&size=${pageSize}&token=${token}`);
 
 
       if (!response.ok) {
@@ -51,7 +51,7 @@ const IdJosDesertPass = () => {
   const handleSearch = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${nameFilter}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${nameFilter}&token=${token}`);
       if (!response.ok) {
         throw new Error('Failed to filter employees');
       }
@@ -78,13 +78,14 @@ const IdJosDesertPass = () => {
     handleSearch({ target: { value: item.name } }); 
     setIsDropdownOpen(false)
   };
+  
   const handleNameFilterChange = async (event) => {
     const filterValue = event.target.value.trim(); 
     setNameFilter(filterValue);
 
     if (filterValue !== '') {
       try {
-        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${filterValue}`);
+        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${filterValue}&token=${token}`);
         if (!response.ok) {
           throw new Error('Failed to filter mobilization');
         }

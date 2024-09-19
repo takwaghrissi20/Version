@@ -10,6 +10,7 @@ import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FaRegCalendarAlt } from "react-icons/fa";
+import zIndex from '@mui/material/styles/zIndex';
 
 const { MonthPicker } = DatePicker;
 
@@ -18,10 +19,10 @@ const OrderTable = ({ orderData, fetchDemobilization }) => {
   const [editingData, setEditingData] = useState({});
   const [backgroundColor, setBackgroundColor] = useState('transparent');
   const { Option } = Select;
-
+  const token = localStorage.getItem("token");
   const startEdit = (record) => {
     setBackgroundColor('#ECF8F6');
-    setEditingRow(record.idMd);
+    setEditingRow(record.idTravel);
     setEditingData({ ...record });
   };
 
@@ -29,20 +30,18 @@ const OrderTable = ({ orderData, fetchDemobilization }) => {
     setEditingData({ ...editingData, [key]: value });
   };
 
-  const handleChangeDate = (date, dateString) => {
-    setEditingData({ ...editingData, dateVisa: dateString });
-  };
+
 
   const handleChangeDateReach = (date, dateString) => {
     //setEditingData({ ...editingData, dateMob: dateString });
-    setEditingData({ ...editingData, richDateToSite: moment(date).format('YYYY-MM-DD') });
+    setEditingData({ ...editingData, rich_DateToSite: moment(date).format('YYYY-MM-DD') });
   };
 
   const handleChangeDateMob = (date, dateString) => {
     //setEditingData({ ...editingData, dateMob: dateString });
     setEditingData({ ...editingData, dateMob: moment(date).format('YYYY-MM-DD') });
   };
-  console.log("editingData", editingData)
+
 
   const openNotification = () => {
     notification.open({
@@ -74,7 +73,7 @@ const OrderTable = ({ orderData, fetchDemobilization }) => {
   const openNotificationError = (errorMessage) => {
     notification.open({
       message: 'Error',
-      description: `Error Update: ${errorMessage}`,
+      description: `Error Update`,
       style: {
         backgroundColor: 'red',
         border: '1px solid #dc3545',
@@ -99,7 +98,7 @@ const OrderTable = ({ orderData, fetchDemobilization }) => {
   };
   const saveEdit2 = async (id) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/update?id=${id}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/travel/updateTr?id=${id}&token=${token}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -124,37 +123,6 @@ const OrderTable = ({ orderData, fetchDemobilization }) => {
     }
   };
 
-  const saveEditTest = async (id) => {
-    try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/update?id=${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(editingData),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.text();
-        throw new Error(`Network response was not ok: ${errorData.message || response.statusText}`);
-      }
-
-      const responseData = await response.json();
-      setEditingRow(null);
-      setEditingData({});
-      setBackgroundColor('transparent');
-      openNotification();
-      console.log("responseData", responseData);
-
-    } catch (error) {
-      console.error("Erreur lors de la récupération du Id :", error);
-      openNotificationError(error.message);
-    }
-  };
-
-
-
-
   const cancelEdit = () => {
     setEditingRow(null);
     setEditingData({});
@@ -162,12 +130,7 @@ const OrderTable = ({ orderData, fetchDemobilization }) => {
   };
 
   const columns = [
-    // {
-    //   title: 'Id',
-    //   dataIndex: 'idMd',
-    //   key: 'idMd',
-    //   width: '10%',
-    // },
+
 
 
     {
@@ -178,17 +141,17 @@ const OrderTable = ({ orderData, fetchDemobilization }) => {
     },
     {
       title: 'Jos Id',
-      dataIndex: 'joysId',
-      key: 'joysId',
+      dataIndex: 'josId',
+      key: 'josId',
 
       width: '15%',
       render: (text, record) => (
-        editingRow === record.idMd ? (
+        editingRow === record.idTravel ? (
           <Input
             type='number'
-            value={editingData?.joysId}
-            
-            onChange={(e) => handleChange('joysId', e.target.value)}
+            value={editingData?.josId}
+
+            onChange={(e) => handleChange('josId', e.target.value)}
           />
         ) : (
           text
@@ -209,17 +172,17 @@ const OrderTable = ({ orderData, fetchDemobilization }) => {
     },
     {
       title: 'Date Reach To Site',
-      dataIndex: 'richDateToSite',
-      key: 'richDateToSite',
+      dataIndex: 'rich_DateToSite',
+      key: 'rich_DateToSite',
       width: '15%',
       render: (text, record) => (
-        editingRow === record.idMd ? (
+        editingRow === record.idTravel ? (
           <div className="table-cell-center">
-            <FaRegCalendarAlt className="calendar-icon"/>
+            <FaRegCalendarAlt className="calendar-icon" />
             <DatePicker
               className='custom-datepickerEdit'
               placeholder='YYYY-MM-DD'
-              selected={editingData.richDateToSite ? moment(editingData.richDateToSite, 'YYYY-MM-DD').toDate() : null}
+              selected={editingData.rich_DateToSite ? moment(editingData.rich_DateToSite, 'YYYY-MM-DD').toDate() : null}
               // value={editingData.dateMob ? moment(editingData.dateMob, 'YYYY-MM-DD') : null}
               onChange={handleChangeDateReach}
               dateFormat='yyyy-MM-dd'
@@ -236,11 +199,20 @@ const OrderTable = ({ orderData, fetchDemobilization }) => {
       key: 'dateMob',
       width: '15%',
       render: (text, record) => (
-        editingRow === record.idMd ? (
+        editingRow === record.idTravel ? (
           <div className="table-cell-center">
-                 <FaRegCalendarAlt className="calendar-icon"/>
+            <FaRegCalendarAlt className="calendar-icon" />
             <DatePicker
-              className='custom-datepickerEdit'
+            popperPlacement="top-start"
+            popperModifiers={{
+              preventOverflow: {
+                enabled: true,
+                escapeWithReference: false,
+                boundariesElement: 'viewport',
+              },
+            }}
+            className="custom-datepickerEdit"
+            
               placeholder='YYYY-MM-DD'
               selected={editingData.dateMob ? moment(editingData.dateMob, 'YYYY-MM-DD').toDate() : null}
               // value={editingData.dateMob ? moment(editingData.dateMob, 'YYYY-MM-DD') : null}
@@ -258,10 +230,10 @@ const OrderTable = ({ orderData, fetchDemobilization }) => {
       dataIndex: 'actions',
       key: 'actions',
       render: (text, record) => (
-        editingRow === record.idMd ? (
+        editingRow === record.idTravel ? (
           <Row gutter={16}>
             <Col xs={24} sm={8}>
-              <CiSaveUp1 className="iconeEditSave" onClick={() => saveEdit2(record.idMd)}>
+              <CiSaveUp1 className="iconeEditSave" onClick={() => saveEdit2(record.idTravel)}>
                 Save
               </CiSaveUp1>
             </Col>
@@ -301,6 +273,7 @@ const OrderTable = ({ orderData, fetchDemobilization }) => {
     <AppAnimate animation="transition.slideUpIn" delay={200}>
       <Space direction='vertical' style={{ width: '100%' }}>
         <Table
+      
           hoverColor
           columns={columns}
           dataSource={orderData}

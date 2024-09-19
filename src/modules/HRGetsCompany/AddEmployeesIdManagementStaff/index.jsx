@@ -25,7 +25,7 @@ const AddEmployeesIdManagementStaff= () => {
   const department=location.state ? location.state.department : null;
   const projname=location.state ? location.state.projname : null;
   const  agreedJoinedDate=location.state ? location.state.agreedJoinedDate : null; 
-
+  const token = localStorage.getItem("token");
 
 
   const fetchDataList = async () => {
@@ -35,7 +35,7 @@ const AddEmployeesIdManagementStaff= () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/list`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/list?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'

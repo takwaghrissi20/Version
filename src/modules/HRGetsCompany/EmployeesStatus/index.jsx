@@ -1,444 +1,133 @@
 import React, { useEffect, useState } from 'react';
-import AppsContainer from '../../../@crema/components/AppsContainer';
-import { useIntl } from 'react-intl';
-import AppsHeader from '../../../@crema/components/AppsContainer/AppsHeader';
-import AppsContent from '../../../@crema/components/AppsContainer/AppsContent';
-import AppInfoView from '../../../@crema/components/AppInfoView';
-import { Input, List } from 'antd';
-import AppPageMeta from '../../../@crema/components/AppPageMeta';
-import Pagination from '../../../@crema/components/AppsPagination';
+import { Row, Col, Button } from 'antd';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import moment from 'moment';
 import CustomerTableOffice from './CustomerTable';
-import CustomerTableSite from './CustomerTableEmpSite';
-import CustomerTableMixt from './CustomerTableEmpMixt';
-
-import { StyledBuyCellCard, StyledTabs } from '../../../styles/index.styled';
-import {
-  StyledCustomerFooterPagination,
-  StyledCustomerHeader,
-  StyledCustomerHeaderPagination,
-  StyledCustomerHeaderRight,
-  StyledCustomerInputView,
-
-} from './index.styled';
-
+import AppPageMeta from '../../../@crema/components/AppPageMeta';
+import AppsContent from '../../../@crema/components/AppsContainer/AppsContent';
+import AppsContainer from '../../../@crema/components/AppsContainer';
+import AppCard from '../../../@crema/components/AppCard';
 const EmployeesStatus = () => {
-  
-  const user = localStorage.getItem("role");
-  const { messages } = useIntl();
   const [employeesoffice, setEmployeesoffice] = useState([]);
-  const [employeessite, setEmployeessite] = useState([]);
-  const [employeesmixt, setEmployeesmixt] = useState([]); 
-  const [employeesofficeFiltrer, setEmployeesofficeFiltrer] = useState([]);
-  const [employeessiteFiltrer, setEmployeessiteFiltrer] = useState([]);
-  const [employeesmixtFiltrer, setEmployeesmixtFiltrer] = useState([]);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
-  const [nameFilter, setNameFilter] = useState('');
-  const [nameSiteFilter, setNameSiteFilter] = useState('');
-  const [nameMixtFilter, setNameMixtFilter] = useState('');
-  const [countOffice, setCountOffice] = useState(0);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [typingTimeout, setTypingTimeout] = useState(0);
-
-  const handlePageChangeOffice = (page) => {
-    setCurrentPage(page);
-  };
-
-  const handleNameFilterChange = (event) => {
-    const filterValue = event.target.value.trim();
-    
-    setNameFilter(filterValue);
-    setNameSiteFilter(filterValue);
-    if (filterValue !== '') {
-
-      clearTimeout(typingTimeout);
-      const timeoutId = setTimeout(() => {
-        fetchFilteredEmployees(filterValue);
-        setIsDropdownOpen(true);
-      }, 300); // Attendre 300 ms après la fin de la saisie pour déclencher la recherche
-      setTypingTimeout(timeoutId);
-
-      
-    }else{
-      setIsDropdownOpen(false);
-    }
-
-   
-  };
-  const handleNameSiteFilterChange = (event) => {
-    const filterValue = event.target.value.trim();
-    
-    setNameSiteFilter(filterValue);
-    if (filterValue !== '') {
-
-      clearTimeout(typingTimeout);
-      const timeoutId = setTimeout(() => {
-        fetchFilteredEmployees(filterValue);
-        setIsDropdownOpen(true);
-      }, 300); // Attendre 300 ms après la fin de la saisie pour déclencher la recherche
-      setTypingTimeout(timeoutId);
-
-      
-    }else{
-      setIsDropdownOpen(false);
-    }
-
-   
-  };
-  const handleNameMixtFilterChange = (event) => {
-    const filterValue = event.target.value.trim();
-    
-    setNameMixtFilter(filterValue);
-    if (filterValue !== '') {
-
-      clearTimeout(typingTimeout);
-      const timeoutId = setTimeout(() => {
-        fetchFilteredEmployees(filterValue);
-        setIsDropdownOpen(true);
-      }, 300); // Attendre 300 ms après la fin de la saisie pour déclencher la recherche
-      setTypingTimeout(timeoutId);
-
-      
-    }else{
-      setIsDropdownOpen(false);
-    }
-
-   
-  };
-
-
-  const fetchFilteredEmployees = async (filterValue) => {
+  const [OfficeWorkStatus, setOfficeWorkStatus] = useState([]);
+  const [selectedMonth, setSelectedMonth] = useState(moment().month() + 1);
+  const [selectedYear, setSelectedYear] = useState(moment().year());
+  const [pickerValue, setPickerValue] = useState(new Date(selectedYear, selectedMonth - 1));
+  const token = localStorage.getItem("token")
+  // Fetch OfficeWorkStatus with filters
+  /////////////////
+  const fetchEmployeesOfficeWorkStatus  = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${filterValue}`);
+
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/OfficeWorkStatus/all?token=${token}`);
+
       if (!response.ok) {
-        throw new Error('Failed to filter employees');
+        throw new Error('Failed to fetch training List By Page');
       }
-      const data = await response.json();
-      setEmployeesofficeFiltrer(data);
-      setEmployeessiteFiltrer(data)
-      setEmployeesmixtFiltrer(data)
-      setIsDropdownOpen(true);
+      if (response.ok) {
+        const data = await response.json();
+
+        // Filter data based on selectedMonth and selectedYear
+        const filteredData = data.filter(item => item.month === moment(selectedMonth, 'M').format('MMMM').toUpperCase() && item.year === selectedYear);
+  
+        setOfficeWorkStatus(filteredData);
+      }
+
+
+
     } catch (error) {
-      console.error('Error filtering employees:', error);
+      console.error('Error fetching training By Pageess:', error);
     }
   };
 
-  const handleListItemClick = (item) => {
-    setNameFilter(item.name);
-    setNameSiteFilter(item.name)
-    setEmployeesofficeFiltrer([]);
 
-   
-    setIsDropdownOpen(false);
-  };
-  const handleListSitetemClick = (item) => {
-  ;
-    setNameSiteFilter(item.name)
-;
-    setEmployeessiteFiltrer([]);
- 
-   
-    setIsDropdownOpen(false);
-  };
-
-  const handleListMixttemClick = (item) => {
-
-      setNameMixtFilter(item.name)
-  ;
-      setEmployeesmixtFiltrer([]);
-   
-     
-      setIsDropdownOpen(false);
-    };
-  useEffect(() => {
-    AllEmployeesFilter();
-  }, [currentPage, pageSize]);
- 
-
-  const fetchEmployeesByType = async (type) => {
-    
+  //////////////////
+  const fetchEmployeesOfficeWorkStatus0 = async () => {
     try {
-      const endPoint = process.env.NODE_ENV === 'development' ? 'https://dev-gateway.gets-company.com' : '';
-      const url = `${endPoint}/api/v1/emp/getEmByType?type=${type}&page=${currentPage}&size=${pageSize}`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/OfficeWorkStatus/all?token=${token}`;
       const response = await fetch(url);
-  
-      if (!response.ok) {
-        throw new Error('Failed to fetch employees');
-      } 
-      const data = await response.json();
-      return data;
-    } 
-    catch (error) {
-      console.error(`Error fetching ${type} employees:`, error);
-      return [];
-    }
 
-  };
-  
-  const AllEmployeesFilter = async () => {
-    try {
-      const officeEmployees = await fetchEmployeesByType('office');
-      setEmployeesoffice(officeEmployees);
-      setCountOffice(officeEmployees.length);
-  
-      const siteEmployees = await fetchEmployeesByType('site');
-      setEmployeessite(siteEmployees);
-
-  
-      const mixtEmployees = await fetchEmployeesByType('office & site');
-      setEmployeesmixt(mixtEmployees);
-  
-    } 
-    catch (error) {
-      console.error('Error in AllEmployeesFilter:', error);
-    }
-  };
-   
-  const handleSearch = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${nameFilter}`);
       if (!response.ok) {
-        throw new Error('Failed to filter employees');
-      }
-      const data = await response.json();
-      setEmployeesofficeFiltrer(data)
-      setEmployeesoffice(data);
-   
-    } catch (error) {
-      console.error('Error filtering employees:', error);
-    }
-  };
-  const handleSiteSearch = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${nameSiteFilter}`);
-      if (!response.ok) {
-        throw new Error('Failed to filter employees');
+        throw new Error('Failed to fetch office work status');
       }
       const data = await response.json();
 
-      setEmployeessiteFiltrer(data)
-  
-      setEmployeessite(data)
-    } catch (error) {
-      console.error('Error filtering employees:', error);
-    }
-  };
-  const handleMixtSearch = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${nameMixtFilter}`);
-      if (!response.ok) {
-        throw new Error('Failed to filter employees');
-      }
-      const data = await response.json();
+      // Filter data based on selectedMonth and selectedYear
+      const filteredData = data.filter(item => item.month === moment(selectedMonth, 'M').format('MMMM').toUpperCase() && item.year === selectedYear);
 
-      setEmployeesmixtFiltrer(data)
-  
-      setEmployeesmixt(data)
+      setOfficeWorkStatus(filteredData);
     } catch (error) {
-      console.error('Error filtering employees:', error);
+      console.error('Error fetching office work status:', error);
     }
   };
 
+  // Handle month and year change
+  const handleMonthChange = (date) => {
+    if (date) {
+      const newMoment = moment(date);
+      setSelectedMonth(newMoment.month() + 1);
+      setSelectedYear(newMoment.year());
+      setPickerValue(date);
+    }
+  };
 
-  const items = [
-    {
-      label: 'Employees Office',
-      key: '1',
-      children: (
-        <>
-          <AppsHeader key={'wrap'}>
-          <StyledCustomerHeader>
-          <StyledCustomerInputView>
-            <Input.Search
-                placeholder='Search Here'
-                type="text"
-                value={nameFilter}
-                onChange={handleNameFilterChange}
-                onKeyPress={(event) => {
-                  if (event.key === 'Enter') {
-                    handleSearch(event);
-                  }
-                }}
-              />
-          
-            {isDropdownOpen && (
-              <List
-                style={{
-                  zIndex: 5, borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px",
-                  background: "white", position: "absolute", top: "6rem", width:"18%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"
-                }}
-                dataSource={employeesofficeFiltrer}
-                renderItem={(item) => (
-                  <List.Item onClick={() => handleListItemClick(item)}>
-                    {item.name}
-                  </List.Item>
-                )}
-              />
-            )}
-            </StyledCustomerInputView>
-            <StyledCustomerHeaderRight>
-         
-        
-          </StyledCustomerHeaderRight>
-         </StyledCustomerHeader>
-         </AppsHeader>
-          <CustomerTableOffice 
-          loading={loading}
-          user={user}
+  // Trigger fetch on month/year change
+  useEffect(() => {
+    fetchEmployeesOfficeWorkStatus();
+  }, [selectedMonth, selectedYear]);
 
-          employeesoffice={employeesoffice} />
-          <div className='Pagination' >
-            <Pagination
-            currentPage={currentPage}
-            //totalPages={Math.ceil(countOffice / pageSize)}
-            totalPages={Math.ceil(42 / pageSize)}
-            handlePageChange={handlePageChangeOffice}
-          />
-          </div>
-        
-        </>
-      ),
-    },
-    {
-      label: 'Employees Site',
-      key: '2',
-      children: 
-      <>
-      <AppsHeader key={'wrap'}>
-      <StyledCustomerHeader>
-      <StyledCustomerInputView>
-        <Input.Search
-            placeholder='Search Here by Name'
-            type="text"
-            value={nameSiteFilter}
-            onChange={handleNameSiteFilterChange}
-            onKeyPress={(event) => {
-              if (event.key === 'Enter') {
-                handleSiteSearch(event);
-              }
-            }}
-          />
-      
-        {isDropdownOpen && (
-          <List
-            style={{
-              zIndex: 5, borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px",
-              background: "white", position: "absolute", top: "6rem", width:"18%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"
-            }}
-            dataSource={employeessiteFiltrer}
-            renderItem={(item) => (
-              <List.Item onClick={() => handleListSitetemClick(item)}>
-                {item.name}
-              </List.Item>
-            )}
-          />
-        )}
-        </StyledCustomerInputView>
-        <StyledCustomerHeaderRight>
-     
-    
-     
-      </StyledCustomerHeaderRight>
-     </StyledCustomerHeader>
-     </AppsHeader>
-      <CustomerTableSite 
-      loading={loading} 
-      user={user}
-      employeessite={employeessite}
-   
-      />
-      <div className='Pagination' >
-      <Pagination
-        currentPage={currentPage}
-        totalPages={Math.ceil(289 / pageSize)}
-        handlePageChange={handlePageChangeOffice}
-      />
-        </div>  
-    </>,
-    },
-    {
-      label: 'Employees Site && Office',
-      key: '3',
-      children:   <>
-      <AppsHeader key={'wrap'}>
-      <StyledCustomerHeader>
-      <StyledCustomerInputView>
-        <Input.Search
-            placeholder='Search Here by Name'
-            type="text"
-            value={nameMixtFilter}
-            onChange={handleNameMixtFilterChange}
-            onKeyPress={(event) => {
-              if (event.key === 'Enter') {
-                handleMixtSearch(event);
-              }
-            }}
-          />
-      
-        {isDropdownOpen && (
-          <List
-            style={{
-              zIndex: 5, borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px",
-              background: "white", position: "absolute", top: "6rem", width:"18%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"
-            }}
-            dataSource={employeesmixtFiltrer}
-            renderItem={(item) => (
-              <List.Item onClick={() => handleListMixttemClick(item)}>
-                {item.name}
-              </List.Item>
-            )}
-          />
-        )}
-        </StyledCustomerInputView>
-        <StyledCustomerHeaderRight>
-     
-    
-     
-      </StyledCustomerHeaderRight>
-     </StyledCustomerHeader>
-     </AppsHeader>
-      <CustomerTableMixt loading={loading} 
-      employeesmixt={employeesmixt}
-      user={user}
-       />
-      <div className='Pagination' >
-      <Pagination
-        currentPage={currentPage}
-        totalPages={Math.ceil(79 / pageSize)}
-        handlePageChange={handlePageChangeOffice}
-      />
-        </div>
-    
-    </>,
-    },
-  ];
+  // Handle filter button click
+  const handleFilterClick = () => {
+    fetchEmployeesOfficeWorkStatus();
+  };
 
   return (
     <>
-      <AppPageMeta title='Employees Status' />
-      <AppsContainer
-        title={messages['sidebar.hr.EmployeesOfficeSite']}
-        fullView
-        type='bottom'
-      >
-        <AppsContent
-          key={'wrap1'}
-          style={{
-            paddingTop: 10,
-            paddingBottom: 10,
-          }}
-        >
-          <StyledBuyCellCard style={{ paddingLeft: '10px' }} heightFull>
-            <StyledTabs defaultActiveKey='1' items={items} />
-          </StyledBuyCellCard>
-        </AppsContent>
-      </AppsContainer>
+     <AppPageMeta title='Monthly Office Summary' />
+     <AppCard title="Monthly Office Summary" heightFull>
+     <AppsContainer   type="bottom" fullView>
+     <div style={{  display: 'flex',justifyContent: 'center', marginTop: '1rem', marginBottom: '2rem',
+      }}>
+     <Row className="row" gutter={16} style={{ display: 'flex', alignItems: 'center' }}>
+        <Col className="calendar" style={{ display: "flex" }} span={15}>
+          <div className="datepicker-wrapper">
+            <DatePicker
+              selected={pickerValue}
+              onChange={handleMonthChange}
+              dateFormat="MMMM yyyy"
+              showMonthYearPicker
+              placeholderText="Select Month and Year"
+              className="custom-datepickerEmployees"
+            />
+          </div>
+          <Button
+            style={{
+              backgroundColor: '#41b3f8',
+              borderColor: 'transparent',
+              color: 'white',
+              paddingRight: "4rem",
+              paddingLeft: "4rem",
+              marginLeft: "5rem"
+            }}
+            onClick={handleFilterClick}
+          >
+            Filter
+          </Button>
+        </Col>
+      </Row>
+      </div>
 
-      <AppInfoView />
+      {/* Render OfficeWorkStatus Table */}
+      <AppsContent style={{ paddingTop: 10, paddingBottom: 10 }}>
+      <CustomerTableOffice 
+        employeesoffice={employeesoffice} 
+        OfficeWorkStatus={OfficeWorkStatus}
+      />
+    
+      </AppsContent>
+    </AppsContainer>
+    </AppCard>
     </>
   );
 };

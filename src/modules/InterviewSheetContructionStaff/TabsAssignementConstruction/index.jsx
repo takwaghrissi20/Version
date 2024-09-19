@@ -17,14 +17,13 @@ import dayjs from 'dayjs';
 import IntlMessages from '../../../@crema/helpers/IntlMessages';
 
 const TabsAssignement = ({ isSaveDisabled,inputInterview }) => {
-  console.log("isSaveDisabled2", isSaveDisabled)
+ 
 
   const location = useLocation();
   const roles = window.localStorage.getItem("role");
 
   const JobCode = location.state ? location.state.JobCode : null;
   const interviewCode = location.state ? location.state.interviewCode: null;
-  console.log("interviewCode",interviewCode)
   const level = location.state ? location.state.level : null;
   const projectName = location.state ? location.state.projectName : null;
   const position = location.state ? location.state.position : null;
@@ -105,7 +104,7 @@ const TabsAssignement = ({ isSaveDisabled,inputInterview }) => {
   const [selectedHSEPolicies, setSelectedHSEPolicies] = useState('');
   const [selectedOthers, setSelectedOthers] = useState('');
   const currentYear = new Date().getFullYear();
-console.log("selectedHSECertificates",selectedHSECertificates)
+  const token = localStorage.getItem("token");
   const fetchData = async () => {
     try {
       const endPoint =
@@ -113,7 +112,7 @@ console.log("selectedHSECertificates",selectedHSECertificates)
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/last`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/last?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -189,7 +188,7 @@ console.log("selectedHSECertificates",selectedHSECertificates)
       }
     });
   }
-
+ 
   const Save = async () => {
     try {
       console.log("selectedValidation", selectedValidation)
@@ -198,7 +197,7 @@ console.log("selectedHSECertificates",selectedHSECertificates)
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/addintv?id=${JobCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/addintv?id=${JobCode}&token=${token}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

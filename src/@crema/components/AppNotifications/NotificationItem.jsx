@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { List } from 'antd';
 import {
@@ -6,13 +6,15 @@ import {
   StyledNotifyMsgAvatar,
 } from './NotificationItem.styled';
 import { useNavigate } from "react-router-dom";
-
+import { ToastContainer, toast } from 'react-toastify';
+import { StyledBuyCellCard, StyledTabs } from '../../../styles/index.styled';
 const NotificationItem = ({ user }) => {
-  console.log("user66666", user)
+
   const navigate = useNavigate();
   const [allnotif, setAllNotif] = useState([]);
   const [notifBod, setNotifBod] = useState([]);
   const [notifHR, setNotifHR] = useState([]);
+  const [notifHRAdministrator, setNotifHRAdministrator] = useState([]);
   const [notifOperation, setNotifOperation] = useState([]);
   const [notifHSE, setNotifHSE] = useState([]);
   const [notifPlanner, setNotifPlanner] = useState([]);
@@ -35,23 +37,79 @@ const NotificationItem = ({ user }) => {
   const [listOperationproject, setListOperationproject] = useState([]);
   const [ListInterviewNotif, setListInterviewNotif] = useState([]);
   const [intCode, setIntCode] = useState("");
+  const token = localStorage.getItem("token")
+  const [visaExpired, setVisaExpired] = useState("");
+  const [passportExpired, setPassportExpired] = useState("");
+  const [contartExpired, setContratExpired] = useState("");
 
 
+  //Fetch Employees Expired Passport et Visa 
+  const fetchExpiredVisa = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list?token=${token}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch employees');
+      }
+
+      // Get the current date and date 15 days from now
+      const data = await response.json();
+      const activeEmployees = data.filter(employee => employee.actStatus === "Active");
+
+      const currentDate = new Date();
+      const dateInFifteenDays = new Date();
+      dateInFifteenDays.setDate(currentDate.getDate() + 15);
+      // Filter employees whose visa expires within 15 days
+      const expiredVisaData = activeEmployees.filter(employee => {
+        if (employee.finishDateVisa) {
+          const visaDate = new Date(employee.finishDateVisa);
+          return visaDate > currentDate;
+        } else {
+          return false;
+        }
+      });
 
 
+      setVisaExpired(expiredVisaData)
+      // Filter employees whose passport expires within 15 days
+      const passportFinishDate = activeEmployees.filter(employee => {
+        if (employee.passport_finish_date) {
+          const passportDate = new Date(employee.passport_finish_date);
+          return passportDate <= dateInFifteenDays && passportDate > currentDate;
+        } else {
+          return false;
+        }
+      });
+      setPassportExpired(passportFinishDate)
+      // Filter employees whose Contract expires within 15 days
+      const contratFinishDate = activeEmployees.filter(employee => {
+        if (employee.finishDate) {
+          const contartDate = new Date(employee.finishDate);
+          return contartDate <= dateInFifteenDays && contartDate > currentDate;
+        } else {
+          return false;
+        }
+      });
+
+      setContratExpired(contratFinishDate)
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+    }
+  };
+
+
+  //End Fetch Employee expired passport et Visa 
   // Project By email
   const fetchProjectEmail = async () => {
     try {
-      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getProjectByMail?mail=${userEmail}`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getProjectByMail?mail=${userEmail}&token=${token}`;
       const response = await fetch(url, {
         method: "GET",
       });
       if (response.ok) {
         const data = await response.json();
-        console.log("data projettttt", data)
         setIdgets(data?.getsId)
         const ProjectName = data.map(project => project.projName);
-        console.log("projet profile", ProjectName)
+        console.log("testttt projjjjj", ProjectName)
         setProject(ProjectName);
       } else {
         console.error("Erreur lors de la récupération du email:", response.status);
@@ -62,13 +120,12 @@ const NotificationItem = ({ user }) => {
   };
   //Get profile By Email
   const GetProfileEmployess = async () => {
-
     try {
       const endPoint =
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${userEmail}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${userEmail}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -84,9 +141,7 @@ const NotificationItem = ({ user }) => {
       }
       const data = await response.json();
       setId(data.getsId)
-      console.log("dataprofile", data?.departement)
       setDep(data?.departement)
-      console.log("setDep", data?.departement)
     } catch (error) {
       console.error('Erreur lors de la récupération getByEmail', error);
     }
@@ -95,7 +150,7 @@ const NotificationItem = ({ user }) => {
   const fetchRecruitementByEmployees = async () => {
     try {
 
-      const url = `https://dev-gateway.gets-company.com/api/v1/re/list`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/re/list?token=${token}`;
       const response = await fetch(url, {
         method: "GET",
       });
@@ -103,10 +158,9 @@ const NotificationItem = ({ user }) => {
         const data = await response.json();
         const filterRecruitement = data.filter(p => p.idemp === id)
         setRecrutementInterviewNotif(filterRecruitement)
-        console.log("fetchRecruitementByEmployees YYYYY", filterRecruitement)
-        console.log("iiiuuuhghggg", allnotif)
+
         const FilterNotification = filterRecruitement.map(item => item.jobCode)
-        console.log("FilterNotification bbbb", FilterNotification)
+
         setListInterviewNotif(FilterNotification)
         // console.log("filterRecruitement",filterRecruitement)
       } else {
@@ -117,7 +171,30 @@ const NotificationItem = ({ user }) => {
     }
   };
 
-  //End Fetch Recruitement
+  const [notificationPermission, setNotificationPermission] = useState(null);
+  useEffect(() => {
+    if (!("Notification" in window)) {
+      // console.log("Browser does not support desktop notifications");
+    } else {
+      Notification.requestPermission();
+    }
+  }, []);
+
+  const showNotification = (message) => {
+    if (Notification.permission === "granted") {
+      new Notification(message);
+    }
+  }
+  const sortNotifications = (notifications) => {
+    return notifications.sort((a, b) => {
+      const isVisaOrPassportA = a.type.includes("Visa") || a.type.includes("Passport");
+      const isVisaOrPassportB = b.type.includes("Visa") || b.type.includes("Passport");
+
+      if (isVisaOrPassportA && !isVisaOrPassportB) return -1;
+      if (!isVisaOrPassportA && isVisaOrPassportB) return 1;
+      return 0;
+    });
+  };
 
   const AllNotif = async () => {
     try {
@@ -131,8 +208,7 @@ const NotificationItem = ({ user }) => {
         throw new Error('La requête a échoué avec le code ' + response.status);
       }
       const data = await response.json();
-      console.log("dattta notif", data)
-      console.log("ListInterviewNotif999", ListInterviewNotif)
+
 
       /////includes codejob
       const NotifInterveiw = data.filter(item => item?.type?.includes("Interview"));
@@ -146,10 +222,14 @@ const NotificationItem = ({ user }) => {
           (item.oDep || item.xDep) &&
           item?.positionRec?.includes('Manager')
         ) ||
+        (item.notfi === 55
+        ) ||
+        (item.notfi === 66) ||
         (item.notfi === 7 &&
           item.dep.includes('Engineering')
         ) ||
-        (item.notfi === 2) ||
+        (item.notfi === 2)
+        ||
         (item.notfi === 7 &&
           item.dep.includes('Operation') &&
           (item.oDep || item.xDep) &&
@@ -165,15 +245,15 @@ const NotificationItem = ({ user }) => {
         (item.notfi === 17 && item.type.includes("Demob"))
       );
 
-
-
-      // const filteredData = data.filter(item => ((!item.dep.includes('Operation')&& (!item.dep.includes('Engineering'))) &&
-      //   item.notfi === 2) || (item.notfi === 7 && item.dep.includes('Operation')) || 
-      //   (item.notfi === 7 && item.dep.includes('Engineering'))
-      // );
-
       setNotifBod(filteredData);
       //////NotifffHrAdminstrotor
+      // filteredData.forEach(item => {
+      //   if (item.notfi === 2 && !displayedNotifications.has(item.id)) {
+      //     showNotification(`Recruitment Request with code Job ${item.jobcode}`);
+      //     setDisplayedNotifications(prev => new Set(prev).add(item.id));
+      //   }
+      // });
+
 
 
       const filteredDataHrAdministartor = data.filter(item => (item.notfi === 3) ||
@@ -192,7 +272,8 @@ const NotificationItem = ({ user }) => {
             item.positionInterv?.includes('Manager'))
         ) ||
         ((item.notfi === 35) && item.type.includes("Extension")) ||
-        (item.notfi === 17 && item.type.includes("Demob"))
+        (item.notfi === 17 && item.type.includes("Demob")) ||
+        (item.notfi === 7 && (item.type.includes("Interview")) && item.dep.includes('Operation'))
 
       ));
 
@@ -233,7 +314,8 @@ const NotificationItem = ({ user }) => {
 
 
       );
-      console.log('project:', project);
+
+
       //   const filteredPlanner3 = data.filter(item => {
       //     const condition1 = item?.dep?.includes("Operation") && item.notfi === 6;
       //     const condition2 = item.dep.includes("Operation") && item.notfi === 7 && project.includes(item.projName);
@@ -270,9 +352,13 @@ const NotificationItem = ({ user }) => {
           // Third group of conditions
           (item.notfi === 6 && item.type.includes("Interview")) ||
           (item.notfi === 2 && item.type === "Interview") ||
-          
+
           (item.notfi === 34 && user.includes("Project")) ||
-          (item.notfi === 37 && user.includes("Human Resource"))
+          (item.notfi === 37 && user.includes("Human Resource")) ||
+          (
+            (item.notfi === 2) &&
+            item?.dep?.includes("QHSE") &&
+            item.type.includes("construction"))
 
 
         );
@@ -288,18 +374,18 @@ const NotificationItem = ({ user }) => {
         console.log('item.notfi:', item.notfi);
         console.log('ListInterviewNotif.includes(item.interviewCodeJobInt):', ListInterviewNotif.includes(item.interviewCodeJobInt));
         console.log('item?.type?.includes("Interview"):', item?.type?.includes("Interview"));
-        console.log('project jjjjj:', project);
+
 
         return (
           (item.notfi === 0 &&
             ListInterviewNotif.includes(item.interviewCodeJobInt) &&
             item.type?.includes("Interview") &&
             item.dep?.includes("Operation")) ||
-             (item.notfi === 14 &&
+          (item.notfi === 14 &&
             item.type?.includes("Demob") &&
             project?.includes(item.projName))
         );
-        
+
       });
 
       // setNotifManager(filteredManager)
@@ -314,23 +400,25 @@ const NotificationItem = ({ user }) => {
           // Fourth group of conditions
           (item.notfi === 13 &&
             item.type.includes("Demob") &&
-            item.positionDemob.includes('HSE') &&
-            project.includes(item.projName)) ||
+            !['HSE', 'QC', 'LOGISTIC'].some(substring => item.positionDemob.toLowerCase().includes(substring.toLowerCase())) &&
+            project.includes(item.projName)
+          )
+          ||
           // Fifth group of conditions
           (item.notfi === 19 &&
-            item.type.includes("Demob") &&
+            item.type.includes("DeMobilization") &&
             project.includes(item.projName)) ||
           (item.notfi === 13 &&
-            item.type.includes("Demob") &&
+            item.type.includes("DeMobilization") &&
             !item.positionDemob.includes('HSE') &&
             project.includes(item.projName) &&
             !item.positionDemob.includes('QC') &&
             !item.positionDemob.includes('Office Logistic')) ||
-          (item.notfi === 13 && item.type.includes("Demob")
+          (item.notfi === 13 && item.type.includes("DeMobilization")
             && project.includes(item.projName)) ||
           (item.notfi === 15 &&
             item.positionDemob.includes('QC') &&
-            item.type.includes("Demob") &&
+            item.type.includes("DeMobilization") &&
             project.includes(item.projName))
 
         );
@@ -364,7 +452,7 @@ const NotificationItem = ({ user }) => {
       });
 
       setNotifLogistic(filteredLogistic);
-    
+
 
 
 
@@ -452,7 +540,9 @@ const NotificationItem = ({ user }) => {
         backToBackType: code?.backToBackType,
         newRecruitment: code?.newRecruitment,
         desiredDate: code?.desiredDate,
-        commentaire: code?.commentaire
+        commentaire: code?.commentaire,
+        referenceMisionOrder:code?.referenceMisionOrder,
+        lsteDateDemob:code?.lsteDateDemob
 
 
       }
@@ -461,7 +551,7 @@ const NotificationItem = ({ user }) => {
   //demob
   const findId = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/findId?code=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/findId?code=${code}&token=${token}`, {
         method: 'POST',
       });
       if (!response.ok) {
@@ -471,15 +561,26 @@ const NotificationItem = ({ user }) => {
       setFindIdData(responseData);
       setCodeJob(responseData.jobCode);
       handleEditRecruitementOpen(responseData);
+      setTimeout(() => {
+        window.location.reload();
+
+      }, 100);
+
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
     }
   };
+  const VisaExpired = async () => {
+    navigate(`/Hr/VisaAndPassportExpired`);
+    window.location.reload();
+
+  };
+
   ///////////////////
   ///////////////////////////ExtentionId
   const findIdExtention = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getById?id=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getById?id=${code}&token=${token}`, {
         method: 'GET',
       });
       if (!response.ok) {
@@ -488,31 +589,34 @@ const NotificationItem = ({ user }) => {
       const responseData = await response.json();
       console.log("extention", responseData)
       handleEditExtentionOpen(responseData)
+      setTimeout(() => {
+        window.location.reload();
+
+      }, 100);
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
     }
   };
 
-
-
-
-
-
-
   /////////////////End Extentiondid
   const findIdInterview = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/findId?code=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/findId?code=${code}&token=${token}`, {
         method: 'GET',
       });
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const responseData = await response.json();
-      console.log("responseDataConstruction", responseData)
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
+
       setFindIdDataStaff(responseData)
       setIntCode(responseData?.interviewCode)
       handleEditInterviewConstructionOpen(responseData?.interviewCode)
+
+
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
     }
@@ -521,15 +625,19 @@ const NotificationItem = ({ user }) => {
   ///////////////////FindIDDEMOB
   const findIdDemob = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/getById?id=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/getById?id=${code}&token=${token}`, {
         method: 'GET',
       });
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const responseData = await response.json();
-      console.log("findIdDemob ", responseData)
+
       handleMobDemobOpen(responseData)
+      setTimeout(() => {
+        window.location.reload();
+
+      }, 100);
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
     }
@@ -581,7 +689,7 @@ const NotificationItem = ({ user }) => {
           hr_HumQuality: findIdDataConstruction?.hr_HumQuality,
           hr_motivation: findIdDataConstruction?.hr_motivation,
           hr_Intellig: findIdDataConstruction?.hr_Intellig,
-          level: findIdDataConstruction?.level,
+          intvlevel: findIdDataConstruction?.intvlevel,
           headOfDepAprouv: findIdDataConstruction?.headOfDepAprouv,
           agreedJoinedDate: findIdDataConstruction?.agreedJoinedDate,
           expectedJoinDate: findIdDataConstruction?.expectedJoinDate,
@@ -590,7 +698,7 @@ const NotificationItem = ({ user }) => {
           feedback: findIdDataConstruction?.feedback,
           propsedsalary: findIdDataConstruction?.propsedsalary,
           finaldesision: findIdDataConstruction?.finaldesision,
-          time: findIdDataConstruction?.time,
+          time: findIdDataConstruction?.INTERVTIME,
           hrComentaire: findIdDataConstruction?.hrComentaire,
           contactEmail: findIdDataConstruction?.contactEmail,
           contactPhone: findIdDataConstruction?.contactPhone,
@@ -617,13 +725,6 @@ const NotificationItem = ({ user }) => {
           leadership: findIdDataConstruction?.leadership,
           hseDecision: findIdDataConstruction?.hseDecision,
           hseComment: findIdDataConstruction?.hseComment,
-
-
-
-
-
-
-
 
 
 
@@ -673,7 +774,7 @@ const NotificationItem = ({ user }) => {
           hr_HumQuality: findIdDataStaff?.hr_HumQuality,
           hr_motivation: findIdDataStaff?.hr_motivation,
           hr_Intellig: findIdDataStaff?.hr_Intellig,
-          level: findIdDataStaff?.level,
+          NLEVEL: findIdDataStaff?.NLEVEL,
           headOfDepAprouv: findIdDataStaff?.headOfDepAprouv,
           agreedJoinedDate: findIdDataStaff?.agreedJoinedDate,
           expectedJoinDate: findIdDataStaff?.expectedJoinDate,
@@ -682,24 +783,30 @@ const NotificationItem = ({ user }) => {
           feedback: findIdDataStaff?.feedback,
           propsedsalary: findIdDataStaff?.propsedsalary,
           finaldesision: findIdDataStaff?.finaldesision,
-          time: findIdDataStaff?.time,
-          hrComentaire: findIdDataStaff?.hrComentaire
+          intervtime: findIdDataStaff?.intervtime,
+          hrComentaire: findIdDataStaff?.hrComentaire,
+
         }
       });
     }
   }, [navigate, findIdDataStaff]);
+
   const findIdInterviewConstruction = async (code) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${code}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${code}&token=${token}`, {
         method: 'POST',
       });
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const responseData = await response.json();
-      console.log("responseDataConstruction", responseData)
       setFindIdDataConstruction(responseData)
       setIntCode(responseData?.interviewCode)
+      setTimeout(() => {
+        window.location.reload();
+
+      }, 100);
+
       // handleEditInterviewConstructionOpen(responseData?.interviewCode)
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
@@ -711,20 +818,35 @@ const NotificationItem = ({ user }) => {
     fetchProjectEmail();
     fetchRecruitementByEmployees()
     GetProfileEmployess()
+    fetchExpiredVisa()
     // findIdInterviewConstruction(intCode)
 
   }, [project, notifPlanner, idgets, id, findIdDataConstruction, intCode, findIdDataStaff]);
-  console.log("user", user)
+
+
+
   return (
     <>
+      {/* NOTIF BOD */}
       {user.includes("bod") ?
         <StyledNotifyListItem className='item-hover'>
           <p>Number All Notification </p>
           {notifBod.map((p, index) => (
             <div key={index}>
-              <button className='Notification' onClick={() => findId(p?.codejob)}>
-                Recruitment Request with Code Job: <span style={{ color: "red", fontWeight: "bold" }}>{p.codejob}</span>
-              </button>
+              {p?.type?.includes("recruitment") && (
+                <div className='NotifTotal' onClick={() => findId(p?.codejob)}>
+                  <div
+                    className='NotifRecruitement' >
+                    R
+                  </div>
+                  <button className='Notification' onClick={() => findId(p?.codejob)}>
+                    Notification Recruitement Request  <br></br>
+                    <span className='IndexNotif'>RRS-</span>
+                    <span className='IndexNotif'>{p.codejob}</span>
+                  </button>
+                </div>
+
+              )}
               <div className='Space'></div>
               {p?.type?.includes("Interview") && (
                 <div>
@@ -749,12 +871,12 @@ const NotificationItem = ({ user }) => {
                 </button>
               )}
               {/*Notification Demob*/}
-              {p?.type?.includes("Demob")  && (
-                  <button className='Notification' onClick={() => findIdDemob(p?.idMd)} >
-                    Demobilization Permission Notification:
-                    <span style={{ color: "red", fontWeight: "bold" }}>DP-{p?.idMd}</span>
-                  </button>
-                )}
+              {p?.type?.includes("Demob") && (
+                <button className='Notification' onClick={() => findIdDemob(p?.idMd)} >
+                  Demobilization Permission Notification:
+                  <span style={{ color: "red", fontWeight: "bold" }}>DP-{p?.idMd}</span>
+                </button>
+              )}
 
             </div>
           ))}
@@ -762,22 +884,94 @@ const NotificationItem = ({ user }) => {
 
         : null
       }
-      {user.includes("Administrator") ?
+      {/* NOTIF Cordinator */}
+      {user.includes("Cordinator") ?
         <StyledNotifyListItem className='item-hover'>
-          <p>Number All Notification </p>
+          <p>Number All Notification :{notifHR?.length} </p>
+
           {notifHR.map((p, index) => (
             <div key={index}>
-              <button className='Notification' onClick={() => findId(p?.codejob)}>
-                Recruitement Request with Code Job :<span style={{ color: "red", fontWeight: "bold" }}>{p.codejob}</span> </button>
-              <div className='Space'></div>
-
+              <div className='NotifTotal' onClick={() => findId(p?.codejob)}>
+                <div
+                  className='NotifRecruitement' >
+                  R
+                </div>
+                <button className='Notification' onClick={() => findId(p?.codejob)}>
+                  Notification Recruitement Request  <br></br>
+                  <span className='IndexNotif'>RRS-</span>
+                  <span className='IndexNotif'>{p.codejob}</span>
+                </button>
+              </div>
 
             </div>
           ))}
+
+
+        </StyledNotifyListItem>
+        : null
+      }
+      {/*Notif Administartor*/}
+      {(!user.includes("Cordinator") && user.includes("Administrator")) ?
+        <StyledNotifyListItem className='item-hover'>
+          <p>Number All Notification :{notifHRAdministrator?.length} </p>
+
+          {visaExpired?.length > 0 && (
+            <div className='NotifTotal' onClick={() => VisaExpired()}>
+              <div
+                className='NotifVisa' >
+                V
+              </div>
+              <div style={{ color: "black" }}>
+                Visa Will Be Expired Of Employees :<span className='IndexNotif'>{visaExpired?.length}</span>
+              </div>
+            </div>
+          )}
+          {passportExpired?.length > 0 && (
+
+            <div className='NotifTotal' onClick={() => VisaExpired()}>
+              <div
+                className='NotiPassport' >
+                P
+              </div>
+              <div style={{ color: "black" }}>
+                Passport Will Be Expired Of Employees  : <span className='IndexNotif'>{passportExpired?.length}</span>
+              </div>
+            </div>
+
+          )}
+
+          {notifHRAdministrator.map((p, index) => (
+            <div key={index}>
+
+
+              {/*Empl Finish Contrat*/}
+              {/* {passportExpired?.length > 0 && ( */}
+              {/* {contartExpired?.length > 0 && (    //Notif Payroll
+            <div className='NotifTotal' onClick={() => VisaExpired()}>
+              <div
+                className='NotiFinishContart' >
+                C
+              </div>
+              <div style={{ color: "black" }}>
+                Contract Will Be Expired Of Employees  :
+                <span className='IndexNotif'>{contartExpired?.length}</span>
+              </div>
+            </div>
+          )} */}
+              {/* )} */}
+              {/*End Empl Finish Contrat*/}
+
+            </div>
+          ))}
+
+
         </StyledNotifyListItem>
         : null
       }
 
+
+      {/*End Notif Administartor */}
+      {/* Notif ADMIN */}
       {user.includes("admin") ?
         <StyledNotifyListItem className='item-hover'>
           <p>Number All Notification </p>
@@ -793,35 +987,49 @@ const NotificationItem = ({ user }) => {
         : null
       }
 
-
-      {user === "Operation  Manager" ? (
+      {/* Notif Operation  Manager*/}
+      {user === "Operation Manager" ? (
         <StyledNotifyListItem className='item-hover'>
           <p>Number All Notification (Operation Manager)</p>
           <>
             {notifOperation.map((p, index) => (
               <>
-                <button className='Notification' onClick={() => findId(p?.codejob)}>
-                  Recruitment Request with Code Job:
-                  <span style={{ color: "red", fontWeight: "bold" }}>{p.codejob}</span>
-                </button>
-                <div>
-                  <button
-                    className='Notification'
-                    onClick={() =>
-                      p.type.includes("Interview of construction team")
-                        ? findIdInterviewConstruction(p?.interviewCode)
-                        : findIdInterview(p?.interviewCode)
-                    }
-                  >
-                    Notification {p.type} Code {p.interviewCode}:
-                    <span style={{ color: "red", fontWeight: "bold" }}>
-                      {p.type.includes("Interview of construction team") ? `CIS-${p.interviewCodeJobInt}` : `RRS-${p.interviewCodeJobInt}`}
-                    </span>
-                    {/* <span style={{ color: "red", fontWeight: "bold" }}>
-             RRS-{p.codejob}
-           </span> */}
-                  </button>
-                </div>
+                {p?.type?.includes("recruitment") && (
+
+                  <div className='NotifTotal' onClick={() => findId(p?.codejob)}>
+                    <div
+                      className='NotifRecruitement' >
+                      R
+                    </div>
+                    <button className='Notification' onClick={() => findId(p?.codejob)}>
+                      Notification Recruitement Request  <br></br>
+                      <span className='IndexNotif'>RRS-</span>
+                      <span className='IndexNotif'>{p.codejob}</span>
+                    </button>
+                  </div>
+                )}
+                {p?.type?.includes("Interview") && (
+                  <div>
+                    <button
+                      className='Notification'
+                      onClick={() =>
+                        p.type.includes("Interview of construction team")
+                          ? findIdInterviewConstruction(p?.interviewCode)
+                          : findIdInterview(p?.interviewCode)
+                      }
+                    >
+                      Notification {p.type} Code {p.interviewCode}:
+                      <span style={{ color: "red", fontWeight: "bold" }}>
+                        {p.type.includes("Interview of construction team") ? `CIS-${p.interviewCodeJobInt}` : `RRS-${p.interviewCodeJobInt}`}
+                      </span>
+                      {/* <span style={{ color: "red", fontWeight: "bold" }}>
+                    RRS-{p.codejob}
+                  </span> */}
+                    </button>
+                  </div>
+
+                )}
+
                 {p?.type?.includes("Extension") && (
                   <button className='Notification' onClick={() => findIdExtention(p?.idExtMiss)}>
                     Extension Mission Notification: <span style={{ color: "red", fontWeight: "bold" }}>MER-{p?.idExtMiss}</span>
@@ -840,16 +1048,24 @@ const NotificationItem = ({ user }) => {
       ) : null}
 
 
-      {/*PLanner */}
-      {user.includes("Planner") || notifPlanner?.dep?.includes('Operation') ?
+      {/* Notif PMO*/}
+      {user.includes("PMO") || notifPlanner?.dep?.includes('Operation') ?
         <StyledNotifyListItem className='item-hover'>
           <p>Number All Notification</p>
           {notifPlanner.map((p, index) => (
             <React.Fragment key={index}>
               <div>
-                <button className='Notification' onClick={() => findId(p?.codejob)}>
-                  Recruitment Request with Code Job: <span style={{ color: "red", fontWeight: "bold" }}>RRS-{p.codejob}</span>
-                </button>
+                <div className='NotifTotal' onClick={() => findId(p?.codejob)}>
+                  <div
+                    className='NotifRecruitement' >
+                    R
+                  </div>
+                  <button className='Notification' onClick={() => findId(p?.codejob)}>
+                    Notification Recruitement Request  <br></br>
+                    <span className='IndexNotif'>RRS-</span>
+                    <span className='IndexNotif'>{p.codejob}</span>
+                  </button>
+                </div>
               </div>
               <div className='Space'></div>
               {p?.type?.includes("Extension") && (
@@ -863,25 +1079,35 @@ const NotificationItem = ({ user }) => {
 
         : null
       }
+      {/* Notif Manager*/}
       {(user.includes("Manager") && !user.includes("Construction") && !dep?.includes('Operation')) && (
         <StyledNotifyListItem className='item-hover'>
-          <p>Number All Notification (notifManager A part Operation)</p>
+          <p>Number All Notification</p>
           {notifManager.map((p, index) => (
             <div key={index}>
               {p?.type?.includes("Interview") && (
-                <div>
-                  <button
-                    className='Notification'
+                <div >
+                  <div className='NotifTotal'
                     onClick={() =>
                       p.type.includes("Interview of construction team")
                         ? findIdInterviewConstruction(p?.interviewCode)
                         : findIdInterview(p?.interviewCode)
-                    }>
-                    Notification {p.type} Code {p.interviewCode}:
-                    <span style={{ color: "red", fontWeight: "bold" }}>
-                      {p.type.includes("Interview of construction team") ? `CIS-${p.interviewCodeJobInt}` : `RRS-${p.interviewCodeJobInt}`}
-                    </span>
-                  </button>
+                    }
+
+                  >
+                    <div
+                      className='NotifInterview' >
+                      I
+                    </div>
+                    <button className='Notification' onClick={() => findId(p?.codejob)}>
+                      Notification {p.type} Code  {p.interviewCode}:  <br></br>
+                      <span lassName='IndexNotif'>
+                        {p.type.includes("Interview of construction team") ? `CIS-${p.interviewCodeJobInt}` : `RRS-${p.interviewCodeJobInt}`}
+                      </span>
+                      <span className='IndexNotif'>{p.codejob}</span>
+                    </button>
+                  </div>
+
                 </div>
               )}
               {p?.type?.includes("Extension") && user.includes("Human Ressource") && (
@@ -904,10 +1130,10 @@ const NotificationItem = ({ user }) => {
 
       )}
 
-      {/* ///Notificationnn de Project Leader*/}
+      {/* Notif Leader*/}
       {user.includes("Leader") ?
         <StyledNotifyListItem className='item-hover'>
-          <p>Number All Notification(ProjectlEADERS) </p>
+          <p>Number All Notification</p>
           {notifProjetLeader.map((p, index) => (
             <>
               <div key={index}>
@@ -952,10 +1178,10 @@ const NotificationItem = ({ user }) => {
         </StyledNotifyListItem>
         : null
       }
-      {/*QC Lead */}
+      {/* Notif QC Lead*/}
       {user.includes("QC Lead") ?
         <StyledNotifyListItem className='item-hover'>
-          <p>Number All Notification(QCLead) </p>
+          <p>Number All Notification </p>
           {notifQCLead.map((p, index) => (
             <>
               <div key={index}>
@@ -976,7 +1202,7 @@ const NotificationItem = ({ user }) => {
       {/*notifLogistic*/}
       {user.toLowerCase().includes("LOGISTIC") ?
         <StyledNotifyListItem className='item-hover'>
-          <p>Number All Notification(LOGISTIC) </p>
+          <p>Number All Notification </p>
           {notifLogistic.map((p, index) => (
             <>
               <div key={index}>
@@ -996,33 +1222,41 @@ const NotificationItem = ({ user }) => {
       }
 
 
-      {/*notifLogistic*/}
-
-
-
-
-      {/*End QC LEAD*/}
-      {/*Construction Manager toLowerCase() */}
+      {/*Construction Manager NOTIF toLowerCase() */}
       {user.includes("Construction") ?
         <StyledNotifyListItem className='item-hover'>
-          <p>Number All Notification(Construction) </p>
+          <p>Number All Notification </p>
           {notifConstruction.map((p, index) => (
-            <>
-              <div key={index}>
-                {/*Demob Flow Project Leader*/}
+            <div key={index}>
+              <div>
+                <div className='NotifTotal' onClick={() => findId(p?.codejob)}>
+                  <div
+                    className='NotifDemob' >
+                    D
+                  </div>
+                  <button className='Notification' onClick={() => findIdDemob(p?.idMd)}>
+                    Demobilization Permission <br></br>
+                    <span className='IndexNotif'>DP-</span>
+                    <span className='IndexNotif'>{p?.idMd}</span>
+                  </button>
+                </div>
+              </div>
+              {/* <div key={index}>
+
                 {p?.type?.includes("Demob") && user.includes("Construction") && (
                   <button className='Notification' onClick={() => findIdDemob(p?.idMd)} >
                     Demobilization Permission Notification:
+
                     <span style={{ color: "red", fontWeight: "bold" }}>DP-{p?.idMd}</span>
                   </button>
                 )}
-              </div>
+              </div> */}
               {/* <div key={index}>
               <button className='Notification' onClick={() => findId(p?.codejob)}>
                 Recruitement Request with Code Job :<span style={{ color: "red",fontWeight:"bold" }}>RRS-{p.codejob}</span> </button>
             </div> */}
               <div className='Space'></div>
-            </>
+            </div>
           ))}
         </StyledNotifyListItem>
         : null

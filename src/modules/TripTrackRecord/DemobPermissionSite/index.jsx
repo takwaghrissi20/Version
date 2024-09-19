@@ -20,7 +20,7 @@ const DemobPermissionSite = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [nameFilter, setNameFilter] = useState('');
-
+  const token = localStorage.getItem("token")
 
   useEffect(() => {
     fetchMobilization();
@@ -32,7 +32,7 @@ const DemobPermissionSite = () => {
       // const datacount = await countEmployees.json();
       // setCount(datacount);
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/list?page=${currentPage}&size=${pageSize}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/list?page=${currentPage}&size=${pageSize}&token=${token}`);
 
 
       if (!response.ok) {

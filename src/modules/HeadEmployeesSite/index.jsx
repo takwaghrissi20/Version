@@ -29,7 +29,7 @@ const HeadOfficeEmployees = () => {
    const [countMobilization, setCountMobilization] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [latestDeMobilization, setLatestDeMobilization] = useState(null);
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     fetchDemobilization();
   }, [currentPage, pageSize, nameFilter]);
@@ -40,19 +40,16 @@ const HeadOfficeEmployees = () => {
       // const datacount = await countMob.json();
       // setCount(datacount);
       //CountMobilization
-      const lastDemobilization = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/getAll`);
+      const lastDemobilization = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/getAll?token=${token}`);
       const allDemobilizations = await lastDemobilization.json();
-  
 
       allDemobilizations.sort((a, b) => new Date(b.demobilizationDate) - new Date(a.demobilizationDate));
-
-      const latestDemobilization = allDemobilizations[0];
-    
+      const latestDemobilization = allDemobilizations[0];  
       setLatestDeMobilization(latestDemobilization);
      
 
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/list?page=${currentPage}&size=${pageSize}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/mobDemob/list?page=${currentPage}&size=${pageSize}&token=${token}`);
 
 
       if (!response.ok) {
@@ -69,7 +66,7 @@ const HeadOfficeEmployees = () => {
   const handleSearch = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${nameFilter}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${nameFilter}&token=${token}`);
       if (!response.ok) {
         throw new Error('Failed to filter employees');
       }
@@ -96,13 +93,14 @@ const HeadOfficeEmployees = () => {
     handleSearch({ target: { value: item.name } }); // Simuler l'événement pour le filtrage
     setIsDropdownOpen(false)
   };
+
   const handleNameFilterChange = async (event) => {
     const filterValue = event.target.value.trim(); // Trim whitespace from input value
     setNameFilter(filterValue);
 
     if (filterValue !== '') {
       try {
-        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${filterValue}`);
+        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/filterByName?name=${filterValue}&token=${token}`);
         if (!response.ok) {
           throw new Error('Failed to filter mobilization');
         }
@@ -125,7 +123,8 @@ const HeadOfficeEmployees = () => {
     <h2 className="Title">Details Person Retun in the Office </h2>
       <AppRowContainer ease={'easeInSine'}>
         <Col xs={24} sm={12} lg={8}>
-          <LastDemobilization latestDeMobilization={latestDeMobilization}></LastDemobilization>
+          <LastDemobilization 
+          latestDeMobilization={latestDeMobilization}></LastDemobilization>
 
         </Col>
       
@@ -168,10 +167,10 @@ const HeadOfficeEmployees = () => {
         </AppsHeader>
         <AppCard
           className='no-card-space-ltr-rtl'
-          title={messages['dashboard.HeadOffice']}
-        >
+          title={messages['dashboard.HeadOffice']} >
 
-          <OrderTable className={clsx("item-hover")} demobilization={demobilization} />
+          <OrderTable className={clsx("item-hover")} 
+          demobilization={demobilization} />
         </AppCard>
         <div style={{marginTop:"1rem",paddingBottom:"1rem"}}>
         <StyledOrderHeaderRight>

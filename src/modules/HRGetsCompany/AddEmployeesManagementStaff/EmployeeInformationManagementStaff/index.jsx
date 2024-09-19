@@ -33,11 +33,11 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
   const [selectedContratType, setSelectedContratType] = useState('');
   const [selectedContractCategorie, setSelectedContractCategorie] = useState('');
   const [isReadOnly, setIsReadOnly] = useState(false);
-
+  const token = localStorage.getItem("token");
   const [category, setCategory] = useState("Management Staff")
   useEffect(() => {
 
-    console.log("categorykkkk", category)
+
 
   }, [selectedGenderType]);
 
@@ -260,7 +260,7 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
           : "";
       const CodeInterview = parseInt(searchValue) + 1; // Increment intCode by 1
       console.log("CodeInterview=", searchValue);
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/findId?code=${searchValue}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/findId?code=${searchValue}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -291,6 +291,7 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
   useEffect(() => {
     fetchPositionTranslate();
   }, [findIdInterview?.positionToBeFilled]);
+
   const fetchPositionTranslate = async () => {
     try {
       const endPoint =
@@ -298,7 +299,7 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/trans/get?description=${findIdInterview?.positionToBeFilled}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/trans/get?description=${findIdInterview?.positionToBeFilled}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -419,7 +420,8 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
     ]).then(values => {
       setIsModalVisible(true);
       if (selectedEmpTypeType === "Site") {
-        alert("Emplotees Site.");
+        // alert("Emplotees Site.");
+        console.log("Emplotees Site.")
       }
       // SaveVisa();
 
@@ -441,25 +443,26 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
             e.preventDefault();
           }
         }}>
+
         {/* <Button onClick={handleSubmit3}>Submit</Button> */}
         <Row style={{ justifyContent: "flex-end" }}>
           <Col xs={24} lg={6} style={{
-            border: '1px solid  ',  padding:'15px',
+            padding: '15px',
             display: "Flex",
-            marginTop:"-15px",
+            marginTop: "-15px",
             position: "relative",
             minHeight: "44px",
             background: "#fff",
             border: "1px solid transparent",
             boxShadow: "0 2px 5px 1px rgba(64, 60, 67, .16)",
             borderRadius: "8px",
-            zIndex:1
+            zIndex: 1
 
 
 
           }}>
             {/* <FaSearch></FaSearch> */}
-            <span style={{marginTop:'0.2rem'}}>MSIS- </span>
+            <span style={{ marginTop: '0.2rem' }}>MSIS- </span>
             <Input
               style={{
                 borderRight: '1px solid grey',
@@ -476,11 +479,11 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
               value={searchValue}
               suffix={<FaSearch onClick={() => fetchDataId(searchValue)} style={{ cursor: 'pointer' }} />}
             >
-              
+
             </Input>
             {isDropdownOpen && (
               <div style={{
-                borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px",cursor:"pointer",
+                borderRadius: "6px", maxHeight: '200px', overflowY: 'auto', paddingLeft: "10px", cursor: "pointer",
                 background: "white", position: "absolute", top: "3.5rem", width: "100%", boxShadow: "5px 5px 5px 5px rgba(64, 60, 67, .16)"
               }}>
                 <List
@@ -493,7 +496,7 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
               </div>
             )}
             {/* <FaSearch onClick={() => fetchDataId(searchValue)}></FaSearch> */}
-            
+
 
 
 
@@ -1316,7 +1319,6 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview }) => {
              disabled={searchValue === '' || !selectedInterviews}>Save</Button> */}
 
         </Space>
-
       </Form>
       <ValidateEmployees
         isViewInfo={isModalVisible}

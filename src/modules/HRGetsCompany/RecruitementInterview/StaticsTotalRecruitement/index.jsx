@@ -12,7 +12,7 @@ import {
 } from '../../../../styles/index.styled';
 
 import { FcReading } from 'react-icons/fc';
-
+import { Image } from 'antd';
 
 const StatsTotalRecruitement = ({ totalNumber }) => {
 
@@ -26,12 +26,14 @@ const StatsTotalRecruitement = ({ totalNumber }) => {
             backgroundColor: '#e6f0ff',
 
 
-          }}
-
-        >
+          }} >
       
-
-        < FcReading  color='#9E49E6' className='icon' /> 
+      <Image
+      width={20}
+      src='/assets/images/TotalRecruitement.png'
+     alt="Total Recruitement"
+     />
+       {/* < FcReading  color='#9E49E6' className='icon' />  */}
         </StyledGeneralStatsAvatar>
         <StyledFlexWrapper>
           <div style={{ marginRight: 8, overflow: 'hidden' }}>

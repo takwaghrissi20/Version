@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useInfoViewActionsContext } from '../../../../@crema/context/AppContextProvider/InfoViewContextProvider';
 
 const jwtAxios = axios.create({
-  baseURL: 'https://dev-gateway.gets-company.com', // Your base API URL
+  baseURL: 'https://dev-gateway.gets-company.com', 
   headers: {
     'Content-Type': 'application/json',
   },
@@ -129,6 +129,7 @@ const JWTAuthProvider = ({ children }) => {
     localStorage.removeItem('token');
     localStorage.removeItem('email');
     setAuthToken(null);
+    window.location.reload();
     setAuthData({
       user: null,
       isLoading: false,

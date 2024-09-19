@@ -140,15 +140,12 @@ const EmpEditForm = (props) => {
     setNewtoApplyForVisa(toApplyForVisa)
     setNewDestination(destination)
   }, [idVisa, dateVisa, toApplyForVisa, destination, getsId]);
-  console.log(" getsIdssss", getsId)
+  const token = localStorage.getItem("token");
   const handleEdit = async (newidVisa, newdateVisa, newdestination, newtoApplyForVisa
-
-
-
 
   ) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/update`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/update?token=${token}`, {
 
         method: 'PUT',
         headers: {

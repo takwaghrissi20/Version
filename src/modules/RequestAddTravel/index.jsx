@@ -32,7 +32,7 @@ const AddTravel = ({
   const [findIdInterview, setFindIdInterview] = useState([]);
 ;
  
-
+const token = localStorage.getItem("token")
   const fetchDataList = async () => {
     try {
       const endPoint =
@@ -40,7 +40,7 @@ const AddTravel = ({
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/list`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/list?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'

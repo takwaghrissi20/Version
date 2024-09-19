@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import AppsContainer from '../../../@crema/components/AppsContainer';
 import { useIntl } from 'react-intl';
 import AppsHeader from '../../../@crema/components/AppsContainer/AppsHeader';
@@ -7,6 +7,7 @@ import { Input, List, Col } from 'antd';
 import AppPageMeta from '../../../@crema/components/AppPageMeta';
 import Pagination from '../../../@crema/components/AppsPagination';
 import RecruitementTable from './RecruitementTable';
+import TrainingTable from './TrainingTable';
 import PassportExpired from './PassportExpired';
 import VisaExpired from './VisaExpired';
 import AppRowContainer from '../../../@crema/components/AppRowContainer';
@@ -20,7 +21,27 @@ import {
 
 } from './index.styled';
 import { useGetDataApi } from '../../../@crema/hooks/APIHooks';
+
 const Dashboards = () => {
+  const [notificationPermission, setNotificationPermission] = useState(null);
+  const requestNotificationPermission = () => {
+    if ('Notification' in window) {
+      Notification.requestPermission().then(permission => {
+        setNotificationPermission(permission);
+      });
+    } else {
+      alert('Your browser does not support desktop notifications.');
+    }
+  };
+
+  const showNotification = () => {
+    if (notificationPermission === 'granted') {
+      new Notification('Afficher Recrutement');
+    } else if (notificationPermission !== 'denied') {
+      requestNotificationPermission();
+    }
+  };
+
   const dropdownRef = useRef(null);
   const { messages } = useIntl();
 
@@ -41,11 +62,38 @@ const Dashboards = () => {
   const [{ apiData: metricsData }] = useGetDataApi('/dashboard/metrics');
   const [{ apiData: crmData }] = useGetDataApi('/dashboard/crm');
   const [passportExpered, setPassportExpered] = useState([]);
+  const [passportExperedProjet, setPassportExperedProjet] = useState([]);
   const [visaExpered, setVisaExpered] = useState([]);
+  const [visaExperedProjet, setVisaExperedProjet] = useState([]);
   const [idRec, setIdRec] = useState("");
   const [listRecruitementId, setListRecruitementId] = useState([]);
+  const [listRecruitementPMO, setListRecruitementPMO] = useState([]);
   const user = localStorage.getItem("role");
+  const [project, setProject] = useState([]);
+  const userEmail = localStorage.getItem("email");
+  const token = localStorage.getItem("token");
+  // Project By email
+
+  const fetchProjectEmail = async () => {
+    try {
+      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getProjectByMail?mail=${userEmail}&token=${token}`;
+      const response = await fetch(url, {
+        method: "GET",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        const ProjectName = data.map(project => project.projName);
+        console.log("projet profile", ProjectName)
+        setProject(ProjectName);
+      } else {
+        console.error("Erreur lors de la récupération du email Projet :", response.status);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la récupération du email Projet:", error);
+    }
+  };
   {/*Get Profile*/ }
+
   const GetProfileEmployess = async () => {
     const storedemail = window.localStorage.getItem("email");
     console.log("storedemail", storedemail)
@@ -54,7 +102,7 @@ const Dashboards = () => {
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${storedemail}&token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -114,7 +162,7 @@ const Dashboards = () => {
 
   const fetchFilteredRecruitement = async (filterValue) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/filterByPosition?position=${filterValue}`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/filterByPosition?position=${filterValue}&token=${token}`);
       if (!response.ok) {
         throw new Error('Failed to filter employees');
       }
@@ -141,7 +189,7 @@ const Dashboards = () => {
           ? "https://dev-gateway.gets-company.com"
           : "";
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list?token=${token}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -159,8 +207,8 @@ const Dashboards = () => {
       setCount(data.length)
       //////Filter les count de Data de idem
       const dataRecruitement = data.filter(p => p.idemp === idRec);
-      console.log("lenght", dataRecruitement)
-
+      const dataRecruitementPMO = data.filter(p => p.notif === 4);
+      setListRecruitementPMO(dataRecruitementPMO)
       setCountId(dataRecruitement)
 
 
@@ -170,39 +218,32 @@ const Dashboards = () => {
     }
   };
 
-  const fetchEmployeesByType = async () => {
+  const fetchRecruitementByType = async () => {
     try {
-      const endPoint = process.env.NODE_ENV === 'development' ? 'https://dev-gateway.gets-company.com' : '';
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/listBypage?page=${currentPage}&size=${pageSize}&sortBy=recruttrequestDate`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-        });
+
+      const url = `https://dev-gateway.gets-company.com/api/v1/re/listBypage?page=${currentPage}&sortBy=recruttrequestDate&size=${pageSize}&token=${token}`;
+      const response = await fetch(url);
+
 
       if (!response.ok) {
-        throw new Error('Failed to fetch employees');
+        throw new Error('Failed to fetch Recruitement');
       }
       const data = await response.json();
       setDatarecruitement(data);
+    } catch (error) {
+      console.error(`Error fetching ${type} Recruitement:`, error);
 
-      return data;
 
     }
-    catch (error) {
-      console.error(`Error fetching ${type} employees:`, error);
-      return [];
-    }
+
+
 
   };
-  const userEmail = localStorage.getItem("email");
-  console.log("userEmail ", userEmail);
 
   // Project By email
   const fetchEmployeesEmail = async () => {
     try {
-      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${userEmail}`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${userEmail}&token=${token}`;
       const response = await fetch(url, {
         method: "GET",
       });
@@ -219,7 +260,7 @@ const Dashboards = () => {
   };
   const fetchEmployeesByEmployees = async () => {
     try {
-      console.log("idRec", idRec)
+
       const endPoint = process.env.NODE_ENV === 'development' ? 'https://dev-gateway.gets-company.com' : '';
       ///const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list`,
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/getRecByGetsId?id=${idRec}&page=${currentPage}&size=${pageSize}`,
@@ -234,10 +275,6 @@ const Dashboards = () => {
         throw new Error('Failed to fetch employees');
       }
       const data = await response.json();
-
-      console.log("idRec", idRec)
-      console.log("Filtered Data List", data);
-      console.log("data List", data)
       setListRecruitementId(data)
       return data;
 
@@ -249,23 +286,35 @@ const Dashboards = () => {
 
   };
   useEffect(() => {
-    if (user.includes("admin") || (user.includes('Administrator'))) {
-      fetchEmployeesByType();
-      fetchCountRecruitement()
-      // fetchCountRecruitement()
-    }
-    else if ((!user.includes("admin"))) {
-      fetchEmployeesEmail()
+    if (user.includes('PMO')) {
+      fetchCountRecruitement();
+      fetchRecruitementByType();
+    } else if ((user.includes("Leader"))) {
+      fetchEmployeesEmail();
       fetchEmployeesByEmployees();
+      fetchExpiredVisa();
+      fetchProjectEmail();
 
     }
+    else if (user.includes("admin") || user.includes("bod") || !user.includes("Cordinator")
+      || user.includes("Administrator")) {
+      fetchCountRecruitement();
+      fetchRecruitementByType();
+      fetchEmployeesEmail();
+      fetchEmployeesByEmployees();
+      fetchExpiredVisa();
+      fetchProjectEmail();
 
-  }, [currentPage, pageSize, idRec]);
+
+    }
+  }, [user, currentPage, pageSize, idRec]);
+
   //Passport Expired
   const fetchExpiredVisa = async () => {
+
     try {
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list`);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list?token=${token}`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch employees');
@@ -282,6 +331,11 @@ const Dashboards = () => {
           return false;
         }
       });
+
+      const ProjexpiredVisaData = expiredVisaData.filter(employee =>
+        project.includes(employee.projName)
+      );
+      setVisaExperedProjet(ProjexpiredVisaData)
       /////Passport Finist Date
       const passportfinishdate = data.filter(employee => {
         // Vérifier si la date de fin de visa est définie et non vide
@@ -289,13 +343,20 @@ const Dashboards = () => {
           const PassportDate = new Date(employee.passport_finish_date);
           return PassportDate < currentDate;
         } else {
-          // Si la date de fin de visa n'est pas définie ou vide, exclure l'employé
           return false;
         }
       });
+
+
+      // Filtrer les employés dont le projet est inclus dans le tableau project
+      const Projpassportfinishdate = passportfinishdate.filter(employee =>
+        project.includes(employee.projName)
+      );
+
+      setPassportExperedProjet(Projpassportfinishdate)
       setPassportExpered(passportfinishdate)
       setVisaExpered(expiredVisaData)
-      console.log("Données des visas expirés :", expiredVisaData);
+
 
 
 
@@ -306,10 +367,8 @@ const Dashboards = () => {
   }
 
   //End Passourt Expired
-
-
   const items = [
-    {
+    ...(!user?.toUpperCase().includes("RELATION AND TRAINING") ? [{
       label: 'Recruitment',
       key: '1',
       children: (
@@ -341,10 +400,15 @@ const Dashboards = () => {
             <RecruitementTable
               loading={loading}
               AllRecruitement={datarecruitement}
+              listRecruitementPMO={listRecruitementPMO}
               listRecruitementId={listRecruitementId}
+              user={user}
             />
-            {user.includes('admin') || user.includes('Administrator') || !user?.includes('Construction') && (
-              <>
+
+            {(user.includes('admin') || user.includes('bod') || user.includes('Cordinator') || !user?.includes('Construction')
+              || !user.includes('PMO') || user?.includes('Administrator') || !user?.toUpperCase().includes("RELATION AND TRAINING"))
+
+              && (
                 <div className='Pagination' >
                   <StyledCustomerHeaderRight>
                     <Pagination
@@ -354,10 +418,9 @@ const Dashboards = () => {
                     />
                   </StyledCustomerHeaderRight>
                 </div>
-              </>
-            )}
-            {!user.includes('admin') || !user.includes('Administrator') && (
 
+              )}
+            {!user.includes('admin') || !user.includes('Cordinator') || !user.includes('PMO') && (
 
               <div className='Pagination' >
                 <StyledCustomerHeaderRight>
@@ -376,52 +439,133 @@ const Dashboards = () => {
 
         </>
       ),
-    },
-
-    // ...((!user?.includes('Manager') || user?.includes('Planner') || user?.includes('Leader') ||
-    //      user?.includes('Administrator')) || user?.includes('Human Ressource')  || !user?.includes('Construction') ? 
-    //  [{
-    //   label: 'Passport Expired',
-    //   key: '2',
-    //   children: (
-    //     <>
-    //       <AppsHeader key={'wrap'}></AppsHeader>
-    //       <PassportExpired loading={loading} passportExpered={passportExpered} />
-    //     </>
-    //   ),
-    // }] : []),
-    ...(((!(user?.includes('Manager') || user?.includes('Planner') || user?.includes('Leader') ||
-      user?.includes('Administrator') || user?.includes('Construction'))) || user?.includes('Human Ressource')) ? [{
-        label: 'Passport Expired',
+    }] : []),
+    ...(user?.toUpperCase().includes("RELATION AND TRAINING") || user?.includes("admin")
+      || user?.includes("bod") ? [{
+        label: 'Training',
         key: '2',
-        children: (
-          <>
-            <AppsHeader key={'wrap'}></AppsHeader>
-            <PassportExpired loading={loading} passportExpered={passportExpered} />
+        children: (          
+            <>
+            
+              <TrainingTable
+                loading={loading}
+                user={user}
+              />
+
+          
+
+
           </>
         ),
       }] : []),
 
-    ...(((!(user?.includes('Manager') || user?.includes('Planner') || user?.includes('Leader') ||
-      user?.includes('Administrator') || user?.includes('Construction'))) || user?.includes('Human Ressource')) ? [{
-        label: 'Visa Expired',
+
+
+
+
+    // ...(((!(user?.includes('Manager') || user?.includes('PMO') ||
+    //   user?.includes('Construction') )) || user?.includes('Human Ressource') ||
+    //   user?.includes('bod') || user?.includes('admin')
+    //   || user?.includes('Administrator')) ? [{
+    //     label: 'Passport Expired',
+    //     key: '2',
+    //     children: (
+    //       <>
+    //         <AppsHeader key={'wrap'}>
+
+    //         </AppsHeader>
+    //         <PassportExpired
+    //           passportExperedProjet={passportExperedProjet}
+    //           loading={loading}
+    //           passportExpered={passportExpered}
+    //           user={user}
+
+
+    //         />
+    //       </>
+    //     ),
+    //   }] : []),
+    /////////////////////Passport Expired
+    ...((user?.includes('PMO') || user?.includes('Construction') || user?.includes('Human Ressource') ||
+      user?.includes('bod') || user?.includes('admin')
+      || (user?.includes('Administrator') && !user?.includes('Cordinator'))) ? [{
+        label: 'Passport Expired',
         key: '3',
-        children:
+        children: (
           <>
             <AppsHeader key={'wrap'}>
 
             </AppsHeader>
-            <VisaExpired loading={loading} VisaExpired={visaExpered} />
+            <PassportExpired
+              passportExperedProjet={passportExperedProjet}
+              loading={loading}
+              passportExpered={passportExpered}
+              user={user}
 
-          </>,
+
+            />
+          </>
+        ),
       }] : []),
+    /////////////////////End Passport Expired
+    ...((user?.includes('PMO') || user?.includes('Construction') || user?.includes('Human Ressource') ||
+      user?.includes('bod') || user?.includes('admin')
+      || (user?.includes('Administrator') && !user?.includes('Cordinator'))
+
+    ) ? [{
+      label: 'Visa Expired',
+      key: '4',
+      children:
+        <>
+          <AppsHeader key={'wrap'}>
+
+          </AppsHeader>
+          <VisaExpired
+            visaExperedProjet={visaExperedProjet}
+            loading={loading}
+            VisaExpired={visaExpered}
+            user={user}
+          />
+
+        </>,
+    }] : []),
+
 
 
   ];
+  /////////////////
+
+  useEffect(() => {
+    if (!("Notification" in window)) {
+      console.log("Browser does not support desktop notification");
+    } else {
+      Notification.requestPermission();
+    }
+  }, []);
+
+  // Define the showNotification function
+  const showNotification2 = useCallback(() => {
+    new Notification('Hello World');
+  }, []);
+
+  // const showNotification = () => {
+  //   if (notificationPermission === 'granted') {
+  //     new Notification('Afficher Recrutement');
+  //   } else if (notificationPermission !== 'denied') {
+  //     requestNotificationPermission();
+  //   }
+  // };
 
   return (
     <>
       <AppPageMeta title='Dashboards' />
+      <div>
+        {/*     
+      <div>
+      <button onClick={showNotification2}>Show notification</button>
+    </div> */}
+
+      </div>
       <>
         {(user.includes("admin") || user.includes("bod")) && metricsData && (
           <AppRowContainer ease={'easeInSine'}>
@@ -433,7 +577,7 @@ const Dashboards = () => {
           </AppRowContainer>
         )}
 
-        {user.includes("Manager") && !user?.includes('Construction') && metricsData && (
+        {user.includes("Manager") && !user?.includes('Construction') && !user?.includes('Operation') && metricsData && (
           <AppRowContainer ease={'easeInSine'}>
             {crmData?.stateDataManager?.map((data) => (
               <Col key={data.id} xs={24} sm={12} lg={6}>
@@ -443,7 +587,7 @@ const Dashboards = () => {
           </AppRowContainer>
         )}
         {/**Leader */}
-        {user.includes("Leader") && metricsData && (
+        {user.includes("PMO") && metricsData && (
           <AppRowContainer ease={'easeInSine'}>
             {crmData?.stateDataManager?.map((data) => (
               <Col key={data.id} xs={24} sm={12} lg={6}>
@@ -452,11 +596,40 @@ const Dashboards = () => {
             ))}
           </AppRowContainer>
         )}
+        {user.includes("Leader") || user.includes("Operation") && metricsData && (
+          <AppRowContainer ease={'easeInSine'}>
+            {crmData?.stateDataManagerOpearation?.map((data) => (
+              <Col key={data.id} xs={24} sm={12} lg={6}>
+                <StatsDirCard data={data} />
+              </Col>
+            ))}
+          </AppRowContainer>
+        )}
         {/*End Project*/}
         {/* //hrAdministrator */}
-        {user.includes("Administrator") && metricsData && (
+        {user.includes("Cordinator") && metricsData && (
           <AppRowContainer ease={'easeInSine'}>
-            {crmData?.stateDataHRAdministrator?.map((data) => (
+            {crmData?.stateDataHRCordinator?.map((data) => (
+              <Col key={data.id} xs={24} sm={12} lg={6}>
+                <StatsDirCard data={data} />
+              </Col>
+            ))}
+          </AppRowContainer>
+        )
+        }
+        {(user.includes("Administrator") && !user.includes("Cordinator")) && metricsData && (
+          <AppRowContainer ease={'easeInSine'}>
+            {crmData?.stateDataHRAdministartor?.map((data) => (
+              <Col key={data.id} xs={24} sm={12} lg={6}>
+                <StatsDirCard data={data} />
+              </Col>
+            ))}
+          </AppRowContainer>
+        )
+        }
+        {(user.toUpperCase().includes("RELATION AND TRAINING")) && metricsData && (
+          <AppRowContainer ease={'easeInSine'}>
+            {crmData?.stateDataHREmplyees?.map((data) => (
               <Col key={data.id} xs={24} sm={12} lg={6}>
                 <StatsDirCard data={data} />
               </Col>
@@ -465,7 +638,7 @@ const Dashboards = () => {
         )
         }
       </>
-      {user.includes("Planner") || user?.includes('Construction') || user?.includes('Site Klerk') ||
+      {user?.includes('Construction') || user?.includes('Site Klerk') ||
         user.includes("QC") || user.includes("ASSET AND LOGISTIC ")
 
         ?

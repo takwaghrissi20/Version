@@ -114,7 +114,7 @@ const OrderTable = ({ orderData }) => {
         return (
           <span style={{
             backgroundColor: isFuture ? '#06668C' : 'black',
-            color: isFuture ? 'white' : 'black',
+            color: isFuture ? 'white' : 'white',
             padding: isFuture ? '0.2rem' : '0px',
             borderRadius:isFuture ? '0.2rem' : '0px'
             

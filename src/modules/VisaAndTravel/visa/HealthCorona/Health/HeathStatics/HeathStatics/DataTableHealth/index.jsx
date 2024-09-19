@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 /// change 
 import { StyledOrderTable} from '../../../../../../../../styles/index.styled';
 
-import { Button,Alert} from 'antd';
+import { Button,Alert,notification} from 'antd';
 import { Dropdown } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
-
+import { Tooltip } from 'antd';
 import ConfirmationModal from '../../../../../../../../@crema/components/AppConfirmationModal';
 import IntlMessages from '../../../../../../../../@crema/helpers/IntlMessages';
 import { useNavigate } from 'react-router-dom';
@@ -21,7 +21,7 @@ const TableHealth = ({vaccin,user}) => {
   const [getsId, setGetsId] = useState("");
 
   const navigate = useNavigate();
-
+  const token = localStorage.getItem("token");
 
 
   const   handleEditHealth= () => {
@@ -44,7 +44,58 @@ const TableHealth = ({vaccin,user}) => {
   
     });
   }
-
+  const openNotification = () => {
+    notification.open({
+      message: 'Success',
+      description: 'Success Delete',
+      style: {
+        backgroundColor: '#28a745',
+        border: '1px solid #28a745',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #1f8838',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
+  const openNotificationError = () => {
+    notification.open({
+      message: 'Error',
+      description: 'Error Delate',
+      style: {
+        backgroundColor: 'red',
+        border: '1px solid #dc3545',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #bd1120',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
 
  
 
@@ -61,23 +112,27 @@ const TableHealth = ({vaccin,user}) => {
                 ? "https://dev-gateway.gets-company.com"
                 : "";
 
-        const response = await fetch(`${endPoint}/api/v1/vacin/delete?code=${getsId}&id=${idv}`, {
+        const response = await fetch(`${endPoint}/api/v1/vacin/delete?code=${getsId}&id=${idv}&token=${token}`, {
             method: 'DELETE',
         });
 
         // Handle server response
         if (!response.ok) {
             console.log("Error: Response not OK", response.status);
-            alert("Error Not Vaccin Delete");
+            openNotificationError('bottomRight')
+        
             throw new Error('La requête a échoué avec le code ' + response.status);
         }
 
         if (response.ok) {
                    
-            const data = await response.text();
-            console.log("deletee", data);         
-            alert(data);
-            onDeleteVaccin(false);
+            const data = await response.json();       
+            openNotification('bottomRight')
+            setTimeout(() => {
+              onDeleteVaccin(false);
+              window.location.reload();
+          }, 100);
+         
         }
 
         const contentType = response.headers.get('content-type');
@@ -90,7 +145,7 @@ const TableHealth = ({vaccin,user}) => {
 }
 const findId = async (code) => {
   try {
-    const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vacin/findId?code=${code}`, {
+    const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/vacin/findId?code=${code}&token=${token}`, {
       method: 'Get',
 
     });
@@ -185,7 +240,18 @@ const items= user?.includes("admin") ? [
       title: 'project Name',
       dataIndex: 'projName',
       key: 'projName',
-      render: (text) => text === null || text === undefined ? 'null' : text
+      width: 100,
+      ellipsis: {
+        showTitle: false,
+      },
+      render: (name) => (
+        <Tooltip placement='topLeft' title={name}>
+          {name}
+        </Tooltip>
+      ),
+
+ 
+     
     },
    
   
@@ -193,43 +259,43 @@ const items= user?.includes("admin") ? [
       title: 'VACCINE TYPE',
       dataIndex: 'typeVccin',
       key: 'typeVccin',
-      render: (text) => text === null || text === undefined ? 'null' : text
+     
     },
     {
       title: 'Result Fetness',
       dataIndex: 'resultFitness',
       key: 'resultFitness',
-      render: (text) => text === null || text === undefined ? 'null' : text
+   
     },
     {
       title: 'Date Fetness Certificate',
       dataIndex: 'dateTestWork',
       key: 'dateTestWork',
-      render: (text) => text === null || text === undefined ? 'null' : text
+    
     },
     {
       title: 'Result Hepatite Certificate',
       dataIndex: 'hepatitResult',
       key: 'hepatitResult',
-      render: (text) => text === null || text === undefined ? 'null' : text
+    
     },
     {
       title: 'Date Hepatite Certificate',
       dataIndex: 'hypatitDare',
       key: 'hypatitDare',
-      render: (text) => text === null || text === undefined ? 'null' : text
+     
     },
     {
       title: 'Result IDZ/HIV tEST',
       dataIndex: 'idzresult',
       key: 'idzresult',
-      render: (text) => text === null || text === undefined ? 'null' : text
+      
     },
     {
       title: 'Date IDZ/HIV tEST',
       dataIndex: 'idzdate',
       key: 'idzdate',
-      render: (text) => text === null || text === undefined ? 'null' : text
+     
     },
    
    
