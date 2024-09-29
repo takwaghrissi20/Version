@@ -76,21 +76,7 @@ const UpdateMission = () => {
   const extraProjectPlanner = location.state ? location.state.extraProjectPlanner : null;
   const plannerInputPlanner = location.state ? location.state.plannerInputPlanner : null;
 
-  const findIdExtention = async (code) => {
-    try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getById?id=${ref}&token=${token}`, {
-        method: 'GET',
-      });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const responseData = await response.json();
-      console.log("extention333333", responseData)
-      setIdExtention(responseData)
-    } catch (error) {
-      console.error("Erreur lors de la récupération du jobcode:", error);
-    }
-  };
+ 
   function ExtraProject(e) {
     setNewExtraProject(e.target.checked)
     if (e.target.checked) {
@@ -108,12 +94,9 @@ const UpdateMission = () => {
 
 
   }
-
-
-
   const findIdMission = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getById?id=${id}&token=${token}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/getById?id=${ref}&token=${token}`, {
         method: 'Get',
       });
       if (!response.ok) {
@@ -121,9 +104,10 @@ const UpdateMission = () => {
       }
       if (response.ok) {
         const responseData = await response.json();
+        console.log("refffMission", responseData)
+        setIdExtention(responseData)
         setMission(responseData)
         setStarTDateMis(responseData?.new_mission);
-
         setGetsId(responseData?.getsId)
         setReason(responseData?.reasonForExtension)
         setCommentaire(responseData?.comments)
@@ -133,7 +117,7 @@ const UpdateMission = () => {
 
       }
     } catch (error) {
-      console.error("Erreur lors de la récupération du id Mission:", error);
+      console.error("Erreur lors de la récupération du id Mission Extention:", error);
     }
   };
 
@@ -172,10 +156,9 @@ const UpdateMission = () => {
 
   }
   useEffect(() => {
-    findIdExtention()
+   
     if (getsId) {
-      findId();
-    }
+      findId();}
     findIdMission()
   }, [getsId, ref]);
   const handleInputReasonChange = (event) => {
@@ -262,7 +245,7 @@ const UpdateMission = () => {
           old_mission: old_mission,
           new_mission: new_mission,
           reasonForExtension: newreason,
-          comments:newcommentaire,
+          comments: newcommentaire,
           extraProject: isExDep,
           plannerInput: isOrDep,
           notif: 34
@@ -330,7 +313,7 @@ const UpdateMission = () => {
       if (response.ok) {
 
         const responseData = await response.text();
-
+      console.log("tettt66666",responseData)
         openNotification('bottomRight')
       }
 
@@ -439,7 +422,7 @@ const UpdateMission = () => {
 
   //Operation
   //hrManager
-  const  Updatehr = async () => {
+  const Updatehr = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/updateTr?id=${ref}&token=${token}`, {
 
@@ -489,57 +472,57 @@ const UpdateMission = () => {
   };
 
   //hrManager
- //BOD
- const   UpdateBOD = async () => {
-  try {
-    const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/updateTr?id=${ref}&token=${token}`, {
+  //BOD
+  const UpdateBOD = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/missionEx/updateTr?id=${ref}&token=${token}`, {
 
-      method: 'PUT',
-      headers: {
-        "Access-Control-Allow-Headers": "Content-Type",
-        "Access-Control-Allow-Origin": "*",
-        'Content-Type': 'application/json',
-        "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
-      },
-      body: JSON.stringify({
-        ref: ref,
-        dateinput: idExtention?.dateinput,
-        refMiss: idExtention?.mission_idMiss,
-        projectTitle: idExtention?.projectTitle,
-        projRef: idExtention?.projRef,
-        name: idExtention?.name,
-        position: idExtention?.position,
-        actualLocation: idExtention?.actualLocation,
-        old_mission: idExtention?.old_mission,
-        new_mission: idExtention?.new_mission,
-        reasonForExtension: idExtention?.reasonForExtension,
-        comments: idExtention?.comments,
-        extraProject: idExtention?.extraProject,
-        plannerInput: idExtention?.plannerInput,
-        notif: 38
+        method: 'PUT',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+          ref: ref,
+          dateinput: idExtention?.dateinput,
+          refMiss: idExtention?.mission_idMiss,
+          projectTitle: idExtention?.projectTitle,
+          projRef: idExtention?.projRef,
+          name: idExtention?.name,
+          position: idExtention?.position,
+          actualLocation: idExtention?.actualLocation,
+          old_mission: idExtention?.old_mission,
+          new_mission: idExtention?.new_mission,
+          reasonForExtension: idExtention?.reasonForExtension,
+          comments: idExtention?.comments,
+          extraProject: idExtention?.extraProject,
+          plannerInput: idExtention?.plannerInput,
+          notif: 38
 
 
-      })
-    });
+        })
+      });
 
-    if (!response.ok) {
-      openNotificationError('bottomRight')
-      throw new Error('Network response was not ok');
+      if (!response.ok) {
+        openNotificationError('bottomRight')
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+
+        const responseData = await response.text();
+
+        openNotification('bottomRight')
+      }
+
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
     }
-    if (response.ok) {
+  };
 
-      const responseData = await response.text();
-
-      openNotification('bottomRight')
-    }
-
-    // Handle responseData if needed
-  } catch (error) {
-    console.error("Erreur lors de la récupération du Id :", error);
-  }
-};
-
- //END BOD
+  //END BOD
 
   return (
     <>
@@ -591,7 +574,7 @@ const UpdateMission = () => {
                       <Form.Item label='Mission Reference' name='Mission Reference '>
                         <Input
                           className='Input'
-                          placeholder={mission?.refMiss}
+                          placeholder={"MAO-"+mission?.refMiss}
                           readOnly
 
                         />
@@ -842,7 +825,7 @@ const UpdateMission = () => {
                       <Form.Item label='Mission Reference' name='Mission Reference '>
                         <Input
                           className='Input'
-                          placeholder={mission_idMiss}
+                          placeholder={"MAO-"+mission?.refMiss}
                           readOnly
 
                         />
@@ -1145,7 +1128,7 @@ const UpdateMission = () => {
             {roles.includes("PMO") &&
               <Button
                 onClick={UpdatePlanner}
-              >Save Planner</Button>
+              >Save </Button>
 
 
             }
@@ -1163,14 +1146,14 @@ const UpdateMission = () => {
 
 
             }
-                {roles.includes("Human Ressource") &&
+            {roles.includes("Human Ressource") &&
               <Button
                 onClick={Updatehr}
               >Save HR</Button>
 
 
             }
-             {roles.includes("bod") &&
+            {roles.includes("bod") &&
               <Button
                 onClick={UpdateBOD}
               >Save BOD</Button>

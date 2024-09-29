@@ -653,7 +653,8 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Arabic Position To be filled' name='arPosition' >
-                    <Input placeholder={positionfieledarabe} dir="rtl"
+                    <Input 
+                    placeholder={positionfieledarabe} dir="rtl"
                       readOnly={true}
 
 

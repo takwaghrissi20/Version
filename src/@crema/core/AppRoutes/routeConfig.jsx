@@ -631,6 +631,12 @@ const routesConfig = [
             messageId: "sidebar.general.SalariesCalculateOffice",
             url: "/Payroll/CalculateSalaryOffice",
           },
+          {
+            id: "FinaceSalary",
+            title: "FinaceSalary",
+            messageId: "sidebar.general.OrDERFIANACIALCOORDINATOR",
+            url: "/Payroll/PAYMENT-OrDER-FIANACIAL-COORDINATOR",
+          },
          
          
           

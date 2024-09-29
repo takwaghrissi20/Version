@@ -537,6 +537,7 @@ const AddRecruitementForemanBelow = () => {
           //jobCode: JobCode,
           certif: certif,
           experience: selectedLevel,
+          jobCode: LastIndexRecruitementIncremente,
           type: type,
           position: profile?.position,
           projectName: selectedProject,

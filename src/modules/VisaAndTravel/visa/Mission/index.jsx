@@ -181,13 +181,12 @@ const Mission = () => {
           projName: project.projName,
           projId: project.projId
         }));
-  
+       console.log("testtt",responseData?.projects)
         const projectscountry = responseData?.projects?.flatMap(project => 
           project.locations?.map(location => location.lieu)
         );
         setProjectsCountry(projectscountry);
         setProjects(projectsData);
-
 
       }
      

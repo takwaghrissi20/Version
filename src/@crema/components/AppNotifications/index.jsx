@@ -1,8 +1,7 @@
 import React,{useEffect, useState} from 'react';
-import { notification } from '@crema/mockapi/fakedb';
+import { notification } from '../../../@crema/mockapi/fakedb';
 import { Dropdown } from 'antd';
-
-import IntlMessages from '@crema/helpers/IntlMessages';
+import IntlMessages from '../../../@crema/helpers/IntlMessages';
 import NotificationItem from './NotificationItem';
 import { IoIosNotificationsOutline } from 'react-icons/io';
 import {
@@ -17,6 +16,7 @@ import {
 const AppNotifications = () => {
   const[count,setCount]=useState(0)
   const[notif,setNotif]=useState([])
+  
   //Norifff All
   const AllNotif = async () => {
     try {

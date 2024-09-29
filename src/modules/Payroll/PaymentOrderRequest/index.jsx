@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../../@crema/components/AppRowContainer';
 import {
@@ -14,17 +15,40 @@ import {
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import IntlMessages from '../../../@crema/helpers/IntlMessages';
- import OrderTable from './TableOrderPaymentRequest';
- import { useLocation } from 'react-router-dom';
-const PaymentOrderRequest  = () => {
+import OrderTable from './TableOrderPaymentRequest';
+import { useLocation } from 'react-router-dom';
+import RequestPayment from './RequestPaymentHTML';
+import RequestPaymentTradeHTML from './RequestPaymentTradeHTML';
+import RequestPaymentViacHTML from './RequestPaymentViacHTML';
+
+const PaymentOrderRequest = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const filteredEmployees = location.state ? location.state.filteredEmployees : null;
-  const  costCenter = location.state ? location.state. costCenter : null;
-  const  selectedProject = location.state ? location.state.selectedProject : null;
- const token = localStorage.getItem("token")
-  //////////////////////////////
-;
+  const costCenter = location.state ? location.state.costCenter : null;
+  const selectedProject = location.state ? location.state.selectedProject : null;
+  const calculateSalary = location.state ? location.state.calculateSalary : null;
+  const subject = location.state ? location.state.subject : null;
+  const selectedTypePament = location.state ? location.state.selectedTypePament : null;
+  const typecompany = location.state ? location.state.typecompany : null;
+  const chequeName = location.state ? location.state.chequeName : null;
+  const bancAccount = location.state ? location.state.bancAccount : null;
+  const ibanNumber = location.state ? location.state.ibanNumber : null;
+  const transfer = location.state ? location.state.transfer : null;
+  const transferRef = location.state ? location.state.transferRef : null;
+  const listprojName = location.state ? location.state.listprojName : null;
+  const monthName = location.state ? location.state.monthName : null;
+  const lastNumberTransferNumberIncrement = location.state ? location.state.lastNumberTransferNumberIncrement : null;
+  const lastNumberTransferNumber = location.state ? location.state.lastNumberTransferNumber : null;
+  const listsalaries = location.state ? location.state.listsalaries : null;
+  const selectedRows = location.state ? location.state.selectedRows : null;
+
+  console.log("listsalaries", listsalaries)
+
+  console.log("lastNumberTransferNumberIncrement 3333", lastNumberTransferNumberIncrement)
+  const [descriptions, setDescriptions] = useState({});
+  const [isSuccess, setIsSuccess] = useState(false);
+  const token = localStorage.getItem("token")
   const [getsId, setGetsId] = useState("");
   const [lastRequest, setLastRequest] = useState(0);
   const [objet, setObjet] = useState("");
@@ -32,14 +56,30 @@ const PaymentOrderRequest  = () => {
   const [isCash, setIsCash] = useState(true);
   const [isTransfer, setIsTransfer] = useState(false);
   const [isCheque, setIsCheque] = useState(false);
-  /////////////////////////
-  const [total, setTotal ]= useState("");
+  const [total, setTotal] = useState("");
   const [profile, setProfile] = useState("")
+  const [isLoading, setIsLoading] = useState(false);
 
   const [form] = Form.useForm();
   const [dateInput, setDateInput] = useState(new Date());
   const userRole = localStorage.getItem("role");
+  const [isRequestPaymentVisible, setIsRequestPaymentVisible] = useState(true);
+  //////////////
+  const [isPrintMode, setIsPrintMode] = useState(false);
+  const [itemSave, setItemSave] = useState("");
 
+  const handlePrint = () => {
+    setIsPrintMode(true);
+    setIsLoading(true);
+    setTimeout(() => {
+      window.print();
+      setIsLoading(false);
+      setIsPrintMode(false);
+    }, 1000);
+  };
+
+
+  /////////////
   const GetProfileEmployess = async () => {
     const storedemail = window.localStorage.getItem("email");
     console.log("storedemail", storedemail)
@@ -70,18 +110,32 @@ const PaymentOrderRequest  = () => {
       console.error('Erreur lors de la récupération Last Recruitement', error);
     }
   };
+  const handlePrinttest = () => {
+    setIsRequestPaymentVisible(false);
+
+    setTimeout(() => {
+      window.print();
+      setIsRequestPaymentVisible(true);
+    }, 1000);
+  };
+
 
   useEffect(() => {
     GetProfileEmployess()
     LastRequestPayment()
     //Calculate Total
-    const totalNetSite = filteredEmployees?.reduce((accumulator, filteredEmployees) => {
-      return accumulator + filteredEmployees?.netSite;
-    }, 0);
-    
-    console.log("Somme totale de netSite pour tous les employés :", totalNetSite);
-    setTotal(totalNetSite)
-  }, [getsId]);
+    const total = Array.isArray(listsalaries)
+      ? listsalaries.reduce((acc, salary) => acc + salary?.siteSaalary, 0)
+      : Array.isArray(Object.values(listsalaries))
+        ? Object.values(listsalaries).reduce((acc, salary) => acc + salary?.siteSaalary, 0)
+        : 0;
+
+    // Update the total state
+    setTotal(total);
+
+
+
+  }, [getsId, listsalaries]);
 
 
 
@@ -112,7 +166,7 @@ const PaymentOrderRequest  = () => {
       color: '#FFFFFF !important',
     });
   };
- 
+
   const openNotificationWarning = () => {
     notification.open({
       message: 'Warning',
@@ -165,7 +219,7 @@ const PaymentOrderRequest  = () => {
       color: '#FFFFFF !important',
     });
   };
- 
+
 
 
 
@@ -199,10 +253,7 @@ const PaymentOrderRequest  = () => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
-      console.log("Lastttt",data?.id)
       setLastRequest(data?.id)
-      
-
 
     } catch (error) {
       console.error('Erreur lors de la récupération Last RequestPayment', error);
@@ -219,7 +270,7 @@ const PaymentOrderRequest  = () => {
     }
 
   }
-  function   Transfer(e) {
+  function Transfer(e) {
     console.log(`checkedHead = ${e.target.checked}`);
     setIsTransfer(e.target.checked)
     if (e.target.checked) {
@@ -236,11 +287,23 @@ const PaymentOrderRequest  = () => {
     }
   }
   //Save Request Order
+
   const SaveRequest = async () => {
     try {
+      const listRequestPayments = filteredEmployees.map(employee => ({
+        ...employee,
+        otherDescription: descriptions[employee.getsId] || '',
+        amount: calculateSalary[employee.getsId] || 0,
+        fullName: employee?.name
+      }));
+      const transferNumber = selectedTypePament === 'Transfer Remittance'
+        ? lastNumberTransferNumberIncrement
+        : lastNumberTransferNumber;
+      console.log("transferNumber testtt", transferNumber)
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/RequestPayment/add?token=${token}`, {
 
         method: 'POST',
+
         headers: {
           "Access-Control-Allow-Headers": "Content-Type",
           "Access-Control-Allow-Origin": "*",
@@ -248,27 +311,43 @@ const PaymentOrderRequest  = () => {
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
         body: JSON.stringify({
-         
-          object: objet,
-          dateInput:formattedDate,
-          fromReq:from,
-          total:total,
-          cashpayment:isCash,
-          transfertPayment:isTransfer,
-          paymentType:isCheque,
-          listRequestPayments:filteredEmployees 
-          // ListRequestPayments: ListRequestPayments
-       
-          // ListRequestPayments:filteredEmployees
-      // //  id:LastIndexRequestPaymentIncremente,
-      //  dateInput:formattedDate,
-      //  object:objet,
-      //  fromReq:from,
+          dateInput: formattedDate,
+          object: subject,
+          fromReq: from,
+          paymentType: selectedTypePament,
+          total: total,
+          monthBy: monthName,
+          requstor: "Syrine",
+          companyType: typecompany,
+          fromBankCheque: bancAccount,
+          "payrollSign": null,
+          "checkedByHod": null,
+          "approvedByBod1": true,
+          "approvedByBod2": null,
+          notif: 0,
+          "cashpayment": null,
+          "transfertPayment": null,
+          "paymentRefDate": null,
+          "payrolDate": null,
+          "otherDescription": null,
+          "prinRreq": null,
+          nameCheque: chequeName,
+          cosCenter: costCenter,
+          projName: selectedProject,
+          "ibanCheque": null,
+          "travelAgent": null,
+          "bankNameTravel": null,
+          "ibnTravel": null,
+          "idPaid": null,
+          "virementOrdre": null,
+          transferNumber: transferNumber,
+          listRequestPayments,
+
 
 
         })
       });
-      
+
 
       if (!response.ok) {
         openNotificationError('bottomRight')
@@ -279,8 +358,15 @@ const PaymentOrderRequest  = () => {
       if (response.ok) {
 
         const responseData = await response.json();
+        console.log("setItemSave", responseData)
+        setItemSave(responseData)
         form.resetFields();
         openNotification('bottomRight')
+        setIsSuccess(true);
+        // setTimeout(() => {
+        //   window.location.reload();
+
+        // }, 100);
 
       }
       // Handle responseData if needed
@@ -307,7 +393,9 @@ const PaymentOrderRequest  = () => {
       >
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
-            <Typography.Title level={4}>Payment Request</Typography.Title>
+            <Typography.Title level={4}>REQUEST FOR PAYMENT :{typecompany}
+
+            </Typography.Title>
 
           </div>
 
@@ -325,7 +413,7 @@ const PaymentOrderRequest  = () => {
                   <Form.Item label='Request Reference' name='Requestref'>
                     <Input
                       readOnly
-                      placeholder={"Request ref-" + LastIndexRequestPaymentIncremente} 
+                      placeholder={"Request ref-" + LastIndexRequestPaymentIncremente}
 
                     />
                   </Form.Item>
@@ -333,8 +421,18 @@ const PaymentOrderRequest  = () => {
                 <Col xs={24} md={12}>
                   <Form.Item label='Date' name='date'>
                     <Input
-                       placeholder={formattedDate}
-                       readOnly
+                      placeholder={formattedDate}
+                      readOnly
+
+                    />
+
+                  </Form.Item>
+                </Col>
+                <Col xs={24} md={12}>
+                  <Form.Item label='COST CENTE' name='COST CENTE'>
+                    <Input
+                      placeholder={costCenter}
+                      readOnly
 
                     />
 
@@ -354,77 +452,98 @@ const PaymentOrderRequest  = () => {
           <Col xs={24} md={18}>
             <StyledShadowWrapper>
               <AppRowContainer>
-           
-              <Col xs={24} md={24}>
-                  <Form.Item label='Object :' name='Object'>
-                    <Input
-                    style={{paddingTop:"1rem",paddingBottom:"1rem"}}
-                    
-                      placeholder="Object"
-                      value={objet}
-                      onChange={(e) => setObjet(e.target.value)}
-
-
-                                                                                        />           
-                  </Form.Item>
-                </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label='From' name='from'>
+                  <Form.Item label='PROJECT NAME' name='PROJECTNAME'>
                     <Input
-                      placeholder="Payroll Coordinator & Administrator"
-                      value={from}
-                      onChange={(e) => setFrom(e.target.value)}
-                                                                                        />           
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Total' name='Total'>
-                    <Input
-                      readOnly
-               
-                      placeholder={ total +" DT"} 
+
+                      placeholder={selectedProject}
+                    // value={objet}
+                    // onChange={(e) => setObjet(e.target.value)}
 
 
                     />
                   </Form.Item>
                 </Col>
+
                 <Col xs={24} md={24}>
-              
-                  <Form.Item label='Payment Type :' name='PaymentType'>
-                  
-                  <Col style={{margin:"1rem"}} xs={24} md={8}>
-                          
-                     
-                        <Checkbox checked={isCash} onChange={Cash}>
-                          <IntlMessages id='Cash' />
-                          
-                        </Checkbox>
-                        </Col>
-                        <Col style={{margin:"1rem"}} xs={24} md={8}>
-                        <Checkbox checked={isTransfer} onChange={Transfer}>
-                          <IntlMessages id='Transfer ' />
-                        </Checkbox>
-                        </Col>
-                        <Col style={{margin:"1rem"}} xs={24} md={8}>
-                        <Checkbox checked={isCheque} onChange={Cheque}>
-                     
-                          <IntlMessages id=' Cheque' />
-                        </Checkbox>
-                        </Col>
-                    
-      
-                  
+                  <Form.Item label='Object :' name='Object'>
+                    <Input
+                      style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
+
+                      placeholder={subject}
+                    // value={objet}
+                    // onChange={(e) => setObjet(e.target.value)}
+
+
+                    />
                   </Form.Item>
                 </Col>
-                
-                
+                <Col xs={24} md={12}>
+                  <Form.Item label='REQUESTED BY' name='from'>
+                    <Input
+                      placeholder={from}
+                      value={from}
+                      onChange={(e) => setFrom(e.target.value)}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} md={12}>
+                  <Form.Item label='BANC ACCOUNT' name='BANCACCOUNT'>
+                    <Input
+                      placeholder={bancAccount}
+                      readOnly
+                    />
+                  </Form.Item>
+                </Col>
+
+                <Col xs={24} md={12}>
+                  <Form.Item label='Total' name='Total'>
+                    <Input
+                      readOnly
+
+                      placeholder={total + " DT"}
+                    />
+                  </Form.Item>
+                </Col>
+
+                <Col xs={24} md={24}>
+                  <Form.Item label="Payment Type :" name="PaymentType">
+                    <Col style={{ margin: "1rem" }} xs={24} md={8}>
+                      <Checkbox
+                        checked={selectedTypePament === 'CASH'}
+                        onChange={Cash}
+                      >
+                        <IntlMessages id='Cash' />
+                      </Checkbox>
+                    </Col>
+
+                    <Col style={{ margin: "1rem" }} xs={24} md={8}>
+                      <Checkbox
+                        checked={selectedTypePament === 'Transfer Remittance'}
+                        onChange={Transfer}
+                      >
+                        <IntlMessages id='Transfer' />
+                      </Checkbox>
+                    </Col>
+
+                    <Col style={{ margin: "1rem" }} xs={24} md={8}>
+                      <Checkbox
+                        checked={selectedTypePament === 'CHEQUE'}
+                        onChange={Cheque}
+                      >
+                        <IntlMessages id='Cheque' />
+                      </Checkbox>
+                    </Col>
+                  </Form.Item>
+                </Col>
+
 
               </AppRowContainer>
             </StyledShadowWrapper>
           </Col>
         </AppRowContainer>
-       {/*Tabel **/}
-       <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+        {/*Tabel **/}
+        <Divider style={{ marginTop: 16, marginBottom: 16 }} />
         <AppRowContainer>
           <Col xs={24} md={6}>
             <Typography.Title level={5}>Payment Request Order</Typography.Title>
@@ -433,21 +552,26 @@ const PaymentOrderRequest  = () => {
           <Col xs={24} md={18}>
             <StyledShadowWrapper>
               <AppRowContainer>
-              <OrderTable filteredEmployees={filteredEmployees}
-              costCenter={costCenter}
-              selectedProject={selectedProject}
-              
-              /> 
-                
-                
+                <OrderTable
+                  filteredEmployees={filteredEmployees}
+                  costCenter={costCenter}
+                  selectedProject={selectedProject}
+                  calculateSalary={calculateSalary}
+                  monthName={monthName}
+                  descriptions={descriptions}
+                  setDescriptions={setDescriptions}
+                  listsalaries={listsalaries}
+                  selectedRows={selectedRows}
+
+                />
 
               </AppRowContainer>
             </StyledShadowWrapper>
           </Col>
         </AppRowContainer>
-    
-       
-       <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+
+
+        <Divider style={{ marginTop: 16, marginBottom: 16 }} />
 
 
 
@@ -457,23 +581,72 @@ const PaymentOrderRequest  = () => {
           style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
         >
           <Button onClick={goBack} >Cancel</Button>
-          <Button  onClick={ SaveRequest} >Save</Button>
-          {/*Save Head of departement differenr de Enginner et operation*/}
+          {!isSuccess ? (
+            <Button onClick={SaveRequest}>Save</Button>
+          ) : (
+            <Button onClick={handlePrint} >Download</Button>
+          )}
 
-          {/* <Button
-   
-
-            type='primary'
-            htmlType='submit'>
-            Save
-          </Button> */}
-
-
+          <div style={{ paddingLeft: "0.5rem", paddingRight: "0.5rem" }}>
+            {isLoading && (
+              <div style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                backgroundColor: 'transparent',
+                backdropFilter: 'blur(10px)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                zIndex: 9999,
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', width: '100px' }}>
+                  <div style={{
+                    width: '30px',
+                    height: '30px',
+                    borderRadius: '50%',
+                    backgroundColor: '#5CAFE7',
+                    animation: 'bounce 1s infinite alternate'
+                  }} />
+                  <div style={{
+                    width: '30px',
+                    height: '30px',
+                    borderRadius: '50%',
+                    backgroundColor: '#82CEF9',
+                    animation: 'bounce 1s infinite alternate',
+                    animationDelay: '0.5s'
+                  }} />
+                </div>
+              </div>
+            )}
+          </div>
 
         </Space>
 
       </Form>
+      {/** Conditionally render RequestPayment for print only */}
+      {isPrintMode && (
+        <div className="print-only">
+          {typecompany === "GETS E&C" &&
+            <RequestPayment
+              itemSave={itemSave}
+            />
+          }
+          {typecompany === "TRADE" &&
+            <RequestPaymentTradeHTML
+              itemSave={itemSave}
+            />
+          }
+          {typecompany === "VAIC" &&
+            <RequestPaymentViacHTML
+              itemSave={itemSave}
+            />
+          }
 
+        </div>
+      )}
 
 
 
@@ -483,4 +656,4 @@ const PaymentOrderRequest  = () => {
 };
 
 
-export default PaymentOrderRequest ;
+export default PaymentOrderRequest;

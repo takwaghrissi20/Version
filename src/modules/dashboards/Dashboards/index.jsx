@@ -368,7 +368,7 @@ const Dashboards = () => {
 
   //End Passourt Expired
   const items = [
-    ...(!user?.toUpperCase().includes("RELATION AND TRAINING") ? [{
+    ...(!(user?.toUpperCase().includes("RELATION AND TRAINING") || user?.includes("Payroll")) ? [{
       label: 'Recruitment',
       key: '1',
       children: (

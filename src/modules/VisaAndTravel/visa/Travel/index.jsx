@@ -673,7 +673,7 @@ console.log("selectTypeValue",selectTypeValue)
                         onChange={handleProjectChange}
                         value={selectedProject}
                       >
-                        {projects.map(project => (
+                        {projects?.map(project => (
                           <Option key={project.projId} value={project.projName}>
                             {project.projName}
                           </Option>

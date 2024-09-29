@@ -434,8 +434,6 @@ const AddEmployeeTemporelleManagementStaff = ({ listInterview,interviewCode,
                   <Form.Item label='Arabic Full name' name='arName'
                     rules={[{ required: true, message: 'Please enter full name' }]}>
                     <Input placeholder="الاسم كامل بالعربي" dir="rtl"
-                     
-
                     />
                   </Form.Item>
 

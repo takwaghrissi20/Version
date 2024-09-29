@@ -321,7 +321,7 @@ const AddVisa = () => {
                         className='Input'
                         placeholder="Passport Number"
                         value={passportnumber}
-                        onChange={handleInputPassortNumberChange} // Correction de la fonction de changement
+                        onChange={handleInputPassortNumberChange} 
                       />
                     </FloatLabel>
                   </Form.Item>

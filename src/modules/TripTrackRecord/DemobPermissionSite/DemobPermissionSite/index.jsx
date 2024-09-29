@@ -124,6 +124,7 @@ console.log("filteredEmployees",filteredEmployees)
         console.log("deletee", data);
         alert(data);
         onDeleteRecruitement(false);
+        
       }
 
       const contentType = response.headers.get('content-type');

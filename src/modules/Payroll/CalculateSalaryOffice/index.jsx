@@ -5,7 +5,7 @@ import AppRowContainer from '../../../@crema/components/AppRowContainer';
 import { StyledCol1, StyledCol2 } from './index.styled';
 import PropTypes from 'prop-types';
 
-const CalculateSalaryOffice = () => {
+const CalculateSalary = () => {
   return (
     <AppAnimate animation='transition.slideUpIn' delay={200}>
       <AppRowContainer>
@@ -19,5 +19,5 @@ const CalculateSalaryOffice = () => {
   );
 };
 
-export default CalculateSalaryOffice;
+export default CalculateSalary;
 

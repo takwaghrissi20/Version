@@ -1,48 +1,38 @@
+
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { StyledOrderTable } from '../../../../../styles/index.styled';
-import { Button, Checkbox, Modal, Table, Select, Input,notification } from 'antd';
+import { Button, Checkbox, Modal, Table, Select, Input, notification } from 'antd';
 import { useNavigate } from 'react-router-dom';
-const OrderTableOffice = ({ allemployee, loading, deductionMonth, costCenter,
-  selectedProject}) => {
+
+const OrderTable = ({ allemployee, loading, deductionMonth, costCenter, selectedProject, subject,
+  selectedTypePament, typecompany, chequeName, bancAccount, ibanNumber, transfer, transferRef,
+  listprojName, lastNumberTransferNumberIncrement,
+  lastNumberTransferNumber
+
+}) => {
   const dateObject = new Date(deductionMonth);
   const month = dateObject.getMonth() + 1;
-  const monthName = dateObject.toLocaleString('en-US', { month: 'long' });
-  const formattedMonth = month < 10 ? '0' + month : month.toString();
+  const monthName = dateObject.toLocaleString('en-US', { month: 'long' }).toUpperCase();
   const [selectedRows, setSelectedRows] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectAll, setSelectAll] = useState(false);
   const [filterType, setFilterType] = useState('');
   const [filterProject, setFilterProject] = useState('');
   const [filteredEmployees, setFilteredEmployees] = useState([]);
+  const [salaries, setSalaries] = useState({});
+  const [listsalaries, setListSalaries] = useState([]);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
-  const handleRequestPayment = () => {
-      navigate(`/Payroll/office/PAYMENT_ORDER_REQUESTS`, {
-        state: {
-         filteredEmployees: filteredEmployees,
-         costCenter:costCenter,
-         selectedProject: selectedProject
-         
-        }
 
-      });
-     
-  
-  
-  //onEditInterviewStaff(true);
-  
-  
-  };
-  //Calculate
   const openRefuseNotification = () => {
     notification.open({
       message: 'Refuse',
-      description: 'Calculate salary Not success',
+      description: 'Calculate salary not successful',
       style: {
         backgroundColor: '#335F8A',
         border: '1px solid #335F8A',
-        color: '#FFFFFF !important',
+        color: 'red !important',
         borderRadius: '3px',
         boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
         cursor: 'pointer',
@@ -58,9 +48,9 @@ const OrderTableOffice = ({ allemployee, loading, deductionMonth, costCenter,
         position: 'relative',
       },
       placement: 'topRight',
-      color: '#FFFFFF !important',
     });
   };
+
   const openCalculateNotification = () => {
     notification.open({
       message: 'Success',
@@ -87,28 +77,93 @@ const OrderTableOffice = ({ allemployee, loading, deductionMonth, costCenter,
       color: '#FFFFFF !important',
     });
   };
-  const Calculate = async (code) => {
+  const openCalculateNotificationSalaryNull = () => {
+    notification.open({
+      message: 'Success',
+      description: 'Employee With Salary 0 DT',
+      style: {
+        backgroundColor: '#de980d',
+        border: '1px solid #de980d',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #de980d',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
+  const Calculate = async (id) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/sheetOffice/calculate?id=${code}&month=${monthName}&token=${token}`, {
-        method: 'GET',
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/sheetSite/calculate?id=${id}&month=${monthName}`, {
+        method: 'POST',
       });
       if (!response.ok) {
-        openRefuseNotification('bottomRight')
+        openRefuseNotification();
         throw new Error('Network response was not ok');
       }
       const responseData = await response.json();
-      console.log("responseData", responseData);
-      openCalculateNotification('bottomRight')
-      //openRefuseNotification('bottomRight')
-
+      console.log("salary Id", responseData)
+      if (responseData === 0) {
+        openCalculateNotificationSalaryNull('bottomRight')
+      } else {
+        setSalaries(prevSalaries => ({ ...prevSalaries, [id]: responseData }));
+        openCalculateNotification('bottomRight')
+      }
+      
     } catch (error) {
-      console.error("Erreur lors de la calculate:", error);
+      console.error("Error calculating salary:", error);
     }
   };
 
+  const CalculateList = async (record) => {
+    try {
+      console.log('Calculating salary for:', record);
+      const selectedIds = selectedRows.map(row => row.getsId);
 
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/sheetSite/calculateList?month=${monthName}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+ 
+        },
 
-  //Calculate
+        body: JSON.stringify(selectedIds),
+      });
+  
+      if (!response.ok) {
+        openRefuseNotification();
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+      const responseData = await response.json();
+  
+   
+     responseData?.forEach((salaryData, index) => {
+      setListSalaries(prevSalaries => ({ ...prevSalaries, [selectedIds[index]]: salaryData }));
+      });
+
+      openCalculateNotification('bottomRight');
+    }
+  
+    } catch (error) {
+      console.error("Error calculating salary:", error);
+    }
+  };
+  
+  
+  
+  
   useEffect(() => {
     if (selectAll) {
       setSelectedRows([...allemployee]);
@@ -152,7 +207,7 @@ const OrderTableOffice = ({ allemployee, loading, deductionMonth, costCenter,
   const handleFilterProjectChange = (value) => {
     setFilterProject(value);
   };
-
+  console.log("setSelectedRows",selectedRows)
   const applyFilter = () => {
     let newFilteredEmployees = selectedRows;
 
@@ -161,7 +216,7 @@ const OrderTableOffice = ({ allemployee, loading, deductionMonth, costCenter,
     }
 
     if (filterProject) {
-      newFilteredEmployees = newFilteredEmployees.filter(employee => 
+      newFilteredEmployees = newFilteredEmployees.filter(employee =>
         employee.projects.some(project => project.projName === filterProject)
       );
     }
@@ -191,27 +246,46 @@ const OrderTableOffice = ({ allemployee, loading, deductionMonth, costCenter,
       dataIndex: 'name',
       key: 'name',
     },
-    {
-      title: 'Calculate Salary',
-      dataIndex: 'btnsalary',
-      key: 'btnsalary',
-      render: (text, record) => (
-        record.netOfice === 0 ? (
-          <>
-          <Button onClick={() => Calculate(record.getsId)}>
-            Calculate Salary
-          </Button>
-         
-          </>
-        ) : (
-          <>
-          <span>{record.netOfice}</span>
-       
-          </>
-        )
-      ),
-    },
+
+    ...(subject === "SALARY PAYMENT Site" || subject === "SALARY PAYMENT OFFICE"
+      ? selectedRows.length > 0
+        ? [{
+            title: 'Salary',
+            key: 'salary',
+            render: (text, record) => (
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Button 
+                  style={{ whiteSpace: 'nowrap' }} 
+                  onClick={() => CalculateList(record)}
+                >
+                  Calculate All Salary
+                </Button>
+              </div>
+            ),
+          }]
+        : []
+      : []),
+     
+    
+
+    // ...(subject === "SALARY PAYMENT Site" || subject === "SALARY PAYMENT OFFICE"
+    //   ? [{
+    //     title: 'Salary',
+    //     dataIndex: 'salary',
+    //     key: 'salary',
+    //     render: (text, record) => (
+    //       salaries[record.getsId] ? (
+    //         <span>{salaries[record.getsId]} DT </span>
+    //       ) : (
+    //         <Button onClick={() => Calculate(record.getsId)}>
+    //           Calculate Salary
+    //         </Button>
+    //       )
+    //     ),
+    //   }]
+    //   : []),
   ];
+
 
   const modalColumns = [
     {
@@ -224,26 +298,49 @@ const OrderTableOffice = ({ allemployee, loading, deductionMonth, costCenter,
       dataIndex: 'name',
       key: 'name',
     },
-    // Add other columns you need to display in the modal
   ];
 
+  const handleRequestPayment = () => {
+    navigate(`/Payroll/PAYMENT_ORDER_REQUESTS`, {
+      state: {
+        calculateSalary: salaries,
+        filteredEmployees: filteredEmployees,
+        costCenter: costCenter,
+        selectedProject: selectedProject,
+        subject:subject,
+        selectedTypePament:selectedTypePament,
+        typecompany:typecompany,
+        chequeName:chequeName,
+        bancAccount:bancAccount,
+        ibanNumber:ibanNumber,
+        transfer: transfer,
+        transferRef: transferRef,
+        listprojName: listprojName,
+        monthName:monthName, 
+        lastNumberTransferNumberIncrement: lastNumberTransferNumberIncrement,
+        lastNumberTransferNumber:lastNumberTransferNumber,
+        listsalaries:listsalaries,
+        selectedRows:selectedRows
+
+      }
+    });
+  };
+console.log("lastNumberTransferNumberIncrement",lastNumberTransferNumberIncrement)
   return (
     <>
       <Button
-      style={{margin:"1rem"}}
+        style={{ margin: "1rem" }}
         type="primary"
         onClick={handleRequestPayment}
-        disabled={selectedRows.length === 0}
+        disabled={
+          selectedRows.length === 0 || 
+          !subject || 
+          !selectedTypePament || 
+          !typecompany
+        }
       >
         Request For Payment
       </Button>
-      {/* <Button
-        type="primary"
-        onClick={showModal}
-        disabled={selectedRows.length === 0}
-      >
-        Order Request
-      </Button> */}
       <StyledOrderTable
         hoverColor
         data={allemployee}
@@ -275,7 +372,7 @@ const OrderTableOffice = ({ allemployee, loading, deductionMonth, costCenter,
             allowClear
           >
             {allemployee?.reduce((uniqueProjects, employee) => {
-              employee.projects.forEach(project => {
+              employee?.projects?.forEach(project => {
                 if (!uniqueProjects.includes(project.projName)) {
                   uniqueProjects.push(project.projName);
                 }
@@ -299,13 +396,13 @@ const OrderTableOffice = ({ allemployee, loading, deductionMonth, costCenter,
   );
 };
 
-OrderTableOffice.defaultProps = {
+OrderTable.defaultProps = {
   allemployee: [],
 };
 
-OrderTableOffice.propTypes = {
+OrderTable.propTypes = {
   allemployee: PropTypes.array,
   loading: PropTypes.bool,
 };
 
-export default OrderTableOffice;
+export default OrderTable;

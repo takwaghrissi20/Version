@@ -53,6 +53,8 @@ import EmployeeTransferPermission from '../../../modules/VisaAndTravel/visa/Empl
 import TransferPermissionEmp from '../../../modules/VisaAndTravel/visa/TransferPermissionEmp';
 import ViewTransfer from '../../../modules/VisaAndTravel/visa/ViewTransfer';
 import UpdateTransfer from '../../../modules/VisaAndTravel/visa/UpdateTransferPermissionEmp';
+import PAYMENTOrDERFIANACIAL  from '../../../modules/Payroll/PAYMENTORDERBYFIANACIALCOORDINATOR';
+import UpdateRequestPayment  from '../../../modules/Payroll/UpdateRequestPayment';
 
 export const recharts2Configs = [
   {
@@ -278,6 +280,11 @@ export const recharts2Configs = [
     element: <PAYMENTORDERREQUESTS  />,
   },
   {
+    path: '/Payroll/PAYMENT-OrDER-FIANACIAL-COORDINATOR',
+    element: <PAYMENTOrDERFIANACIAL />,
+  },
+
+  {
     path: '/Payroll/office/PAYMENT_ORDER_REQUESTS',
     element: <PaymentOrderRequestOffice  />,
   },
@@ -285,7 +292,10 @@ export const recharts2Configs = [
     path: '/Payroll/Cash_Advance',
     element: <CashAdvance />,
   },
-
+  {
+    path: '/Payroll/Save/Request_Paymet/:id',
+    element: <UpdateRequestPayment/>,
+  },
 
 
 
