@@ -632,10 +632,41 @@ const routesConfig = [
             url: "/Payroll/CalculateSalaryOffice",
           },
           {
+            id: "RequestForPayment",
+            title: "RequestForPayment",
+            messageId: "sidebar.general.RequestForPayment",
+            url: "/Payroll/Salary_Request_For_Payment",
+          },
+          {
+            id: "SetelmentSalaries",
+            title: "SetelmentSalaries",
+            messageId: "sidebar.general.SalariesSetelment",
+            url: "/Payroll/Calculate-Setelment",
+          },
+          // {
+          //   id: "PayrollPerPerson",
+          //   title: "PayrollPerPerson",
+          //   messageId: "sidebar.general.PayrollPerPerson",
+          //   url: "/Payroll/Payroll_Per_Person",
+          // },
+          // {
+          //   id: "FINANCESITTLEMETOFFICE",
+          //   title: "FINANCESITTLEMETOFFICE",
+          //   messageId: "sidebar.general.FINANCESITTLEMETOFFICE",
+          //   url: "/Payroll/FINANCE_SITTLEMET_OFFICE",
+          // },
+           
+          {
             id: "FinaceSalary",
             title: "FinaceSalary",
             messageId: "sidebar.general.OrDERFIANACIALCOORDINATOR",
             url: "/Payroll/PAYMENT-OrDER-FIANACIAL-COORDINATOR",
+          },
+          {
+            id: "RequestPayment",
+            title: "RequestPayment",
+            messageId: "sidebar.general.AllRequestPayment",
+            url: "/Payroll/All-Request-Payment",
           },
          
          
@@ -653,12 +684,12 @@ const routesConfig = [
             url: "/Payroll/Cash_Advance",
           },
        
-          {
-            id: "Payment Request",
-            title: "Payment Request",
-            messageId: "sidebar.general.paymentRequest",
-            url: "/Payroll/PaymentRequest",
-          },
+          // {
+          //   id: "Payment Request",
+          //   title: "Payment Request",
+          //   messageId: "sidebar.general.paymentOrderRequest",
+          //   url: "/Payroll/PaymentRequest",
+          // },
      
      
        

@@ -50,7 +50,7 @@ const JWTAuthProvider = ({ children }) => {
 
       try {
         const { data } = await axios.get(`https://dev-gateway.gets-company.com/api/v1/auth/editProfileByToken?token=${token}`);
-        console.log("dattttaaa",data)
+       
          // Ensure this is the correct endpoint
         setAuthData({
           user: data,

@@ -7,18 +7,13 @@ import { useIntl } from "react-intl";
 import dayjs from 'dayjs';
 import Salarypayment from './salarypayment';
 import { StyledBuyCellCard, StyledTabs } from '../../../../styles/index.styled';
-import moment from 'moment';
+
 
 const Table = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [lastNumberTransferNumber, setLastNumberTransferNumber] = useState(0);
-  const { messages } = useIntl();
-  const [page, setPage] = useState(1);
-  const [search, setSearchQuery] = useState('');
-  const [employee, setEmployees] = useState([]);
   const [allemployee, setAllemployee] = useState([]);
-  const [count, setCount] = useState(0);
   const [projName, setProjName] = useState([]);
   const [costCenters, setCostCenters] = useState([]);
   const [costCenter, setCostCenter] = useState([]);
@@ -33,7 +28,7 @@ const Table = () => {
   const [ibanNumber, setIbanNumber] = useState('');
   const [subject, setSubject] = useState('');
   const [typecompany, setTypecompany] = useState('');
-
+  const [listCosCenterAndProjName, setListCosCenterAndProjName] = useState([]);
   const [projectOptions, setProjectOptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [listprojName, setListprojName] = useState([]);
@@ -70,21 +65,21 @@ const Table = () => {
   ];
 
   const Subject = [
-    { type: 'FINANCE SETTLEMENT' },
-    { type: 'FLIGHT TICHET MANPOWER' },
-    { type: 'TRANSPORTATION BY ROAD MANPOWER' },
-    { type: 'INTERNAL TRANSPORTATION MANPOWER' },
+    // { type: 'FINANCE SETTLEMENT' },
+    // { type: 'FLIGHT TICHET MANPOWER' },
+    // { type: 'TRANSPORTATION BY ROAD MANPOWER' },
+    // { type: 'INTERNAL TRANSPORTATION MANPOWER' },
     { type: 'FRIDAY RATE SITE' },
-    { type: 'MANPOWER HOTEL PAYMENT' },
+    // { type: 'MANPOWER HOTEL PAYMENT' },
     { type: 'SITE MANPOWER BONUS' },
-    { type: 'SALARY PAYMENT OFFICE' },
+    // { type: 'SALARY PAYMENT OFFICE' },
     { type: 'SALARY PAYMENT Site' },
     { type: 'RATES PAYMENT  SITE' },
-    { type: 'STANDBY WELDERS IN TUNISIA' },
-    { type: 'VISA REQUEST IN THE EMBASSY' },
-    { type: 'MISSION TO TUNISIA' },
-    { type: 'ADVANCE PAYMENT SITE' },
-    { type: 'ADVANCE PAYMENT OFFICE' },
+    // { type: 'STANDBY WELDERS IN TUNISIA' },
+    // { type: 'VISA REQUEST IN THE EMBASSY' },
+    // { type: 'MISSION TO TUNISIA' },
+    // { type: 'ADVANCE PAYMENT SITE' },
+    // { type: 'ADVANCE PAYMENT OFFICE' },
 
 
   ];
@@ -95,26 +90,12 @@ const Table = () => {
 
   ];
   useEffect(() => {
-    fetchListEmployee();
-    fetchCountEmployees();
     fetchCosCenter()
     fetchAllListRequestPayment()
     // fetchAllListEmployee();
     fetchAllListEmployee()
   }, [currentPage, pageSize]);
   const lastNumberTransferNumberIncrement = lastNumberTransferNumber + 1
-  const fetchCountEmployees = async () => {
-    try {
-      const countEmployees = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/countAll`);
-      if (!countEmployees.ok) {
-        throw new Error('Failed to fetch employees');
-      }
-      const datacount = await countEmployees.json();
-      setCount(datacount);
-    } catch (error) {
-      console.error('Error fetching employees:', error);
-    }
-  };
   const fetchCosCenter = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/proj/list?token=${token}`, {
@@ -140,6 +121,7 @@ const Table = () => {
       }));
 
       console.log("List of cosCenter and projName:", listCosCenterAndProjName);
+      setListCosCenterAndProjName(listCosCenterAndProjName)
       // Extract projName and cosCenter, then update the state
       const projNames = dataCosCenter.map(p => p.projName);
       const cosCenters = dataCosCenter.map(p => p.cosCenter);
@@ -167,24 +149,74 @@ const Table = () => {
     }
     setTransferRef(`T-${refPrefix}-${lastNumberTransferNumber}-${currentYear}`);
   }, [selectedTypePament, bancAccount, lastNumberTransferNumber, currentYear]);
-  const fetchListEmployee = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/listBypage?page=${currentPage}&size=${pageSize}&token=${token}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch employees');
-      }
-      const data = await response.json();
-      setEmployees(data);
-      setLoading(false);
-    } catch (error) {
-      console.error('Erreur lors de la récupération des données Employees:', error);
-      setLoading(false);
-    }
-  };
+
   const fetchAllListEmployee = async () => {
     try {
-      setLoading(true); // Démarre le chargement
+      setLoading(true); // Start loading indicator
+      const type = encodeURIComponent('office & site');
+  
+      // URLs for both API calls
+      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getEmByTypeWithoutPage?type=site&token=${token}`;
+      const urlSiteAndOffice = `https://dev-gateway.gets-company.com/api/v1/emp/getEmByTypeWithoutPage?type=${type}&token=${token}`;
+  
+      // Parallel API calls
+      const [response, responseSiteAndOffice] = await Promise.all([
+        fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } }),
+        fetch(urlSiteAndOffice, { method: 'GET', headers: { 'Content-Type': 'application/json' } })
+      ]);
+  
+      // Handle response errors
+      if (!response.ok || !responseSiteAndOffice.ok) {
+        throw new Error('Failed to fetch employees');
+      }
+  
+      // Convert responses to JSON
+      const data = await response.json();
+      const dataSiteOffice = await responseSiteAndOffice.json();
+      
+      // Filter active employees from both datasets
+      const activeEmployees = [
+        ...data.filter(emp => emp.actStatus === "Active"),
+        ...dataSiteOffice.filter(emp => emp.actStatus === "Active")
+      ];
+  
+      setAllemployee(activeEmployees);
+  
+      // Collect project names and cost centers
+      const projectInfoSet = new Set();
+      const costCenterSet = new Set();
+  
+      activeEmployees.forEach(employee => {
+        if (employee?.projects && employee?.projects.length > 0) {
+          employee.projects.forEach(project => {
+            const projName = project.projName?.trim() || '';
+            const cosCenter = project.cosCenter?.trim() || '';
+  
+            if (projName) {
+              projectInfoSet.add(JSON.stringify({ projName, cosCenter }));
+            }
+            if (cosCenter) {
+              costCenterSet.add(cosCenter);
+            }
+          });
+        }
+      });
+  
+      // Update state with project and cost center info
+      setProjName(Array.from(projectInfoSet).map(item => JSON.parse(item)));
+      setCostCenters(Array.from(costCenterSet));
+  
+      setLoading(false); 
+    } catch (error) {
+      console.error('Error fetching employee data:', error);
+      setLoading(false); // Stop loading indicator in case of error
+    }
+  };
+  
+  const fetchAllListEmployeetest = async () => {
+ 
+    try {
+      setLoading(true); 
 
       const endPoint = process.env.NODE_ENV === 'development'
         ? 'https://dev-gateway.gets-company.com'
@@ -192,8 +224,8 @@ const Table = () => {
       const type = encodeURIComponent('office & site');
 
       // URLs pour les deux appels API
-      const url = `${endPoint}/api/v1/emp/getEmByTypeWithoutPage?type=site&token=${token}`;
-      const urlSiteAndOffice = `${endPoint}/api/v1/emp/getEmByTypeWithoutPage?type=${type}&token=${token}`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getEmByTypeWithoutPage?type=site&token=${token}`;
+      const urlSiteAndOffice = `https://dev-gateway.gets-company.com/api/v1/emp/getEmByTypeWithoutPage?type=${type}&token=${token}`;
 
       // Appels API parallèles
       const [response, responseSiteAndOffice] = await Promise.all([
@@ -265,7 +297,6 @@ const Table = () => {
         }
       });
 
-
       if (!response.ok) {
         throw new Error('Failed to fetch employees');
       }
@@ -285,8 +316,6 @@ const Table = () => {
       } else {
         console.log("Aucun transferNumber trouvé.");
       }
-
-
       console.log("Le plus grand transferNumber:", maxTransferNumber);
 
 
@@ -299,47 +328,16 @@ const Table = () => {
 
   const handleCostCenterChange = (value) => {
     setCostCenter(value);
-
-    const matchedProject = projName.find(proj => proj.cosCenter === value);
+  
+    // Find the matching project based on the selected cost center
+    const matchedProject = listCosCenterAndProjName.find(proj => proj.cosCenter === value);
     if (matchedProject) {
       setSelectedProject(matchedProject.projName);
     } else {
       setSelectedProject('');
     }
   };
-  const handleCostCenterChangetest = (selectedCostCenter) => {
-    if (selectedCostCenter === "default") {
-      setProjectOptions([]);
-      setSelectedProject('');
-      setAllemployee([]);
-      window.location.reload();
-    } else {
-      const filteredProjects = projName.filter(proj => proj.cosCenter === selectedCostCenter);
 
-      if (filteredProjects.length > 0) {
-        const firstProject = filteredProjects[0].projName;
-        setSelectedProject(firstProject);
-      }
-
-      setProjectOptions(filteredProjects);
-      const uniqueCostCenters = [...new Set(filteredProjects.map(project => project.cosCenter))];
-      setCostCenter(uniqueCostCenters[0]);
-    }
-  };
-
-
-  const handleCostCenter = (value) => {
-    setCostCenter(value);
-    if (value === 'default') {
-      window.location.reload();
-    }
-  };
-  const handleProjectChange = (value) => {
-    setSelectedProject(value);
-    if (value === 'default') {
-      window.location.reload();
-    }
-  };
   const handlePayment = (value) => {
     setSelectedTpePayment(value);
     if (value === 'default') {
@@ -355,7 +353,6 @@ const Table = () => {
   };
   const handleBanc = (value) => {
     setBancAccount(value);
-
     const selectedBank = listbancAccount.find(bank => bank.type === value);
     if (selectedBank) {
       setIbanNumber(selectedBank.iban || "");
@@ -388,45 +385,46 @@ const Table = () => {
 
   const handleFilterApply = () => {
     let filteredEmployees = allemployee;
-
-
-    //Filtrage par projet sélectionné
+    // Filtrage par projet sélectionné
     if (selectedProject) {
       filteredEmployees = filteredEmployees.filter(employee => {
         return employee.projects.some(project => project.projName === selectedProject);
-
       });
+      console.log("Filtered Employees by Project", filteredEmployees);
     }
-
-
+  
     // Filtrage par type de société (companyType)
     if (typecompany) {
       filteredEmployees = filteredEmployees.filter(employee => employee.companyType === typecompany);
+      console.log("Filtered Employees by Company Type", filteredEmployees);
     }
-
-    // Filtrage par mois de pointage
+  
+    // // Filtrage par mois de pointage
     const selectedMonth = deductionMonth.format('MMMM').toUpperCase();
     filteredEmployees = filteredEmployees.filter(emp => {
       return emp.pointages.some(pointage => pointage.month === selectedMonth && pointage.pointage !== null);
     });
+    //Filter les employees How has rib as Transfer Remittence
+    if (selectedTypePament === 'Transfer Remittance') {
+      filteredEmployees = filteredEmployees.filter(employee => {
+          return !(employee.rib === "CHEQUE" || employee.rib === "CASH");
+      });
+      console.log("No Rib filteredEmployees", filteredEmployees);
+  }
+   
 
+
+
+  
+    // Setting the filtered employees to state
     setAllemployee(filteredEmployees);
-    console.log("Filtered Employees", filteredEmployees);
+  
+    // Ensuring the console log reflects the most recent filtered data
+    console.log("Filtered Employees after all filters", filteredEmployees);
   };
+  
 
-
-  const filterEmployeesByProjectAndMonth = () => {
-    const selectedMonth = deductionMonth.format('MMMM').toUpperCase();
-
-    return allemployee.filter(emp => {
-
-      const hasPointagesInMonth = emp.pointages.some(pointage => pointage.month === selectedMonth && pointage.pointage !== null);
-
-      return hasPointagesInMonth;
-    });
-  };
-
-  const filteredEmployees = filterEmployeesByProjectAndMonth();
+  console.log("Filtered Employees after all filters 1111", allemployee);
   const items = [
     {
       label: 'Calculate Employee Site salaries',
@@ -460,6 +458,40 @@ const Table = () => {
           </Row>
 
           {/* Select Transfer Remittance Or Cheque */}
+          <Row style={{ marginBottom: "2rem" }} gutter={16}>
+            <Col span={10}>
+              <span>Month of</span>
+              <DatePicker
+                style={{ width: "100%", height: "30px", marginTop: "0.5rem" }}
+                picker="month"
+                placeholder="For Month"
+                onChange={(value) => setDeductionMonth(value)}
+                value={deductionMonth}
+                format={(value) => value.format("MMMM").toUpperCase()}
+              />
+            </Col>
+            <Col span={10}>
+              <span>Type Payment</span>
+              <Select
+                style={{ width: "100%", marginTop: "0.5rem" }}
+                placeholder="Type ¨Payment"
+                allowClear
+                onChange={handlePayment}
+                value={selectedTypePament}
+
+              >
+                <Select.Option key="default" value="default">
+                  Default
+                </Select.Option>
+                {TypePaymrnt.map(p => (
+                  <Select.Option key={p.type} value={p.type}>
+                    {p?.type}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Col>
+          </Row>
+          {/*Bank Account && Iban */}
           {selectedTypePament === "Transfer Remittance" || selectedTypePament === "CHEQUE" ?
             <Row style={{ marginBottom: "2rem" }} gutter={16}>
               <Col span={10}>
@@ -514,40 +546,7 @@ const Table = () => {
 
             </Row>
             : null}
-
-          <Row style={{ marginBottom: "2rem" }} gutter={16}>
-            <Col span={10}>
-              <span>Month of</span>
-              <DatePicker
-                style={{ width: "100%", height: "30px", marginTop: "0.5rem" }}
-                picker="month"
-                placeholder="For Month"
-                onChange={(value) => setDeductionMonth(value)}
-                value={deductionMonth}
-                format={(value) => value.format("MMMM").toUpperCase()}
-              />
-            </Col>
-            <Col span={10}>
-              <span>Type Payment</span>
-              <Select
-                style={{ width: "100%", marginTop: "0.5rem" }}
-                placeholder="Type ¨Payment"
-                allowClear
-                onChange={handlePayment}
-                value={selectedTypePament}
-
-              >
-                <Select.Option key="default" value="default">
-                  Default
-                </Select.Option>
-                {TypePaymrnt.map(p => (
-                  <Select.Option key={p.type} value={p.type}>
-                    {p?.type}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Col>
-          </Row>
+          {/*End Banc Account*/ }
           {/*Select Cheque */}
           {selectedTypePament === "CHEQUE" ?
             <Row style={{ marginBottom: "2rem" }} gutter={16}>
@@ -613,9 +612,7 @@ const Table = () => {
                 placeholder="Request Subject"
                 allowClear
                 onChange={handleSubject}
-                value={subject}
-
-              >
+                value={subject}>
                 <Select.Option key="default" value="default">
                   Default
                 </Select.Option>
@@ -673,11 +670,7 @@ const Table = () => {
               lastNumberTransferNumberIncrement={lastNumberTransferNumberIncrement}
               lastNumberTransferNumber={lastNumberTransferNumber}
               currentYear={currentYear}
-
-
-
-
-
+            
             />
           )}
         </div>

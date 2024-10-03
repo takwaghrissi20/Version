@@ -45,9 +45,11 @@ import SalariesTracker from '../../../modules/Payroll/Salaries Tracker';
 import PaymentRequest from '../../../modules/Payroll/PaymentRequest';
 import CalculateSalary from '../../../modules/Payroll/CalculateSalary';
 import CalculateSalaryOffice from '../../../modules/Payroll/CalculateSalaryOffice';
-// import CalculateSalaryOffice from '../../../modules/Payroll/CalculateSalaryOffice';
 import PAYMENTORDERREQUESTS from '../../../modules/Payroll/PaymentOrderRequest';
+import PAYMENTORDERREQUESTSSite from '../../../modules/Payroll/PaymentOrderRequest';
 import PaymentOrderRequestOffice from '../../../modules/Payroll/PaymentOrderRequestOffice';
+import PaymentOrderRequestSetement from '../../../modules/Payroll/PaymentOrderRequestSetement';
+import PAYMENTfORRequest from '../../../modules/PaymentForRequest';
 import CashAdvance from '../../../modules/Payroll/CashAdvance';
 import EmployeeTransferPermission from '../../../modules/VisaAndTravel/visa/EmployeeTransferPermission';
 import TransferPermissionEmp from '../../../modules/VisaAndTravel/visa/TransferPermissionEmp';
@@ -55,6 +57,10 @@ import ViewTransfer from '../../../modules/VisaAndTravel/visa/ViewTransfer';
 import UpdateTransfer from '../../../modules/VisaAndTravel/visa/UpdateTransferPermissionEmp';
 import PAYMENTOrDERFIANACIAL  from '../../../modules/Payroll/PAYMENTORDERBYFIANACIALCOORDINATOR';
 import UpdateRequestPayment  from '../../../modules/Payroll/UpdateRequestPayment';
+import AllRequestPayment  from '../../../modules/Payroll/AllRequestPayment';
+import CalculateSetelment from '../../../modules/Payroll/CalculateSetlement';
+import FINANCESITTLEMETOFFICE from '../../../modules/Payroll/FINANCESITTLEMETOFFICE';
+import RequestFORPayment from '../../../modules/PaymentForRequestSalary';
 
 export const recharts2Configs = [
   {
@@ -276,13 +282,41 @@ export const recharts2Configs = [
     element: < CalculateSalaryOffice />,
   },
   {
+    path: '/Payroll/Salary_Request_For_Payment',
+    element: <RequestFORPayment />,
+  },
+  {
     path: '/Payroll/PAYMENT_ORDER_REQUESTS',
-    element: <PAYMENTORDERREQUESTS  />,
+    element: <PAYMENTORDERREQUESTS />,
+  },
+  {
+    path: '/Payroll/PAYMENT_ORDER_REQUESTS_Site',
+    element: <PAYMENTORDERREQUESTSSite/>,
+  },
+  {
+    path: '/Payroll/PAYMENT_For_REQUEST',
+    element: <PAYMENTfORRequest/>,
+  },
+  {
+    path: '/Payroll/PAYMENT_ORDER_REQUESTS_Setelment',
+    element: <PaymentOrderRequestSetement/>,
   },
   {
     path: '/Payroll/PAYMENT-OrDER-FIANACIAL-COORDINATOR',
     element: <PAYMENTOrDERFIANACIAL />,
   },
+  {
+  path: '/Payroll/All-Request-Payment',
+  element: <AllRequestPayment />,
+},
+{
+  path: '/Payroll/Calculate-Setelment',
+  element: <CalculateSetelment />,
+},
+{
+  path: '/Payroll/FINANCE_SITTLEMET_OFFICE',
+  element: <FINANCESITTLEMETOFFICE />,
+},
 
   {
     path: '/Payroll/office/PAYMENT_ORDER_REQUESTS',

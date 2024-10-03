@@ -647,7 +647,6 @@ const AddRecruitementAbove = () => {
           totalNumber: vacancie,
           oDep: isOrDep,
           exDep: isExDep,
-          jobCode: LastIndexRecruitementIncremente,
           // type: "For Foreman & Below",
           // oDep: asper,
           // // exDep: "",
@@ -929,7 +928,8 @@ const AddRecruitementAbove = () => {
           notif: 6,
           dep: profile?.departement,
           dateInputRecrut: formattedDate,
-          status: "Pending Approval bY HOD"
+          status: "Pending Approval bY HOD",
+          
 
         })
       });

@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import AppContextProvider from '@crema/context/AppContextProvider';
-import AppThemeProvider from '@crema/context/AppThemeProvider';
-import AppLocaleProvider from '@crema/context/AppLocaleProvider';
-import AppAuthProvider from '@crema/core/AppAuthProvider';
-import AuthRoutes from '@crema/components/AuthRoutes';
-import AppLayout from '@crema/core/AppLayout';
-import '@crema/mockapi';
-import { GlobalStyles } from '@crema/core/theme/GlobalStyle';
+import AppContextProvider from './@crema/context/AppContextProvider';
+import AppThemeProvider from './@crema/context/AppThemeProvider';
+import AppLocaleProvider from './@crema/context/AppLocaleProvider';
+import AppAuthProvider from './@crema/core/AppAuthProvider';
+import AuthRoutes from './@crema/components/AuthRoutes';
+import AppLayout from './@crema/core/AppLayout';
+import './@crema/mockapi';
+import { GlobalStyles } from './@crema/core/theme/GlobalStyle';
 import { Normalize } from 'styled-normalize';
 import './styles/index.css';
 import { Button, Modal, Space } from 'antd';
 
 function App() {
+
   const [email, setEmail] = useState("");
   const [visible, setVisible] = useState(false);
   //GetProfile When Login
@@ -42,7 +43,7 @@ function App() {
       }
 
       // Get the current date and date 15 days from now
-      const data = await response.json();
+      const data = await response.json();  
       const activeEmployees = data.filter(employee => employee.actStatus === "Active");
 
       const currentDate = new Date();
@@ -97,8 +98,17 @@ function App() {
       });
       if (response.ok) {
         const data = await response.json();
-        setEmail(data.email);
-        localStorage.setItem('email', data.email);
+    
+        if (data.roles === "not autheticated" && window.location.pathname !== "/signin") {
+          alert("You are logged out.");
+          localStorage.removeItem('token');
+          window.location.href = "/signin"; 
+        } else {
+          setEmail(data.email);
+          localStorage.setItem('email', data.email);
+        }
+        // setEmail(data.email);
+        // localStorage.setItem('email', data.email);
       } else {
         console.error("Erreur lors de la récupération du rôle:", response.status);
       }
@@ -111,15 +121,11 @@ function App() {
 
   ///End Modl Employees 
   useEffect(() => {
-
     const handleTokenCheck = () => {
       const isAlertShown = localStorage.getItem('alertShown');
-      if (token && isAlertShown === 'false') {
-        
+      if (token && isAlertShown === 'false') {      
           setVisible(true)
-          localStorage.setItem('alertShown', 'true');
-        
-      
+          localStorage.setItem('alertShown', 'true');      
 
         // setTimeout(() => {
         //   window.location.reload();

@@ -15,7 +15,7 @@ import {
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import IntlMessages from '../../../@crema/helpers/IntlMessages';
-import OrderTable from './TableOrderPaymentRequest';
+import OrderTable from './TableOrderPaymentRequestSite';
 import { useLocation } from 'react-router-dom';
 import RequestPayment from './RequestPaymentHTML';
 import RequestPaymentTradeHTML from './RequestPaymentTradeHTML';
@@ -42,10 +42,7 @@ const PaymentOrderRequest = () => {
   const lastNumberTransferNumber = location.state ? location.state.lastNumberTransferNumber : null;
   const listsalaries = location.state ? location.state.listsalaries : null;
   const selectedRows = location.state ? location.state.selectedRows : null;
-
-  console.log("listsalaries", listsalaries)
-
-  console.log("lastNumberTransferNumberIncrement 3333", lastNumberTransferNumberIncrement)
+ 
   const [descriptions, setDescriptions] = useState({});
   const [isSuccess, setIsSuccess] = useState(false);
   const token = localStorage.getItem("token")
@@ -136,9 +133,6 @@ const PaymentOrderRequest = () => {
 
 
   }, [getsId, listsalaries]);
-
-
-
 
   const openNotification = () => {
     notification.open({
@@ -286,7 +280,7 @@ const PaymentOrderRequest = () => {
       setIsTransfer(false);
     }
   }
-  //Save Request Order
+  //Save Request Payment
 
   const SaveRequest = async () => {
     try {
@@ -299,7 +293,6 @@ const PaymentOrderRequest = () => {
       const transferNumber = selectedTypePament === 'Transfer Remittance'
         ? lastNumberTransferNumberIncrement
         : lastNumberTransferNumber;
-      console.log("transferNumber testtt", transferNumber)
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/RequestPayment/add?token=${token}`, {
 
         method: 'POST',
@@ -320,6 +313,7 @@ const PaymentOrderRequest = () => {
           requstor: "Syrine",
           companyType: typecompany,
           fromBankCheque: bancAccount,
+          transferRef:transferRef,
           "payrollSign": null,
           "checkedByHod": null,
           "approvedByBod1": true,
@@ -334,7 +328,6 @@ const PaymentOrderRequest = () => {
           nameCheque: chequeName,
           cosCenter: costCenter,
           projName: selectedProject,
-          "ibanCheque": null,
           "travelAgent": null,
           "bankNameTravel": null,
           "ibnTravel": null,
@@ -342,6 +335,8 @@ const PaymentOrderRequest = () => {
           "virementOrdre": null,
           transferNumber: transferNumber,
           listRequestPayments,
+          ibanCheque: ibanNumber
+         
 
 
 
@@ -409,15 +404,30 @@ const PaymentOrderRequest = () => {
           <Col xs={24} md={18}>
             <StyledShadowWrapper>
               <AppRowContainer>
-                <Col xs={24} md={12}>
-                  <Form.Item label='Request Reference' name='Requestref'>
-                    <Input
-                      readOnly
-                      placeholder={"Request ref-" + LastIndexRequestPaymentIncremente}
+                {selectedTypePament === 'Transfer Remittance' ?
+                 <Col xs={24} md={12}>
+                 <Form.Item label='Request Reference' name='Requestref'>
+                   <Input
+                     readOnly
+                     placeholder={transferRef}
 
-                    />
-                  </Form.Item>
-                </Col>
+                   />
+                 </Form.Item>
+               </Col>
+
+                  :
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Request Reference' name='Requestref'>
+                      <Input
+                        readOnly
+                        placeholder={"Request ref-" + LastIndexRequestPaymentIncremente}
+
+                      />
+                    </Form.Item>
+                  </Col>
+
+                }
+
                 <Col xs={24} md={12}>
                   <Form.Item label='Date' name='date'>
                     <Input
@@ -581,11 +591,12 @@ const PaymentOrderRequest = () => {
           style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
         >
           <Button onClick={goBack} >Cancel</Button>
-          {!isSuccess ? (
+          <Button onClick={SaveRequest}>Save</Button>
+          {/* {!isSuccess ? (
             <Button onClick={SaveRequest}>Save</Button>
           ) : (
             <Button onClick={handlePrint} >Download</Button>
-          )}
+          )} */}
 
           <div style={{ paddingLeft: "0.5rem", paddingRight: "0.5rem" }}>
             {isLoading && (

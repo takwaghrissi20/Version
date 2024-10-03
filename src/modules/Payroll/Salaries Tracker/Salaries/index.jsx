@@ -158,7 +158,7 @@ const Table = () => {
     }
 
     setAllemployee(filteredEmployees);
-    console.log("tthhjjkkki",filteredEmployees)
+ 
   };
 
 

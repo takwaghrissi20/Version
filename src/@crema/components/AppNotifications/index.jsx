@@ -1,6 +1,6 @@
-import React,{useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { notification } from '../../../@crema/mockapi/fakedb';
-import { Dropdown } from 'antd';
+import { Dropdown, Spin } from 'antd';  
 import IntlMessages from '../../../@crema/helpers/IntlMessages';
 import NotificationItem from './NotificationItem';
 import { IoIosNotificationsOutline } from 'react-icons/io';
@@ -13,72 +13,34 @@ import {
   StyledNotifyScrollSubmenu,
   StyledNotifyText,
 } from './index.styled';
+
 const AppNotifications = () => {
-  const[count,setCount]=useState(0)
-  const[notif,setNotif]=useState([])
-  
-  //Norifff All
-  const AllNotif = async () => {
-    try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/notif/list`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('La requête a échoué avec le code ' + response.status);
-      }
-
-      const data = await response.json();
-      
-      const filteredData= data.filter(item => item.notfi === 0);
-      //Filtert Notif ==0 de bod 
-   
-    
-      //setCount(FilterDateNotif.length)
-      setNotif(filteredData)
-    
-    } catch (error) {
-      console.error('Erreur lors de la récupération Last Recruitement', error);
-    }
-  };
-  useEffect(() => {
-    AllNotif ()   
-  }, [notif]);
+  const [count, setCount] = useState(0);
+  const [notif, setNotif] = useState([]);
+  const [isLoadingchargement, setIsLoadingchargement] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   const user = localStorage.getItem("role");
   const items = [
     ...(user.includes('bod') ? [{
-      key: 1, 
-      label: (    
+      key: 1,
+      label: (
         <span className='header'>
           <IntlMessages id='common.notifications' />({count})
         </span>
       ),
-       
-    }] : []
-  ),
-    // {
-    //   key: 1,
-    //   label: (    
-    //     <span className='header'>
-    //       <IntlMessages id='common.notifications' />({count})
-    //     </span>
-    //   ),
-    // },
+    }] : []),
     {
       key: 2,
       label: (
         <StyledNotifyScrollSubmenu>
-          <NotificationItem  user={user} />
-          {/* <StyledNotifyList
-            dataSource={notification}
-            renderItem={(item) => {
-              return <NotificationItem key={item.id} item={item} />;
-            }}
-          /> */}
+          <NotificationItem 
+            user={user}
+            isLoadingchargement={isLoadingchargement}
+            setIsLoadingchargement={setIsLoadingchargement}
+            setVisible={setVisible}
+            visible={visible}
+          />
         </StyledNotifyScrollSubmenu>
       ),
     },
@@ -86,37 +48,38 @@ const AppNotifications = () => {
       key: 3,
       label: (
         <StyledNotifyButtonAll type='primary'>
-          <IntlMessages id='common.viewAll' />
+          {/* <IntlMessages id='common.viewAll' /> */}
         </StyledNotifyButtonAll>
       ),
     },
   ];
 
+  const handleVisibleChange = (visible) => {
+    setVisible(visible); 
+  };
+
   return (
     <StyledDrowdownWrapper>
-    <Dropdown
-      menu={{ items }}
-      className='dropdown'
-      overlayClassName='header-notify-messages'
-      getPopupContainer={(triggerNode) => triggerNode}
-      trigger={['click']}>
-      <StyledNotifyLink onClick={(e) => e.preventDefault()}>
-        <StyledNotifyIcon>
-          <IoIosNotificationsOutline />
-        </StyledNotifyIcon>
-        <StyledNotifyText>
-          <IntlMessages id='common.notifications' />
-         
-        </StyledNotifyText>
-      </StyledNotifyLink>
-    </Dropdown>
-  
-  
-  </StyledDrowdownWrapper>
+      <Dropdown
+        menu={{ items }}
+        className='dropdown'
+        overlayClassName='header-notify-messages'
+        getPopupContainer={(triggerNode) => triggerNode}
+        trigger={['click']}
+        visible={visible}
+        onVisibleChange={handleVisibleChange} 
+      >
+        <StyledNotifyLink onClick={(e) => e.preventDefault()}>
+          <StyledNotifyIcon>
+            <IoIosNotificationsOutline />
+          </StyledNotifyIcon>
+          <StyledNotifyText>
+            <IntlMessages id='common.notifications' />
+          </StyledNotifyText>
+        </StyledNotifyLink>
+      </Dropdown>
+    </StyledDrowdownWrapper>
   );
 };
 
-
-
 export default AppNotifications;
-

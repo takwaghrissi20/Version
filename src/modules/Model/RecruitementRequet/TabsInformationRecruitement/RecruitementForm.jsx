@@ -95,6 +95,8 @@ const TabsInformationRecruitement = (props) => {
           projectName: projname,
           recruttrequestDate: DateRequestor,
           requestedDicipline: positionRecruitement,
+          experience: selectedLevel,
+          // jobCode: LastIndexRecruitementIncremente,
           totalNumber: vacancie,
           type: "Foreman & Below",
           oDep: asper,

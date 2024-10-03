@@ -15,7 +15,7 @@ const OrderTable = ({ allemployee, loading, filteredEmployees, costCenter, selec
     const salaryInfo = listsalaries[employee.getsId] || {}; // Get salary info from listsalaries using getsId
     return {
       ...employee,
-      salary: salaryInfo.siteSaalary || 0, // Use siteSaalary from listsalaries
+      salary: salaryInfo.salary || 0,
       monthName: salaryInfo.month || new Date().toLocaleString('default', { month: 'long' }), // Use month from listsalaries
       position: employee?.position || 'N/A',
       costCenter: costCenter || 'N/A',

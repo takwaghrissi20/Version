@@ -1,18 +1,16 @@
-
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { StyledOrderTable } from '../../../../../styles/index.styled';
-import { Button, Checkbox, Modal, Table, Select, Input, notification } from 'antd';
+import { Button, Checkbox, Modal, Table, Select, Input, notification, Row, Spin } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { FcMoneyTransfer } from "react-icons/fc";
 
-const OrderTable = ({ allemployee, loading, deductionMonth, costCenter, selectedProject, subject,
-  selectedTypePament, typecompany, chequeName, bancAccount, ibanNumber, transfer, transferRef,
-  listprojName, lastNumberTransferNumberIncrement,
-  lastNumberTransferNumber
 
-}) => {
+const OrderTable = ({ allemployee, loading, deductionMonth,  subject,
+
+ }) => {
+
   const dateObject = new Date(deductionMonth);
-  const month = dateObject.getMonth() + 1;
   const monthName = dateObject.toLocaleString('en-US', { month: 'long' }).toUpperCase();
   const [selectedRows, setSelectedRows] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -22,9 +20,10 @@ const OrderTable = ({ allemployee, loading, deductionMonth, costCenter, selected
   const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [salaries, setSalaries] = useState({});
   const [listsalaries, setListSalaries] = useState([]);
+  const [isCalculating, setIsCalculating] = useState(false); 
+  const [loadingAll, setLoadingAll] = useState(false);  
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
-
   const openRefuseNotification = () => {
     notification.open({
       message: 'Refuse',
@@ -32,7 +31,7 @@ const OrderTable = ({ allemployee, loading, deductionMonth, costCenter, selected
       style: {
         backgroundColor: '#335F8A',
         border: '1px solid #335F8A',
-        color: 'red !important',
+        color: '#FFFFFF !important',
         borderRadius: '3px',
         boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
         cursor: 'pointer',
@@ -48,16 +47,16 @@ const OrderTable = ({ allemployee, loading, deductionMonth, costCenter, selected
         position: 'relative',
       },
       placement: 'topRight',
+      color: '#FFFFFF !important',
     });
   };
-
   const openCalculateNotification = () => {
     notification.open({
       message: 'Success',
       description: 'Calculate salary with success',
       style: {
-        backgroundColor: '#335F8A',
-        border: '1px solid #335F8A',
+        backgroundColor: '#28a745',
+        border: '1px solid #28a745',
         color: '#FFFFFF !important',
         borderRadius: '3px',
         boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
@@ -77,93 +76,47 @@ const OrderTable = ({ allemployee, loading, deductionMonth, costCenter, selected
       color: '#FFFFFF !important',
     });
   };
+
   const openCalculateNotificationSalaryNull = () => {
     notification.open({
       message: 'Success',
       description: 'Employee With Salary 0 DT',
-      style: {
-        backgroundColor: '#de980d',
-        border: '1px solid #de980d',
-        color: '#FFFFFF !important',
-        borderRadius: '3px',
-        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
-        cursor: 'pointer',
-        display: 'flex',
-        height: "102px",
-        width: "500px",
-        borderLeft: '8px solid #de980d',
-        fontsize: '30px',
-        lineheight: '150%',
-        marginbottom: 0,
-        margintop: 0,
-        maxwidth: 'calc(100% - 15px)',
-        position: 'relative',
-      },
+      style: { /* styles */ },
       placement: 'topRight',
-      color: '#FFFFFF !important',
     });
   };
-  const Calculate = async (id) => {
-    try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/sheetSite/calculate?id=${id}&month=${monthName}`, {
-        method: 'POST',
-      });
-      if (!response.ok) {
-        openRefuseNotification();
-        throw new Error('Network response was not ok');
-      }
-      const responseData = await response.json();
-      console.log("salary Id", responseData)
-      if (responseData === 0) {
-        openCalculateNotificationSalaryNull('bottomRight')
-      } else {
-        setSalaries(prevSalaries => ({ ...prevSalaries, [id]: responseData }));
-        openCalculateNotification('bottomRight')
-      }
-      
-    } catch (error) {
-      console.error("Error calculating salary:", error);
-    }
-  };
 
-  const CalculateList = async (record) => {
+  const CalculateList = async () => {
+    setIsCalculating(true);
+    setLoadingAll(true); 
     try {
-      console.log('Calculating salary for:', record);
       const selectedIds = selectedRows.map(row => row.getsId);
-
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/sheetSite/calculateList?month=${monthName}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
- 
         },
-
         body: JSON.stringify(selectedIds),
       });
-  
+
       if (!response.ok) {
         openRefuseNotification();
         throw new Error('Network response was not ok');
       }
-      if (response.ok) {
-      const responseData = await response.json();
-  
-   
-     responseData?.forEach((salaryData, index) => {
-      setListSalaries(prevSalaries => ({ ...prevSalaries, [selectedIds[index]]: salaryData }));
-      });
 
-      openCalculateNotification('bottomRight');
-    }
-  
+      const responseData = await response.json();
+      responseData?.forEach((salaryData, index) => {
+        setListSalaries(prevSalaries => ({ ...prevSalaries, [selectedIds[index]]: salaryData }));
+      });
+      openCalculateNotification();
     } catch (error) {
       console.error("Error calculating salary:", error);
+    } finally {
+      setIsCalculating(false); 
+      setLoadingAll(false); 
     }
   };
-  
-  
-  
-  
+
   useEffect(() => {
     if (selectAll) {
       setSelectedRows([...allemployee]);
@@ -188,42 +141,6 @@ const OrderTable = ({ allemployee, loading, deductionMonth, costCenter, selected
     setSelectAll(e.target.checked);
   };
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleFilterTypeChange = (value) => {
-    setFilterType(value);
-  };
-
-  const handleFilterProjectChange = (value) => {
-    setFilterProject(value);
-  };
-  console.log("setSelectedRows",selectedRows)
-  const applyFilter = () => {
-    let newFilteredEmployees = selectedRows;
-
-    if (filterType) {
-      newFilteredEmployees = newFilteredEmployees.filter(employee => employee.type_Emp === filterType);
-    }
-
-    if (filterProject) {
-      newFilteredEmployees = newFilteredEmployees.filter(employee =>
-        employee.projects.some(project => project.projName === filterProject)
-      );
-    }
-
-    setFilteredEmployees(newFilteredEmployees);
-  };
-
   const columns = [
     {
       title: <Checkbox checked={selectAll} onChange={handleSelectAllChange} />,
@@ -236,162 +153,40 @@ const OrderTable = ({ allemployee, loading, deductionMonth, costCenter, selected
         />
       ),
     },
-    {
-      title: 'Gets Id',
-      dataIndex: 'getsId',
-      key: 'getsId',
-    },
-    {
-      title: 'Full Name',
-      dataIndex: 'name',
-      key: 'name',
-    },
-
-    ...(subject === "SALARY PAYMENT Site" || subject === "SALARY PAYMENT OFFICE"
-      ? selectedRows.length > 0
-        ? [{
-            title: 'Salary',
-            key: 'salary',
-            render: (text, record) => (
-              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <Button 
-                  style={{ whiteSpace: 'nowrap' }} 
-                  onClick={() => CalculateList(record)}
-                >
-                  Calculate All Salary
-                </Button>
-              </div>
-            ),
-          }]
-        : []
-      : []),
-     
-    
-
-    // ...(subject === "SALARY PAYMENT Site" || subject === "SALARY PAYMENT OFFICE"
-    //   ? [{
-    //     title: 'Salary',
-    //     dataIndex: 'salary',
-    //     key: 'salary',
-    //     render: (text, record) => (
-    //       salaries[record.getsId] ? (
-    //         <span>{salaries[record.getsId]} DT </span>
-    //       ) : (
-    //         <Button onClick={() => Calculate(record.getsId)}>
-    //           Calculate Salary
-    //         </Button>
-    //       )
-    //     ),
-    //   }]
-    //   : []),
+    { title: 'Gets Id', dataIndex: 'getsId', key: 'getsId' },
+    { title: 'Full Name', dataIndex: 'name', key: 'name' },
   ];
 
-
-  const modalColumns = [
-    {
-      title: 'Gets Id',
-      dataIndex: 'getsId',
-      key: 'getsId',
-    },
-    {
-      title: 'Full Name',
-      dataIndex: 'name',
-      key: 'name',
-    },
-  ];
-
-  const handleRequestPayment = () => {
-    navigate(`/Payroll/PAYMENT_ORDER_REQUESTS`, {
-      state: {
-        calculateSalary: salaries,
-        filteredEmployees: filteredEmployees,
-        costCenter: costCenter,
-        selectedProject: selectedProject,
-        subject:subject,
-        selectedTypePament:selectedTypePament,
-        typecompany:typecompany,
-        chequeName:chequeName,
-        bancAccount:bancAccount,
-        ibanNumber:ibanNumber,
-        transfer: transfer,
-        transferRef: transferRef,
-        listprojName: listprojName,
-        monthName:monthName, 
-        lastNumberTransferNumberIncrement: lastNumberTransferNumberIncrement,
-        lastNumberTransferNumber:lastNumberTransferNumber,
-        listsalaries:listsalaries,
-        selectedRows:selectedRows
-
-      }
-    });
-  };
-console.log("lastNumberTransferNumberIncrement",lastNumberTransferNumberIncrement)
   return (
     <>
-      <Button
-        style={{ margin: "1rem" }}
-        type="primary"
-        onClick={handleRequestPayment}
-        disabled={
-          selectedRows.length === 0 || 
-          !subject || 
-          !selectedTypePament || 
-          !typecompany
-        }
-      >
-        Request For Payment
-      </Button>
+       {loadingAll && (
+        <div className='FullPageLoader'>
+          <Spin size="large" tip="Calculating Salaries..." />
+        </div>
+      )}
+      <Row gutter={24} style={{ margin: "1rem" }}>
+        {(subject === "SALARY PAYMENT Site" || subject === "SALARY PAYMENT OFFICE") && selectedRows.length > 0 ? (
+          <>
+            <p>Selected: <span style={{ fontWeight: "bold", color: "#212E53" }}>{selectedRows.length}</span></p>
+            <Button
+              style={{ height: "1.5rem", fontSize: '0.75rem', marginLeft: "0.5rem", borderColor: "#5784BA", color: "#384454" }}
+              onClick={CalculateList}
+              disabled={isCalculating} 
+            >
+              <FcMoneyTransfer style={{ marginRight: '0.5rem' }} />
+              {isCalculating ? <Spin size="small" /> : "Calculate All Salary"} 
+            </Button>
+          </>
+        ) : null}
+      </Row>
+
       <StyledOrderTable
         hoverColor
         data={allemployee}
-        loading={loading}
+        loading={loading || isCalculating} 
         columns={columns}
         scroll={{ x: 'auto', y: 250 }}
       />
-      <Modal
-        title="Order Request"
-        visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        width={800}
-      >
-        <div style={{ marginBottom: 16 }}>
-          <Select
-            placeholder="Select Type"
-            style={{ width: 200, marginRight: 16 }}
-            onChange={handleFilterTypeChange}
-            allowClear
-          >
-            <Select.Option value="office">Office</Select.Option>
-            <Select.Option value="site">Site</Select.Option>
-          </Select>
-          <Select
-            placeholder="Select Project"
-            style={{ width: 200, marginRight: 16 }}
-            onChange={handleFilterProjectChange}
-            allowClear
-          >
-            {allemployee?.reduce((uniqueProjects, employee) => {
-              employee?.projects?.forEach(project => {
-                if (!uniqueProjects.includes(project.projName)) {
-                  uniqueProjects.push(project.projName);
-                }
-              });
-              return uniqueProjects;
-            }, []).map(projectName => (
-              <Select.Option key={projectName} value={projectName}>
-                {projectName}
-              </Select.Option>
-            ))}
-          </Select>
-          <Button type="primary" onClick={applyFilter}>Apply Filter</Button>
-        </div>
-        <Table
-          dataSource={filteredEmployees}
-          columns={modalColumns}
-          rowKey="id"
-        />
-      </Modal>
     </>
   );
 };

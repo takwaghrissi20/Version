@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { List } from 'antd';
+import { List, Spin } from 'antd';
 import {
   StyledNotifyListItem,
   StyledNotifyMsgAvatar,
@@ -8,8 +8,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import { StyledBuyCellCard, StyledTabs } from '../../../styles/index.styled';
-const NotificationItem = ({ user }) => {
-
+const NotificationItem = ({setVisible,visible, user, isLoadingchargement, setIsLoadingchargement,handleVisibleChange }) => {
+  const [requestQueue, setRequestQueue] = useState([]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [allnotif, setAllNotif] = useState([]);
@@ -47,6 +47,8 @@ const NotificationItem = ({ user }) => {
   const [requestPayments, setRequestPayments] = useState([]);
   const [monthOf, setMonthOf] = useState("");
   const [name, setName] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [clickedId, setClickedId] = useState(null);
   //Fetch Employees Expired Passport et Visa 
   const fetchExpiredVisa = async () => {
     try {
@@ -183,11 +185,20 @@ const NotificationItem = ({ user }) => {
   const [notificationPermission, setNotificationPermission] = useState(null);
   useEffect(() => {
     if (!("Notification" in window)) {
-      // console.log("Browser does not support desktop notifications");
     } else {
       Notification.requestPermission();
     }
-  }, []);
+    //Chargement le page with loading 
+    if (isLoadingchargement) {
+      const timer = setTimeout(() => {
+        setIsLoading
+        setIsLoadingchargement(false);
+
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+
+  }, [isLoadingchargement]);
 
   const showNotification = (message) => {
     if (Notification.permission === "granted") {
@@ -217,14 +228,11 @@ const NotificationItem = ({ user }) => {
         throw new Error('La requête a échoué avec le code ' + response.status);
       }
       const data = await response.json();
-
-
-      /////includes codejob
       const NotifInterveiw = data.filter(item => item?.type?.includes("Interview"));
       const filteredNotifications = NotifInterveiw.filter(item => ListInterviewNotif.includes(item.codejob));
 
-      ///////
       setAllNotif(data);
+      /////////////////
       const filteredData = data.filter(item =>
         (item.notfi === 4 &&
           item?.dep?.includes('Operation') &&
@@ -263,6 +271,7 @@ const NotificationItem = ({ user }) => {
 
       );
 
+      console.log("setNotifBod", notifBod)
       setNotifBod(filteredData);
       //////NotifffHrAdminstrotor
       // filteredData.forEach(item => {
@@ -615,6 +624,9 @@ const NotificationItem = ({ user }) => {
   }
   //demob
   const findId = async (code) => {
+    setLoading(true);
+    setClickedId(code);
+    setVisible(true)
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/findId?code=${code}&token=${token}`, {
         method: 'POST',
@@ -634,12 +646,23 @@ const NotificationItem = ({ user }) => {
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
     }
+    finally {
+      setLoading(false);
+      setVisible(false)
+    }
+  };
+  const handleQueue = (code) => {
+    setRequestQueue(prevQueue => [...prevQueue, code]);
+    if (requestQueue.length === 0) {
+      findId(code);
+    }
   };
   ///Requet Payment
 
   const findPaymentId = async (code) => {
-    setLoading(true);
+
     try {
+      setIsLoading(true);
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/RequestPayment/findId?code=${code}&token=${token}`, {
         method: 'Get',
       });
@@ -930,177 +953,207 @@ const NotificationItem = ({ user }) => {
 
   }, [project, notifPlanner, idgets, id, findIdDataConstruction, intCode, findIdDataStaff]);
 
-
-
   return (
     <>
-      {/* NOTIF BOD */}
-      {user.includes("bod") ?
-        <StyledNotifyListItem className='item-hover'>
-          {notifBod.map((p, index) => (
-            <div key={index}>
-              {p?.type?.includes("recruitment") && (
-                <div className='NotifTotal' onClick={() => findId(p?.codejob)}>
-                  <div
-                    className='NotifRecruitement' >
-                    R
+      <div >
+        {isLoadingchargement ? (
+          <Spin className="loading-chargement" size="large" />
+        ) : (
+          <>
+            {/* NOTIF BOD */}
+            {user.includes("bod") ? (
+              <StyledNotifyListItem className='item-hover'>
+                {notifBod
+                  .sort((a, b) => {
+                    return new Date(b.
+                      insertDatere) - new Date(a.insertDatere)
+                  }).map((p, index) => (
+                    <div key={index}>
+                      {/* Recruitment Notification */}
+                      {loading ?(
+                       <div className='loading-indicator'>Chargement...</div>
+                      ):
+                      <>
+                       {p?.type?.includes("recruitment") && (
+                        <div
+                          className={`NotifTotal ${clickedId === p.codejob ? 'red-background' : ''}`}
+                          // onClick={() => handleQueue(p?.codejob)}
+                   
+                          // onClick={() => findId(p?.codejob)}
+                        >
+
+                          <div className='NotifRecruitement'>R</div>
+                          <button className='Notification'   onClick={() => handleQueue(p?.codejob)}>
+                            Notification Recruitment Request <br></br>
+                            <span className='IndexNotif'>RRS-</span>
+                            <span className='IndexNotif'>{p.codejob}</span>
+                            {/* <p>Date: {new Date(p.insertDatere).toLocaleDateString()}</p>
+                      <p>Date: {p.insertDatere}</p> */}
+                            <p style={{
+                              padding: "0.5rem", textAlign: "right",
+                              fontSize: "10px"
+                            }}> {p.insertDatere.split(' ')[0]} At :{p.insertDatere.split(' ')[1]} </p>
+                          </button>
+                         
+                        </div>
+                      )}
+                      </>
+                      
+                      
+                      
+                      }
+                     
+
+                      <div className='Space'></div>
+
+                      {/* Interview Notification */}
+                      {p?.type?.includes("Interview") && (
+                        <div>
+                          <button
+                            className='Notification'
+                            onClick={() =>
+                              p.type.includes("Interview of construction team")
+                                ? findIdInterviewConstruction(p?.interviewCode)
+                                : findIdInterview(p?.interviewCode)
+                            }
+                          >
+                            Notification {p.type} Code {p.interviewCode}:
+                            <span style={{ color: "red", fontWeight: "bold" }}>
+                              {p.type.includes("Interview of construction team") ? `CIS-${p.interviewCodeJobInt}` : `RRS-${p.interviewCodeJobInt}`}
+                            </span>
+                          </button>
+                        </div>
+                      )}
+
+                      {/* Extension Notification */}
+                      {p?.type?.includes("Extension") && (
+                        <button className='Notification' onClick={() => findIdExtention(p?.idExtMiss)}>
+                          Extension Mission Notification: <span style={{ color: "red", fontWeight: "bold" }}>MER-{p?.idExtMiss}</span>
+                        </button>
+                      )}
+
+                      {/* Demobilization Notification */}
+                      {p?.type?.includes("Demob") && (
+                        <button className='Notification' onClick={() => findIdDemob(p?.idMd)}>
+                          Demobilization Permission Notification:
+                          <span style={{ color: "red", fontWeight: "bold" }}>DP-{p?.idMd}</span>
+                        </button>
+                      )}
+
+                      {/* Payment Request Notification */}
+                      {p?.refrequestpayment !== 0 && (
+                        <div className='NotifTotal' onClick={() => findPaymentId(p?.refrequestpayment)}>
+                          <div className='NotifPayment'>P</div>
+                          <button className='Notification' onClick={() => findPaymentId(p?.refrequestpayment)}>
+                            REQUEST FOR PAYMENT <br />
+                            <span className='IndexNotif'>Ref-</span>
+                            <span className='IndexNotif'>{p.refrequestpayment}</span>
+                          </button>
+                        </div>
+                      )}
+
+
+                    </div>
+                  ))}
+              </StyledNotifyListItem>
+            ) : null}
+
+            {/*Notif Payroll*/}
+            {user.includes("Payroll") ?
+              <StyledNotifyListItem className='item-hover'>
+                {notifPayroll.map((p, index) => (
+                  <div key={index}>
+
+                    <div className='NotifTotal' onClick={() => findPaymentId(p?.refrequestpayment)}>
+                      <div
+                        className='NotifPayment' >
+                        P
+                      </div>
+                      <button className='Notification' onClick={() => findPaymentId(p?.refrequestpayment)}>
+                        REQUEST FOR PAYMENT   <br></br>
+                        <span className='IndexNotif'>Ref-</span>
+                        <span className='IndexNotif'>{p.refrequestpayment}</span>
+                      </button>
+                    </div>
+
+                    {/*EndNotif Payment Reques*/}
+
+
                   </div>
-                  <button className='Notification' onClick={() => findId(p?.codejob)}>
-                    Notification Recruitement Request  <br></br>
-                    <span className='IndexNotif'>RRS-</span>
-                    <span className='IndexNotif'>{p.codejob}</span>
-                  </button>
-                </div>
+                ))}
+              </StyledNotifyListItem>
 
-              )}
-              <div className='Space'></div>
-              {p?.type?.includes("Interview") && (
-                <div>
-                  <button
-                    className='Notification'
-                    onClick={() =>
-                      p.type.includes("Interview of construction team")
-                        ? findIdInterviewConstruction(p?.interviewCode)
-                        : findIdInterview(p?.interviewCode)
-                    }
-                  >
-                    Notification {p.type} Code {p.interviewCode}:
-                    <span style={{ color: "red", fontWeight: "bold" }}>
-                      {p.type.includes("Interview of construction team") ? `CIS-${p.interviewCodeJobInt}` : `RRS-${p.interviewCodeJobInt}`}
-                    </span>
-                  </button>
-                </div>
-              )}
-              {p?.type?.includes("Extension") && (
-                <button className='Notification' onClick={() => findIdExtention(p?.idExtMiss)}>
-                  Extension Mission Notification: <span style={{ color: "red", fontWeight: "bold" }}>MER-{p?.idExtMiss}</span>
-                </button>
-              )}
-              {/*Notification Demob*/}
-              {p?.type?.includes("Demob") && (
-                <button className='Notification' onClick={() => findIdDemob(p?.idMd)} >
-                  Demobilization Permission Notification:
-                  <span style={{ color: "red", fontWeight: "bold" }}>DP-{p?.idMd}</span>
-                </button>
-              )}
-              {/*Notif Payment Reques*/}
-              <div className='NotifTotal' onClick={() => findPaymentId(p?.refrequestpayment)}>
-                <div
-                  className='NotifPayment' >
-                  P
-                </div>
-                <button className='Notification' onClick={() => findPaymentId(p?.refrequestpayment)}>
-                  REQUEST FOR PAYMENT   <br></br>
-                  <span className='IndexNotif'>Ref-</span>
-                  <span className='IndexNotif'>{p.refrequestpayment}</span>
-                </button>
-              </div>
-
-              {/*EndNotif Payment Reques*/}
+              : null
+            }
 
 
-            </div>
-          ))}
-        </StyledNotifyListItem>
+            {/*End Notif Payroll*/}
 
-        : null
-      }
-      {/*Notif Payroll*/}
-      {user.includes("Payroll") ?
-        <StyledNotifyListItem className='item-hover'>
-          {notifPayroll.map((p, index) => (
-            <div key={index}>
+            {/* NOTIF Cordinator */}
+            {user.includes("Cordinator") ?
+              <StyledNotifyListItem className='item-hover'>
+                <p>Number All Notification :{notifHR?.length} </p>
 
-              <div className='NotifTotal' onClick={() => findPaymentId(p?.refrequestpayment)}>
-                <div
-                  className='NotifPayment' >
-                  P
-                </div>
-                <button className='Notification' onClick={() => findPaymentId(p?.refrequestpayment)}>
-                  REQUEST FOR PAYMENT   <br></br>
-                  <span className='IndexNotif'>Ref-</span>
-                  <span className='IndexNotif'>{p.refrequestpayment}</span>
-                </button>
-              </div>
-
-              {/*EndNotif Payment Reques*/}
+                {notifHR.map((p, index) => (
+                  <div key={index}>
 
 
-            </div>
-          ))}
-        </StyledNotifyListItem>
+                    <div className='NotifTotal' onClick={() => findId(p?.codejob)}>
+                      <div
+                        className='NotifRecruitement' >
+                        R
+                      </div>
+                      <button className='Notification' onClick={() => findId(p?.codejob)}>
+                        Notification Recruitement Request  <br></br>
+                        <span className='IndexNotif'>RRS-</span>
+                        <span className='IndexNotif'>{p.codejob}</span>
+                      </button>
+                    </div>
 
-        : null
-      }
-
-
-      {/*End Notif Payroll*/}
-
-      {/* NOTIF Cordinator */}
-      {user.includes("Cordinator") ?
-        <StyledNotifyListItem className='item-hover'>
-          <p>Number All Notification :{notifHR?.length} </p>
-
-          {notifHR.map((p, index) => (
-            <div key={index}>
+                  </div>
+                ))}
 
 
-              <div className='NotifTotal' onClick={() => findId(p?.codejob)}>
-                <div
-                  className='NotifRecruitement' >
-                  R
-                </div>
-                <button className='Notification' onClick={() => findId(p?.codejob)}>
-                  Notification Recruitement Request  <br></br>
-                  <span className='IndexNotif'>RRS-</span>
-                  <span className='IndexNotif'>{p.codejob}</span>
-                </button>
-              </div>
+              </StyledNotifyListItem>
+              : null
+            }
+            {/*Notif Administartor*/}
+            {(!user.includes("Cordinator") && user.includes("Administrator")) ?
+              <StyledNotifyListItem className='item-hover'>
+                <p>Number All Notification :{notifHRAdministrator?.length} </p>
 
-            </div>
-          ))}
+                {visaExpired?.length > 0 && (
+                  <div className='NotifTotal' onClick={() => VisaExpired()}>
+                    <div
+                      className='NotifVisa' >
+                      V
+                    </div>
+                    <div style={{ color: "black" }}>
+                      Visa Will Be Expired Of Employees :<span className='IndexNotif'>{visaExpired?.length}</span>
+                    </div>
+                  </div>
+                )}
+                {passportExpired?.length > 0 && (
 
+                  <div className='NotifTotal' onClick={() => VisaExpired()}>
+                    <div
+                      className='NotiPassport' >
+                      P
+                    </div>
+                    <div style={{ color: "black" }}>
+                      Passport Will Be Expired Of Employees  : <span className='IndexNotif'>{passportExpired?.length}</span>
+                    </div>
+                  </div>
 
-        </StyledNotifyListItem>
-        : null
-      }
-      {/*Notif Administartor*/}
-      {(!user.includes("Cordinator") && user.includes("Administrator")) ?
-        <StyledNotifyListItem className='item-hover'>
-          <p>Number All Notification :{notifHRAdministrator?.length} </p>
+                )}
 
-          {visaExpired?.length > 0 && (
-            <div className='NotifTotal' onClick={() => VisaExpired()}>
-              <div
-                className='NotifVisa' >
-                V
-              </div>
-              <div style={{ color: "black" }}>
-                Visa Will Be Expired Of Employees :<span className='IndexNotif'>{visaExpired?.length}</span>
-              </div>
-            </div>
-          )}
-          {passportExpired?.length > 0 && (
-
-            <div className='NotifTotal' onClick={() => VisaExpired()}>
-              <div
-                className='NotiPassport' >
-                P
-              </div>
-              <div style={{ color: "black" }}>
-                Passport Will Be Expired Of Employees  : <span className='IndexNotif'>{passportExpired?.length}</span>
-              </div>
-            </div>
-
-          )}
-
-          {notifHRAdministrator.map((p, index) => (
-            <div key={index}>
+                {notifHRAdministrator.map((p, index) => (
+                  <div key={index}>
 
 
-              {/*Empl Finish Contrat*/}
-              {/* {passportExpired?.length > 0 && ( */}
-              {/* {contartExpired?.length > 0 && (    //Notif Payroll
+                    {/*Empl Finish Contrat*/}
+                    {/* {passportExpired?.length > 0 && ( */}
+                    {/* {contartExpired?.length > 0 && (    //Notif Payroll
             <div className='NotifTotal' onClick={() => VisaExpired()}>
               <div
                 className='NotiFinishContart' >
@@ -1112,319 +1165,320 @@ const NotificationItem = ({ user }) => {
               </div>
             </div>
           )} */}
-              {/* )} */}
-              {/*End Empl Finish Contrat*/}
+                    {/* )} */}
+                    {/*End Empl Finish Contrat*/}
 
-            </div>
-          ))}
-
-
-        </StyledNotifyListItem>
-        : null
-      }
-
-
-
-
-      {/*End Notif Administartor */}
-      {/* Notif ADMIN */}
-      {user.includes("admin") ?
-        <StyledNotifyListItem className='item-hover'>
-          <p>Number All Notification </p>
-          {allnotif.map((p, index) => (
-            <div key={index}>
-              <button className='Notification' onClick={() => findId(p?.codejob)}>
-                Recruitement Request with Code Job :<span style={{ color: "red", fontWeight: "bold" }}>{p.codejob}</span> </button>
-              <div className='Space'></div>
-
-            </div>
-          ))}
-        </StyledNotifyListItem>
-        : null
-      }
-
-      {/* Notif Operation  Manager*/}
-      {user === "Operation Manager" ? (
-        <StyledNotifyListItem className='item-hover'>
-          <p>Number All Notification (Operation Manager)</p>
-          <>
-            {notifOperation.map((p, index) => (
-              <>
-                {p?.type?.includes("recruitment") && (
-
-                  <div className='NotifTotal' onClick={() => findId(p?.codejob)}>
-                    <div
-                      className='NotifRecruitement' >
-                      R
-                    </div>
-                    <button className='Notification' onClick={() => findId(p?.codejob)}>
-                      Notification Recruitement Request  <br></br>
-                      <span className='IndexNotif'>RRS-</span>
-                      <span className='IndexNotif'>{p.codejob}</span>
-                    </button>
                   </div>
-                )}
-                {p?.type?.includes("Interview") && (
-                  <div>
-                    <button
-                      className='Notification'
-                      onClick={() =>
-                        p.type.includes("Interview of construction team")
-                          ? findIdInterviewConstruction(p?.interviewCode)
-                          : findIdInterview(p?.interviewCode)
-                      }
-                    >
-                      Notification {p.type} Code {p.interviewCode}:
-                      <span style={{ color: "red", fontWeight: "bold" }}>
-                        {p.type.includes("Interview of construction team") ? `CIS-${p.interviewCodeJobInt}` : `RRS-${p.interviewCodeJobInt}`}
-                      </span>
-                      {/* <span style={{ color: "red", fontWeight: "bold" }}>
+                ))}
+
+
+              </StyledNotifyListItem>
+              : null
+            }
+
+
+
+
+            {/*End Notif Administartor */}
+            {/* Notif ADMIN */}
+            {user.includes("admin") ?
+              <StyledNotifyListItem className='item-hover'>
+                <p>Number All Notification </p>
+                {allnotif.map((p, index) => (
+                  <div key={index}>
+                    <button className='Notification' onClick={() => findId(p?.codejob)}>
+                      Recruitement Request with Code Job :<span style={{ color: "red", fontWeight: "bold" }}>{p.codejob}</span> </button>
+                    <div className='Space'></div>
+
+                  </div>
+                ))}
+              </StyledNotifyListItem>
+              : null
+            }
+
+            {/* Notif Operation  Manager*/}
+            {user === "Operation Manager" ? (
+              <StyledNotifyListItem className='item-hover'>
+                <p>Number All Notification (Operation Manager)</p>
+                <>
+                  {notifOperation.map((p, index) => (
+                    <>
+                      {p?.type?.includes("recruitment") && (
+
+                        <div className='NotifTotal' onClick={() => findId(p?.codejob)}>
+                          <div
+                            className='NotifRecruitement' >
+                            R
+                          </div>
+                          <button className='Notification' onClick={() => findId(p?.codejob)}>
+                            Notification Recruitement Request  <br></br>
+                            <span className='IndexNotif'>RRS-</span>
+                            <span className='IndexNotif'>{p.codejob}</span>
+                          </button>
+                        </div>
+                      )}
+                      {p?.type?.includes("Interview") && (
+                        <div>
+                          <button
+                            className='Notification'
+                            onClick={() =>
+                              p.type.includes("Interview of construction team")
+                                ? findIdInterviewConstruction(p?.interviewCode)
+                                : findIdInterview(p?.interviewCode)
+                            }
+                          >
+                            Notification {p.type} Code {p.interviewCode}:
+                            <span style={{ color: "red", fontWeight: "bold" }}>
+                              {p.type.includes("Interview of construction team") ? `CIS-${p.interviewCodeJobInt}` : `RRS-${p.interviewCodeJobInt}`}
+                            </span>
+                            {/* <span style={{ color: "red", fontWeight: "bold" }}>
                     RRS-{p.codejob}
                   </span> */}
-                    </button>
-                  </div>
+                          </button>
+                        </div>
 
-                )}
+                      )}
 
-                {p?.type?.includes("Extension") && (
-                  <button className='Notification' onClick={() => findIdExtention(p?.idExtMiss)}>
-                    Extension Mission Notification: <span style={{ color: "red", fontWeight: "bold" }}>MER-{p?.idExtMiss}</span>
-                  </button>
-                )}
-                {p?.type?.includes("Demob") && user.includes("Operation") && (
-                  <button className='Notification' onClick={() => findIdDemob(p?.idMd)} >
-                    Demobilization Permission Notification:
-                    <span style={{ color: "red", fontWeight: "bold" }}>DP-{p?.idMd}</span>
-                  </button>
-                )}
-              </>
-            ))}
-          </>
-        </StyledNotifyListItem>
-      ) : null}
+                      {p?.type?.includes("Extension") && (
+                        <button className='Notification' onClick={() => findIdExtention(p?.idExtMiss)}>
+                          Extension Mission Notification: <span style={{ color: "red", fontWeight: "bold" }}>MER-{p?.idExtMiss}</span>
+                        </button>
+                      )}
+                      {p?.type?.includes("Demob") && user.includes("Operation") && (
+                        <button className='Notification' onClick={() => findIdDemob(p?.idMd)} >
+                          Demobilization Permission Notification:
+                          <span style={{ color: "red", fontWeight: "bold" }}>DP-{p?.idMd}</span>
+                        </button>
+                      )}
+                    </>
+                  ))}
+                </>
+              </StyledNotifyListItem>
+            ) : null}
 
 
-      {/* Notif PMO*/}
-      {user.includes("PMO") || notifPlanner?.dep?.includes('Operation') ?
-        <StyledNotifyListItem className='item-hover'>
-          <p>Number All Notification</p>
-          {notifPlanner.map((p, index) => (
-            <React.Fragment key={index}>
-              <div>
-                <div className='NotifTotal' onClick={() => findId(p?.codejob)}>
-                  <div
-                    className='NotifRecruitement' >
-                    R
-                  </div>
-                  <button className='Notification' onClick={() => findId(p?.codejob)}>
-                    Notification Recruitement Request  <br></br>
-                    <span className='IndexNotif'>RRS-</span>
-                    <span className='IndexNotif'>{p.codejob}</span>
-                  </button>
-                </div>
-              </div>
-              <div className='Space'></div>
-              {p?.type?.includes("Extension") && (
-                <button className='Notification' onClick={() => findIdExtention(p?.idExtMiss)}>
-                  Extension Mission Notification: <span style={{ color: "red", fontWeight: "bold" }}>MER-{p?.idExtMiss}</span>
-                </button>
-              )}
-            </React.Fragment>
-          ))}
-        </StyledNotifyListItem>
-
-        : null
-      }
-      {/* Notif Manager*/}
-      {(user.includes("Manager") && !user.includes("Construction") && !dep?.includes('Operation')) && (
-        <StyledNotifyListItem className='item-hover'>
-          <p>Number All Notification</p>
-          {notifManager.map((p, index) => (
-            <div key={index}>
-              {p?.type?.includes("Interview") && (
-                <div >
-                  <div className='NotifTotal'
-                    onClick={() =>
-                      p.type.includes("Interview of construction team")
-                        ? findIdInterviewConstruction(p?.interviewCode)
-                        : findIdInterview(p?.interviewCode)
-                    } >
-                    <div
-                      className='NotifInterview' >
-                      I
+            {/* Notif PMO*/}
+            {user.includes("PMO") || notifPlanner?.dep?.includes('Operation') ?
+              <StyledNotifyListItem className='item-hover'>
+                <p>Number All Notification</p>
+                {notifPlanner.map((p, index) => (
+                  <React.Fragment key={index}>
+                    <div>
+                      <div className='NotifTotal' onClick={() => findId(p?.codejob)}>
+                        <div
+                          className='NotifRecruitement' >
+                          R
+                        </div>
+                        <button className='Notification' onClick={() => findId(p?.codejob)}>
+                          Notification Recruitement Request  <br></br>
+                          <span className='IndexNotif'>RRS-</span>
+                          <span className='IndexNotif'>{p.codejob}</span>
+                        </button>
+                      </div>
                     </div>
-                    <button className='Notification' onClick={() => findId(p?.codejob)}>
-                      Notification {p.type} Code  {p.interviewCode}:  <br></br>
-                      <span lassName='IndexNotif'>
-                        {p.type.includes("Interview of construction team") ? `CIS-${p.interviewCodeJobInt}` : `RRS-${p.interviewCodeJobInt}`}
-                      </span>
-                      <span className='IndexNotif'>{p.codejob}</span>
-                    </button>
+                    <div className='Space'></div>
+                    {p?.type?.includes("Extension") && (
+                      <button className='Notification' onClick={() => findIdExtention(p?.idExtMiss)}>
+                        Extension Mission Notification: <span style={{ color: "red", fontWeight: "bold" }}>MER-{p?.idExtMiss}</span>
+                      </button>
+                    )}
+                  </React.Fragment>
+                ))}
+              </StyledNotifyListItem>
+
+              : null
+            }
+            {/* Notif Manager*/}
+            {(user.includes("Manager") && !user.includes("Construction") && !dep?.includes('Operation')) && (
+              <StyledNotifyListItem className='item-hover'>
+                <p>Number All Notification</p>
+                {notifManager.map((p, index) => (
+                  <div key={index}>
+                    {p?.type?.includes("Interview") && (
+                      <div >
+                        <div className='NotifTotal'
+                          onClick={() =>
+                            p.type.includes("Interview of construction team")
+                              ? findIdInterviewConstruction(p?.interviewCode)
+                              : findIdInterview(p?.interviewCode)
+                          } >
+                          <div
+                            className='NotifInterview' >
+                            I
+                          </div>
+                          <button className='Notification' onClick={() => findId(p?.codejob)}>
+                            Notification {p.type} Code  {p.interviewCode}:  <br></br>
+                            <span lassName='IndexNotif'>
+                              {p.type.includes("Interview of construction team") ? `CIS-${p.interviewCodeJobInt}` : `RRS-${p.interviewCodeJobInt}`}
+                            </span>
+                            <span className='IndexNotif'>{p.codejob}</span>
+                          </button>
+                        </div>
+
+                      </div>
+                    )}
+                    {p?.type?.includes("Extension") && user.includes("Human Ressource") && (
+                      <button className='Notification' onClick={() => findIdExtention(p?.idExtMiss)}>
+                        Extension Mission Notification: <span style={{ color: "red", fontWeight: "bold" }}>MER-{p?.idExtMiss}</span>
+                      </button>
+                    )}
+                    {/*Demob Flow HSE Site Manager*/}
+                    {p?.type?.includes("Demob") && user.includes("HSE Site Manager") && (
+                      <button className='Notification' onClick={() => findIdDemob(p?.idMd)} >
+                        Demobilization Permission Notification:
+                        <span style={{ color: "red", fontWeight: "bold" }}>DP-{p?.idMd}</span>
+
+                      </button>
+                    )}
+
+                    {/*Payment requet*/}
+                    <div className='NotifTotal' onClick={() => findPaymentId(p?.refrequestpayment)}>
+                      <div
+                        className='NotifPayment' >
+                        P
+                      </div>
+                      <button className='Notification'>
+                        REQUEST FOR PAYMENT   <br></br>
+                        <span className='IndexNotif'>Ref-</span>
+                        <span className='IndexNotif'>{p.refrequestpayment}</span>
+                      </button>
+                    </div>
+                    {/*Payment requet*/}
+                    {loading &&
+                      <div className="loading-container">
+                        <div className="ball red"></div>
+                        <div className="ball yellow"></div>
+                        <div className="loading-text">Chargement, veuillez patienter...</div>
+                      </div>}
                   </div>
+                ))}
+              </StyledNotifyListItem>
 
-                </div>
-              )}
-              {p?.type?.includes("Extension") && user.includes("Human Ressource") && (
-                <button className='Notification' onClick={() => findIdExtention(p?.idExtMiss)}>
-                  Extension Mission Notification: <span style={{ color: "red", fontWeight: "bold" }}>MER-{p?.idExtMiss}</span>
-                </button>
-              )}
-              {/*Demob Flow HSE Site Manager*/}
-              {p?.type?.includes("Demob") && user.includes("HSE Site Manager") && (
-                <button className='Notification' onClick={() => findIdDemob(p?.idMd)} >
-                  Demobilization Permission Notification:
-                  <span style={{ color: "red", fontWeight: "bold" }}>DP-{p?.idMd}</span>
+            )}
 
-                </button>
-              )}
+            {/* Notif Leader*/}
 
-              {/*Payment requet*/}
-              <div className='NotifTotal' onClick={() => findPaymentId(p?.refrequestpayment)}>
-                <div
-                  className='NotifPayment' >
-                  P
-                </div>
-                <button className='Notification'>
-                  REQUEST FOR PAYMENT   <br></br>
-                  <span className='IndexNotif'>Ref-</span>
-                  <span className='IndexNotif'>{p.refrequestpayment}</span>
-                </button>
-              </div>
-              {/*Payment requet*/}
-              {loading &&
-                <div className="loading-container">
-                  <div className="ball red"></div>
-                  <div className="ball yellow"></div>
-                  <div className="loading-text">Chargement, veuillez patienter...</div>
-                </div>}
-            </div>
-          ))}
-        </StyledNotifyListItem>
-
-      )}
-
-      {/* Notif Leader*/}
-
-      {user.includes("Leader") ?
-        <StyledNotifyListItem className='item-hover'>
-          <p>Number All Notification</p>
-          {notifProjetLeader.map((p, index) => (
-            <>
-              <div key={index}>
-                {/* <button className='Notification' onClick={() => findId(p?.codejob)}>
+            {user.includes("Leader") ?
+              <StyledNotifyListItem className='item-hover'>
+                <p>Number All Notification</p>
+                {notifProjetLeader.map((p, index) => (
+                  <>
+                    <div key={index}>
+                      {/* <button className='Notification' onClick={() => findId(p?.codejob)}>
           Recruitement Request with Code Job: <span style={{ color: "red", fontWeight: "bold" }}>RRS-{p.codejob}</span>
         </button> */}
-                {p?.type?.includes("Interview") && (
-                  <div>
-                    <button
-                      className='Notification'
-                      onClick={() =>
-                        p.type.includes("Interview of construction team")
-                          ? findIdInterviewConstruction(p?.interviewCode)
-                          : findIdInterview(p?.interviewCode)
-                      }
-                    >
-                      Notification {p.type} Code {p.interviewCode}:
-                      <span style={{ color: "red", fontWeight: "bold" }}>
-                        {p.type.includes("Interview of construction team") ? `CIS-${p.interviewCodeJobInt}` : `RRS-${p.interviewCodeJobInt}`}
-                      </span>
-                      {/* <span style={{ color: "red", fontWeight: "bold" }}>
+                      {p?.type?.includes("Interview") && (
+                        <div>
+                          <button
+                            className='Notification'
+                            onClick={() =>
+                              p.type.includes("Interview of construction team")
+                                ? findIdInterviewConstruction(p?.interviewCode)
+                                : findIdInterview(p?.interviewCode)
+                            }
+                          >
+                            Notification {p.type} Code {p.interviewCode}:
+                            <span style={{ color: "red", fontWeight: "bold" }}>
+                              {p.type.includes("Interview of construction team") ? `CIS-${p.interviewCodeJobInt}` : `RRS-${p.interviewCodeJobInt}`}
+                            </span>
+                            {/* <span style={{ color: "red", fontWeight: "bold" }}>
                        RRS-{p.codejob}
                         </span> */}
-                    </button>
-                  </div>
-                )}
-                {/*Demob Flow Project Leader*/}
-                {p?.type?.includes("Demob") && user.includes("Leader") && (
-                  <button className='Notification' onClick={() => findIdDemob(p?.idMd)} >
-                    Demobilization Permission Notification:
-                    <span style={{ color: "red", fontWeight: "bold" }}>DP-{p?.idMd}</span>
-                  </button>
-                )}
-              </div>
-              {/* <div key={index}>
+                          </button>
+                        </div>
+                      )}
+                      {/*Demob Flow Project Leader*/}
+                      {p?.type?.includes("Demob") && user.includes("Leader") && (
+                        <button className='Notification' onClick={() => findIdDemob(p?.idMd)} >
+                          Demobilization Permission Notification:
+                          <span style={{ color: "red", fontWeight: "bold" }}>DP-{p?.idMd}</span>
+                        </button>
+                      )}
+                    </div>
+                    {/* <div key={index}>
               <button className='Notification' onClick={() => findId(p?.codejob)}>
                 Recruitement Request with Code Job :<span style={{ color: "red",fontWeight:"bold" }}>RRS-{p.codejob}</span> </button>
             </div> */}
-              <div className='Space'></div>
-            </>
-          ))}
-        </StyledNotifyListItem>
-        : null
-      }
-      {/* Notif QC Lead*/}
-      {user.includes("QC Lead") ?
-        <StyledNotifyListItem className='item-hover'>
-          <p>Number All Notification </p>
-          {notifQCLead.map((p, index) => (
-            <>
-              <div key={index}>
+                    <div className='Space'></div>
+                  </>
+                ))}
+              </StyledNotifyListItem>
+              : null
+            }
+            {/* Notif QC Lead*/}
+            {user.includes("QC Lead") ?
+              <StyledNotifyListItem className='item-hover'>
+                <p>Number All Notification </p>
+                {notifQCLead.map((p, index) => (
+                  <>
+                    <div key={index}>
 
-                {p?.type?.includes("Demob") && user.includes("QC Lead") && (
-                  <button className='Notification' onClick={() => findIdDemob(p?.idMd)} >
-                    Demobilization Permission Notification:
-                    <span style={{ color: "red", fontWeight: "bold" }}>DP-{p?.idMd}</span>
-                  </button>
-                )}
-              </div>
-              <div className='Space'></div>
-            </>
-          ))}
-        </StyledNotifyListItem>
-        : null
-      }
-      {/*notifLogistic*/}
-      {user.toLowerCase().includes("LOGISTIC") ?
-        <StyledNotifyListItem className='item-hover'>
-          <p>Number All Notification </p>
-          {notifLogistic.map((p, index) => (
-            <>
-              <div key={index}>
+                      {p?.type?.includes("Demob") && user.includes("QC Lead") && (
+                        <button className='Notification' onClick={() => findIdDemob(p?.idMd)} >
+                          Demobilization Permission Notification:
+                          <span style={{ color: "red", fontWeight: "bold" }}>DP-{p?.idMd}</span>
+                        </button>
+                      )}
+                    </div>
+                    <div className='Space'></div>
+                  </>
+                ))}
+              </StyledNotifyListItem>
+              : null
+            }
+            {/*notifLogistic*/}
+            {user.toLowerCase().includes("LOGISTIC") ?
+              <StyledNotifyListItem className='item-hover'>
+                <p>Number All Notification </p>
+                {notifLogistic.map((p, index) => (
+                  <>
+                    <div key={index}>
 
-                {p?.type?.includes("Demob") && user.toLowerCase().includes("LOGISTIC") && (
-                  <button className='Notification' onClick={() => findIdDemob(p?.idMd)} >
-                    Demobilization Permission Notification:
-                    <span style={{ color: "red", fontWeight: "bold" }}>DP-{p?.idMd}</span>
-                  </button>
-                )}
-              </div>
-              <div className='Space'></div>
-            </>
-          ))}
-        </StyledNotifyListItem>
-        : null
-      }
+                      {p?.type?.includes("Demob") && user.toLowerCase().includes("LOGISTIC") && (
+                        <button className='Notification' onClick={() => findIdDemob(p?.idMd)} >
+                          Demobilization Permission Notification:
+                          <span style={{ color: "red", fontWeight: "bold" }}>DP-{p?.idMd}</span>
+                        </button>
+                      )}
+                    </div>
+                    <div className='Space'></div>
+                  </>
+                ))}
+              </StyledNotifyListItem>
+              : null
+            }
 
 
-      {/*Construction Manager NOTIF toLowerCase() */}
-      {user.includes("Construction") ?
-        <StyledNotifyListItem className='item-hover'>
-          <p>Number All Notification </p>
-          {notifConstruction.map((p, index) => (
-            <>
-              <div key={index}>
-                {/*Demob Flow Project Leader*/}
-                {p?.type?.includes("Demob") && user.includes("Construction") && (
-                  <button className='Notification' onClick={() => findIdDemob(p?.idMd)} >
-                    Demobilization Permission Notification:
-                    <span style={{ color: "red", fontWeight: "bold" }}>DP-{p?.idMd}</span>
-                  </button>
-                )}
-              </div>
-              {/* <div key={index}>
+            {/*Construction Manager NOTIF toLowerCase() */}
+            {user.includes("Construction") ?
+              <StyledNotifyListItem className='item-hover'>
+                <p>Number All Notification </p>
+                {notifConstruction.map((p, index) => (
+                  <>
+                    <div key={index}>
+                      {/*Demob Flow Project Leader*/}
+                      {p?.type?.includes("Demob") && user.includes("Construction") && (
+                        <button className='Notification' onClick={() => findIdDemob(p?.idMd)} >
+                          Demobilization Permission Notification:
+                          <span style={{ color: "red", fontWeight: "bold" }}>DP-{p?.idMd}</span>
+                        </button>
+                      )}
+                    </div>
+                    {/* <div key={index}>
               <button className='Notification' onClick={() => findId(p?.codejob)}>
                 Recruitement Request with Code Job :<span style={{ color: "red",fontWeight:"bold" }}>RRS-{p.codejob}</span> </button>
             </div> */}
-              <div className='Space'></div>
-            </>
-          ))}
-        </StyledNotifyListItem>
-        : null
-      }
+                    <div className='Space'></div>
+                  </>
+                ))}
+              </StyledNotifyListItem>
+              : null
+            }
 
 
-
-
+          </>
+        )}
+      </div>
 
     </>
   );

@@ -206,12 +206,8 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId,listRecruiteme
   const DeleteRecruitement = async () => {
  
     try {
-        const endPoint =
-            process.env.NODE_ENV === "development"
-                ? "https://dev-gateway.gets-company.com"
-                : "";
-
-        const response = await fetch(`${endPoint}/api/v1/re/delete?code=${id}&token=${token}`, {
+   
+        const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/delete?code=${id}&token=${token}`, {
             method: 'DELETE',
         });
 
@@ -222,10 +218,9 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId,listRecruiteme
             throw new Error('La requête a échoué avec le code ' + response.status);
         }
 
-        if (response.ok) {
-          
-          
-            const data = await response.text();
+        if (response.ok) {               
+            const data = await response.json();
+            console.log("tettttttt",data)
             openNotification('bottomRight')
             setTimeout(() => {
               onDeleteRecruitement(false);

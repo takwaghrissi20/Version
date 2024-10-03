@@ -69,7 +69,7 @@ const EmpEditForm = (props) => {
 
   const handleEdit = async (maritalStatus,newTelNumber,newFinishDate,newactStatus,newposition) => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/update?token=${token}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/update?token=${token}&id=${getsId}`, {
 
         method: 'PUT',
         headers: {

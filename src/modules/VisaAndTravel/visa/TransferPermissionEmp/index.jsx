@@ -52,13 +52,9 @@ const AllTransferPermissionEmp = () => {
     try {
       const count = await fetch(`https://dev-gateway.gets-company.com/api/v1/transfer/list?token=${token}`);
       const datacount = await count.json();
-      console.log("counttttt",datacount)
       setCount(datacount.length);
      
-  
-        /////////////////////////////////
-
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/transfer/listBypage?page=${currentPage}&size=${pageSize}&sortBy=inputDate&token=${token}`);
+     const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/transfer/listBypage?page=${currentPage}&size=${pageSize}&sortBy=inputDate&token=${token}`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch Transfer Emp');

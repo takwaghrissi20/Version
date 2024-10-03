@@ -986,11 +986,9 @@ input {
 .Notification {
   border: none;
   background-color: transparent;
-  margin-bottom: 0.5rem;
-  /* border-bottom: 0.2mm ridge #2997ff; */
-  padding: 0.5rem;
   text-align: center;
   cursor: pointer;
+  width: 100%;
 
 
 
@@ -1131,7 +1129,12 @@ input {
   margin: 0 10px;
   animation: bounce 0.6s infinite alternate;
 }
-
+.loading-chargement{
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  background-color: white; 
+}
 .red {
   background-color: #5784BA;
 }
@@ -1199,7 +1202,6 @@ input {
   align-items: center;
    cursor: pointer;
    margin-top: 10px;
-
    box-shadow: 0 6px 16px 0 rgba(186, 180, 180, 0.05), 0 3px 6px -4px rgba(186, 180, 180, 0.05),
    0 9px 28px 8px rgba(186, 180, 180, 0.05);
    padding: 0.5rem;
@@ -1213,8 +1215,8 @@ input {
 .NotifRecruitement{
   background-color: #0B162C;
   color: white;
-  width: 40px;
-  height: 40px;
+  width: 33px;
+  height: 33px;
   border-Radius: 50%;
   display: flex ;
   justify-content: center; 
@@ -1446,4 +1448,19 @@ opacity: 0.5;
   margin-top: 20px; /* Espace au-dessus du texte */
 }
 
-
+.red-background {
+  background-color: #212E53;
+  transition: background-color 0.3s ease;
+}
+.FullPageLoader{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}

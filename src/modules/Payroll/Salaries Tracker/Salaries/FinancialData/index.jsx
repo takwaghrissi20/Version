@@ -41,11 +41,7 @@ const OrderTable = ({  employee, loading }) => {
       dataIndex: 'rib',
       key: 'rib',
     },
-    {
-      title: 'Bank Account',
-      dataIndex: 'rib',
-      key: 'rib',
-    },
+    
     {
       title: 'Bank Name',
       dataIndex: 'bankName',

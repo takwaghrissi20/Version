@@ -35,7 +35,7 @@ const OrderTable = ({ dataemployeesVisa, fetchEmployees }) => {
   const handleChangeReady = (date, dateString) => {
     setEditingData({ ...editingData, visaReady: dateString });
   };
-  console.log("eddddoiiiittt",editingData)
+
 
   const handleChangeDatepassportSubmitdate = (date, dateString) => {
     setEditingData({ ...editingData, passportSubmitdate: dateString });

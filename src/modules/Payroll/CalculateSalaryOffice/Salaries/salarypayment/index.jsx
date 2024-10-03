@@ -2,8 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { StyledOrderTable } from '../../../../../styles/index.styled';
-import { Button, Checkbox, Modal, Table, Select, Input, notification } from 'antd';
+import { Button, Checkbox, Modal, Table, Select, Input, notification, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { FcMoneyTransfer } from "react-icons/fc";
 
 const OrderTable = ({ allemployee, loading, deductionMonth, costCenter, selectedProject, subject,
   selectedTypePament, typecompany, chequeName, bancAccount, ibanNumber, transfer, transferRef,
@@ -103,67 +104,42 @@ const OrderTable = ({ allemployee, loading, deductionMonth, costCenter, selected
       color: '#FFFFFF !important',
     });
   };
-  const Calculate = async (id) => {
-    try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/sheetSite/calculate?id=${id}&month=${monthName}`, {
-        method: 'POST',
-      });
-      if (!response.ok) {
-        openRefuseNotification();
-        throw new Error('Network response was not ok');
-      }
-      const responseData = await response.json();
-      console.log("salary Id", responseData)
-      if (responseData === 0) {
-        openCalculateNotificationSalaryNull('bottomRight')
-      } else {
-        setSalaries(prevSalaries => ({ ...prevSalaries, [id]: responseData }));
-        openCalculateNotification('bottomRight')
-      }
-      
-    } catch (error) {
-      console.error("Error calculating salary:", error);
-    }
-  };
+ 
 
-  const CalculateList = async (record) => {
+  const CalculateList = async () => {
     try {
-      console.log('Calculating salary for:', record);
+
       const selectedIds = selectedRows.map(row => row.getsId);
 
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/sheetSite/calculateList?month=${monthName}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/sheetOffice/calculateList?month=${monthName}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
- 
+
         },
 
         body: JSON.stringify(selectedIds),
       });
-  
+
       if (!response.ok) {
         openRefuseNotification();
         throw new Error('Network response was not ok');
       }
       if (response.ok) {
-      const responseData = await response.json();
-  
-   
-     responseData?.forEach((salaryData, index) => {
-      setListSalaries(prevSalaries => ({ ...prevSalaries, [selectedIds[index]]: salaryData }));
-      });
+        const responseData = await response.json();
+        responseData?.forEach((salaryData, index) => {
+          setListSalaries(prevSalaries => ({ ...prevSalaries, [selectedIds[index]]: salaryData }));
+        });
+      
+        openCalculateNotification('bottomRight');
+      }
 
-      openCalculateNotification('bottomRight');
-    }
-  
     } catch (error) {
       console.error("Error calculating salary:", error);
     }
   };
-  
-  
-  
-  
+  console.log("salary",listsalaries)
+
   useEffect(() => {
     if (selectAll) {
       setSelectedRows([...allemployee]);
@@ -188,41 +164,6 @@ const OrderTable = ({ allemployee, loading, deductionMonth, costCenter, selected
     setSelectAll(e.target.checked);
   };
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleFilterTypeChange = (value) => {
-    setFilterType(value);
-  };
-
-  const handleFilterProjectChange = (value) => {
-    setFilterProject(value);
-  };
-  console.log("setSelectedRows",selectedRows)
-  const applyFilter = () => {
-    let newFilteredEmployees = selectedRows;
-
-    if (filterType) {
-      newFilteredEmployees = newFilteredEmployees.filter(employee => employee.type_Emp === filterType);
-    }
-
-    if (filterProject) {
-      newFilteredEmployees = newFilteredEmployees.filter(employee =>
-        employee.projects.some(project => project.projName === filterProject)
-      );
-    }
-
-    setFilteredEmployees(newFilteredEmployees);
-  };
 
   const columns = [
     {
@@ -247,85 +188,37 @@ const OrderTable = ({ allemployee, loading, deductionMonth, costCenter, selected
       key: 'name',
     },
 
-    ...(subject === "SALARY PAYMENT Site" || subject === "SALARY PAYMENT OFFICE"
-      ? selectedRows.length > 0
-        ? [{
-            title: 'Salary',
-            key: 'salary',
-            render: (text, record) => (
-              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <Button 
-                  style={{ whiteSpace: 'nowrap' }} 
-                  onClick={() => CalculateList(record)}
-                >
-                  Calculate All Salary
-                </Button>
-              </div>
-            ),
-          }]
-        : []
-      : []),
-     
-    
 
-    // ...(subject === "SALARY PAYMENT Site" || subject === "SALARY PAYMENT OFFICE"
-    //   ? [{
-    //     title: 'Salary',
-    //     dataIndex: 'salary',
-    //     key: 'salary',
-    //     render: (text, record) => (
-    //       salaries[record.getsId] ? (
-    //         <span>{salaries[record.getsId]} DT </span>
-    //       ) : (
-    //         <Button onClick={() => Calculate(record.getsId)}>
-    //           Calculate Salary
-    //         </Button>
-    //       )
-    //     ),
-    //   }]
-    //   : []),
   ];
 
 
-  const modalColumns = [
-    {
-      title: 'Gets Id',
-      dataIndex: 'getsId',
-      key: 'getsId',
-    },
-    {
-      title: 'Full Name',
-      dataIndex: 'name',
-      key: 'name',
-    },
-  ];
 
   const handleRequestPayment = () => {
     navigate(`/Payroll/PAYMENT_ORDER_REQUESTS`, {
       state: {
-        calculateSalary: salaries,
+      
         filteredEmployees: filteredEmployees,
         costCenter: costCenter,
         selectedProject: selectedProject,
-        subject:subject,
-        selectedTypePament:selectedTypePament,
-        typecompany:typecompany,
-        chequeName:chequeName,
-        bancAccount:bancAccount,
-        ibanNumber:ibanNumber,
+        subject: subject,
+        selectedTypePament: selectedTypePament,
+        typecompany: typecompany,
+        chequeName: chequeName,
+        bancAccount: bancAccount,
+        ibanNumber: ibanNumber,
         transfer: transfer,
         transferRef: transferRef,
         listprojName: listprojName,
-        monthName:monthName, 
+        monthName: monthName,
         lastNumberTransferNumberIncrement: lastNumberTransferNumberIncrement,
-        lastNumberTransferNumber:lastNumberTransferNumber,
-        listsalaries:listsalaries,
-        selectedRows:selectedRows
+        lastNumberTransferNumber: lastNumberTransferNumber,
+        listsalaries: listsalaries,
+        selectedRows: selectedRows
 
       }
     });
   };
-console.log("lastNumberTransferNumberIncrement",lastNumberTransferNumberIncrement)
+  console.log("lastNumberTransferNumberIncrement", lastNumberTransferNumberIncrement)
   return (
     <>
       <Button
@@ -333,14 +226,39 @@ console.log("lastNumberTransferNumberIncrement",lastNumberTransferNumberIncremen
         type="primary"
         onClick={handleRequestPayment}
         disabled={
-          selectedRows.length === 0 || 
-          !subject || 
-          !selectedTypePament || 
+          selectedRows.length === 0 ||
+          !subject ||
+          !selectedTypePament ||
           !typecompany
         }
       >
         Request For Payment
       </Button>
+      <Row gutter={24} style={{ margin: "1rem" }}>
+
+        {(subject === "SALARY PAYMENT Office") && selectedRows && selectedRows.length > 0 ? (
+          <>
+            <p>Selected: <span style={{ fontWeight: "bold", color: "#212E53" }}>{selectedRows.length}</span></p>
+            <Button
+              style={{
+                height: "1.5rem",
+                fontSize: '0.75rem',
+                marginLeft: "0.5rem",
+                borderColor: "#5784BA",
+                color: "#384454"
+              }}
+              onClick={() => CalculateList()}
+            >
+              <FcMoneyTransfer style={{ marginRight: '0.5rem' }} />
+              Calculate All Salary
+            </Button>
+            
+          </>
+
+        ) : null}
+
+      </Row>
+
       <StyledOrderTable
         hoverColor
         data={allemployee}
@@ -348,50 +266,7 @@ console.log("lastNumberTransferNumberIncrement",lastNumberTransferNumberIncremen
         columns={columns}
         scroll={{ x: 'auto', y: 250 }}
       />
-      <Modal
-        title="Order Request"
-        visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        width={800}
-      >
-        <div style={{ marginBottom: 16 }}>
-          <Select
-            placeholder="Select Type"
-            style={{ width: 200, marginRight: 16 }}
-            onChange={handleFilterTypeChange}
-            allowClear
-          >
-            <Select.Option value="office">Office</Select.Option>
-            <Select.Option value="site">Site</Select.Option>
-          </Select>
-          <Select
-            placeholder="Select Project"
-            style={{ width: 200, marginRight: 16 }}
-            onChange={handleFilterProjectChange}
-            allowClear
-          >
-            {allemployee?.reduce((uniqueProjects, employee) => {
-              employee?.projects?.forEach(project => {
-                if (!uniqueProjects.includes(project.projName)) {
-                  uniqueProjects.push(project.projName);
-                }
-              });
-              return uniqueProjects;
-            }, []).map(projectName => (
-              <Select.Option key={projectName} value={projectName}>
-                {projectName}
-              </Select.Option>
-            ))}
-          </Select>
-          <Button type="primary" onClick={applyFilter}>Apply Filter</Button>
-        </div>
-        <Table
-          dataSource={filteredEmployees}
-          columns={modalColumns}
-          rowKey="id"
-        />
-      </Modal>
+
     </>
   );
 };

@@ -103,7 +103,7 @@ const UpdateVisa = (props) => {
   };
   const Update = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/update?token=${token}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/update?token=${token}&id=${dateemp?.getsId}`, {
 
         method: 'PUT',
         headers: {
