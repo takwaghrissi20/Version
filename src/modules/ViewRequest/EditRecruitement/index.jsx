@@ -39,8 +39,43 @@ const EditRecruitementAbove = () => {
   const affectedTo = location.state ? location.state.affectedTo : null
   const notif = location.state ? location.state.notif : null
   const dateInputRecrut = location.state ? location.state.dateInputRecrut : null
+  const signaturepolead = location.state ? location.state.signaturepolead : null
+  const signatureBod2 = location.state ? location.state.signatureBod2 : null
+  console.log("signaturepolead",signaturepolead)
+  console.log("signatureBod2", signatureBod2)
   const userRoles = localStorage.getItem("role");
   const token = localStorage.getItem("token");
+  const userEmail = localStorage.getItem("email");
+  const [commentBOD1, setCommentBOD1] = useState("");
+  const [commentBOD2, setCommentBOD2] = useState("");
+  const [name, setName] = useState("");
+  //Get profile By Email
+  useEffect(() => {
+    GetProfileEmployess()
+  }, []);
+  const GetProfileEmployess = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${userEmail}&token=${token}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+      if (!response.ok) {
+        throw new Error('La requête a échoué avec le code ' + response.status);
+      }
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
+      }
+      const data = await response.json();
+      setName(data?.name)
+      console.log("nameeeeess",data?.name)
+    } catch (error) {
+      console.error('Erreur lors de la récupération getByEmail', error);
+    }
+  };
+
   const Back = async () => {
     navigate(-1)
 
@@ -82,6 +117,8 @@ const EditRecruitementAbove = () => {
           comentPlaner: comentPlaner,
           signatureHod: null,
           signatureBod: null,
+          signatureBod2:commentBOD2,
+          signaturepolead:commentBOD1,
           notif: 20,
           status: "Not Approved By BOD"
         })
@@ -109,6 +146,74 @@ const EditRecruitementAbove = () => {
       console.error("Erreur lors de la récupération du Id :", error);
     }
   }
+  //Reject Recruitement BOD NIDHAL
+  const  CancelRecruitementBodNIDHA = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}&token=${token}`, {
+
+        method: 'PUT',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+
+          jobCode: jobCode,
+          dateInputRecrut: dateInputRecrut,
+          desiredDate: DesiredDate,
+          dep: dep,
+          idemp: idemp,
+          position: position,
+          recruttrequestDate: recruttrequestDate,
+          requestName: requestName,
+          requestedDicipline: requestedDicipline,
+          approuvedRecrutRequestNumber: 1,
+          projectName: projectName,
+          projRef: projRef,
+          totalNumber: Numbervacancies,
+          experience: Level,
+          nbExperience: nbExperience,
+          type: type,
+          affectedTo: affectedTo,
+          certif: certif,
+          bod: null,
+          oDep: oDep,
+          exDep: exDep,
+          comentPlaner: comentPlaner,
+          signatureHod: null,
+          signatureBod: null,
+          notif: 80,
+          signatureBod2:commentBOD2,
+          signaturepolead:commentBOD1,
+          status: "Not Approved By BOD"
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+
+        const responseData = await response.text();
+        openRefuseNotificationBOD('bottomRight')
+        setTimeout(() => {
+          window.location.reload();
+          navigate(-1)
+        }, 2000);
+
+
+
+        //handleAddContactClose(true)
+      }
+
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+    }
+  }
+ 
 
   const [newdesiredDate, setNewDesiredDate] = useState(DesiredDate);
   const [newdep, setNewdep] = useState(dep);
@@ -599,6 +704,8 @@ const EditRecruitementAbove = () => {
           comentPlaner: comentPlaner,
           signatureHod: null,
           signatureBod: null,
+          signatureBod2:commentBOD2,
+          signaturepolead:commentBOD1,
           notif: 3,
           status: "Approved By BOD"
         })
@@ -626,9 +733,74 @@ const EditRecruitementAbove = () => {
     }
   }
 
-
-
   //End Updata BOd
+  ///Approve BOD NIDHAL
+  const  UpdateBODNIDHAL = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}&token=${token}`, {
+
+        method: 'PUT',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+
+          jobCode: jobCode,
+          dateInputRecrut: dateInputRecrut,
+          desiredDate: DesiredDate,
+          dep: dep,
+          idemp: idemp,
+          position: position,
+          recruttrequestDate: recruttrequestDate,
+          requestName: requestName,
+          requestedDicipline: requestedDicipline,
+          approuvedRecrutRequestNumber: 1,
+          projectName: projectName,
+          projRef: projRef,
+          totalNumber: Numbervacancies,
+          experience: Level,
+          nbExperience: nbExperience,
+          type: type,
+          affectedTo: affectedTo,
+          certif: certif,
+          bod: null,
+          oDep: oDep,
+          exDep: exDep,
+          comentPlaner: comentPlaner,
+          signatureHod: null,
+          signatureBod: null,
+          signatureBod2:commentBOD2,
+          signaturepolead:commentBOD1,
+          notif: 8,
+          status: "Approved By BOD"
+        })
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+
+        const responseData = await response.text();
+        openNotification('bottomRight')
+        setTimeout(() => {
+          window.location.reload();
+          navigate(-1)
+        }, 2000);
+     
+        // navigate(-1)
+
+        //handleAddContactClose(true)
+      }
+
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+    }
+  }
+ 
 
 
   return (
@@ -1345,8 +1517,79 @@ const EditRecruitementAbove = () => {
 
                     </Form.Item>
                   </Col>
+             
+                </AppRowContainer>
+              </StyledShadowWrapper>
+            </Col>
+          </AppRowContainer>
+          {/*Comment Bod 1 et BOD2*/ }
+          <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+            <Col xs={24} md={6}>
+              <Typography.Title level={5}> Comments </Typography.Title>
 
-
+            </Col>
+            <Col xs={24} md={18}>
+              <StyledShadowWrapper>
+                <AppRowContainer>
+                  {name?.toLowerCase().includes("ali")&&
+                   <Col xs={24} md={24}>
+                   <p>{name}:</p>
+                   {signatureBod2===null?
+                 <p></p>
+                 :
+                 <Form.Item label='Comment Of Nidhal' name='Comment Of Nidhal '>
+                 <Input
+                className='InputComment'
+                placeholder={signatureBod2}
+                readOnly
+                
+                 />
+               </Form.Item>                              
+                 }
+                  <Form.Item label='Comment' name='Comment'>
+                    <Input
+                   className='InputComment'
+                   placeholder="Comment"
+                   value={commentBOD1}
+                   onChange={(e) => setCommentBOD1(e.target.value)}                  
+                    />
+                  </Form.Item>
+                </Col>
+                  
+                  }
+                  {name?.toLowerCase().includes("nidhal")&&
+                 <Col xs={24} md={24}>
+                 <p>{name} : </p>
+                 {signaturepolead===null?
+                 <p></p>
+                 :
+                 <Form.Item label='Comment Of Ali' name='Comment Of Ali '>
+                 <Input
+                className='InputComment'
+                placeholder={signaturepolead}
+                readOnly
+                
+                 />
+               </Form.Item>
+                               
+                 }
+                
+        
+                <Form.Item label='Comment' name='Comment'>
+                  <Input
+                 className='InputComment'
+                 placeholder="Comment"
+                 value={commentBOD2}
+                 onChange={(e) => setCommentBOD2(e.target.value)}
+                 
+                  />
+                </Form.Item>
+              </Col>                
+                  }
+                 
+                
+              
+              
                 </AppRowContainer>
               </StyledShadowWrapper>
             </Col>
@@ -1636,12 +1879,24 @@ const EditRecruitementAbove = () => {
 
               : null
             }
-            {userRoles.includes("bod") ?
+            {userRoles.includes("bod") && name?.toLowerCase().includes("ali") ?
               <>
                 <Button style={{ color: "green", borderColor: "green" }} onClick={() => UpdateBOD()}>
-                  Approved
+                  Approved 
                 </Button>
                 <Button style={{ color: "red", borderColor: "red" }} onClick={() => CancelRecruitementBod()}>
+                  Refuse 
+                </Button>
+                <Button onClick={Back}>Cancel</Button>
+              </>
+              : null
+            }
+               {userRoles.includes("bod") && name?.toLowerCase().includes("nidhal") ?
+              <>
+                <Button style={{ color: "green", borderColor: "green" }} onClick={() => UpdateBODNIDHAL()}>
+                  Approved 
+                </Button>
+                <Button style={{ color: "red", borderColor: "red" }} onClick={() =>CancelRecruitementBodNIDHA()}>
                   Refuse
                 </Button>
                 <Button onClick={Back}>Cancel</Button>

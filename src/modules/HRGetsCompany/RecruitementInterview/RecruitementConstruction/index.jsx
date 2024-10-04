@@ -27,6 +27,7 @@ const RecruitementConstruction = ({ allrecruitementbelow, roles, recruitementTyp
   const [isGenerateInterview, onGenerateInterview] = useState(false);
   const [findIdData, setFindIdData] = useState(null);
   const [id, setId] = useState(0);
+  const [loading, setLoading] = useState(false);
   const count = allrecruitementbelow.length
   useEffect(() => {
     fetchRecruitementbelow();
@@ -189,7 +190,7 @@ const RecruitementConstruction = ({ allrecruitementbelow, roles, recruitementTyp
           paddingBottom: 10,
         }}
       >
-        {(roles.includes("admin")) || (roles.includes("Cordinator")) || (roles.includes("Administrator"))  ?
+  {(roles.includes("admin")) ||(roles.includes("bod")) || (roles.includes("Cordinator")) || (roles.includes("Administrator"))  ?
           <>
             <OrderTable
               allrecruitementbelow={recruitementbelow}

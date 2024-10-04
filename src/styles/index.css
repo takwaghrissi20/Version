@@ -1135,6 +1135,13 @@ input {
   align-items: center; 
   background-color: white; 
 }
+.loading-charge{
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+
+  height:max-content
+}
 .red {
   background-color: #5784BA;
 }

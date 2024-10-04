@@ -12,7 +12,11 @@ import AppsContent from '../../../../@crema/components/AppsContainer/AppsContent
 import Pagination from '../../../../@crema/components/AppsPagination';
 import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
 import { useNavigate } from "react-router-dom";
-const RecruitementStaff = ({ allrecruitementabove, recruitementTypeIdAbove, roles, token }) => {
+const RecruitementStaff = ({ allrecruitementabove, recruitementTypeIdAbove, roles, token,
+  loading,setLoading
+
+
+ }) => {
   const navigate = useNavigate();
   const [recruitementabove, setRecruitementabove] = useState([]);
   const [recruitementaboveFiltrer, setRecruitementaboveFiltrer] = useState([]);
@@ -193,7 +197,7 @@ const RecruitementStaff = ({ allrecruitementabove, recruitementTypeIdAbove, role
 
         }}>
         {/*admin*/}
-        {(roles.includes("admin")) || (roles.includes("Cordinator"))|| (roles.includes("Administrator")) ?
+        {(roles.includes("admin")) || roles.includes("bod")||(roles.includes("Cordinator"))|| (roles.includes("Administrator")) ?
           <>
             <OrderTable
               allrecruitementabove={recruitementabove}
@@ -204,7 +208,8 @@ const RecruitementStaff = ({ allrecruitementabove, recruitementTypeIdAbove, role
               open={open}
               handleInterview={handleInterview}
               roles={roles}
-
+              setLoading={setLoading}
+              loading={setLoading}
             />
             {/* <OrderTable 
          allrecruitementabove={filteredData}

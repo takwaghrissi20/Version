@@ -5,7 +5,7 @@ import AppPageMeta from '../../../@crema/components/AppPageMeta';
 import AppRowContainer from '../../../@crema/components/AppRowContainer';
 import { StyledBuyCellCard, StyledTabs } from '../../../styles/index.styled';
 import AppInfoView from '../../../@crema/components/AppInfoView';
-import { Col } from 'antd';
+import { Col, Spin } from 'antd';
 import RecruitementStaff from './RecruitementStaffManager';
 import RecruitementConstruction from './RecruitementConstruction';
 import InterviewStaff from './InterviewStaff';
@@ -28,6 +28,8 @@ const RecruitementInterview = () => {
   const [recruitementTypeIdbelow, setRecruitementTypeIdbelow] = useState("");
   const [interTypeIdManagement, setInterTypeIdManagement] = useState([]);
   const [interTypeIdConstruction, setInterTypeIdConstruction] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [loading1, setLoading1] = useState(true);
   // Gets Id BY Profile:
   const userEmail = localStorage.getItem("email");
   const roles = localStorage.getItem("role");
@@ -58,7 +60,6 @@ const RecruitementInterview = () => {
       if (!response.ok) {
         throw new Error('La requête a échoué avec le code ' + response.status);
       }
-
       const data = await response.json();
       const filteredData = data.filter(item => item?.idemp === idProfile);
       const filteredDataType = filteredData.filter(item => item?.type === "Above Foreman");
@@ -67,7 +68,7 @@ const RecruitementInterview = () => {
       ///If Foreman & Below
       const filteredDataTypeForman = filteredData.filter(item => item?.type === "Foreman & Below");
       setRecruitementTypeIdbelow(filteredDataTypeForman)
-    
+
     } catch (error) {
       console.error('Erreur lors de la récupération List Recruitement', error);
     }
@@ -79,12 +80,12 @@ const RecruitementInterview = () => {
         process.env.NODE_ENV === "development"
           ? "https://dev-gateway.gets-company.com"
           : "";
-          const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list?token=${token}`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-          });
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list?token=${token}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
 
       if (!response.ok) {
         throw new Error('La requête a échoué Recruitement ' + response.status);
@@ -130,7 +131,7 @@ const RecruitementInterview = () => {
   //     ///If Foreman & Below
   //     const filteredDataTypeForman = filteredData.filter(item => item?.type === "Foreman & Below");
   //     setRecruitementTypeIdbelow(filteredDataTypeForman)
-    
+
   //   } catch (error) {
   //     console.error('Erreur lors de la récupération List Recruitement', error);
   //   }
@@ -140,23 +141,27 @@ const RecruitementInterview = () => {
     {
       label: 'Staff Management Recruitment',
       key: '1',
-      children: 
-      <RecruitementStaff
-        recruitementTypeIdAbove={recruitementTypeIdAbove}
-        roles={roles}
-        allrecruitementabove={allrecruitementabove}
-        token={token}
+      children:
+        <RecruitementStaff
+          recruitementTypeIdAbove={recruitementTypeIdAbove}
+          roles={roles}
+          allrecruitementabove={allrecruitementabove}
+          token={token}
+          loading={loading}
+          setLoading={setLoading}
 
-      />,
+        />,
     },
     {
       label: 'Constructuction Staff Recruitment',
       key: '2',
       children: <RecruitementConstruction
-       allrecruitementbelow={allrecruitementbelow}
+        allrecruitementbelow={allrecruitementbelow}
         recruitementTypeIdbelow={recruitementTypeIdbelow}
         roles={roles}
         token={token}
+        loading={loading}
+        setLoading={setLoading}
 
       />,
     },
@@ -167,9 +172,9 @@ const RecruitementInterview = () => {
       children: <InterviewStaff
         allinterviewStaffManagement={allinterviewStaffManagement}
         token={token}
-        
-        
-        />
+
+
+      />
 
     }] : []),
     // {
@@ -184,9 +189,9 @@ const RecruitementInterview = () => {
     ...((roles?.includes('Cordinator') || roles?.includes('admin') || roles?.includes('bod') || roles?.includes('Ressource')) ? [{
       label: 'Construction Staff Interview',
       key: '4',
-      children: <InterviewConstruction 
-      allinterviewConstructionTeam={allinterviewConstructionTeam} 
-      token={token}
+      children: <InterviewConstruction
+        allinterviewConstructionTeam={allinterviewConstructionTeam}
+        token={token}
       />
 
     }] : []),
@@ -279,80 +284,65 @@ const RecruitementInterview = () => {
         }
       });
     }
+    ///////////
+    if (loading1) {
+      const timer = setTimeout(() => {
+        // window.location.reload();
+        setLoading1(false);
+
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
   }, [roles, idProfile])
+
+
 
 
   return (
     <>
-      <AppsContainer
-        title={messages['sidebar.app.recruitementinterview']}
-        cardStyle={{ backgroundColor: 'transparent', boxShadow: 'none' }}
-        fullView
-      >
-        {/*Layout of dahbords*/}
-        <AppPageMeta title='InterviewRecruitement' />
-        <div>
-          <AppRowContainer ease={'easeInSine'}>
-            {roles === "admin" ?
-              <Col xs={24} md={10}>
-                <LastRequestor
+      <div>
+        {loading1 ? (
+          <Spin className="loading-charge" size="large" />
+        ) : (
+          <>
+            <AppsContainer
+              title={messages['sidebar.app.recruitementinterview']}
+              cardStyle={{ backgroundColor: 'transparent', boxShadow: 'none' }}
+              fullView
+            >
+              {/* Layout of dashboards */}
+              <AppPageMeta title="InterviewRecruitement" />
+              <div>
+                <AppRowContainer ease="easeInSine">
+                  {roles === "admin" && (
+                    <Col xs={24} md={10}>
+                      <LastRequestor lastRecruitement={lastRecruitement} />
+                    </Col>
+                  )}
+                  <Col xs={24} md={14}>
+                    <StaticNumber
+                      allrecruitementaboveItRecruitement={allrecruitementaboveItRecruitement}
+                      totalNumberInterview={totalNumberInterview}
+                      totalNumber={totalNumber}
+                      user={roles}
+                    />
+                  </Col>
+                </AppRowContainer>
+              </div>
 
-                  lastRecruitement={lastRecruitement} />
-              </Col>
-              : null
+              <AppsContainer type="bottom" fullView>
+                <StyledBuyCellCard style={{ paddingLeft: "10px" }} heightFull>
+                  <StyledTabs defaultActiveKey="1" items={items} />
+                </StyledBuyCellCard>
+              </AppsContainer>
 
-            }
-            <Col xs={24} md={14}>
-              <StaticNumber
-                allrecruitementaboveItRecruitement={allrecruitementaboveItRecruitement}
-                totalNumberInterview={totalNumberInterview} totalNumber={totalNumber} user={roles} />
-            </Col>
-
-            {/* <Col  xs={24} sm={12} lg={6}>
-              <StaticsTotalRecruitement totalNumber={totalNumber}></StaticsTotalRecruitement>
-              </Col>
-              <Col xs={24} sm={12} lg={6}>
-                <StaticsTotalInterview totalNumberInterview={totalNumberInterview}></StaticsTotalInterview>
-              </Col>
-              <Col xs={24} sm={12} lg={10}>
-                <LastRequestorRecruitement lastRecruitement={lastRecruitement} ></LastRequestorRecruitement>
-              </Col> */}
-
-          </AppRowContainer>
-        </div>
-
-        <AppsContainer
-
-          type='bottom'
-          fullView>
-          <StyledBuyCellCard style={{ paddingLeft: "10px" }} heightFull>
-            <StyledTabs defaultActiveKey='1' items={items} />
-          </StyledBuyCellCard>
-        </AppsContainer>
-
-        <AppInfoView />
-
-      </AppsContainer>
-
-
-      {/* <AppsContainer
-      title={messages['sidebar.Recruitement.InterviewSheet']}
-      sidebarContent={
-        <ProductsSidebar
-          filterData={filterData}
-          setFilterData={setFilterData}
-        />
-      }
-    > */}
-      {/* <AppPageMeta title='Products Listing' />
-      <ProductListing
-        filterData={filterData}
-        viewType={viewType}
-        setViewType={setViewType}
-        setFilterData={setFilterData}
-      />
-    </AppsContainer> */}
+              <AppInfoView />
+            </AppsContainer>
+          </>
+        )}
+      </div>
     </>
+
   );
 };
 

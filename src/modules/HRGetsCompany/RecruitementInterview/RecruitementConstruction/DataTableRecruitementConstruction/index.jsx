@@ -15,7 +15,7 @@ import IntlMessages from '../../../../../@crema/helpers/IntlMessages';
 import { useNavigate } from "react-router-dom";
 import { Button, Tooltip, Dropdown } from 'antd';
 const AllRecruitementStaff = ({ roles,allrecruitementbelow, findIdData, id, findId, setFindIdData, open, handleInterview }) => {
-console.log("allrecruitementbelow",findIdData)
+
   //const [findIdData, setFindIdData] = useState(null);
   const [isViewRecruitement, onViewRecruitement] = useState(false);
   const [isEditRecruitement, onEditRecruitement] = useState(false);
@@ -102,9 +102,6 @@ console.log("allrecruitementbelow",findIdData)
       });
     }
 
-
-
-
     //onViewRecruitement(true);
   };
   const handleAddRecruitementClose = () => {
@@ -123,6 +120,36 @@ console.log("allrecruitementbelow",findIdData)
   const handleDeleteRecruitement = () => {
 
     onDeleteRecruitement(true);
+  };
+  const handleApprovedRecruitement = () => {
+      navigate(`/Hr/Recruitement&Interview/Recruitement/Update/codeJob=${findIdData?.jobCode}`, {
+        state: {
+          jobCode: findIdData.jobCode,
+          notif: findIdData?.notif,
+          dep: findIdData?.dep,
+          idemp: findIdData?.idemp,
+          requestName: findIdData?.requestName,
+          dateInputRecrut: findIdData?.dateInputRecrut,
+          position: findIdData?.position,
+          recruttrequestDate: findIdData?.recruttrequestDate,
+          DesiredDate: findIdData?.desiredDate,
+          projectName: findIdData?.projectName,
+          projRef: findIdData?.projRef,
+          type: findIdData?.type,
+          affectedTo: findIdData?.affectedTo,
+          requestedDicipline: findIdData?.requestedDicipline,
+          Level: findIdData?.experience,
+          Numbervacancies: findIdData?.totalNumber,
+          certif: findIdData?.certif,
+          nbExperience: findIdData?.nbExperience,
+          exDep: findIdData?.exDep,
+          oDep: findIdData?.oDep,
+          comentPlaner: findIdData?.comentPlaner,
+          signatureBod: findIdData?.signatureBod,
+          signatureHod: findIdData?.signatureHod,
+        }
+    
+    });
   };
   const handleEditRecruitementOpen = () => {
     navigate(`/Hr/Recruitement&Interview/Recruitement/Update/codeJob=${id}`, {
@@ -193,7 +220,7 @@ console.log("allrecruitementbelow",findIdData)
   }
 
   const items = [
-    { key: 1, label: <span style={{ fontSize: 14 }}>View </span>, onClick: handleAddRecruitementOpen },   
+    { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleAddRecruitementOpen },   
     // { key: 3, label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, onClick: handleInterview },
   
     //Approved Hr 
@@ -210,12 +237,16 @@ console.log("allrecruitementbelow",findIdData)
       { key: 3, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditRecruitementOpen },
       { key: 4, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteRecruitement },
     ] : []),
+    ...(roles.includes('bod') ? [
+      { key: 3, label: <span style={{ fontSize: 14 }}>Approve</span>,onClick:handleApprovedRecruitement },
+     
+    ] : []),
   ];
 
  
   const columns = [
     {
-      title: 'Recruitement Reference',
+      title: 'Recruitement Referencerr',
       dataIndex: 'jobCode',
       key: 'jobCode',
       width: 150,

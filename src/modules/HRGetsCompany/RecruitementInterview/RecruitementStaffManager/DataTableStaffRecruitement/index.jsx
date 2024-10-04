@@ -23,6 +23,8 @@ const AllRecruitementStaff = ({ allrecruitementabove,
   setFindIdData
   , open,
   roles,
+  setLoading,
+  loading,
   handleInterview }) => {
 
 
@@ -31,6 +33,7 @@ const AllRecruitementStaff = ({ allrecruitementabove,
   const [isEditRecruitement, onEditRecruitement] = useState(false);
   const [isDelteRecruitement, onDeleteRecruitement] = useState(false);
   const navigate = useNavigate();
+
   const token = localStorage.getItem("token");
   const handleAddRecruitementOpen = () => {
     navigate(`/Hr/Recruitement&Interview/Recruitement/View/codeJob=${id}`, {
@@ -204,6 +207,42 @@ const AllRecruitementStaff = ({ allrecruitementabove,
       console.error('Erreur lors de la récupération des données:', error);
     }
   }
+  const handleApprovedRecruitement = () => {
+    setLoading(true); 
+    setTimeout(() => {
+      navigate(`/Hr/Recruitement&Interview/Recruitement/Update/codeJob=${findIdData?.jobCode}`, {
+        state: {
+          jobCode: findIdData.jobCode,
+          notif: findIdData?.notif,
+          dep: findIdData?.dep,
+          idemp: findIdData?.idemp,
+          requestName: findIdData?.requestName,
+          dateInputRecrut: findIdData?.dateInputRecrut,
+          position: findIdData?.position,
+          recruttrequestDate: findIdData?.recruttrequestDate,
+          DesiredDate: findIdData?.desiredDate,
+          projectName: findIdData?.projectName,
+          projRef: findIdData?.projRef,
+          type: findIdData?.type,
+          affectedTo: findIdData?.affectedTo,
+          requestedDicipline: findIdData?.requestedDicipline,
+          Level: findIdData?.experience,
+          Numbervacancies: findIdData?.totalNumber,
+          certif: findIdData?.certif,
+          nbExperience: findIdData?.nbExperience,
+          exDep: findIdData?.exDep,
+          oDep: findIdData?.oDep,
+          comentPlaner: findIdData?.comentPlaner,
+          signatureBod: findIdData?.signatureBod,
+          signatureHod: findIdData?.signatureHod,
+          signaturepolead:findIdData?.signaturepolead,
+          signatureBod2:findIdData?.signatureBod2,
+        }
+      });
+      // Hide the loading indicator after navigating
+      setLoading(false);
+    }, 1000); // 1 second delay
+  };
   
   const items = [
     { key: 1, label: <span style={{ fontSize: 14 }}>View </span>, onClick: handleAddRecruitementOpen },
@@ -221,7 +260,10 @@ const AllRecruitementStaff = ({ allrecruitementabove,
     //   { key: 4, label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, onClick: handleInterview }
     // ] : [])
     // { key: 3, label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, onClick: handleInterview },
-
+    ...(roles.includes('bod') ? [
+      { key: 2, label: <span style={{ fontSize: 14 }}>Approve</span>, onClick: handleApprovedRecruitement },
+     
+    ] : []),
   ];
 
   const columns = [
@@ -427,6 +469,7 @@ const AllRecruitementStaff = ({ allrecruitementabove,
 
   return (
     <>
+{loading && <div>...</div>}
 
       <StyledOrderTable
         hoverColor

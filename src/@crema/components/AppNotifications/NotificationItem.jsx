@@ -49,6 +49,7 @@ const NotificationItem = ({setVisible,visible, user, isLoadingchargement, setIsL
   const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [clickedId, setClickedId] = useState(null);
+  const [loading1, setLoading1] = useState(false);
   //Fetch Employees Expired Passport et Visa 
   const fetchExpiredVisa = async () => {
     try {
@@ -102,9 +103,6 @@ const NotificationItem = ({setVisible,visible, user, isLoadingchargement, setIsL
       console.error('Error fetching employees:', error);
     }
   };
-
-
-
 
 
 
@@ -183,7 +181,7 @@ const NotificationItem = ({setVisible,visible, user, isLoadingchargement, setIsL
   };
 
   const [notificationPermission, setNotificationPermission] = useState(null);
-  useEffect(() => {
+  useEffect((code) => {
     if (!("Notification" in window)) {
     } else {
       Notification.requestPermission();
@@ -271,18 +269,7 @@ const NotificationItem = ({setVisible,visible, user, isLoadingchargement, setIsL
 
       );
 
-      console.log("setNotifBod", notifBod)
       setNotifBod(filteredData);
-      //////NotifffHrAdminstrotor
-      // filteredData.forEach(item => {
-      //   if (item.notfi === 2 && !displayedNotifications.has(item.id)) {
-      //     showNotification(`Recruitment Request with code Job ${item.jobcode}`);
-      //     setDisplayedNotifications(prev => new Set(prev).add(item.id));
-      //   }
-      // });
-
-
-
       const filteredDataHrAdministartor = data.filter(item => (item.notfi === 3) ||
         (item.notfi === 1)
       );
@@ -523,6 +510,17 @@ const NotificationItem = ({setVisible,visible, user, isLoadingchargement, setIsL
       }
     });
   }
+  
+  const HandleNotifRecruitementTesrrr = () => {
+    console.log("Open Notif")
+    navigate(`/Hr/Recruitement&Interview`, {
+     
+    });
+  }
+
+const HandleNotifRecruitement = () => {; 
+ navigate(`/Hr/Recruitement&Interview`);
+};
   //Extesion
   const handleEditExtentionOpen = (code) => {
     navigate(`/Hr/Visa/UpdateMissionOrderExtention/MER=${code?.ref}`, {
@@ -976,14 +974,14 @@ const NotificationItem = ({setVisible,visible, user, isLoadingchargement, setIsL
                       <>
                        {p?.type?.includes("recruitment") && (
                         <div
-                          className={`NotifTotal ${clickedId === p.codejob ? 'red-background' : ''}`}
+                          className={`NotifTotal ${clickedId === p.codejob ? 'red-background' : ''}`}                       
+                          onClick={HandleNotifRecruitement}
                           // onClick={() => handleQueue(p?.codejob)}
                    
                           // onClick={() => findId(p?.codejob)}
-                        >
-
+                          >
                           <div className='NotifRecruitement'>R</div>
-                          <button className='Notification'   onClick={() => handleQueue(p?.codejob)}>
+                          <button className='Notification' >
                             Notification Recruitment Request <br></br>
                             <span className='IndexNotif'>RRS-</span>
                             <span className='IndexNotif'>{p.codejob}</span>
