@@ -61,58 +61,6 @@ const AddVisa = (props) => {
   const { messages } = useIntl();
 
 
-  // const handleEdit = async (maritalStatus,newTelNumber,newFinishDate,newactStatus,newposition) => {
-  //   try {
-  //     const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/update`, {
-
-  //       method: 'PUT',
-  //       headers: {
-  //         "Access-Control-Allow-Headers": "Content-Type",
-  //         "Access-Control-Allow-Origin": "*",
-  //         'Content-Type': 'application/json',
-  //         "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
-  //       },
-  //       body: JSON.stringify({
-  //         getsId:getsId,
-  //         name:name,
-  //         position:newposition,
-  //         nationality:nationality,
-  //         birthDate:birthDate,
-  //         familyStatus:maritalStatus,
-  //         phoneNumber:newTelNumber,
-  //         joinDate,
-  //         companyType,
-  //         finishDate:newFinishDate,
-  //         actStatus:newactStatus,
-  //         position:newposition,
-  //         getsEmail:getsEmail,
-  //         passportnumber:passportnumber,
-  //         cnss:cnss,
-  //         contractNumb: contractNumb,
-  //         cvCopy:cvCopy,
-  //         passportCopy:passportCopy,
-
-  //       })
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error('Network response was not ok');
-  //     }
-  //     if (response.ok) {
-
-  //       const responseData = await response.json();
-       
-  //       setDataEdit(responseData)
-  //       //handleAddContactClose(true)
-  //     }
-
-  //     // Handle responseData if needed
-  //   } catch (error) {
-  //     console.error("Erreur lors de la récupération du Id :", error);
-  //   }
-  // };
-
-
   
   return (
     <StyledContactForm>

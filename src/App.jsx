@@ -88,7 +88,35 @@ function App() {
     }
   };
   //End Fetch Employees Expired Passport et Visa 
+  const [name, setName] = useState("");
+  const userEmail = localStorage.getItem("email");
+  ///Gets Profile
+  const GetProfileEmployess = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${userEmail}&token=${token}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+      if (!response.ok) {
+        throw new Error('La requête a échoué avec le code ' + response.status);
+      }
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
+      }
+      const data = await response.json();
+      setName(data?.name)
+      localStorage.setItem('name',data?.name);
+      localStorage.setItem('departement',data?.departement);
+    } catch (error) {
+      console.error('Erreur lors de la récupération getByEmail', error);
+    }
+  
+  };
 
+  ////Gets Profiles
   const fetchRole = async () => {
     try {
       const params = new URLSearchParams({ roles: storedrole });
@@ -142,9 +170,8 @@ function App() {
       handleTokenCheck();
 
     }else null
-
     fetchExpiredVisa()
-
+    GetProfileEmployess()
   }, [token, email]);
 
   return (

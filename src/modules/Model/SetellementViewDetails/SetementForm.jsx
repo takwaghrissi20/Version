@@ -27,7 +27,8 @@ const Setement = (props) => {
   const {
     setUserImage,
     handleCloseView,
-    salaryData
+    salaryData,
+    dateemp
 
   } = props;
 

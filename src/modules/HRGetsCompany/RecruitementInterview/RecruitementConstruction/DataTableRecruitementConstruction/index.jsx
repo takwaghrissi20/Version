@@ -14,7 +14,7 @@ import ConfirmationModal from '../../../../../@crema/components/AppConfirmationM
 import IntlMessages from '../../../../../@crema/helpers/IntlMessages';
 import { useNavigate } from "react-router-dom";
 import { Button, Tooltip, Dropdown } from 'antd';
-const AllRecruitementStaff = ({ roles,allrecruitementbelow, findIdData, id, findId, setFindIdData, open, handleInterview }) => {
+const AllRecruitementConstruction = ({ roles,allrecruitementbelow, findIdData, id, findId, setFindIdData, open, handleInterview }) => {
 
   //const [findIdData, setFindIdData] = useState(null);
   const [isViewRecruitement, onViewRecruitement] = useState(false);
@@ -124,7 +124,7 @@ const AllRecruitementStaff = ({ roles,allrecruitementbelow, findIdData, id, find
   const handleApprovedRecruitement = () => {
       navigate(`/Hr/Recruitement&Interview/Recruitement/Update/codeJob=${findIdData?.jobCode}`, {
         state: {
-          jobCode: findIdData.jobCode,
+          jobCode: findIdData?.jobCode,
           notif: findIdData?.notif,
           dep: findIdData?.dep,
           idemp: findIdData?.idemp,
@@ -238,7 +238,7 @@ const AllRecruitementStaff = ({ roles,allrecruitementbelow, findIdData, id, find
       { key: 4, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteRecruitement },
     ] : []),
     ...(roles.includes('bod') ? [
-      { key: 3, label: <span style={{ fontSize: 14 }}>Approve</span>,onClick:handleApprovedRecruitement },
+      { key: 3, label: <span style={{ fontSize: 14 }}>Take Action</span>,onClick:handleApprovedRecruitement },
      
     ] : []),
   ];
@@ -414,4 +414,4 @@ const AllRecruitementStaff = ({ roles,allrecruitementbelow, findIdData, id, find
 };
 
 
-export default AllRecruitementStaff;
+export default AllRecruitementConstruction;

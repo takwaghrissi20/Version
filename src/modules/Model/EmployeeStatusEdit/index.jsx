@@ -29,6 +29,7 @@ const ModalView = ({
   traveldate,
   projName,
   destination,
+  findIdData
  
 
 }) => {
@@ -67,6 +68,7 @@ const ModalView = ({
         traveldate={traveldate}
         projName={projName}
         destination={destination}
+        findIdData={findIdData}
      
      
 

@@ -44,7 +44,7 @@ const RecruitementConstruction = ({ allrecruitementbelow, roles, recruitementTyp
         throw new Error('Failed to fetch employees');
       }
       const data = await response.json();
-      console.log("getRecByType",data)
+      console.log("getRecByType", data)
       setRecruitementbelow(data);
     } catch (error) {
       console.error('Error fetching employees:', error);
@@ -110,8 +110,8 @@ const RecruitementConstruction = ({ allrecruitementbelow, roles, recruitementTyp
         projectName: findIdData?.projectName,
         position: findIdData?.position,
         experience: findIdData?.experience,
-        dep:findIdData?.dep
-        
+        dep: findIdData?.dep
+
 
 
       }
@@ -190,7 +190,7 @@ const RecruitementConstruction = ({ allrecruitementbelow, roles, recruitementTyp
           paddingBottom: 10,
         }}
       >
-  {(roles.includes("admin")) ||(roles.includes("bod")) || (roles.includes("Cordinator")) || (roles.includes("Administrator"))  ?
+        {(roles.includes("admin")) || (roles.includes("bod")) || (roles.includes("Cordinator")) || (roles.includes("Administrator")) ?
           <>
             <OrderTable
               allrecruitementbelow={recruitementbelow}
@@ -227,14 +227,14 @@ const RecruitementConstruction = ({ allrecruitementbelow, roles, recruitementTyp
 
             />
             <div className='Pagination' >
-            
+
               <StyledOrderHeaderRight>
 
                 <Pagination
                   currentPage={currentPage}
                   totalPages={Math.ceil(recruitementTypeIdbelow.length / pageSize)}
                   handlePageChange={handlePageChange} />
-                </StyledOrderHeaderRight>
+              </StyledOrderHeaderRight>
 
             </div>
           </>

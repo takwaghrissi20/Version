@@ -15,7 +15,7 @@ import Pagination from '../../../../@crema/components/AppsPagination';
 import clsx from 'clsx';
 import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal'; 
 import { useNavigate } from "react-router-dom";
-const StaffInterview = ({ allinterviewStaffManagement,token }) => {
+const StaffInterview = ({ allinterviewStaffManagement,token,departement }) => {
   const navigate = useNavigate();
   const [interviewStaff, setInterviewStaff] = useState([]);
   const [interviewStaffFiltrer, setInterviewStaffFiltrer] = useState([]);
@@ -118,8 +118,6 @@ const StaffInterview = ({ allinterviewStaffManagement,token }) => {
         setId(responseData.interviewCode)
         setCodeJob(responseData?.jobCode)
         setInterviewCode(responseData.interviewCode)
-
-
 
 
       }

@@ -194,6 +194,7 @@ const OrderTable = ({ dataemployeeId, loading,employeeId,token,dateemp,findId })
                 isViewDetails={isViewDetails}
                 handleCloseView={handleCloseView}
                 salaryData={salaryData}
+                dateemp={dateemp}
               
 
               />

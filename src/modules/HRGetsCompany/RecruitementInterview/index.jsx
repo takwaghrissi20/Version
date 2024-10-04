@@ -34,6 +34,8 @@ const RecruitementInterview = () => {
   const userEmail = localStorage.getItem("email");
   const roles = localStorage.getItem("role");
   const token = localStorage.getItem("token");
+  const departement = localStorage.getItem("departement");
+
   const fetchEmployeesEmail = async () => {
     try {
       const url = `https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${userEmail}&token=${token}`;
@@ -166,13 +168,25 @@ const RecruitementInterview = () => {
       />,
     },
     {/*Interview Sheet**/ },
-    ...((roles?.includes('Cordinator') || roles?.includes('admin') || roles?.includes('bod') || roles?.includes('Ressource Manager')) ? [{
+    ...((roles?.includes('Cordinator') || roles?.includes('admin') || 
+    roles?.includes('bod') || roles?.includes('Ressource Manager') || roles?.includes('Manager')) ? [{
       label: 'Staff Management Interview',
       key: '3',
       children: <InterviewStaff
         allinterviewStaffManagement={allinterviewStaffManagement}
         token={token}
+        roles={roles}
+        departement={departement}
 
+      />
+
+    }] : []),
+    ...((roles?.includes('Cordinator')) ? [{
+      label: 'Staff Management Interview',
+      key: '3',
+      children: <InterviewStaff
+        allinterviewStaffManagement={allinterviewStaffManagement}
+        token={token}
 
       />
 
@@ -224,15 +238,9 @@ const RecruitementInterview = () => {
           throw new TypeError("La réponse n'est pas au format JSON");
         }
         const responseData = await response.json();
-        console.log("interviewww", responseData)
         setTotalNumberInterview(responseData.length);
         setAllinterviewStaffManagement(responseData);
-        //////Interview Bu Id
-
-
-
-
-        //End Interview bu Id 
+        
 
         const responseRecruitement = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list?token=${token}`, {
           method: 'GET',
@@ -294,8 +302,6 @@ const RecruitementInterview = () => {
       return () => clearTimeout(timer);
     }
   }, [roles, idProfile])
-
-
 
 
   return (

@@ -1271,8 +1271,8 @@ input {
 .NotifPayment{
   background-color: #26474E;
   color: white;
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   border-Radius: 50%;
   display: flex ;
   justify-content: center; 

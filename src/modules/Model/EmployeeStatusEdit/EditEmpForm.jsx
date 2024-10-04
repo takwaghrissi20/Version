@@ -43,6 +43,7 @@ const EmpEditForm = (props) => {
     contractNumb,
     cvCopy,
     passportCopy,
+    findIdData
   
 
   } = props;
@@ -66,7 +67,6 @@ const EmpEditForm = (props) => {
   const [newposition,setNewposition]=useState(position)
   const [dataEdit, setDataEdit] = useState([])
   const token = localStorage.getItem("token");
-
   const handleEdit = async (maritalStatus,newTelNumber,newFinishDate,newactStatus,newposition) => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/update?token=${token}&id=${getsId}`, {
@@ -97,6 +97,21 @@ const EmpEditForm = (props) => {
           contractNumb: contractNumb,
           cvCopy:cvCopy,
           passportCopy:passportCopy,
+          vacations: findIdData?.vacations, 
+          projects:findIdData?.projects,
+          pointages:findIdData?.pointages,
+          integrations:findIdData?.integrations,
+          vaccins:findIdData?.vaccins,
+          materials:findIdData?.materials,
+          officeWorkStatus:findIdData?.officeWorkStatus,
+          siteWorkStatus:findIdData?.siteWorkStatus,
+          officepointages:findIdData?.officepointages,
+          advancedSalarys:findIdData?.advancedSalarys,
+          salaries:findIdData?.salaries,
+          transferPermissions:findIdData?.transferPermissions,
+          positionChanges:findIdData?.positionChanges,
+          trainings:findIdData?.trainings,
+          
 
         })
       });

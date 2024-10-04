@@ -20,6 +20,7 @@ export const setAuthToken = (token) => {
   }
 };
 
+
 const JWTAuthContext = createContext();
 const JWTAuthActionsContext = createContext();
 

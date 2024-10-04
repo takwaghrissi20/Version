@@ -9,7 +9,8 @@ import { StyledContactModal } from '../../../styles/index.styled';
 const ModalView = ({
   isViewDetails,
   handleCloseView,
-  salaryData
+  salaryData,
+  dateemp
 
 }) => {
   return (
@@ -25,6 +26,7 @@ const ModalView = ({
       <Setement
          handleCloseView={handleCloseView}
          salaryData={salaryData}
+         dateemp={dateemp}
         
     
       />

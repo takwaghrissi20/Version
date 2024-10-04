@@ -177,6 +177,7 @@ const OrderTable = ({ employeesmixt, loading,user }) => {
         )}
         
             <EmployeeStatusEdit
+             findIdData={findIdData}
               isEditEmployee={isEditEmp}
               handleAddContactClose={handleEditEmpClose}
               getsId={findIdData?.getsId}

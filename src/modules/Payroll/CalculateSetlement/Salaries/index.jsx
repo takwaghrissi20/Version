@@ -28,6 +28,7 @@ const Table = () => {
   const [getsId, setGetsId] = useState("");
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [loadingUpdate, setLoadingUpdate] = useState(false);
+  const username = localStorage.getItem("name");
   const handleFinalSetement = (value) => {
     setSelectedFinalSetement(value);
   };
@@ -296,8 +297,20 @@ const openNotificationError = () => {
           checkHolderName: dateemp?.checkHolderName,
           settelment: selectedFinalSetement,
           finishDate: newDateFinish,
-
-
+          vacations: dateemp?.vacations, 
+          projects:dateemp?.projects,
+          pointages:dateemp?.pointages,
+          integrations:dateemp?.integrations,
+          vaccins:dateemp?.vaccins,
+          materials:dateemp?.materials,
+          officeWorkStatus:dateemp?.officeWorkStatus,
+          siteWorkStatus:dateemp?.siteWorkStatus,
+          officepointages:dateemp?.officepointages,
+          advancedSalarys:dateemp?.advancedSalarys,
+          salaries:dateemp?.salaries,
+          transferPermissions:dateemp?.transferPermissions,
+          positionChanges:dateemp?. positionChanges,
+          trainings:dateemp?. trainings,
 
         })
       });
@@ -362,6 +375,7 @@ const openNotificationError = () => {
             token={token}
             dateemp={dateemp}
             findId={findId}
+          
           
           />
         </div>

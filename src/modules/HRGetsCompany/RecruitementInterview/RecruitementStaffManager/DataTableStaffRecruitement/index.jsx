@@ -84,10 +84,10 @@ const AllRecruitementStaff = ({ allrecruitementabove,
     switch (notificationValue) {
       case 2:
         return 'Waiting';
-        case 6:
-          return 'Waiting';
-          case 8:
-            return 'Waiting';
+      case 6:
+        return 'Waiting';
+      case 8:
+        return 'Waiting';
       case 3:
         return 'Approved by BOD';
       case 20:
@@ -96,8 +96,8 @@ const AllRecruitementStaff = ({ allrecruitementabove,
         return 'Checked By PMO';
       case 7:
         return 'Accepted By Operation Manager';
-        case 70:
-          return 'Refuse By Operation Manager';
+      case 70:
+        return 'Refuse By Operation Manager';
       default:
         return 'Pending';
     }
@@ -208,11 +208,11 @@ const AllRecruitementStaff = ({ allrecruitementabove,
     }
   }
   const handleApprovedRecruitement = () => {
-    setLoading(true); 
+    setLoading(true);
     setTimeout(() => {
-      navigate(`/Hr/Recruitement&Interview/Recruitement/Update/codeJob=${findIdData?.jobCode}`, {
+    navigate(`/Hr/Recruitement&Interview/Recruitement/Update/codeJob=${findIdData?.jobCode}`, {
         state: {
-          jobCode: findIdData.jobCode,
+          jobCode: findIdData?.jobCode,
           notif: findIdData?.notif,
           dep: findIdData?.dep,
           idemp: findIdData?.idemp,
@@ -235,25 +235,24 @@ const AllRecruitementStaff = ({ allrecruitementabove,
           comentPlaner: findIdData?.comentPlaner,
           signatureBod: findIdData?.signatureBod,
           signatureHod: findIdData?.signatureHod,
-          signaturepolead:findIdData?.signaturepolead,
-          signatureBod2:findIdData?.signatureBod2,
+          signaturepolead: findIdData?.signaturepolead,
+          signatureBod2: findIdData?.signatureBod2,
         }
       });
-      // Hide the loading indicator after navigating
       setLoading(false);
-    }, 1000); // 1 second delay
+    }, 100); 
   };
-  
+
   const items = [
     { key: 1, label: <span style={{ fontSize: 14 }}>View </span>, onClick: handleAddRecruitementOpen },
     ...(roles.includes('admin') ? [
       { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditRecruitementOpen },
       { key: 2, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteRecruitement },
     ] : []),
-    ...(roles?.includes('Cordinator') || roles?.includes('admin')  ? [
+    ...(roles?.includes('Cordinator') || roles?.includes('admin') ? [
       ...(findIdData?.status === 'Approved By BOD' ? [
         { key: 2, label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, onClick: handleInterview }
-           
+
       ] : []),
     ] : []),
     // ...(findIdData?.status === 'Approved By BOD' ? [
@@ -261,8 +260,8 @@ const AllRecruitementStaff = ({ allrecruitementabove,
     // ] : [])
     // { key: 3, label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, onClick: handleInterview },
     ...(roles.includes('bod') ? [
-      { key: 2, label: <span style={{ fontSize: 14 }}>Approve</span>, onClick: handleApprovedRecruitement },
-     
+      { key: 2, label: <span style={{ fontSize: 14 }}>Take Action</span>, onClick: handleApprovedRecruitement },
+
     ] : []),
   ];
 
@@ -345,7 +344,7 @@ const AllRecruitementStaff = ({ allrecruitementabove,
 
 
     },
- 
+
     {
       title: 'Status',
       dataIndex: 'status',
@@ -353,8 +352,8 @@ const AllRecruitementStaff = ({ allrecruitementabove,
       width: 150,
       render: (status) => {
         let backgroundColor;
-        let color = 'white'; 
-    
+        let color = 'white';
+
         if (status?.includes('Pending')) {
           backgroundColor = '#C0C0C0';
         } else if (status?.includes('Approved')) {
@@ -372,7 +371,7 @@ const AllRecruitementStaff = ({ allrecruitementabove,
         );
       },
     },
- 
+
     // {
     //   title: 'Status',
     //   dataIndex: 'status',
@@ -469,7 +468,7 @@ const AllRecruitementStaff = ({ allrecruitementabove,
 
   return (
     <>
-{loading && <div>...</div>}
+      {loading && <div></div>}
 
       <StyledOrderTable
         hoverColor
