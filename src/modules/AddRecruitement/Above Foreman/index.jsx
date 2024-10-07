@@ -679,12 +679,17 @@ const AddRecruitementAbove = () => {
 
         const responseData = await response.json();
         form.resetFields();
+        //window.location.reload();
         openNotification('bottomRight')
-        setTimeout(() => {
+        setTimeout(() => {      
           window.location.reload();
-          form.resetFields();
-      }, 2000)
+          navigate(-1)
 
+        }, 2000);
+
+
+
+        //Email Send 
         const email = 'rihemhassounanjim90@gmail.com';
         const secondApiResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/bodNotif?email=${encodeURIComponent(email)}`, {
           method: 'POST',
@@ -692,22 +697,24 @@ const AddRecruitementAbove = () => {
 
         if (secondApiResponse.ok) {
           const secondResponseData = await secondApiResponse.json();
-          form.resetFields();
-          setTimeout(() => {
-            window.location.reload();
-        }, 2000);
-          //window.location.reload();
         } else {
-          //setModalError(true)
           console.error("Failed to fetch data from the second API.");
         }
+        //End Send Email
+
+
+
+
+
+        //onSave(false)
+   
 
         // alert('Recruitment request saved successfully.');
 
       }
-      // Handle responseData if needed
+    
     } catch (error) {
-      console.error("Erreur lors de la récupération du Id :", error);
+      console.error("Erreur lors de la récupération du Id Recruitement:", error);
     }
   };
   const SaverecrutementEngineer = async () => {

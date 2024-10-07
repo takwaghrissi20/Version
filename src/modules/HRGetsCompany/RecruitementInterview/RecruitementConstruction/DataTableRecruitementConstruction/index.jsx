@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { StyledOrderTable } from '../../../../../styles/index.styled';
 import RecruitementView from "../../../../Model/RecruitementView"
 import RecruitementEdit from "../../../../Model/RecruitementEdit"
-import { MoreOutlined } from '@ant-design/icons';
+import { MoreOutlined } from '@ant-design/icons'
 import {
   StyledRecentPatientBadge,
 
@@ -147,6 +147,9 @@ const AllRecruitementConstruction = ({ roles,allrecruitementbelow, findIdData, i
           comentPlaner: findIdData?.comentPlaner,
           signatureBod: findIdData?.signatureBod,
           signatureHod: findIdData?.signatureHod,
+          signaturepolead:findIdData?.signaturepolead,
+          signatureBod2:findIdData?.signatureBod2
+        
         }
     
     });
@@ -373,7 +376,12 @@ const AllRecruitementConstruction = ({ roles,allrecruitementbelow, findIdData, i
 
     }
   ];
-
+  const rowClassName = (record) => {
+    if (record.notif === 2) {
+      return 'row-red';
+    }
+    return '';
+  };
 
   return (
     <>
@@ -381,6 +389,7 @@ const AllRecruitementConstruction = ({ roles,allrecruitementbelow, findIdData, i
         hoverColor
         data={allrecruitementbelow}
         columns={columns}
+        rowClassName={rowClassName}
         scroll={{ x: 'auto', y: tableHeight }}
       //scroll={{ x: 'auto', y: 200 }}
 

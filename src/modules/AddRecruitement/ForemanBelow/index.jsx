@@ -482,8 +482,7 @@ const AddRecruitementForemanBelow = () => {
         form.resetFields();
         //window.location.reload();
         openNotification('bottomRight')
-        setTimeout(() => {
-          
+        setTimeout(() => {      
           window.location.reload();
           navigate(-1)
 

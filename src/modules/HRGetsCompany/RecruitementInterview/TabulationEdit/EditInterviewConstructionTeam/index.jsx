@@ -45,7 +45,7 @@ const EditInterviewConstruction = ({ hseCertif,
   const [form] = Form.useForm();
   ////////////////////////////Varaibla Location
   const interviewCode = location.state ? location.state.interviewCode : null;
-  console.log("teettttttt",idViewConstruction)
+
 
   // const hseCertif = location.state ? location.state.hseCertif : null;
   // const siteHazCont = location.state ? location.state.siteHazCont : null;
@@ -101,6 +101,7 @@ const EditInterviewConstruction = ({ hseCertif,
   const hrComentaire = location.state ? location.state.hrComentaire : null
   const finaldesision = location.state ? location.state.finaldesision : null
   const inputInterview = location.state ? location.state.inputInterview : null
+
   /////////////////////End Variable Location
   const [selectedValidation, setSelectedValidation] = useState('');
   const [isOkChecked, setIsOkChecked] = useState(false);
@@ -151,7 +152,9 @@ const EditInterviewConstruction = ({ hseCertif,
   const [isNoCheckedHRDecision, setIsNoCheckedHRDecision] = useState(false);
   const [commentHr, setCommentsHr] = useState("");
   const [idConstruction, setIdConstruction] = useState("");
+  const [intcodec, setIntcodec] = useState(0);
   const token = localStorage.getItem("token");
+
   const findIdInterviewConstruction = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${interviewCode}&token=${token}`, {
@@ -161,8 +164,9 @@ const EditInterviewConstruction = ({ hseCertif,
         throw new Error('Network response was not ok');
       }
       const responseData = await response.json();
-
+      console.log("testtttttt33333", responseData)
       setIdConstruction(responseData)
+      setIntcodec(responseData?.interviewCode)
 
 
     } catch (error) {
@@ -292,7 +296,7 @@ const EditInterviewConstruction = ({ hseCertif,
     findIdInterviewConstruction()
     // findIdInterviewConstruction()
 
-  }, [interviewCode, name, getsId]);
+  }, [interviewCode, name, getsId, setIntcodec, intcodec]);
 
 
   const handleValidationSelect = (value) => {
@@ -598,7 +602,7 @@ const EditInterviewConstruction = ({ hseCertif,
     });
   };
   ///Update
- 
+
   const Update = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}&token=${token}`, {
@@ -664,7 +668,7 @@ const EditInterviewConstruction = ({ hseCertif,
 
       if (!response.ok) {
         openNotificationError('bottomRight')
-        
+
 
         throw new Error('Network response was not ok');
       }
@@ -701,7 +705,7 @@ const EditInterviewConstruction = ({ hseCertif,
 
   const UpdateManager = async () => {
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${idConstruction?.interviewCode}&token=${token}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -711,29 +715,30 @@ const EditInterviewConstruction = ({ hseCertif,
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
         body: JSON.stringify({
-          interviewCode: idConstruction?.interviewCode,
-          jobCode: idConstruction?.jobCode,
+          interviewCode: interviewCode,
+          jobCode: jobCode,
           interviwDate: idConstruction?.interviwDate,
-          totalAccept:idConstruction?. totalAccept,
+          totalAccept: idConstruction?.totalAccept,
           totalInterv: idConstruction?.totalInterv,
           totalReqPos: idConstruction?.totalReqPos,
           totalRequiredGrade: idConstruction?.totalRequiredGrade,
           idNumb: getsId,
-          evalName:name,
+          evalId: getsId,
+          evalName: name,
           department: idConstruction?.department,
           projname: idConstruction?.projname,
-          requiredGrade:  idConstruction?.requiredGrade,
+          requiredGrade: idConstruction?.requiredGrade,
           requiredQualification: idConstruction?.requiredQualification,
-          positionToBeFilled:idConstruction?. positionToBeFilled,
+          positionToBeFilled: idConstruction?.positionToBeFilled,
           fullName: idConstruction?.fullName,
           birthayDate: idConstruction?.birthayDate,
-          familySituation:idConstruction?.familySituation,
+          familySituation: idConstruction?.familySituation,
           experience: experience,
           educationLevel: idConstruction?.educationLevel,
-          diploma:idConstruction?.diploma,
+          diploma: idConstruction?.diploma,
           contactPhone: idConstruction?.contactPhone,
           contactEmail: idConstruction?.contactEmail,
-          urlCv:idConstruction?.urlCv,
+          urlCv: idConstruction?.urlCv,
           validatesFor: selectedValidation,
           goTotest2: isOkChecked,
           psy_Person: selectedPersonality,
@@ -746,29 +751,30 @@ const EditInterviewConstruction = ({ hseCertif,
           techDate: evaluationDate,
           meetDesision: isOkCheckedProfile,
           techcommentaire: comment,
-          hr_Person:selectedPersonalityHR,
-          hr_HumQuality:selectedHumainqualityHR,
-          hr_motivation:selectedMotivationHR,
-          hr_Intellig:selectedIntelligenceHR,
-          level:selectedLevelHR,
+          hr_Person: selectedPersonalityHR,
+          hr_HumQuality: selectedHumainqualityHR,
+          hr_motivation: selectedMotivationHR,
+          hr_Intellig: selectedIntelligenceHR,
+          level: selectedLevelHR,
           headOfDepAprouv: isOkCheckedHead,
           // agreedJoinedDate,
+
           expectedJoinDate: expectedJoinDate,
-          dailyRate:proposedDailyRate,
-          hrDesion:isOkCheckedHRDecision,
+          dailyRate: proposedDailyRate,
+          hrDesion: isOkCheckedHRDecision,
           // feedback,
-          propsedsalary:proposedSalary,
+          propsedsalary: proposedSalary,
           notif: 2,
-          hseCertif:idConstruction?.hseCertif,
-          siteHazCont:idConstruction?.siteHazCont,
-          hsePolicies:idConstruction?.hsePolicies?
-          properUse:idConstruction?.properUse,
-          hzardousMater:idConstruction?.hzardousMater,
-          emergency:idConstruction?.emergency,
-          ptw:idConstruction?.ptw,
-          hseDecision:idConstruction?.hseDecision,
-          others:idConstruction?.others,
-         
+          hseCertif: idConstruction?.hseCertif,
+          siteHazCont: idConstruction?.siteHazCont,
+          hsePolicies: idConstruction?.hsePolicies ?
+            properUse : idConstruction?.properUse,
+          hzardousMater: idConstruction?.hzardousMater,
+          emergency: idConstruction?.emergency,
+          ptw: idConstruction?.ptw,
+          hseDecision: idConstruction?.hseDecision,
+          others: idConstruction?.others,
+
 
         })
       });
@@ -886,7 +892,7 @@ const EditInterviewConstruction = ({ hseCertif,
   };
   /////Update Manager HSE
 
-  const  UpdateMangerHSE = async () => {
+  const UpdateMangerHSE = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}&token=${token}`, {
 
@@ -932,18 +938,18 @@ const EditInterviewConstruction = ({ hseCertif,
           techDate: evaluationDate,
           meetDesision: isOkCheckedProfile,
           techcommentaire: comment,
-          hr_Person:selectedPersonalityHR,
-          hr_HumQuality:selectedHumainqualityHR,
-          hr_motivation:selectedMotivationHR,
-          hr_Intellig:selectedIntelligenceHR,
-          level:selectedLevelHR,
+          hr_Person: selectedPersonalityHR,
+          hr_HumQuality: selectedHumainqualityHR,
+          hr_motivation: selectedMotivationHR,
+          hr_Intellig: selectedIntelligenceHR,
+          level: selectedLevelHR,
           headOfDepAprouv: isOkCheckedHead,
           // agreedJoinedDate,
           expectedJoinDate: expectedJoinDate,
-          dailyRate:proposedDailyRate,
-          hrDesion:isOkCheckedHRDecision,
+          dailyRate: proposedDailyRate,
+          hrDesion: isOkCheckedHRDecision,
           // feedback,
-          propsedsalary:proposedSalary,
+          propsedsalary: proposedSalary,
           notif: 2,
 
 
@@ -1000,7 +1006,7 @@ const EditInterviewConstruction = ({ hseCertif,
 
   //   });
   // };
-  
+
   const UpdateProjectLeader = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}&token=${token}`, {
@@ -1081,8 +1087,8 @@ const EditInterviewConstruction = ({ hseCertif,
           window.location.reload();
           navigate(-1)
         }, 2000);
-        
-   
+
+
       }
 
       // Handle responseData if needed
@@ -1093,7 +1099,7 @@ const EditInterviewConstruction = ({ hseCertif,
   };
   //EndUpdataProjectLeader
   //RefuseProjectLeader
-  
+
   const RefuseProjectLeader = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}&token=${token}`, {
@@ -1173,8 +1179,8 @@ const EditInterviewConstruction = ({ hseCertif,
           window.location.reload();
           navigate(-1)
         }, 2000);
-        
-   
+
+
       }
 
       // Handle responseData if needed
@@ -1191,7 +1197,7 @@ const EditInterviewConstruction = ({ hseCertif,
   const UpdateHSE = async () => {
 
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${idConstruction?.interviewCode}&token=${token}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${intcodec}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -1201,63 +1207,68 @@ const EditInterviewConstruction = ({ hseCertif,
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
         body: JSON.stringify({
-          interviewCode:  idConstruction?.interviewCode,
-          jobCode: interviewCode?.jobCode,
-          interviwDate: idConstruction?.interviwDate,
-          totalAccept: idConstruction?.totalAccept,
-          totalInterv: idConstruction?.totalInterv,
-          totalReqPos: idConstruction?.totalReqPos,
+          interviewCode: idViewConstruction?.interviewCode,
+          jobCode: idViewConstruction?.jobCode,
+          interviwDate: idViewConstruction?.interviwDate,
+          totalAccept: idViewConstruction?.totalAccept,
+          totalInterv: idViewConstruction?.totalInterv,
+          totalReqPos: idViewConstruction?.totalReqPos,
           totalRequiredGrade: totalRequiredGrade,
-          idNumb:  idConstruction?.idNumb,
-          department:  idConstruction?.department,
-          projname:  idConstruction?.projname,
-          requiredGrade:idConstruction?.requiredGrade,
+          idNumb: idViewConstruction?.idNumb,
+          department: idViewConstruction?.department,
+          projname: idViewConstruction?.projname,
+          requiredGrade: idViewConstruction?.requiredGrade,
           requiredQualification: newrequiredQualification,
-          positionToBeFilled: positionToBeFilled,
-          fullName: fullName?.fullName,
-          birthayDate: birthayDate,
-          familySituation: idConstruction?.familySituation,
-          experience: idConstruction?.experience,
-          educationLevel: idConstruction?.educationLevel,
-          diploma: idConstruction?.diploma,
-          contactPhone: idConstruction?.contactPhone,
-          urlCv:idConstruction?.urlCv,
-          validatesFor: idConstruction?.validatesFor,
-          goTotest2: idConstruction?.goTotest2,
-          psy_Person: idConstruction?.psy_Person,
-          psy_HumQuality: idConstruction?.psy_HumQuality,
-          psy_motivation: idConstruction?.psy_motivation,
-          psy_Intellig: idConstruction?.psy_Intellig,
-          goToTest3: idConstruction?.goToTest3,
-          techEnglishSkills: idConstruction?.techEnglishSkills,
-          evalDesision: idConstruction?.evalDesision,
-          techDate: idConstruction?.techDate,
-          meetDesision: idConstruction?.meetDesision,
-          techcommentaire: idConstruction?.techcommentaire,
+          positionToBeFilled: idViewConstruction?.positionToBeFilled,
+          fullName: idViewConstruction?.fullName,
+          birthayDate: idViewConstruction?.birthayDate,
+          familySituation: idViewConstruction?.familySituation,
+          experience: idViewConstruction?.experience,
+          educationLevel: idViewConstruction?.educationLevel,
+          diploma: idViewConstruction?.diploma,
+          contactPhone: idViewConstruction?.contactPhone,
+          urlCv: idViewConstruction?.urlCv,
+          validatesFor: idViewConstruction?.validatesFor,
+          goTotest2: idViewConstruction?.goTotest2,
+          psy_Person: idViewConstruction?.psy_Person,
+          psy_HumQuality: idViewConstruction?.psy_HumQuality,
+          psy_motivation:idViewConstruction?.psy_motivation,
+          psy_Intellig: idViewConstruction?.psy_Intellig,
+          goToTest3: idViewConstruction?.goToTest3,
+          techEnglishSkills: idViewConstruction?.techEnglishSkills,
+          evalDesision: idViewConstruction?.evalDesision,
+          techDate: idViewConstruction?.techDate,
+          meetDesision: idViewConstruction?.meetDesision,
+          techcommentaire: idViewConstruction?.techcommentaire,
           contactEmail: contactEmail,
-          hr_Person:idConstruction?. hr_Person,
-          hr_HumQuality:idConstruction?. hr_HumQuality,
-          hr_motivation:idConstruction?.hr_motivation,
-          hr_Intellig:idConstruction?.hr_Intellig,
-          nlevel:idConstruction?.nlevel,
+          hr_Person: idViewConstruction?.hr_Person,
+          hr_HumQuality: idViewConstruction?.hr_HumQuality,
+          hr_motivation: idViewConstruction?.hr_motivation,
+          hr_Intellig: idViewConstruction?.hr_Intellig,
+          nlevel: idViewConstruction?.nlevel,
           headOfDepAprouv: isOkCheckedHead,
           // agreedJoinedDate,
-          expectedJoinDate:idConstruction?.expectedJoinDate,
-          dailyRate:idConstruction?.dailyRate,
-          hrDesion:idConstruction?.hrDesion,
+          expectedJoinDate: idViewConstruction?.expectedJoinDate,
+          dailyRate: idViewConstruction?.dailyRate,
+          hrDesion: idViewConstruction?.hrDesion,
           // feedback,
-          propsedsalary:idConstruction?.propsedsalary,
+          propsedsalary: idViewConstruction?.propsedsalary,
           notif: 6,
           hseDecision: isOkCheckedHSE,
           hseComment: commentHSE,
-          hseCertif: idConstruction?.hseCertif,
-          siteHazCont: idConstruction?.siteHazCont,
-          properUse: idConstruction?.properUse,
-          hzardousMater: idConstruction?.hzardousMater,
-          emergency: idConstruction?.emergency,
-          ptw: idConstruction?.ptw,
-          hsePolicies: idConstruction?.hsePolicies,
-          others: idConstruction?.others
+          hseCertif: idViewConstruction?.hseCertif,
+          siteHazCont: idViewConstruction?.siteHazCont,
+          properUse: idViewConstruction?.properUse,
+          hzardousMater: idViewConstruction?.hzardousMater,
+          emergency: idViewConstruction?.emergency,
+          ptw: idViewConstruction?.ptw,
+          hsePolicies: idViewConstruction?.hsePolicies,
+          others: idViewConstruction?.others,
+          intervtime: idViewConstruction?.intervtime,
+          /////////////////////////////////////////////////     
+          requiredExperinece: idViewConstruction?.requiredExperinece,
+
+
 
 
         })
@@ -1287,7 +1298,7 @@ const EditInterviewConstruction = ({ hseCertif,
 
   };
   //Refuse HSE
- 
+
   const RefuseHSE = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}&token=${token}`, {
@@ -1402,28 +1413,30 @@ const EditInterviewConstruction = ({ hseCertif,
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
         body: JSON.stringify({
+
+
           interviewCode: interviewCode,
           jobCode: jobCode,
           interviwDate: idConstruction?.interviwDate,
           totalAccept: idConstruction?.totalAccept,
           totalInterv: idConstruction?.totalInterv,
-          totalReqPos:idConstruction?. totalReqPos,
+          totalReqPos: idConstruction?.totalReqPos,
           totalRequiredGrade: idConstruction?.totalRequiredGrade,
           idNumb: idConstruction?.idNumb,
           department: idConstruction?.department,
           projname: idConstruction?.projname,
           requiredGrade: idConstruction?.requiredGrade,
-          requiredQualification:idConstruction?.requiredQualification,
-          positionToBeFilled:idConstruction?. positionToBeFilled,
+          requiredQualification: idConstruction?.requiredQualification,
+          positionToBeFilled: idConstruction?.positionToBeFilled,
           fullName: idConstruction?.fullName,
           birthayDate: idConstruction?.birthayDate,
-          familySituation:idConstruction?. familySituation,
-          experience:idConstruction?. experience,
+          familySituation: idConstruction?.familySituation,
+          experience: idConstruction?.experience,
           educationLevel: idConstruction?.educationLevel,
           diploma: idConstruction?.diploma,
           contactPhone: idConstruction?.contactPhone,
           contactEmail: idConstruction?.contactEmail,
-          urlCv:idConstruction?.urlCv,
+          urlCv: idConstruction?.urlCv,
           validatesFor: idConstruction?.validatesFor,
           goTotest2: idConstruction?.goTotest2,
           psy_Person: idConstruction?.psy_Person,
@@ -1438,10 +1451,9 @@ const EditInterviewConstruction = ({ hseCertif,
           meetDesision: idConstruction?.meetDesision,
           techcommentaire: idConstruction?.techcommentaire,
           headOfDepAprouv: idConstruction?.headOfDepAprouv,
-          agreedJoinedDate,
-          dailyRate:idConstruction?.dailyRate,
+          dailyRate: idConstruction?.dailyRate,
           // feedback,
-          propsedsalary:idConstruction?. propsedsalary,
+          propsedsalary: idConstruction?.propsedsalary,
           hseDecision: idConstruction?.hseDecision,
           hseComment: idConstruction?.hseComment,
           hr_Person: selectedPersonalityHR,
@@ -1463,27 +1475,6 @@ const EditInterviewConstruction = ({ hseCertif,
           physicPres: idConstruction?.physicPres,
           leadership: idConstruction?.leadership,
           notif: 5,
-          // hseDecision: isOkCheckedHSE,
-          // hseComment: commentHSE,
-          hseCertif: idConstruction?.hseCertif,
-          siteHazCont: idConstruction?.siteHazCont,
-          properUse: idConstruction?.properUse,
-          hzardousMater: idConstruction?.hzardousMater,
-          emergency: idConstruction?.emergency,
-          ptw: idConstruction?.ptw,
-          hsePolicies: idConstruction?.hsePolicies,
-          others: idConstruction?.others,
-          // educAndTrain: idConstruction?.educAndTrain,
-          // workExp: idConstruction?.workExp,
-          // DiversityTal: idConstruction?.DiversityTal,
-          // intellCap: idConstruction?.intellCap,
-          // emotIntellij: idConstruction?.emotIntellij,
-          // selfConf: idConstruction?.selfConf,
-          // comunicSkills: idConstruction?.comunicSkills,
-          // passion: idConstruction?.passion,
-          // creativity: idConstruction?.creativity,
-          // physicPres: idConstruction?.physicPres,
-          // leadership: idConstruction?.leadership,
 
 
         })
@@ -1503,8 +1494,8 @@ const EditInterviewConstruction = ({ hseCertif,
           window.location.reload();
           navigate(-1)
         }, 2000);
-        
-      
+
+
       }
 
       // Handle responseData if needed
@@ -1516,7 +1507,7 @@ const EditInterviewConstruction = ({ hseCertif,
 
   {/*End Human Manager*/ }
   {/*RefuseHumanRessource*/ }
-  const  RefuseHumanRessource= async () => {
+  const RefuseHumanRessource = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}&token=${token}`, {
 
@@ -1638,7 +1629,7 @@ const EditInterviewConstruction = ({ hseCertif,
 
   };
 
-{/* End RefuseHumanRessource*/}
+  {/* End RefuseHumanRessource*/ }
 
 
   const roles = localStorage.getItem("role");
@@ -1951,15 +1942,11 @@ const EditInterviewConstruction = ({ hseCertif,
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item label='Experience' name='experience'
-
-
-
-
-                    >
+                    <Form.Item label='Experience' name='experience'>
                       <Input
                         className='Input'
-                        placeholder={experience}
+
+                        placeholder={idViewConstruction?.requiredExperinece}
                         readOnly={true}
 
 
@@ -2233,8 +2220,8 @@ const EditInterviewConstruction = ({ hseCertif,
                     <Form.Item
                       label='Head of Department Approval :'
                       name='Head of Department Approval' >
-                      <Checkbox 
-                      checked={headOfDepAprouv}  >
+                      <Checkbox
+                        checked={headOfDepAprouv}  >
                         <IntlMessages id='validation.test' />
                       </Checkbox>
                       <Checkbox checked={!headOfDepAprouv}>
@@ -2702,7 +2689,7 @@ const EditInterviewConstruction = ({ hseCertif,
             </Col>
           </AppRowContainer>
           {/*HSE*/}
-          {(roles.includes("HSE") && !idConstruction.validatesFor==="" ) || (roles.includes("Human Ressource")) ?
+          {(roles.includes("HSE") && !idConstruction.validatesFor === "") || (roles.includes("Human Ressource")) ?
             <>
               <Divider style={{ marginTop: 16, marginBottom: 16 }} />
               <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
@@ -2883,7 +2870,7 @@ const EditInterviewConstruction = ({ hseCertif,
                             <Form.Item label='Evaluator' name='Evaluator'
                             >
                               <Input
-                              placeholder={idConstruction?.evalName}
+                                placeholder={idConstruction?.evalName}
                                 readOnly />
                             </Form.Item>
                           </Col>
@@ -3176,10 +3163,10 @@ const EditInterviewConstruction = ({ hseCertif,
 
                                       <DatePicker
                                         //defaultValue={new Date()} 
-                                        defaultValue={dayjs(expectedJoinDate, '16 06,1990')}
+
 
                                         style={{ width: "100%", height: "30px" }}
-                                        onChange={(value) => setExpectedJoinDate(dayjs(value).format('YYYY/MM/DD'))}
+                                        onChange={(value) => setExpectedJoinDate(dayjs(value).format('YYYY-MM-DD'))}
                                       />
 
                                     </Form.Item>
@@ -3614,7 +3601,7 @@ const EditInterviewConstruction = ({ hseCertif,
                               label='Evaluator Decision :'
                               name=' EvaluatorDecision'
                               rules={[
-                                { required: true, message: 'Please Checked !' }, ]}
+                                { required: true, message: 'Please Checked !' },]}
 
                             >
                               <Checkbox checked={isOkCheckedEvaluator} onChange={OkEvaluator}>
@@ -3763,8 +3750,7 @@ const EditInterviewConstruction = ({ hseCertif,
             >Cancel</Button>
             {roles.includes("Manager") && !roles.includes("HSE") && !roles.includes("Human Ressource") && (
               <>
-                <Button style={{ color: "green", borderColor: "green" }} onClick={UpdateManager}
-                >
+                <Button style={{ color: "green", borderColor: "green" }} onClick={UpdateManager}>
                   Approved
 
                 </Button>
@@ -3774,16 +3760,15 @@ const EditInterviewConstruction = ({ hseCertif,
 
                 </Button>
               </>)}
-            {(roles.includes("HSE") && !idConstruction?.validatesFor==null ) && (
+            {(roles.includes("HSE") && idConstruction?.validatesFor && idConstruction.validatesFor.length > 0) && (
               <>
                 <Button style={{ color: "green", borderColor: "green" }} onClick={UpdateHSE}>Approved
 
-                  
                 </Button>
                 <Button style={{ color: "red", borderColor: "red" }} onClick={RefuseHSE}
                 >Refuse</Button>
               </>)}
-              {(roles?.includes("HSE") && idConstruction?.validatesFor == null ) && (
+            {(roles?.includes("HSE") && idConstruction?.validatesFor == null) && (
               <>
                 <Button style={{ color: "green", borderColor: "green" }} onClick={UpdateManager}
                 >Approved</Button>
@@ -3792,19 +3777,19 @@ const EditInterviewConstruction = ({ hseCertif,
               </>)}
             {roles.includes("Leader") && (
               <>
-                <Button style={{color:"green",borderColor:"green"}}onClick={UpdateProjectLeader}
+                <Button style={{ color: "green", borderColor: "green" }} onClick={UpdateProjectLeader}
                 >Approved</Button>
-                 <Button style={{color:"red",borderColor:"red"}}onClick={RefuseProjectLeader}
+                <Button style={{ color: "red", borderColor: "red" }} onClick={RefuseProjectLeader}
                 >Refuse</Button>
               </>)}
             {roles === "Human Ressource Manager" && (
               <>
                 <Button
-                style={{color:"green",borderColor:"green"}}
+                  style={{ color: "green", borderColor: "green" }}
                   onClick={UpdateHumanRessource}
                 >Approved </Button>
-                 <Button
-                style={{color:"red",borderColor:"red"}}
+                <Button
+                  style={{ color: "red", borderColor: "red" }}
                   onClick={RefuseHumanRessource}
                 >Refuse </Button>
               </>)}

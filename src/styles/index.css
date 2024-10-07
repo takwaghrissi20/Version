@@ -1471,3 +1471,23 @@ opacity: 0.5;
   align-items: center;
   z-index: 9999;
 }
+@keyframes blink {
+  0% {
+    background-color: #317AC1;
+  }
+  50% {
+    background-color: rgba(255, 0, 0, 0); 
+  }
+  100% {
+    background-color: #317AC1;
+  }
+}
+
+.row-red {
+  animation: blink 1s infinite; 
+}
+
+.row-red:hover {
+  background-color:#317AC1;
+  animation: none;
+}

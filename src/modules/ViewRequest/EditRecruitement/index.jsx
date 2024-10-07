@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../../@crema/components/AppRowContainer';
 import {
   Button, Col, Divider, Form, Input, Space, Typography,
-  Select, Alert, Checkbox, DatePicker, InputNumber, notification,Spin
+  Select, Alert, Checkbox, DatePicker, InputNumber, notification, Spin
 } from 'antd';
 import {
   StyledShadowWrapper,
@@ -50,7 +50,7 @@ const EditRecruitementAbove = () => {
   const [commentBOD2, setCommentBOD2] = useState("");
   const [name, setName] = useState("");
   const [chargement, setChargement] = useState("");
-  console.log("username nnnnn",username)
+  console.log("username nnnnn", username)
   //Get profile By Email
   useEffect(() => {
     GetProfileEmployess()
@@ -122,7 +122,7 @@ const EditRecruitementAbove = () => {
           comentPlaner: comentPlaner,
           signatureHod: null,
           signatureBod: null,
-          signatureBod2: commentBOD2,
+          signatureBod2:signaturepolead,
           signaturepolead: commentBOD1,
           notif: 20,
           status: "Not Approved By BOD"
@@ -191,7 +191,7 @@ const EditRecruitementAbove = () => {
           signatureBod: null,
           notif: 80,
           signatureBod2: commentBOD2,
-          signaturepolead: commentBOD1,
+          signaturepolead:signaturepolead,
           status: "Not Approved By BOD"
         })
       });
@@ -666,10 +666,6 @@ const EditRecruitementAbove = () => {
       console.error("Erreur lors de la récupération du Id :", error);
     }
   }
-
-
-
-
   //End Cancel Recruitement Oprartion
   //Updata BOD
   const UpdateBOD = async () => {
@@ -709,8 +705,9 @@ const EditRecruitementAbove = () => {
           comentPlaner: comentPlaner,
           signatureHod: null,
           signatureBod: null,
-          signatureBod2: commentBOD2,
+          signatureBod2:signaturepolead,
           signaturepolead: commentBOD1,
+          
           notif: 3,
           status: "Approved By BOD"
         })
@@ -778,7 +775,7 @@ const EditRecruitementAbove = () => {
           signatureHod: null,
           signatureBod: null,
           signatureBod2: commentBOD2,
-          signaturepolead: commentBOD1,
+          signaturepolead:signaturepolead,
           notif: 8,
           status: "Approved By BOD"
         })
@@ -1532,68 +1529,76 @@ const EditRecruitementAbove = () => {
             <Col xs={24} md={18}>
               <StyledShadowWrapper>
                 <AppRowContainer>
-   
+
                   {/* {chargement ? (
                     <Spin tip="Loading..........." />
                   ) : ( */}
-                    {username?.toLowerCase().includes("ali") && (
-                      <Col xs={24} md={24}>
-                        <p>{username}:</p>
-                        {signatureBod2 === null || signatureBod2 === undefined ? (
-                          <p></p>
-                        ) : (
-                          <Form.Item label='Comment Of Nidhal' name='Comment Of Nidhal'>
-                            <Input
-                              className='InputComment'
-                              placeholder={signatureBod2}
-                              readOnly
-                            />
-                          </Form.Item>
-                        )}
-                        <Form.Item label='Comment' name='Comment'>
-                          <Input
-                            className='InputComment'
-                            placeholder="Comment"
-                            value={commentBOD1}
-                            onChange={(e) => setCommentBOD1(e.target.value)}
-                          />
-                        </Form.Item>
-                      </Col>
-                    )
+                  {username?.toLowerCase().includes("ali") && (
+                    <Col xs={24} md={24}>
+                      <p>{username}:</p>   
+                             
+                      {signatureBod2?.trim().length > 0 &&
+                        <Form.Item label='Comment Of Nidhal' name='Comment Of Nidhal'>
+                        <Input
+                          className='InputComment'
+                          placeholder={signatureBod2}
+                          readOnly
+                        />
+                      </Form.Item>
+                    
+}
+                      {signatureBod2 === null || signatureBod2 === undefined && 
+                        <p></p>
+                      }
+                      <Form.Item label='Comment' name='Comment'>
+                        <Input
+                          className='InputComment'
+                          placeholder="Comment"
+                          value={commentBOD1}
+                          onChange={(e) => setCommentBOD1(e.target.value)}
+                        />
+                      </Form.Item>
+                    </Col>
+                  )
                   }
-        
-                     {/* {chargement ? (
+
+                  {/* {chargement ? (
                     <Spin tip="Loading..........." />
                   ) : ( */}
-                     {username?.toLowerCase().includes("nidhal") && (
-                      <Col xs={24} md={24}>
-                        <p>{username}:</p>
-                        {signaturepolead === null || signatureBod2 == undefined ? (
-                          <p></p>
-                        ) : (
-                          <Form.Item label='Comment Of Nidhal' name='Comment Of Nidhal'>
-                            <Input
-                              className='InputComment'
-                              placeholder={signaturepolead}
-                              readOnly
-                            />
-                          </Form.Item>
-                        )}
-                        <Form.Item label='Comment' name='Comment'>
+                  {username?.toLowerCase().includes("nidhal") && (
+                    <Col xs={24} md={24}>
+                      <p>{username}:</p>
+                
+                                         
+                      {signaturepolead?.trim().length > 0 &&
+                        <Form.Item label='Comment Of Nidhal' name='Comment Of Nidhal'>
                           <Input
                             className='InputComment'
-                            placeholder="Comment"
-                            value={commentBOD2}
-                            onChange={(e) => setCommentBOD2(e.target.value)}
+                            placeholder={signaturepolead}
+                            readOnly
                           />
                         </Form.Item>
-                      </Col>
-                    )
+
+
+                      }
+                      {signaturepolead === null || signaturepolead == undefined &&
+                        <p></p>
+                      }
+                      <Form.Item label='Comment' name='Comment'>
+                        <Input
+                          className='InputComment'
+                          placeholder="Comment"
+                          value={commentBOD2}
+                          onChange={(e) => setCommentBOD2(e.target.value)}
+                        />
+                      </Form.Item>
+                    </Col>
+                  )
                   }
-                
 
 
-                
+
+
 
 
 

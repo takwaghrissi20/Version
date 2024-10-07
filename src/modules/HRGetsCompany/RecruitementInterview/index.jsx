@@ -12,6 +12,7 @@ import InterviewStaff from './InterviewStaff';
 import InterviewConstruction from './InterviewConstruction';
 import LastRequestor from "./LastRequestor";
 import StaticNumber from "./StaticNumber";
+import { useLocation } from 'react-router-dom';
 
 const RecruitementInterview = () => {
   const { messages } = useIntl();
@@ -30,12 +31,15 @@ const RecruitementInterview = () => {
   const [interTypeIdConstruction, setInterTypeIdConstruction] = useState("");
   const [loading, setLoading] = useState(false);
   const [loading1, setLoading1] = useState(true);
+  const location = useLocation();
+  const    findIdData = location.state ? location.state.findIdData :null;
+  
   // Gets Id BY Profile:
   const userEmail = localStorage.getItem("email");
   const roles = localStorage.getItem("role");
   const token = localStorage.getItem("token");
   const departement = localStorage.getItem("departement");
-
+  const name = localStorage.getItem("name");
   const fetchEmployeesEmail = async () => {
     try {
       const url = `https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${userEmail}&token=${token}`;
@@ -151,6 +155,7 @@ const RecruitementInterview = () => {
           token={token}
           loading={loading}
           setLoading={setLoading}
+          
 
         />,
     },
@@ -181,16 +186,7 @@ const RecruitementInterview = () => {
       />
 
     }] : []),
-    ...((roles?.includes('Cordinator')) ? [{
-      label: 'Staff Management Interview',
-      key: '3',
-      children: <InterviewStaff
-        allinterviewStaffManagement={allinterviewStaffManagement}
-        token={token}
-
-      />
-
-    }] : []),
+  
     // {
     //   label: 'Staff Management Interview',
     //   key: '3',
@@ -200,7 +196,8 @@ const RecruitementInterview = () => {
 
     //   />,
     // },
-    ...((roles?.includes('Cordinator') || roles?.includes('admin') || roles?.includes('bod') || roles?.includes('Ressource')) ? [{
+    ...((roles?.includes('Cordinator') || roles?.includes('Ressource Manager') || roles?.includes('Manager')||
+    roles?.includes('admin') || roles?.includes('bod') || roles?.includes('Ressource')) ? [{
       label: 'Construction Staff Interview',
       key: '4',
       children: <InterviewConstruction
@@ -282,6 +279,12 @@ const RecruitementInterview = () => {
 
     fetchDataStatiqueTotalInterviewRecruitement();
   }, []);
+  useEffect(() => {
+    if (!sessionStorage.getItem('reloaded')) {
+      sessionStorage.setItem('reloaded', 'true');
+      window.location.reload();
+    }
+  }, []);
 
   useEffect(() => {
     if (!roles?.includes("admin")) {
@@ -295,7 +298,6 @@ const RecruitementInterview = () => {
     ///////////
     if (loading1) {
       const timer = setTimeout(() => {
-        // window.location.reload();
         setLoading1(false);
 
       }, 2000);

@@ -619,7 +619,8 @@ console.log("timeeewss",interviewTime)
           notif: 0,
           inputInterview: formattedDate,
           birthayDate: scheduleDate,
-          intervtime:interviewTime
+          intervtime:interviewTime,
+          requiredExperinece: experience
           // interviwDate: interviewDate,
           // fullName: fullname,
           // projname: projectName,
@@ -1066,7 +1067,7 @@ console.log("timeeewss",interviewTime)
                           //defaultValue={dayjs(scheduleDate, '16 06,1990')}
                           placeholder='Select Date of Birth'
                           style={{ width: "100%", height: "34px" }}
-                          onChange={(value) => setScheduleDate(dayjs(value).format('YYYY/MM/DD'))}
+                          onChange={(value) => setScheduleDate(dayjs(value).format('YYYY-MM-DD'))}
                         />
                       </StyledTodoDetailDatePicker>
                     </Form.Item>
@@ -1155,8 +1156,6 @@ console.log("timeeewss",interviewTime)
                       <Input placeholder='Experience'
                         value={experience}
                         onChange={ChangeExperience}
-
-
                       />
                     </Form.Item>
                   </Col>
@@ -1936,8 +1935,7 @@ console.log("timeeewss",interviewTime)
                     >
                       <StyledTodoDetailDatePicker
                         className='form-field'>
-                        <TimePicker
-                         
+                        <TimePicker                      
                           format='HH:mm:ss.SSS'
                           style={{ width: "100%", height: "34px" }}
                           onChange={handleTimeChange}
@@ -2163,10 +2161,7 @@ console.log("timeeewss",interviewTime)
                       rules={[
                         { required: true, message: 'Please input your Diploma /Speciality!' },
 
-                      ]}
-
-
-                    >
+                      ]}>
                       <Input
                         placeholder='Diploma /Speciality'
                         value={diploma}

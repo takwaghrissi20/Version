@@ -27,9 +27,17 @@ const RecruitementStaff = ({ allrecruitementabove, recruitementTypeIdAbove, role
   const [isGenerateInterview, onGenerateInterview] = useState(false);
   const [findIdData, setFindIdData] = useState(null);
   const [id, setId] = useState(0);
-
+  const [isLoading, setIsLoading] = useState(true);
   const count = allrecruitementabove.length
+  // useEffect(() => {
+  //   setLoading(true);
+  //   const timer = setTimeout(() => {
+  //     setIsLoading(false);
+  //     setLoading(false);
+  //   }, 2000);
 
+  //   return () => clearTimeout(timer); 
+  // }, []);
   useEffect(() => {
     fetchRecruitementabove();
   }, [currentPage, pageSize, nameFilter, count, id]);
@@ -210,6 +218,8 @@ const RecruitementStaff = ({ allrecruitementabove, recruitementTypeIdAbove, role
               roles={roles}
               setLoading={setLoading}
               loading={setLoading}
+      
+
             />
             {/* <OrderTable 
          allrecruitementabove={filteredData}
@@ -224,7 +234,8 @@ const RecruitementStaff = ({ allrecruitementabove, recruitementTypeIdAbove, role
               </StyledCustomerHeaderRight>
             </div>
           </>
-          : <>
+          : 
+          <>
             <OrderTable
               allrecruitementabove={recruitementTypeIdAbove}
               findIdData={findIdData}

@@ -196,6 +196,7 @@ const NotificationItem = ({ setVisible, visible, user, isLoadingchargement, setI
       return () => clearTimeout(timer);
     }
 
+
   }, [isLoadingchargement]);
 
   const showNotification = (message) => {
@@ -239,6 +240,11 @@ const NotificationItem = ({ setVisible, visible, user, isLoadingchargement, setI
         ) ||
         (item?.notfi === 55
         ) ||
+
+        (item?.notfi === 8
+        ) ||
+        (item?.notfi === 3
+        ) ||
         (item?.notfi === 66) ||
         (item?.notfi === 7 &&
           item?.dep?.includes('Engineering')
@@ -270,8 +276,8 @@ const NotificationItem = ({ setVisible, visible, user, isLoadingchargement, setI
       );
 
       setNotifBod(filteredData);
-      const filteredDataHrAdministartor = data.filter(item => (item.notfi === 3) ||
-        (item.notfi === 8) ||
+      const filteredDataHrAdministartor = data.filter(item => (item.notfi === 3 && item?.signatureBod2) ||
+        (item.notfi === 8 && item?.signatureBod1 ) ||
         (item.notfi === 1)
       );
       setNotifHR(filteredDataHrAdministartor)
@@ -354,7 +360,6 @@ const NotificationItem = ({ setVisible, visible, user, isLoadingchargement, setI
 
           // Group 2: Construction-related Notifications for HSE
           (user.includes("HSE") && (item.notfi === 1 || item.notfi === 2) && item.type.includes("construction")) ||
-
           // Group 3: Interview Notifications with specific notfi conditions
           (item.notfi === 6 && item.type.includes("Interview")) ||
           (item.notfi === 2 && item.type === "Interview") ||
@@ -518,10 +523,11 @@ const NotificationItem = ({ setVisible, visible, user, isLoadingchargement, setI
 
     });
   }
-
   const HandleNotifRecruitement = () => {
-    ;
-    navigate(`/Hr/Recruitement&Interview`);
+    navigate('/Hr/Recruitement&Interview');
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   };
 
   //Extesion
@@ -624,10 +630,15 @@ const NotificationItem = ({ setVisible, visible, user, isLoadingchargement, setI
     });
   }
   //demob
+  const cache = {};
+
   const findId = async (code) => {
-    setLoading(true);
-    setClickedId(code);
-    setVisible(true)
+    if (cache[code]) {
+      setFindIdData(cache[code]);
+      setCodeJob(cache[code].jobCode);
+      return;
+    }
+
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/findId?code=${code}&token=${token}`, {
         method: 'POST',
@@ -636,22 +647,16 @@ const NotificationItem = ({ setVisible, visible, user, isLoadingchargement, setI
         throw new Error('Network response was not ok');
       }
       const responseData = await response.json();
+      console.log("responnnse", responseData);
+
+      cache[code] = responseData;
       setFindIdData(responseData);
       setCodeJob(responseData.jobCode);
-      handleEditRecruitementOpen(responseData);
-      setTimeout(() => {
-        window.location.reload();
-
-      }, 100);
-
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
     }
-    finally {
-      setLoading(false);
-      setVisible(false)
-    }
   };
+
   const handleQueue = (code) => {
     setRequestQueue(prevQueue => [...prevQueue, code]);
     if (requestQueue.length === 0) {
@@ -752,7 +757,7 @@ const NotificationItem = ({ setVisible, visible, user, isLoadingchargement, setI
 
       setFindIdDataStaff(responseData)
       setIntCode(responseData?.interviewCode)
-      handleEditInterviewConstructionOpen(responseData?.interviewCode)
+      // handleEditInterviewConstructionOpen(responseData?.interviewCode)
 
 
     } catch (error) {
@@ -924,6 +929,7 @@ const NotificationItem = ({ setVisible, visible, user, isLoadingchargement, setI
           intervtime: findIdDataStaff?.intervtime,
           hrComentaire: findIdDataStaff?.hrComentaire,
 
+
         }
       });
     }
@@ -965,9 +971,11 @@ const NotificationItem = ({ setVisible, visible, user, isLoadingchargement, setI
     fetchRecruitementByEmployees()
     GetProfileEmployess()
     fetchExpiredVisa()
+
+
     // findIdInterviewConstruction(intCode)
 
-  }, [project, notifPlanner, idgets, id, findIdDataConstruction, intCode, findIdDataStaff]);
+  }, [project, notifPlanner, idgets, id, findIdDataConstruction, intCode, findIdDataStaff, codeJob]);
 
   return (
     <>
@@ -986,57 +994,63 @@ const NotificationItem = ({ setVisible, visible, user, isLoadingchargement, setI
                   }).map((p, index) => (
                     <div key={index}>
                       {/* Recruitment Notification */}
-                      {loading ? (
-                        <div className='loading-indicator'>Chargement...</div>
-                      ) :
-                        <>
-                          {p?.type?.includes("recruitment") && (
-                            <div
-                              className={`NotifTotal ${clickedId === p.codejob ? 'red-background' : ''}`}
-                              onClick={HandleNotifRecruitement}
-                            // onClick={() => handleQueue(p?.codejob)}
+                      <div>
+                        {p?.type?.includes("recruitment") && (
+                          <div
+                            className={`NotifTotal ${clickedId === p.codejob ? 'red-background' : ''}`}
+                            onClick={HandleNotifRecruitement}
+                          // onClick={() => handleQueue(p?.codejob)}
 
-                            // onClick={() => findId(p?.codejob)}
-                            >
-                              <div className='NotifRecruitement'>R</div>
-                              <button className='Notification' >
-                                Notification Recruitment Request <br></br>
-                                <span className='IndexNotif'>RRS-</span>
-                                <span className='IndexNotif'>{p.codejob}</span>
-                                {/* <p>Date: {new Date(p.insertDatere).toLocaleDateString()}</p>
-                      <p>Date: {p.insertDatere}</p> */}
-                                <p style={{
-                                  padding: "0.5rem", textAlign: "right",
-                                  fontSize: "10px"
-                                }}> {p.insertDatere.split(' ')[0]} At :{p.insertDatere.split(' ')[1]} </p>
-                              </button>
+                          // onClick={() => findId(p?.codejob)}
+                          >
+                            <div className='NotifRecruitement'>R</div>
+                            <button className='Notification' >
+                              Notification Recruitment Request <br></br>
+                              <span className='IndexNotif'>RRS-</span>
+                              <span className='IndexNotif'>{p.codejob}</span>
+                              {/* <p>Date: {new Date(p.insertDatere).toLocaleDateString()}</p>
+                                     <p>Date: {p.insertDatere}</p> */}
+                              <p style={{
+                                padding: "0.5rem", textAlign: "right",
+                                fontSize: "10px"
+                              }}> {p.insertDatere.split(' ')[0]} At :{p.insertDatere.split(' ')[1]} </p>
+                            </button>
+
+                          </div>
+                        )}
+                      </div>
+
+                      <div className='Space'></div>
+                      {p.interviewCode !== 0 && (
+                        <>
+                          {p?.type?.includes("Interview") && (
+                            <div >
+                              <div
+                                className={`NotifTotal ${clickedId === p.interviewCodeJobInt ? 'red-background' : ''}`}
+                                // onClick={() =>
+                                //   p.type.includes("Interview of construction team")
+                                //     ? findIdInterviewConstruction(p?.interviewCode)
+                                //     : findIdInterview(p?.interviewCode)
+                                // } 
+                                onClick={HandleNotifRecruitement}>
+                                <div
+                                  className='NotifInterview' >
+                                  I
+                                </div>
+                                <button className='Notification'>
+                                  Notification {p.type} Code  {p.interviewCode}:  <br></br>
+                                  <span lassName='IndexNotif'>
+                                    {p.type.includes("Interview of construction team") ? `CIS-${p.interviewCodeJobInt}` : `RRS-${p.interviewCodeJobInt}`}
+                                  </span>
+
+                                </button>
+                              </div>
 
                             </div>
                           )}
                         </>
-
-                      }
-
-                      <div className='Space'></div>
-
-                      {/* Interview Notification */}
-                      {p?.type?.includes("Interview") && (
-                        <div>
-                          <button
-                            className='Notification'
-                            onClick={() =>
-                              p.type.includes("Interview of construction team")
-                                ? findIdInterviewConstruction(p?.interviewCode)
-                                : findIdInterview(p?.interviewCode)
-                            }
-                          >
-                            Notification {p.type} Code {p.interviewCode}:
-                            <span style={{ color: "red", fontWeight: "bold" }}>
-                              {p.type.includes("Interview of construction team") ? `CIS-${p.interviewCodeJobInt}` : `RRS-${p.interviewCodeJobInt}`}
-                            </span>
-                          </button>
-                        </div>
                       )}
+
 
                       {/* Extension Notification */}
                       {p?.type?.includes("Extension") && (
@@ -1137,9 +1151,6 @@ const NotificationItem = ({ setVisible, visible, user, isLoadingchargement, setI
 
 
                       }
-
-
-
 
                     </div>
                   ))}
@@ -1324,67 +1335,72 @@ const NotificationItem = ({ setVisible, visible, user, isLoadingchargement, setI
                 <p>Number All Notification</p>
                 {notifManager.map((p, index) => (
                   <div key={index}>
-                    {loading ? (
+                    {/* {loading ? (
                       <div className='loading-indicator'>Chargement...</div>
-                    ) :
-                      <>
-                        {p?.type?.includes("Interview") && (
-                          <div >
-                            <div
-                              className={`NotifTotal ${clickedId === p.interviewCode ? 'red-background' : ''}`}
-                              // onClick={() =>
-                              //   p.type.includes("Interview of construction team")
-                              //     ? findIdInterviewConstruction(p?.interviewCode)
-                              //     : findIdInterview(p?.interviewCode)
-                              // } 
-                              onClick={HandleNotifRecruitement}                              
-                              >
+                    ) : */}
+                    <>
+                      { }
+                      {p.interviewCode !== 0 && (
+                        <>
+                          {p?.type?.includes("Interview") && (
+                            <div >
                               <div
-                                className='NotifInterview' >
-                                I
+                                className={`NotifTotal ${clickedId === p.interviewCodeJobInt ? 'red-background' : ''}`}
+                                // onClick={() =>
+                                //   p.type.includes("Interview of construction team")
+                                //     ? findIdInterviewConstruction(p?.interviewCode)
+                                //     : findIdInterview(p?.interviewCode)
+                                // } 
+                                onClick={HandleNotifRecruitement}>
+                                <div
+                                  className='NotifInterview' >
+                                  I
+                                </div>
+                                <button className='Notification'>
+                                  Notification {p.type} Code  {p.interviewCode}:  <br></br>
+                                  <span lassName='IndexNotif'>
+                                    {p.type.includes("Interview of construction team") ? `CIS-${p.interviewCodeJobInt}` : `RRS-${p.interviewCodeJobInt}`}
+                                  </span>
+
+                                </button>
                               </div>
-                              <button className='Notification'>
-                                Notification {p.type} Code  {p.interviewCode}:  <br></br>
-                                <span lassName='IndexNotif'>
-                                  {p.type.includes("Interview of construction team") ? `CIS-${p.interviewCodeJobInt}` : `RRS-${p.interviewCodeJobInt}`}
-                                </span>
-                                <span className='IndexNotif'>{p.codejob}</span>
-                              </button>
+
                             </div>
+                          )}
+                        </>
+                      )}
 
-                          </div>
-                        )}
-                        {p?.type?.includes("Extension") && user.includes("Human Ressource") && (
-                          <button className='Notification' onClick={() => findIdExtention(p?.idExtMiss)}>
-                            Extension Mission Notification: <span style={{ color: "red", fontWeight: "bold" }}>MER-{p?.idExtMiss}</span>
-                          </button>
-                        )}
-                        {/*Demob Flow HSE Site Manager*/}
-                        {p?.type?.includes("Demob") && user.includes("HSE Site Manager") && (
-                          <button className='Notification' onClick={() => findIdDemob(p?.idMd)} >
-                            Demobilization Permission Notification:
-                            <span style={{ color: "red", fontWeight: "bold" }}>DP-{p?.idMd}</span>
+                      {p?.type?.includes("Extension") && user.includes("Human Ressource") && (
+                        <button className='Notification' onClick={() => findIdExtention(p?.idExtMiss)}>
+                          Extension Mission Notification: <span style={{ color: "red", fontWeight: "bold" }}>MER-{p?.idExtMiss}</span>
+                        </button>
+                      )}
+                      {/*Demob Flow HSE Site Manager*/}
+                      {p?.type?.includes("Demob") && user.includes("HSE Site Manager") && (
+                        <button className='Notification' onClick={() => findIdDemob(p?.idMd)} >
+                          Demobilization Permission Notification:
+                          <span style={{ color: "red", fontWeight: "bold" }}>DP-{p?.idMd}</span>
 
-                          </button>
-                        )}
+                        </button>
+                      )}
 
-                        {/*Payment requet*/}
-                        <div className='NotifTotal' onClick={() => findPaymentId(p?.refrequestpayment)}>
-                          <div
-                            className='NotifPayment' >
-                            P
-                          </div>
-                          <button className='Notification'>
-                            REQUEST FOR PAYMENT   <br></br>
-                            <span className='IndexNotif'>Ref-</span>
-                            <span className='IndexNotif'>{p.refrequestpayment}</span>
-                          </button>
+                      {/*Payment requet*/}
+                      <div className='NotifTotal' onClick={() => findPaymentId(p?.refrequestpayment)}>
+                        <div
+                          className='NotifPayment' >
+                          P
                         </div>
+                        <button className='Notification'>
+                          REQUEST FOR PAYMENT   <br></br>
+                          <span className='IndexNotif'>Ref-</span>
+                          <span className='IndexNotif'>{p.refrequestpayment}</span>
+                        </button>
+                      </div>
 
-                      </>
+                    </>
 
 
-                    }
+
 
 
                   </div>

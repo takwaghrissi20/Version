@@ -199,7 +199,21 @@ const UpdateVisa = (props) => {
           altenativeNameBank: dateemp?.altenativeNameBank,
           paymentCategory: dateemp?.paymentCategory,
           paymentType: dateemp?.paymentType,
-          checkHolderName: dateemp?.checkHolderName
+          checkHolderName: dateemp?.checkHolderName,
+          vacations: dateemp?.vacations, 
+          projects:dateemp?.projects,
+          pointages:dateemp?.pointages,
+          integrations:dateemp?.integrations,
+          vaccins:dateemp?.vaccins,
+          materials:dateemp?.materials,
+          officeWorkStatus:dateemp?.officeWorkStatus,
+          siteWorkStatus:dateemp?.siteWorkStatus,
+          officepointages:dateemp?.officepointages,
+          advancedSalarys:dateemp?.advancedSalarys,
+          salaries:dateemp?.salaries,
+          transferPermissions:dateemp?.transferPermissions,
+          positionChanges:dateemp?.positionChanges,
+          trainings:dateemp?.trainings,
 
 
 

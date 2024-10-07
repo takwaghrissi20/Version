@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , useCallback } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import AppContextProvider from './@crema/context/AppContextProvider';
 import AppThemeProvider from './@crema/context/AppThemeProvider';
@@ -11,6 +11,7 @@ import { GlobalStyles } from './@crema/core/theme/GlobalStyle';
 import { Normalize } from 'styled-normalize';
 import './styles/index.css';
 import { Button, Modal, Space } from 'antd';
+
 
 function App() {
 
@@ -173,8 +174,44 @@ function App() {
     fetchExpiredVisa()
     GetProfileEmployess()
   }, [token, email]);
+  ////////////////
+  const [inactiveTime, setInactiveTime] = useState(0);
+  const timeoutDuration = 5 * 60 * 1000; 
+
+  const resetTimer = useCallback(() => {
+    setInactiveTime(0); 
+  }, []);
+
+
+  useEffect(() => {
+    const handleUserActivity = () => {
+      resetTimer();
+    };
+
+    window.addEventListener('mousemove', handleUserActivity);
+    window.addEventListener('keypress', handleUserActivity);
+
+    return () => {
+      window.removeEventListener('mousemove', handleUserActivity);
+      window.removeEventListener('keypress', handleUserActivity);
+    };
+  }, [resetTimer]);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setInactiveTime((prevTime) => prevTime + 1000); 
+    }, 1000);
+
+    if (inactiveTime >= timeoutDuration) {
+      window.location.reload(); 
+    }
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [inactiveTime]);
 
   return (
+  
     <AppContextProvider>
       <AppThemeProvider>
         <AppLocaleProvider>
@@ -218,6 +255,7 @@ function App() {
         </AppLocaleProvider>
       </AppThemeProvider>
     </AppContextProvider>
+  
   );
 }
 

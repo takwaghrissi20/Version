@@ -120,7 +120,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
   };
 
   const handleEditInterviewStaffOpen = () => {
-      console.log("findIdData",findIdData?.interviewCode)
+     
         navigate(`/Hr/Recruitement&Interview/ConstructionStaffInterview/Update/${interviewCode}`, {
           state: {
             interviewCode:findIdData?.interviewCode,
@@ -396,9 +396,14 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
       render: (text, record) => {
         const items = [
           { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleAddInterviewStaffOpen },
-          { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditInterviewStaffOpen },
+          ...(userRoles.includes('Manager') || userRoles.includes('bod')? [
+            
+            { key: 4, label: <span style={{ fontSize: 14 }}>Take Action</span>, onClick: handleEditInterviewStaffOpen },
+          ] : []),
+        
           ...(userRoles.includes('admin') ? [
             { key: 3, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteInterviewStaff },
+            { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditInterviewStaffOpen },
           ] : [])
 
         

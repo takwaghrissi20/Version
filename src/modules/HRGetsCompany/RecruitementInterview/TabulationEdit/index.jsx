@@ -84,13 +84,12 @@ const InterviewSheetById = () => {
   }, [idViewConstruction]);
   const items = [
     {
-      label: 'INTERVIEW SHEET CONSTRUCTION TEAM ',
+      label: 'INTERVIEW SHEET CONSTRUCTION TEAM',
       key: '1',
       children: 
       <InterviewSheet 
-      JobCode={JobCode}
+        JobCode={JobCode}
         idViewConstruction={idViewConstruction}
-
         // isSaveDisabled={activeTabKey !== '1'}
         totalNumber={totalNumber} level={level} projectName={projectName} position={position}
         isSaveDisabled={isSaveDisabled}

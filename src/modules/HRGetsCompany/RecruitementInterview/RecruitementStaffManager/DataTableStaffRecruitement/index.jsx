@@ -464,7 +464,13 @@ const AllRecruitementStaff = ({ allrecruitementabove,
 
     }
   ];
-
+  const rowClassName = (record) => {
+    if (record.notif === 2) {
+      return 'row-red';
+    }
+    return '';
+  };
+  
 
   return (
     <>
@@ -475,6 +481,7 @@ const AllRecruitementStaff = ({ allrecruitementabove,
         data={allrecruitementabove}
         columns={columns}
         scroll={{ x: 'auto', y: tableHeight }}
+        rowClassName={rowClassName}
         border
 
       />
