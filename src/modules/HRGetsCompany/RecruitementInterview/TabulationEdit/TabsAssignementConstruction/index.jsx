@@ -315,6 +315,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
           others: selectedOthers,
           projname: findInterviewConstruction?.projname,
           notif: 100,
+          urlCv:findInterviewConstruction?.urlCv,
           jobCod: findInterviewConstruction?.jobCod,
           totalReqPos: findInterviewConstruction?.totalReqPos,
           intervtime: findInterviewConstruction?.intervtime,
@@ -383,6 +384,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
           feedback: findInterviewConstruction?.feedback,
           agreedJoinedDate: findInterviewConstruction?.agreedJoinedDate,
           diversityTal: findInterviewConstruction?.diversityTal,
+          
 
         })
       });
@@ -448,6 +450,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
           others: findInterviewConstruction?.others,
           projname: findInterviewConstruction?.projname,
           notif: 600,
+          urlCv:findInterviewConstruction?.urlCv,
           jobCod: findInterviewConstruction?.jobCod,
           totalReqPos: findInterviewConstruction?.totalReqPos,
           intervtime: findInterviewConstruction?.intervtime,

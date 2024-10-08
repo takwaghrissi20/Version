@@ -149,7 +149,7 @@ const AddRecruitementForemanBelow = () => {
   ];
   const handleLevelSelect = (value) => {
     setSelectedLevel(value);
-    setDesiredExperience(calculateDesiredExperience(value));
+    // setDesiredExperience(calculateDesiredExperience(value));
   };
   const handlePositionRecruitement = (value) => {
     setPositionRecruitement(value)
@@ -455,7 +455,7 @@ const AddRecruitementForemanBelow = () => {
           // oDep: asper,
           // // exDep: "",
           // // status:"0",
-          nbExperience: desiredExperience,
+          nbExperience:desiredExperienceLevel,
           projRef: projectCode,
           // bod: isOkBod,
           idemp: profile?.getsId,
@@ -1110,13 +1110,13 @@ const AddRecruitementForemanBelow = () => {
                     label='Desired years of experience'
                     name='Desiredyearsexperience'
                     rules={[
-                      { required: true, message: 'Please Select your Select Desired years of experience!' },
-                    ]}>
-
+                      { required: true, message: 'Please Select your Select Desired years of experience!' },]}>
                     <Input
+                     placeholder="Desired years of experience"
                       value={desiredExperienceLevel}
-                      onChange={(value) => setDesiredExperiencELevel(value)}
-                      type="number"
+                      onChange={(e) => setDesiredExperiencELevel(e.target.value)}
+                      type='number'
+                                     
                     // placeholder={desiredExperience}
                     />
 
@@ -1312,9 +1312,7 @@ const AddRecruitementForemanBelow = () => {
         isOkBod={isOkBod}
         dep={dep}
         certif={certif}
-        type={type}
-
-      >
+        type={type}>
 
 
 

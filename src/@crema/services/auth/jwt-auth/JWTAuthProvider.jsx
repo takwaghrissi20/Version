@@ -70,11 +70,15 @@ const JWTAuthProvider = ({ children }) => {
 
     getAuthUser();
   }, []);
-
-  const signInUser = async ({ username, password }) => {
-    fetchStart();
+   
+  const signInUser = async ({username, password }) => {
+    const normalizedUsername = username.toLowerCase();
+    console.log("normalizedUsername",username)
     try {
-      const response = await jwtAxios.post('/api/v1/auth/generateToken', { username, password });
+      const response = await jwtAxios.post('/api/v1/auth/generateToken', { 
+        username,
+        password 
+      });
       if (response.status === 200) {
   
         const data = response.data;
@@ -90,8 +94,8 @@ const JWTAuthProvider = ({ children }) => {
         window.location.reload();
         fetchSuccess();
       }
-    } catch (error) {
-      console.error('Sign-in error:', error);
+    }catch (error) {
+      console.error('Sign-in error:', error?.response?.data || error.message);
       setAuthData({
         ...authData,
         isAuthenticated: false,
@@ -99,6 +103,8 @@ const JWTAuthProvider = ({ children }) => {
       });
       fetchError(error?.response?.data?.error || 'Something went wrong');
     }
+    
+   
   };
 
   const signUpUser = async ({ name, email, password }) => {

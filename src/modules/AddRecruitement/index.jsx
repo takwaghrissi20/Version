@@ -10,12 +10,12 @@ const AddRecruitement = () => {
   const { messages } = useIntl();
   const items = [
     {
-      label: 'Recruitement Construction Team',
+      label: 'Construction Team',
       key: '1',
       children: <RecruitementForemanBelow ></RecruitementForemanBelow>,
     }, // remember to pass the key prop
     {
-      label: 'Recruitement Management Team',
+      label: 'Management Team',
       key: '2',
       children: <RecruitementBelow ></RecruitementBelow>,
     },

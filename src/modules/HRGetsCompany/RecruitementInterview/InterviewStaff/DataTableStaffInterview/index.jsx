@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 //import { StyledOrderTable, StyledAction } from '../index.styled';
 /// change 
-import { StyledOrderTable } from '../../../../../styles/index.styled';
+import { StyledOrderTable,StyledAnChar } from '../../../../../styles/index.styled';
 
 import { Button, Alert, Tooltip } from 'antd';
 import InterviewView from "../../../../Model/InterviewView"
@@ -168,8 +168,11 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
         finaldesision: findIdData?.finaldesision,
         intervtime: findIdData?.intervtime,
         hrComentaire: findIdData?.hrComentaire,
-        
-
+        inputInterview: findIdData?.inputInterview,
+        emailCandidate:findIdData?.email,
+       
+     
+      
 
       }
 
@@ -263,13 +266,14 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
     setData(updatedData);
   };
 
-
+  const year = new Date().getFullYear();
   const columns = [
     {
       title: 'Reference',
       dataIndex: 'interviewCode',
       key: 'interviewCode',
-      width: 80,
+    
+      render: (text) => text ? <StyledAnChar>MIS-{text}- {year}</StyledAnChar> : null,
 
     },
     // {
@@ -571,14 +575,14 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
 
         ];
         if (((record.notif === 55 && record.directSign2 === "Accepted" && record.directSign1 === "Accepted" && record.feedback === "Accepted Offer") ||
-          (record.notif === 66 && record.directSign1 === "Accepted" && record.directSign === "Accepted" && record.feedback === "Accepted Offer"))) {
+          (record.notif === 66 && record.directSign1 === "Accepted" && record.directSign2 === "Accepted" && record.feedback === "Accepted Offer"))) {
           items.push({
             key: 4, label: <span style={{ fontSize: 14 }}>Add Employees</span>,
             onClick: handleAddEmployees
           });
         }
         if (((record.notif === 55 && record.directSign2 === "Accepted" && record.directSign1 === "Accepted") ||
-          (record.notif === 66 && record.directSign1 === "Accepted" && record.directSign === "Accepted"))) {
+          (record.notif === 66 && record.directSign1 === "Accepted" && record.directSign2 === "Accepted"))) {
           items.push({
             key: 5, label: <span style={{ fontSize: 14 }}>Feddback Employees</span>,
             onClick: handleFeedbackEmployeesOpen

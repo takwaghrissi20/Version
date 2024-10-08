@@ -38,6 +38,13 @@ const ViewIdTraining  = React.lazy(() =>
 const EditRecruitementInterview  = React.lazy(() =>
   import('../../../modules/ViewRequest/EditRecruitement')
 );
+const EditRRs  = React.lazy(() =>
+  import('../../../modules/RecruitementRequest')
+);
+const EditRRsConstruction  = React.lazy(() =>
+  import('../../../modules/RecruitementRequestConstruction')
+);
+
 const EditAllRecruitementInterview  = React.lazy(() =>
   import('../../../modules/ViewRequest/EditAllRecruitement')
 );
@@ -255,6 +262,18 @@ export const ecommerceConfig = [
     path: '/Hr/Recruitement&Interview/Recruitement/Update/:id',
     element: < EditRecruitementInterview/>,
   },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/Hr/Recruitement-Request/Update/:id',
+    element: <EditRRs/>,
+  },
+  {
+    permittedRole: RoutePermittedRole.User,
+    path: '/Hr/Recruitement-Request-Construction/Update/:id',
+    element: <EditRRsConstruction/>,
+  },
+
+ 
   {
     permittedRole: RoutePermittedRole.User,
     path: '/Hr/Recruitement&Interview/ConstructionStaffInterview/ASSESMEN_SHEET/:id',

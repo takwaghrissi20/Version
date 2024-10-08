@@ -279,12 +279,12 @@ const RecruitementInterview = () => {
 
     fetchDataStatiqueTotalInterviewRecruitement();
   }, []);
-  useEffect(() => {
-    if (!sessionStorage.getItem('reloaded')) {
-      sessionStorage.setItem('reloaded', 'true');
-      window.location.reload();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!sessionStorage.getItem('reloaded')) {
+  //     sessionStorage.setItem('reloaded', 'true');
+  //     window.location.reload();
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (!roles?.includes("admin")) {

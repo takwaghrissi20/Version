@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../@crema/components/AppRowContainer';
-import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert,TimePicker, Checkbox, notification, DatePicker, } from 'antd';
+import { Button, Col, Divider, Form, Input, Space, Typography, Select, Alert, TimePicker, Checkbox, notification, DatePicker, Modal } from 'antd';
 import { MdEdit } from 'react-icons/md';
 import {
   StyledSecondaryText,
@@ -17,7 +17,8 @@ import dayjs from 'dayjs';
 import IntlMessages from '../../@crema/helpers/IntlMessages';
 import ConfirmationModal from '../../@crema/components/AppConfirmationModal';
 import { useNavigate } from 'react-router-dom';
-
+import { FcBrokenLink } from "react-icons/fc";
+import { AiOutlineLink } from "react-icons/ai";
 const InterviewSheetById = () => {
   const location = useLocation();
   const DesiredDate = location.state ? location.state.DesiredDate : null;
@@ -89,6 +90,19 @@ const InterviewSheetById = () => {
   const token = localStorage.getItem("token")
   const [interviewTime, setInterviewTime] = useState(dayjs().format('HH:mm:ss.SSS'));
   //////////////Time
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [cvCandidate, setCvCandidate] = useState("");
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
   const handleTimeChange = (value) => {
     if (value) {
       setInterviewTime(dayjs(value).format('HH:mm:ss.SSS'));
@@ -140,7 +154,7 @@ const InterviewSheetById = () => {
   const situation = [
     { st: 'Single' },
     { st: 'Maried' },
-    { st: 'Divored' },
+    { st: 'Divorced' },
     { st: 'windower' },
   ];
   const personality = [
@@ -499,11 +513,11 @@ const InterviewSheetById = () => {
   };
   const BeforeSaveInterview = () => {
     //setIsModalVisible(true)
-    form.validateFields(['fullName','telCondidate','ContactEmail','FamilySituation',
-      'diploma','educationLevel','experience',
+    form.validateFields(['fullName', 'telCondidate', 'ContactEmail', 'FamilySituation',
+      'diploma', 'educationLevel', 'experience','cvLink'
 
     ]).then(values => {
-    
+
       SaveHRADMONISTRTOR()
 
     }).catch(errorInfo => {
@@ -513,7 +527,7 @@ const InterviewSheetById = () => {
 
     });
   };
- 
+
   const SaveHRADMONISTRTOR = async () => {
     // if (salaryError || dailyError) {
     //   return;
@@ -550,21 +564,22 @@ const InterviewSheetById = () => {
           requiredExperinece: requiredExperinece,
           requiredQualification: requiredQualification,
           fullName: fullname,
-          interviwDate:interviewDate,
-          telCondidate:contactFullNumber,
-          email:contactEmail,
-          familySituation:selectedSituation,
+          interviwDate: interviewDate,
+          telCondidate: contactFullNumber,
+          email: contactEmail,
+          familySituation: selectedSituation,
           // telCondidate: contactFullNumber,
           // email: contactEmail,
           // birthayDate:scheduleDate,
           //familySituation:selectedSituation,
           diploma: diploma,
-          educationLevel: educationLevel,       
+          educationLevel: educationLevel,
           notif: 0,
           inputInterview: formattedDate,
-          birthayDate:scheduleDate,
-          intervtime:interviewTime
-      
+          birthayDate: scheduleDate,
+          intervtime: interviewTime,
+          urlCv:cvCandidate
+
 
           // interviwDate: interviewDate,
           // fullName: fullname,
@@ -606,7 +621,7 @@ const InterviewSheetById = () => {
         setTimeout(() => {
           window.location.reload();
           navigate(-1)
-      }, 2000);
+        }, 2000);
         // navigate(-1);
       }
 
@@ -840,22 +855,40 @@ const InterviewSheetById = () => {
                       </StyledTodoDetailDatePicker>
                     </Form.Item>
                   </Col>
-                  <Col xs={24} md={12}>
-                    <Form.Item label='Time Interview' name='TimeInterview'>
-                      <StyledTodoDetailDatePicker
-                        className='form-field'>
+                    {/*Time*/}
+                    <Col xs={24} md={12}>
+                    <Form.Item
+                      label='Time Interview'
+                      name='TimeInterview'
+                      rules={[
+                        { required: true, message: 'Please input your Time Interview!' },
+                      ]}
+                    >
+                      <StyledTodoDetailDatePicker className='form-field'>
                         <TimePicker
-                          defaultValue={dayjs('12:00:00.000', 'HH:mm:ss.SSS')}
-                          format='HH:mm:ss.SSS'
+                          format='HH:mm'
                           style={{ width: "100%", height: "34px" }}
                           onChange={handleTimeChange}
+                          disabledTime={() => ({
+                            disabledHours: () => {
+                              const hours = [];
+                              for (let i = 0; i < 8; i++) {
+                                hours.push(i);
+                              }
+                              for (let i = 18; i < 24; i++) {
+                                hours.push(i);
+                              }
+                              return hours;
+                            }
+                          })}
                         />
-                      </StyledTodoDetailDatePicker >
+                      </StyledTodoDetailDatePicker>
                     </Form.Item>
                   </Col>
+                  {/*End Time*/}
 
 
-                  
+
                   <Col xs={24} md={12}>
                     <Form.Item label='JOB CODE:' name='jobcode1'>
                       <Input placeholder={JobCode} readOnly={true} />{/*Ajout le MSIS OU cis*/}
@@ -1020,7 +1053,7 @@ const InterviewSheetById = () => {
                           //defaultValue={dayjs(scheduleDate, '16 06,1990')}
                           placeholder='Select Date of Birth'
                           style={{ width: "100%", height: "34px" }}
-                          onChange={(value) => setScheduleDate(dayjs(value).format('YYYY/MM/DD'))}
+                          onChange={(value) => setScheduleDate(dayjs(value).format('YYYY-MM-DD'))}
                         />
                       </StyledTodoDetailDatePicker>
                     </Form.Item>
@@ -1976,11 +2009,11 @@ const InterviewSheetById = () => {
                   </Col>
                   <Col xs={24} md={12}>
                     <Form.Item label='Interview Date' name='DateInterview'
-                       rules={[
+                      rules={[
                         { required: true, message: 'Please Select your Interview Date!' },
-  
+
                       ]}
-                     
+
                     >
                       <StyledTodoDetailDatePicker className='form-field'>
 
@@ -1993,28 +2026,40 @@ const InterviewSheetById = () => {
                       </StyledTodoDetailDatePicker>
                     </Form.Item>
                   </Col>
-                  <Col xs={24} md={12}>
-                    <Form.Item label='Time Interview' name='TimeInterview'
-                     rules={[
-                      { required: true, message: 'Please Select your Time Interview!' },
-
-                    ]}
-
+                    {/*Time*/}
+                    <Col xs={24} md={12}>
+                    <Form.Item
+                      label='Time Interview'
+                      name='TimeInterview'
+                      rules={[
+                        { required: true, message: 'Please input your Time Interview!' },
+                      ]}
                     >
-                      <StyledTodoDetailDatePicker
-                        className='form-field'>
+                      <StyledTodoDetailDatePicker className='form-field'>
                         <TimePicker
-                          // defaultValue={dayjs('12:00:00.000', 'HH:mm:ss.SSS')}
-                          format='HH:mm:ss.SSS'
+                          format='HH:mm'
                           style={{ width: "100%", height: "34px" }}
                           onChange={handleTimeChange}
+                          disabledTime={() => ({
+                            disabledHours: () => {
+                              const hours = [];
+                              for (let i = 0; i < 8; i++) {
+                                hours.push(i);
+                              }
+                              for (let i = 18; i < 24; i++) {
+                                hours.push(i);
+                              }
+                              return hours;
+                            }
+                          })}
                         />
-                      </StyledTodoDetailDatePicker >
+                      </StyledTodoDetailDatePicker>
                     </Form.Item>
                   </Col>
+                  {/*End Time*/}
 
 
-               
+
                   <Col xs={24} md={12}>
                     <Form.Item label='JOB CODE' name='jobcode1'>
                       <Input placeholder={JobCode} readOnly={true} />{/*Ajout le MSIS OU cis*/}
@@ -2087,7 +2132,7 @@ const InterviewSheetById = () => {
 
                   <Col xs={24} md={12}>
                     <Form.Item label='Requested Qualification' name='requiredQualification'>
-                      <Input                      
+                      <Input
 
                         value={requiredQualification}
                         onChange={RequireQalification}
@@ -2174,12 +2219,12 @@ const InterviewSheetById = () => {
 
                   <Col xs={24} md={12}>
                     <Form.Item label='Date of Birth' name='birthayDate'
-                   >
+                    >
                       <StyledTodoDetailDatePicker className='form-field'>
 
                         <DatePicker
                           //defaultValue={new Date()} 
-                          defaultValue={dayjs(scheduleDate, '16 06,1990')}
+
 
                           style={{ width: "100%", height: "34px" }}
                           onChange={(value) => setScheduleDate(dayjs(value).format('YYYY-MM-DD'))}
@@ -2248,9 +2293,7 @@ const InterviewSheetById = () => {
                       rules={[
                         { required: true, message: 'Please input your Educational level!' },
 
-                      ]}
-
-                    >
+                      ]}>
                       <Input placeholder='Educational level'
                         value={educationLevel}
                         onChange={ChangeEductionLevel}
@@ -2275,6 +2318,39 @@ const InterviewSheetById = () => {
                       />
                     </Form.Item>
                   </Col>
+                  <Button 
+                  style={{margin:"2rem"}}
+                  type="primary" onClick={showModal}>
+                   <AiOutlineLink style={{color:"white",marginTop:0.5}}/>
+                    Attach CV
+                  
+           
+                  </Button>
+
+                  {/* Modal for attaching CV */}
+                  <Modal title="Attach CV" 
+                  visible={isModalVisible} 
+                  onOk={handleOk}
+                   onCancel={handleCancel}>
+                    <Form form={form} layout="vertical">
+                      <Form.Item
+                        label="CV Link"
+                        name="cvLink"
+                        rules={[
+                          { required: true, message: 'Please enter the CV link!' },
+                          { pattern: /^https:\/\/cloud\.gets-company\.com\.tn\//, 
+                            message: 'Link must start with "https://cloud.gets-company.com.tn/"' },
+                        ]}
+                      >
+                        <Input 
+                        value={cvCandidate}
+                        placeholder="Input CV link" 
+                        onChange={(e) =>setCvCandidate(e.target.value)}
+
+                        />
+                      </Form.Item>
+                    </Form>
+                  </Modal>
 
                 </AppRowContainer>
               </StyledShadowWrapper>

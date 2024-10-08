@@ -15,6 +15,11 @@ export const StyledCustomerInputView = styled.div`
     max-width: 150px;
   }
 `;
+export const StyledRecentPatientBadge = styled.span`
+  padding: 3px 10px;
+  border-radius: 4px;
+  display: inline-block;
+`;
 export const StyledCustomerHeaderRight = styled.div`
   display: flex;
   flex-direction: row;

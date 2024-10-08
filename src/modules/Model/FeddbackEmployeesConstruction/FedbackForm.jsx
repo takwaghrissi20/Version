@@ -108,7 +108,7 @@ const FedbackForm = (props) => {
   const update = async () => {
  
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intC/updateintv?id=${findIdData?.interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/updateintv?id=${findIdData?.interviewCode}`, {
 
         method: 'PUT',
         headers: {
@@ -166,7 +166,7 @@ const FedbackForm = (props) => {
           notif: findIdData?. notif,
           directSign1: findIdData?.directSign1,
           directSign2: findIdData?.directSign2,
-        
+          urlCv:findIdData?.urlCv,
           agreedJoinedDate:newDateJointCandidate,
           feedback:selectedFedback
 

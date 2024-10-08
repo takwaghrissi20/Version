@@ -489,7 +489,7 @@ const EditInterviewConstruction = () => {
           educationLevel: educationLevel,
           diploma: diploma,
           telCondidate: telCondidate,
-          urlCv,
+          urlCv:urlCv,
           validatesFor,
           goTotest2,
           psy_Person,
@@ -547,13 +547,8 @@ const EditInterviewConstruction = () => {
     });
   }
 
-
-
-
-  
   //EndgoAssesmentSheet
   //UpdateManager
-
   const UpdateManager = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${interviewCode}&token=${token}`, {
@@ -586,7 +581,7 @@ const EditInterviewConstruction = () => {
           educationLevel: educationLevel,
           diploma: diploma,
           telCondidate: telCondidate,
-          urlCv,
+          urlCv:urlCv,
           validatesFor: selectedValidation,
           goTotest2: isOkChecked,
           psy_Person: selectedPersonality,
@@ -680,7 +675,7 @@ const EditInterviewConstruction = () => {
           educationLevel: educationLevel,
           diploma: diploma,
           telCondidate: telCondidate,
-          urlCv,
+          urlCv:urlCv,
           validatesFor: selectedValidation,
           goTotest2: isOkChecked,
           psy_Person: selectedPersonality,
@@ -2312,7 +2307,7 @@ const EditInterviewConstruction = () => {
                               <DatePicker
                                 style={{ width: '100%', height: "33px" }}
                                 autoFocus
-                                defaultValue={dayjs(evaluationDate, '16 06,1990')}
+                                // defaultValue={dayjs(evaluationDate, '16 06,1990')}
 
                                 onChange={(value) => setEvaluationDate(dayjs(value).format('YYYY-MM-DD'))}
 

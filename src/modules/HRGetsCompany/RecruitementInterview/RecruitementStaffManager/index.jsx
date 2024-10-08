@@ -97,14 +97,13 @@ const RecruitementStaff = ({ allrecruitementabove, recruitementTypeIdAbove, role
       }
       if (filterValue.length > 0) {
         setIsDropdownOpen(true);
-        // Filtrer les données en fonction de la valeur de l'entrée
-        const filteredData = // votre logique de filtrage ici
+        const filteredData = 
           setRecruitementaboveFiltrer(filteredData);
       } else {
         setIsDropdownOpen(false);
       }
     } else {
-      setIsDropdownOpen(false); // Close dropdown if filter is empty
+      setIsDropdownOpen(false); 
     }
   };
 
@@ -121,8 +120,6 @@ const RecruitementStaff = ({ allrecruitementabove, recruitementTypeIdAbove, role
         experience: findIdData?.experience,
         dep:findIdData?.dep
         
-
-
 
       }
 

@@ -13,6 +13,8 @@ import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
 import { useLocation } from 'react-router-dom';
+import { FiEye } from "react-icons/fi";
+import { FcDownLeft } from "react-icons/fc";
 const EditInterviewStaff = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -63,6 +65,8 @@ const EditInterviewStaff = () => {
   const finaldesision = location.state ? location.state.finaldesision : null
   const inputInterview = location.state ? location.state.inputInterview : null
   const intervtime = location.state ? location.state.intervtime : null
+  const emailCandidate = location.state ? location.state.emailCandidate : null
+
   const [selectedValidation, setSelectedValidation] = useState('');
   const [isOkChecked, setIsOkChecked] = useState(false);
   const [isNoChecked, setIsNoChecked] = useState(false);
@@ -124,7 +128,7 @@ const EditInterviewStaff = () => {
   const [commentareBod2, setCommentareBod2] = useState('');
   const [salarybod1, setSalarybod1] = useState('');
   const token = localStorage.getItem("token")
-
+  const username = localStorage.getItem("name");
   const handleSalary1Change = (event) => {
     const value = event.target.value;
     setSalary1(event.target.value);
@@ -755,7 +759,7 @@ const EditInterviewStaff = () => {
           educationLevel: educationLevel,
           diploma: diploma,
           telCondidate: telCondidate,
-          urlCv,
+          // urlCv,
           validatesFor: selectedValidation,
           goTotest2: isOkChecked,
           psy_Person: selectedPersonality,
@@ -768,6 +772,7 @@ const EditInterviewStaff = () => {
           techDate: evaluationDate,
           meetDesision: isOkCheckedProfile,
           techcommentaire: comment,
+          intervtime: intervtime,
           hr_Person,
           hr_HumQuality,
           hr_motivation,
@@ -781,11 +786,8 @@ const EditInterviewStaff = () => {
           // feedback,
           propsedsalary,
           notif: 2,
-          evalName: idStaff?.evalId,
+          evalName: username,
           evalId: idStaff?.evalId,
-
-
-
 
         })
       });
@@ -1344,7 +1346,7 @@ const EditInterviewStaff = () => {
           propsedsalary: proposedSalary,
           notif: 66,
           directSign1: idStaff?.directSign1,
-          directSign2: selectedbodDescition2,
+          directSign2: selectedbodDescition,
           propsedsalaryBod1: idStaff?.propsedsalaryBod1,
           propsedsalaryBod2: proposedSalary2,
           dailyRateBod1: idStaff?.dailyRateBod1,
@@ -1816,7 +1818,7 @@ const EditInterviewStaff = () => {
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item label='JOB CODE:' name='JOB CODE'>
+                    <Form.Item label='JOB CODE' name='JOB CODE'>
                       <Input
                         className='Input'
                         placeholder={jobCode}
@@ -1953,10 +1955,7 @@ const EditInterviewStaff = () => {
               <StyledShadowWrapper>
                 <AppRowContainer>
                   <Col xs={24} md={12}>
-                    <Form.Item label='Diploma /Speciality' name='diploma'
-
-
-                    >
+                    <Form.Item label='Diploma /Speciality' name='diploma'>
                       <Input
                         className='Input'
                         placeholder={diploma}
@@ -2493,7 +2492,7 @@ const EditInterviewStaff = () => {
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item label=' Date' name='Date'>
+                    <Form.Item label='Date' name='Date'>
                       <Input
                         className='Input'
                         placeholder={inputInterview}
@@ -2530,12 +2529,14 @@ const EditInterviewStaff = () => {
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item label='JOB CODE:' name='JOB CODE'>
+                    <Form.Item label='JOB CODE' name='JOB CODE'>
                       <Input
                         className='Input'
-                        placeholder={jobCode}
+                        placeholder={"RRS-"+jobCode}
                         classNames="ViewInput"
-                        readOnly={true} />
+                        readOnly={true} 
+                        
+                        />
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
@@ -2657,6 +2658,75 @@ const EditInterviewStaff = () => {
               </StyledShadowWrapper>
             </Col>
           </AppRowContainer>
+          {/*Candidate Personal Information*/}
+          <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+          <AppRowContainer>
+            <Col xs={24} md={6}>
+              <Typography.Title level={5}>Candidate Personal Information</Typography.Title>
+
+            </Col>
+            <Col xs={24} md={18}>
+              <StyledShadowWrapper>
+                <AppRowContainer>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Full Name' name='fullName'>
+
+                      <Input
+                        placeholder={fullName}
+                        readOnly
+
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Contact Full Number' name='telCondidate'
+                    >
+                      <Input
+                        placeholder={telCondidate}
+                        readOnly
+
+
+
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Contact Email' name='ContactEmail'
+                    >
+                      <Input
+                        placeholder={emailCandidate} />
+                    </Form.Item>
+                  </Col>
+
+                  <Col xs={24} md={12}>
+                    <Form.Item label='Date of Birth' name='birthayDate'>
+
+                      <Input
+                        placeholder={birthayDate}
+                        readOnly
+                      />
+
+
+                    </Form.Item>
+                  </Col>
+
+                  <Col xs={24} md={12}>
+                    <Form.Item
+                      label='Family Situation'
+                      name='FamilySituation'>
+                      <Input
+                        placeholder={familySituation}
+                        readOnly
+                      />
+
+                    </Form.Item>
+                  </Col>
+
+
+                </AppRowContainer>
+              </StyledShadowWrapper>
+            </Col>
+          </AppRowContainer>
           {/*Candidate Information*/}
           <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
             <Col xs={24} md={6}>
@@ -2682,36 +2752,36 @@ const EditInterviewStaff = () => {
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item label='Educational level' name='educationLevel'
-
-
-                    >
+                    <Form.Item label='Educational level' name='educationLevel' >
                       <Input
 
                         className='Input'
                         placeholder={educationLevel}
-                        readOnly={true}
-
-
-                      />
+                        readOnly={true} />
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item label='Experience' name='experience'
-
-
-
-
-                    >
+                    <Form.Item label='Experience' name='experience'>
                       <Input
                         className='Input'
                         placeholder={experience}
                         readOnly={true}
-
-
-
                       />
+
                     </Form.Item>
+                  </Col>
+
+                  <Col xs={24} md={12}>
+                    <Button
+                      type='primary'
+                      style={{ margin: "2rem", borderRadius: "2rem" }}
+                      onClick={() => window.open(urlCv, '_blank')}
+                    >
+                      <FiEye style={{ paddingTop: 2, fontSize: "15px" }} ></FiEye>
+                      <span style={{ paddingLeft: 2 }}>
+                        View Cv :
+                      </span>
+                      <span style={{ fontWeight: "bold", color: "#e5e7e6" }}>{fullName}</span></Button>
                   </Col>
 
                 </AppRowContainer>
@@ -6203,7 +6273,7 @@ const EditInterviewStaff = () => {
                       <Col xs={24} md={18}>
                         <StyledShadowWrapper>
                           <AppRowContainer>
-                            {/*Desicion de bod Ali */}                        
+                            {/*Desicion de bod Ali */}
                             {
                               (idStaff?.directSign1 !== "" && idStaff?.directSign1 !== null && idStaff?.directSign1?.length !== 0) && (
                                 <>
@@ -6436,27 +6506,31 @@ const EditInterviewStaff = () => {
 
           <Space
             size={15}
-            style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
-          >
-            <Button onClick={goBack}
-            >Cancel</Button>
+            style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}>
+            <Button onClick={goBack}>
+              <FcDownLeft style={{ marginRight: "5px", marginTop: "5px" }} />
+              Return
+            </Button>
+
             {roles.includes("admin") && (
               <>
                 <Button onClick={Update}
                 >Save</Button>
               </>)}
 
-            {roles.includes("Manager") && !roles.includes("Human Ressource") && (
+            {roles.includes("Manager") && !roles.includes("Human Ressource") 
+            && (
               <>
-                <Button style={{ color: "green", borderColor: "green" }} onClick={UpdateManager}
-                >Approved</Button>
+
+             
+                <Button style={{ color: "green", borderColor: "green" }} onClick={UpdateManager}>Approve</Button>
                 <Button style={{ color: "red", borderColor: "red" }} onClick={RefuseManager}
                 >Refuse</Button>
               </>)}
             {roles.includes("Leader") && !roles.includes("Human Ressource") && (
               <>
                 <Button style={{ color: "green", borderColor: "green" }} onClick={UpdateLeader}
-                >Approved</Button>
+                >Approve</Button>
                 <Button style={{ color: "red", borderColor: "red" }} onClick={RefuseLeader}
                 >Refuse</Button>
               </>)}
@@ -6465,7 +6539,7 @@ const EditInterviewStaff = () => {
                 <Button
                   style={{ color: "green", borderColor: "green" }}
                   onClick={UpdateHumanRessource}
-                >Approved </Button>
+                >Approve</Button>
                 <Button
                   style={{ color: "red", borderColor: "red" }}
                   onClick={RefuseHumanRessource}
@@ -6474,14 +6548,14 @@ const EditInterviewStaff = () => {
             {name?.toLowerCase().includes("nidhal") && (
               <>
                 <Button style={{ color: "green", borderColor: "green" }} onClick={Updatebod}
-                >Approved</Button>
+                >Approve</Button>
                 <Button onClick={Refusebod} style={{ color: "red", borderColor: "red" }}
                 >Refuse</Button>
               </>)}
             {name?.toLowerCase().includes("ali") && (
               <>
                 <Button style={{ color: "green", borderColor: "green" }} onClick={Updatebod1}
-                >Approved </Button>
+                >Approve</Button>
                 <Button onClick={Refusedbod1} style={{ color: "red", borderColor: "red" }}
                 >Refuse</Button>
               </>)}

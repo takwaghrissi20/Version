@@ -10,6 +10,7 @@ import {
 import AppsHeader from '../../../@crema/components/AppsContainer/AppsHeader';
 import { useNavigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
+import { FcDownLeft } from "react-icons/fc";
 const ViewRecruitementAbove = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -41,6 +42,7 @@ const ViewRecruitementAbove = () => {
   const affectedTo = location.state ? location.state.affectedTo : null
   const notif1 = location.state ? location.state.notif1 : null
   const notif = location.state ? location.state.notif : null
+
 
   const Back = () => {
     navigate(-1)
@@ -281,6 +283,22 @@ const ViewRecruitementAbove = () => {
 
                   </Form.Item>
                 </Col>
+                <Col xs={24} md={12}>
+                  <Form.Item label='Recruitment For' name='Recruitment For'
+
+
+                  >{/*Date et temp de Interview bu Hr*/}
+                    <Input
+                
+                      placeholder={affectedTo}
+                      readOnly={true} />
+
+                  </Form.Item>
+                </Col>
+
+
+
+
                 {type === "Above Foreman" ?
 
                   <Col xs={24} md={12}>
@@ -337,7 +355,7 @@ const ViewRecruitementAbove = () => {
 
                   </Form.Item>
                 </Col>
-                <Col style={{marginTop:"1.2rem"}} xs={24} md={12}>
+                <Col xs={24} md={12}>
                   <Form.Item
                     label='Number of vacancies '
                     name='Numbervacancies'
@@ -347,6 +365,7 @@ const ViewRecruitementAbove = () => {
                       className='StyleInput'
                       placeholder={Numbervacancies}
                       type="number"
+                      readOnly
 
                     />
 
@@ -531,9 +550,13 @@ const ViewRecruitementAbove = () => {
 
         <Space
           size={15}
-          style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
-        >
-          <Button onClick={Back}>Cancel</Button>
+          style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}>
+          <Button onClick={Back}>
+
+          <FcDownLeft  style={{ marginRight:"5px",marginTop:"5px" }} />
+          Return
+          </Button>
+         
           {/* <Button
             disabled={!ischecked1 || isNochecked}
              onClick={Update}

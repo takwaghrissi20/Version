@@ -37,7 +37,7 @@ const AppVerticalNav = ({ routesConfig }) => {
   const filterMenuItems = (items) => {
     console.log("filterMenuItemspp", items)
     return items.filter(item => {
-      if (userRole.includes("Manager") && !userRole.includes("Human Ressource ") &&
+      if (userRole.includes("Manager") && !userRole.includes("Human Ressource") &&
         !userRole.includes("Construction") && !userRole.includes("Operation") &&
         !userRole.includes("Project") && !userRole.includes("Site")) {
         if (item.id === "VisaHealth" ||

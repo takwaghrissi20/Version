@@ -15,6 +15,7 @@ import ConfirmationModal from '../../../../../@crema/components/AppConfirmationM
 import { useLocation } from 'react-router-dom';
 import { getFormattedDate } from '../../../../../@crema/helpers/DateHelper';
 import ViewInterviewContraction from './View';
+import { FcDownLeft } from "react-icons/fc";
 const EditInterviewConstruction = ({ hseCertif,
   siteHazCont,
   properUse,
@@ -526,7 +527,7 @@ const EditInterviewConstruction = ({ hseCertif,
   const openNotification = () => {
     notification.open({
       message: 'Success',
-      description: 'Success Construction STAFF INTERVIEW SHEET',
+      description: 'Approved Construction STAFF INTERVIEW SHEET',
       style: {
         backgroundColor: '#28a745',
         border: '1px solid #28a745',
@@ -549,6 +550,33 @@ const EditInterviewConstruction = ({ hseCertif,
       color: '#FFFFFF !important',
     });
   };
+  const   openNotificationRefuse = () => {
+    notification.open({
+      message: 'Refuse',
+      description: 'Refuse Construction STAFF INTERVIEW SHEET',
+      style: {
+        backgroundColor: '#A7001E',
+        border: '1px solid #A7001E',
+        color: '#FFFFFF !important',
+        borderRadius: '3px',
+        boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        display: 'flex',
+        height: "102px",
+        width: "500px",
+        borderLeft: '8px solid #C23028',
+        fontsize: '30px',
+        lineheight: '150%',
+        marginbottom: 0,
+        margintop: 0,
+        maxwidth: 'calc(100% - 15px)',
+        position: 'relative',
+      },
+      placement: 'topRight',
+      color: '#FFFFFF !important',
+    });
+  };
+
   const openNotificationWarning = () => {
     notification.open({
       message: 'Warning',
@@ -636,7 +664,7 @@ const EditInterviewConstruction = ({ hseCertif,
           diploma: diploma,
           contactPhone: contactPhone,
           contactEmail: contactEmail,
-          urlCv,
+          urlCv:urlCv,
           validatesFor,
           goTotest2,
           psy_Person,
@@ -774,6 +802,8 @@ const EditInterviewConstruction = ({ hseCertif,
           ptw: idConstruction?.ptw,
           hseDecision: idConstruction?.hseDecision,
           others: idConstruction?.others,
+        
+       
 
 
         })
@@ -836,7 +866,7 @@ const EditInterviewConstruction = ({ hseCertif,
           diploma: diploma,
           contactPhone: contactPhone,
           contactEmail: contactEmail,
-          urlCv,
+          urlCv:urlCv,
           validatesFor: selectedValidation,
           goTotest2: isOkChecked,
           psy_Person: selectedPersonality,
@@ -877,7 +907,7 @@ const EditInterviewConstruction = ({ hseCertif,
 
         const responseData = await response.json();
         // form.resetFields();
-        openNotification('bottomRight')
+        openNotificationRefuse('bottomRight')
         setTimeout(() => {
           window.location.reload();
           navigate(-1)
@@ -925,7 +955,7 @@ const EditInterviewConstruction = ({ hseCertif,
           diploma: diploma,
           contactPhone: contactPhone,
           contactEmail: contactEmail,
-          urlCv,
+          urlCv:urlCv,
           validatesFor: selectedValidation,
           goTotest2: isOkChecked,
           psy_Person: selectedPersonality,
@@ -1040,7 +1070,7 @@ const EditInterviewConstruction = ({ hseCertif,
           diploma: diploma,
           contactPhone: contactPhone,
           contactEmail: contactEmail,
-          urlCv,
+          urlCv:urlCv,
           validatesFor: selectedValidation,
           goTotest2: isOkChecked,
           psy_Person: selectedPersonality,
@@ -1133,7 +1163,7 @@ const EditInterviewConstruction = ({ hseCertif,
           diploma: diploma,
           contactPhone: contactPhone,
           contactEmail: contactEmail,
-          urlCv,
+          urlCv:urlCv,
           validatesFor: selectedValidation,
           goTotest2: isOkChecked,
           psy_Person: selectedPersonality,
@@ -1232,7 +1262,7 @@ const EditInterviewConstruction = ({ hseCertif,
           goTotest2: idViewConstruction?.goTotest2,
           psy_Person: idViewConstruction?.psy_Person,
           psy_HumQuality: idViewConstruction?.psy_HumQuality,
-          psy_motivation:idViewConstruction?.psy_motivation,
+          psy_motivation: idViewConstruction?.psy_motivation,
           psy_Intellig: idViewConstruction?.psy_Intellig,
           goToTest3: idViewConstruction?.goToTest3,
           techEnglishSkills: idViewConstruction?.techEnglishSkills,
@@ -1331,7 +1361,7 @@ const EditInterviewConstruction = ({ hseCertif,
           educationLevel: educationLevel,
           diploma: diploma,
           contactPhone: contactPhone,
-          urlCv,
+          urlCv:urlCv,
           validatesFor: idConstruction?.validatesFor,
           goTotest2: idConstruction?.goTotest2,
           psy_Person: idConstruction?.psy_Person,
@@ -1540,7 +1570,7 @@ const EditInterviewConstruction = ({ hseCertif,
           diploma: diploma,
           contactPhone: contactPhone,
           contactEmail: contactEmail,
-          urlCv,
+          urlCv:idConstruction.urlCv,
           validatesFor: idConstruction?.validatesFor,
           goTotest2: idConstruction?.goTotest2,
           psy_Person: idConstruction?.psy_Person,
@@ -2689,7 +2719,7 @@ const EditInterviewConstruction = ({ hseCertif,
             </Col>
           </AppRowContainer>
           {/*HSE*/}
-          {(roles.includes("HSE") && !idConstruction.validatesFor === "") || (roles.includes("Human Ressource")) ?
+    {(roles.includes("HSE") && (idViewConstruction.goTotest2 ||!idViewConstruction.validatesFor)) || (roles.includes("Human Ressource")) ?
             <>
               <Divider style={{ marginTop: 16, marginBottom: 16 }} />
               <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
@@ -3186,7 +3216,7 @@ const EditInterviewConstruction = ({ hseCertif,
                                         value={proposedSalary}
                                         onChange={handleSalaryChange}
                                         // onChange={(e) => setProposedSalary(e.target.value)}
-                                        placeholder={`Proposed Office Salary does not exceed ${officeSalaryMax}`}
+                                        placeholder={`Proposed Office Salary`}
 
                                       />
                                       {salaryError && <Alert className="custom-alert" message={salaryError}
@@ -3208,7 +3238,7 @@ const EditInterviewConstruction = ({ hseCertif,
                                         value={proposedDailyRate}
                                         onChange={handleDailyChange}
                                         // onChange={(e) =>setProposedDailyRate(e.target.value)}
-                                        placeholder={`Proposed Daily Rate does not exceed ${dailyRateMax}`}
+                                        placeholder={`Proposed Daily Rate`}
                                       />
                                       {dailyError && <Alert className="custom-alert" message={dailyError} type="error" showIcon />}
                                     </Form.Item>
@@ -3746,12 +3776,16 @@ const EditInterviewConstruction = ({ hseCertif,
             size={15}
             style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
           >
-            <Button onClick={goBack}
-            >Cancel</Button>
+            <Button onClick={goBack}>
+
+              <FcDownLeft style={{ marginRight: "5px", marginTop: "5px" }} />
+              Return
+            </Button>
+
             {roles.includes("Manager") && !roles.includes("HSE") && !roles.includes("Human Ressource") && (
               <>
                 <Button style={{ color: "green", borderColor: "green" }} onClick={UpdateManager}>
-                  Approved
+                  Approve
 
                 </Button>
                 <Button style={{ color: "red", borderColor: "red" }} onClick={RefuseManager}
@@ -3760,18 +3794,18 @@ const EditInterviewConstruction = ({ hseCertif,
 
                 </Button>
               </>)}
-            {(roles.includes("HSE") && idConstruction?.validatesFor && idConstruction.validatesFor.length > 0) && (
+            {(roles.includes("HSE") && (idViewConstruction.goTotest2 ||!idViewConstruction.validatesFor)) && (
               <>
-                <Button style={{ color: "green", borderColor: "green" }} onClick={UpdateHSE}>Approved
+                <Button style={{ color: "green", borderColor: "green" }} onClick={UpdateHSE}>Approve
 
                 </Button>
                 <Button style={{ color: "red", borderColor: "red" }} onClick={RefuseHSE}
                 >Refuse</Button>
               </>)}
-            {(roles?.includes("HSE") && idConstruction?.validatesFor == null) && (
+              {(roles?.includes("HSE") && (!idViewConstruction.goTotest2))&& (
               <>
                 <Button style={{ color: "green", borderColor: "green" }} onClick={UpdateManager}
-                >Approved</Button>
+                >Approve</Button>
                 <Button style={{ color: "red", borderColor: "red" }} onClick={RefuseManager}
                 >Refuse</Button>
               </>)}
@@ -3787,7 +3821,7 @@ const EditInterviewConstruction = ({ hseCertif,
                 <Button
                   style={{ color: "green", borderColor: "green" }}
                   onClick={UpdateHumanRessource}
-                >Approved </Button>
+                >Approve </Button>
                 <Button
                   style={{ color: "red", borderColor: "red" }}
                   onClick={RefuseHumanRessource}

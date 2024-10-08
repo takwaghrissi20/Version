@@ -83,59 +83,9 @@ const InterviewSheetById = () => {
     findIdInterviewConstruction()
   }, [idViewConstruction]);
   const items = [
-    {
-      label: 'INTERVIEW SHEET CONSTRUCTION TEAM',
-      key: '1',
-      children: 
-      <InterviewSheet 
-        JobCode={JobCode}
-        idViewConstruction={idViewConstruction}
-        // isSaveDisabled={activeTabKey !== '1'}
-        totalNumber={totalNumber} level={level} projectName={projectName} position={position}
-        isSaveDisabled={isSaveDisabled}
-        interviewCode={interviewCode}
-        siteHazCont={siteHazCont}
-        properUse={properUse}
-        hzardousMater={hzardousMater}
-        emergency={emergency}
-        ptw={ptw}
-        hsePolicies={hsePolicies}
-        others={others}
-        educAndTrain={educAndTrain}
-        workExp={workExp}
-        DiversityTal={DiversityTal}
-        intellCap={intellCap}
-        emotIntellij={emotIntellij}
-        selfConf={selfConf}
-        comunicSkills={comunicSkills}
-        passion={passion}
-        creativity={creativity}
-        physicPres={physicPres}
-        leadership={leadership}
-        hseDecision={hseDecision}
-        hseComment={hseComment}
-        hseCertif={hseCertif}
-        propsedsalary={propsedsalary}
-        dailyRate={dailyRate}
-
-        roles={roles} ></InterviewSheet>,
-    },
-
-    // {
-    //   label: 'INTERVIEW ASSESMENT SHEET ',
-    //   key: '2',
-    //   children: <AssignementConstruction isSaveDisabled={true}
-    //   JobCode={JobCode}
-    //     // isSaveDisabled={activeTabKey !== '1'}
-    //     totalNumber={totalNumber} level={level} projectName={projectName} position={position}
-    //     roles={roles}
-
-    //   ></AssignementConstruction>,
-    // }
-
     ...(roles.includes('HSE') || roles === "Human Ressource Manager" || roles.includes('bod') ? [{
       label: 'INTERVIEW ASSESMENT SHEET',
-      key: '2',
+      key: '1',
       children: (
         <AssignementConstruction
           idViewConstruction={idViewConstruction}
@@ -187,7 +137,58 @@ const InterviewSheetById = () => {
           dailyRate={dailyRate}
         />
       ),
-    }] : [])
+    }] : []),
+    {
+      label: 'INTERVIEW SHEET CONSTRUCTION TEAM',
+      key: '2',
+      children: 
+      <InterviewSheet 
+        JobCode={JobCode}
+        idViewConstruction={idViewConstruction}
+        // isSaveDisabled={activeTabKey !== '1'}
+        totalNumber={totalNumber} level={level} projectName={projectName} position={position}
+        isSaveDisabled={isSaveDisabled}
+        interviewCode={interviewCode}
+        siteHazCont={siteHazCont}
+        properUse={properUse}
+        hzardousMater={hzardousMater}
+        emergency={emergency}
+        ptw={ptw}
+        hsePolicies={hsePolicies}
+        others={others}
+        educAndTrain={educAndTrain}
+        workExp={workExp}
+        DiversityTal={DiversityTal}
+        intellCap={intellCap}
+        emotIntellij={emotIntellij}
+        selfConf={selfConf}
+        comunicSkills={comunicSkills}
+        passion={passion}
+        creativity={creativity}
+        physicPres={physicPres}
+        leadership={leadership}
+        hseDecision={hseDecision}
+        hseComment={hseComment}
+        hseCertif={hseCertif}
+        propsedsalary={propsedsalary}
+        dailyRate={dailyRate}
+
+        roles={roles} ></InterviewSheet>,
+    },
+
+    // {
+    //   label: 'INTERVIEW ASSESMENT SHEET ',
+    //   key: '2',
+    //   children: <AssignementConstruction isSaveDisabled={true}
+    //   JobCode={JobCode}
+    //     // isSaveDisabled={activeTabKey !== '1'}
+    //     totalNumber={totalNumber} level={level} projectName={projectName} position={position}
+    //     roles={roles}
+
+    //   ></AssignementConstruction>,
+    // }
+
+  
 
 
   ];

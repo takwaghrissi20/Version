@@ -1491,3 +1491,16 @@ opacity: 0.5;
   background-color:#317AC1;
   animation: none;
 }
+.row-bod{
+  animation: blink 1s infinite;   
+}
+.row-bod:hover {
+  background-color:#9AC8EB;
+  animation: none;
+}
+@media screen and (max-width: 750px) and (min-width: 300px) {
+  .DateDesiredRecruitement {
+    width: 48%;
+  }
+}
+

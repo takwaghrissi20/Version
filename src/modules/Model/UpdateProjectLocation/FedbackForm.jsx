@@ -212,7 +212,7 @@ const FedbackForm = (props) => {
         </Form.Item>
   
             <Col xs={24} md={24}>
-            <span className='modallabel'> Candidate Accept offer/Not Accept Offer :</span>
+            <span className='modallabel'> Candidate Accept offer/Not Accept Offer:</span>
               <Form.Item
                 name="CandidateAccept"
                 label="">

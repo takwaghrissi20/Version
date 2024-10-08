@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import AppRowContainer from '../../../@crema/components/AppRowContainer';
+import AppRowContainer from '../../@crema/components/AppRowContainer';
 import {
   Button, Col, Divider, Form, Input, Space, Typography,
   Select, Alert, Checkbox, DatePicker, InputNumber, notification, Spin
@@ -42,11 +42,12 @@ const EditRecruitementAbove = () => {
   const dateInputRecrut = location.state ? location.state.dateInputRecrut : null
   const signaturepolead = location.state ? location.state.signaturepolead : null
   const signatureBod2 = location.state ? location.state.signatureBod2 : null
-  const chekedBod2 = location.state ? location.state.chekedBod2 : null
-  const chekedBod1 = location.state ? location.state.chekedBod1 : null
-
+  const totalNumber = location.state ? location.state.totalNumber : null
+  
   console.log("signaturepolead", signaturepolead)
   console.log("signatureBod2", signatureBod2)
+  console.log("type Recruitement", type)
+  const [selectedLevel, setSelectedLevel] = useState('');
   const userRoles = localStorage.getItem("role");
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("name");
@@ -55,12 +56,37 @@ const EditRecruitementAbove = () => {
   const [commentBOD2, setCommentBOD2] = useState("");
   const [name, setName] = useState("");
   const [chargement, setChargement] = useState("");
-  const [checkedAliDescition, setCheckedAliDescition] = useState(false);
-  const [checkedNidhalDescition, setCheckedNidhal] = useState(false);
+  const [positionAbove, setPositionAbove] = useState("");
+  const [positionRecruitementAbove, setPositionRecruitementAbove] = useState(position);
+  const [positionRecruitementBelow, setPositionRecruitementBelow] = useState('');
+ 
+  const [positionBelow, setPositionBelow] = useState('');
+  console.log("username nnnnn", username)
+  const RequestedDiciplineAbove = (value) => {
+    setPositionRecruitementAbove(value);
 
+  };
   //Get profile By Email
+  const requiredlevel = [
+    { level: 'Junior' },
+    { level: 'Medium' },
+    { level: 'Senior' },
+
+  ];
+  const requiredlevelbelow = [
+    { level: 'Level I ' },
+    { level: 'Level II' },
+    { level: 'levelIII' },
+    { level: 'LEVEL IV' },
+    { level: 'Level V' },
+
+  ];
+  const handleLevelSelect = (value) => {
+    setSelectedLevel(value);
+  };
   useEffect(() => {
     GetProfileEmployess()
+    GetPositions()
   }, []);
   const GetProfileEmployess = async () => {
     setChargement(true);
@@ -132,9 +158,7 @@ const EditRecruitementAbove = () => {
           signatureBod2: signaturepolead,
           signaturepolead: commentBOD1,
           notif: 20,
-          status: "Not Approved By BOD",
-          chekedBod1: checkedBodAli,
-          chekedBod2: chekedBod2
+          status: "Not Approved By BOD"
         })
       });
 
@@ -201,9 +225,7 @@ const EditRecruitementAbove = () => {
           notif: 80,
           signatureBod2: commentBOD2,
           signaturepolead: signaturepolead,
-          status: "Not Approved By BOD",
-          chekedBod1: chekedBod1,
-          chekedBod2: checkedBodNidhal
+          status: "Not Approved By BOD Nidhal"
         })
       });
 
@@ -248,10 +270,8 @@ const EditRecruitementAbove = () => {
   const [newoDep, setNewoDep] = useState(oDep);
   const [exDepPlanner, setExDepPlanner] = useState(false);
   const [oDepPlanner, setoDepPlanner] = useState(false);
-  const [checkedBodAli, setCheckedBodAli] = useState(false);
-  const [checkedNoBodAli, setCheckedNoBodAli] = useState(false);
-  const [checkedBodNidhal, setCheckedBodNidhal] = useState(false);
-  const [checkedNoBodNidhal, setCheckedNoBodNidhal] = useState(false);
+  const [newCheckedHod, setNewCheckedHod] = useState(signatureHod);
+  const [newCheckedBod, setNewCheckedBod] = useState(signatureBod);
 
   const [selectedLieu, setSelectedLieu] = useState(affectedTo);
   const [dataEdit, setDataEdit] = useState("")
@@ -301,35 +321,11 @@ const EditRecruitementAbove = () => {
     }
 
   }
-  function HandleBODAli(e) {
-    setCheckedBodAli(e.target.checked)
-    if (e.target.checked) {
-      setCheckedNoBodAli(false);
+  function HandleHOD(e) {
 
-    }
-  }
-  function HandleBODNoAli(e) {
-    setCheckedNoBodAli(e.target.checked)
-    if (e.target.checked) {
-      setCheckedBodAli(false);
+    setNewCheckedHod(e.target.checked)
 
-    }
   }
-  ////Nidhal 
-  function HandleBODNidhal(e) {
-    setCheckedBodNidhal(e.target.checked)
-    if (e.target.checked) {
-      setCheckedNoBodNidhal(false);
-
-    }
-  }
-  function HandleBODNoNidhal(e) {
-    setCheckedNoBodNidhal(e.target.checked)
-    if (e.target.checked) {
-      setCheckedBodNidhal(false);
-    }
-  }
-
   function HandleBOD(e) {
 
     setNewCheckedBod(e.target.checked)
@@ -633,6 +629,122 @@ const EditRecruitementAbove = () => {
       console.error("Erreur lors de la récupération du Id :", error);
     }
   }
+  const GetPositions = async () => {
+
+    try {
+      const endPoint =
+        process.env.NODE_ENV === "development"
+          ? "https://dev-gateway.gets-company.com"
+          : "";
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/rateMnStaff/list`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('La requête a échoué avec le code ' + response.status);
+      }
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
+      }
+      const data = await response.json();
+
+      const Position = data.map(p => p.description)
+      setPositionAbove(Position)
+      //////Position Below
+      const responseBelow = await fetch(`https://dev-gateway.gets-company.com/api/v1/rateConst/list`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('La requête a échoué avec le code ' + response.status);
+      }
+    
+      const dataBelow = await response.json();
+      const PositionBelow = dataBelow.map(p => p.description)
+      setPositionBelow(PositionBelow)
+    
+    } catch (error) {
+      console.error('Erreur lors de la récupération Last Recruitement', error);
+    }
+  };
+  //Edittttt Manager or Leader
+  const EditManager = async () => {
+
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}&token=${token}`, {
+
+        method: 'PUT',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+
+          jobCode: jobCode,
+          dateInputRecrut: dateInputRecrut,
+          desiredDate:newdesiredDate,
+          dep: dep,
+           idemp: idemp,
+          position:positionRecruitementAbove,
+          recruttrequestDate: recruttrequestDate,
+          requestName: requestName,      
+          requestedDicipline: requestedDicipline,
+          approuvedRecrutRequestNumber: 1,
+          projectName: projectName,
+          projRef: projRef,
+          totalNumber: Numbervacancies,
+          experience: newLevel,
+           nbExperience: newnbExperience,
+          type: type,
+          affectedTo: selectedLieu,
+          certif: newcertif,
+          bod: null,
+          oDep: oDep,
+          exDep: exDep,
+          comentPlaner: comentPlaner,
+          signatureHod: null,
+          signatureBod: null,
+          notif: 2,
+          status: "Pending",
+
+
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+
+        const responseData = await response.text();
+        openNotification('bottomRight')
+        console.log("updataaaa planner", responseData)
+        setTimeout(() => {
+          window.location.reload();
+          navigate(-1)
+        }, 2000);
+
+        // navigate(-1)
+
+        //handleAddContactClose(true)
+      }
+
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+    }
+  }
+  
 
   //End Update UpdateOperation
   ///Cancel Recruitement Oprartion
@@ -745,9 +857,7 @@ const EditRecruitementAbove = () => {
           signatureBod2: signaturepolead,
           signaturepolead: commentBOD1,
           notif: 3,
-          status: "Approved By BOD Ali",
-          chekedBod1: checkedBodAli,
-          chekedBod2: chekedBod2
+          status: "Approved By BOD"
         })
       });
       if (!response.ok) {
@@ -815,9 +925,7 @@ const EditRecruitementAbove = () => {
           signatureBod2: commentBOD2,
           signaturepolead: signaturepolead,
           notif: 8,
-          status: "Approved By BOD Nidhal",
-          chekedBod1: chekedBod1,
-          chekedBod2: checkedBodNidhal
+          status: "Approved By BOD"
         })
       });
       if (!response.ok) {
@@ -1009,124 +1117,122 @@ const EditRecruitementAbove = () => {
               </StyledShadowWrapper>
             </Col>
           </AppRowContainer>
-          <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-            <Col xs={24} md={6}>
-              <Typography.Title level={5}> {type} Recruitement </Typography.Title>
+          {(userRoles.includes("Manager")&& !dep.includes("Operation") &&!dep.includes("Engineering"))
+          || !userRole.includes("Human Ressource")          
+          &&
+            <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+              <Col xs={24} md={6}>
+                <Typography.Title level={5}> {type} Recruitement </Typography.Title>
+              </Col>
+              <Col xs={24} md={18}>
+                <StyledShadowWrapper>
+                  <AppRowContainer>
+                    <Col xs={24} md={12}>
+                      <Form.Item label='Desired Date of Recruitment'
+                        name='DateDesiredRecruitement'>
+                        <StyledScrumBoardDatePicker
+                          value={newdesiredDate}
+                          onChange={() => setNewDesiredDate()} />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item label='Recruitment For' name='Recruitment For'>
+                        <Select
+                          placeholder='Recruitment For'
+                          onChange={handlePlaceSelect}
+                          value={selectedLieu}
+                        >
+                          {lieu.map((p, index) => (
+                            <Select.Option key={index} value={p.place}>
+                              {p.place}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    {type === "Above Foreman" ?
+                    <>
 
-            </Col>
-            <Col xs={24} md={18}>
-              <StyledShadowWrapper>
-                <AppRowContainer>
-                  <Col xs={24} md={12}>
-                    <Form.Item label='Desired Date of Recruitment' name='DateDesiredRecruitement'
-                    >
-                      <StyledScrumBoardDatePicker
-                        value={newdesiredDate}
-                        onChange={() => setNewDesiredDate()}
-                      />
+                      <Col xs={24} md={12}>
+                        <Form.Item label='Recruitement For' name='Recruitement For'>
+                          <Input
+                            placeholder={affectedTo}
+                            readOnly={true} />
+                        </Form.Item>
+                      </Col>
+                      </>
 
 
-                    </Form.Item>
-                  </Col>
-                  <Col xs={24} md={12}>
-                    <Form.Item label='Recruitment For' name='Recruitment For'>
-                      <Select
-                        placeholder='Recruitment For'
-                        onChange={handlePlaceSelect}
-                        value={selectedLieu}
-                      >
-                        {lieu.map((p, index) => (
-                          <Select.Option key={index} value={p.place}>
-                            {p.place}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                  {type === "Above Foreman" ?
+                      : null}
 
                     <Col xs={24} md={12}>
-                      <Form.Item label='Recruitement For' name='Recruitement For'>
+                      <Form.Item label='Position' name='Position'>
                         <Input
-                          placeholder={affectedTo}
-                          readOnly={true} />
+                          value={newposition}
+                          onChange={() => setNewposition()}
+                          placeholder="Position" />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label='Required Level' name='RequiredLevel' >
+                        <Input
+                          value={newLevel}
+                          onChange={() => setNewLevel()}
+                          placeholder="Required Level"
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label='Desired years of experience'
+                        name='Desiredyearsexperience'>
+
+                        <Input
+                          value={newnbExperience}
+                          onChange={() => setNewnbExperience()}
+                          placeholder="Desired years of experience"
+                        />
+
+                      </Form.Item>
+                    </Col>
+                    <Col style={{ marginTop: '1.3rem' }} xs={24} md={12}>
+                      <Form.Item
+                        label='Number of vacancies'
+                      >
+                        <Input
+                          value={newNumbervacancies}
+                          onChange={() => setNewNumbervacancies()}
+                          placeholder="Number of vacancies"
+                          type="number" />
+
+
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label='Academic Certificates /Comments (otherrequired Knowledge /Recruitment objective)'
+                        name='certif'
+
+                      >
+                        <Input
+                          value={certif}
+                          onChange={() => setNewcertif()}
+                          placeholder="Academic Certificates" />
+
+
                       </Form.Item>
                     </Col>
 
 
-                    : null}
-
-                  <Col xs={24} md={12}>
-                    <Form.Item label='Position' name='Position'>
-                      <Input
-                        value={newposition}
-                        onChange={() => setNewposition()}
-                        placeholder="Position"
-                      />
+                  </AppRowContainer>
+                </StyledShadowWrapper>
+              </Col>
+            </AppRowContainer>
 
 
+          }
 
-
-                    </Form.Item>
-                  </Col>
-                  <Col xs={24} md={12}>
-                    <Form.Item
-                      label='Required Level' name='RequiredLevel'
-
-                    >
-                      <Input
-                        value={newLevel}
-                        onChange={() => setNewLevel()}
-                        placeholder="Required Level"
-                      />
-                    </Form.Item>
-                  </Col>
-                  <Col xs={24} md={12}>
-                    <Form.Item
-                      label='Desired years of experience'
-                      name='Desiredyearsexperience'>
-
-                      <Input
-                        value={newnbExperience}
-                        onChange={() => setNewnbExperience()}
-                        placeholder="Desired years of experience"
-                      />
-
-                    </Form.Item>
-                  </Col>
-                  <Col style={{ marginTop: '1.3rem' }} xs={24} md={12}>
-                    <Form.Item
-                      label='Number of vacancies'
-                    >
-                      <Input
-                        value={newNumbervacancies}
-                        onChange={() => setNewNumbervacancies()}
-                        placeholder="Number of vacancies"
-                        type="number" />
-
-
-                    </Form.Item>
-                  </Col>
-                  <Col xs={24} md={12}>
-                    <Form.Item
-                      label='Academic Certificates /Comments (otherrequired Knowledge /Recruitment objective)'
-                      name='certif'
-
-                    >
-                      <Input
-                        value={certif}
-                        onChange={() => setNewcertif()}
-                        placeholder="Academic Certificates" />
-
-
-                    </Form.Item>
-                  </Col>
-
-
-                </AppRowContainer>
-              </StyledShadowWrapper>
-            </Col>
-          </AppRowContainer>
 
 
           {(dep?.includes("Operation")) ?
@@ -1194,7 +1300,39 @@ const EditRecruitementAbove = () => {
 
             : null}
 
+          <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+            <Col xs={24} md={6}>
+              <Typography.Title level={5}> Head of Department Inputs</Typography.Title>
+            </Col>
+            <Col xs={24} md={18}>
+              <StyledShadowWrapper>
+                <AppRowContainer>
+                  <Col xs={24} md={18}>
+                    <StyledInput>
+                      <Form.Item
+                        label='Head Of Departement Decision'
+                        name='HeadInputs'>
+                        <Checkbox checked={newCheckedHod} onChange={HandleHOD}>
 
+                          Yes
+                        </Checkbox>
+
+                        <Checkbox
+
+                        >
+                          No
+                        </Checkbox>
+
+                      </Form.Item>
+                    </StyledInput>
+                  </Col>
+
+
+
+                </AppRowContainer>
+              </StyledShadowWrapper>
+            </Col>
+          </AppRowContainer>
 
 
           <Divider style={{ marginTop: 16, marginBottom: 16 }} />
@@ -1349,11 +1487,9 @@ const EditRecruitementAbove = () => {
                     </Form.Item>
                   </Col>
 
-
                   <Col xs={24} md={12}>
                     <Form.Item label='Position' name='position'>
                       <Input
-
                         placeholder={position}
                         readOnly={true} />
                     </Form.Item>
@@ -1418,30 +1554,41 @@ const EditRecruitementAbove = () => {
               <Typography.Title level={5}> {type} Recruitement </Typography.Title>
 
             </Col>
+            {
+
+            }
             <Col xs={24} md={18}>
               <StyledShadowWrapper>
                 <AppRowContainer>
+
                   <Col xs={24} md={12}>
-                    <Form.Item label='Desired Date of Recruitment' name='DateDesiredRecruitement'
-                    >
-                      <Input
+                    <Form.Item
+                      className='DateDesiredRecruitement'
+                      label='Desired Date of Recruitment'
+                      name='DateDesiredRecruitement'>
+                      <StyledScrumBoardDatePicker
                         placeholder={DesiredDate}
-                        readOnly
-                      />
+                        style={{ width: "100%", height: "30px" }}
+                        value={newdesiredDate}
+                        onChange={() => setNewDesiredDate()} />
                     </Form.Item>
-
-
-
                   </Col>
                   <Col xs={24} md={12}>
                     <Form.Item label='Recruitment For' name='Recruitment For'>
-                      <Input
+                      <Select
                         placeholder={affectedTo}
-                        readOnly
-                      />
-
+                        onChange={handlePlaceSelect}
+                        value={selectedLieu}
+                      >
+                        {lieu.map((p, index) => (
+                          <Select.Option key={index} value={p.place}>
+                            {p.place}
+                          </Select.Option>
+                        ))}
+                      </Select>
                     </Form.Item>
                   </Col>
+
                   {/* {type === "Above Foreman" ?
 
                 <Col xs={24} md={12}>
@@ -1456,8 +1603,8 @@ const EditRecruitementAbove = () => {
 
 
                 : null} */}
-
-                  <Col xs={24} md={12}>
+                 
+                  {/* <Col xs={24} md={12}>
                     <Form.Item label='Position' name='Position'>
                       <Input
                         placeholder={requestedDicipline}
@@ -1465,31 +1612,78 @@ const EditRecruitementAbove = () => {
                       />
 
                     </Form.Item>
-                  </Col>
-                  <Col xs={24} md={12}>
-                    <Form.Item
-                      label='Required Level' name='RequiredLevel'
+                  </Col> */}
+                  {type === "Above Foreman" ?
+                  <>
+                   <Col xs={24} md={12}>
+                    <Form.Item label='Position' name='Position'>
+                    <Select
+                      placeholder={position}
+                      value={positionRecruitementAbove}
+                      onChange={RequestedDiciplineAbove} >
 
-                    >
-                      <Input
-                        // value={Level}
-                        placeholder={Level}
-                        readOnly
-
-                      />
+                      {positionAbove && positionAbove?.map((p, index) => (
+                        <Select.Option key={index} value={p}>
+                          {p}
+                        </Select.Option>
+                      ))}
+                    </Select>
                     </Form.Item>
                   </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label='Required Level' name='RequiredLevel'
+
+                        rules={[
+                          { required: true, message: 'Please Select your Select Required Level!' },
+                        ]}
+                      >
+                        <Select
+                          placeholder={Level}
+                          onChange={handleLevelSelect}
+                          value={selectedLevel}
+                        >
+                          {requiredlevel.map((p, index) => (
+                            <Select.Option key={index} value={p.level}>
+                              {p.level}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    </>
+
+                    : <Col xs={24} md={12}>
+                      <Form.Item
+                        label='Required Level' name='RequiredLevel'
+
+                        rules={[
+                          { required: true, message: 'Please Select your Select Required Level!' },
+                        ]}
+                      >
+                        <Select
+                          placeholder={Level}
+                          onChange={handleLevelSelect}
+                          value={selectedLevel}
+                        >
+                          {requiredlevelbelow.map((p, index) => (
+                            <Select.Option key={index} value={p.level}>
+                              {p.level}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>}
                   <Col xs={24} md={12}>
                     <Form.Item
                       label='Desired years of experience'
                       name='Desiredyearsexperience'>
 
                       <Input
-                        placeholder={nbExperience}
-                        readOnly
-                      // value={newnbExperience}
-                      // onChange={() => setNewnbExperience()}
-                      // placeholder="Desired years of experience"
+                       placeholder={nbExperience}
+                        value={newnbExperience}
+                        onChange={() => setNewnbExperience()}
+                  
                       />
 
                     </Form.Item>
@@ -1498,11 +1692,11 @@ const EditRecruitementAbove = () => {
                     <Form.Item
                       label='Number of vacancies'
                     >
-                      <Input
-                        placeholder={Numbervacancies}
-                        readOnly
-
-                      />
+                     <Input
+                          value={newNumbervacancies}
+                          onChange={() => setNewNumbervacancies()}
+                          placeholder={totalNumber}
+                          type="number" />
 
 
                     </Form.Item>
@@ -1513,9 +1707,10 @@ const EditRecruitementAbove = () => {
                       name='certif'
 
                     >
-                      <Input
-                        placeholder={certif}
-                        readOnly />
+                     <Input
+                          value={certif}
+                          onChange={() => setNewcertif()}
+                          placeholder="Academic Certificates" />
 
 
                     </Form.Item>
@@ -1527,239 +1722,91 @@ const EditRecruitementAbove = () => {
           </AppRowContainer>
           {/*Comment Bod 1 et BOD2*/}
           {userRoles?.includes("bod") &&
-            <>
-              {username?.toLowerCase().includes("ali") && (
-                <>
-                  <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-                    <Col xs={24} md={6}>
-                      <Typography.Title level={5}> BOD Decision</Typography.Title>
-                    </Col>
-                    <Col xs={24} md={18}>
-                      <StyledShadowWrapper>
-                        <AppRowContainer>
-                          {/*Ali desiction*/}
-                          {chekedBod2 === null || chekedBod2 === undefined && (
-                            <p>Null</p>
+            <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+              <Col xs={24} md={6}>
+                <Typography.Title level={5}> Comments </Typography.Title>
 
-                          )}
-                          {chekedBod2 === "true" && (
-                            <>                       
-                            <Col xs={24} md={18} >
-                            <StyledInput>
-                              <Form.Item
-                                label='Ali Decision'
-                                name='BODInputs'>
-                                <Checkbox
-                                  checked={chekedBod2==="true"}
-                                  readOnly>
+              </Col>
+              <Col xs={24} md={18}>
+                <StyledShadowWrapper>
+                  <AppRowContainer>
 
-                                  Yes
-                                </Checkbox>
-
-                                <Checkbox
-                                 checked={chekedBod2==="false"}
-                                 readOnly>
-                                  No
-                                </Checkbox>
-
-                              </Form.Item>
-                            </StyledInput>
-                          </Col>
-                            </>
-                          )}
-
-
-                          {/*End Ali Descition*/}
-                          <Col xs={24} md={18}>
-                            <StyledInput>
-                              <Form.Item
-                                label='Ali Decision'
-                                name='BODInputs'>
-                                <Checkbox
-                                  checked={checkedBodAli} onChange={HandleBODAli}>
-
-                                  Yes
-                                </Checkbox>
-
-                                <Checkbox
-                                  checked={checkedNoBodAli} onChange={HandleBODNoAli}
-                                >
-                                  No
-                                </Checkbox>
-
-                              </Form.Item>
-                            </StyledInput>
-                          </Col>
-
-
-
-                        </AppRowContainer>
-                      </StyledShadowWrapper>
-                    </Col>
-                  </AppRowContainer>
-                </>
-              )}
-              {username?.toLowerCase().includes("nidhal") && (
-                <>
-                  <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-                    <Col xs={24} md={6}>
-                      <Typography.Title level={5}> BOD Decision</Typography.Title>
-                    </Col>
-                    <Col xs={24} md={18}>
-                      <StyledShadowWrapper>
-                        <AppRowContainer>
-                          {/*Ali desiction*/}
-                          {chekedBod1 === null || chekedBod1 === undefined && (
-                            <p></p>
-
-                          )}
-                          {chekedBod1 === "true" && (
-                            <>
-                          
-                            <Col xs={24} md={18}>
-                            <StyledInput>
-                              <Form.Item
-                                label='Ali Decision'
-                                name='BODInputs'>
-                                <Checkbox
-                                  checked={chekedBod1==="true"}
-                                  readOnly
-                                  >
-
-                                  Yes
-                                </Checkbox>
-
-                                <Checkbox
-                                 checked={chekedBod1==="false"}
-                   
-                                   readOnly
-                                >
-                                  No
-                                </Checkbox>
-
-                              </Form.Item>
-                            </StyledInput>
-                          </Col>
-                            </>
-                          )}
-
-
-                          {/*End Ali Descition*/}
-                          <Col xs={24} md={18}>
-                            <StyledInput>
-                              <Form.Item
-                                label='Nidhal Decision'
-                                name='BODInputs'>
-                                <Checkbox
-                                  checked={checkedBodNidhal} onChange={HandleBODNidhal}>
-
-                                  Yes
-                                </Checkbox>
-
-                                <Checkbox
-                                  checked={checkedNoBodNidhal} onChange={HandleBODNoNidhal}
-                                >
-                                  No
-                                </Checkbox>
-
-                              </Form.Item>
-                            </StyledInput>
-                          </Col>
-
-
-
-                        </AppRowContainer>
-                      </StyledShadowWrapper>
-                    </Col>
-                  </AppRowContainer>
-                </>
-              )}
-              <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-                <Col xs={24} md={6}>
-                  <Typography.Title level={5}> Comments </Typography.Title>
-
-                </Col>
-                <Col xs={24} md={18}>
-                  <StyledShadowWrapper>
-                    <AppRowContainer>
-
-                      {/* {chargement ? (
+                    {/* {chargement ? (
                    <Spin tip="Loading..........." />
                  ) : ( */}
-                      {username?.toLowerCase().includes("ali") && (
-                        <>
+                    {username?.toLowerCase().includes("ali") && (
+                      <Col xs={24} md={24}>
+                        <p>{username}:</p>
 
-                          <Col xs={24} md={24}>
-                            <p>{username}:</p>
-
-                            {signatureBod2?.trim().length > 0 &&
-                              <Form.Item label='Comment' name='Comment Of Nidhal'>
-                                <Input
-                                  className='InputComment'
-                                  placeholder={signatureBod2}
-                                  readOnly
-                                />
-                              </Form.Item>
-
-                            }
-                            {signatureBod2 === null || signatureBod2 === undefined &&
-                              <p></p>
-                            }
-                            <Form.Item label='Comment' name='Comment'>
-                              <Input
-                                className='InputComment'
-                                placeholder="Comment"
-                                value={commentBOD1}
-                                onChange={(e) => setCommentBOD1(e.target.value)}
-                              />
-                            </Form.Item>
-                          </Col>
-                        </>
-                      )
-                      }
-
-                      {/* {chargement ? (
-                   <Spin tip="Loading..........." />
-                 ) : ( */}
-
-                      {username?.toLowerCase().includes("nidhal") && (
-                        <Col xs={24} md={24}>
-                          <p>{username}:</p>
-
-
-                          {signaturepolead?.trim().length > 0 &&
-                            <Form.Item label='Comment' name='Comment Of Nidhal'>
-                              <Input
-                                className='InputComment'
-                                placeholder={signaturepolead}
-                                readOnly
-                              />
-                            </Form.Item>
-
-
-                          }
-                          {signaturepolead === null || signaturepolead == undefined &&
-                            <p></p>
-                          }
-                          <Form.Item label='Comment' name='Comment'>
+                        {signatureBod2?.trim().length > 0 &&
+                          <Form.Item label='Comment' name='Comment Of Nidhal'>
                             <Input
                               className='InputComment'
-                              placeholder="Comment"
-                              value={commentBOD2}
-                              onChange={(e) => setCommentBOD2(e.target.value)}
+                              placeholder={signatureBod2}
+                              readOnly
                             />
                           </Form.Item>
-                        </Col>
-                      )
-                      }
+
+                        }
+                        {signatureBod2 === null || signatureBod2 === undefined &&
+                          <p></p>
+                        }
+                        <Form.Item label='Comment' name='Comment'>
+                          <Input
+                            className='InputComment'
+                            placeholder="Comment"
+                            value={commentBOD1}
+                            onChange={(e) => setCommentBOD1(e.target.value)}
+                          />
+                        </Form.Item>
+                      </Col>
+                    )
+                    }
+
+                    {/* {chargement ? (
+                   <Spin tip="Loading..........." />
+                 ) : ( */}
+                    {username?.toLowerCase().includes("nidhal") && (
+                      <Col xs={24} md={24}>
+                        <p>{username}:</p>
+
+
+                        {signaturepolead?.trim().length > 0 &&
+                          <Form.Item label='Comment' name='Comment Of Nidhal'>
+                            <Input
+                              className='InputComment'
+                              placeholder={signaturepolead}
+                              readOnly
+                            />
+                          </Form.Item>
+
+
+                        }
+                        {signaturepolead === null || signaturepolead == undefined &&
+                          <p></p>
+                        }
+                        <Form.Item label='Comment' name='Comment'>
+                          <Input
+                            className='InputComment'
+                            placeholder="Comment"
+                            value={commentBOD2}
+                            onChange={(e) => setCommentBOD2(e.target.value)}
+                          />
+                        </Form.Item>
+                      </Col>
+                    )
+                    }
 
 
 
-                    </AppRowContainer>
-                  </StyledShadowWrapper>
-                </Col>
-              </AppRowContainer>
-            </>
+
+
+
+
+                  </AppRowContainer>
+                </StyledShadowWrapper>
+              </Col>
+            </AppRowContainer>
           }
           {(dep?.includes("Operation") && notif === 6 && (!userRoles?.includes("bod"))) || (dep?.includes("Operation") && notif === 7 && (!userRoles?.includes("bod")))
             ?
@@ -2007,10 +2054,16 @@ const EditRecruitementAbove = () => {
           <Space
             size={15}
             style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}>
-            {(userRoles?.includes("Manager") || userRoles?.includes("Human Ressource") || userRoles?.includes("Leader")) && (
-              <Button onClick={Back}>
+            {(userRoles?.includes("Manager") || userRoles?.includes("Human Ressource")) && (
+             <>
+             <Button onClick={Back}>
                 <FcDownLeft style={{ marginRight: 5 }} /> Return
               </Button>
+              <Button onClick={() => EditManager()}>
+                  Save
+                </Button>
+                </>
+
             )}
 
 
@@ -2051,28 +2104,24 @@ const EditRecruitementAbove = () => {
             {userRoles.includes("bod") && username?.toLowerCase().includes("ali") ?
               <>
                 <Button style={{ color: "green", borderColor: "green" }} onClick={() => UpdateBOD()}>
-                  Approve
+                  Approved
                 </Button>
                 <Button style={{ color: "red", borderColor: "red" }} onClick={() => CancelRecruitementBod()}>
                   Refuse
                 </Button>
-                <Button onClick={Back}>
-                  <FcDownLeft style={{ marginRight: "5px", marginTop: "5px" }} />
-                  Return</Button>
+                <Button onClick={Back}>Cancel</Button>
               </>
               : null
             }
             {userRoles.includes("bod") && username?.toLowerCase().includes("nidhal") ?
               <>
                 <Button style={{ color: "green", borderColor: "green" }} onClick={() => UpdateBODNIDHAL()}>
-                  Approve NIDHAL
+                  Approved NIDHAL
                 </Button>
                 <Button style={{ color: "red", borderColor: "red" }} onClick={() => CancelRecruitementBodNIDHA()}>
                   Refuse NIDHAL
                 </Button>
-                <Button onClick={Back}>
-
-                  Return</Button>
+                <Button onClick={Back}>Cancel</Button>
               </>
               : null
             }

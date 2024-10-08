@@ -2,19 +2,15 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 //import { StyledOrderTable, StyledAction } from '../index.styled';
 /// change 
-import { StyledOrderTable } from '../../../../../styles/index.styled';
 import RecruitementView from "../../../../Model/RecruitementView"
 import RecruitementEdit from "../../../../Model/RecruitementEdit"
 import { MoreOutlined } from '@ant-design/icons'
-import {
-  StyledRecentPatientBadge,
-
-} from '../../index.styled'
+import { StyledOrderTable, StyledAnChar,  StyledRecentPatientBadge } from '../../../../../styles/index.styled';
 import ConfirmationModal from '../../../../../@crema/components/AppConfirmationModal';
 import IntlMessages from '../../../../../@crema/helpers/IntlMessages';
 import { useNavigate } from "react-router-dom";
 import { Button, Tooltip, Dropdown } from 'antd';
-const AllRecruitementConstruction = ({ roles,allrecruitementbelow, findIdData, id, findId, setFindIdData, open, handleInterview }) => {
+const AllRecruitementConstruction = ({ roles, allrecruitementbelow, findIdData, id, findId, setFindIdData, open, handleInterview }) => {
 
   //const [findIdData, setFindIdData] = useState(null);
   const [isViewRecruitement, onViewRecruitement] = useState(false);
@@ -65,6 +61,8 @@ const AllRecruitementConstruction = ({ roles,allrecruitementbelow, findIdData, i
         comentPlaner: findIdData?.comentPlaner,
         signatureBod: findIdData?.signatureBod,
         signatureHod: findIdData?.signatureHod,
+        chekedBod1:findIdData?.chekedBod1,
+        chekedBod2:findIdData?.chekedBod2,
 
 
       }
@@ -95,6 +93,8 @@ const AllRecruitementConstruction = ({ roles,allrecruitementbelow, findIdData, i
           comentPlaner: findIdData?.comentPlaner,
           signatureBod: findIdData?.signatureBod,
           signatureHod: findIdData?.signatureHod,
+          chekedBod2: findIdData?.chekedBod2,
+          chekedBod1: findIdData?.chekedBod1,
 
 
         }
@@ -122,36 +122,38 @@ const AllRecruitementConstruction = ({ roles,allrecruitementbelow, findIdData, i
     onDeleteRecruitement(true);
   };
   const handleApprovedRecruitement = () => {
-      navigate(`/Hr/Recruitement&Interview/Recruitement/Update/codeJob=${findIdData?.jobCode}`, {
-        state: {
-          jobCode: findIdData?.jobCode,
-          notif: findIdData?.notif,
-          dep: findIdData?.dep,
-          idemp: findIdData?.idemp,
-          requestName: findIdData?.requestName,
-          dateInputRecrut: findIdData?.dateInputRecrut,
-          position: findIdData?.position,
-          recruttrequestDate: findIdData?.recruttrequestDate,
-          DesiredDate: findIdData?.desiredDate,
-          projectName: findIdData?.projectName,
-          projRef: findIdData?.projRef,
-          type: findIdData?.type,
-          affectedTo: findIdData?.affectedTo,
-          requestedDicipline: findIdData?.requestedDicipline,
-          Level: findIdData?.experience,
-          Numbervacancies: findIdData?.totalNumber,
-          certif: findIdData?.certif,
-          nbExperience: findIdData?.nbExperience,
-          exDep: findIdData?.exDep,
-          oDep: findIdData?.oDep,
-          comentPlaner: findIdData?.comentPlaner,
-          signatureBod: findIdData?.signatureBod,
-          signatureHod: findIdData?.signatureHod,
-          signaturepolead:findIdData?.signaturepolead,
-          signatureBod2:findIdData?.signatureBod2
-        
-        }
-    
+    navigate(`/Hr/Recruitement&Interview/Recruitement/Update/codeJob=${findIdData?.jobCode}`, {
+      state: {
+        jobCode: findIdData?.jobCode,
+        notif: findIdData?.notif,
+        dep: findIdData?.dep,
+        idemp: findIdData?.idemp,
+        requestName: findIdData?.requestName,
+        dateInputRecrut: findIdData?.dateInputRecrut,
+        position: findIdData?.position,
+        recruttrequestDate: findIdData?.recruttrequestDate,
+        DesiredDate: findIdData?.desiredDate,
+        projectName: findIdData?.projectName,
+        projRef: findIdData?.projRef,
+        type: findIdData?.type,
+        affectedTo: findIdData?.affectedTo,
+        requestedDicipline: findIdData?.requestedDicipline,
+        Level: findIdData?.experience,
+        Numbervacancies: findIdData?.totalNumber,
+        certif: findIdData?.certif,
+        nbExperience: findIdData?.nbExperience,
+        exDep: findIdData?.exDep,
+        oDep: findIdData?.oDep,
+        comentPlaner: findIdData?.comentPlaner,
+        signatureBod: findIdData?.signatureBod,
+        signatureHod: findIdData?.signatureHod,
+        signaturepolead: findIdData?.signaturepolead,
+        signatureBod2: findIdData?.signatureBod2,
+        chekedBod2: findIdData?.chekedBod2,
+        chekedBod1: findIdData?.chekedBod1,
+
+      }
+
     });
   };
   const handleEditRecruitementOpen = () => {
@@ -179,6 +181,8 @@ const AllRecruitementConstruction = ({ roles,allrecruitementbelow, findIdData, i
         comentPlaner: findIdData?.comentPlaner,
         signatureBod: findIdData?.signatureBod,
         signatureHod: findIdData?.signatureHod,
+        chekedBod2: findIdData?.chekedBod2,
+        chekedBod1: findIdData?.chekedBod1,
 
 
       }
@@ -221,18 +225,57 @@ const AllRecruitementConstruction = ({ roles,allrecruitementbelow, findIdData, i
       console.error('Erreur lors de la récupération des données:', error);
     }
   }
+  const handleEditRecruitement = () => {
+    navigate(`/Hr/Recruitement-Request-Construction/Update/codeJob=${id}`, {
+      state: {
+        jobCode: findIdData?.jobCode,
+        notif: findIdData?.notif,
+        dep: findIdData?.dep,
+        idemp: findIdData?.idemp,
+        requestName: findIdData?.requestName,
+        dateInputRecrut: findIdData?.dateInputRecrut,
+        position: findIdData?.position,
+        recruttrequestDate: findIdData?.recruttrequestDate,
+        DesiredDate: findIdData?.desiredDate,
+        projectName: findIdData?.projectName,
+        projRef: findIdData?.projRef,
+        type: findIdData?.type,
+        affectedTo: findIdData?.affectedTo,
+        requestedDicipline: findIdData?.requestedDicipline,
+        Level: findIdData?.experience,
+        Numbervacancies: findIdData?.totalNumber,
+        certif: findIdData?.certif,
+        nbExperience: findIdData?.nbExperience,
+        exDep: findIdData?.exDep,
+        oDep: findIdData?.oDep,
+        comentPlaner: findIdData?.comentPlaner,
+        signatureBod: findIdData?.signatureBod,
+        signatureHod: findIdData?.signatureHod,
+        signaturepolead: findIdData?.signaturepolead,
+        signatureBod2: findIdData?.signatureBod2,
+        totalNumber: findIdData?.totalNumber
 
+
+      }
+
+    });
+  }
   const items = [
-    { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleAddRecruitementOpen },   
+    { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleAddRecruitementOpen },
     // { key: 3, label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, onClick: handleInterview },
-  
+    ...(roles?.includes('Manager') || roles?.includes('Human Ressource') || roles?.includes('Leader')  ? [
+      ...(findIdData?.notif !== 3 && findIdData?.notif !== 8 && findIdData?.notif !== 80 && findIdData?.notif !== 20 ? [
+        { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditRecruitement }
+      ] : []),
+    ] : []),
+
     //Approved Hr 
     ...(roles?.includes('Cordinator') || roles?.includes('admin') ? [
-      ...(findIdData?.status === 'Approved By BOD' ? [
-        { 
-          key: 2, 
-          label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, 
-          onClick: handleInterview 
+      ...(findIdData?.notif == 3 &&findIdData?.chekedBod2==="true" ||findIdData?.notif == 8 &&findIdData?.chekedBod1==="true"  ? [
+        {
+          key: 2,
+          label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>,
+          onClick: handleInterview
         }
       ] : [])
     ] : []),
@@ -241,18 +284,19 @@ const AllRecruitementConstruction = ({ roles,allrecruitementbelow, findIdData, i
       { key: 4, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteRecruitement },
     ] : []),
     ...(roles.includes('bod') ? [
-      { key: 3, label: <span style={{ fontSize: 14 }}>Take Action</span>,onClick:handleApprovedRecruitement },
-     
+      { key: 3, label: <span style={{ fontSize: 14 }}>Take Action</span>, onClick: handleApprovedRecruitement },
+
     ] : []),
   ];
 
- 
+  const year = new Date().getFullYear();
   const columns = [
     {
-      title: 'Recruitement Referencerr',
+      title: 'Recruitement Reference',
       dataIndex: 'jobCode',
       key: 'jobCode',
-      width: 150,
+      render: (text) => text ? <StyledAnChar>RRS-{text}- {year}</StyledAnChar> : null,
+
 
     },
     {
@@ -260,20 +304,19 @@ const AllRecruitementConstruction = ({ roles,allrecruitementbelow, findIdData, i
       dataIndex: 'requestedDicipline',
       key: 'requestedDicipline',
       render: (text) => <a>{text}</a>,
-      width: 150,
+
     },
 
     {
       title: 'Requested Discipline',
       dataIndex: 'requestedDicipline',
       key: 'requestedDicipline',
-      width: 150,
+
     },
     {
       title: 'Project Code',
       dataIndex: 'projRef',
       key: 'projRef',
-      width: 80,
       ellipsis: {
         showTitle: false,
       },
@@ -288,7 +331,6 @@ const AllRecruitementConstruction = ({ roles,allrecruitementbelow, findIdData, i
       title: 'Desired Date',
       dataIndex: 'desiredDate',
       key: 'desiredDate',
-      width: 100,
       ellipsis: {
         showTitle: false,
       },
@@ -302,7 +344,6 @@ const AllRecruitementConstruction = ({ roles,allrecruitementbelow, findIdData, i
       title: 'Total Number',
       dataIndex: 'totalNumber',
       key: 'totalNumber',
-      width: 80,
       ellipsis: {
         showTitle: false,
       },
@@ -313,30 +354,181 @@ const AllRecruitementConstruction = ({ roles,allrecruitementbelow, findIdData, i
       ),
     },
     {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
-      width: 150,
-      render: (status) => {
-        let backgroundColor;
-        let color = 'white'; 
-    
-        if (status?.includes('Pending')) {
-          backgroundColor = '#C0C0C0';
-        } else if (status?.includes('Approved')) {
-          backgroundColor = '#32CD32';
-        } else if (status?.includes('Refuse')) {
-          backgroundColor = '#FF2400';
-        }
-    
-        return (
-          <div style={{ backgroundColor, color, padding: '4px', borderRadius: '4px', textAlign: 'center' }}>
-            {status}
-          </div>
-        );
+      title: 'RRS Status',
+      dataIndex: 'notif',
+      key: 'notif',
+      render: (text, record) => {
+        if (record.notif === 2) {
+          return (
+            <StyledRecentPatientBadge
+            style={{            
+              backgroundColor:"#37463D",
+              color:"white",
+              fontFamily:"inherit"
+            }}
+            >
+             Pending
+            </StyledRecentPatientBadge>
+          );
+        } 
+   
+        
+        return null;
       },
     },
- 
+    {
+      title: 'Status BOD',
+      dataIndex: 'notif',
+      key: 'notif',
+      render: (text, record) => {
+        if (record.notif === 3 && record.chekedBod1 === "true"&&record.chekedBod2 === null   ) {
+          return (
+            <StyledRecentPatientBadge
+            style={{
+             
+              backgroundColor:"#4AA3A2",
+              color:"white",
+              fontFamily:"inherit"
+            }}
+            >
+              Approved By BOD Ali
+            </StyledRecentPatientBadge>
+          );
+        } else if (record.notif === 8 && record.chekedBod2 === "true" &&record.chekedBod1 === null  ) {
+          return (
+            <StyledRecentPatientBadge
+            style={{
+              
+              backgroundColor:"#4AA3A2",
+              color:"white",
+              fontFamily:"inherit"
+            }}
+            >
+              Approved By Bod Nidhal
+            </StyledRecentPatientBadge>
+          );
+        }
+        else if (record?.chekedBod1 === "true" && record?.chekedBod2 === "true" ) {
+          return (
+            <StyledRecentPatientBadge
+            style={{
+              
+              backgroundColor:"#32CD32",
+              color:"white",
+              fontFamily:"inherit"
+            }}
+            >
+              Approved By Bod 
+            </StyledRecentPatientBadge>
+          );
+        }
+        else if (record.notif === 80 && record.chekedBod2 === "false" ) {
+          return (
+            <StyledRecentPatientBadge
+            style={{
+              
+              backgroundColor:"#FF2400",
+              color:"white",
+              fontFamily:"inherit",
+              width:"100%",
+              alignItems:"center",
+              textAlign:"center"
+            }}>
+              Refuse By Bod Nidhal
+            </StyledRecentPatientBadge>
+          );
+        }
+        else if (record.notif === 20 && record.chekedBod1 === "false" ) {
+          return (
+            <StyledRecentPatientBadge
+            style={{
+              
+              backgroundColor:"#FF2400",
+              color:"white",
+              fontFamily:"inherit",
+              width:"100%",
+              alignItems:"center",
+              textAlign:"center"
+            }}>
+              Refuse By Bod Ali
+            </StyledRecentPatientBadge>
+          );
+        }
+        else if (record.chekedBod2 === "true" && record.chekedBod1 === "false" ) {
+          return (
+            <StyledRecentPatientBadge
+            style={{
+              
+              backgroundColor:"#F27438",
+              color:"white",
+              fontFamily:"inherit",
+              width:"100%",
+              alignItems:"center",
+              textAlign:"center"
+            }}>
+              Approved By Bod Nidhal And Refuse Bu Bod Ali 
+            </StyledRecentPatientBadge>
+          );
+        }
+        else if (record.chekedBod2 === "false" && record.chekedBod1 === "true" ) {
+          return (
+            <StyledRecentPatientBadge
+            style={{
+              
+              backgroundColor:"#F27438",
+              color:"white",
+              fontFamily:"inherit",
+              width:"100%",
+              alignItems:"center",
+              textAlign:"center"
+            }}>
+              Approved By Bod Ali And Refuse By Bod Nidhal
+            </StyledRecentPatientBadge>
+          );
+        }
+        else if (record.notif === 2 ) {
+          return (
+            <StyledRecentPatientBadge
+            style={{              
+              backgroundColor:"#C0C0C0",
+              color:"white",
+              fontFamily:"inherit",
+              width:"100%",
+              alignItems:"center",
+              textAlign:"center"
+            }}>
+              Pending
+            </StyledRecentPatientBadge>
+          );
+        }
+        
+        return null;
+      },
+    },
+    // {
+    //   title: 'Status',
+    //   dataIndex: 'status',
+    //   key: 'status',
+    //   render: (status,record) => {
+    //     let backgroundColor;
+    //     let color = 'white';
+    //     if (status?.includes('Pending')) {
+    //       backgroundColor = '#C0C0C0';
+    //     } else if (status?.includes('Approved') ) {
+    //       backgroundColor = '#32CD32';
+    //     } else if (status?.includes('Refuse')) {
+    //       backgroundColor = '#FF2400';
+    //     }
+        
+
+    //     return (
+    //       <div style={{ backgroundColor, color, padding: '4px', borderRadius: '4px', textAlign: 'center' }}>
+    //         {status}
+    //       </div>
+    //     );
+    //   },
+    // },
+
     // {
     //   title: 'Status',
     //   dataIndex: 'notif',
@@ -358,7 +550,7 @@ const AllRecruitementConstruction = ({ roles,allrecruitementbelow, findIdData, i
       title: 'Actions',
       dataIndex: 'actions',
       key: 'actions',
-      width: 88,
+
       fixed: 'right',
       className: 'customer-table-actions',
       render: (text, record) => (
@@ -380,6 +572,13 @@ const AllRecruitementConstruction = ({ roles,allrecruitementbelow, findIdData, i
     if (record.notif === 2) {
       return 'row-red';
     }
+    else if (record.notif === 3 &&record.chekedBod2===null ) {
+      return 'row-bod';
+    }
+    else if (record.notif === 8 &&record.chekedBod1===null ) {
+      return 'row-bod';
+    }
+   
     return '';
   };
 

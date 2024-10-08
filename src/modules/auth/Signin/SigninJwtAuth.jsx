@@ -68,19 +68,18 @@ const SignInJwtAuth = () => {
                       <IntlMessages id='common.login' />
                     </h3>
                   </StyledUserCardHeader>
-
+   
                   <StyledUserForm
                     name='basic'
                     initialValues={{
                       remember: true,
-                      username: 'admin',
+                      username: '',
                       password: '123456789',
                     }}
                     onFinish={signInUser}
                     onFinishFailed={onFinishFailed}
                   >
-                    {/* <p>Version 1.0.2</p> */}
-
+              
                     <Form.Item
                       name='username'
                       className='form-field'
@@ -88,9 +87,9 @@ const SignInJwtAuth = () => {
                       rules={[{ required: true, message: 'Please input your user Name!' }]}
                     >
                       <Input
-                      className='InputAuth'
-                
-                      placeholder={messages['common.username']} />
+                      className='InputAuth'               
+                      placeholder={messages['common.username']}                      
+                      />
                     </Form.Item>
 
                     <Form.Item
@@ -103,11 +102,9 @@ const SignInJwtAuth = () => {
                       className='InputAuth'
                       placeholder={messages['common.password']} />
                     </Form.Item>
-
                     <StyledUserFieldAction
                       name='remember'
-                      valuePropName='checked'
-                    >
+                      valuePropName='checked'>
                       <>
                       <Checkbox onChange={onRememberMe}>
                           <IntlMessages id='common.rememberMe' />

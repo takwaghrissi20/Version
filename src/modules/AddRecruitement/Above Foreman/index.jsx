@@ -144,7 +144,7 @@ const AddRecruitementAbove = () => {
   ];
   const handleLevelSelect = (value) => {
     setSelectedLevel(value);
-    setDesiredExperience(calculateDesiredExperience(value));
+    //setDesiredExperience(calculateDesiredExperience(value));
   };
   const handlePlaceSelect = (value) => {
     setSelectedLieu(value);

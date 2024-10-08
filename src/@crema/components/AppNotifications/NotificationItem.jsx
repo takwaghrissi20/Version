@@ -276,12 +276,11 @@ const NotificationItem = ({ setVisible, visible, user, isLoadingchargement, setI
       );
 
       setNotifBod(filteredData);
-      const filteredDataHrAdministartor = data.filter(item => (item.notfi === 3 && item?.signatureBod2) ||
-        (item.notfi === 8 && item?.signatureBod1 ) ||
+      const filteredDataHrAdministartor = data.filter(item => (item.notfi === 3 && item?.chekedBod2==="true") ||
+        (item.notfi === 8 && item?.chekedBod1==="true" ) ||
         (item.notfi === 1)
       );
       setNotifHR(filteredDataHrAdministartor)
-
       //End Notif Hr ADministrator
       const FilterOperationManager = data.filter(item => (
         (item?.notfi === 8 && item?.dep?.includes('Engineering')) ||
@@ -513,6 +512,8 @@ const NotificationItem = ({ setVisible, visible, user, isLoadingchargement, setI
         comentPlaner: code?.comentPlaner,
         signatureBod: code?.signatureBod,
         signatureHod: code?.signatureHod,
+        chekedBod2:code?.chekedBod2,
+        chekedBod1:code?.chekedBod1,
       }
     });
   }
@@ -928,6 +929,7 @@ const NotificationItem = ({ setVisible, visible, user, isLoadingchargement, setI
           finaldesision: findIdDataStaff?.finaldesision,
           intervtime: findIdDataStaff?.intervtime,
           hrComentaire: findIdDataStaff?.hrComentaire,
+          emailCandidate:findIdDataStaff?.email
 
 
         }

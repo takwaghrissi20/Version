@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react';
 import PropTypes from 'prop-types';
 //import { StyledOrderTable, StyledAction } from '../index.styled';
 /// change 
-import { StyledOrderTable} from '../../../../../styles/index.styled';
+import { StyledOrderTable,StyledAnChar} from '../../../../../styles/index.styled';
 
 import { Button,Alert} from 'antd';
 import InterviewView from "../../../../Model/InterviewView"
@@ -264,12 +264,13 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
     });
     setData(updatedData);
   };
-
+  const year = new Date().getFullYear();
   const columns = [
     {
       title: 'Reference',
       dataIndex: 'interviewCode',
       key: 'interviewCode',
+      render: (text) => text ? <StyledAnChar>CIS-{text}- {year}</StyledAnChar> : null, 
     
     },
     {
@@ -339,9 +340,45 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
         return null;
       },
     },
+    {
+      title: 'HSE Approval',
+      dataIndex: 'notif',
+      key: 'notif',
+      render: (text, record) => {
+        if (record.notif === 6  ) {
+          return (
+            <StyledRecentPatientBadge
+            style={{
+             
+              backgroundColor:"#32CD32",
+              color:"white",
+              fontFamily:"inherit",
+              textAlign:"center"
+            }}
+            >
+              Approved By HSE MANAGER
+            </StyledRecentPatientBadge>
+          );
+        } else if (record.notif === 55) {
+          return (
+            <StyledRecentPatientBadge
+            style={{
+              
+              backgroundColor:"#77021D",
+              color:"white",
+              fontFamily:"inherit"
+            }}
+            >
+             Refuse By HSE MANAGER
+            </StyledRecentPatientBadge>
+          );
+        }
+        return null;
+      },
+    },
     
     {
-      title: ' HR  Approval',
+      title: 'HR Approval',
       dataIndex: 'notif',
       key: 'notif',
       render: (text, record) => {
@@ -408,7 +445,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
 
         
         ];  
-        if (record.notif === 5 ) {
+        if (record.notif === 5 && userRoles.includes('Administrator') && userRoles.includes('Cordinator') ) {
           items.push({ key: 4, label: <span style={{ fontSize: 14 }}>Add Employees</span>, 
           onClick:handleAddEmployees });
           items.push({

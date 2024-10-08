@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../../@crema/components/AppRowContainer';
-import { Button, Col, Divider, Form, Input, Space, Typography, TimePicker, Select, Alert, Checkbox, notification, DatePicker, } from 'antd';
+import { Button, Col, Divider, Form, Input, Space, Modal, Typography, TimePicker, Select, Alert, Checkbox, notification, DatePicker, } from 'antd';
 import { MdEdit } from 'react-icons/md';
 import {
   StyledSecondaryText,
@@ -18,7 +18,7 @@ import dayjs from 'dayjs';
 import IntlMessages from '../../../@crema/helpers/IntlMessages';
 import ConfirmationModal from '../../../@crema/components/AppConfirmationModal';
 import { useNavigate } from 'react-router-dom';
-
+import { AiOutlineLink } from "react-icons/ai";
 const TabsInterviewSheetConstructionId = () => {
   const location = useLocation();
   const DesiredDate = location.state ? location.state.DesiredDate : null;
@@ -152,7 +152,7 @@ const TabsInterviewSheetConstructionId = () => {
   const situation = [
     { st: 'Single' },
     { st: 'Maried' },
-    { st: 'Divored' },
+    { st: 'Divorced' },
     { st: 'windower' },
   ];
   const personality = [
@@ -247,7 +247,7 @@ const TabsInterviewSheetConstructionId = () => {
       setInterviewTime(dayjs(value).format('HH:mm:ss.SSS'));
     }
   };
-console.log("timeeewss",interviewTime)
+  console.log("timeeewss", interviewTime)
   /////////////End Time
   const fetchData = async () => {
     try {
@@ -277,6 +277,19 @@ console.log("timeeewss",interviewTime)
     } catch (error) {
       console.error('Erreur lors de la récupération des données:', error);
     }
+  };
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [cvCandidate, setCvCandidate] = useState("");
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
   };
 
   const fetchMaxValues = async () => {
@@ -556,8 +569,9 @@ console.log("timeeewss",interviewTime)
   };
   const BeforeSaveInterview = () => {
     //setIsModalVisible(true)
-    form.validateFields(['fullName', 'telCondidate', 'ContactEmail', 'FamilySituation', 'diploma'
-   
+    form.validateFields(['fullName', 'telCondidate', 'ContactEmail', 'FamilySituation', 'diploma',
+      'cvLink'
+
     ]).then(values => {
 
       SaveHRADMONISTRTOR()
@@ -619,8 +633,8 @@ console.log("timeeewss",interviewTime)
           notif: 0,
           inputInterview: formattedDate,
           birthayDate: scheduleDate,
-          intervtime:interviewTime,
-          requiredExperinece: experience
+          intervtime: interviewTime,
+          requiredExperinece: experience,
           // interviwDate: interviewDate,
           // fullName: fullname,
           // projname: projectName,
@@ -636,7 +650,8 @@ console.log("timeeewss",interviewTime)
           // positionToBeFilled: position,
           //telCondidate:contactFullNumber,
           // validatesFor:selectedValidation,
-          // goTotest2: CheckedFinalGotest2
+          // goTotest2: CheckedFinalGotest2,
+          urlCv: cvCandidate
 
 
 
@@ -660,7 +675,7 @@ console.log("timeeewss",interviewTime)
         setTimeout(() => {
           window.location.reload();
           navigate(-1)
-      }, 2000);
+        }, 2000);
         openNotification('bottomRight')
         // navigate(-1);
       }
@@ -882,12 +897,12 @@ console.log("timeeewss",interviewTime)
                   </Col>
                   <Col xs={24} md={12}>
                     <Form.Item label='Interview DateInterview Date' name='DateInterview'
-                        rules={[
-                          { required: true, message: 'Please input your Interview Date!' },
-                        ]}
-  
-                    
-                    
+                      rules={[
+                        { required: true, message: 'Please input your Interview Date!' },
+                      ]}
+
+
+
                     >
                       <StyledTodoDetailDatePicker className='form-field'>
 
@@ -1908,9 +1923,9 @@ console.log("timeeewss",interviewTime)
                   </Col>
                   <Col xs={24} md={12}>
                     <Form.Item label='Interview Date' name='DateInterview'
-                    rules={[
-                      { required: true, message: 'Please input your Interview Date!' },
-                    ]}
+                      rules={[
+                        { required: true, message: 'Please input your Interview Date!' },
+                      ]}
 
 
                     >
@@ -1926,24 +1941,35 @@ console.log("timeeewss",interviewTime)
                     </Form.Item>
                   </Col>
                   {/*Time*/}
-
                   <Col xs={24} md={12}>
-                    <Form.Item label='Time Interview' name='TimeInterview'
+                    <Form.Item
+                      label='Time Interview'
+                      name='TimeInterview'
                       rules={[
                         { required: true, message: 'Please input your Time Interview!' },
                       ]}
                     >
-                      <StyledTodoDetailDatePicker
-                        className='form-field'>
-                        <TimePicker                      
-                          format='HH:mm:ss.SSS'
+                      <StyledTodoDetailDatePicker className='form-field'>
+                        <TimePicker
+                          format='HH:mm'
                           style={{ width: "100%", height: "34px" }}
                           onChange={handleTimeChange}
+                          disabledTime={() => ({
+                            disabledHours: () => {
+                              const hours = [];
+                              for (let i = 0; i < 8; i++) {
+                                hours.push(i);
+                              }
+                              for (let i = 18; i < 24; i++) {
+                                hours.push(i);
+                              }
+                              return hours;
+                            }
+                          })}
                         />
-                      </StyledTodoDetailDatePicker >
+                      </StyledTodoDetailDatePicker>
                     </Form.Item>
                   </Col>
-
                   {/*End Time*/}
 
                   <Col xs={24} md={12}>
@@ -2203,6 +2229,39 @@ console.log("timeeewss",interviewTime)
                       />
                     </Form.Item>
                   </Col>
+                  <Button
+                    style={{ margin: "2rem" }}
+                    type="primary" onClick={showModal}>
+                    <AiOutlineLink style={{ color: "white", marginTop: 0.5 }} />
+                    Attach CV
+                  </Button>
+
+                  {/* Modal for attaching CV */}
+                  <Modal title="Attach CV"
+                    visible={isModalVisible}
+                    onOk={handleOk}
+                    onCancel={handleCancel}>
+                    <Form form={form} layout="vertical">
+                      <Form.Item
+                        label="CV Link"
+                        name="cvLink"
+                        rules={[
+                          { required: true, message: 'Please enter the CV link!' },
+                          {
+                            pattern: /^https:\/\/cloud\.gets-company\.com\.tn\//,
+                            message: 'Link must start with "https://cloud.gets-company.com.tn/"'
+                          },
+                        ]}
+                      >
+                        <Input
+                          value={cvCandidate}
+                          placeholder="Input CV link"
+                          onChange={(e) => setCvCandidate(e.target.value)}
+
+                        />
+                      </Form.Item>
+                    </Form>
+                  </Modal>
 
                 </AppRowContainer>
               </StyledShadowWrapper>

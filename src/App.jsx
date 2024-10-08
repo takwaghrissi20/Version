@@ -175,40 +175,40 @@ function App() {
     GetProfileEmployess()
   }, [token, email]);
   ////////////////
-  const [inactiveTime, setInactiveTime] = useState(0);
-  const timeoutDuration = 5 * 60 * 1000; 
+  // const [inactiveTime, setInactiveTime] = useState(0);
+  // const timeoutDuration = 5 * 60 * 1000; 
 
-  const resetTimer = useCallback(() => {
-    setInactiveTime(0); 
-  }, []);
+  // const resetTimer = useCallback(() => {
+  //   setInactiveTime(0); 
+  // }, []);
 
 
-  useEffect(() => {
-    const handleUserActivity = () => {
-      resetTimer();
-    };
+  // useEffect(() => {
+  //   const handleUserActivity = () => {
+  //     resetTimer();
+  //   };
 
-    window.addEventListener('mousemove', handleUserActivity);
-    window.addEventListener('keypress', handleUserActivity);
+  //   window.addEventListener('mousemove', handleUserActivity);
+  //   window.addEventListener('keypress', handleUserActivity);
 
-    return () => {
-      window.removeEventListener('mousemove', handleUserActivity);
-      window.removeEventListener('keypress', handleUserActivity);
-    };
-  }, [resetTimer]);
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setInactiveTime((prevTime) => prevTime + 1000); 
-    }, 1000);
+  //   return () => {
+  //     window.removeEventListener('mousemove', handleUserActivity);
+  //     window.removeEventListener('keypress', handleUserActivity);
+  //   };
+  // }, [resetTimer]);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     setInactiveTime((prevTime) => prevTime + 1000); 
+  //   }, 1000);
 
-    if (inactiveTime >= timeoutDuration) {
-      window.location.reload(); 
-    }
+  //   if (inactiveTime >= timeoutDuration) {
+  //     window.location.reload(); 
+  //   }
 
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [inactiveTime]);
+  //   return () => {
+  //     clearInterval(intervalId);
+  //   };
+  // }, [inactiveTime]);
 
   return (
   

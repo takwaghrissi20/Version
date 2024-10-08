@@ -15,7 +15,7 @@ const AppFooter = () => {
         <p>
 
         Copyright© 2024 — ERP GETS COMPANY. All rights reserved-
-        Version 1.0.7
+        Version 1.0.8
         </p>
         <StyledFooterBtnView>
           <StyledFooterBtn type='link' color='primary'>

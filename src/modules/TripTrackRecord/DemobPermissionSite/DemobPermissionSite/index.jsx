@@ -65,6 +65,8 @@ console.log("filteredEmployees",filteredEmployees)
         comentPlaner: findIdData?.comentPlaner,
         signatureBod: findIdData?.signatureBod,
         signatureHod: findIdData?.signatureHod,
+        chekedBod1:findIdData?.chekedBod1,
+        chekedBod2:findIdData?.chekedBod2,
       }
     });
   };
@@ -94,6 +96,8 @@ console.log("filteredEmployees",filteredEmployees)
         comentPlaner: findIdData?.comentPlaner,
         signatureBod: findIdData?.signatureBod,
         signatureHod: findIdData?.signatureHod,
+        chekedBod2: findIdData?.chekedBod2,
+        chekedBod1: findIdData?.chekedBod1,
       }
     });
   };

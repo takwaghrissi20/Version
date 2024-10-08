@@ -305,6 +305,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
           hsePolicies: selectedHSEPolicies,
           others: selectedOthers,
           notif: 100,
+      
 
         })
       });

@@ -5,7 +5,7 @@ import OrderActions from './OrderActions';
 import { StyledCustomerTable } from '../index.styled';
 import { Dropdown, Button } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
-import { StyledOrderTable, StyledAction } from '../../../../styles/index.styled';
+import { StyledOrderTable, StyledAnChar } from '../../../../styles/index.styled';
 import { all } from 'axios';
 import { Table, Tooltip,notification } from 'antd';
 import { useNavigate } from "react-router-dom";
@@ -61,6 +61,8 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId,listRecruiteme
           comentPlaner:findIdData?.comentPlaner,
           signatureBod:findIdData?.signatureBod,
           signatureHod:findIdData?.signatureHod,
+          chekedBod1:findIdData?.chekedBod1,
+          chekedBod2:findIdData?.chekedBod2,
         
         }
   
@@ -267,12 +269,14 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId,listRecruiteme
     const daysDifference = desiredDate ? Math.ceil((new Date(desiredDate) - new Date()) / (1000 * 60 * 60 * 24)) : '';
     return daysDifference < 0 ? 'red' : 'green';
   };
+  const year = new Date().getFullYear();
   const columns = [
     {
-      title: 'Recrutement Requet Num',
+      title:'Recrutement Requet Num',
       dataIndex: 'jobCode',
       key: 'jobCode',
       width: 80,
+      render: (text) => text ? <StyledAnChar>RRS-{text}- {year}</StyledAnChar> : null, 
   
     },
     {
