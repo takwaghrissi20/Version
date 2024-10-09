@@ -396,7 +396,7 @@ const AllRecruitementStaff = ({ allrecruitementabove,
     },
 
     {
-      title: 'Status BOD',
+      title: 'BOD Approval',
       dataIndex: 'notif',
       key: 'notif',
       render: (text, record) => {

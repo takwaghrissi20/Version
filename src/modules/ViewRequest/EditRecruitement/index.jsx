@@ -133,7 +133,7 @@ const EditRecruitementAbove = () => {
           signaturepolead: commentBOD1,
           notif: 20,
           status: "Not Approved By BOD",
-          chekedBod1: checkedBodAli,
+          chekedBod1:"false",
           chekedBod2: chekedBod2
         })
       });
@@ -203,7 +203,7 @@ const EditRecruitementAbove = () => {
           signaturepolead: signaturepolead,
           status: "Not Approved By BOD",
           chekedBod1: chekedBod1,
-          chekedBod2: checkedBodNidhal
+          chekedBod2: "false"
         })
       });
 
@@ -746,7 +746,7 @@ const EditRecruitementAbove = () => {
           signaturepolead: commentBOD1,
           notif: 3,
           status: "Approved By BOD Ali",
-          chekedBod1: checkedBodAli,
+          chekedBod1:"true",
           chekedBod2: chekedBod2
         })
       });
@@ -817,7 +817,7 @@ const EditRecruitementAbove = () => {
           notif: 8,
           status: "Approved By BOD Nidhal",
           chekedBod1: chekedBod1,
-          chekedBod2: checkedBodNidhal
+          chekedBod2:"true"
         })
       });
       if (!response.ok) {
@@ -1529,150 +1529,147 @@ const EditRecruitementAbove = () => {
           {userRoles?.includes("bod") &&
             <>
               {username?.toLowerCase().includes("ali") && (
-                <>
-                  <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-                    <Col xs={24} md={6}>
-                      <Typography.Title level={5}> BOD Decision</Typography.Title>
-                    </Col>
-                    <Col xs={24} md={18}>
-                      <StyledShadowWrapper>
-                        <AppRowContainer>
-                          {/*Ali desiction*/}
-                          {chekedBod2 === null || chekedBod2 === undefined && (
-                            <p>Null</p>
+                <></>
+                // <>
+                //   <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                //     <Col xs={24} md={6}>
+                //       <Typography.Title level={5}> BOD Decision</Typography.Title>
+                //     </Col>
+                //     <Col xs={24} md={18}>
+                //       <StyledShadowWrapper>
+                //         <AppRowContainer>
+                //           {chekedBod2 === null || chekedBod2 === undefined && (
+                //             <p></p>
 
-                          )}
-                          {chekedBod2 === "true" && (
-                            <>                       
-                            <Col xs={24} md={18} >
-                            <StyledInput>
-                              <Form.Item
-                                label='Ali Decision'
-                                name='BODInputs'>
-                                <Checkbox
-                                  checked={chekedBod2==="true"}
-                                  readOnly>
+                //           )}
+                //           {chekedBod2 === "true" && (
+                //             <>                       
+                //             <Col xs={24} md={18} >
+                //             <StyledInput>
+                //               <Form.Item
+                //                 label='Nidhal Decision'
+                //                 name='BODInputs'>
+                //                 <Checkbox
+                //                   checked={chekedBod2==="true"}
+                //                   readOnly>
 
-                                  Yes
-                                </Checkbox>
+                //                   Yes
+                //                 </Checkbox>
 
-                                <Checkbox
-                                 checked={chekedBod2==="false"}
-                                 readOnly>
-                                  No
-                                </Checkbox>
+                //                 <Checkbox
+                //                  checked={chekedBod2==="false"}
+                //                  readOnly>
+                //                   No
+                //                 </Checkbox>
 
-                              </Form.Item>
-                            </StyledInput>
-                          </Col>
-                            </>
-                          )}
+                //               </Form.Item>
+                //             </StyledInput>
+                //           </Col>
+                //             </>
+                //           )}
+                //           <Col xs={24} md={18}>
+                //             <StyledInput>
+                //               <Form.Item
+                //                 label='Ali Decision'
+                //                 name='BODInputs'>
+                //                 <Checkbox
+                //                   checked={checkedBodAli}
+                //                    onChange={HandleBODAli}>
 
+                //                   Yes
+                //                 </Checkbox>
 
-                          {/*End Ali Descition*/}
-                          <Col xs={24} md={18}>
-                            <StyledInput>
-                              <Form.Item
-                                label='Ali Decision'
-                                name='BODInputs'>
-                                <Checkbox
-                                  checked={checkedBodAli} onChange={HandleBODAli}>
+                //                 <Checkbox
+                //                   checked={checkedNoBodAli} onChange={HandleBODNoAli}
+                //                 >
+                //                   No
+                //                 </Checkbox>
 
-                                  Yes
-                                </Checkbox>
-
-                                <Checkbox
-                                  checked={checkedNoBodAli} onChange={HandleBODNoAli}
-                                >
-                                  No
-                                </Checkbox>
-
-                              </Form.Item>
-                            </StyledInput>
-                          </Col>
+                //               </Form.Item>
+                //             </StyledInput>
+                //           </Col>
 
 
 
-                        </AppRowContainer>
-                      </StyledShadowWrapper>
-                    </Col>
-                  </AppRowContainer>
-                </>
+                //         </AppRowContainer>
+                //       </StyledShadowWrapper>
+                //     </Col>
+                //   </AppRowContainer>
+                // </>
               )}
               {username?.toLowerCase().includes("nidhal") && (
-                <>
-                  <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-                    <Col xs={24} md={6}>
-                      <Typography.Title level={5}> BOD Decision</Typography.Title>
-                    </Col>
-                    <Col xs={24} md={18}>
-                      <StyledShadowWrapper>
-                        <AppRowContainer>
-                          {/*Ali desiction*/}
-                          {chekedBod1 === null || chekedBod1 === undefined && (
-                            <p></p>
+                <p></p>
+                // <>
+                //   <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                //     <Col xs={24} md={6}>
+                //       <Typography.Title level={5}> BOD Decision</Typography.Title>
+                //     </Col>
+                //     <Col xs={24} md={18}>
+                //       <StyledShadowWrapper>
+                //         <AppRowContainer>
+                       
+                //           {chekedBod1 === null || chekedBod1 === undefined && (
+                //             <p></p>
 
-                          )}
-                          {chekedBod1 === "true" && (
-                            <>
+                //           )}
+                //           {chekedBod1 === "true" && (
+                //             <>
                           
-                            <Col xs={24} md={18}>
-                            <StyledInput>
-                              <Form.Item
-                                label='Ali Decision'
-                                name='BODInputs'>
-                                <Checkbox
-                                  checked={chekedBod1==="true"}
-                                  readOnly
-                                  >
+                //             <Col xs={24} md={18}>
+                //             <StyledInput>
+                //               <Form.Item
+                //                 label='Ali Decision'
+                //                 name='BODInputs'>
+                //                 <Checkbox
+                //                   checked={chekedBod1==="true"}
+                //                   readOnly
+                //                   >
 
-                                  Yes
-                                </Checkbox>
+                //                   Yes
+                //                 </Checkbox>
 
-                                <Checkbox
-                                 checked={chekedBod1==="false"}
+                //                 <Checkbox
+                //                  checked={chekedBod1==="false"}
                    
-                                   readOnly
-                                >
-                                  No
-                                </Checkbox>
+                //                    readOnly
+                //                 >
+                //                   No
+                //                 </Checkbox>
 
-                              </Form.Item>
-                            </StyledInput>
-                          </Col>
-                            </>
-                          )}
+                //               </Form.Item>
+                //             </StyledInput>
+                //           </Col>
+                //             </>
+                //           )}
 
+                //           <Col xs={24} md={18}>
+                //             <StyledInput>
+                //               <Form.Item
+                //                 label='Nidhal Decision'
+                //                 name='BODInputs'>
+                //                 <Checkbox
+                //                   checked={checkedBodNidhal} onChange={HandleBODNidhal}>
 
-                          {/*End Ali Descition*/}
-                          <Col xs={24} md={18}>
-                            <StyledInput>
-                              <Form.Item
-                                label='Nidhal Decision'
-                                name='BODInputs'>
-                                <Checkbox
-                                  checked={checkedBodNidhal} onChange={HandleBODNidhal}>
+                //                   Yes
+                //                 </Checkbox>
 
-                                  Yes
-                                </Checkbox>
+                //                 <Checkbox
+                //                   checked={checkedNoBodNidhal} onChange={HandleBODNoNidhal}
+                //                 >
+                //                   No
+                //                 </Checkbox>
 
-                                <Checkbox
-                                  checked={checkedNoBodNidhal} onChange={HandleBODNoNidhal}
-                                >
-                                  No
-                                </Checkbox>
-
-                              </Form.Item>
-                            </StyledInput>
-                          </Col>
+                //               </Form.Item>
+                //             </StyledInput>
+                //           </Col>
 
 
 
-                        </AppRowContainer>
-                      </StyledShadowWrapper>
-                    </Col>
-                  </AppRowContainer>
-                </>
+                //         </AppRowContainer>
+                //       </StyledShadowWrapper>
+                //     </Col>
+                //   </AppRowContainer>
+                // </>
               )}
               <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
                 <Col xs={24} md={6}>
@@ -2050,7 +2047,8 @@ const EditRecruitementAbove = () => {
             }
             {userRoles.includes("bod") && username?.toLowerCase().includes("ali") ?
               <>
-                <Button style={{ color: "green", borderColor: "green" }} onClick={() => UpdateBOD()}>
+        <Button style={{ color: "green", borderColor: "green" }}
+         onClick={() => UpdateBOD()}>
                   Approve
                 </Button>
                 <Button style={{ color: "red", borderColor: "red" }} onClick={() => CancelRecruitementBod()}>
@@ -2064,7 +2062,8 @@ const EditRecruitementAbove = () => {
             }
             {userRoles.includes("bod") && username?.toLowerCase().includes("nidhal") ?
               <>
-                <Button style={{ color: "green", borderColor: "green" }} onClick={() => UpdateBODNIDHAL()}>
+                <Button style={{ color: "green", borderColor: "green" }} 
+                onClick={() => UpdateBODNIDHAL()}>
                   Approve NIDHAL
                 </Button>
                 <Button style={{ color: "red", borderColor: "red" }} onClick={() => CancelRecruitementBodNIDHA()}>

@@ -10,7 +10,6 @@ import { CiSaveDown2 } from "react-icons/ci";
 import { MoreOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 const OrderTable = ({ temployee, loading,user }) => {
-  console.log("temployeerrrrrrr",temployee)
   const navigate = useNavigate();
   const [findIdData, setFindIdData] = useState("");
   const [contractCategory, setContractCategory] = useState("");
@@ -539,7 +538,7 @@ const OrderTable = ({ temployee, loading,user }) => {
       render: (text, record) => {
         let items = [];
 
-        if (user.includes('admin')) {
+        if (user.includes('admin') || user.includes('Payroll')) {
         
           items = [
             { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleAddContratOpen },

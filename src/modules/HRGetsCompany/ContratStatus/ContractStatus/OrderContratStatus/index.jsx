@@ -246,7 +246,6 @@ const OrderTable = ({ temployee, loading, user }) => {
   };
   ////////////////////////Les Contract
   const ContratB1 = () => {
-
     navigate('/HRGetsCompany/ContartTypeB1', {
       state: {
         fullName: findIdData?.arName,
@@ -585,8 +584,7 @@ const OrderTable = ({ temployee, loading, user }) => {
       className: 'customer-table-actions',
       render: (text, record) => {
         let items = [];
-
-        if (user.includes('admin')) {
+        if (user.includes('admin') || user.includes('Payroll')) {
 
           items = [
             { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleAddContratOpen },

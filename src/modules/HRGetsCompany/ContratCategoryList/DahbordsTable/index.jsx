@@ -36,8 +36,7 @@ const OrderTable = ({ orderData }) => {
         throw new Error('Network response was not ok');
       }
       if (response.ok) {
-        const responseData = await response.json();
-        console.log("responseData getById ", responseData);
+        const responseData = await response.json()
         setFindIdData(responseData);
 
 

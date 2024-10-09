@@ -615,8 +615,8 @@ const ContratCategory = (props) => {
         contractType: selectedContratType,
         contractCategory: selectedContractCategorie,
         primeProductivity: newprimeProductivity,
-        salary: finalSalary,
-        dailyRate: finaldailyRate,
+        salary: salary,
+        dailyRate:dailyRate,
         joinDate: startDate,
         finishDate: finishDate,
         traveldate:datetravel,
@@ -649,9 +649,11 @@ const ContratCategory = (props) => {
       // if (!contentType || !contentType.includes('application/json')) {
       //   throw new TypeError("La réponse n'est pas au format JSON");
       // }
-      const data = await response.text();
+      if (response.ok) {
+      const data = await response.json();
       setData(data)
       setShowAlert(true)
+      }
       // handleAddContactClose()
       // Traiter la réponse de l'API si nécessaire
     } catch (error) {
@@ -725,7 +727,7 @@ const ContratCategory = (props) => {
                    <span className='modallabel'> Contract start date :</span>
                    <FloatLabel name="joinDate">
                      <DatePicker
-                       style={{ width: "100%", height: "30px" }}
+                       style={{ width: "100%", height: "30px",marginTop:"0.5rem" }}
                        placeholder='YYYY-MM-DD'
                        value={datetravel ? dayjs(datetravel, 'YYYY-MM-DD') : null}
                        onChange={(value) => setDatetravel(value ? dayjs(value).format('YYYY-MM-DD') : '')}
@@ -740,7 +742,7 @@ const ContratCategory = (props) => {
                    <span className='modallabel'> Contract Finish date :</span>
                    <FloatLabel name="joinDate">
                      <DatePicker
-                       style={{ width: "100%", height: "30px" }}
+                       style={{ width: "100%", height: "30px",marginTop:"0.5rem"  }}
                        placeholder='YYYY-MM-DD'
                        value={dateendtravel ? dayjs(dateendtravel, 'YYYY-MM-DD') : null}
                        onChange={(value) => setDateendtravel(value ? dayjs(value).format('YYYY-MM-DD') : '')}
@@ -752,11 +754,7 @@ const ContratCategory = (props) => {
                </Col>
              </Row>
 
-
-
-
                 :
-
                 <Row gutter={16}>
                   <Col span={12}>
                     <Form.Item className='form-field'>
@@ -794,14 +792,15 @@ const ContratCategory = (props) => {
               <Row gutter={16}>
                 <Col span={12}>
                   <Form.Item className='form-field'>
-                    <span className='modallabel'> Salary :</span>
+                    <span className='modallabel'> Salary </span>
                     <FloatLabel name="joinDate">
                       <Input
                         type='number'
                         className='Input'
-                        value={finalSalary}
-                        onChange={(e) => setFinalSalary(e.target.value)}
-                        placeholder="Salary"
+                        // value={finalSalary}
+                        // onChange={(e) => setFinalSalary(e.target.value)}
+                        placeholder={salary}
+                        readOnly
 
 
                       />
@@ -818,9 +817,10 @@ const ContratCategory = (props) => {
                       <Input
                         type='number'
                         className='Input'
-                        value={finaldailyRate}
-                        onChange={(e) => setFinaldailyRate(e.target.value)}
-                        placeholder="Daily Rate"
+                        // value={finaldailyRate}
+                        // onChange={(e) => setFinaldailyRate(e.target.value)}
+                        placeholder={dailyRate}
+                        readOnly
 
 
                       />

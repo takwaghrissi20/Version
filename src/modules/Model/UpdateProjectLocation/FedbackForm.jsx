@@ -212,14 +212,15 @@ const FedbackForm = (props) => {
         </Form.Item>
   
             <Col xs={24} md={24}>
-            <span className='modallabel'> Candidate Accept offer/Not Accept Offer:</span>
+            <span className='modallabel'> 
+              Candidate Accept offer/Not Accept Offer:</span>
               <Form.Item
                 name="CandidateAccept"
                 label="">
                 <Select
                   style={{marginTop:"0.5rem"}}
                   onChange={handleFedback}
-                  placeholder="Candidate Accept offer/Not Accept Offer"
+                  placeholder="Candidate Accept offer/Not Accept Offer "
                   allowClear>
                   {Fedback.map(type => (
                     <Option key={type.Fedback} value={type.Fedback}>

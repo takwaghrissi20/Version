@@ -4,8 +4,6 @@ import SelectCategoryTEmp from './SelectCategoryTEmp';
 import { StyledContactModal } from '../../../styles/index.styled';
 
 
-
-
 const ModalView = ({
   isCategoryEmployee,
   handleAddContactClose,

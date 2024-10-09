@@ -44,7 +44,7 @@ const FedbackForm = (props) => {
   });
   console.log("findIdData", findIdData)
   const { messages } = useIntl();
-  const [newDateJointCandidate, setnewDateJointCandidate] = useState(findIdData?.agreedJoinedDate);
+  const [newDateJointCandidate, setnewDateJointCandidate] = useState(findIdData?.expectedJoinDate);
   const [selectedFedback, setSelectedFedback] = useState("Default");
   const Fedback = [
     { Fedback: 'Accepted Offer' },
@@ -52,6 +52,7 @@ const FedbackForm = (props) => {
   const handleFedback = (value) => {
     setSelectedFedback(value);
   };
+  const token = localStorage.getItem("token");
   const openNotification = () => {
     notification.open({
       message: 'Success',
@@ -106,9 +107,8 @@ const FedbackForm = (props) => {
     });
   };
   const update = async () => {
- 
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/updateintv?id=${findIdData?.interviewCode}`, {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/update?id=${findIdData?.interviewCode}&token=${token}`, {
 
         method: 'PUT',
         headers: {
@@ -160,10 +160,9 @@ const FedbackForm = (props) => {
           // agreedJoinedDate,
           expectedJoinDate: findIdData?.expectedJoinDate,
           dailyRate: findIdData?.dailyRate,
-          hrDesion: findIdData?.hrDesion,
-        
+          hrDesion: findIdData?.hrDesion,        
           propsedsalary: findIdData?.propsedsalary,
-          notif: findIdData?. notif,
+          notif: findIdData?.notif,
           directSign1: findIdData?.directSign1,
           directSign2: findIdData?.directSign2,
           urlCv:findIdData?.urlCv,
@@ -184,8 +183,11 @@ const FedbackForm = (props) => {
         const responseData = await response.json();
         openNotification('bottomRight')
         handleFeedbackContactClose()
-        window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000)
       
+     
       }
 
       // Handle responseData if needed
@@ -232,7 +234,7 @@ const FedbackForm = (props) => {
         <FloatLabel name="Interview Date">
           <span className='modallabel'> Agreed Join Date if Approved By BOD:</span>
           <DatePicker
-          placeholder={findIdData?.agreedJoinedDate}     
+          placeholder={findIdData?.expectedJoinDate}    
           onChange={(value) => setnewDateJointCandidate(dayjs(value).format('YYYY-MM-DD'))}
             //  onChange={(value) => setnewDateJointCandidate(dayjs(value))}
             // value={newDateJointCandidate}

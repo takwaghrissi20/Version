@@ -583,7 +583,7 @@ const TabsInterviewSheetConstructionId = () => {
 
     });
   };
-
+  const year = new Date().getFullYear();
   const SaveHRADMONISTRTOR = async () => {
     // if (salaryError || dailyError) {
     //   return;
@@ -651,7 +651,8 @@ const TabsInterviewSheetConstructionId = () => {
           //telCondidate:contactFullNumber,
           // validatesFor:selectedValidation,
           // goTotest2: CheckedFinalGotest2,
-          urlCv: cvCandidate
+          urlCv: cvCandidate,
+         
 
 
 
@@ -918,7 +919,9 @@ const TabsInterviewSheetConstructionId = () => {
 
                   <Col xs={24} md={12}>
                     <Form.Item label='JOB CODE:' name='jobcode1'>
-                      <Input placeholder={JobCode} readOnly={true} />{/*Ajout le MSIS OU cis*/}
+                      <Input 
+                      placeholder={"RRS-"+JobCode+"-"+year } 
+                      readOnly={true} />{/*Ajout le MSIS OU cis*/}
                     </Form.Item>
                   </Col>
 
@@ -1974,7 +1977,8 @@ const TabsInterviewSheetConstructionId = () => {
 
                   <Col xs={24} md={12}>
                     <Form.Item label='JOB CODE:' name='jobcode1'>
-                      <Input placeholder={JobCode} readOnly={true} />{/*Ajout le MSIS OU cis*/}
+                      <Input
+                      placeholder={"RRS-"+JobCode+"-"+year } readOnly={true} />{/*Ajout le MSIS OU cis*/}
                     </Form.Item>
                   </Col>
 

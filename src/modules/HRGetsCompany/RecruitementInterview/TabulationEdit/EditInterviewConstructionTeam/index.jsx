@@ -7,15 +7,16 @@ import {
   StyledSecondaryText1,
 
 } from '../index.styled';
-
+import moment from 'moment';
 import IntlMessages from '../../../../../@crema/helpers/IntlMessages';
-import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../../../../../@crema/components/AppConfirmationModal';
 import { useLocation } from 'react-router-dom';
 import { getFormattedDate } from '../../../../../@crema/helpers/DateHelper';
 import ViewInterviewContraction from './View';
 import { FcDownLeft } from "react-icons/fc";
+import { FiEye } from "react-icons/fi";
+import dayjs from 'dayjs';
 const EditInterviewConstruction = ({ hseCertif,
   siteHazCont,
   properUse,
@@ -36,9 +37,6 @@ const EditInterviewConstruction = ({ hseCertif,
   physicPres,
   leadership,
   idViewConstruction
-
-
-
 
 }) => {
   const location = useLocation();
@@ -155,6 +153,8 @@ const EditInterviewConstruction = ({ hseCertif,
   const [idConstruction, setIdConstruction] = useState("");
   const [intcodec, setIntcodec] = useState(0);
   const token = localStorage.getItem("token");
+  const year = new Date().getFullYear();
+  const [affect, setAffect] = useState("");
 
   const findIdInterviewConstruction = async () => {
     try {
@@ -165,7 +165,6 @@ const EditInterviewConstruction = ({ hseCertif,
         throw new Error('Network response was not ok');
       }
       const responseData = await response.json();
-      console.log("testtttttt33333", responseData)
       setIdConstruction(responseData)
       setIntcodec(responseData?.interviewCode)
 
@@ -187,7 +186,8 @@ const EditInterviewConstruction = ({ hseCertif,
       setIsVisibleHRDecision(false);
     }
   }
-
+  idViewConstruction?.intervtime
+  console.log("testttt time", idViewConstruction?.intervtime)
   function NoHrDesicision(e) {
     console.log(`checkedgggg = ${e.target.checked}`);
     setIsOkCheckedHRDecision(e.target.checked);
@@ -200,22 +200,70 @@ const EditInterviewConstruction = ({ hseCertif,
   const handleSalaryChange = (e) => {
     const value = e.target.value;
     setProposedSalary(value);
-    if (parseFloat(value) > lev1SalaryMax) {
-      setSalaryError(`Proposed  Salary exceeds the maximum allowed value of ${lev1SalaryMax}`);
-    } else
-      setSalaryError("");
+    setSalaryError(null);
+
+    // Vérification que la valeur est bien un nombre valide
+    if (!isNaN(value) && value !== "") {
+      if (parseFloat(value) > lev1SalaryMax) {
+        setSalaryError(`Proposed Salary exceeds the maximum allowed value of ${lev1SalaryMax}`);
+      } else {
+        setProposedDailyRate((value / 30).toFixed(2));
+      }
+    } else {
+      setSalaryError('Invalid salary input');
+    }
   };
+
   const handleDailyChange = (e) => {
     const value = e.target.value;
     setProposedDailyRate(value);
-    if (parseFloat(value) > lev1dailyRateMax) {
-      setDailyError(`Proposed Daily Rate exceeds the maximum allowed value of ${lev1dailyRateMax}`);
+    setDailyError(null);
 
-    }
-    else {
-      setDailyError("")
+    if (!isNaN(value) && value !== "") {
+      if (parseFloat(value) > lev1dailyRateMax) {
+        setDailyError(`Proposed Daily Rate exceeds the maximum allowed value of ${lev1dailyRateMax}`);
+      } else {
+        setProposedSalary((value * 30).toFixed(2));
+      }
+    } else {
+      setDailyError('Invalid daily rate input');
     }
   };
+  /////Office or siteOffice
+  const handleSalaryOfficeChange = (e) => {
+    const value = e.target.value;
+    setProposedSalary(value);
+    setSalaryError(null);
+
+    // Vérification que la valeur est bien un nombre valide
+    if (!isNaN(value) && value !== "") {
+      if (parseFloat(value) > lev1SalaryMax) {
+        setSalaryError(`Proposed Salary exceeds the maximum allowed value of ${lev1SalaryMax}`);
+      } else {
+        setProposedDailyRate((value / 26).toFixed(2));
+      }
+    } else {
+      setSalaryError('Invalid salary input');
+    }
+  };
+
+  const handleDailyOfficeChange = (e) => {
+    const value = e.target.value;
+    setProposedDailyRate(value);
+    setDailyError(null);
+
+    if (!isNaN(value) && value !== "") {
+      if (parseFloat(value) > lev1dailyRateMax) {
+        setDailyError(`Proposed Daily Rate exceeds the maximum allowed value of ${lev1dailyRateMax}`);
+      } else {
+        setProposedSalary((value * 26).toFixed(2));
+      }
+    } else {
+      setDailyError('Invalid daily rate input');
+    }
+  };
+
+
   console.log("positionToBeFilled00", positionToBeFilled)
   console.log("requiredQualificatio00", requiredQualification)
   const fetchMaxValues = async () => {
@@ -291,10 +339,31 @@ const EditInterviewConstruction = ({ hseCertif,
       console.error('Erreur lors de la récupération des données Salary:', error);
     }
   };
+  ////Find By Recruitement Id 
+  const findRecruitementId = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/findId?code=${idViewConstruction?.jobCode}&token=${token}`, {
+        method: 'POST',
+
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      if (response.ok) {
+        const responseData = await response.json();
+        setAffect(responseData?.affectedTo)
+      }
+    } catch (error) {
+      console.error("Erreur lors de la récupération du jobcode:", error);
+    }
+  };
+
   useEffect(() => {
     fetchMaxValues()
     GetProfileEmployess()
     findIdInterviewConstruction()
+    findRecruitementId()
     // findIdInterviewConstruction()
 
   }, [interviewCode, name, getsId, setIntcodec, intcodec]);
@@ -550,7 +619,7 @@ const EditInterviewConstruction = ({ hseCertif,
       color: '#FFFFFF !important',
     });
   };
-  const   openNotificationRefuse = () => {
+  const openNotificationRefuse = () => {
     notification.open({
       message: 'Refuse',
       description: 'Refuse Construction STAFF INTERVIEW SHEET',
@@ -664,7 +733,7 @@ const EditInterviewConstruction = ({ hseCertif,
           diploma: diploma,
           contactPhone: contactPhone,
           contactEmail: contactEmail,
-          urlCv:urlCv,
+          urlCv: urlCv,
           validatesFor,
           goTotest2,
           psy_Person,
@@ -766,7 +835,7 @@ const EditInterviewConstruction = ({ hseCertif,
           diploma: idConstruction?.diploma,
           contactPhone: idConstruction?.contactPhone,
           contactEmail: idConstruction?.contactEmail,
-          urlCv: idConstruction?.urlCv,
+          urlCv: urlCv,
           validatesFor: selectedValidation,
           goTotest2: isOkChecked,
           psy_Person: selectedPersonality,
@@ -802,8 +871,9 @@ const EditInterviewConstruction = ({ hseCertif,
           ptw: idConstruction?.ptw,
           hseDecision: idConstruction?.hseDecision,
           others: idConstruction?.others,
-        
-       
+
+
+
 
 
         })
@@ -866,7 +936,7 @@ const EditInterviewConstruction = ({ hseCertif,
           diploma: diploma,
           contactPhone: contactPhone,
           contactEmail: contactEmail,
-          urlCv:urlCv,
+          urlCv: urlCv,
           validatesFor: selectedValidation,
           goTotest2: isOkChecked,
           psy_Person: selectedPersonality,
@@ -892,6 +962,7 @@ const EditInterviewConstruction = ({ hseCertif,
           // feedback,
           propsedsalary,
           notif: 52,
+
 
 
 
@@ -955,7 +1026,7 @@ const EditInterviewConstruction = ({ hseCertif,
           diploma: diploma,
           contactPhone: contactPhone,
           contactEmail: contactEmail,
-          urlCv:urlCv,
+          urlCv: urlCv,
           validatesFor: selectedValidation,
           goTotest2: isOkChecked,
           psy_Person: selectedPersonality,
@@ -1070,7 +1141,7 @@ const EditInterviewConstruction = ({ hseCertif,
           diploma: diploma,
           contactPhone: contactPhone,
           contactEmail: contactEmail,
-          urlCv:urlCv,
+          urlCv: urlCv,
           validatesFor: selectedValidation,
           goTotest2: isOkChecked,
           psy_Person: selectedPersonality,
@@ -1163,7 +1234,7 @@ const EditInterviewConstruction = ({ hseCertif,
           diploma: diploma,
           contactPhone: contactPhone,
           contactEmail: contactEmail,
-          urlCv:urlCv,
+          urlCv: urlCv,
           validatesFor: selectedValidation,
           goTotest2: isOkChecked,
           psy_Person: selectedPersonality,
@@ -1361,7 +1432,7 @@ const EditInterviewConstruction = ({ hseCertif,
           educationLevel: educationLevel,
           diploma: diploma,
           contactPhone: contactPhone,
-          urlCv:urlCv,
+          urlCv: urlCv,
           validatesFor: idConstruction?.validatesFor,
           goTotest2: idConstruction?.goTotest2,
           psy_Person: idConstruction?.psy_Person,
@@ -1443,8 +1514,6 @@ const EditInterviewConstruction = ({ hseCertif,
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
         body: JSON.stringify({
-
-
           interviewCode: interviewCode,
           jobCode: jobCode,
           interviwDate: idConstruction?.interviwDate,
@@ -1481,9 +1550,9 @@ const EditInterviewConstruction = ({ hseCertif,
           meetDesision: idConstruction?.meetDesision,
           techcommentaire: idConstruction?.techcommentaire,
           headOfDepAprouv: idConstruction?.headOfDepAprouv,
-          dailyRate: idConstruction?.dailyRate,
+          dailyRate:proposedDailyRate,
           // feedback,
-          propsedsalary: idConstruction?.propsedsalary,
+          propsedsalary: proposedSalary,
           hseDecision: idConstruction?.hseDecision,
           hseComment: idConstruction?.hseComment,
           hr_Person: selectedPersonalityHR,
@@ -1505,8 +1574,15 @@ const EditInterviewConstruction = ({ hseCertif,
           physicPres: idConstruction?.physicPres,
           leadership: idConstruction?.leadership,
           notif: 5,
-
-
+          hrComentaire:commentHr,
+          hseCertif:idConstruction?.hseCertif,
+          siteHazCont:idConstruction?.siteHazCont,
+          properUse:idConstruction?.properUse,
+          hzardousMater:idConstruction?.hzardousMater,
+          emergency:idConstruction?.emergency,
+          ptw:idConstruction?.ptw,
+          hsePolicies:idConstruction?.hsePolicies,
+          others:idConstruction?.others
         })
       });
 
@@ -1570,7 +1646,7 @@ const EditInterviewConstruction = ({ hseCertif,
           diploma: diploma,
           contactPhone: contactPhone,
           contactEmail: contactEmail,
-          urlCv:idConstruction.urlCv,
+          urlCv: idConstruction.urlCv,
           validatesFor: idConstruction?.validatesFor,
           goTotest2: idConstruction?.goTotest2,
           psy_Person: idConstruction?.psy_Person,
@@ -1585,9 +1661,9 @@ const EditInterviewConstruction = ({ hseCertif,
           techcommentaire: idConstruction?.techcommentaire,
           headOfDepAprouv: idConstruction?.headOfDepAprouv,
           // agreedJoinedDate,
-          dailyRate,
+          dailyRate:proposedDailyRate,
           // feedback,
-          propsedsalary,
+          propsedsalary:proposedSalary,
           hseDecision: idConstruction?.hseDecision,
           hseComment: idConstruction?.hseComment,
           hr_Person: selectedPersonalityHR,
@@ -1808,7 +1884,7 @@ const EditInterviewConstruction = ({ hseCertif,
                     <Form.Item label='JOB CODE:' name='JOB CODE'>
                       <Input
                         className='Input'
-                        placeholder={jobCode}
+                        placeholder={"RRS-" + jobCode + year}
                         classNames="ViewInput"
                         readOnly={true} />
                     </Form.Item>
@@ -2351,12 +2427,10 @@ const EditInterviewConstruction = ({ hseCertif,
 
                     </Form.Item>
                   </Col>
-                  <Col xs={24} md={12}>
-                    <Form.Item label='Proposed Site Daily Rate' name='Proposed Daily Rate'
-
-
-
-                    >
+                  {affect==="Site"&&(
+                    <>
+                    <Col xs={24} md={12}>
+                    <Form.Item label='Proposed Site Daily Rate' name='Proposed Daily Rate' >
                       <Input
 
                         placeholder={dailyRate} />
@@ -2378,15 +2452,41 @@ const EditInterviewConstruction = ({ hseCertif,
                     </Form.Item>
 
                   </Col>
+                  </>
+                  )}
+                   {affect==="Office" || affect==="Office & Site"&&(
+                    <>
+                    <Col xs={24} md={12}>
+                    <Form.Item label='Proposed Site Daily Rate' name='Proposed Daily Rate' >
+                      <Input
+
+                        placeholder={dailyRate} />
+
+                    </Form.Item>
+                  </Col>
                   <Col xs={24} md={24}>
-                    <Form.Item label='Comments' name='Comments'
 
+                    <Form.Item
+                      label='HR Decision:'
+                      name='HR Evaluation' >
+                      <Checkbox checked={hrDesion} >
 
+                        <IntlMessages id='validation.test' />
+                      </Checkbox>
+                      <Checkbox checked={!hrDesion} >
+                        <IntlMessages id='Refuse.test' />
+                      </Checkbox>
+                    </Form.Item>
 
-                    >
+                  </Col>
+                  </>
+                  )}
+                  
+                  <Col xs={24} md={24}>
+                    <Form.Item label='Comments' name='Comments'>
                       <Input
                         className='InputComment'
-                        placeholder={hrComentaire} />
+                        placeholder={hrComentaire}  />
                     </Form.Item>
                   </Col>
 
@@ -2478,10 +2578,9 @@ const EditInterviewConstruction = ({ hseCertif,
                     <Form.Item label='Interview Time' name='Interview Time'>
                       <Input
                         className='Input'
-                        placeholder={idViewConstruction?.intervtime}
+                        // placeholder={idViewConstruction?.intervtime}
+                        placeholder={idViewConstruction?.intervtime ? idViewConstruction.intervtime.substring(0, 5) : ''}
                         readOnly
-                      // value={newinterviwDate}
-                      // onChange={() => setNewinterviwDate()} 
 
                       />
                     </Form.Item>
@@ -2489,8 +2588,7 @@ const EditInterviewConstruction = ({ hseCertif,
                   <Col xs={24} md={12}>
                     <Form.Item label='JOB CODE:' name='JOB CODE'>
                       <Input
-
-                        placeholder={idViewConstruction?.jobCode}
+                        placeholder={"RRS-" + idViewConstruction?.jobCode + "-" + year}
                         classNames="ViewInput"
                         readOnly={true} />
                     </Form.Item>
@@ -2540,7 +2638,7 @@ const EditInterviewConstruction = ({ hseCertif,
           <Divider style={{ marginTop: 16, marginBottom: 16 }} />
           <AppRowContainer>
             <Col xs={24} md={6}>
-              <Typography.Title level={5}> Required Position Information </Typography.Title>
+              <Typography.Title level={5}> Required Position Information</Typography.Title>
 
             </Col>
             <Col xs={24} md={18}>
@@ -2603,10 +2701,19 @@ const EditInterviewConstruction = ({ hseCertif,
                         className='Input'
                         placeholder={idViewConstruction?.requiredExperinece}
                         onChange={(e) => setNewrequiredGrade(e.target.value)}
-                        readOnly
-
-                      />
+                        readOnly />
                     </Form.Item>
+                  </Col>
+                  <Col xs={24} md={12}>
+                    <Button
+                      type='primary'
+                      style={{ margin: "2rem", borderRadius: "2rem" }}
+                      onClick={() => window.open(idViewConstruction?.urlCv, '_blank')} >
+                      <FiEye style={{ paddingTop: 2, fontSize: "15px" }} ></FiEye>
+                      <span style={{ paddingLeft: 2 }}>
+                        View Cv :
+                      </span>
+                      <span style={{ fontWeight: "bold", color: "#e5e7e6" }}>{fullName}</span></Button>
                   </Col>
 
                 </AppRowContainer>
@@ -2708,18 +2815,17 @@ const EditInterviewConstruction = ({ hseCertif,
                         placeholder={idViewConstruction?.experience}
                         readOnly={true}
 
-
-
                       />
                     </Form.Item>
                   </Col>
+
 
                 </AppRowContainer>
               </StyledShadowWrapper>
             </Col>
           </AppRowContainer>
           {/*HSE*/}
-    {(roles.includes("HSE") && (idViewConstruction.goTotest2 ||!idViewConstruction.validatesFor)) || (roles.includes("Human Ressource")) ?
+          {(roles.includes("HSE") && (idViewConstruction.goTotest2 || !idViewConstruction.validatesFor)) || (roles.includes("Human Ressource")) ?
             <>
               <Divider style={{ marginTop: 16, marginBottom: 16 }} />
               <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
@@ -3201,8 +3307,127 @@ const EditInterviewConstruction = ({ hseCertif,
 
                                     </Form.Item>
                                   </Col>
+                                  {affect==="Site" &&(
+                                    <>
+         
+                                  <Col xs={24} md={12}>
+                                    <Form.Item
+                                      label='Proposed Site Daily Rate'
+                                      name='Proposed Daily Rate'
+                                      rules={[
+                                        { required: true, message: 'Please input your Proposed Daily Rate!' },
+                                        {
+                                          pattern: /^\d+(\.\d+)?$/,  
+                                          message: 'Proposed Daily Rate must be a valid number!',
+                                        },
+                                        
+                                      ]}
+                                    >
+                                      <Input
+                                        value={proposedDailyRate}
+                                        onChange={handleDailyChange}
+                                        placeholder='Proposed Daily Rate'
+                                      />
+                                      {dailyError && <Alert className="custom-alert" message={dailyError} type="error" showIcon />}
+                                    </Form.Item>
+                                  </Col>
+
+                                  <Col xs={24} md={12}>
+                                    <Form.Item
+                                      label='Proposed Site Salary'
+                                      name='Proposed Salary'
+                                      rules={[
+                                        { required: true, message: 'Please input your Proposed Salary!' },
+                                        {
+                                          pattern: /^\d+(\.\d+)?$/,  
+                                          message: 'Proposed Daily Rate must be a valid number!',
+                                        },
+                                      ]}
+                                    >
+                                      <Input
+                                        value={proposedSalary}
+                                        onChange={handleSalaryChange}
+                                        placeholder='Proposed Salary'
+                                      />
+                                      {salaryError && <Alert className="custom-alert" message={salaryError} type="error" showIcon />}
+                                    </Form.Item>
+                                  </Col>
+                                  </>
+                                  )}
+                              
+                              {(affect === "Office" || affect === "Office & Site") && (
+                                    <>
+                               
+                                  <Col xs={24} md={12}>
+                                    <Form.Item
+                                      label='Proposed Site Daily Rate'
+                                      name='Proposed Daily Rate'
+                                      rules={[
+                                        { required: true, message: 'Please input your Proposed Daily Rate!' },
+                                        {
+                                          pattern: /^\d+(\.\d+)?$/,  
+                                          message: 'Proposed Daily Rate must be a valid number!',
+                                        },
+                                        
+                                      ]}
+                                    >
+                                      <Input
+                                        value={proposedDailyRate}
+                                        onChange={handleDailyOfficeChange}
+                                        placeholder='Proposed Daily Rate'
+                                      />
+                                      {dailyError && <Alert className="custom-alert" message={dailyError} type="error" showIcon />}
+                                    </Form.Item>
+                                  </Col>
+
+                                  <Col xs={24} md={12}>
+                                    <Form.Item
+                                      label='Proposed Site Salary'
+                                      name='Proposed Salary'
+                                      rules={[
+                                        { required: true, message: 'Please input your Proposed Salary!' },
+                                        {
+                                          pattern: /^\d+(\.\d+)?$/,  
+                                          message: 'Proposed Daily Rate must be a valid number!',
+                                        },
+                                      ]}
+                                    >
+                                      <Input
+                                        value={proposedSalary}
+                                        onChange={handleSalaryOfficeChange}
+                                        placeholder='Proposed Salary'
+                                      />
+                                      {salaryError && <Alert className="custom-alert" message={salaryError} type="error" showIcon />}
+                                    </Form.Item>
+                                  </Col>
+                                  </>
+                                  )}
 
 
+
+
+
+
+                                  {/*Calcul Daily Rate */}
+                                  {/* <Col xs={24} md={12}>
+                                    <Form.Item label='Proposed Site Daily Rate' name='Proposed Daily Rate'
+                                      rules={[
+                                        { required: true, message: 'Please input your Proposed Daily Rate!' },
+                                        { pattern: /^[0-9]+$/, message: 'Proposed Daily Rate must be a number!' },
+                                      ]}
+
+
+                                    >
+                                      <Input
+                                        value={proposedDailyRate}
+                                        onChange={handleDailyChange}
+                                        // onChange={(e) =>setProposedDailyRate(e.target.value)}
+                                        placeholder={`Proposed Daily Rate`}
+                                      />
+                                      {dailyError && <Alert className="custom-alert" message={dailyError} type="error" showIcon />}
+                                    </Form.Item>
+                                  </Col>
+                            
                                   <Col xs={24} md={12}>
                                     <Form.Item label='Proposed Site Salary' name='Proposed Salary'
                                       rules={[
@@ -3224,25 +3449,7 @@ const EditInterviewConstruction = ({ hseCertif,
 
                                     </Form.Item>
                                   </Col>
-                                  <Col xs={24} md={12}>
-                                    <Form.Item label='Proposed Site Daily Rate' name='Proposed Daily Rate'
-                                      rules={[
-                                        { required: true, message: 'Please input your Proposed Daily Rate!' },
-                                        { pattern: /^[0-9]+$/, message: 'Proposed Daily Rate must be a number!' },
-
-                                      ]}
-
-
-                                    >
-                                      <Input
-                                        value={proposedDailyRate}
-                                        onChange={handleDailyChange}
-                                        // onChange={(e) =>setProposedDailyRate(e.target.value)}
-                                        placeholder={`Proposed Daily Rate`}
-                                      />
-                                      {dailyError && <Alert className="custom-alert" message={dailyError} type="error" showIcon />}
-                                    </Form.Item>
-                                  </Col>
+                                */}
                                   <Col xs={24} md={24}>
                                     <StyledInput>
                                       <Form.Item
@@ -3794,7 +4001,7 @@ const EditInterviewConstruction = ({ hseCertif,
 
                 </Button>
               </>)}
-            {(roles.includes("HSE") && (idViewConstruction.goTotest2 ||!idViewConstruction.validatesFor)) && (
+            {(roles.includes("HSE") && (idViewConstruction.goTotest2 || !idViewConstruction.validatesFor)) && (
               <>
                 <Button style={{ color: "green", borderColor: "green" }} onClick={UpdateHSE}>Approve
 
@@ -3802,7 +4009,7 @@ const EditInterviewConstruction = ({ hseCertif,
                 <Button style={{ color: "red", borderColor: "red" }} onClick={RefuseHSE}
                 >Refuse</Button>
               </>)}
-              {(roles?.includes("HSE") && (!idViewConstruction.goTotest2))&& (
+            {(roles?.includes("HSE") && (!idViewConstruction.goTotest2)) && (
               <>
                 <Button style={{ color: "green", borderColor: "green" }} onClick={UpdateManager}
                 >Approve</Button>

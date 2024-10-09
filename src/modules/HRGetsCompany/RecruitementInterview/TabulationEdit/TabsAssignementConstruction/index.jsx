@@ -57,7 +57,6 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
   const [showAlertError, setShowAlertError] = useState(false);
   const [showAlertConfirmation, setShowAlertConfirmation] = useState(false);
   const [dataInterview, setDataInterview] = useState([]);
-
   const [interviewDate, setInterviewDate] = useState("");
   const [scheduleDate, setScheduleDate] = useState("");
   const [expectedJoinDate, setExpectedJoinDate] = useState("");
@@ -174,7 +173,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
       }
       const responseData = await response.json();
       setFindInterviewConstruction(responseData)
-      console.log("testteee", responseData)
+     
 
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
@@ -453,7 +452,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
           urlCv:findInterviewConstruction?.urlCv,
           jobCod: findInterviewConstruction?.jobCod,
           totalReqPos: findInterviewConstruction?.totalReqPos,
-          intervtime: findInterviewConstruction?.intervtime,
+          intervtime:findInterviewConstruction?.intervtime,
           totalInterv: findInterviewConstruction?.totalInterv,
           totalAccept: findInterviewConstruction?.totalAccept,
           totalRequiredGrade: findInterviewConstruction?.totalRequiredGrade,
@@ -479,11 +478,11 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
           techEnglishSkills: findInterviewConstruction?.techEnglishSkills,
           techDate: findInterviewConstruction?.techDate,
           techEvaluation: findInterviewConstruction?.techEvaluation,
-          idNumb: findInterviewConstruction?.idNumb,
+          idNumb: idViewConstruction?.idNumb,
           meetDesision: findInterviewConstruction?.meetDesision,
           evalDesision: findInterviewConstruction?.evalDesision,
-          evalName: findInterviewConstruction?.evalName,
-          evalId: findInterviewConstruction?.evalId,
+          evalName: idViewConstruction?.evalName,
+          evalId: idViewConstruction?.evalId,
           evalDesisionSign: findInterviewConstruction?.evalDesisionSign,
           techcommentaire: findInterviewConstruction?.techcommentaire,
           headOfDepAprouv: findInterviewConstruction?.headOfDepAprouv,
@@ -519,6 +518,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
           feedback: findInterviewConstruction?.feedback,
           agreedJoinedDate: findInterviewConstruction?.agreedJoinedDate,
           diversityTal: selectedDiversity,
+
 
 
 
@@ -756,7 +756,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                           label="HSE Certificates:Working at hight/ H2S/ First Aid"
                           name='attribut'>
                           <Input
-                            placeholder={findInterviewConstruction?.hseCertif}
+                            placeholder={idViewConstruction?.hseCertif}
 
                             readOnly
                           ></Input>
@@ -770,7 +770,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                         >
                           <Input
-                            placeholder={findInterviewConstruction?.siteHazCont}
+                            placeholder={idViewConstruction?.siteHazCont}
 
                             readOnly
                           ></Input>
@@ -784,7 +784,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                         >
                           <Input
-                            placeholder={findInterviewConstruction?.properUse}
+                            placeholder={idViewConstruction?.properUse}
 
                             readOnly
                           ></Input>
@@ -798,7 +798,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                         >
                           <Input
-                            placeholder={findInterviewConstruction?.hzardousMater}
+                            placeholder={idViewConstruction?.hzardousMater}
 
                             readOnly
                           ></Input>
@@ -812,7 +812,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                         >
                           <Input
-                            placeholder={findInterviewConstruction?.emergency}
+                            placeholder={idViewConstruction?.emergency}
 
                             readOnly
                           ></Input>
@@ -826,7 +826,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                         >
                           <Input
-                            placeholder={findInterviewConstruction?.ptw}
+                            placeholder={idViewConstruction?.ptw}
 
                             readOnly
                           ></Input>
@@ -840,7 +840,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                         >
                           <Input
-                            placeholder={findInterviewConstruction?.hsePolicies}
+                            placeholder={idViewConstruction?.hsePolicies}
 
                             readOnly
                           ></Input>
@@ -854,7 +854,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                         >
                           <Input
-                            placeholder={findInterviewConstruction?.others}
+                            placeholder={idViewConstruction?.others}
 
                             readOnly
                           ></Input>
@@ -874,7 +874,9 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
               <Col xs={24} md={18}>
                 <StyledShadowWrapper>
                   <AppRowContainer>
-                    <Col xs={24} md={12}>
+                    <Col xs={24} md={12}
+                    style={{marginTop:"1.3rem"}} 
+                    >
                       <Form.Item
                         label='Education and Training -scholastic achievements, special 
                              studies, relevance to position applied for'
@@ -926,13 +928,13 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                       </Form.Item>
                     </Col>
                     <Col xs={24} md={12}
-                      style={{ marginTop: "1.2rem" }}
+                   
 
                     >
                       <Form.Item
                         label="Diversity of Talents/Interests  Hobbies ; sports"
                         name='attribut3'
-
+                        style={{marginTop:"1.3rem"}} 
                         rules={[
                           { required: true, message: 'Please Select your Select Diversity of Talents/Interests !' },
 
@@ -941,8 +943,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                       >
                         <Select
 
-
-                          placeholder='Select Education and Training'
+                          placeholder='Select Diversity of Talents/Interests'
                           onChange={(value) => setSelectedDiversity(value)}
                           value={selectedDiversity}
                         >
@@ -954,10 +955,13 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                         </Select>
                       </Form.Item>
                     </Col>
-                    <Col xs={24} md={12}>
+                    <Col xs={24} md={12}
+                        
+                    >
                       <Form.Item
                         label="Intellectual Capability comprehension ; judgment; ability to reason;decision 
                         making-decision"
+                   
                         name='attribut4'
                         rules={[
                           { required: true, message: 'Please Select your Select Intellectual Capability comprehension  !' },
@@ -982,6 +986,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                       <Form.Item
                         label="Emotional Intelligence ability to work/relate with others; 
                   attitude towards work/life; maturity"
+                  style={{marginTop:"1rem"}} 
                         name='attribut5'
                         rules={[
                           { required: true, message: 'Please Select your Select Emotional Intelligence  !' },
@@ -1030,7 +1035,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                     </Col>
                     <Col xs={24} md={12}>
                       <Form.Item
-                        style={{ marginTop: "1.2rem" }}
+                        style={{ marginTop: "2rem" }}
                         label="Communication Skills ability to express/present ideas in clear ,concise manner
                 "
                         name='attribut7'
@@ -1083,7 +1088,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                     </Col>
                     <Col xs={24} md={12}>
                       <Form.Item
-                        style={{ marginTop: "1.2rem" }}
+                        style={{ marginTop: "2rem" }}
                         label="   
                   Creativity / Imagination - ability to work/find solutions 
                        outside the boundaries of conventions."
@@ -1192,7 +1197,6 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                       >
                         <Select
                           placeholder='Select  HSE Certificates  '
-
                           onChange={(value) => setSelectedHSECertificates(value)}
                           value={selectedHSECertificates}
                         >

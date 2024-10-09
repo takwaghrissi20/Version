@@ -103,6 +103,8 @@ const UploadContractList = () => {
   const [newcontratctCopy, setNewcontratctCopy] = useState(contratctCopy);
   const [newrib, setNewrib] = useState(rib);
   const [newcheckHolderName, setNewcheckHolderName] = useState(checkHolderName);
+  const [selectPaymentCategory, setSelectPaymentCategory] = useState("");
+  const [empT, setEmpT] = useState("");
   const handlePaymentType = (value) => {
     setSelectedTypePayment(value);
   };
@@ -112,6 +114,10 @@ const UploadContractList = () => {
   const handleCompanyType = (value) => {
     setSelectedCompanyType(value);
   };
+  const handlePaymentCategory = (value) => {
+    setSelectPaymentCategory(value);
+  };
+
   const goBack = () => {
     navigate(-1)
 
@@ -213,6 +219,13 @@ const UploadContractList = () => {
 
 
   ];
+  const PaymentCategory = [
+    { type: 'B- Site Construction Rate' },
+    { type: 'A- Management Staff Rate' },
+    { type: 'E-Office Work Only' },
+
+  ];
+  const categoryPayment = selectPaymentCategory ? selectPaymentCategory.charAt(0) : '';
   const Update = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/empT/update?id=${id}&token=${token}`, {
@@ -242,6 +255,9 @@ const UploadContractList = () => {
           primeProductivity: primeProductivity,
           salary: salary,
           dailyRate: dailyRate,
+          paymentCategory: selectPaymentCategory,
+          category: categoryPayment,
+
           // idVisa,
           // arName,
           // arPosition,
@@ -297,7 +313,8 @@ const UploadContractList = () => {
       if (response.ok) {
 
         const responseData = await response.json();
-        console.log("eerrrr",responseData)
+        console.log("eerrrr", responseData)
+        setEmpT(responseData)
         openNotificationUpdate('bottomRight')
         // setDataEdit(responseData)
         // window.location.reload();
@@ -325,6 +342,40 @@ const UploadContractList = () => {
 
         body: JSON.stringify({
 
+          actStatus: empT?.actStatus,
+
+          approvalStatus: empT?.approvalStatus,
+
+          arDestination: empT?.arDestination,
+          arName: empT?.arName,
+          arPosition: empT?.arPosition,
+          arResidenceAdress: empT?.arResidenceAdress,
+          birthDate: empT?.arResidenceAdress,
+          cin: empT?.cin,
+          cinDate: empT?.cinDate,
+          cnss: empT?.cnss,
+          cnssCopy: empT?.cnssCopy,
+          contractNumb: empT?.contractNumb,
+          contractType: empT?.contractType,
+          cvCopy: empT?.cvCopy,
+          dailyRate: empT?.dailyRate,
+          dateVisa: empT?.dateVisa,
+          deductionAmount: empT?.deductionAmount,
+          departement: empT?.departement,
+          desertPass_finish_date: empT?.desertPass_finish_date,
+          desert_pass: empT?.desert_pass,
+          destination: empT?.destination,
+          duration: empT?.duration,
+          email: empT?.email,
+          emergencyName: empT?.emergencyName,
+          emergencyRelation: empT?.emergencyRelation,
+          exitRentryType: empT?.exitRentryType,
+          exitRentry_finish_date: empT?.exitRentry_finish_date,
+          exrentry_date: empT?.exrentry_date,    
+           getsEmail:empT?. getsEmail,
+           nbchildren :empT?.nbchildren ,
+           primeProductivity :empT?.primeProductivity  ,
+
           name: name,
           departement: departement,
           familyStatus: familyStatus,
@@ -346,7 +397,7 @@ const UploadContractList = () => {
           arPosition: arPosition,
           arResidenceAdress: arResidenceAdress,
           birthDate: birthDate,
-          category: category,
+          category: categoryPayment,
           checkHolderName: checkHolderName,
           cin: cin,
           cinDate: cinDate,
@@ -512,15 +563,40 @@ const UploadContractList = () => {
                         readOnly={true} />
                     </Form.Item>
                   </Col>
-                  <Col xs={24} md={12} >
-                    <Form.Item label='Payment Category :' name='paymentCategory'>
+
+                  <Col xs={24} md={12}>
+                    <Form.Item
+                      label='Payment Category'
+                      name="PaymentCategory"
+                      rules={[{ required: true, message: 'Please select Payment Category' }]}
+                    >
+                      <Select
+                        placeholder="Payment Category"
+                        allowClear
+                        onChange={(value) => setSelectPaymentCategory(value)}
+                        value={selectPaymentCategory}>
+                        {PaymentCategory.map((p, index) => (
+                          <Option key={index} value={p.type}>
+                            {p.type}
+                          </Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                  {/* <p>category:{categoryPayment}</p> */}
+
+                  {/* <Col xs={24} md={12} >
+                    <Form.Item label='Payment Category' 
+                    name='paymentCategory'>
+
+
                       <Input
                         className='Input'
                         placeholder={paymentCategory}
                         value={newpaymentCategory}
                         onChange={(e) => setNewpaymentCategory(e.target.value)} />
                     </Form.Item>
-                  </Col>
+                  </Col> */}
                   <Col xs={24} md={12} >
                     <Form.Item
                       label='Payment Type :'
@@ -667,9 +743,7 @@ const UploadContractList = () => {
             <StyledContactFormBtn
               type='primary'
               ghost
-              onClick={goBack}
-
-            >
+              onClick={goBack} >
               <IntlMessages id='common.cancel' />
             </StyledContactFormBtn>
             <StyledContactFormBtn
@@ -696,20 +770,6 @@ const UploadContractList = () => {
         </Form>
 
       </>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     </div>

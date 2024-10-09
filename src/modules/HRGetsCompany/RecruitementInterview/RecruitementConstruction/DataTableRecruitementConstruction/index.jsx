@@ -353,31 +353,31 @@ const AllRecruitementConstruction = ({ roles, allrecruitementbelow, findIdData, 
         </Tooltip>
       ),
     },
-    {
-      title: 'RRS Status',
-      dataIndex: 'notif',
-      key: 'notif',
-      render: (text, record) => {
-        if (record.notif === 2) {
-          return (
-            <StyledRecentPatientBadge
-            style={{            
-              backgroundColor:"#37463D",
-              color:"white",
-              fontFamily:"inherit"
-            }}
-            >
-             Pending
-            </StyledRecentPatientBadge>
-          );
-        } 
+    // {
+    //   title: 'RRS Status',
+    //   dataIndex: 'notif',
+    //   key: 'notif',
+    //   render: (text, record) => {
+    //     if (record.notif === 2) {
+    //       return (
+    //         <StyledRecentPatientBadge
+    //         style={{            
+    //           backgroundColor:"#37463D",
+    //           color:"white",
+    //           fontFamily:"inherit"
+    //         }}
+    //         >
+    //          Pending
+    //         </StyledRecentPatientBadge>
+    //       );
+    //     } 
    
         
-        return null;
-      },
-    },
+    //     return null;
+    //   },
+    // },
     {
-      title: 'Status BOD',
+      title: 'BOD Approval',
       dataIndex: 'notif',
       key: 'notif',
       render: (text, record) => {

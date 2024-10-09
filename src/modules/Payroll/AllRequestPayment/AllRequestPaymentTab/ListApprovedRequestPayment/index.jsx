@@ -625,7 +625,7 @@ const AllRequestPaymentApprovedTab = ({ user }) => {
     },
     
     {
-      title: 'BOD Status',
+      title: 'BOD Approval',
       dataIndex: 'notif',
       key: 'notif',
       render: (text, record) => {

@@ -56,10 +56,7 @@ const GenerateContract = () => {
               <AppRowContainer>
                 <Col xs={24} md={12}>
                   <Form.Item label='Name :' 
-                  name='Name :'
-                   
-
-                  >
+                  name='Name'>
                     <Input
                       className='Name'
                       placeholder={name}
@@ -86,10 +83,6 @@ const GenerateContract = () => {
             </StyledShadowWrapper>
           </Col>
         </AppRowContainer>
-
-
-
-
 
 
         <Space

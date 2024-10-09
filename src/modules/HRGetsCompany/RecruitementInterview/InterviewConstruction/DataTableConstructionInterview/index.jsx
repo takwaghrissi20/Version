@@ -310,7 +310,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
       dataIndex: 'notif',
       key: 'notif',
       render: (text, record) => {
-        if (record.notif === 2 || record.notif === 1  ) {
+        if (record.notif === 2 || record.notif === 1 || record?.evalDesision) {
           return (
             <StyledRecentPatientBadge
             style={{
@@ -323,20 +323,23 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
               Approved By Evaluator
             </StyledRecentPatientBadge>
           );
-        } else if (record.notif === 6) {
-          return (
-            <StyledRecentPatientBadge
-            style={{
+
+
+        } 
+        // else if (record.notif === 6 || !record?.evalDesision) {
+        //   return (
+        //     <StyledRecentPatientBadge
+        //     style={{
               
-              backgroundColor:"#32CD32",
-              color:"white",
-              fontFamily:"inherit"
-            }}
-            >
-              Approved By HSE
-            </StyledRecentPatientBadge>
-          );
-        }
+        //       backgroundColor:"#32CD32",
+        //       color:"white",
+        //       fontFamily:"inherit"
+        //     }}
+        //     >
+        //       Approved By HSE
+        //     </StyledRecentPatientBadge>
+        //   );
+        // }
         return null;
       },
     },
@@ -345,7 +348,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
       dataIndex: 'notif',
       key: 'notif',
       render: (text, record) => {
-        if (record.notif === 6  ) {
+        if (record.notif === 6  || record?.hseDecision) {
           return (
             <StyledRecentPatientBadge
             style={{
@@ -359,7 +362,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
               Approved By HSE MANAGER
             </StyledRecentPatientBadge>
           );
-        } else if (record.notif === 55) {
+        } else if (record.notif === 55 && !record?.hseDecision) {
           return (
             <StyledRecentPatientBadge
             style={{
@@ -382,7 +385,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
       dataIndex: 'notif',
       key: 'notif',
       render: (text, record) => {
-        if (record.notif === 5   ) {
+        if (record.notif === 5  || record?.hrDesion  ) {
           return (
             <StyledRecentPatientBadge
             style={{
@@ -396,6 +399,22 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
             </StyledRecentPatientBadge>
           );
         } 
+        if (!record?.hrDesion  && record?.hrDesion===500) {
+          return (
+            <StyledRecentPatientBadge
+            style={{
+           
+              backgroundColor:"#A7001E",
+              color:"white",
+              fontFamily:"inherit"
+            }}
+            >
+              Refuse By HR Manager
+            </StyledRecentPatientBadge>
+          );
+        } 
+
+ 
         // else if (record.notif === 6) {
         //   return (
         //     <StyledRecentPatientBadge
@@ -414,8 +433,14 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
       },
      
     },
-   
- 
+    {
+      title: 'FeedbackCandidate',
+      dataIndex: 'feedback',
+      key: 'feedback',
+      render: (text) => {
+        return text === "Accepted Offer" ? text : null;
+      }
+    },
     
    
     // {
@@ -445,14 +470,23 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
 
         
         ];  
-        if (record.notif === 5 && userRoles.includes('Administrator') && userRoles.includes('Cordinator') ) {
-          items.push({ key: 4, label: <span style={{ fontSize: 14 }}>Add Employees</span>, 
-          onClick:handleAddEmployees });
+        if (record.notif === 5 && userRoles.includes('Administrator') && userRoles.includes('Cordinator')) {
+         
+          if (record?.feedback === "Accepted Offer") {
+            items.push({
+              key: 4, 
+              label: <span style={{ fontSize: 14 }}>Add Employees</span>, 
+              onClick: handleAddEmployees
+            });
+          }
+        
           items.push({
-            key: 5, label: <span style={{ fontSize: 14 }}>Feddback Employees</span>,
+            key: 5, 
+            label: <span style={{ fontSize: 14 }}>Feedback Employees</span>, 
             onClick: handleFeedbackEmployeesOpen
           });
         }
+        
     
         return (
           <div onClick={() => findId(record?.interviewCode)}>
