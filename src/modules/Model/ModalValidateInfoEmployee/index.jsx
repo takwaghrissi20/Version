@@ -35,7 +35,8 @@ const ModalView = ({
   destination,
   arDestination,
   salary,
-  dailyRate, contractType,
+  dailyRate,
+   contractType,
   emergencyName,
   emergencyRelation,
   phoneEmergency,
@@ -44,7 +45,9 @@ const ModalView = ({
   duration,
   primeProductivity,
   category,
-  SaveVisa
+  SaveVisa,
+  findIdInterview,
+  nbchildren
 
 
 }) => {
@@ -70,6 +73,7 @@ const ModalView = ({
         gender={ gender}
         phoneNumber={phoneNumber}
         familyStatus={ familyStatus}
+        nbchildren={nbchildren}
         residenceAdress={residenceAdress}
         arResidenceAdress={arResidenceAdress}
         passportnumber={ passportnumber}
@@ -99,6 +103,7 @@ const ModalView = ({
         duration={duration}
         primeProductivity={primeProductivity}
         category={ category}
+        findIdInterview={findIdInterview}
        
       
       />

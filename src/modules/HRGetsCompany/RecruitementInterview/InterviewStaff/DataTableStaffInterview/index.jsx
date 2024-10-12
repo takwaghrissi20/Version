@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 //import { StyledOrderTable, StyledAction } from '../index.styled';
 /// change 
-import { StyledOrderTable,StyledAnChar } from '../../../../../styles/index.styled';
+import { StyledOrderTable, StyledAnChar } from '../../../../../styles/index.styled';
 
 import { Button, Alert, Tooltip } from 'antd';
 import InterviewView from "../../../../Model/InterviewView"
@@ -32,7 +32,7 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
   useEffect(() => {
     const updateTableHeight = () => {
       const pageHeight = window.innerHeight;
-      const tableHeight = pageHeight * 0.15;
+      const tableHeight = pageHeight * 0.4;
       setTableHeight(tableHeight);
     };
     window.addEventListener('resize', updateTableHeight);
@@ -169,10 +169,10 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
         intervtime: findIdData?.intervtime,
         hrComentaire: findIdData?.hrComentaire,
         inputInterview: findIdData?.inputInterview,
-        emailCandidate:findIdData?.email,
-       
-     
-      
+        emailCandidate: findIdData?.email,
+
+
+
 
       }
 
@@ -272,7 +272,7 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
       title: 'Reference',
       dataIndex: 'interviewCode',
       key: 'interviewCode',
-    
+
       render: (text) => text ? <StyledAnChar>MIS-{text}- {year}</StyledAnChar> : null,
 
     },
@@ -387,73 +387,67 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
       ),
     },
     {
-      title: 'HR  Approval',
+      title: 'HR Approval',
       dataIndex: 'notif',
       key: 'notif',
-      render: (text, record) => (
-        <>
-          {(record.notif === 5 && record?.hrDesion) && (
+      render: (text, record) => {
+        if ((record.notif === 5 || record?.hrDesion) ||
+          (record.notif === 55 && record.directSign2 === "Accepted" && record.directSign1 === "Accepted") ||
+          (record.notif === 66 && record.directSign1 === "Accepted" && record.directSign === "Accepted")
+
+        ) {
+          return (
             <StyledRecentPatientBadge
               style={{
-                backgroundColor: "rgb(50, 205, 50)",
+                backgroundColor: "#32CD32",
                 color: "white",
                 fontFamily: "inherit"
               }}
             >
-              Approved
+              Approved By HR Manager
             </StyledRecentPatientBadge>
-          )}
-
-          {record.notif === 500 && (
+          );
+        }
+        if (record?.hrDesion === 500) {
+          return (
             <StyledRecentPatientBadge
               style={{
-                backgroundColor: "rgb(50, 205, 50)",
+                backgroundColor: "#A7001E",
                 color: "white",
                 fontFamily: "inherit"
               }}
             >
-              Not Approved
+              Refuse By HR Manager
             </StyledRecentPatientBadge>
-          )}
+          );
+        }
 
-          {(record.notif === 0) && (
-            <StyledRecentPatientBadge
-              style={{
-                backgroundColor: "rgb(192, 192, 192)",
-                color: "white",
-                fontFamily: "inherit"
-              }}
-            >
-           Pending
-            </StyledRecentPatientBadge>
-          )}
-
-
-
-        </>
-
-
-
-      ),
+        return null;
+      }
     },
+
     {
       title: 'BOD Approval',
       dataIndex: 'notif',
       key: 'notif',
       render: (text, record) => (
         <>
-          {((record.notif === 55 && record.directSign2 === "Accepted" && record.directSign1 === "Accepted") ||
-            (record.notif === 66 && record.directSign1 === "Accepted" && record.directSign === "Accepted")) && (
+          {
+            ((record.notif === 55 && record.directSign2 === "Accepted" && record.directSign1 === "Accepted") ||
+              (record.notif === 66 && record.directSign1 === "Accepted" && record.directSign2 === "Accepted")) && (
               <StyledRecentPatientBadge
                 style={{
-                  backgroundColor: "rgb(50, 205, 50)",
+                  backgroundColor: "rgb(50, 205, 50)", // Lime green
                   color: "white",
                   fontFamily: "inherit"
                 }}
               >
                 Accepted
               </StyledRecentPatientBadge>
-            )}
+            )
+          }
+
+
           {((record.notif === 550 && record.directSign2 === "Not Accepted") ||
             (record.notif === 660 && record.directSign1 === "Not Accepted")) && (
               <StyledRecentPatientBadge
@@ -564,7 +558,7 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
           ] : []),
           ...(userRoles.includes('Manager') || userRoles.includes('bod') ? [
             { key: 4, label: <span style={{ fontSize: 14 }}>Take Action</span>, onClick: handleEditInterviewStaffOpen },
-            
+
           ] : []),
 
 
@@ -574,11 +568,11 @@ const TableInterviewStaff = ({ allinterviewStaffManagement, findIdData, id,
           ] : [])
 
         ];
-             
+
         if (((record.notif === 55 && record.directSign2 === "Accepted" && record.directSign1 === "Accepted" && record.feedback === "Accepted Offer") ||
           (record.notif === 66 && record.directSign1 === "Accepted" && record.directSign2 === "Accepted" && record.feedback === "Accepted Offer"))) {
           items.push({
-            
+
             key: 4, label: <span style={{ fontSize: 14 }}>Add Employees</span>,
             onClick: handleAddEmployees
           });

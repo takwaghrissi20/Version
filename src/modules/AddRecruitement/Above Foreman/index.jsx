@@ -259,7 +259,8 @@ const AddRecruitementAbove = () => {
   const BeforeSaveRecruitement = () => {
     //setIsModalVisible(true)
     form.validateFields([ 'ProjectName', 'ProjectCode'
-      , 'DateDesiredRecruitement', 'position', 'RequiredLevel', 'Desiredyearsexperience', 'Numbervacancies',
+      , 'DateDesiredRecruitement', 'position'
+      , 'RequiredLevel', 'Desiredyearsexperience', 'Numbervacancies',
 
     ]).then(values => {
       //onSave(true)
@@ -657,7 +658,7 @@ const AddRecruitementAbove = () => {
           idemp: profile?.getsId,
           desiredDate: desiredrecruitementDate,
           affectedTo: selectedLieu,
-          signatureHod: isOkHead,
+          signatureHod: "true",
           signatureBod: isOkBod,
           notif: 2,
           dep: profile?.departement,
@@ -694,7 +695,6 @@ const AddRecruitementAbove = () => {
         const secondApiResponse = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/bodNotif?email=${encodeURIComponent(email)}`, {
           method: 'POST',
         });
-
         if (secondApiResponse.ok) {
           const secondResponseData = await secondApiResponse.json();
         } else {
@@ -1428,42 +1428,49 @@ const AddRecruitementAbove = () => {
 
 
           : null}
-        <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-          <Col xs={24} md={6}>
-            <Typography.Title level={5}> Head of Department Inputs</Typography.Title>
-          </Col>
-          <Col xs={24} md={18}>
-            <StyledShadowWrapper>
-              <AppRowContainer>
-                <Col xs={24} md={18}>
-                  <StyledInput>
-                    <Form.Item
-                      label='Head Of Departement Decision'
-                      name='HeadInputs'
-                    // rules={[
-                    //   { required: true, message: 'Please Check your  Head Of Departement Decision!' },
+           {user.includes("Manager") ?
+            <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+            <Col xs={24} md={6}>
+              <Typography.Title level={5}> Head of Department Inputs</Typography.Title>
+            </Col>
+            <Col xs={24} md={18}>
+              <StyledShadowWrapper>
+                <AppRowContainer>
+                  <Col xs={24} md={18}>
+                    <StyledInput>
+                      <Form.Item
+                        label='Head Of Departement Decision'
+                        name='HeadInputs'
+                      // rules={[
+                      //   { required: true, message: 'Please Check your  Head Of Departement Decision!' },
+  
+                      // ]}
+  
+  
+                      >
+                        <Checkbox checked={isOkHead} onChange={OkHead}>
+  
+                          <IntlMessages id='accepted.Head' />
+                        </Checkbox>
+                        <Checkbox checked={isNOHead} onClick={NoHead}>
+                          <IntlMessages id='Refuse.head' />
+                        </Checkbox>
+                      </Form.Item>
+                    </StyledInput>
+                  </Col>
+  
+  
+  
+                </AppRowContainer>
+              </StyledShadowWrapper>
+            </Col>
+          </AppRowContainer>
+    
+          : null
 
-                    // ]}
 
-
-                    >
-                      <Checkbox checked={isOkHead} onChange={OkHead}>
-
-                        <IntlMessages id='accepted.Head' />
-                      </Checkbox>
-                      <Checkbox checked={isNOHead} onClick={NoHead}>
-                        <IntlMessages id='Refuse.head' />
-                      </Checkbox>
-                    </Form.Item>
-                  </StyledInput>
-                </Col>
-
-
-
-              </AppRowContainer>
-            </StyledShadowWrapper>
-          </Col>
-        </AppRowContainer>
+        }
+       
         {user.includes('bod') ?
           <>
             <Divider style={{ marginTop: 16, marginBottom: 16 }} />

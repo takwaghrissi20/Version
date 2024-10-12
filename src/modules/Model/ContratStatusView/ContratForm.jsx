@@ -37,7 +37,8 @@ const ContratViewForm = (props) => {
     familyStatus,
     contratctCopy,
     visaReady,
-    departement
+    departement,
+    findIdData
    
   } = props;
 

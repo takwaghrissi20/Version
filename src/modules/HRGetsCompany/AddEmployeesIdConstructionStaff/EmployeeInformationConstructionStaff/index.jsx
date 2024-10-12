@@ -15,10 +15,10 @@ import { FaSearch } from "react-icons/fa";
 import ValidateEmployees from "../../../Model/ModalValidateInfoEmployee"
 import moment from 'moment';
 const { Option } = Select;
-const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
+import { FcDownLeft } from "react-icons/fc";
+const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,nbchildren,
   fullName,birthayDate,familySituation,positionToBeFilled,department,projname, agreedJoinedDate}) => {
   const navigate = useNavigate();
-  console.log("tttttrrrrt",positionToBeFilled)
   const { messages } = useIntl();
   const [intCode, setIntCode] = useState("Code Interview Sheet");
   const [findIdInterview, setFindIdInterview] = useState(0);
@@ -33,6 +33,37 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
   const [employeeType, setEmployeeType] = useState("Site");
   const [category, setCategory] = useState("Construction Staff")
   const token = localStorage.getItem("token")
+ 
+  //Fetch Id Interview Construction 
+  const fetchDataId = async () => {
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${interviewCode}&token=${token}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+      if (!response.ok) {
+        throw new Error('La requête a échoué avec le code ' + response.status);
+      }
+      if (response.ok) {
+      const data = await response.json();
+      setFindIdInterview(data)
+      }
+
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données FINd Id Construction :', error);
+    }
+  };
+
+
+
+
+
+
+
+
+  //End Fetch Interview Construction
   const handleValidateEmployeeClose = () => {
     setIsModalVisible(false);
   };
@@ -162,46 +193,11 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
     setIsDropdownOpen(value.trim() !== '');
   };
 
-  ////////////////////////////////////////////
-  
-  const fetchDataId = async (searchValue) => {
-    try {
-      const endPoint =
-        process.env.NODE_ENV === "development"
-          ? "https://dev-gateway.gets-company.com"
-          : "";
-      const CodeInterview = parseInt(searchValue) + 1; // Increment intCode by 1
-      console.log("CodeInterview=", searchValue);
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${searchValue}&token=${token}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('La requête a échoué avec le code ' + response.status);
-      }
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        throw new TypeError("La réponse n'est pas au format JSON");
-      }
-
-      const data = await response.json();
-      setFindIdInterview(data)
-      fetchPositionTranslate()
-
-
-
-
-    } catch (error) {
-      console.error('Erreur lors de la récupération des données:', error);
-    }
-  };
 
   //Api Position Fieled Arabe
   useEffect(() => {
     fetchPositionTranslate();
+    fetchDataId()
   }, [findIdInterview?.positionToBeFilled]);
 
   const fetchPositionTranslate = async () => {
@@ -239,12 +235,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
 
 
   const formData = form.getFieldsValue();
-
   //Calcul Duration Period
-
-
-
-
 
   // if (FinishDate) {
   //   // Convertir la date en format "YYYY-MM-DD"
@@ -308,17 +299,18 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
       residenceAdress: '', arResidenceAdress: '', passportnumber: '', passportSubmitdate: '', passport_finish_date: '',
       email: '', finishDate: '', selectedStatusTypeCompany: '', traveldate: '', endTravelDate: '',
       destination: '', arDestination: '', duration: '', emergencyName: '', selectedRelationType: '',
-      phoneEmergency: '', selectedContractCategorie: '', primeProductivity: ''
-
+      phoneEmergency: '', selectedContractCategorie: '', primeProductivity: '',
+      joinDate:'',finishDate:''
 
     });
+    navigate(-1)
 
   };
   const handleOpenAfter = () => {
     form.validateFields(['CIN', 'cinDate', 'arName', 'nationality', 'gender', 'phoneNumber', 'residenceAdress',
       'arResidenceAdress', 'passportnumber', 'passportSubmitdate', 'passport_finish_date', 'type_Emp', 'email',
       'companyType', 'traveldate', 'endTravelDate', 'destination', 'arDestination', 'duration', 'emergencyName',
-      'emergencyRelation', 'phoneEmergency'
+      'emergencyRelation', 'phoneEmergency','joinDate','finishDate'
 
     ]).then(values => {
       setIsModalVisible(true);
@@ -333,7 +325,6 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
   };
 
   useEffect(() => {
-
     if (selectedContractCategorie === "CAT-B2") {
       console.log("proddd")
       setIsTargetproductivityVisible(true)
@@ -376,21 +367,16 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
             <input
               style={{
                 borderRight: '1px solid grey',
-                border: '1px solid transparent', // Bordure transparente par défaut
-                outline: 'none', // Supprime la bordure de focus par défaut
+                border: '1px solid transparent', 
+                outline: 'none', 
                 '&:focus': {
-                  border: '1px solid transparent', // Rend la bordure transparente lorsqu'en focus
+                  border: '1px solid transparent',
                 }
               }}
 
               placeholder="Interview Code"
               value={interviewCode}
-              readOnly
-              
-             
-            ></input>
-         
-         
+              readOnly ></input>        
             <div>
             
             </div>
@@ -563,19 +549,18 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
                    
                   </Form.Item>
                 </Col>
-
+              
                 <Col xs={24} md={12}>
-                  <Form.Item label='Residence Address' name='residenceAdress' rules={[{ required: true, message: 'Please enter Residence Address' }]}>
-                    <Input placeholder='Residence Address'
+                  <Form.Item label='#Children' name='nbchildren' >
+                    <Input placeholder='nbchildren'
                      />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='Arabic Residence Address' name='arResidenceAdress' rules={[{ required: true, message: 'Please enter Residence Address Arabe' }]}>
                     <Input placeholder='عنوان السكني بالعربي' dir="rtl"
-                    
-
-                    />
+                  
+                   />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
@@ -605,7 +590,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
                         required: true,
                         message: 'Please enter Date of issue',
                       },
-
+ 
                     ]}
 
 
@@ -702,7 +687,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
                   </Form.Item>
                 </Col>
 
-
+               
                 <Col xs={24} md={12}>
                   <Form.Item label='Project Name' name='projName' >
                     {/* <Form.Item label='Full Name' name='fullName'> */}
@@ -764,44 +749,72 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
                       })}
                     </Select>
                   </Form.Item>
-                </Col>
-
-                <Col xs={24} md={12}>
-                  <Form.Item label='Travel Date ' name='traveldate'
+                </Col>                                   
+                 {selectedEmpTypeType==="Office"?
+                
+                  <>
+                  <Col xs={24} md={12}>
+                  <Form.Item label='joinDate' name='joinDate'
                     rules={[
                       {
                         required: true,
-                        message: 'Please enter Date Travel',
+                        message: 'Please enter Join Date',
                       },
-
                     ]}
-
 
                   >
                     <StyledScrumBoardDatePicker />
-                    {/* <Input placeholder="Date Travel"
-                      readOnly={true} /> */}
+                   
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label='Travel End Date' name='endTravelDate'
+                  <Form.Item label='Finish Date' name='finishDate'
                     rules={[
                       {
                         required: true,
-                        message: 'Please enter End Travel Date',
+                        message: 'Please enter Finish Date',
                       },
 
-                    ]}
-
-
-
-
-                  >
+                    ]}>
                     <StyledScrumBoardDatePicker  />
-                    {/* <Input placeholder="End Travel Date"
-                      readOnly={true} /> */}
+                  
                   </Form.Item>
                 </Col>
+                </>
+                :  <>
+                <Col xs={24} md={12}>
+                <Form.Item label='Travel Date ' name='traveldate'
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please enter Date Travel',
+                    }, 
+                  ]}>
+                  <StyledScrumBoardDatePicker />
+                  {/* <Input placeholder="Date Travel"
+                    readOnly={true} /> */}
+                </Form.Item>
+              </Col>
+              <Col xs={24} md={12}>
+                <Form.Item label='Travel End Date' name='endTravelDate'
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please enter End Travel Date',
+                    },
+
+                  ]} >
+                  <StyledScrumBoardDatePicker  />
+                  {/* <Input placeholder="End Travel Date"
+                    readOnly={true} /> */}
+                </Form.Item>
+              </Col>
+              </>
+
+                       
+                                            
+                }
+                  
                 <Col xs={24} md={12}>
                   <Form.Item label='Location' name='destination'
 
@@ -950,7 +963,12 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
           size={15}
           style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
         >
-          <Button onClick={cancelInfo} >Cancel</Button>
+           <Button onClick={cancelInfo}>
+
+<FcDownLeft  style={{ marginRight:"5px",marginTop:"5px" }} />
+Return
+</Button>
+          
           {/* <Button onClick={SaveEmployees} type='primary' htmlType='submit'
              disabled={searchValue == ''}
                      
@@ -983,6 +1001,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
         gender={selectedGenderType}
         phoneNumber={formData?.phoneNumber}
         familyStatus={familySituation}
+        nbchildren={nbchildren}
         residenceAdress={formData?.residenceAdress}
         arResidenceAdress={formData?.arResidenceAdress}
         passportnumber={formData?.passportnumber}
@@ -995,14 +1014,15 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
         type_Emp={selectedEmpTypeType}
         projname={projname}
         email={formData?.email}
-        joinDate={agreedJoinedDate}
+        // joinDate={agreedJoinedDate}
         finishDate={formData?.finishDate?.format('YYYY-MM-DD')}
         companyType={formData?.companyType}
         traveldate={formData?.traveldate?.format('YYYY-MM-DD')}
         endTravelDate={formData?.endTravelDate?.format('YYYY-MM-DD')}
+        joinDate={formData?.joinDate?.format('YYYY-MM-DD')}
         destination={formData?.destination}
         arDestination={formData?.arDestination}
-        salary={findIdInterview?.propsedsalary}
+        salary={findIdInterview?.salary}
         dailyRate={findIdInterview?.dailyRate}
         contractType={contratType}
         emergencyName={formData?.emergencyName}
@@ -1013,7 +1033,10 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview,interviewCode,
         duration={formData?.duration}
         primeProductivity={formData?.primeProductivity}
         category={category}
-
+        findIdInterview={findIdInterview}
+        interviewCode={interviewCode}
+        
+        
 
       />
 

@@ -25,7 +25,7 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId,listRecruiteme
   useEffect(() => {
     const updateTableHeight = () => {
       const pageHeight = window.innerHeight;
-      const tableHeight = pageHeight * 0.4; 
+      const tableHeight = pageHeight * 0.35; 
       setTableHeight(tableHeight);
     };
     window.addEventListener('resize', updateTableHeight);

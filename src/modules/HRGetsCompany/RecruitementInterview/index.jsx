@@ -13,6 +13,7 @@ import InterviewConstruction from './InterviewConstruction';
 import LastRequestor from "./LastRequestor";
 import StaticNumber from "./StaticNumber";
 import { useLocation } from 'react-router-dom';
+import { position } from 'polished';
 
 const RecruitementInterview = () => {
   const { messages } = useIntl();
@@ -26,20 +27,49 @@ const RecruitementInterview = () => {
   const [allinterviewStaffManagement, setAllinterviewStaffManagement] = useState([]);
   const [allinterviewConstructionTeam, setAllinterviewConstructionTeam] = useState([]);
   const [recruitementTypeIdAbove, setRecruitementTypeIdAbove] = useState([]);
+  const [allrecruitementAbove, setAllrecruitementAbove] = useState([]);
   const [recruitementTypeIdbelow, setRecruitementTypeIdbelow] = useState("");
+  const [recruitementTypeIdbelowPMO, setRecruitementTypeIdbelowPMO] = useState("");
+  const [recruitementTypeIdbelowBOD, setRecruitementTypeIdbelowBOD] = useState("");
+  const [recruitementTypeIdAbovePMO, setRecruitementTypeIdAbovePMO] = useState("");
+  const [recruitementTypeIdAboveBOD, setRecruitementTypeIdAboveBOD] = useState("");
   const [interTypeIdManagement, setInterTypeIdManagement] = useState([]);
   const [interTypeIdConstruction, setInterTypeIdConstruction] = useState("");
+  const [recruitementTypeIdAboveOperationManager, setRecruitementAboveOperationManager] = useState("");
+  const [recruitementTypeIdBelowOperationManager, setRecruitementBelowOperationManager] = useState("");
+  const [project, setProject] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loading1, setLoading1] = useState(true);
   const location = useLocation();
-  const    findIdData = location.state ? location.state.findIdData :null;
-  
+  const findIdData = location.state ? location.state.findIdData : null;
   // Gets Id BY Profile:
   const userEmail = localStorage.getItem("email");
   const roles = localStorage.getItem("role");
   const token = localStorage.getItem("token");
   const departement = localStorage.getItem("departement");
   const name = localStorage.getItem("name");
+  const [idgets, setIdgets] = useState("");
+  // Project By email
+  const fetchProjectEmail = async () => {
+    try {
+      const url = `https://dev-gateway.gets-company.com/api/v1/emp/getProjectByMail?mail=${userEmail}&token=${token}`;
+      const response = await fetch(url, {
+        method: "GET",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setIdgets(data?.getsId)
+        const ProjectName = data.map(project => project.projName);
+        setProject(ProjectName);
+        console.log("testtttttg 55555", ProjectName)
+      } else {
+        console.error("Erreur lors de la récupération du email:", response.status);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la récupération du email:", error);
+    }
+  };
+
   const fetchEmployeesEmail = async () => {
     try {
       const url = `https://dev-gateway.gets-company.com/api/v1/emp/getByEmail?email=${userEmail}&token=${token}`;
@@ -68,54 +98,155 @@ const RecruitementInterview = () => {
       }
       const data = await response.json();
       const filteredData = data.filter(item => item?.idemp === idProfile);
-      const filteredDataType = filteredData.filter(item => item?.type === "Above Foreman");
-      setRecruitementTypeIdAbove(filteredDataType)
 
+      const filteredDataType = filteredData.filter(item => item?.type === "Above Foreman");
+
+      setRecruitementTypeIdAbove(filteredDataType)
+      ///////////////All Recruitement Staff
+      const filteredAllDataType = data.filter(item => item?.type === "Above Foreman");
+      setAllrecruitementAbove(filteredAllDataType)
+
+      ///////////////////
+      const filteredDataTypeAboveBOD = data.filter(item => {
+        const condition1 = (
+          ((item?.oDep === "true" && item?.exDep === "false") ||
+            (item?.oDep === "false" && item?.exDep === "true")) &&
+          item?.projectName !== "Office" &&
+          item?.signatureHod === "true" &&
+          !item.position.includes("Leader")
+        );
+        const condition3 = (
+          ((item?.oDep === "true" && item?.exDep === "false") ||
+            (item?.oDep === "false" && item?.exDep === "true")) &&
+          item?.projectName !== "Office" &&
+          item?.signatureHod === "true" &&
+          (item.notif === 7 || item.notif === 3 || item.notif === 8) &&
+          item.position.includes("Leader")
+        );
+
+        const condition2 = (
+          item?.projectName === "Office" &&
+          item?.signatureHod === "true"
+        );
+
+        // Log pour comprendre pourquoi certains éléments ne passent pas
+        console.log('Item:', item);
+        console.log('Condition 1:', condition1);
+        console.log('Condition 2:', condition2);
+
+        return item?.type === "Above Foreman" && (condition1 || condition2 || condition3);
+      });
+
+      setRecruitementTypeIdAboveBOD(filteredDataTypeAboveBOD)
+      const filteredDataTypeAbovePMO = data.filter(item =>
+      ((item?.projectName && item?.type === "Above Foreman" &&
+        !item.projectName.includes("Office") &&
+        item?.signatureHod === "true") ||
+        (item?.projectName &&
+          !item.projectName.includes("Office") &&
+          item?.notif === 6
+
+        )
+      )
+      );
+      setRecruitementTypeIdAbovePMO(filteredDataTypeAbovePMO)
+      //////////////////////////Manager Operationnn
+      const filteredDataTypeAboveOperation = data.filter(item =>
+        (
+          item?.type === "Above Foreman" &&
+          (item?.notif === 4 || item?.notif === 7 || item?.notif === 3 || item?.notif === 8) &&
+          item?.dep?.includes('Operation') &&
+          (
+            (item?.oDep === "true" && item?.exDep === "false") ||
+            (item?.oDep === "false" && item?.exDep === "true")
+          ) &&
+          item?.position?.includes("Leader")
+        ) ||
+        (
+          item?.type === "Above Foreman" &&
+          item?.notif === 8 &&
+          item?.dep?.includes('Engineering')
+        )
+      );
+      setRecruitementAboveOperationManager(filteredDataTypeAboveOperation)
+
+      console.log("Above", filteredDataTypeAboveOperation)
+
+
+      //////////////////////////////
       ///If Foreman & Below
       const filteredDataTypeForman = filteredData.filter(item => item?.type === "Foreman & Below");
       setRecruitementTypeIdbelow(filteredDataTypeForman)
+      const filteredDataTypeFormanBOD = data.filter(item =>
+        item?.type === "Foreman & Below" && (
+          // Condition 1: oDep or exDep is true, and projectName is not "Office", signatureHod is true
+          (
+            ((item?.oDep === "true" && item?.exDep === "false") ||
+              (item?.oDep === "false" && item?.exDep === "true")) &&
+            item?.projectName !== "Office" &&
+            item?.signatureHod === "true" &&
+            !item.position.includes("Leader")
+          ) ||
+          (
+            ((item?.oDep === "true" && item?.exDep === "false") ||
+              (item?.oDep === "false" && item?.exDep === "true")) &&
+            item?.projectName !== "Office" &&
+            item?.signatureHod === "true" &&
+            !item.position.includes("Manager")
+          ) ||
+
+
+          // Condition 2: Project is "Office", signatureHod is true
+          (
+            item?.projectName === "Office" &&
+            item?.signatureHod === "true"
+          )
+        )
+      );
+
+      setRecruitementTypeIdbelowBOD(filteredDataTypeFormanBOD);
+      ///setRecruitementTypeIdbelowPMO
+      const filteredDataTypeFormanPMO = data.filter(item =>
+        item?.type === "Foreman & Below" && (
+          // Condition 1: oDep or exDep is true, and projectName is not "Office", signatureHod is true
+          (
+            item?.projectName !== "Office" &&
+            item?.signatureHod === "true"
+          )
+        )
+      );
+
+      console.log('Filtered Data pmo', filteredDataTypeFormanPMO);
+      setRecruitementTypeIdbelowPMO(filteredDataTypeFormanPMO);
+      //////OperationManager  item?.type === "Foreman & Below"
+      const filteredDataTypeBelowOperation = data.filter(item =>
+        (
+          item?.type === "Foreman & Below" &&
+          item?.notif === 4 &&
+          item?.dep?.includes('Operation') &&
+          (
+            (item?.oDep === "true" && item?.exDep === "false") ||
+            (item?.oDep === "false" && item?.exDep === "true")
+          ) &&
+          item?.position?.includes("Leader")
+        ) ||
+        (
+          item?.type === "Foreman & Below" &&
+          item?.notif === 8 &&
+          item?.dep?.includes('Engineering')
+        )
+
+      );
+      setRecruitementBelowOperationManager(filteredDataTypeBelowOperation)
+
+      setRecruitementTypeIdbelow(filteredDataTypeForman)
+
 
     } catch (error) {
       console.error('Erreur lors de la récupération List Recruitement', error);
     }
   };
 
-  const fetchRecruitementTypeProfile1 = async () => {
-    try {
-      const endPoint =
-        process.env.NODE_ENV === "development"
-          ? "https://dev-gateway.gets-company.com"
-          : "";
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list?token=${token}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('La requête a échoué Recruitement ' + response.status);
-      }
-      if (!contentType || !contentType.includes('application/json')) {
-        throw new TypeError("La réponse n'est pas au format JSON");
-      }
-
-      const data = await response.json();
-      const filteredData = data.filter(item => item?.idemp === idProfile);
-      const filteredDataType = filteredData.filter(item => item?.type === "Above Foreman");
-      setRecruitementTypeIdAbove(filteredDataType)
-
-      ///If Foreman & Below
-      const filteredDataTypeForman = filteredData.filter(item => item?.type === "Foreman & Below");
-      setRecruitementTypeIdbelow(filteredDataTypeForman)
-
-      ///End If Foreman & Below
-      // Use filteredData as needed
-
-    } catch (error) {
-      console.error('Erreur lors de la récupération all Recruitement', error);
-    }
-  };
   // const fetchInterviewTypeProfileManagement = async () => {
   //   try {
   //     const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/list?token=${token}`, {
@@ -150,13 +281,17 @@ const RecruitementInterview = () => {
       children:
         <RecruitementStaff
           recruitementTypeIdAbove={recruitementTypeIdAbove}
+
           roles={roles}
           allrecruitementabove={allrecruitementabove}
           token={token}
           loading={loading}
           setLoading={setLoading}
+          recruitementTypeIdAbovePMO={recruitementTypeIdAbovePMO}
+          recruitementTypeIdAboveBOD={recruitementTypeIdAboveBOD}
+          allrecruitementAbove={allrecruitementAbove}
+          recruitementTypeIdAboveOperationManager={recruitementTypeIdAboveOperationManager}
           
-
         />,
     },
     {
@@ -165,28 +300,32 @@ const RecruitementInterview = () => {
       children: <RecruitementConstruction
         allrecruitementbelow={allrecruitementbelow}
         recruitementTypeIdbelow={recruitementTypeIdbelow}
+        recruitementTypeIdbelowBOD={recruitementTypeIdbelowBOD}
+        recruitementTypeIdbelowPMO={recruitementTypeIdbelowPMO}
         roles={roles}
         token={token}
         loading={loading}
         setLoading={setLoading}
+        recruitementTypeIdAboveOperationManager={recruitementTypeIdAboveOperationManager}
+        recruitementTypeIdBelowOperationManager={recruitementTypeIdBelowOperationManager}
 
       />,
     },
     {/*Interview Sheet**/ },
-    ...((roles?.includes('Cordinator') || roles?.includes('admin') || 
-    roles?.includes('bod') || roles?.includes('Ressource Manager') || roles?.includes('Manager')) ? [{
-      label: 'Staff Management Interview',
-      key: '3',
-      children: <InterviewStaff
-        allinterviewStaffManagement={allinterviewStaffManagement}
-        token={token}
-        roles={roles}
-        departement={departement}
+    ...((roles?.includes('Cordinator') || roles?.includes('admin') || roles?.includes('PMO') ||
+      roles?.includes('bod') || roles?.includes('Ressource Manager') || roles?.includes('Manager')) ? [{
+        label: 'Staff Management Interview',
+        key: '3',
+        children: <InterviewStaff
+          allinterviewStaffManagement={allinterviewStaffManagement}
+          token={token}
+          roles={roles}
+          departement={departement}
 
-      />
+        />
 
-    }] : []),
-  
+      }] : []),
+
     // {
     //   label: 'Staff Management Interview',
     //   key: '3',
@@ -196,16 +335,16 @@ const RecruitementInterview = () => {
 
     //   />,
     // },
-    ...((roles?.includes('Cordinator') || roles?.includes('Ressource Manager') || roles?.includes('Manager')||
-    roles?.includes('admin') || roles?.includes('bod') || roles?.includes('Ressource')) ? [{
-      label: 'Construction Staff Interview',
-      key: '4',
-      children: <InterviewConstruction
-        allinterviewConstructionTeam={allinterviewConstructionTeam}
-        token={token}
-      />
+    ...((roles?.includes('Cordinator') || roles?.includes('Ressource Manager') || roles?.includes('Manager') ||
+      roles?.includes('admin') || roles?.includes('PMO') || roles?.includes('bod') || roles?.includes('Ressource')) ? [{
+        label: 'Construction Staff Interview',
+        key: '4',
+        children: <InterviewConstruction
+          allinterviewConstructionTeam={allinterviewConstructionTeam}
+          token={token}
+        />
 
-    }] : []),
+      }] : []),
     // {
     //   label: 'Construction Staff Interview',
     //   key: '4',
@@ -237,7 +376,7 @@ const RecruitementInterview = () => {
         const responseData = await response.json();
         setTotalNumberInterview(responseData.length);
         setAllinterviewStaffManagement(responseData);
-        
+
 
         const responseRecruitement = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list?token=${token}`, {
           method: 'GET',
@@ -287,6 +426,7 @@ const RecruitementInterview = () => {
   // }, []);
 
   useEffect(() => {
+    fetchProjectEmail()
     if (!roles?.includes("admin")) {
       console.log("Not Admin");
       fetchEmployeesEmail().then(() => {
@@ -323,18 +463,21 @@ const RecruitementInterview = () => {
               <div>
                 <AppRowContainer ease="easeInSine">
                   {roles === "admin" && (
-                    <Col xs={24} md={10}>
-                      <LastRequestor lastRecruitement={lastRecruitement} />
-                    </Col>
+                    <>
+                      <Col xs={24} md={10}>
+                        <LastRequestor lastRecruitement={lastRecruitement} />
+                      </Col>
+                      <Col xs={24} md={14}>
+                        <StaticNumber
+                          allrecruitementaboveItRecruitement={allrecruitementaboveItRecruitement}
+                          totalNumberInterview={totalNumberInterview}
+                          totalNumber={totalNumber}
+                          user={roles}
+                        />
+                      </Col>
+                    </>
                   )}
-                  <Col xs={24} md={14}>
-                    <StaticNumber
-                      allrecruitementaboveItRecruitement={allrecruitementaboveItRecruitement}
-                      totalNumberInterview={totalNumberInterview}
-                      totalNumber={totalNumber}
-                      user={roles}
-                    />
-                  </Col>
+
                 </AppRowContainer>
               </div>
 

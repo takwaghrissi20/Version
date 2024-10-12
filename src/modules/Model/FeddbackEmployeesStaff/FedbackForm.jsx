@@ -206,7 +206,9 @@ const FedbackForm = (props) => {
           <input {...getInputProps()} />
           <label htmlFor='icon-button-file'>
             < StyledContactFormHeaderTitle  >
-              <p className='TitleModal'>Candidate Feedback After BOD Approval</p>
+              <p className='TitleModal'>Candidate Feedback After BOD Approval
+
+              </p>
             </StyledContactFormHeaderTitle>
           </label>
         </Form.Item>

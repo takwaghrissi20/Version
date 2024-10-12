@@ -41,6 +41,7 @@ const Sammuary = () => {
       if (response.ok) {
         const data = await response.json();
         setEmployees(data);
+        console.log("data 3333",data)
       }
 
 

@@ -342,7 +342,7 @@ const ViewTransfer = () => {
           size={15}
           style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
         >
-          <Button onClick={handleCancelTransfer}>Cancel</Button>
+          <Button onClick={handleCancelTransfer}>Return</Button>
          
         </Space>
       </Form>

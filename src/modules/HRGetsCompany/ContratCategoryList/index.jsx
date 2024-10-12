@@ -63,7 +63,7 @@ const ContratList = () => {
            
         return isManagementOrConstruction;
         });
-  
+ 
         console.log("Filtered Data:", data);
         // setEmployees(filteredEmployees);
         setEmployees(data)
@@ -170,7 +170,8 @@ const ContratList = () => {
           title={messages['dashboard.EmployeesCategoryContract']}
         >
          
-            <OrderTable className={clsx("item-hover")} dataemployees={employees} />
+            <OrderTable className={clsx("item-hover")} 
+            dataemployees={employees} />
             {/* <StyledOrderHeaderRight>
 
               <Pagination

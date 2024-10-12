@@ -207,7 +207,7 @@ const EditInterviewConstruction = ({ hseCertif,
       if (parseFloat(value) > lev1SalaryMax) {
         setSalaryError(`Proposed Salary exceeds the maximum allowed value of ${lev1SalaryMax}`);
       } else {
-        setProposedDailyRate((value / 30).toFixed(2));
+        setProposedDailyRate((value / 30).toFixed(3));
       }
     } else {
       setSalaryError('Invalid salary input');
@@ -223,7 +223,7 @@ const EditInterviewConstruction = ({ hseCertif,
       if (parseFloat(value) > lev1dailyRateMax) {
         setDailyError(`Proposed Daily Rate exceeds the maximum allowed value of ${lev1dailyRateMax}`);
       } else {
-        setProposedSalary((value * 30).toFixed(2));
+        setProposedSalary((value * 30).toFixed(3));
       }
     } else {
       setDailyError('Invalid daily rate input');
@@ -463,7 +463,7 @@ const EditInterviewConstruction = ({ hseCertif,
     setIsOkCheckedHSE(true);
     if (e.target.checked) {
       setIsNoCheckedHSE(false);
-    }
+    }0
 
   }
   function NoHSE(e) {
@@ -855,7 +855,6 @@ const EditInterviewConstruction = ({ hseCertif,
           level: selectedLevelHR,
           headOfDepAprouv: isOkCheckedHead,
           // agreedJoinedDate,
-
           expectedJoinDate: expectedJoinDate,
           dailyRate: proposedDailyRate,
           hrDesion: isOkCheckedHRDecision,
@@ -871,6 +870,8 @@ const EditInterviewConstruction = ({ hseCertif,
           ptw: idConstruction?.ptw,
           hseDecision: idConstruction?.hseDecision,
           others: idConstruction?.others,
+          intervtime:idConstruction?.intervtime,
+         
 
 
 
@@ -923,6 +924,7 @@ const EditInterviewConstruction = ({ hseCertif,
           totalReqPos: totalReqPos,
           totalRequiredGrade: totalRequiredGrade,
           idNumb: getsId,
+          evalName:idViewConstruction?.evalName,
           department: department,
           projname: projname,
           requiredGrade: newrequiredGrade,
@@ -956,12 +958,13 @@ const EditInterviewConstruction = ({ hseCertif,
           level,
           headOfDepAprouv: isOkCheckedHead,
           // agreedJoinedDate,
-          expectedJoinDate,
-          dailyRate,
-          hrDesion,
+          expectedJoinDate:idViewConstruction?.expectedJoinDate,
+          dailyRate:idViewConstruction?.dailyRate,
+          hrDesion:idViewConstruction?.hrDesion,
           // feedback,
-          propsedsalary,
+          propsedsalary:idViewConstruction?. propsedsalary,
           notif: 52,
+          intervtime:idViewConstruction?.intervtime
 
 
 
@@ -1368,9 +1371,9 @@ const EditInterviewConstruction = ({ hseCertif,
           intervtime: idViewConstruction?.intervtime,
           /////////////////////////////////////////////////     
           requiredExperinece: idViewConstruction?.requiredExperinece,
-
-
-
+          evalName:idViewConstruction?.evalName,
+          evalId:idViewConstruction?.evalId,
+        
 
         })
       });
@@ -1469,9 +1472,9 @@ const EditInterviewConstruction = ({ hseCertif,
           emergency: idConstruction?.emergency,
           ptw: idConstruction?.ptw,
           hsePolicies: idConstruction?.hsePolicies,
-          others: idConstruction?.others
-
-
+          others: idConstruction?.others,
+          evalName:idViewConstruction?.evalName,
+          evalId:idViewConstruction?.evalId,
         })
       });
 
@@ -1582,7 +1585,8 @@ const EditInterviewConstruction = ({ hseCertif,
           emergency:idConstruction?.emergency,
           ptw:idConstruction?.ptw,
           hsePolicies:idConstruction?.hsePolicies,
-          others:idConstruction?.others
+          others:idConstruction?.others,
+         
         })
       });
 
@@ -2090,10 +2094,11 @@ const EditInterviewConstruction = ({ hseCertif,
                 <Col xs={24} md={12}>
                   <Form.Item
                     style={{ marginTop: "10px" }}
-                    label='Go to test 2 :'
+                    label='Go to test 2:'
                     name='Gototest2' >
 
-                    <Checkbox checked={goTotest2}>
+                    <Checkbox checked={goTotest2}
+                    >
 
                       <IntlMessages id='validation.test' />
                     </Checkbox>
@@ -2579,7 +2584,7 @@ const EditInterviewConstruction = ({ hseCertif,
                       <Input
                         className='Input'
                         // placeholder={idViewConstruction?.intervtime}
-                        placeholder={idViewConstruction?.intervtime ? idViewConstruction.intervtime.substring(0, 5) : ''}
+                        placeholder={idViewConstruction?.intervtime? idViewConstruction.intervtime.substring(0, 5) : ''}
                         readOnly
 
                       />
@@ -2857,7 +2862,8 @@ const EditInterviewConstruction = ({ hseCertif,
                           style={{ marginTop: "10px" }}
                           label='Go to test 2 :'
                           name='Gototest2' >
-                          <Checkbox checked={idConstruction.goTotest2}>
+                          <Checkbox 
+                          checked={idConstruction.goTotest2}>
 
                             <IntlMessages id='validation.test' />
                           </Checkbox>
@@ -3988,7 +3994,6 @@ const EditInterviewConstruction = ({ hseCertif,
               <FcDownLeft style={{ marginRight: "5px", marginTop: "5px" }} />
               Return
             </Button>
-
             {roles.includes("Manager") && !roles.includes("HSE") && !roles.includes("Human Ressource") && (
               <>
                 <Button style={{ color: "green", borderColor: "green" }} onClick={UpdateManager}>
@@ -4001,9 +4006,10 @@ const EditInterviewConstruction = ({ hseCertif,
 
                 </Button>
               </>)}
-            {(roles.includes("HSE") && (idViewConstruction.goTotest2 || !idViewConstruction.validatesFor)) && (
+        {(roles.includes("HSE") && (idViewConstruction.goTotest2 || !idViewConstruction.validatesFor)) && (
               <>
-                <Button style={{ color: "green", borderColor: "green" }} onClick={UpdateHSE}>Approve
+                <Button style={{ color: "green", borderColor: "green" }} 
+                onClick={UpdateHSE}>Approve
 
                 </Button>
                 <Button style={{ color: "red", borderColor: "red" }} onClick={RefuseHSE}

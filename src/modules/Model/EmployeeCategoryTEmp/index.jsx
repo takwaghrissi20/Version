@@ -21,15 +21,17 @@ const ModalView = ({
   endTravelDate ,
   arResidenceAdress,
   arPosition ,
-  salary ,
-  dailyRate ,       
+  salary ,      
   duration ,
   finishDate,
    joinDate ,
   cin ,
   cinDate ,
    id ,
-   name
+   name,
+   propsedsalary,
+   dailyRate,
+   findIdData
 
 }) => {
 
@@ -70,6 +72,8 @@ const ModalView = ({
         cinDate={cinDate}
         id={id}
         name={name}
+        findIdData={findIdData}
+        propsedsalary={propsedsalary}
 
 
       />

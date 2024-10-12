@@ -244,7 +244,10 @@ const AppVerticalNav = ({ routesConfig }) => {
           item.id === "attendance" ||
           item.id === "VacationLeave" ||
           item.id === "ManpowerEvaluation" ||
-          item.id === "recruitement" ||
+          item.id === "Add Recruitment" ||
+          item.id === "Integration" ||
+          item.id === "IntegrationStatistics" ||
+          item.id === "Planification" ||
           item.id === "Site Clerk" ||
           item.id === "PROJECTS TRIP TRACK RECORD " ||
           item.id === "Payroll" ||

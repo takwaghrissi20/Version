@@ -3,7 +3,7 @@ import { useDropzone } from 'react-dropzone';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import IntlMessages from '@crema/helpers/IntlMessages';
-import { Form, Input, Select, Col,notification } from 'antd';
+import { Form, Input, Select, Col, notification } from 'antd';
 import moment from 'moment';
 import {
   StyledContactForm,
@@ -19,7 +19,7 @@ import {
   StyledShadowWrapper,
 } from './index.styled';
 import FloatLabel from "./FloatLabel";
-import { DatePicker, Space ,Button} from 'antd';
+import { DatePicker, Space, Button } from 'antd';
 import dayjs from 'dayjs';
 import AppRowContainer from '../../../@crema/components/AppRowContainer';
 const FedbackForm = (props) => {
@@ -120,31 +120,31 @@ const FedbackForm = (props) => {
         body: JSON.stringify({
           interviewCode: findIdData?.interviewCode,
           jobCode: findIdData?.jobCode,
-          interviwDate:findIdData?.interviwDate,
+          interviwDate: findIdData?.interviwDate,
           totalAccept: findIdData?.totalAccept,
           totalInterv: findIdData?.totalInterv,
-          totalReqPos:  findIdData?.totalReqPos,
+          totalReqPos: findIdData?.totalReqPos,
           totalRequiredGrade: findIdData?.totalRequiredGrade,
-          idNumb:findIdData?.idNumb,
+          idNumb: findIdData?.idNumb,
           department: findIdData?.department,
           projname: findIdData?.projname,
           requiredGrade: findIdData?.requiredGrade,
-          requiredQualification:  findIdData?.requiredQualification,
-          positionToBeFilled:  findIdData?. positionToBeFilled,
+          requiredQualification: findIdData?.requiredQualification,
+          positionToBeFilled: findIdData?.positionToBeFilled,
           fullName: findIdData?.fullName,
           birthayDate: findIdData?.birthayDate,
-          familySituation: findIdData?. familySituation,
+          familySituation: findIdData?.familySituation,
           experience: findIdData?.experience,
           educationLevel: findIdData?.educationLevel,
           diploma: findIdData?.diploma,
-          telCondidate:  findIdData?.telCondidate,
-          urlCv:findIdData?.urlCv,
-          validatesFor:findIdData?. validatesFor,
+          telCondidate: findIdData?.telCondidate,
+          urlCv: findIdData?.urlCv,
+          validatesFor: findIdData?.validatesFor,
           goTotest2: findIdData?.goTotest2,
           psy_Person: findIdData?.psy_Person,
           psy_HumQuality: findIdData?.psy_HumQuality,
-          psy_motivation: findIdData?. psy_motivation,
-          psy_Intellig:findIdData?. psy_Intellig,
+          psy_motivation: findIdData?.psy_motivation,
+          psy_Intellig: findIdData?.psy_Intellig,
           goToTest3: findIdData?.goToTest3,
           techEnglishSkills: findIdData?.techEnglishSkills,
           evalDesision: findIdData?.evalDesision,
@@ -160,14 +160,60 @@ const FedbackForm = (props) => {
           // agreedJoinedDate,
           expectedJoinDate: findIdData?.expectedJoinDate,
           dailyRate: findIdData?.dailyRate,
-          hrDesion: findIdData?.hrDesion,        
+          hrDesion: findIdData?.hrDesion,
           propsedsalary: findIdData?.propsedsalary,
           notif: findIdData?.notif,
           directSign1: findIdData?.directSign1,
           directSign2: findIdData?.directSign2,
-          urlCv:findIdData?.urlCv,
-          agreedJoinedDate:newDateJointCandidate,
-          feedback:selectedFedback
+          urlCv: findIdData?.urlCv,
+          agreedJoinedDate: newDateJointCandidate,
+          feedback: selectedFedback,
+          hseDecision: findIdData?.hseDecision,
+          evalName: findIdData?.evalName,
+          evalId: findIdData?.evalId,
+          intervtime: findIdData?.intervtime,
+          requiredExperinece: findIdData?.requiredExperinece,
+          techEvaluation: findIdData?.techEvaluation,
+          evalDesisionSign: findIdData?.evalDesisionSign,
+          headOfDepAprouvSign: findIdData?.headOfDepAprouvSign,
+          nlevel: findIdData?.nlevel,
+          hrComentaire: findIdData?.hrComentaire,
+          finaldesision: findIdData?.finaldesision,
+          finaldesision2: findIdData?.finaldesision2,
+          educAndTrain: findIdData?.educAndTrain,
+          workExp: findIdData?.workExp,
+          intellCap: findIdData?.intellCap,
+          emotIntellij: findIdData?.emotIntellij,
+          selfConf: findIdData?.selfConf,
+          comunicSkills: findIdData?.comunicSkills,
+          refAssign: findIdData?.refAssign,
+          passion: findIdData?.passion,
+          creativity: findIdData?.creativity,
+          leadership: findIdData?.leadership,
+          physicPres: findIdData?.physicPres,
+          hseCertif: findIdData?.hseCertif,
+          siteHazCont: findIdData?.siteHazCont,
+          properUse: findIdData?.properUse,
+          hzardousMater: findIdData?.hzardousMater,
+          emergency: findIdData?.emergency,
+          ptw: findIdData?.ptw,
+          hsePolicies: findIdData?.hsePolicies,
+          others: findIdData?.others,
+          hseDecision: findIdData?.hseDecision,
+          hseSign: findIdData?.hseSign,
+          hseComment: findIdData?.hseComment,
+          contactEmail: findIdData?.contactEmail,
+          contactPhone: findIdData?.contactPhone,
+          inputInterview: findIdData?.inputInterview,
+          diversityTal: findIdData?.diversityTal
+          /////////////////////////////////////////////
+
+
+
+
+
+
+
 
 
         })
@@ -186,8 +232,8 @@ const FedbackForm = (props) => {
         setTimeout(() => {
           window.location.reload();
         }, 2000)
-      
-     
+
+
       }
 
       // Handle responseData if needed
@@ -199,58 +245,58 @@ const FedbackForm = (props) => {
   return (
     <StyledContactForm>
 
-        <Form.Item >
-          <input {...getInputProps()} />
-          <label htmlFor='icon-button-file'>
-            < StyledContactFormHeaderTitle  >
-              <p className='TitleModal'>Candidate Feedback After BOD Approval</p>
-            </StyledContactFormHeaderTitle>
-          </label>
-        </Form.Item>
-  
-            <Col xs={24} md={24}>
-            <span className='modallabel'> Candidate Accept offer/Not Accept Offer :</span>
-              <Form.Item
-                name="CandidateAccept"
-                label="">
-                <Select
-                  style={{marginTop:"0.5rem"}}
-                  onChange={handleFedback}
-                  placeholder="Candidate Accept offer/Not Accept Offer"
-                  allowClear>
-                  {Fedback.map(type => (
-                    <Option key={type.Fedback} value={type.Fedback}>
-                      {type.Fedback}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
-            </Col>
-        
-      
-     
-      <Col xs={24} md={24}>
-      <Form.Item className='form-field'>
-        <FloatLabel name="Interview Date">
-          <span className='modallabel'> Agreed Join Date if Approved By BOD:</span>
-          <DatePicker
-          placeholder={findIdData?.expectedJoinDate}    
-          onChange={(value) => setnewDateJointCandidate(dayjs(value).format('YYYY-MM-DD'))}
-            //  onChange={(value) => setnewDateJointCandidate(dayjs(value))}
-            // value={newDateJointCandidate}
-           style={{height:"2rem",marginTop:"0.5rem"}}
+      <Form.Item >
+        <input {...getInputProps()} />
+        <label htmlFor='icon-button-file'>
+          < StyledContactFormHeaderTitle  >
+            <p className='TitleModal'>Candidate Feedback After BOD Approval
 
-          />
-        </FloatLabel>
+            </p>
+          </StyledContactFormHeaderTitle>
+        </label>
       </Form.Item>
+
+      <Col xs={24} md={24}>
+        <span className='modallabel'> Candidate Accept offer/Not Accept Offer :</span>
+        <Form.Item
+          name="CandidateAccept"
+          label="">
+          <Select
+            style={{ marginTop: "0.5rem" }}
+            onChange={handleFedback}
+            placeholder="Candidate Accept offer/Not Accept Offer"
+            allowClear>
+            {Fedback.map(type => (
+              <Option key={type.Fedback} value={type.Fedback}>
+                {type.Fedback}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
       </Col>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-  <Button onClick={update}>Save</Button>
-</div>
-{/* 
+
+
+
+      <Col xs={24} md={24}>
+        <Form.Item className='form-field'>
+          <FloatLabel name="Interview Date">
+            <span className='modallabel'> Agreed Join Date if Approved By BOD:</span>
+            <DatePicker
+              placeholder={findIdData?.expectedJoinDate}
+              onChange={(value) => setnewDateJointCandidate(dayjs(value).format('YYYY-MM-DD'))}
+              //  onChange={(value) => setnewDateJointCandidate(dayjs(value))}
+              // value={newDateJointCandidate}
+              style={{ height: "2rem", marginTop: "0.5rem" }} />
+          </FloatLabel>
+        </Form.Item>
+      </Col>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Button onClick={update}>Save</Button>
+      </div>
+      {/* 
       <Button onClick={update}> Save </Button> */}
 
-{/* 
+      {/* 
 
       <Form.Item className='form-field'>
         <FloatLabel name="Interview Date">

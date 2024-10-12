@@ -52,7 +52,8 @@ const ContratCategory = (props) => {
     cin,
     cinDate,
     id,
-    name
+    name,
+    findIdData
 
 
 
@@ -83,8 +84,8 @@ const ContratCategory = (props) => {
   const [data, setData] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [datetravel, setDatetravel] = useState("");
-  const [dateendtravel, setDateendtravel] = useState("");
+  const [datetravel, setDatetravel] = useState(traveldate);
+  const [dateendtravel, setDateendtravel] = useState(endTravelDate);
   useEffect(() => {
     if (showAlert) {
       setGenerateBtnEnabled(true);
@@ -94,7 +95,6 @@ const ContratCategory = (props) => {
     setGrayBackground(!generateBtnEnabled);
   }, [generateBtnEnabled]);
   const LastIdIncremente = id + 1
-
 
   const navigate = useNavigate();
   const ListContrat = [
@@ -163,7 +163,7 @@ const ContratCategory = (props) => {
 
 
   ]
-
+  console.log(" findIdData 5555", findIdData)
   useEffect(() => {
     if (selectedContractCategorie === "CAT-B1") {
       console.log(" contractCategory", selectedContractCategorie)
@@ -253,7 +253,6 @@ const ContratCategory = (props) => {
   };
 
   const ContratB1 = () => {
-
     navigate('/HRGetsCompany/ContartTypeB1', {
       state: {
         fullName: arName,
@@ -534,73 +533,72 @@ const ContratCategory = (props) => {
   };
 
 
-  const SelectionnnerContrat = () => {
+  // const SelectionnnerContrat = () => {
+  //   console.log("contractCategorysssssss Testtt", selectedContractCategorie)
+  //   if (selectedContractCategorie === "CAT-B1") {
+  //     console.log("ContractCategory CAT-B1", selectedContractCategorie)
+  //     ContratB1();
+  //   } else if (selectedContractCategorie === "CAT-A1") {
+  //     console.log(" contractCategory A1")
+  //     ContratA1()
+  //   } else if (selectedContractCategorie === "CAT-A2") {
+  //     console.log(" contractCategory A2")
+  //     ContratA2()
 
-    console.log("contractCategorysssssss", selectedContractCategorie)
-    if (selectedContractCategorie === "CAT-B1") {
-      console.log(" contractCategory", selectedContractCategorie)
-      ContratB1();
-    } else if (selectedContractCategorie === "CAT-A1") {
-      console.log(" contractCategory A1")
-      ContratA1()
-    } else if (selectedContractCategorie === "CAT-A2") {
-      console.log(" contractCategory A2")
-      ContratA2()
+  //   }
+  //   else if (selectedContractCategorie === "CAT-A3") {
+  //     console.log(" contractCategory  CAT- A3 ")
+  //     ContratA3()
 
-    }
-    else if (selectedContractCategorie === "CAT-A3") {
-      console.log(" contractCategory  CAT- A3 ")
-      ContratA3()
+  //   }
 
-    }
+  //   else if (selectedContractCategorie === "CAT-E1") {
+  //     console.log(" contractCategory  CAT -E1")
+  //     ContratE1()
 
-    else if (selectedContractCategorie === "CAT-E1") {
-      console.log(" contractCategory  CAT -E1")
-      ContratE1()
+  //   }
+  //   else if (selectedContractCategorie === "CAT-E2") {
+  //     console.log(" contractCategory  CAT -E2")
+  //     ContratE2()
 
-    }
-    else if (selectedContractCategorie === "CAT-E2") {
-      console.log(" contractCategory  CAT -E2")
-      ContratE2()
+  //   }
+  //   else if (selectedContractCategorie === "SERVICE1-E3") {
+  //     console.log(" contractCategory  SERVICE 1-E3")
+  //     ContratE3()
 
-    }
-    else if (selectedContractCategorie === "SERVICE1-E3") {
-      console.log(" contractCategory  SERVICE 1-E3")
-      ContratE3()
+  //   }
+  //   else if (selectedContractCategorie === "SERVICE2-E3") {
+  //     console.log(" contractCategory  SERVICE2-E3")
+  //     ContratS2E3()
 
-    }
-    else if (selectedContractCategorie === "SERVICE2-E3") {
-      console.log(" contractCategory  SERVICE2-E3")
-      ContratS2E3()
-
-    }
-    else if (contractCategory === "CAT-B2") {
-      console.log(" contractCategory")
-      ContratB2()
-    }
-    else if (contractCategory === "CAT-B2") {
-      console.log(" contractCategory")
-      ContratB2()
-    }
-    else if (contractCategory === "CAT-B3") {
-      console.log("contractCategory")
-      ContratB3()
-    }
-    else if (contractCategory === "CAT-C") {
-      console.log(" contractCategory")
-      ContratC()
-    }
-    else if (contractCategory === "CAT-D") {
-      console.log(" contractCategory")
-      ContratD()
-    }
-    else if (contractCategory === "Contrat SIVP") {
-      console.log("Contrat SIVP")
-      ContratSIVP()
-    }
+  //   }
+  //   else if (contractCategory === "CAT-B2") {
+  //     console.log(" contractCategory")
+  //     ContratB2()
+  //   }
+  //   else if (contractCategory === "CAT-B2") {
+  //     console.log(" contractCategory")
+  //     ContratB2()
+  //   }
+  //   else if (contractCategory === "CAT-B3") {
+  //     console.log("contractCategory")
+  //     ContratB3()
+  //   }
+  //   else if (contractCategory === "CAT-C") {
+  //     console.log(" contractCategory")
+  //     ContratC()
+  //   }
+  //   else if (contractCategory === "CAT-D") {
+  //     console.log(" contractCategory")
+  //     ContratD()
+  //   }
+  //   else if (contractCategory === "Contrat SIVP") {
+  //     console.log("Contrat SIVP")
+  //     ContratSIVP()
+  //   }
 
 
-  };
+  // };
   ///UpdateEmployees
   const UpdateEmployees = async () => {
 
@@ -616,15 +614,11 @@ const ContratCategory = (props) => {
         contractCategory: selectedContractCategorie,
         primeProductivity: newprimeProductivity,
         salary: salary,
-        dailyRate:dailyRate,
+        dailyRate: dailyRate,
         joinDate: startDate,
         finishDate: finishDate,
-        traveldate:datetravel,
-        endTravelDate:dateendtravel
-
-
-
-
+        traveldate: datetravel,
+        endTravelDate: dateendtravel
 
 
       };
@@ -650,9 +644,14 @@ const ContratCategory = (props) => {
       //   throw new TypeError("La réponse n'est pas au format JSON");
       // }
       if (response.ok) {
-      const data = await response.json();
-      setData(data)
-      setShowAlert(true)
+        const data = await response.json();
+        setData(data)
+        setShowAlert(true)
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+
+
       }
       // handleAddContactClose()
       // Traiter la réponse de l'API si nécessaire
@@ -660,6 +659,68 @@ const ContratCategory = (props) => {
       console.error('Erreur lors de la récupération des données:', error);
     }
   };
+  const SelectionnnerContrat = () => {
+    console.log("ContractCategory Test", selectedContractCategorie);
+
+    switch (selectedContractCategorie) {
+      case "CAT-B1":
+        console.log("ContractCategory CAT-B1", selectedContractCategorie);
+        ContratB1();
+        break;
+      case "CAT-A1":
+        console.log("ContractCategory CAT-A1");
+        ContratA1();
+        break;
+      case "CAT-A2":
+        console.log("ContractCategory CAT-A2");
+        ContratA2();
+        break;
+      case "CAT-A3":
+        console.log("ContractCategory CAT-A3");
+        ContratA3();
+        break;
+      case "CAT-E1":
+        console.log("ContractCategory CAT-E1");
+        ContratE1();
+        break;
+      case "CAT-E2":
+        console.log("ContractCategory CAT-E2");
+        ContratE2();
+        break;
+      case "SERVICE1-E3":
+        console.log("ContractCategory SERVICE1-E3");
+        ContratE3();
+        break;
+      case "SERVICE2-E3":
+        console.log("ContractCategory SERVICE2-E3");
+        ContratS2E3();
+        break;
+      case "CAT-B2":
+        console.log("ContractCategory CAT-B2");
+        ContratB2();
+        break;
+      case "CAT-B3":
+        console.log("ContractCategory CAT-B3");
+        ContratB3();
+        break;
+      case "CAT-C":
+        console.log("ContractCategory CAT-C");
+        ContratC();
+        break;
+      case "CAT-D":
+        console.log("ContractCategory CAT-D");
+        ContratD();
+        break;
+      case "Contrat SIVP":
+        console.log("ContractCategory Contrat SIVP");
+        ContratSIVP();
+        break;
+      default:
+        console.log("Invalid contract category:", selectedContractCategorie);
+        break;
+    }
+  };
+
 
   return (
     <StyledContactForm>
@@ -669,7 +730,7 @@ const ContratCategory = (props) => {
           <label htmlFor='icon-button-file'>
             < StyledContactFormHeaderTitle  >
               {/* <IntlMessages id='Recruitement.Request' /> */}
-              <p className='TitleModal'>Generate Contract Categorie</p>
+              <p className='TitleModal'>Generate Contract Categorise</p>
 
             </StyledContactFormHeaderTitle>
           </label>
@@ -721,38 +782,38 @@ const ContratCategory = (props) => {
                 </Col>
               </Row>
               {category?.includes("Construction") ?
-               <Row gutter={16}>
-               <Col span={12}>
-                 <Form.Item className='form-field'>
-                   <span className='modallabel'> Contract start date :</span>
-                   <FloatLabel name="joinDate">
-                     <DatePicker
-                       style={{ width: "100%", height: "30px",marginTop:"0.5rem" }}
-                       placeholder='YYYY-MM-DD'
-                       value={datetravel ? dayjs(datetravel, 'YYYY-MM-DD') : null}
-                       onChange={(value) => setDatetravel(value ? dayjs(value).format('YYYY-MM-DD') : '')}
-                     />
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Form.Item className='form-field'>
+                      <span className='modallabel'> Contract start date :</span>
+                      <FloatLabel name="joinDate">
+                        <DatePicker
+                          style={{ width: "100%", height: "30px", marginTop: "0.5rem" }}
+                          placeholder={findIdData.traveldate}
+                          value={datetravel ? dayjs(datetravel, 'YYYY-MM-DD') : null}
+                          onChange={(value) => setDatetravel(value ? dayjs(value).format('YYYY-MM-DD') : '')}
+                        />
 
-                   </FloatLabel>
-                 </Form.Item>
+                      </FloatLabel>
+                    </Form.Item>
 
-               </Col>
-               <Col span={12}>
-                 <Form.Item className='form-field'>
-                   <span className='modallabel'> Contract Finish date :</span>
-                   <FloatLabel name="joinDate">
-                     <DatePicker
-                       style={{ width: "100%", height: "30px",marginTop:"0.5rem"  }}
-                       placeholder='YYYY-MM-DD'
-                       value={dateendtravel ? dayjs(dateendtravel, 'YYYY-MM-DD') : null}
-                       onChange={(value) => setDateendtravel(value ? dayjs(value).format('YYYY-MM-DD') : '')}
-                     />
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item className='form-field'>
+                      <span className='modallabel'> Contract Finish date :</span>
+                      <FloatLabel name="joinDate">
+                        <DatePicker
+                          style={{ width: "100%", height: "30px", marginTop: "0.5rem" }}
+                          placeholder={findIdData.endTravelDate}
+                          value={dateendtravel ? dayjs(dateendtravel, 'YYYY-MM-DD') : null}
+                          onChange={(value) => setDateendtravel(value ? dayjs(value).format('YYYY-MM-DD') : '')}
+                        />
 
-                   </FloatLabel>
-                 </Form.Item>
+                      </FloatLabel>
+                    </Form.Item>
 
-               </Col>
-             </Row>
+                  </Col>
+                </Row>
 
                 :
                 <Row gutter={16}>
@@ -793,7 +854,7 @@ const ContratCategory = (props) => {
                 <Col span={12}>
                   <Form.Item className='form-field'>
                     <span className='modallabel'> Salary </span>
-                    <FloatLabel name="joinDate">
+                    <FloatLabel name="salary">
                       <Input
                         type='number'
                         className='Input'

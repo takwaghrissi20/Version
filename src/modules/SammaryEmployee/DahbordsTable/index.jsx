@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Dropdown } from 'antd';
+import { Button, Dropdown,Image } from 'antd';
 import AppAnimate from '../../../@crema/components/AppAnimate';
 import { StyledAnChar, StyledOrderTable } from '../../../styles/index.styled';
 import EmployeeView from "../../Model/EmployeeView";
@@ -124,11 +124,74 @@ const OrderTable = ({ orderData }) => {
       title: 'Join Date',
       dataIndex: 'joinDate',
       key: 'joinDate',
+      render: (text) => (
+        <div
+      style={{
+        backgroundColor: !text ? 'transparent' : 'transparent',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%',
+      }}
+    >
+      {!text ? <Image style={{width:"25px",height:"25px"}}src='../assets/images/nothing.png'></Image> : text}
+    </div>
+      ),
     },
+ 
     {
       title: 'End Contract',
       dataIndex: 'finishDate',
       key: 'finishDate',
+      render: (text) => (
+        <div
+      style={{
+        backgroundColor: !text ? 'transparent' : 'transparent',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%',
+      }}
+    >
+      {!text ? <Image style={{width:"25px",height:"25px"}}src='../assets/images/nothing.png'></Image> : text}
+    </div>
+      ),
+    },
+    {
+      title: 'Date Travel',
+      dataIndex: 'traveldate',
+      key: 'traveldate',
+      render: (text) => (
+        <div
+      style={{
+        backgroundColor: !text ? 'transparent' : 'transparent',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%',
+      }}
+    >
+      {!text ? <Image style={{width:"25px",height:"25px"}}src='../assets/images/nothing.png'></Image> : text}
+    </div>
+      ),
+    },
+    {
+      title: 'Travel End Date',
+      dataIndex: 'endTravelDate',
+      key: 'endTravelDate',
+      render: (text) => (
+        <div
+      style={{
+        backgroundColor: !text ? 'transparent' : 'transparent',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%',
+      }}
+    >
+      {!text ? <Image style={{width:"25px",height:"25px"}}src='../assets/images/nothing.png'></Image> : text}
+    </div>
+      ),
     },
     {
       title: 'Actions',
@@ -204,6 +267,7 @@ const OrderTable = ({ orderData }) => {
               projName={findIdData?.projName}
               findIdDataMatriel={findIdDataMatriel }
               findIdDataTravel={findIdDataTravel}
+              findIdData={findIdData}
 
               
             />

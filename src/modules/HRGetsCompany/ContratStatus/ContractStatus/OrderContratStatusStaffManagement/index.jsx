@@ -127,7 +127,6 @@ const OrderTable = ({ temployee, loading,user }) => {
   useEffect(() => {
     console.log("contractCategory 8888",contractCategory)
   }, [contractCategory]);
-  console.log("ttgggggaarrrr",contractCategory)
   //SelectionnerContract
   const SelectionnnerContrat = () => {
 

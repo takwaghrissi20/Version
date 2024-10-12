@@ -182,7 +182,6 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
     setIsDropdownOpen(value.trim() !== '');
   };
 
-  ////////////////////////////////////////////
   const fetchDataId = async (searchValue) => {
     try {
       const endPoint =

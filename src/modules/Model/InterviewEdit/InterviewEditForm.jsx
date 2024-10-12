@@ -791,7 +791,7 @@ Technical Evaluation*/ }
 Technical Evaluation*/ }
           <StyledContactFormContentItem>
             <StyledContactFormItemTitle>
-              <p className='SousTitle'>HR Evaluation && Decision</p>
+              <p className='SousTitle'>HR Evaluation And Decision</p>
 
               {/* <IntlMessages id='Recruitement.RequestorandRequired Profile' /> */}
             </StyledContactFormItemTitle>

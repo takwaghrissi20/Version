@@ -48,6 +48,7 @@ const ModalView = ({
         contratctCopy={contratctCopy}
         visaReady={visaReady}
         departement={departement}
+        findIdData={findIdData}
        
       
       />

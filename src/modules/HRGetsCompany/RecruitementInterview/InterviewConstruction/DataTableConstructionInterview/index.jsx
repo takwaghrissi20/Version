@@ -40,7 +40,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
   useEffect(() => {
     const updateTableHeight = () => {
       const pageHeight = window.innerHeight;
-      const tableHeight = pageHeight * 0.15;
+      const tableHeight = pageHeight * 0.35;
       setTableHeight(tableHeight);
     };
     window.addEventListener('resize', updateTableHeight);
@@ -385,54 +385,37 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
       dataIndex: 'notif',
       key: 'notif',
       render: (text, record) => {
-        if (record.notif === 5  || record?.hrDesion  ) {
+        if ((record.notif === 5 || record?.hrDesion) || record.notif === 55) {
           return (
             <StyledRecentPatientBadge
-            style={{
-           
-              backgroundColor:"#32CD32",
-              color:"white",
-              fontFamily:"inherit"
-            }}
+              style={{
+                backgroundColor: "#32CD32",
+                color: "white",
+                fontFamily: "inherit"
+              }}
             >
               Approved By HR Manager
             </StyledRecentPatientBadge>
           );
-        } 
-        if (!record?.hrDesion  && record?.hrDesion===500) {
+        }
+        if (record?.hrDesion === 500) {
           return (
             <StyledRecentPatientBadge
-            style={{
-           
-              backgroundColor:"#A7001E",
-              color:"white",
-              fontFamily:"inherit"
-            }}
+              style={{
+                backgroundColor: "#A7001E",
+                color: "white",
+                fontFamily: "inherit"
+              }}
             >
               Refuse By HR Manager
             </StyledRecentPatientBadge>
           );
-        } 
-
- 
-        // else if (record.notif === 6) {
-        //   return (
-        //     <StyledRecentPatientBadge
-        //       style={{
-        //         color: record.color,
-        //         backgroundColor: "red",
-        //         color: "white",
-        //         fontFamily: "inherit"
-        //       }}
-        //     >
-        //       Approved By HSE
-        //     </StyledRecentPatientBadge>
-        //   );
-        // }
-        // return null;
-      },
-     
+        }
+    
+        return null;
+      }
     },
+    
     {
       title: 'FeedbackCandidate',
       dataIndex: 'feedback',

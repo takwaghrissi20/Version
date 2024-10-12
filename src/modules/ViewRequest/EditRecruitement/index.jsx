@@ -46,7 +46,8 @@ const EditRecruitementAbove = () => {
   const chekedBod1 = location.state ? location.state.chekedBod1 : null
 
   console.log("signaturepolead", signaturepolead)
-  console.log("signatureBod2", signatureBod2)
+  console.log("signatureHod ", signatureHod)
+  console.log("dep", dep)
   const userRoles = localStorage.getItem("role");
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("name");
@@ -57,7 +58,27 @@ const EditRecruitementAbove = () => {
   const [chargement, setChargement] = useState("");
   const [checkedAliDescition, setCheckedAliDescition] = useState(false);
   const [checkedNidhalDescition, setCheckedNidhal] = useState(false);
+  const [newCheckedHod, setNewCheckedHod] = useState("false");
+  const [newNoCheckedHod, setNewNoCheckedHod] = useState("false");
 
+  function HandleHOD(e) {
+
+    setNewCheckedHod(e.target.checked)
+    if (e.target.checked) {
+      setNewNoCheckedHod(false);
+
+    }
+
+  }
+  function HandleNoHOD(e) {
+
+    setNewNoCheckedHod(e.target.checked)
+    if (e.target.checked) {
+      setNewCheckedHod(false);
+
+    }
+
+  }
   //Get profile By Email
   useEffect(() => {
     GetProfileEmployess()
@@ -127,14 +148,14 @@ const EditRecruitementAbove = () => {
           oDep: oDep,
           exDep: exDep,
           comentPlaner: comentPlaner,
-          signatureHod: null,
           signatureBod: null,
           signatureBod2: signaturepolead,
           signaturepolead: commentBOD1,
           notif: 20,
           status: "Not Approved By BOD",
-          chekedBod1:"false",
-          chekedBod2: chekedBod2
+          chekedBod1: "false",
+          chekedBod2: chekedBod2,
+          signatureHod: "true",
         })
       });
 
@@ -196,14 +217,14 @@ const EditRecruitementAbove = () => {
           oDep: oDep,
           exDep: exDep,
           comentPlaner: comentPlaner,
-          signatureHod: null,
           signatureBod: null,
           notif: 80,
           signatureBod2: commentBOD2,
           signaturepolead: signaturepolead,
           status: "Not Approved By BOD",
           chekedBod1: chekedBod1,
-          chekedBod2: "false"
+          chekedBod2: "false",
+          signatureHod: "true",
         })
       });
 
@@ -246,6 +267,10 @@ const EditRecruitementAbove = () => {
   const [newcertif, setNewcertif] = useState(certif);
   const [newexDep, setNewexDep] = useState(exDep);
   const [newoDep, setNewoDep] = useState(oDep);
+  ////////////////////////////////////////////////
+  const [newexDeppmo, setNewexDeppmo] = useState(false);
+  const [newoDeppmo, setNewoDeppmo] = useState(false);
+
   const [exDepPlanner, setExDepPlanner] = useState(false);
   const [oDepPlanner, setoDepPlanner] = useState(false);
   const [checkedBodAli, setCheckedBodAli] = useState(false);
@@ -274,6 +299,14 @@ const EditRecruitementAbove = () => {
 
     }
   }
+  function HandleexDeppmo(e) {
+    setNewexDeppmo(e.target.checked)
+    if (e.target.checked) {
+      setNewoDeppmo(false);
+
+    }
+  }
+
   //////
   function HandleexDepPlanner(e) {
     setExDepPlanner(e.target.checked)
@@ -293,7 +326,6 @@ const EditRecruitementAbove = () => {
   //////////////////////
 
   function HandleoDep(e) {
-
     setNewoDep(e.target.checked)
     if (e.target.checked) {
       setNewexDep(false);
@@ -301,6 +333,15 @@ const EditRecruitementAbove = () => {
     }
 
   }
+  function HandleoDeppmo(e) {
+    setNewoDeppmo(e.target.checked)
+    if (e.target.checked) {
+      setNewexDeppmo(false);
+
+    }
+
+  }
+
   function HandleBODAli(e) {
     setCheckedBodAli(e.target.checked)
     if (e.target.checked) {
@@ -538,10 +579,10 @@ const EditRecruitementAbove = () => {
           oDep: oDepPlanner,
           exDep: exDepPlanner,
           comentPlaner: comentPlanerUpdate,
-          signatureHod: null,
+          signatureHod: signatureHod,
           signatureBod: null,
           notif: 4,
-          status: "Ckeked By Planner "
+          status: "Ckeked By PMO"
 
 
         })
@@ -555,6 +596,78 @@ const EditRecruitementAbove = () => {
         const responseData = await response.text();
         openNotification('bottomRight')
         console.log("updataaaa planner", responseData)
+        setTimeout(() => {
+          window.location.reload();
+          navigate(-1)
+        }, 2000);
+        // navigate(-1)
+
+        //handleAddContactClose(true)
+      }
+
+      // Handle responseData if needed
+    } catch (error) {
+      console.error("Erreur lors de la récupération du Id :", error);
+    }
+  };
+  //
+  const UpdatePMO = async () => {
+
+    try {
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/update?id=${jobCode}&token=${token}`, {
+
+        method: 'PUT',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
+        },
+        body: JSON.stringify({
+
+          jobCode: jobCode,
+          dateInputRecrut: dateInputRecrut,
+          desiredDate: DesiredDate,
+          dep: dep,
+          idemp: idemp,
+          position: position,
+          recruttrequestDate: recruttrequestDate,
+          requestName: requestName,
+          requestedDicipline: requestedDicipline,
+          approuvedRecrutRequestNumber: 1,
+          projectName: projectName,
+          projRef: projRef,
+          totalNumber: Numbervacancies,
+          experience: Level,
+          nbExperience: nbExperience,
+          type: type,
+          affectedTo: affectedTo,
+          certif: certif,
+          bod: null,
+          oDep: newexDeppmo,
+          exDep: newoDeppmo,
+          comentPlaner: comentPlanerUpdate,
+          signatureHod: "true",
+          signatureBod: null,
+          notif: 4,
+          status: "Ckeked By PMO"
+
+
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+
+        const responseData = await response.text();
+        openNotification('bottomRight')
+        console.log("updataaaa planner", responseData)
+        setTimeout(() => {
+          window.location.reload();
+          navigate(-1)
+        }, 2000);
         // navigate(-1)
 
         //handleAddContactClose(true)
@@ -601,7 +714,7 @@ const EditRecruitementAbove = () => {
           oDep: oDep,
           exDep: exDep,
           comentPlaner: comentPlaner,
-          signatureHod: null,
+          signatureHod: "true",
           signatureBod: null,
           notif: 7,
           status: "Approved By Operation Manager"
@@ -672,7 +785,7 @@ const EditRecruitementAbove = () => {
           oDep: oDep,
           exDep: exDep,
           comentPlaner: comentPlaner,
-          signatureHod: null,
+          signatureHod: "false",
           signatureBod: null,
           notif: 70,
           status: "Not Approved By Operation Manager"
@@ -740,14 +853,15 @@ const EditRecruitementAbove = () => {
           oDep: oDep,
           exDep: exDep,
           comentPlaner: comentPlaner,
-          signatureHod: null,
+          signatureHod: "true",
           signatureBod: null,
           signatureBod2: signaturepolead,
           signaturepolead: commentBOD1,
           notif: 3,
           status: "Approved By BOD Ali",
-          chekedBod1:"true",
-          chekedBod2: chekedBod2
+          chekedBod1: "true",
+          chekedBod2: chekedBod2,
+
         })
       });
       if (!response.ok) {
@@ -810,14 +924,14 @@ const EditRecruitementAbove = () => {
           oDep: oDep,
           exDep: exDep,
           comentPlaner: comentPlaner,
-          signatureHod: null,
           signatureBod: null,
           signatureBod2: commentBOD2,
           signaturepolead: signaturepolead,
           notif: 8,
           status: "Approved By BOD Nidhal",
           chekedBod1: chekedBod1,
-          chekedBod2:"true"
+          chekedBod2: "true",
+          signatureHod: "true",
         })
       });
       if (!response.ok) {
@@ -1127,73 +1241,6 @@ const EditRecruitementAbove = () => {
               </StyledShadowWrapper>
             </Col>
           </AppRowContainer>
-
-
-          {(dep?.includes("Operation")) ?
-            <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-              <Col xs={24} md={6}>
-                <Typography.Title level={5}>PMO Controlling</Typography.Title>
-
-              </Col>
-              <Col xs={24} md={18}>
-                <StyledShadowWrapper>
-                  <AppRowContainer>
-                    <Col xs={24} md={12}>
-                      <Form.Item
-                        label='As per : '
-                        name='Asper' >
-
-                        <Checkbox checked={newexDep} onChange={HandleexDep}>
-                          Extra Deployment Schedule
-                        </Checkbox>
-                      </Form.Item>
-                    </Col>
-                    <Col xs={24} md={12}>
-                      <Form.Item
-                        label=' '
-                        name='Asper'
-
-                      >
-
-                        <Checkbox checked={newoDep} onChange={HandleoDep}>
-                          Original Deployment Schedule
-                        </Checkbox>
-
-                      </Form.Item>
-                    </Col>
-                    <Col xs={24} md={24}
-
-                    >
-                      <Form.Item
-                        label='PMO Comments'
-                        name='PlannerComments'
-
-
-                      >
-                        <Input
-                          style={{ paddingTop: "1rem", paddingBottom: "1rem" }}
-                          placeholder="PMO Comments"
-                          value={newcomentPlaner}
-                          onChange={() => setNewcomentPlaner()}
-
-
-                        />
-
-                      </Form.Item>
-                    </Col>
-
-
-
-                  </AppRowContainer>
-                </StyledShadowWrapper>
-              </Col>
-            </AppRowContainer>
-
-
-
-
-            : null}
-
 
 
 
@@ -1525,239 +1572,7 @@ const EditRecruitementAbove = () => {
               </StyledShadowWrapper>
             </Col>
           </AppRowContainer>
-          {/*Comment Bod 1 et BOD2*/}
-          {userRoles?.includes("bod") &&
-            <>
-              {username?.toLowerCase().includes("ali") && (
-                <></>
-                // <>
-                //   <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-                //     <Col xs={24} md={6}>
-                //       <Typography.Title level={5}> BOD Decision</Typography.Title>
-                //     </Col>
-                //     <Col xs={24} md={18}>
-                //       <StyledShadowWrapper>
-                //         <AppRowContainer>
-                //           {chekedBod2 === null || chekedBod2 === undefined && (
-                //             <p></p>
 
-                //           )}
-                //           {chekedBod2 === "true" && (
-                //             <>                       
-                //             <Col xs={24} md={18} >
-                //             <StyledInput>
-                //               <Form.Item
-                //                 label='Nidhal Decision'
-                //                 name='BODInputs'>
-                //                 <Checkbox
-                //                   checked={chekedBod2==="true"}
-                //                   readOnly>
-
-                //                   Yes
-                //                 </Checkbox>
-
-                //                 <Checkbox
-                //                  checked={chekedBod2==="false"}
-                //                  readOnly>
-                //                   No
-                //                 </Checkbox>
-
-                //               </Form.Item>
-                //             </StyledInput>
-                //           </Col>
-                //             </>
-                //           )}
-                //           <Col xs={24} md={18}>
-                //             <StyledInput>
-                //               <Form.Item
-                //                 label='Ali Decision'
-                //                 name='BODInputs'>
-                //                 <Checkbox
-                //                   checked={checkedBodAli}
-                //                    onChange={HandleBODAli}>
-
-                //                   Yes
-                //                 </Checkbox>
-
-                //                 <Checkbox
-                //                   checked={checkedNoBodAli} onChange={HandleBODNoAli}
-                //                 >
-                //                   No
-                //                 </Checkbox>
-
-                //               </Form.Item>
-                //             </StyledInput>
-                //           </Col>
-
-
-
-                //         </AppRowContainer>
-                //       </StyledShadowWrapper>
-                //     </Col>
-                //   </AppRowContainer>
-                // </>
-              )}
-              {username?.toLowerCase().includes("nidhal") && (
-                <p></p>
-                // <>
-                //   <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-                //     <Col xs={24} md={6}>
-                //       <Typography.Title level={5}> BOD Decision</Typography.Title>
-                //     </Col>
-                //     <Col xs={24} md={18}>
-                //       <StyledShadowWrapper>
-                //         <AppRowContainer>
-                       
-                //           {chekedBod1 === null || chekedBod1 === undefined && (
-                //             <p></p>
-
-                //           )}
-                //           {chekedBod1 === "true" && (
-                //             <>
-                          
-                //             <Col xs={24} md={18}>
-                //             <StyledInput>
-                //               <Form.Item
-                //                 label='Ali Decision'
-                //                 name='BODInputs'>
-                //                 <Checkbox
-                //                   checked={chekedBod1==="true"}
-                //                   readOnly
-                //                   >
-
-                //                   Yes
-                //                 </Checkbox>
-
-                //                 <Checkbox
-                //                  checked={chekedBod1==="false"}
-                   
-                //                    readOnly
-                //                 >
-                //                   No
-                //                 </Checkbox>
-
-                //               </Form.Item>
-                //             </StyledInput>
-                //           </Col>
-                //             </>
-                //           )}
-
-                //           <Col xs={24} md={18}>
-                //             <StyledInput>
-                //               <Form.Item
-                //                 label='Nidhal Decision'
-                //                 name='BODInputs'>
-                //                 <Checkbox
-                //                   checked={checkedBodNidhal} onChange={HandleBODNidhal}>
-
-                //                   Yes
-                //                 </Checkbox>
-
-                //                 <Checkbox
-                //                   checked={checkedNoBodNidhal} onChange={HandleBODNoNidhal}
-                //                 >
-                //                   No
-                //                 </Checkbox>
-
-                //               </Form.Item>
-                //             </StyledInput>
-                //           </Col>
-
-
-
-                //         </AppRowContainer>
-                //       </StyledShadowWrapper>
-                //     </Col>
-                //   </AppRowContainer>
-                // </>
-              )}
-              <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-                <Col xs={24} md={6}>
-                  <Typography.Title level={5}> Comments </Typography.Title>
-
-                </Col>
-                <Col xs={24} md={18}>
-                  <StyledShadowWrapper>
-                    <AppRowContainer>
-
-                      {/* {chargement ? (
-                   <Spin tip="Loading..........." />
-                 ) : ( */}
-                      {username?.toLowerCase().includes("ali") && (
-                        <>
-
-                          <Col xs={24} md={24}>
-                            <p>{username}:</p>
-
-                            {signatureBod2?.trim().length > 0 &&
-                              <Form.Item label='Comment' name='Comment Of Nidhal'>
-                                <Input
-                                  className='InputComment'
-                                  placeholder={signatureBod2}
-                                  readOnly
-                                />
-                              </Form.Item>
-
-                            }
-                            {signatureBod2 === null || signatureBod2 === undefined &&
-                              <p></p>
-                            }
-                            <Form.Item label='Comment' name='Comment'>
-                              <Input
-                                className='InputComment'
-                                placeholder="Comment"
-                                value={commentBOD1}
-                                onChange={(e) => setCommentBOD1(e.target.value)}
-                              />
-                            </Form.Item>
-                          </Col>
-                        </>
-                      )
-                      }
-
-                      {/* {chargement ? (
-                   <Spin tip="Loading..........." />
-                 ) : ( */}
-
-                      {username?.toLowerCase().includes("nidhal") && (
-                        <Col xs={24} md={24}>
-                          <p>{username}:</p>
-
-
-                          {signaturepolead?.trim().length > 0 &&
-                            <Form.Item label='Comment' name='Comment Of Nidhal'>
-                              <Input
-                                className='InputComment'
-                                placeholder={signaturepolead}
-                                readOnly
-                              />
-                            </Form.Item>
-
-
-                          }
-                          {signaturepolead === null || signaturepolead == undefined &&
-                            <p></p>
-                          }
-                          <Form.Item label='Comment' name='Comment'>
-                            <Input
-                              className='InputComment'
-                              placeholder="Comment"
-                              value={commentBOD2}
-                              onChange={(e) => setCommentBOD2(e.target.value)}
-                            />
-                          </Form.Item>
-                        </Col>
-                      )
-                      }
-
-
-
-                    </AppRowContainer>
-                  </StyledShadowWrapper>
-                </Col>
-              </AppRowContainer>
-            </>
-          }
           {(dep?.includes("Operation") && notif === 6 && (!userRoles?.includes("bod"))) || (dep?.includes("Operation") && notif === 7 && (!userRoles?.includes("bod")))
             ?
             <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
@@ -1878,15 +1693,304 @@ const EditRecruitementAbove = () => {
               </Col>
             </AppRowContainer>
 
-
-
-
             : null} */}
-          {/*uPDATE BOD */}
 
-          {((dep?.includes("Operation") && notif === 7
-            && (oDep === "true" || exDep === "true"))) || ((dep?.includes("Operation")
-              && notif === 4)) ? (
+
+          {(userRoles.includes("PMO") && !dep?.includes("Operation") ||
+            userRoles.includes("bod")
+          ) && (
+              <>
+                <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                  <Col xs={24} md={6}>
+                    <Typography.Title level={5}> Head of Department Inputs</Typography.Title>
+                  </Col>
+                  <Col xs={24} md={18}>
+                    <StyledShadowWrapper>
+                      <AppRowContainer>
+                        <Col xs={24} md={18}>
+                          <StyledInput>
+                            <Form.Item
+                              label='Head Of Departement Decision'
+                              name='HeadInputs'>
+                              <Checkbox checked={signatureHod === "true"}
+                                readOnly
+                              >
+
+                                Yes
+                              </Checkbox>
+
+                              <Checkbox
+                                checked={signatureHod === "false"}
+                                readOnly
+
+                              >
+                                No
+                              </Checkbox>
+
+                            </Form.Item>
+                          </StyledInput>
+                        </Col>
+
+
+
+                      </AppRowContainer>
+                    </StyledShadowWrapper>
+                  </Col>
+                </AppRowContainer>
+
+              </>
+            )
+          }
+          {/*Chek PMO */}
+          {/*Comment Bod 1 et BOD2*/}
+          {userRoles?.includes("bod") &&
+            <>
+              {username?.toLowerCase().includes("ali") && (
+                <></>
+                // <>
+                //   <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                //     <Col xs={24} md={6}>
+                //       <Typography.Title level={5}> BOD Decision</Typography.Title>
+                //     </Col>
+                //     <Col xs={24} md={18}>
+                //       <StyledShadowWrapper>
+                //         <AppRowContainer>
+                //           {chekedBod2 === null || chekedBod2 === undefined && (
+                //             <p></p>
+
+                //           )}
+                //           {chekedBod2 === "true" && (
+                //             <>                       
+                //             <Col xs={24} md={18} >
+                //             <StyledInput>
+                //               <Form.Item
+                //                 label='Nidhal Decision'
+                //                 name='BODInputs'>
+                //                 <Checkbox
+                //                   checked={chekedBod2==="true"}
+                //                   readOnly>
+
+                //                   Yes
+                //                 </Checkbox>
+
+                //                 <Checkbox
+                //                  checked={chekedBod2==="false"}
+                //                  readOnly>
+                //                   No
+                //                 </Checkbox>
+
+                //               </Form.Item>
+                //             </StyledInput>
+                //           </Col>
+                //             </>
+                //           )}
+                //           <Col xs={24} md={18}>
+                //             <StyledInput>
+                //               <Form.Item
+                //                 label='Ali Decision'
+                //                 name='BODInputs'>
+                //                 <Checkbox
+                //                   checked={checkedBodAli}
+                //                    onChange={HandleBODAli}>
+
+                //                   Yes
+                //                 </Checkbox>
+
+                //                 <Checkbox
+                //                   checked={checkedNoBodAli} onChange={HandleBODNoAli}
+                //                 >
+                //                   No
+                //                 </Checkbox>
+
+                //               </Form.Item>
+                //             </StyledInput>
+                //           </Col>
+
+
+
+                //         </AppRowContainer>
+                //       </StyledShadowWrapper>
+                //     </Col>
+                //   </AppRowContainer>
+                // </>
+              )}
+              {username?.toLowerCase().includes("nidhal") && (
+                <p></p>
+                // <>
+                //   <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                //     <Col xs={24} md={6}>
+                //       <Typography.Title level={5}> BOD Decision</Typography.Title>
+                //     </Col>
+                //     <Col xs={24} md={18}>
+                //       <StyledShadowWrapper>
+                //         <AppRowContainer>
+
+                //           {chekedBod1 === null || chekedBod1 === undefined && (
+                //             <p></p>
+
+                //           )}
+                //           {chekedBod1 === "true" && (
+                //             <>
+
+                //             <Col xs={24} md={18}>
+                //             <StyledInput>
+                //               <Form.Item
+                //                 label='Ali Decision'
+                //                 name='BODInputs'>
+                //                 <Checkbox
+                //                   checked={chekedBod1==="true"}
+                //                   readOnly
+                //                   >
+
+                //                   Yes
+                //                 </Checkbox>
+
+                //                 <Checkbox
+                //                  checked={chekedBod1==="false"}
+
+                //                    readOnly
+                //                 >
+                //                   No
+                //                 </Checkbox>
+
+                //               </Form.Item>
+                //             </StyledInput>
+                //           </Col>
+                //             </>
+                //           )}
+
+                //           <Col xs={24} md={18}>
+                //             <StyledInput>
+                //               <Form.Item
+                //                 label='Nidhal Decision'
+                //                 name='BODInputs'>
+                //                 <Checkbox
+                //                   checked={checkedBodNidhal} onChange={HandleBODNidhal}>
+
+                //                   Yes
+                //                 </Checkbox>
+
+                //                 <Checkbox
+                //                   checked={checkedNoBodNidhal} onChange={HandleBODNoNidhal}
+                //                 >
+                //                   No
+                //                 </Checkbox>
+
+                //               </Form.Item>
+                //             </StyledInput>
+                //           </Col>
+
+
+
+                //         </AppRowContainer>
+                //       </StyledShadowWrapper>
+                //     </Col>
+                //   </AppRowContainer>
+                // </>
+              )}
+              <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                <Col xs={24} md={6}>
+                  <Typography.Title level={5}> Comments </Typography.Title>
+
+                </Col>
+                <Col xs={24} md={18}>
+                  <StyledShadowWrapper>
+                    <AppRowContainer>
+
+                      {/* {chargement ? (
+                   <Spin tip="Loading..........." />
+                 ) : ( */}
+                      {username?.toLowerCase().includes("ali") && (
+                        <>
+
+                          <Col xs={24} md={24}>
+
+
+                            {signatureBod2?.trim().length > 0 &&
+                              <Form.Item label='Comment' name='Comment Of Nidhal'>
+                                <Input
+                                  className='InputComment'
+                                  placeholder={signatureBod2}
+                                  readOnly
+                                />
+                              </Form.Item>
+
+                            }
+                            {signatureBod2 === null || signatureBod2 === undefined &&
+                              <p></p>
+                            }
+                            <Form.Item label='Comment' name='Comment'>
+                              <Input
+                                className='InputComment'
+                                placeholder="Comment"
+                                value={commentBOD1}
+                                onChange={(e) => setCommentBOD1(e.target.value)}
+                              />
+                            </Form.Item>
+                          </Col>
+                        </>
+                      )
+                      }
+
+                      {/* {chargement ? (
+                   <Spin tip="Loading..........." />
+                 ) : ( */}
+
+                      {username?.toLowerCase().includes("nidhal") && (
+                        <Col xs={24} md={24}>
+
+
+
+                          {signaturepolead?.trim().length > 0 &&
+                            <Form.Item label='Comment' name='Comment Of Nidhal'>
+                              <Input
+                                className='InputComment'
+                                placeholder={signaturepolead}
+                                readOnly
+                              />
+                            </Form.Item>
+
+
+                          }
+                          {signaturepolead === null || signaturepolead == undefined &&
+                            <p></p>
+                          }
+                          <Form.Item label='Comment' name='Comment'>
+                            <Input
+                              className='InputComment'
+                              placeholder="Comment"
+                              value={commentBOD2}
+                              onChange={(e) => setCommentBOD2(e.target.value)}
+                            />
+                          </Form.Item>
+                        </Col>
+                      )
+                      }
+                          {/* Comment bod bod*/}
+
+
+
+                    </AppRowContainer>
+                  </StyledShadowWrapper>
+                </Col>
+              </AppRowContainer>
+            </>
+          }
+
+
+
+          {(((dep?.includes("Operation") &&
+            (notif === 7 || notif === 3 || notif === 8) &&
+            ((oDep === "true" && exDep === "false") ||
+              (oDep === "false" && exDep === "true"))) ||
+            (!dep?.includes("Operation") &&
+              (notif === 4) &&
+              ((oDep === "true" && exDep === "false") ||
+                (oDep === "false" && exDep === "true")))
+
+
+          )
+          ) ? (
             <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
               <Col xs={24} md={6}>
                 <Typography.Title level={5}>PMO Controlling</Typography.Title>
@@ -1896,16 +2000,14 @@ const EditRecruitementAbove = () => {
                   <AppRowContainer>
                     <Col xs={24} md={12}>
                       <Form.Item label="As per :" name="Asper">
-                        <Checkbox checked={exDep === "true"}
-                          readOnly>
+                        <Checkbox checked={exDep === "true"} readOnly>
                           Extra Deployment Schedule
                         </Checkbox>
                       </Form.Item>
                     </Col>
                     <Col xs={24} md={12}>
                       <Form.Item label=" " name="Asper">
-                        <Checkbox checked={oDep === "true"}
-                          readOnly>
+                        <Checkbox checked={oDep === "true"} readOnly>
                           Original Deployment Schedule
                         </Checkbox>
                       </Form.Item>
@@ -1924,81 +2026,95 @@ const EditRecruitementAbove = () => {
               </Col>
             </AppRowContainer>
           ) : null}
+          {(
+            (userRoles.includes("PMO") && signatureHod === "true" && !dep.includes("Operation")) ||
+            (userRoles.includes("PMO") && signatureHod === "true" && dep.includes("Operation") && position.includes("Operation")) ||
+            (userRoles.includes("PMO") && signatureHod === "null" && dep.includes("Operation") && position.includes("Leader"))
+          ) && (
+              <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+                <Col xs={24} md={6}>
+                  <Typography.Title level={5}>PMO Controlling</Typography.Title>
+                </Col>
+                <Col xs={24} md={18}>
+                  <StyledShadowWrapper>
+                    <AppRowContainer>
+                      <Col xs={24} md={12}>
+                        <Form.Item label="As per :" name="Asper">
+                          <Checkbox checked={newexDeppmo} onChange={HandleexDeppmo}>
+                            Extra Deployment Schedule
+                          </Checkbox>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
+                        <Form.Item label=" " name="Asper">
+                          <Checkbox checked={newoDeppmo} onChange={HandleoDeppmo}>
+                            Original Deployment Schedule
+                          </Checkbox>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={24}>
+                        <Form.Item label="PMO Comments" name="PlannerComments">
+                          <Input
+                            placeholder="PMO Comments"
+                            value={newcomentPlaner}
+                            onChange={e => setNewcomentPlaner(e.target.value)}
+                            className="InputComment"
+                          />
+                        </Form.Item>
+                      </Col>
+                    </AppRowContainer>
+                  </StyledShadowWrapper>
+                </Col>
+              </AppRowContainer>
+            )}
+
+
+
+          {/**/}
+
+
 
           {/*End uPDATE BOD */}
+
           {/* <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-        <Col xs={24} md={6}>
-          <Typography.Title level={5}> Head of Department Inputs</Typography.Title>
-        </Col>
-        <Col xs={24} md={18}>
-          <StyledShadowWrapper>
-            <AppRowContainer>
-              <Col xs={24} md={18}>
-                <StyledInput>
-                  <Form.Item
-                    label='Head Of Departement Decision'
-                    name='HeadInputs'>
-                    <Checkbox checked={newCheckedHod} onChange={HandleHOD}>
+            <Col xs={24} md={6}>
+              <Typography.Title level={5}> Head of Department Inputs</Typography.Title>
+            </Col>
+            <Col xs={24} md={18}>
+              <StyledShadowWrapper>
+                <AppRowContainer>
+                  <Col xs={24} md={18}>
+                    <StyledInput>
+                      <Form.Item
+                        label='Head Of Departement Decision'
+                        name='HeadInputs'>
+                        <Checkbox checked={newCheckedHod} onChange={HandleHOD}>
 
-                      Yes
-                    </Checkbox>
+                          Yes
+                        </Checkbox>
 
-                    <Checkbox
+                        <Checkbox
+                          checked={newNoCheckedHod}
+                           onChange={HandleNoHOD}
+                        >
+                          No
+                        </Checkbox>
 
-                    >
-                      No
-                    </Checkbox>
-
-                  </Form.Item>
-                </StyledInput>
-              </Col>
-
-
-
-            </AppRowContainer>
-          </StyledShadowWrapper>
-        </Col>
-      </AppRowContainer>
-
-
-      <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-
-      <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-        <Col xs={24} md={6}>
-          <Typography.Title level={5}>Decision BOD</Typography.Title>
-
-        </Col>
-        <Col xs={24} md={18}>
-          <StyledShadowWrapper>
-            <AppRowContainer>
-              <Col xs={24} md={18}>
-                <StyledInput>
-                  <Form.Item
-                    label='Executive Directors Approval'
-                    name='DirectorsApproval'>
-                    <Checkbox checked={newCheckedBod} onChange={HandleBOD}>
-
-                      Yes
-                    </Checkbox>
-                    <Checkbox
-                    // checked={newCheckedBod} onChange={HandleBOD}
-                    >
-                      No
-                    </Checkbox>
-
-                  </Form.Item>
-                </StyledInput>
-              </Col>
+                      </Form.Item>
+                    </StyledInput>
+                  </Col>
 
 
 
-            </AppRowContainer>
-          </StyledShadowWrapper>
+                </AppRowContainer>
+              </StyledShadowWrapper>
+            </Col>
+          </AppRowContainer> */}
 
 
-        </Col>
+          <Divider style={{ marginTop: 16, marginBottom: 16 }} />
 
-      </AppRowContainer> */}
+
 
 
           <Space
@@ -2013,13 +2129,31 @@ const EditRecruitementAbove = () => {
 
 
 
-            {userRoles?.includes("PMO") ?
+            {(userRoles.includes("PMO") && !dep?.includes("Operation")) ?
+
+              <>
+                <Button onClick={() => UpdatePMO()}>
+                  Save
+                </Button>
+                <Button onClick={Back}>
+                  <FcDownLeft style={{ marginRight: "5px", marginTop: "5px" }} />
+                  Return</Button>
+
+              </>
+
+              : null
+
+            }
+            {(userRoles.includes("PMO") && dep?.includes("Operation")) ?
 
               <>
                 <Button onClick={() => UpdatePlanner()}>
                   Save
                 </Button>
-                <Button onClick={Back}>Cancel</Button>
+                <Button onClick={Back}>
+                  <FcDownLeft style={{ marginRight: "5px", marginTop: "5px" }} />
+                  Return</Button>
+
               </>
 
               : null
@@ -2039,7 +2173,7 @@ const EditRecruitementAbove = () => {
                   Refuse
                 </Button>
                 <Button onClick={Back}>
-                  Cancel
+                  Return
                 </Button>
               </>
 
@@ -2047,8 +2181,8 @@ const EditRecruitementAbove = () => {
             }
             {userRoles.includes("bod") && username?.toLowerCase().includes("ali") ?
               <>
-        <Button style={{ color: "green", borderColor: "green" }}
-         onClick={() => UpdateBOD()}>
+                <Button style={{ color: "green", borderColor: "green" }}
+                  onClick={() => UpdateBOD()}>
                   Approve
                 </Button>
                 <Button style={{ color: "red", borderColor: "red" }} onClick={() => CancelRecruitementBod()}>
@@ -2062,8 +2196,8 @@ const EditRecruitementAbove = () => {
             }
             {userRoles.includes("bod") && username?.toLowerCase().includes("nidhal") ?
               <>
-                <Button style={{ color: "green", borderColor: "green" }} 
-                onClick={() => UpdateBODNIDHAL()}>
+                <Button style={{ color: "green", borderColor: "green" }}
+                  onClick={() => UpdateBODNIDHAL()}>
                   Approve NIDHAL
                 </Button>
                 <Button style={{ color: "red", borderColor: "red" }} onClick={() => CancelRecruitementBodNIDHA()}>

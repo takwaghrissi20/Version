@@ -518,7 +518,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
           feedback: findInterviewConstruction?.feedback,
           agreedJoinedDate: findInterviewConstruction?.agreedJoinedDate,
           diversityTal: selectedDiversity,
-
+      
 
 
 

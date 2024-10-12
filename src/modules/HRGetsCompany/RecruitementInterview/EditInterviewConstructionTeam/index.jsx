@@ -1414,7 +1414,7 @@ const EditInterviewConstruction = () => {
             style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
           >
             <Button onClick={goBack}
-            >Cancel</Button>
+            >Return</Button>
             <Button onClick={Update}
             >Save</Button>
           </Space>

@@ -405,7 +405,9 @@ const UploadContractList = () => {
         >
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <div>
-              <Typography.Title level={4}>Contract and Financial Data</Typography.Title>
+              <Typography.Title level={4}>Contract and Financial Data
+                
+              </Typography.Title>
             </div>
           </div>
           <Divider style={{ marginTop: 16, marginBottom: 16 }} />

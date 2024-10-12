@@ -13,9 +13,8 @@ import AppCard from '../../../@crema/components/AppCard';
 import AppsHeader from '../../../@crema/components/AppsContainer/AppsHeader';
 import EmployeeInformationConstruction from './EmployeeInformationConstructionStaff'
 import { useLocation } from 'react-router-dom';
+import { FcDownLeft } from "react-icons/fc";
 const AddEmployeesIdConstructionStaff = ({
-
-
 }) => {
   const location = useLocation();
 
@@ -53,10 +52,13 @@ const AddEmployeesIdConstructionStaff = ({
       if (!contentType || !contentType.includes('application/json')) {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
+      if (response.ok) {
 
       const data = await response.json();
       setListInterview(data)
-     
+
+      }
+    
 
     } catch (error) {
       console.error('Erreur lors de la récupération des données:', error);

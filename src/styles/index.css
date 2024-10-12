@@ -770,13 +770,7 @@ z-index: 100;
 
 }
 
-.row-red {
-  color: red !important;
-  background-color: #ECF8F6;
 
-
-  /* background-color:#C0B198; */
-}
 
 .row-brown {
   background-color: #F1F1D3;
@@ -1497,6 +1491,13 @@ opacity: 0.5;
 }
 .row-bod:hover {
   background-color:#9AC8EB;
+  animation: none;
+}
+.row-pmo{
+  animation: blink 1s infinite;   
+}
+.row-pmo:hover {
+  background-color:red;
   animation: none;
 }
 @media screen and (max-width: 750px) and (min-width: 300px) {

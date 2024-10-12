@@ -59,6 +59,7 @@ const ViewInformationForm = (props) => {
     gender,
     phoneNumber,
     familyStatus,
+    nbchildren,
     residenceAdress,
     arResidenceAdress,
     passportnumber,
@@ -88,6 +89,7 @@ const ViewInformationForm = (props) => {
     duration,
     primeProductivity,
     category,
+    findIdInterview
 
   } = props;
 
@@ -101,67 +103,74 @@ const ViewInformationForm = (props) => {
       setUserImage(URL.createObjectURL(acceptedFiles[0]));
     },
   });
+  console.log("salary testtt salary", findIdInterview)
+  console.log("salary testtt salary 222", dailyRate)
   const SaveVisa = async () => {
-  
-        try {
-    
-          const endPoint =
-            process.env.NODE_ENV === "development"
-              ? "https://dev-gateway.gets-company.com"
-              : "";
-    
-          const requestBody = {
-         
-           idVisa:LastIdIncremente,
-           category:"Construction Staff",     
-           departement:departement,
-           name:name,
-           passportnumber:passportnumber,
-           passportSubmitdate:passportSubmitdate,
-           position:position,
-           projName:projName,        
-           type_Emp:type_Emp,
-           toApplyForVisa:"true"
+
+    try {
+
+      const endPoint =
+        process.env.NODE_ENV === "development"
+          ? "https://dev-gateway.gets-company.com"
+          : "";
+
+      const requestBody = {
+
+        idVisa: LastIdIncremente,
+        category: "Construction Staff",
+        departement: departement,
+        name: name,
+        passportnumber: passportnumber,
+        passportSubmitdate: passportSubmitdate,
+        position: position,
+        projName: projName,
+        type_Emp: type_Emp,
+        toApplyForVisa: "true",
+        dailyRate: findIdInterview?.dailyRate,
+        salary: findIdInterview?.propsedsalary,
+        finishDate:finishDate,
+        joinDate:joinDate
 
 
-    
-          
-          };
-          const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/add?token=${token}`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(requestBody)
-          });
-    
-          // Gérer la réponse du serveur
-          if (!response.ok) {
-           alert("Request failed")
-            throw new Error('La requête a échoué avec le code ' + response.status);
-    
-          }
-    
-          const contentType = response.headers.get('content-type');
-          if (!contentType || !contentType.includes('application/json')) {
-            throw new TypeError("La réponse n'est pas au format JSON");
-          }
-          const data = await response.json();
-          
-          console.log("lastIdffffff",lastId)
-           console.log("datavisa",data)
-    
-          // handleAddContactClose()
-          // Traiter la réponse de l'API si nécessaire
-        } catch (error) {
-          console.error('Erreur lors de la récupération des données:', error);
-        }
-    
+
       };
- 
-      const LastIdIncremente = lastId + 1
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/visa/add?token=${token}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      // Gérer la réponse du serveur
+      if (!response.ok) {
+        alert("Request failed")
+        throw new Error('La requête a échoué avec le code ' + response.status);
+
+      }
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("La réponse n'est pas au format JSON");
+      }
+      if (response.ok) {
+      const data = await response.json();
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    }
+
+      // handleAddContactClose()
+      // Traiter la réponse de l'API si nécessaire
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données:', error);
+    }
+
+  };
+
+  const LastIdIncremente = lastId + 1
   const SaveEmployees = async () => {
-    
+
     try {
       const endPoint =
         process.env.NODE_ENV === "development"
@@ -178,6 +187,7 @@ const ViewInformationForm = (props) => {
         gender,
         phoneNumber,
         familyStatus,
+        nbchildren,
         residenceAdress,
         arResidenceAdress,
         passportnumber,
@@ -196,8 +206,8 @@ const ViewInformationForm = (props) => {
         endTravelDate,
         destination,
         arDestination,
-        salary,
-        dailyRate,
+        dailyRate: findIdInterview?.dailyRate,
+        salary: findIdInterview?.propsedsalary,
         contractType,
         emergencyName,
         emergencyRelation,
@@ -221,7 +231,6 @@ const ViewInformationForm = (props) => {
       if (!response.ok) {
         setShowAlertError(true)
         throw new Error('La requête a échoué avec le code ' + response.status);
-
       }
 
       const contentType = response.headers.get('content-type');
@@ -229,7 +238,6 @@ const ViewInformationForm = (props) => {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
       const data = await response.json();
-      console.log("tetsttttttsataempT",data)
       setData(data)
       setPasspordDate(data.passportSubmitdate)
       setCompanyTypepdf(data.companyType)
@@ -239,15 +247,22 @@ const ViewInformationForm = (props) => {
       setArPositionpdf(data.arPosition)
       setLastId(data.id)
       setShowAlert(true);
-      if(data.type_Emp==="Site"){
-        console.log("data.type_EmpConstruction",data.type_Emp)
+  
+      setTimeout(() => {
+        handleAddContactClose();
+        window.location.reload();
+      }, 1500);
+
+      if (data.type_Emp === "Site") {
+        console.log("data.type_EmpConstruction", data.type_Emp)
         SaveVisa()
       }
-     
+
+
       // handleAddContactClose()
       // Traiter la réponse de l'API si nécessaire
     } catch (error) {
-      console.error('Erreur lors de la récupération des données:', error);
+      console.error('Erreur lors de la récupération des données EmpT:', error);
     }
   };
   useEffect(() => {
@@ -259,8 +274,8 @@ const ViewInformationForm = (props) => {
   useEffect(() => {
     // Set grayBackground to true when generateBtnEnabled is false
     setGrayBackground(!generateBtnEnabled);
-  }, [generateBtnEnabled]);
-  
+  }, [generateBtnEnabled, findIdInterview]);
+
 
 
 
@@ -397,6 +412,19 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
+                <span className='modallabel'>#Children :</span>
+                <FloatLabel name="nbchildren">
+                  <Input
+                    className='Input'
+                    value={nbchildren}
+                    classNames="ViewInput"
+                    placeholder="#children"
+                    readOnly={true}
+                  />
+                </FloatLabel>
+              </Form.Item>
+
+              <Form.Item className='form-field'>
                 <span className='modallabel'> Residence Address :</span>
 
                 <FloatLabel name="residenceAdress">
@@ -474,9 +502,9 @@ const ViewInformationForm = (props) => {
             </StyledContactFormItemTitle>
             <StyledContactFormContentField>
               <Form.Item className='form-field'>
-              <span className='modallabel'>Position To be filled :</span>
-           
-                <FloatLabel  name="position">
+                <span className='modallabel'>Position To be filled :</span>
+
+                <FloatLabel name="position">
                   <Input
                     className='Input'
                     value={position}
@@ -487,8 +515,8 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
-              <span className='modallabel'>Arabic Position To be filled :</span>
-                <FloatLabel  name="arPosition">
+                <span className='modallabel'>Arabic Position To be filled :</span>
+                <FloatLabel name="arPosition">
                   <Input
                     className='Input'
                     value={arPosition}
@@ -499,8 +527,8 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
-              <span className='modallabel'>Departement :</span>
-                <FloatLabel  name="departement">
+                <span className='modallabel'>Departement :</span>
+                <FloatLabel name="departement">
                   <Input
                     className='Input'
                     value={departement}
@@ -511,9 +539,8 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
-              <span className='modallabel'> Employee Type :</span>
-             
-                <FloatLabel  name="type_Emp">
+                <span className='modallabel'> Employee Type :</span>
+                <FloatLabel name="type_Emp">
                   <Input
                     className='Input'
                     value={type_Emp}
@@ -522,9 +549,11 @@ const ViewInformationForm = (props) => {
                   />
                 </FloatLabel>
               </Form.Item>
+
+          
               <Form.Item className='form-field'>
-              <span className='modallabel'> Project Name :</span>
-              
+                <span className='modallabel'> Project Name :</span>
+
                 <FloatLabel name="projName">
                   <Input
                     className='Input'
@@ -535,9 +564,9 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
-              <span className='modallabel'> E-mail Address :</span>
-              
-                <FloatLabel  name="email">
+                <span className='modallabel'> E-mail Address :</span>
+
+                <FloatLabel name="email">
                   <Input
                     className='Input'
                     value={email}
@@ -569,8 +598,8 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item> */}
               <Form.Item className='form-field'>
-              <span className='modallabel'> Company Type :</span>
-                <FloatLabel  name="companyType">
+                <span className='modallabel'> Company Type :</span>
+                <FloatLabel name="companyType">
                   <Input
                     className='Input'
                     value={companyType}
@@ -579,34 +608,68 @@ const ViewInformationForm = (props) => {
                   />
                 </FloatLabel>
               </Form.Item>
-              <Form.Item className='form-field'>
-              <span className='modallabel'>Travel Date :</span>
-             
-                <FloatLabel  name="traveldate">
-                  <Input
-                    className='Input'
-                    value={traveldate}
-                    placeholder="Travel Date"
-                    readOnly={true}
-                  />
-                </FloatLabel>
-              </Form.Item>
-              <Form.Item className='form-field'>
-              <span className='modallabel'>Travel End Date :</span>
+                  {/*emp type*/}
+                  {type_Emp === "Office" && (
+                <>
+                  <Form.Item className='form-field'>
+                    <span className='modallabel'> Join Date :</span>
+                    <FloatLabel name="joinDate">
+                      <Input
+                       className='Input'
+                       value={joinDate}
+                       placeholder="Join Date"
+                       readOnly={true}
+                      />
+                    </FloatLabel>
+                  </Form.Item>
+                  <Form.Item className='form-field'>
+                    <span className='modallabel'> Finish Date :</span>
+                    <FloatLabel name="finishDate">
+                      <Input
+                       className='Input'
+                       value={finishDate}
+                       placeholder="Finish Date"
+                       readOnly={true}
+                      />
+                    </FloatLabel>
+                  </Form.Item>
+                </>
+
+              )}
               
-                <FloatLabel  name="endTravelDate">
-                  <Input
-                    className='Input'
-                    value={endTravelDate}
-                    placeholder="Travel End Date"
-                    readOnly={true}
-                  />
-                </FloatLabel>
-              </Form.Item>
+              {type_Emp === "Site" || type_Emp === "Office & Site" && (
+                <>
+                  <Form.Item className='form-field'>
+                    <span className='modallabel'>Travel Date :</span>
+
+                    <FloatLabel name="traveldate">
+                      <Input
+                        className='Input'
+                        value={traveldate}
+                        placeholder="Travel Date"
+                        readOnly={true}
+                      />
+                    </FloatLabel>
+                  </Form.Item>
+                  <Form.Item className='form-field'>
+                    <span className='modallabel'>Travel End Date :</span>
+
+                    <FloatLabel name="endTravelDate">
+                      <Input
+                        className='Input'
+                        value={endTravelDate}
+                        placeholder="Travel End Date"
+                        readOnly={true}
+                      />
+                    </FloatLabel>
+                  </Form.Item>
+                </>
+              )}
+{/*END emp type*/}
               <Form.Item className='form-field'>
-              <span className='modallabel'> Location :</span>
-             
-                <FloatLabel  name="destination">
+                <span className='modallabel'> Location :</span>
+
+                <FloatLabel name="destination">
                   <Input
                     className='Input'
                     value={destination}
@@ -616,9 +679,9 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
-              <span className='modallabel'> Arabic Location:</span>
-              
-                <FloatLabel  name="arDestination">
+                <span className='modallabel'> Arabic Location:</span>
+
+                <FloatLabel name="arDestination">
                   <Input
                     className='Input'
                     value={destination}
@@ -650,9 +713,9 @@ const ViewInformationForm = (props) => {
                   />
                 </FloatLabel>
               </Form.Item> */}
-              <Form.Item className='form-field'>
-              <span className='modallabel'> Contrat Type :</span>
-             
+              {/* <Form.Item className='form-field'>
+                <span className='modallabel'> Contrat Type :</span>
+
                 <FloatLabel name="contractType">
                   <Input
                     className='Input'
@@ -661,10 +724,10 @@ const ViewInformationForm = (props) => {
                     readOnly={true}
                   />
                 </FloatLabel>
-              </Form.Item>
+              </Form.Item> */}
               <Form.Item className='form-field'>
-              <span className='modallabel'> Duration:</span>
-                <FloatLabel  name="duration">
+                <span className='modallabel'> Duration:</span>
+                <FloatLabel name="duration">
                   <Input
                     className='Input'
                     value={duration}
@@ -684,8 +747,8 @@ const ViewInformationForm = (props) => {
             </StyledContactFormItemTitle>
             <StyledContactFormContentField>
               <Form.Item className='form-field'>
-              <span className='modallabel'> Emergency Full Name:</span>
-                <FloatLabel  name="emergencyName">
+                <span className='modallabel'> Emergency Full Name:</span>
+                <FloatLabel name="emergencyName">
                   <Input
                     className='Input'
                     value={emergencyName}
@@ -695,8 +758,8 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
-              <span className='modallabel'> RelationShip :</span>
-                <FloatLabel  name="emergencyRelation">
+                <span className='modallabel'> RelationShip :</span>
+                <FloatLabel name="emergencyRelation">
                   <Input
                     className='Input'
                     placeholder="RelationShip"
@@ -706,8 +769,8 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
-              <span className='modallabel'> Emergency Telephone :</span>
-                <FloatLabel  name="phoneEmergency">
+                <span className='modallabel'> Emergency Telephone :</span>
+                <FloatLabel name="phoneEmergency">
                   <Input
                     className='Input'
                     value={phoneEmergency}
@@ -743,10 +806,11 @@ const ViewInformationForm = (props) => {
           </StyledContactFormContentItem>
 
         </StyledContactFormContent>
-        <h2 style={{ textAlign: "center", fontWeight: "bold", paddingBottom: "25px", color: "#317AC1" }}>Please Review The employee Information </h2> 
+        <h2 style={{ textAlign: "center", fontWeight: "bold", paddingBottom: "25px", color: "#317AC1" }}>
+          Please Review The employee Information </h2>
 
 
-        <StyledContactFormFooter style={{marginTop:"20px"}}>
+        <StyledContactFormFooter style={{ marginTop: "20px" }}>
           <StyledContactFormBtn
             type='primary'
             ghost
@@ -756,7 +820,7 @@ const ViewInformationForm = (props) => {
           </StyledContactFormBtn>
 
           <StyledContactValidationFormBtn
-           type='Button'
+            type='Button'
             ghost
             onClick={SaveEmployees}>
 

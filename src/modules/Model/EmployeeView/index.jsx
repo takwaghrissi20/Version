@@ -30,7 +30,9 @@ const ModalView = ({
   projName,
   destination,
   findIdDataMatriel,
-  findIdDataTravel
+  findIdDataTravel,
+
+  findIdData
 
 }) => {
 
@@ -70,6 +72,7 @@ const ModalView = ({
         destination={destination}
         findIdDataMatriel={findIdDataMatriel}
         findIdDataTravel={findIdDataTravel}
+        findIdData={findIdData}
      
 
       />

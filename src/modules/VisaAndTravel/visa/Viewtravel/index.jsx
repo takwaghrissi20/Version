@@ -6,7 +6,7 @@ import {
   StyledShadowWrapper,
 } from './index.styled';
 import FloatLabel from "./FloatLabel";
-
+import { FcDownLeft } from "react-icons/fc";
 const { Option } = Select;
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
@@ -38,7 +38,7 @@ const ViewTravel = () => {
       }
       if (response.ok) {
         const responseData = await response.json();
-     
+
         setTravel(responseData)
         setGetsId(responseData?.getsId)
 
@@ -109,7 +109,7 @@ const ViewTravel = () => {
                   <Form.Item label='Gets Id' name='Gets Id '>
                     <Input
                       className='Input'
-                     
+
                       placeholder={travel?.getsId}
                     />
                   </Form.Item>
@@ -118,7 +118,7 @@ const ViewTravel = () => {
                   <Form.Item label='Jos Id' name='Jos Id'>
                     <Input
                       className='Input'
-                     
+
                       placeholder={travel?.josId}
 
 
@@ -165,212 +165,217 @@ const ViewTravel = () => {
                 </Col>
 
               </AppRowContainer>
-           
+
             </StyledShadowWrapper>
           </Col>
         </AppRowContainer>
         <Divider style={{ marginTop: 16, marginBottom: 16 }} />
+        <AppRowContainer>
+          <Col xs={24} md={6}>
+            <Typography.Title level={5}>Travel Details</Typography.Title>
+          </Col>
+          <Col xs={24} md={18}>
+            <StyledShadowWrapper>
               <AppRowContainer>
-                <Col xs={24} md={6}>
-                  <Typography.Title level={5}>Travel Details</Typography.Title>
+                <Col xs={24} md={12}>
+                  <Form.Item
+                    name="MobDemob"
+                    label="Mobilization / Demobilization"
+
+                  >
+                    <Input
+                      readOnly={true}
+                      className='Input'
+                      placeholder={travel?.goBack ? 'Demobilization' : 'Mobilization'} />
+                  </Form.Item>
                 </Col>
-                <Col xs={24} md={18}>
-                  <StyledShadowWrapper>
-                    <AppRowContainer>
-                      <Col xs={24} md={12}>
-                        <Form.Item
-                          name="MobDemob"
-                          label="Mobilization / Demobilization"
-
-                        >
-                          <Input
-                            readOnly={true}
-                            className='Input'
-                            placeholder={travel?.goBack ? 'Demobilization' : 'Mobilization'} />
-                        </Form.Item>
-                      </Col>
-                      <Col xs={24} md={12}>
-                        <Form.Item label='Date Mobilization' name='mobDate'
-                        >
-                          <Input
-                            readOnly={true}
-                            className='Input'
-                            placeholder={travel?.dateMob} />
-                        </Form.Item>
-                      </Col>
-                      <Col xs={24} md={12}>
-                        <Form.Item label='Date DeMobilization' name='demobDate'
-                        >
-
-                          <Input
-                            readOnly={true}
-                            className='Input'
-                            placeholder={travel?.dateDemob
-                            } />
-                        </Form.Item>
-                      </Col>
-
-                      <Col xs={24} md={12}>
-                        <Form.Item label='Desert Flight' name='DateTravel'
-                        >
-
-
-                          <Input
-                            readOnly={true}
-                            className='Input'
-                            placeholder={travel?.dateOfTravel} />
-                        </Form.Item>
-                      </Col>
-                      <Col xs={24} md={12}>
-                        <Form.Item label='Ticket Reference'
-                          name='TicketReference'
-                        >
-
-                          <Input
-                            readOnly={true}
-                            className='Input'
-                            placeholder={travel?.ticketRef
-                            }
-
-                          />
-                        </Form.Item>
-                      </Col>
-                      <Col xs={24} md={12}>
-                        <Form.Item
-                          name="TRIPType"
-                          label="LAND /FLIGHT"
-
-                        >
-                          <Input
-                            readOnly={true}
-                            className='Input'
-                            placeholder={travel?.type
-                            }
-
-                          />
-                        </Form.Item>
-                      </Col>
-
-                      <Col xs={24} md={12}>
-                        <Form.Item
-                          name="RoundTrip"
-                          label="Round Trip/One Tript"
-
-                        >
-                          <Input
-                            readOnly={true}
-                            className='Input'
-                            placeholder={travel?.round
-                            }
-
-                          />
-                        </Form.Item>
-                      </Col>
-
-
-                      <Col xs={24} md={12}>
-                        <Form.Item
-                          label='Actual Location' name='ActualLocation'
-                        >
-
-
-                          <Input
-                            className='Input'
-                            placeholder={travel?.actualLocationFrom
-                            }
-                            readOnly={true}
-
-                          />
-                        </Form.Item>
-                      </Col>
-                      <Col xs={24} md={12}>
-                        <Form.Item
-                          name="ExitReentry"
-                          label="Exit Reentry /Final Exit"
-
-                        >
-                          <Input
-                            className='Input'
-                            placeholder={travel?.
-                              tripTypeDesert}
-                            readOnly={true}
-
-                          />
-
-                        </Form.Item>
-                      </Col>
-
-                      <Col xs={24} md={12}>
-                        <Form.Item
-                          label='To Location' name='ToLocation'
-                         >
-
-
-                          <Input
-                            className='Input'
-                          
-                            placeholder={travel?.actualLocationTo}
-                          // value={exit}
-
-
-                          />
-                        </Form.Item>
-                      </Col>
-                      <Col xs={24} md={12}>
-                        <Form.Item label='Date Travel Desert' name='DateTravelDesert'
-                          >
-
-                          <Input
-                            className='Input'
-                         
-                            placeholder={travel?.dateTravelDesert
-                            }
-                          // value={exit}
-
-
-                          />
-                        </Form.Item>
-                      </Col>
-                      <Col xs={24} md={12}>
-                        <Form.Item label='Trip Type Desert' name='TripTypeDesert'
-                         >
-                          <Input
-                            className='Input'
-                            placeholder={travel?.tripTypeDesert}
-                            
-
-                          />
-                        </Form.Item>
-                      </Col>
-
-
-                      <Col xs={24} md={12}>
-                        <Form.Item label='Idendity Copy Ticket'
-                        >
-                          <Input
-                            className='Input'
-                            placeholder={travel?.idendityCopy
-                            }
-
-
-
-                          />
-                        </Form.Item>
-                      </Col>
-
-
-
-                    </AppRowContainer>
-                  </StyledShadowWrapper>
+                <Col xs={24} md={12}>
+                  <Form.Item label='Date Mobilization' name='mobDate'
+                  >
+                    <Input
+                      readOnly={true}
+                      className='Input'
+                      placeholder={travel?.dateMob} />
+                  </Form.Item>
                 </Col>
+                <Col xs={24} md={12}>
+                  <Form.Item label='Date DeMobilization' name='demobDate'
+                  >
+
+                    <Input
+                      readOnly={true}
+                      className='Input'
+                      placeholder={travel?.dateDemob
+                      } />
+                  </Form.Item>
+                </Col>
+
+                <Col xs={24} md={12}>
+                  <Form.Item label='Desert Flight' name='DateTravel'
+                  >
+
+
+                    <Input
+                      readOnly={true}
+                      className='Input'
+                      placeholder={travel?.dateOfTravel} />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} md={12}>
+                  <Form.Item label='Ticket Reference'
+                    name='TicketReference'
+                  >
+
+                    <Input
+                      readOnly={true}
+                      className='Input'
+                      placeholder={travel?.ticketRef
+                      }
+
+                    />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} md={12}>
+                  <Form.Item
+                    name="TRIPType"
+                    label="LAND /FLIGHT"
+
+                  >
+                    <Input
+                      readOnly={true}
+                      className='Input'
+                      placeholder={travel?.type
+                      }
+
+                    />
+                  </Form.Item>
+                </Col>
+
+                <Col xs={24} md={12}>
+                  <Form.Item
+                    name="RoundTrip"
+                    label="Round Trip/One Tript"
+
+                  >
+                    <Input
+                      readOnly={true}
+                      className='Input'
+                      placeholder={travel?.round
+                      }
+
+                    />
+                  </Form.Item>
+                </Col>
+
+
+                <Col xs={24} md={12}>
+                  <Form.Item
+                    label='Actual Location' name='ActualLocation'
+                  >
+
+
+                    <Input
+                      className='Input'
+                      placeholder={travel?.actualLocationFrom
+                      }
+                      readOnly={true}
+
+                    />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} md={12}>
+                  <Form.Item
+                    name="ExitReentry"
+                    label="Exit Reentry /Final Exit"
+
+                  >
+                    <Input
+                      className='Input'
+                      placeholder={travel?.
+                        tripTypeDesert}
+                      readOnly={true}
+
+                    />
+
+                  </Form.Item>
+                </Col>
+
+                <Col xs={24} md={12}>
+                  <Form.Item
+                    label='To Location' name='ToLocation'
+                  >
+
+
+                    <Input
+                      className='Input'
+
+                      placeholder={travel?.actualLocationTo}
+                    // value={exit}
+
+
+                    />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} md={12}>
+                  <Form.Item label='Date Travel Desert' name='DateTravelDesert'
+                  >
+
+                    <Input
+                      className='Input'
+
+                      placeholder={travel?.dateTravelDesert
+                      }
+                    // value={exit}
+
+
+                    />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} md={12}>
+                  <Form.Item label='Trip Type Desert' name='TripTypeDesert'
+                  >
+                    <Input
+                      className='Input'
+                      placeholder={travel?.tripTypeDesert}
+
+
+                    />
+                  </Form.Item>
+                </Col>
+
+
+                <Col xs={24} md={12}>
+                  <Form.Item label='Idendity Copy Ticket'
+                  >
+                    <Input
+                      className='Input'
+                      placeholder={travel?.idendityCopy
+                      }
+
+
+
+                    />
+                  </Form.Item>
+                </Col>
+
+
+
               </AppRowContainer>
+            </StyledShadowWrapper>
+          </Col>
+        </AppRowContainer>
 
 
         <Space
           size={15}
           style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}
         >
-          <Button onClick={goBack} >Cancel</Button>
+          <Button onClick={goBack}>
+
+            <FcDownLeft style={{ marginRight: "5px", marginTop: "5px" }} />
+            Return
+          </Button>
+
 
         </Space>
       </Form>

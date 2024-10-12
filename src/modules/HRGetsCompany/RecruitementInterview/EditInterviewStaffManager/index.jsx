@@ -2182,7 +2182,7 @@ const EditInterviewStaff = () => {
                     <Form.Item label='ID Number' name='ID Number'
                     >
                       <Input
-                        value={idNumb}
+                        value="367"
                         placeholder='ID Number' />
                     </Form.Item>
                   </Col>
@@ -5058,14 +5058,15 @@ const EditInterviewStaff = () => {
                               <Col xs={24} md={12}>
                                 <Form.Item label='Evaluator' name='Evaluator' >
                                   <Input
-                                    placeholder={idStaff.evalName}
+                                   
+                                    placeholder="Mohklos Ben Ahmed"
                                     readOnly />
                                 </Form.Item>
                               </Col>
                               <Col xs={24} md={12}>
                                 <Form.Item label='ID Number' name='idgets'>
                                   <Input
-                                    placeholder={idStaff.evalId}
+                                    placeholder={idNumb}
                                     readOnly />
                                 </Form.Item>
                               </Col>
@@ -5934,7 +5935,8 @@ const EditInterviewStaff = () => {
                   <Divider style={{ marginTop: 16, marginBottom: 16 }} />
                   <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
                     <Col xs={24} md={6}>
-                      <Typography.Title level={5}> HR Evaluation && Decision</Typography.Title>
+                      <Typography.Title level={5}> 
+                        HR Evaluation And Decision</Typography.Title>
 
                     </Col>
 
@@ -6554,7 +6556,8 @@ const EditInterviewStaff = () => {
               </>)}
             {name?.toLowerCase().includes("ali") && (
               <>
-                <Button style={{ color: "green", borderColor: "green" }} onClick={Updatebod1}
+                <Button style={{ color: "green", borderColor: "green" }}
+                 onClick={Updatebod1}
                 >Approve</Button>
                 <Button onClick={Refusedbod1} style={{ color: "red", borderColor: "red" }}
                 >Refuse</Button>

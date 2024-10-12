@@ -491,7 +491,7 @@ const PaymentForRequestSalary = () => {
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label='COST CENTE' name='COST CENTE'>
+                  <Form.Item label='COST CENTER' name='COST CENTE'>
                     <Select
                       style={{ width: "100%", marginTop: "0.5rem" }}
                       placeholder="Cost Center"
@@ -564,9 +564,7 @@ const PaymentForRequestSalary = () => {
                   placeholder="FROM BANK ACCOUNT"
                   allowClear
                   onChange={handleBanc}
-                  value={bancAccount}
-
-                >
+                  value={bancAccount}>
                   <Select.Option key="default" value="default">
                     Default
                   </Select.Option>
@@ -689,7 +687,6 @@ const PaymentForRequestSalary = () => {
               </Col>
               <p>{name}</p> */}
 
-   
           <Col xs={24} md={18}>
             <StyledShadowWrapper>
               <AppRowContainer>
@@ -701,7 +698,6 @@ const PaymentForRequestSalary = () => {
                  getsIdData={getsIdData}    
                  setEmpId={setEmpId}
                  empId={empId}
-                 ///////
                  getsId={getsId}
                  handleInputGetsIdChange={handleInputGetsIdChange}
                  name={name}

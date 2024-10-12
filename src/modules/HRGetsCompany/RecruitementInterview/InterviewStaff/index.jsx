@@ -176,9 +176,7 @@ const StaffInterview = ({ allinterviewStaffManagement,token,departement }) => {
           open={open}
           handleInterview={handleInterview}
           codeJob={codeJob}
-          interviewCode={interviewCode}
-
-        />
+          interviewCode={interviewCode}/>
           <div className='Pagination' >
         <StyledOrderHeaderRight>
           <Pagination

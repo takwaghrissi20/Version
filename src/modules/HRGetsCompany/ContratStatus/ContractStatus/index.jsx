@@ -73,15 +73,14 @@ const fetchListEmployee = async () => {
     
     const contentType = response.headers.get('content-type');
     if (contentType && contentType.includes('application/json')) {
-      const data = await response.json(); // Utilisez response.json() pour récupérer les données JSON
+      const data = await response.json(); 
       const filteredData = data.filter(employee =>  
         
         employee.contractCategory=== 'CAT-B2' ||
         employee.contractCategory === 'CAT-B3' ||
         employee.contractCategory === 'CAT-C'  ||
         employee.contractCategory === 'CAT-D'
-        
-        
+           
       );
       const filteredDataStaff = data.filter(employee => 
         employee.contractCategory=== 'CAT-A1' ||
@@ -92,9 +91,8 @@ const fetchListEmployee = async () => {
         employee.contractCategory === 'CAT-E2'   ||
         employee.contractCategory === 'SERVICE1-E3' ||
         employee.contractCategory === 'SERVICE2-E3'
-              
+           
       );
-  
       setTemployees(filteredData)
       setTemployeesStaff(filteredDataStaff)
     
@@ -110,7 +108,9 @@ const items = [
   {
     label: 'Construction Team',
     key: '1',
-    children:  <OrderContrat user={user} temployee={temployee}/> ,
+    children:  <OrderContrat 
+    user={user} 
+    temployee={temployee}/> ,
   }, // remember to pass the key prop
   {
     label: 'Management Staff ',

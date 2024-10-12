@@ -537,7 +537,7 @@ const EditRecruitementAbove = () => {
           signatureHod: null,
           signatureBod: null,
           notif: 4,
-          status: "Ckeked By Planner "
+          status: "Ckeked By PMO"
 
 
         })

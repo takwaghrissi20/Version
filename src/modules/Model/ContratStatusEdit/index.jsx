@@ -60,7 +60,9 @@ const ModalView = ({
   cin,gender,residenceAdress,
   arResidenceAdress,salary,
   duration,
-  emergencyName,emergencyRelation
+  emergencyName,
+  emergencyRelation,
+
 
 }) => {
 

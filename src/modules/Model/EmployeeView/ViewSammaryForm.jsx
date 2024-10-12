@@ -48,10 +48,12 @@ const SammaryForm = (props) => {
     projName,
     destination,
     findIdDataMatriel,
-    findIdDataTravel
+    findIdDataTravel,
+    findIdData
+ 
 
   } = props;
-
+console.log('testtttt',findIdData)
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
       'image/jpeg': [],
@@ -128,7 +130,7 @@ const SammaryForm = (props) => {
                       <span className='modallabel'> Nationality :</span>
                       <Input
                         className='Input'
-                        placeholder="Nationality"
+                        placeholder={findIdData?.nationality}
                         value={nationality}
                         classNames="ViewInput"
                         readOnly={true}

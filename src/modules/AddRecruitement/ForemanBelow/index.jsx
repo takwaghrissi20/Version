@@ -455,19 +455,19 @@ const AddRecruitementForemanBelow = () => {
           // oDep: asper,
           // // exDep: "",
           // // status:"0",
-          nbExperience:desiredExperienceLevel,
+          nbExperience: desiredExperienceLevel,
           projRef: projectCode,
           // bod: isOkBod,
           idemp: profile?.getsId,
           desiredDate: desiredrecruitementDate,
           affectedTo: selectedLieu,
-          signatureHod: isOkHead,
+          signatureHod: "true",
           signatureBod: isOkBod,
           notif: 2,
           dep: profile?.departement,
           dateInputRecrut: formattedDate,
           status: "Pending",
-    
+
 
         })
       });
@@ -482,7 +482,7 @@ const AddRecruitementForemanBelow = () => {
         form.resetFields();
         //window.location.reload();
         openNotification('bottomRight')
-        setTimeout(() => {      
+        setTimeout(() => {
           window.location.reload();
           navigate(-1)
 
@@ -578,7 +578,7 @@ const AddRecruitementForemanBelow = () => {
         form.resetFields();
         openNotification('bottomRight')
         setTimeout(() => {
-          
+
           window.location.reload();
           navigate(-1)
 
@@ -638,7 +638,7 @@ const AddRecruitementForemanBelow = () => {
           totalNumber: vacancie,
           oDep: isOrDep,
           exDep: isExDep,
-      
+
           // type: "For Foreman & Below",
           // oDep: asper,
           // // exDep: "",
@@ -671,7 +671,7 @@ const AddRecruitementForemanBelow = () => {
         form.resetFields();
         openNotification('bottomRight')
         setTimeout(() => {
-          
+
           window.location.reload();
           navigate(-1)
 
@@ -731,7 +731,7 @@ const AddRecruitementForemanBelow = () => {
           totalNumber: vacancie,
           oDep: isOrDep,
           exDep: isExDep,
-        
+
           // type: "For Foreman & Below",
           // oDep: asper,
           // // exDep: "",
@@ -763,10 +763,10 @@ const AddRecruitementForemanBelow = () => {
         console.log("opration reponse project Leader", responseData)
         form.resetFields();
         setTimeout(() => {
-          window.location.reload();        
+          window.location.reload();
           navigate(-1)
-  
-       
+
+
         }, 2000);
         openNotification('bottomRight')
 
@@ -796,7 +796,8 @@ const AddRecruitementForemanBelow = () => {
   const BeforeSaveRecruitement = () => {
     //setIsModalVisible(true)
     form.validateFields(['ProjectName', 'ProjectCode'
-      , 'DateDesiredRecruitement', 'position', 'RequiredLevel', 'Desiredyearsexperience', 'Numbervacancies',
+      , 'DateDesiredRecruitement', 'position'
+      , 'RequiredLevel', 'Desiredyearsexperience', 'Numbervacancies',
 
     ]).then(values => {
       //onSave(true)
@@ -1010,7 +1011,7 @@ const AddRecruitementForemanBelow = () => {
         </AppRowContainer>
         <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
           <Col xs={24} md={6}>
-            <Typography.Title level={5}>For Foreman & Below Recruitement </Typography.Title>
+            <Typography.Title level={5}>For Foreman And Below Recruitement </Typography.Title>
 
           </Col>
           <Col xs={24} md={18}>
@@ -1058,8 +1059,9 @@ const AddRecruitementForemanBelow = () => {
                     </Select>
                   </Form.Item>
                 </Col>
+                {/*Position End*/}
 
-
+                {/*Position End testtt*/}
 
                 <Col xs={24} md={12}>
                   <Form.Item label='Position' name='Position'
@@ -1077,10 +1079,6 @@ const AddRecruitementForemanBelow = () => {
                         </Select.Option>
                       ))}
                     </Select>
-
-
-
-
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
@@ -1112,11 +1110,11 @@ const AddRecruitementForemanBelow = () => {
                     rules={[
                       { required: true, message: 'Please Select your Select Desired years of experience!' },]}>
                     <Input
-                     placeholder="Desired years of experience"
+                      placeholder="Desired years of experience"
                       value={desiredExperienceLevel}
                       onChange={(e) => setDesiredExperiencELevel(e.target.value)}
                       type='number'
-                                     
+
                     // placeholder={desiredExperience}
                     />
 
@@ -1170,7 +1168,7 @@ const AddRecruitementForemanBelow = () => {
                       <Form.Item
                         label='As per :'
                         name='As per'
- >
+                      >
                         <Checkbox checked={isExDep} onChange={ExDep}>
 
                           <IntlMessages id='Exdep.planner' />
@@ -1188,42 +1186,51 @@ const AddRecruitementForemanBelow = () => {
           </AppRowContainer>
 
           : null}
-        <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
-          <Col xs={24} md={6}>
-            <Typography.Title level={5}> Head of Department Inputs</Typography.Title>
-          </Col>
-          <Col xs={24} md={18}>
-            <StyledShadowWrapper>
-              <AppRowContainer>
-                <Col xs={24} md={12}>
-                  <StyledInput>
-                    <Form.Item
-                      label='Head Of Departement Decision'
-                      name='HeadInputs'
-                    // rules={[
-                    //   { required: true, message: 'Please Check your  Head Of Departement Decision!' },
 
-                    // ]}
+        {/*Test Head*/}
+        {user.includes("Manager") ?
+          <AppRowContainer style={{ marginTop: 32, marginBottom: 32 }}>
+            <Col xs={24} md={6}>
+              <Typography.Title level={5}> Head of Department Inputs</Typography.Title>
+            </Col>
+            <Col xs={24} md={18}>
+              <StyledShadowWrapper>
+                <AppRowContainer>
+                  <Col xs={24} md={12}>
+                    <StyledInput>
+                      <Form.Item
+                        label='Head Of Departement Decision'
+                        name='HeadInputs'
+                      // rules={[
+                      //   { required: true, message: 'Please Check your  Head Of Departement Decision!' },
 
-
-                    >
-                      <Checkbox checked={isOkHead} onChange={OkHead}>
-
-                        <IntlMessages id='accepted.Head' />
-                      </Checkbox>
-                      <Checkbox checked={isNOHead} onClick={NoHead}>
-                        <IntlMessages id='Refuse.head' />
-                      </Checkbox>
-                    </Form.Item>
-                  </StyledInput>
-                </Col>
+                      // ]}
 
 
+                      >
+                        <Checkbox checked={isOkHead} onChange={OkHead}>
 
-              </AppRowContainer>
-            </StyledShadowWrapper>
-          </Col>
-        </AppRowContainer>
+                          <IntlMessages id='accepted.Head' />
+                        </Checkbox>
+                        <Checkbox checked={isNOHead} onClick={NoHead}>
+                          <IntlMessages id='Refuse.head' />
+                        </Checkbox>
+                      </Form.Item>
+                    </StyledInput>
+                  </Col>
+
+
+
+                </AppRowContainer>
+              </StyledShadowWrapper>
+            </Col>
+          </AppRowContainer>
+          : null
+
+
+        }
+
+        {/*End Test Head*/}
         {user.includes('bod') ?
           <>
             <Divider style={{ marginTop: 16, marginBottom: 16 }} />

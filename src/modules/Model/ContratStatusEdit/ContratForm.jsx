@@ -223,12 +223,10 @@ const ContratEditForm = (props) => {
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
       
-        body: JSON.stringify({
-         
+        body: JSON.stringify({        
           name:newName,
           position:newposition,
-          familyStatus:newfamilyStatus,
-   
+          familyStatus:newfamilyStatus,  
            destination:newdistination,
            traveldate:newtravelDate,
           companyType:newTypeCompany,
@@ -586,9 +584,9 @@ const ContratEditForm = (props) => {
             type='primary'
             ghost
             onClick={() => Update(newName, newfamilyStatus, newcontratCopy, newposition,newtravelDate,newEndtravelDate,
-              
+              newtravelDate,
               newVisaReady,
-              newTypeCompany)} // Pass newName as an argument
+              newTypeCompany)}
           >
             <IntlMessages id='common.Edit' />
           </StyledContactFormBtn>

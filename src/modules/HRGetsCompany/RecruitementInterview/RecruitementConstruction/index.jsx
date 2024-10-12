@@ -15,7 +15,8 @@ import Pagination from '../../../../@crema/components/AppsPagination';
 import clsx from 'clsx';
 import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal';
 import { useNavigate } from "react-router-dom";
-const RecruitementConstruction = ({ allrecruitementbelow, roles, recruitementTypeIdbelow, token }) => {
+const RecruitementConstruction = ({ allrecruitementbelow, roles, 
+  recruitementTypeIdbelow, token, recruitementTypeIdbelowBOD,recruitementTypeIdbelowPMO }) => {
   const navigate = useNavigate();
   const [recruitementbelow, setRecruitementbelow] = useState([]);
   const [recruitementbelowid, setRecruitementbelowid] = useState(recruitementTypeIdbelow);
@@ -188,33 +189,89 @@ const RecruitementConstruction = ({ allrecruitementbelow, roles, recruitementTyp
         style={{
           paddingTop: 10,
           paddingBottom: 10,
-        }}
-      >
-        {(roles.includes("admin")) || (roles.includes("bod")) || (roles.includes("Cordinator")) || (roles.includes("Administrator")) ?
-          <>
-            <OrderTable
-              allrecruitementbelow={recruitementbelow}
-              findIdData={findIdData}
-              id={id}
-              findId={findId}
-              setFindIdData={setFindIdData}
-              open={open}
-              handleInterview={handleInterview}
-              roles={roles}
+        }}>
+        {/*bOD DeSCITION*/}
+        {roles.includes('bod') &&  (
+            <>
+              <OrderTable
+                allrecruitementbelow={recruitementbelow}
+                recruitementTypeIdbelowBOD={recruitementTypeIdbelowBOD}
+                findIdData={findIdData}
+                id={id}
+                findId={findId}
+                setFindIdData={setFindIdData}
+                open={open}
+                handleInterview={handleInterview}
+                roles={roles}
+              />
+              <div className='Pagination' >
+                <StyledOrderHeaderRight>
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={Math.ceil(recruitementTypeIdbelowBOD.length / pageSize)}
+                    handlePageChange={handlePageChange} />
 
-            />
-            <div className='Pagination' >
-              <StyledOrderHeaderRight>
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={Math.ceil(count / pageSize)}
-                  handlePageChange={handlePageChange} />
+                </StyledOrderHeaderRight>
 
-              </StyledOrderHeaderRight>
+              </div>
+            </>
+          )
 
-            </div>
-          </>
-          : <>
+
+        }
+        {/*eND bOD Desction*/}
+        {roles.includes('PMO') &&  (
+            <>
+              <OrderTable
+                recruitementTypeIdbelowPMO={recruitementTypeIdbelowPMO}
+                findIdData={findIdData}
+                id={id}
+                findId={findId}
+                setFindIdData={setFindIdData}
+                open={open}
+                handleInterview={handleInterview}
+                roles={roles}
+              />
+              <div className='Pagination' >
+                <StyledOrderHeaderRight>
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={Math.ceil( recruitementTypeIdbelowPMO.length / pageSize)}
+                    handlePageChange={handlePageChange} />
+
+                </StyledOrderHeaderRight>
+
+              </div>
+            </>
+          )
+
+        }
+      {(roles.includes("admin") || roles.includes("Cordinator") || roles.includes("Administrator")) && (
+  <>
+    <OrderTable
+      allrecruitementbelow={recruitementbelow}
+      findIdData={findIdData}
+      id={id}
+      findId={findId}
+      setFindIdData={setFindIdData}
+      open={open}
+      handleInterview={handleInterview}
+      roles={roles}
+    />
+    <div className='Pagination'>
+      <StyledOrderHeaderRight>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={Math.ceil(count / pageSize)}
+          handlePageChange={handlePageChange}
+        />
+      </StyledOrderHeaderRight>
+    </div>
+  </>
+)}
+      {(roles.includes("Manager") ) && (
+
+      <>
             <OrderTable
               allrecruitementbelow={recruitementTypeIdbelow}
               findIdData={findIdData}
@@ -238,11 +295,15 @@ const RecruitementConstruction = ({ allrecruitementbelow, roles, recruitementTyp
 
             </div>
           </>
+ 
+  
+)}
+        
 
 
 
 
-        }
+ 
         {/* {(!roles.includes("admin")) ?
        
         :null} */}

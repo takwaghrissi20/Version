@@ -10,6 +10,7 @@ import { CiSaveDown2 } from "react-icons/ci";
 import { MoreOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 const OrderTable = ({ temployee, loading, user }) => {
+
   const navigate = useNavigate();
   const [findIdData, setFindIdData] = useState("");
   const [contractCategory, setContractCategory] = useState("");
@@ -175,10 +176,10 @@ const OrderTable = ({ temployee, loading, user }) => {
   useEffect(() => {
     console.log("contractCategory 8888", contractCategory)
   }, [contractCategory]);
+  
   console.log("ttgggggaarrrr", contractCategory)
   //SelectionnerContract
   const SelectionnnerContrat = () => {
-
     console.log("contractCategorysssssss", contractCategory)
     if (contractCategory === "CAT-B1") {
       console.log(" contractCategory", contractCategory)
@@ -558,20 +559,25 @@ const OrderTable = ({ temployee, loading, user }) => {
       key: 'departement',
     },
     {
-      title: 'Project Name',
-      dataIndex: 'projName',
-      key: 'projName',
+      title: 'Date Travel',
+      dataIndex: 'traveldate',
+      key: 'traveldate',
     },
     {
-      title: 'Join Date',
-      dataIndex: 'joinDate',
-      key: 'joinDate',
+      title: 'Date End Travel',
+      dataIndex: 'endTravelDate',
+      key: 'endTravelDate',
     },
-    {
-      title: 'Finish Date',
-      dataIndex: 'finishDate',
-      key: 'finishDate',
-    },
+    // {
+    //   title: 'Join Date',
+    //   dataIndex: 'joinDate',
+    //   key: 'joinDate',
+    // },
+    // {
+    //   title: 'Finish Date',
+    //   dataIndex: 'finishDate',
+    //   key: 'finishDate',
+    // },
     // {
     //   title: 'contratctCopy',
     //   dataIndex: 'contratctCopy',
@@ -608,7 +614,7 @@ const OrderTable = ({ temployee, loading, user }) => {
                 <MoreOutlined />
               </Button>
             </Dropdown>
-            {isEditContrat && (
+             {isEditContrat && (
               <ContratStatusEdit
                 isEditContrat={isEditContrat}
                 // isEditContrat={isEditContrat}
@@ -690,6 +696,7 @@ const OrderTable = ({ temployee, loading, user }) => {
                 contratctCopy={findIdData?.contratctCopy}
                 visaReady={findIdData?.visaReady}
                 departement={findIdData?.departement}
+               
 
               />
             )}

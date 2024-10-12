@@ -223,7 +223,8 @@ const UploadContractList = () => {
     { type: 'B- Site Construction Rate' },
     { type: 'A- Management Staff Rate' },
     { type: 'E-Office Work Only' },
-
+    { type: 'C-Site Construction Rate'},
+    { type: 'D-Site Construction Rate'},
   ];
   const categoryPayment = selectPaymentCategory ? selectPaymentCategory.charAt(0) : '';
   const Update = async () => {
@@ -257,6 +258,8 @@ const UploadContractList = () => {
           dailyRate: dailyRate,
           paymentCategory: selectPaymentCategory,
           category: categoryPayment,
+          rib: newrib,
+          bankName: selectedBankName
 
           // idVisa,
           // arName,
@@ -300,8 +303,7 @@ const UploadContractList = () => {
           // cin, gender, residenceAdress,
           // arResidenceAdress, salary, duration,
           // emergencyName, emergencyRelation,
-          rib: newrib,
-          bankName: selectedBankName
+         
 
         })
       });
@@ -736,7 +738,8 @@ const UploadContractList = () => {
           </AppRowContainer>
 
           <Divider style={{ marginTop: 16, marginBottom: 16 }} />
-          <h2 style={{ textAlign: "center", fontWeight: "bold", paddingBottom: "20px" }}>Please insert the scanned contract link and after save & confirm a GETS ID will be generated</h2>
+          <h2 style={{ textAlign: "center", fontWeight: "bold", paddingBottom: "20px" }}>Please insert the scanned contract link
+             and after save & confirm a GETS ID will be generated</h2>
 
           <StyledContactFormFooter>
 
