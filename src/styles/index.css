@@ -607,7 +607,8 @@
 .ViewInput {
   color: black;
   font-Weight: 400;
-  font-Size: 15px
+  font-Size: 15px;
+  border-color:transparent !important ;
 }
 
 .btnPagination {

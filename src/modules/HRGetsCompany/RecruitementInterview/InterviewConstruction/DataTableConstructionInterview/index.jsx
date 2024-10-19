@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 /// change 
 import { StyledOrderTable,StyledAnChar} from '../../../../../styles/index.styled';
 
-import { Button,Alert} from 'antd';
+import { Button,Alert,Table} from 'antd';
 import InterviewView from "../../../../Model/InterviewView"
 import InterviewEdit from "../../../../Model/InterviewEdit"
-import { Dropdown,Select } from 'antd';
+import { Dropdown,Select,Spin } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import {
   StyledRecentPatientBadge,
@@ -18,13 +18,26 @@ import IntlMessages from '../../../../../@crema/helpers/IntlMessages';
 import { useNavigate } from "react-router-dom";
 import FeddbackEmployeesConstruction from "../../../../Model/FeddbackEmployeesConstruction"
 const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,  
-  findId, setFindIdData,open,handleInterview,codeJob,interviewCode}) => {
+  findId, setFindIdData,open,handleInterview,codeJob,interviewCode,
+  allinterviewConstructionTeamLeader,allinterviewConstructionHSE,
+  allinterviewConstructionHRManager
+}) => {
+  console.log("findIdData?.hseDecision",findIdData?.hseDecision)
   //const [findIdData, setFindIdData] = useState(null);
   const [isViewInterviewStaff, onViewInterviewStaff] = useState(false);
   const [isEditInterviewStaff, onEditInterviewStaff] = useState(false);
   const [isDelteInterviewStaff, onDeleteInterviewStaff] = useState(false)
   const [isAddEmployees, onAddEmployees] = useState(false);
   const [isFeddbackEmployee, onFeddbackEmployee] = useState(false);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+
+    const timer = setTimeout(() => {
+      setLoading(false); 
+    }, 2000); 
+
+    return () => clearTimeout(timer); 
+  }, []);
   const token = localStorage.getItem("token")
   const handleFeedbackEmployeesOpen = (code) => {
    onFeddbackEmployee(true);
@@ -35,12 +48,12 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
  
 
   const navigate = useNavigate();
-  const userRoles = localStorage.getItem("role");
+
   const [tableHeight, setTableHeight] = useState('auto');
   useEffect(() => {
     const updateTableHeight = () => {
       const pageHeight = window.innerHeight;
-      const tableHeight = pageHeight * 0.35;
+      const tableHeight = pageHeight*0.35;
       setTableHeight(tableHeight);
     };
     window.addEventListener('resize', updateTableHeight);
@@ -119,8 +132,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
     onEditInterviewStaff(false);
   };
 
-  const handleEditInterviewStaffOpen = () => {
-     
+  const handleEditInterviewStaffOpen = () => {    
         navigate(`/Hr/Recruitement&Interview/ConstructionStaffInterview/Update/${interviewCode}`, {
           state: {
             interviewCode:findIdData?.interviewCode,
@@ -170,7 +182,8 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
             finaldesision:findIdData?.finaldesision,
             intervtime:findIdData?.intervtime,
             hrComentaire:findIdData?.hrComentaire,
-        
+           
+            
            
        
                   
@@ -208,7 +221,10 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
         positionToBeFilled:findIdData?.positionToBeFilled,
         department:findIdData?.department,
         projname:findIdData?.projname,
-        agreedJoinedDate:findIdData?.agreedJoinedDate
+        agreedJoinedDate:findIdData?.agreedJoinedDate,
+        contactPhone:findIdData?.contactPhone,
+        contactEmail:findIdData?.contactEmail
+
 
       }
     });
@@ -264,6 +280,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
     });
     setData(updatedData);
   };
+  const userRoles = localStorage.getItem("role");
   const year = new Date().getFullYear();
   const columns = [
     {
@@ -275,8 +292,8 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
     },
     {
       title: 'Evalutor Name ',
-      dataIndex: 'fullName',
-      key: 'fullName',
+      dataIndex: 'evalName',
+      key: 'evalName',
     },
     {
       title: 'Interview Date  ',
@@ -293,18 +310,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
       dataIndex: 'positionToBeFilled',
       key: 'positionToBeFilled',
     },
-    // {
-    //   title: 'Project Name',
-    //   dataIndex: 'projname',
-    //   key: 'projname',
-    // },
-  
-   
-    // {
-    //   title: 'Expected Join Date',
-    //   dataIndex: 'expectedJoinDate',
-    //   key: 'expectedJoinDate',
-    // },
+    
     {
       title: 'Evaluator Approval',
       dataIndex: 'notif',
@@ -325,7 +331,22 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
           );
 
 
-        } 
+        }  else if (record.notif === 10) {
+          return (
+            <StyledRecentPatientBadge
+            style={{
+             
+              backgroundColor:"#77021D",
+              color:"white",
+              fontFamily:"inherit"
+            }}
+            >
+             Refused By Evaluator
+            </StyledRecentPatientBadge>
+          );
+
+
+        }
         // else if (record.notif === 6 || !record?.evalDesision) {
         //   return (
         //     <StyledRecentPatientBadge
@@ -341,6 +362,46 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
         //   );
         // }
         return null;
+      },
+    },
+    {
+      title: 'Evaluator Approval',
+      dataIndex: 'notif',
+      key: 'notif',
+      render: (text, record) => {
+        if (record.notif === 2 || record.notif === 1 || record?.evalDesision) {
+          return (
+            <StyledRecentPatientBadge
+            style={{
+             
+              backgroundColor:"#32CD32",
+              color:"white",
+              fontFamily:"inherit"
+            }}
+            >
+              Approved By Evaluator
+            </StyledRecentPatientBadge>
+          );
+
+
+        }  else if (record.notif === 10) {
+          return (
+            <StyledRecentPatientBadge
+            style={{
+             
+              backgroundColor:"#77021D",
+              color:"white",
+              fontFamily:"inherit"
+            }}
+            >
+             Refused By Evaluator
+            </StyledRecentPatientBadge>
+          );
+
+
+        }
+        
+        return 'Pending';
       },
     },
     {
@@ -362,7 +423,7 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
               Approved By HSE MANAGER
             </StyledRecentPatientBadge>
           );
-        } else if (record.notif === 55 && !record?.hseDecision) {
+        } else if (record.notif === 53 && !record?.hseDecision) {
           return (
             <StyledRecentPatientBadge
             style={{
@@ -441,10 +502,20 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
       render: (text, record) => {
         const items = [
           { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleAddInterviewStaffOpen },
-          ...(userRoles.includes('Manager') || userRoles.includes('bod')? [
+          ...(
+           
+          (userRoles.includes('bod') )||
+          (userRoles.includes('Leader')) || 
+          (userRoles.includes('Manager') && (findIdData?.hseDecision))  ||
+          (userRoles.includes('Manager') && (findIdData?.evalDesision))     
+             
+          
+          ? [
             
-            { key: 4, label: <span style={{ fontSize: 14 }}>Take Action</span>, onClick: handleEditInterviewStaffOpen },
+            { key: 4, label: <span style={{ fontSize: 14 }}>Take Action </span>, onClick: handleEditInterviewStaffOpen },
           ] : []),
+        
+
         
           ...(userRoles.includes('admin') ? [
             { key: 3, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteInterviewStaff },
@@ -725,38 +796,80 @@ const TableInterviewStaff = ({allinterviewConstructionTeam,findIdData,id,
  
 
 
+
   return (
     <>
-      <StyledOrderTable
-        hoverColor
-        data={allinterviewConstructionTeam}
-        columns={columns}
-        scroll={{ x: 'auto', y: tableHeight }}
+    {loading ? (
+      <div style={{ textAlign: 'center', padding: '50px 0' }}>
+        <Spin size="large" /> 
+      </div>
+    ) : (
+      <>
+    {userRoles.includes("Leader") || 
+     userRoles.includes("HSE") ||
+     userRoles.includes("Human Ressource Manager") ?
+         null : (
+          <StyledOrderTable
+            hoverColor
+            data={allinterviewConstructionTeam}
+            columns={columns}
+            scroll={{ x: 'auto', y: tableHeight }}
+          />
+        )}
+        {/*Human Ressource */ }
+       {/*Human Ressource */ }
+       {userRoles.includes("Human Ressource Manager") &&
+       
+          <StyledOrderTable
+            hoverColor
+            data={allinterviewConstructionHRManager}
+            columns={columns}
+            scroll={{ x: 'auto', y: tableHeight }}
+          />
+       }
+         {/*End Human Ressource */ }
+         {/*End Human Ressource */ }
+
+        {userRoles.includes("Leader") && (
+          <StyledOrderTable
+            hoverColor
+            data={allinterviewConstructionTeamLeader}
+            columns={columns}
+            scroll={{ x: 'auto', y: tableHeight }}
+          />
+        )}
+           {userRoles.includes("HSE") && (
+          <StyledOrderTable
+            hoverColor
+            data={allinterviewConstructionHSE}
+            columns={columns}
+            scroll={{ x: 'auto', y: tableHeight }}
+          />
+        )}
+     
+        {isDelteInterviewStaff && (
+          <ConfirmationModal
+            open={isDelteInterviewStaff}
+            paragraph={'Are you sure you want to delete this?'}
+            onDeny={onDeleteInterviewStaff}
+            onConfirm={DeleteInterviewStaff}
+            modalTitle={<IntlMessages id='common.deleteItem' />}
+          />
+        )}
 
 
-      />
-    
-      {isDelteInterviewStaff? (
-        <ConfirmationModal
-          open={isDelteInterviewStaff}
-          paragraph={'Are you sure you want to delete this?'}
-          onDeny={onDeleteInterviewStaff}
-          onConfirm={DeleteInterviewStaff}
-          modalTitle={<IntlMessages id='common.deleteItem' />}
-        />
-      ) : null}
-       {isAddEmployees? (
-        <ConfirmationModal
-          open={isAddEmployees}
-          paragraph={'Are you sure you want to Add Employees?'}
-          onDeny={onAddEmployees}
-          onConfirm={AddEmployeesAfterConfirmation}
-          modalTitle={<IntlMessages id='common.confirmation' />}
-        />
-      ) : null}
-   
-
-    </>
+        {isAddEmployees && (
+          <ConfirmationModal
+            open={isAddEmployees}
+            paragraph={'Are you sure you want to Add Employees?'}
+            onDeny={onAddEmployees}
+            onConfirm={AddEmployeesAfterConfirmation}
+            modalTitle={<IntlMessages id='common.confirmation' />}
+          />
+        )}
+      </>
+    )}
+  </>
   );
 };
 

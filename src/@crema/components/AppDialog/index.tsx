@@ -88,7 +88,7 @@ const AppDialog: React.FC<AppDialogProps> = ({
           </IconButton>
         )}
       </DialogTitle>
-    <p>testttt</p>
+
       {actionTitle ? (
         <DialogActions>
           <Button color='primary' variant='contained' type='submit'>

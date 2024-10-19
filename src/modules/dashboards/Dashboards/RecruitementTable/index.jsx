@@ -63,7 +63,7 @@ const OrderTable = ({ loading,AllRecruitement, listRecruitementId,listRecruiteme
           signatureHod:findIdData?.signatureHod,
           chekedBod1:findIdData?.chekedBod1,
           chekedBod2:findIdData?.chekedBod2,
-        
+          dateInputRecrut:findIdData?.dateInputRecrut
         }
   
       });

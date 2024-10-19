@@ -11,13 +11,14 @@ import AssignementConstruction from './TabsAssignementConstruction';
 
 const InterviewSheetById = () => {
   const location = useLocation();
+  const [idINTC, setIdINTC] = useState([]);
   const DesiredDate = location.state ? location.state.DesiredDate : null;
   const JobCode = location.state ? location.state.JobCode : null;
   const totalNumber = location.state ? location.state.totalNumber : null;
   const level = location.state ? location.state.level : null;
   const projectName = location.state ? location.state.projectName : null;
   const position = location.state ? location.state.position : null;
-  const experienceRequired = location.state ? location.state.experience : null;
+  const experienceRequired = location.state ? location.state.experience : idINTC;
   const interviewCode = location.state ? location.state.interviewCode : null;
   const validatesFor = location.state ? location.state.validatesFor : null;
   const goTotest2 = location.state ? location.state.goTotest2 : null;
@@ -62,7 +63,9 @@ const InterviewSheetById = () => {
   const propsedsalary = location.state ? location.state.propsedsalary : null;
   const dailyRate = location.state ? location.state.dailyRate : null;
   const token = localStorage.getItem("token")
+  console.log("interviewCode",interviewCode)
   const [idViewConstruction, setIdViewConstruction] = useState([]);
+
   const findIdInterviewConstruction = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/findId?code=${interviewCode}&token=${token}`, {
@@ -73,7 +76,8 @@ const InterviewSheetById = () => {
       }
       const responseData = await response.json();
       setIdViewConstruction(responseData)
-      console.log("responseDataConstruction View11111", responseData)
+      setIdINTC(responseData?.interviewCode)
+      console.log("responseDataConstruction View11111", responseData?.interviewCode)
 
     } catch (error) {
       console.error("Erreur lors de la récupération du Interview Code:", error);
@@ -81,7 +85,7 @@ const InterviewSheetById = () => {
   };
   useEffect(() => {
     findIdInterviewConstruction()
-  }, [idViewConstruction]);
+  }, [idViewConstruction,idINTC,interviewCode]);
   const items = [
     ...(roles.includes('HSE') || roles === "Human Ressource Manager" || roles.includes('bod') ? [{
       label: 'INTERVIEW ASSESMENT SHEET',
@@ -146,7 +150,10 @@ const InterviewSheetById = () => {
         JobCode={JobCode}
         idViewConstruction={idViewConstruction}
         // isSaveDisabled={activeTabKey !== '1'}
-        totalNumber={totalNumber} level={level} projectName={projectName} position={position}
+        totalNumber={totalNumber}
+         level={level} 
+         projectName={projectName}
+        position={position}
         isSaveDisabled={isSaveDisabled}
         interviewCode={interviewCode}
         siteHazCont={siteHazCont}

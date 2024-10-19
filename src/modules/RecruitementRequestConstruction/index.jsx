@@ -279,7 +279,7 @@ const EditRecruitementBelow = () => {
   const [comentPlanerUpdate, setComentPlanerUpdate] = useState("");
   const lieu = [
     { place: 'Office' },
-    { place: 'Site ' },
+    { place: 'Site' },
     { place: 'Office & Site' },
   ];
 

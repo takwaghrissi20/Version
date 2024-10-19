@@ -130,7 +130,7 @@ const AddRecruitementAbove = () => {
   };
   const lieu = [
     { place: 'Office' },
-    { place: 'Site ' },
+    { place: 'Site' },
     { place: 'Office & Site' },
   ];
 
@@ -684,7 +684,7 @@ const AddRecruitementAbove = () => {
         openNotification('bottomRight')
         setTimeout(() => {      
           window.location.reload();
-          navigate(-1)
+          navigate("/Hr/Recruitement&Interview")
 
         }, 2000);
 
@@ -961,7 +961,14 @@ const AddRecruitementAbove = () => {
         if (secondApiResponse.ok) {
           const secondResponseData = await secondApiResponse.json();
           form.resetFields();
-          window.location.reload();
+          setTimeout(() => {      
+            window.location.reload();
+            navigate("/Hr/Recruitement&Interview")
+  
+          }, 2000);
+
+
+
         } else {
           //setModalError(true)
           console.error("Failed to fetch data from the second API.");

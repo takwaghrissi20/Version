@@ -16,11 +16,13 @@ import {
   StyledContactFormItemTitle,
   StyledContactModalScrollbar,
 } from './index.styled';
+import { StyledBuyCellCard, StyledTabs } from '../../../styles/index.styled';
 import FloatLabel from "./FloatLabel";
 import ViewTableTravelSammary from './ViewTableTravelSammary';
 import ViewTableMatrielsReceive from './ViewTableMatrielsReceive';
 
 import AppCard from '../../../@crema/components/AppCard';
+import AppsContainer from "../../../@crema/components/AppsContainer";
 
 const SammaryForm = (props) => {
   const {
@@ -53,7 +55,7 @@ const SammaryForm = (props) => {
  
 
   } = props;
-console.log('testtttt',findIdData)
+
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
       'image/jpeg': [],
@@ -66,37 +68,18 @@ console.log('testtttt',findIdData)
   });
 
   const { messages } = useIntl();
-
-
-  return (
-    <StyledContactForm>
-      <StyledContactFormHeader>
-        <Form.Item >
-          <input {...getInputProps()} />
-          <label htmlFor='icon-button-file'>
-            < StyledContactFormHeaderTitle  >
-              {/* <IntlMessages id='Recruitement.Request' /> */}
-              <p className='TitleModal'>Sammary</p>
-
-            </StyledContactFormHeaderTitle>
-          </label>
-        </Form.Item>
-
-        <StyledContactFormHeaderTitle>
-
-        </StyledContactFormHeaderTitle>
-
-      </StyledContactFormHeader>
-
-      <StyledContactModalScrollbar>
-        <StyledContactFormContent>
-          <StyledContactFormContentItem>
+  const items = [
+    {
+      label: 'Personnal Information',
+      key: '1',
+      children:
+      <div>
             <StyledContactFormItemTitle>
               <p className='SousTitle'>Personnal Information</p>
-              {/* <IntlMessages id='Recruitement.RequestorandRequired Profile' /> */}
+    
             </StyledContactFormItemTitle>
-            <StyledContactFormContentField>
-
+  
+    
               <Row gutter={16}>
                 <Col span={8}>
                   <Form.Item className='form-field'>
@@ -380,92 +363,95 @@ console.log('testtttt',findIdData)
                 </FloatLabel>
               </Form.Item>
                   </Col>
-                  </Row>
+                  </Row>  
+               
+        
+          </div>
+    },
+    {
+      label: 'Received Materials',
+      key: '2',
+      children:  <StyledContactFormContentItem>
+      <StyledContactFormItemTitle>
+    
+
+      </StyledContactFormItemTitle>
+      <AppCard
+        className='no-card-space-ltr-rtl'
+        title={messages['dashboard.RECEIVEDMATRIALS']}
+      >
+        <ViewTableMatrielsReceive findIdDataMatriel={findIdDataMatriel} />
+      </AppCard>
 
 
 
 
+    </StyledContactFormContentItem>,
+
+  
+    },
+    {
+      label: 'Travel Date',
+      key: '3',
+      children: <StyledContactFormContentItem>
+      <StyledContactFormItemTitle>
+       
+
+      </StyledContactFormItemTitle>
+
+      {/**/}
+
+      <AppCard
+        className='no-card-space-ltr-rtl'
+        title={messages['dashboard.TravelDate']}
+      >
+        <ViewTableTravelSammary findIdDataTravel={findIdDataTravel} />
+      </AppCard>
 
 
+    </StyledContactFormContentItem>,
 
+  
+    },
+  
 
-            
+   
+ 
 
-            </StyledContactFormContentField>
-          </StyledContactFormContentItem>
-          <StyledContactFormContentItem>
-            <StyledContactFormItemTitle>
-              <p className='SousTitle'>Received Materials</p>
+  ];
 
-            </StyledContactFormItemTitle>
-            <AppCard
-              className='no-card-space-ltr-rtl'
-              title={messages['dashboard.RECEIVEDMATRIALS']}
-            >
-              <ViewTableMatrielsReceive findIdDataMatriel={findIdDataMatriel} />
-            </AppCard>
+  return (
+    <StyledContactForm>
+      <StyledContactFormHeader>
+        <Form.Item >
+          <input {...getInputProps()} />
+          <label htmlFor='icon-button-file'>
+            < StyledContactFormHeaderTitle  >
+              {/* <IntlMessages id='Recruitement.Request' /> */}
+              <p className='TitleModal'>Sammary</p>
 
+            </StyledContactFormHeaderTitle>
+          </label>
+        </Form.Item>
 
+        <StyledContactFormHeaderTitle>
 
+        </StyledContactFormHeaderTitle>
 
-          </StyledContactFormContentItem>
+      </StyledContactFormHeader>
 
-          <StyledContactFormContentItem>
-            <StyledContactFormItemTitle>
-              <p className='SousTitle'>Travel Date</p>
+      <StyledContactModalScrollbar>
+        <StyledContactFormContent>
+        <AppsContainer type="bottom" fullView>
+                <StyledBuyCellCard style={{ paddingLeft: "10px" }} heightFull>
+                  <StyledTabs defaultActiveKey="1" items={items} />
+                </StyledBuyCellCard>
+              </AppsContainer>
 
-            </StyledContactFormItemTitle>
+          
+         
 
-            {/**/}
-
-            <AppCard
-              className='no-card-space-ltr-rtl'
-              title={messages['dashboard.TravelDate']}
-            >
-              <ViewTableTravelSammary findIdDataTravel={findIdDataTravel} />
-            </AppCard>
-
-            {/* <Form.Item className='form-field'>
-              <FloatLabel name="traveldate">
-                <span className='modallabel'>Date Of Travel :</span>
-                <Input
-                  className='Input'
-                  placeholder="Date Of Travel "
-                  value={traveldate}
-                  classNames="ViewInput"
-                  readOnly={true}
-                />
-              </FloatLabel>
-            </Form.Item>
-            <Form.Item className='form-field'>
-              <FloatLabel name="destination">
-                <span className='modallabel'>From /To  :</span>
-                <Input
-                  className='Input'
-                  placeholder="From /To  "
-                  value={destination}
-                  classNames="ViewInput"
-                  readOnly={true}
-                />
-              </FloatLabel>
-            </Form.Item>
-            <Form.Item className='form-field'>
-              <FloatLabel name="Project Work">
-                <span className='modallabel'>Project Work :</span>
-                <Input
-                  className='Input'
-                  placeholder="Project Work "
-                  value={projName}
-                  classNames="ViewInput"
-                  readOnly={true}
-                />
-              </FloatLabel>
-            </Form.Item> */}
-
-
-
-
-          </StyledContactFormContentItem>
+         
 
           <StyledContactFormFooter>
             <StyledContactFormBtn

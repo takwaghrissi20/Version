@@ -119,6 +119,8 @@ export const StyledContactFormItemTitle = styled.h6`
   font-size: ${({ theme }) => theme.font.size.lg};
   font-weight: ${({ theme }) => theme.font.weight.medium};
   margin-bottom: 16px;
+   text-align: center;
+ 
 
   @media screen and (min-width: ${({ theme }) => theme.breakpoints.xxl}px) {
     margin-bottom: 24px;

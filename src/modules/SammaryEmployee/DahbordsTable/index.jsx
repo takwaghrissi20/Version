@@ -6,6 +6,7 @@ import { StyledAnChar, StyledOrderTable } from '../../../styles/index.styled';
 import EmployeeView from "../../Model/EmployeeView";
 import AppIconButton from "../../../@crema/components/AppIconButton";
 import { MdLabelOutline } from "react-icons/md";
+import { padding } from 'polished';
 
 const OrderTable = ({ orderData }) => {
   const [hoveredRow, setHoveredRow] = useState(null);
@@ -40,7 +41,7 @@ const OrderTable = ({ orderData }) => {
         console.log("responseData?.projects ",responseData?.projects);
         const projects = responseData?.projects || [];
     // Initialize an array to store all travels
-    let allTravels = [];
+      let allTravels = [];
 
     // Iterate over each project
     projects.forEach(project => {
@@ -227,8 +228,8 @@ const OrderTable = ({ orderData }) => {
     onViewEmployee(false);
   };
   return (
-    <AppAnimate animation='transition.slideUpIn' delay={200}   
-    >
+    <AppAnimate animation='transition.slideUpIn'
+     delay={200}  >
      
       <StyledOrderTable
         hoverColor

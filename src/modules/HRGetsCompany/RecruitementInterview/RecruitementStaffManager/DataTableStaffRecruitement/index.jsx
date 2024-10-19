@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { StyledOrderTable, StyledAnChar, StyledRecentPatientBadge }
   from '../../../../../styles/index.styled';
 
-import { Button, Alert, Tooltip } from 'antd';
+import { Button, Alert, Tooltip, Spin } from 'antd';
 import RecruitementView from "../../../../Model/RecruitementView"
 import RecruitementEdit from "../../../../Model/RecruitementEdit"
 import { Dropdown } from 'antd';
@@ -27,20 +27,27 @@ const AllRecruitementStaff = ({ allrecruitementabove,
   recruitementTypeIdAboveBOD,
   recruitementTypeIdAboveOperationManager,
   recruitementTypeIdAbove,
-   allrecruitementAbove
- 
+  allrecruitementAbove
+
 
 
 
 }) => {
-  console.log("recruitementTypeIdAbove", recruitementTypeIdAbove)
+  console.log("recruitementTypeIdAbove", allrecruitementAbove)
 
   //const [findIdData, setFindIdData] = useState(null);
   const [isViewRecruitement, onViewRecruitement] = useState(false);
   const [isEditRecruitement, onEditRecruitement] = useState(false);
   const [isDelteRecruitement, onDeleteRecruitement] = useState(false);
   const navigate = useNavigate();
-  console.log("findIdData?.affectedTo jjjjjj:", roles)
+  const [loading1, setLoading1] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading1(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
   const token = localStorage.getItem("token");
   const handleAddRecruitementOpen = () => {
     navigate(`/Hr/Recruitement&Interview/Recruitement/View/codeJob=${id}`, {
@@ -121,7 +128,7 @@ const AllRecruitementStaff = ({ allrecruitementabove,
   useEffect(() => {
     const updateTableHeight = () => {
       const pageHeight = window.innerHeight;
-      const tableHeight = pageHeight * 0.35;
+      const tableHeight = pageHeight*0.35;
       setTableHeight(tableHeight);
     };
     window.addEventListener('resize', updateTableHeight);
@@ -288,15 +295,20 @@ const AllRecruitementStaff = ({ allrecruitementabove,
   };
 
   const items = [
-    { key: 1, label: <span style={{ fontSize: 14 }}>View</span>, onClick: handleAddRecruitementOpen },
+    { key: 1, label: <span style={{ fontSize: 14 }}>View  </span>, onClick: handleAddRecruitementOpen },
     // { key: 3, label: <span style={{ fontSize: 14 }}>Generate the interview sheet</span>, onClick: handleInterview },
     ...(roles?.includes('Manager') || roles?.includes('Human Ressource') || roles?.includes('Leader') ? [
-      ...(findIdData?.notif !== 3 && findIdData?.notif !== 4 && findIdData?.notif !== 8 && findIdData?.notif !== 80 && findIdData?.notif !== 20 ? [
-        { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditRecruitement }
-      ] : []),
-    ] : []),
-    //Take Action Operation Manager
+      ...(findIdData?.notif !== 3 && findIdData?.notif !== 8
+        && findIdData?.notif !== 80
+        && findIdData?.notif !== 4
+        && findIdData?.notif !== 20 &&
+        findIdData?.notif !== 7
 
+        ? [
+
+          { key: 2, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditRecruitement }
+        ] : []),
+    ] : []),
 
     //Approved Hr 
     ...(roles?.includes('Cordinator') || roles?.includes('admin') ? [
@@ -312,55 +324,113 @@ const AllRecruitementStaff = ({ allrecruitementabove,
       { key: 3, label: <span style={{ fontSize: 14 }}>Edit</span>, onClick: handleEditRecruitementOpen },
       { key: 4, label: <span style={{ fontSize: 14 }}>Delete</span>, onClick: handleDeleteRecruitement },
     ] : []),
-    ...((roles.includes('PMO') && findIdData?.signatureHod === "true" && findIdData?.projectName !== "Office"
+
+    ...((
+      ((roles.includes('PMO') &&
+        findIdData?.projectName !== "Office" &&
+        (
+          (findIdData?.signatureHod === "true") &&
+          (!findIdData?.notif === 7 || !findIdData?.notif === 3 || !findIdData?.notif === 8)
+        ))
+
+        ||
+        (roles.includes('PMO') &&
+          findIdData?.projectName !== "Office" &&
+          (
+            (findIdData?.signatureHod === "true") &&
+            (findIdData?.notif === 7 || !findIdData?.notif === 3 || !findIdData?.notif === 8)
+          ))
+
+        ||
+        (
+          roles.includes('PMO') &&
+          !(findIdData?.notif === 7) &&
+          !(findIdData?.notif === 3) &&
+          !(findIdData?.notif === 8) &&
+          findIdData?.position?.includes("Leader") &&
+          findIdData?.signatureHod === "false"
+        )
+      )
     ) ? [
       { key: 3, label: <span style={{ fontSize: 14 }}>Take Action</span>, onClick: handleApprovedRecruitement },
     ] : []),
-    /*Take Action BOD */
-    ...(
-      ((findIdData?.projectName !== "Office" &&
-        roles.includes('bod') &&
-        findIdData?.signatureHod === "true" &&
-        ((findIdData?.oDep === "true" && findIdData?.exDep === "false") ||
-          (findIdData?.oDep === "false" && findIdData?.exDep === "true")) &&
-        findIdData?.notif === 4
-      )
 
-        ||
-        (((findIdData?.oDep === "true" && findIdData?.exDep === "false") ||
-          (findIdData?.oDep === "false" && findIdData?.exDep === "true")) &&
-          findIdData?.projectName !== "Office" &&
-          findIdData?.signatureHod === "true" &&
-          findIdData.notif === 7 &&
-          findIdData.position.includes("Leader")) ||
+    ...((findIdData?.projectName !== "Office" && roles.includes('bod') &&
+      findIdData?.signatureHod === "true" && ((findIdData?.oDep === "true" && findIdData?.exDep === "false")
+        || (findIdData?.oDep === "false" || findIdData?.exDep === "true"))
+      && (findIdData?.notif === 4 || findIdData?.notif === 7 || findIdData?.notif === 3 || findIdData?.notif === 8)) ? [
+      { key: 3, label: <span style={{ fontSize: 14 }}>Take Action</span>, onClick: handleApprovedRecruitement },
 
-        (findIdData?.projectName == "Office"
-          && roles.includes('bod') &&
-          findIdData?.signatureHod === "true")
+    ] : []),
+    ...((findIdData?.projectName == "Office" && roles.includes('bod') &&
+      findIdData?.signatureHod === "true") ? [
+      { key: 3, label: <span style={{ fontSize: 14 }}>Take Action</span>, onClick: handleApprovedRecruitement },
 
-      ) ? [
-        { key: 3, label: <span style={{ fontSize: 14 }}>Take Action</span>, onClick: handleApprovedRecruitement },
+    ] : []),
+    //Operation Take Action
+    ...(((findIdData?.projectName !== "Office" &&
+      findIdData?.signatureHod === "false" && ((findIdData?.oDep === "true"
+        && findIdData?.exDep === "false")
+        || (findIdData?.oDep === "false" && findIdData?.exDep === "true"))
+      && findIdData?.notif === 4 && roles.includes('Manager') &&
+      findIdData?.dep.includes("Operation")) ||
 
-      ] : []),
-    /*End Take Action BOD */
+      (findIdData?.projectName !== "Office" &&
+        findIdData?.signatureHod === "true" && ((findIdData?.oDep === "true"
+          && findIdData?.exDep === "false")
+          || (findIdData?.oDep === "false" && findIdData?.exDep === "true"))
+        && findIdData?.notif === 7 && roles.includes('Manager') &&
+        findIdData?.dep.includes("Operation"))
 
-    //Take Action Operation Manager
-    ...(
-      (findIdData?.notif === 4 || findIdData?.notif === 7 || findIdData?.notif === 3
-        || findIdData?.notif === 8
-      ) &&
-        findIdData?.dep?.includes('Operation') &&
-        (
-          (findIdData?.oDep === "true" && findIdData?.exDep === "false") ||
-          (findIdData?.oDep === "false" && findIdData?.exDep === "true")
-        ) &&
-        findIdData?.position?.includes("Leader") ? [
-        { key: 3, label: <span style={{ fontSize: 14 }}>Take Action</span>, onClick: handleApprovedRecruitement },
-      ] : []),
 
+
+
+
+    ) ? [
+      { key: 3, label: <span style={{ fontSize: 14 }}>Take Action</span>, onClick: handleApprovedRecruitement },
+    ] : []),
 
   ];
   const year = new Date().getFullYear();
+  const statusBadges = {
+    pending: { label: "Pending", bgColor: "#C0C0C0", color: "white" },
+    checkedByPMO: { label: "Checked By PMO", bgColor: "#C0C0C0", color: "white" },
+    approvedByHOD: { label: "Approved By HOD", bgColor: "#32CD32", color: "white" },
+    refusedByHOD: { label: "Refuse By HOD Operation", bgColor: "#FF2400", color: "white" },
+    approvedByHODOperation: { label: "Approved By HOD Operation", bgColor: "#32CD32", color: "white" },
+    cisGenerate: { label: "CIS Generate", bgColor: "#5784BA", color: "white" }
+  };
+  
+  const renderStatus = (record) => {
+    if (record.notif === 3 ) {
+      return <StyledRecentPatientBadge
+       style={{ backgroundColor: statusBadges.approvedByHOD.bgColor, 
+        color: statusBadges.approvedByHOD.color }}>{statusBadges.approvedByHOD.label}</StyledRecentPatientBadge>;
+    }
+    if (record.notif === 8 ) {
+      return <StyledRecentPatientBadge
+       style={{ backgroundColor: statusBadges.approvedByHOD.bgColor, 
+        color: statusBadges.approvedByHOD.color }}>{statusBadges.approvedByHOD.label}</StyledRecentPatientBadge>;
+    }
+
+    if (record.notif === 4 && (record.oDep === "true" || record.exDep === "true")) {
+      return <StyledRecentPatientBadge style={{ backgroundColor: statusBadges.checkedByPMO.bgColor, color: statusBadges.checkedByPMO.color }}>{statusBadges.checkedByPMO.label}</StyledRecentPatientBadge>;
+    }
+    if (record.notif === 7 && 
+      (record.oDep === "true" || record.exDep === "true")) {
+      return <StyledRecentPatientBadge style={{ backgroundColor: statusBadges.approvedByHODOperation.bgColor, color: statusBadges.approvedByHODOperation.color }}>{statusBadges.approvedByHODOperation.label}</StyledRecentPatientBadge>;
+    }
+    if (record.notif === 70) {
+      return <StyledRecentPatientBadge style={{ backgroundColor: statusBadges.refusedByHOD.bgColor, color: statusBadges.refusedByHOD.color }}>{statusBadges.refusedByHOD.label}</StyledRecentPatientBadge>;
+    }
+    if (record.notif === 2) {
+      return <StyledRecentPatientBadge style={{ backgroundColor: statusBadges.approvedByHOD.bgColor, color: statusBadges.approvedByHOD.color }}>{statusBadges.approvedByHOD.label}</StyledRecentPatientBadge>;
+    }
+    if (record.interviewsc.length > 0) {
+      return <StyledRecentPatientBadge style={{ backgroundColor: statusBadges.cisGenerate.bgColor, color: statusBadges.cisGenerate.color }}>{statusBadges.cisGenerate.label}</StyledRecentPatientBadge>;
+    }
+    return <StyledRecentPatientBadge style={{ backgroundColor: statusBadges.pending.bgColor, color: statusBadges.pending.color }}>{statusBadges.pending.label}</StyledRecentPatientBadge>;
+  };
   const columns = [
     {
       title: 'Recruitement Reference',
@@ -440,6 +510,12 @@ const AllRecruitementStaff = ({ allrecruitementabove,
 
 
     },
+    {
+      title: 'RRS Status',
+      dataIndex: 'notif',
+      key: 'notif',
+      render: (text, record) => renderStatus(record),
+    },
 
     {
       title: 'BOD Approval',
@@ -456,7 +532,7 @@ const AllRecruitementStaff = ({ allrecruitementabove,
                 fontFamily: "inherit"
               }}
             >
-              Approved By BOD Ali
+              Pending
             </StyledRecentPatientBadge>
           );
         } else if (record.notif === 8 && record.chekedBod2 === "true" && record.chekedBod1 === null) {
@@ -469,7 +545,7 @@ const AllRecruitementStaff = ({ allrecruitementabove,
                 fontFamily: "inherit"
               }}
             >
-              Approved By Bod Nidhal
+              Pending
             </StyledRecentPatientBadge>
           );
         }
@@ -567,7 +643,7 @@ const AllRecruitementStaff = ({ allrecruitementabove,
           );
         }
 
-        return null;
+        return "Pending";
       },
     },
 
@@ -688,84 +764,130 @@ const AllRecruitementStaff = ({ allrecruitementabove,
 
   return (
     <>
-      {loading && <div></div>}
-      {roles.includes('bod')
-        && (
-          <>
-            <StyledOrderTable
-              hoverColor
-              data={recruitementTypeIdAboveBOD}
-              columns={columns}
-              scroll={{ x: 'auto', y: tableHeight }}
-              rowClassName={rowClassName}
-              border
+      {loading1 ? (
+        <div style={{ textAlign: 'center', marginTop: '50px' }}>
+          <Spin size="large" />
+        </div>
+      ) : (
+        <>   
+  
+        {(roles.includes('admin') || roles.includes('Cordinator') ||
+        roles.includes('Administrator')  ) &&
+              <>
+                <StyledOrderTable
+                  hoverColor
+                  data={allrecruitementAbove}
+                  columns={columns}
+                  scroll={{ x: 'auto', y: tableHeight }}
+                  // rowClassName={rowClassName}
+                  border
 
 
-            />
-          </>
-        )
-      }
-      {roles.includes('Manager') && !roles.includes('Operation')
-        && (
-          <>
-            <StyledOrderTable
-              hoverColor
-              data={allrecruitementabove}
-              columns={columns}
-              scroll={{ x: 'auto', y: tableHeight }}
-              rowClassName={rowClassName}
-              border
+                />
+              </>
+            
+          }
+          {roles.includes('bod')
+            && (
+              <>
+                <StyledOrderTable
+                  hoverColor
+                  data={recruitementTypeIdAboveBOD}
+                  columns={columns}
+                  scroll={{ x: 'auto', y: tableHeight }}
+                  // rowClassName={rowClassName}
+                  border
 
 
-            />
-          </>
-        )
-      }
-      {roles.includes('PMO') && (
-        <>
-          <StyledOrderTable
-            hoverColor
-            data={recruitementTypeIdAbovePMO}
-            columns={columns}
-            scroll={{ x: 'auto', y: tableHeight }}
-            rowClassName={rowClassName}
-            border
+                />
+              </>
+            )
+          }
+          {((roles.includes('Manager') && !roles.includes('Human Ressource') && !roles.includes('Operation')) ||
+            roles.includes('Leader'))
+            && (
+              <>
+          
+                <StyledOrderTable
+                  hoverColor
+                  data={allrecruitementabove}
+                  columns={columns}
+                  scroll={{ x: 'auto', y: tableHeight }}
+                  // rowClassName={rowClassName}
+                  border
 
-          />
+
+                />
+              </>
+            )
+          }
+          {roles.includes('PMO') && (
+            <>
+              <StyledOrderTable
+                hoverColor
+                data={recruitementTypeIdAbovePMO}
+                columns={columns}
+                scroll={{ x: 'auto', y: tableHeight }}
+                // rowClassName={rowClassName}
+                border
+
+              />
+            </>
+          )
+          }
+          {!roles.includes('bod') &&
+            !roles.includes('PMO') &&
+            !roles.includes('Operation Manager') &&
+            roles.includes('Human Ressource') &&
+            roles.includes('Cordinator') && (
+              <>
+            
+              <StyledOrderTable
+                hoverColor
+                data={allrecruitementAbove}
+                columns={columns}
+                scroll={{ x: 'auto', y: tableHeight }}
+                // rowClassName={rowClassName}
+                border
+              />
+              </>
+            )}
+            {
+            
+            roles.includes('Human Ressource') &&
+          (
+              <>
+            
+              <StyledOrderTable
+                hoverColor
+                data={allrecruitementAbove}
+                columns={columns}
+                scroll={{ x: 'auto', y: tableHeight }}
+                // rowClassName={rowClassName}
+                border
+              />
+              </>
+            )}
+
+
+          {roles === "Operation Manager" && (
+            <>
+              <StyledOrderTable
+                hoverColor
+                data={recruitementTypeIdAboveOperationManager}
+                columns={columns}
+                scroll={{ x: 'auto', y: tableHeight }}
+                // rowClassName={rowClassName}
+                border
+
+              />
+            </>
+          )
+          }
         </>
-      )
-      }
-      {!roles.includes('bod') &&
-        !roles.includes('PMO') &&
-        !roles.includes('Operation Manager') &&
-       
-        roles.includes('Cordinator') && (
-          <>
-            <StyledOrderTable
-              hoverColor
-              data={ allrecruitementAbove}
-              columns={columns}
-              scroll={{ x: 'auto', y: tableHeight }}
-              rowClassName={rowClassName}
-              border
-            />
-          </>
-        )}
+      )}
 
-      {roles === "Operation Manager" && (
-        <>
-          <StyledOrderTable
-            hoverColor
-            data={recruitementTypeIdAboveOperationManager}
-            columns={columns}
-            scroll={{ x: 'auto', y: tableHeight }}
-            rowClassName={rowClassName}
-            border
 
-          />
-        </>
-      )
-      }
 
 
       {isDelteRecruitement ? (

@@ -1377,6 +1377,8 @@ export const StyledOrderTable = styled(AppTableContainer)`
   border-radius: 8px 8px 0 0;
   border-collapse: separate;
   border-spacing: 0;
+  padding-bottom: 24px;
+
 
 
 
@@ -1387,6 +1389,7 @@ export const StyledOrderTable = styled(AppTableContainer)`
     font-weight: bold;  
     line-height: 1;
     font-family: poppins;
+  
    
 
     }
@@ -1398,8 +1401,9 @@ export const StyledOrderTable = styled(AppTableContainer)`
     text-align:left;
     line-height: 1.5;
     min-width:57px;
-    max-width:70px
-   
+    max-width:70px,
+   margin-bottom:2rem
+  
 
 
  

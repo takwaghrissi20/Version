@@ -45,28 +45,14 @@ const ContratList = () => {
         if (!response.ok) {
           throw new Error('Failed to fetch employees');
         }
+        if (response.ok) {
   
         const data = await response.json();
         console.log("Original Data:", data);
-        /////////////////////////////////////////
-        const filteredEmployees2 = data.filter(employee => {
-          const isManagementStaff = employee.category === "Management Staff";
-          const isConstructionStaffOnSite = employee.category === "Construction Staff" && employee.type_Emp === "site" && employee.dateVisa !== null;
-          const isSiteOrSiteOffice = employee.type_Emp === "site&office";
-          
-          return isManagementStaff || isConstructionStaffOnSite || isSiteOrSiteOffice;
-        });
-  
-  
-        const filteredEmployees = data.filter(employee => {
-          const isManagementOrConstruction = employee.category === "Management Staff" || employee.category === "Construction Staff";
-           
-        return isManagementOrConstruction;
-        });
- 
-        console.log("Filtered Data:", data);
+    
         // setEmployees(filteredEmployees);
         setEmployees(data)
+        }
   
       } catch (error) {
         console.error('Error fetching employees:', error);

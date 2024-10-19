@@ -100,7 +100,8 @@ const EditInterviewConstruction = ({ hseCertif,
   const hrComentaire = location.state ? location.state.hrComentaire : null
   const finaldesision = location.state ? location.state.finaldesision : null
   const inputInterview = location.state ? location.state.inputInterview : null
-
+  
+  const intervtime= location.state ? location.state.intervtime: null
   /////////////////////End Variable Location
   const [selectedValidation, setSelectedValidation] = useState('');
   const [isOkChecked, setIsOkChecked] = useState(false);
@@ -150,7 +151,7 @@ const EditInterviewConstruction = ({ hseCertif,
   const [isOkCheckedHRDecision, setIsOkCheckedHRDecision] = useState(false);
   const [isNoCheckedHRDecision, setIsNoCheckedHRDecision] = useState(false);
   const [commentHr, setCommentsHr] = useState("");
-  const [idConstruction, setIdConstruction] = useState("");
+  const [idConstruction, setIdConstruction] = useState([]);
   const [intcodec, setIntcodec] = useState(0);
   const token = localStorage.getItem("token");
   const year = new Date().getFullYear();
@@ -186,8 +187,7 @@ const EditInterviewConstruction = ({ hseCertif,
       setIsVisibleHRDecision(false);
     }
   }
-  idViewConstruction?.intervtime
-  console.log("testttt time", idViewConstruction?.intervtime)
+
   function NoHrDesicision(e) {
     console.log(`checkedgggg = ${e.target.checked}`);
     setIsOkCheckedHRDecision(e.target.checked);
@@ -199,12 +199,11 @@ const EditInterviewConstruction = ({ hseCertif,
   }
   const handleSalaryChange = (e) => {
     const value = e.target.value;
+    const numericValue = parseFloat(value); 
     setProposedSalary(value);
     setSalaryError(null);
-
-    // Vérification que la valeur est bien un nombre valide
     if (!isNaN(value) && value !== "") {
-      if (parseFloat(value) > lev1SalaryMax) {
+      if ( value> lev1SalaryMax) {
         setSalaryError(`Proposed Salary exceeds the maximum allowed value of ${lev1SalaryMax}`);
       } else {
         setProposedDailyRate((value / 30).toFixed(3));
@@ -213,22 +212,27 @@ const EditInterviewConstruction = ({ hseCertif,
       setSalaryError('Invalid salary input');
     }
   };
-
   const handleDailyChange = (e) => {
     const value = e.target.value;
+  
+    const numericValue = parseFloat(value); 
     setProposedDailyRate(value);
     setDailyError(null);
-
+  
     if (!isNaN(value) && value !== "") {
-      if (parseFloat(value) > lev1dailyRateMax) {
+      if (value> lev1dailyRateMax) {
         setDailyError(`Proposed Daily Rate exceeds the maximum allowed value of ${lev1dailyRateMax}`);
-      } else {
+      
         setProposedSalary((value * 30).toFixed(3));
-      }
+     
     } else {
       setDailyError('Invalid daily rate input');
     }
   };
+}
+  
+  
+
   /////Office or siteOffice
   const handleSalaryOfficeChange = (e) => {
     const value = e.target.value;
@@ -237,10 +241,11 @@ const EditInterviewConstruction = ({ hseCertif,
 
     // Vérification que la valeur est bien un nombre valide
     if (!isNaN(value) && value !== "") {
-      if (parseFloat(value) > lev1SalaryMax) {
+      
+      if ( value > lev1SalaryMax) {
         setSalaryError(`Proposed Salary exceeds the maximum allowed value of ${lev1SalaryMax}`);
       } else {
-        setProposedDailyRate((value / 26).toFixed(2));
+        setProposedDailyRate((value / 26).toFixed(3));
       }
     } else {
       setSalaryError('Invalid salary input');
@@ -253,7 +258,7 @@ const EditInterviewConstruction = ({ hseCertif,
     setDailyError(null);
 
     if (!isNaN(value) && value !== "") {
-      if (parseFloat(value) > lev1dailyRateMax) {
+      if (value > lev1dailyRateMax) {
         setDailyError(`Proposed Daily Rate exceeds the maximum allowed value of ${lev1dailyRateMax}`);
       } else {
         setProposedSalary((value * 26).toFixed(2));
@@ -263,9 +268,6 @@ const EditInterviewConstruction = ({ hseCertif,
     }
   };
 
-
-  console.log("positionToBeFilled00", positionToBeFilled)
-  console.log("requiredQualificatio00", requiredQualification)
   const fetchMaxValues = async () => {
     try {
       const endPoint =
@@ -366,7 +368,7 @@ const EditInterviewConstruction = ({ hseCertif,
     findRecruitementId()
     // findIdInterviewConstruction()
 
-  }, [interviewCode, name, getsId, setIntcodec, intcodec]);
+  }, [interviewCode, name, getsId, setIntcodec, intcodec,validatesFor]);
 
 
   const handleValidationSelect = (value) => {
@@ -619,13 +621,14 @@ const EditInterviewConstruction = ({ hseCertif,
       color: '#FFFFFF !important',
     });
   };
-  const openNotificationRefuse = () => {
+  const   openNotificationRefuse = () => {
     notification.open({
-      message: 'Refuse',
-      description: 'Refuse Construction STAFF INTERVIEW SHEET',
+      message: '',
+      description: 'Your decision has been processed successfully.',
       style: {
-        backgroundColor: '#A7001E',
-        border: '1px solid #A7001E',
+        backgroundColor: '#28a745',
+        backgroundColor: '#28a745',
+        border: '1px solid #28a745',
         color: '#FFFFFF !important',
         borderRadius: '3px',
         boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
@@ -633,7 +636,7 @@ const EditInterviewConstruction = ({ hseCertif,
         display: 'flex',
         height: "102px",
         width: "500px",
-        borderLeft: '8px solid #C23028',
+        borderLeft: '8px solid #1f8838',
         fontsize: '30px',
         lineheight: '150%',
         marginbottom: 0,
@@ -645,6 +648,8 @@ const EditInterviewConstruction = ({ hseCertif,
       color: '#FFFFFF !important',
     });
   };
+
+ 
 
   const openNotificationWarning = () => {
     notification.open({
@@ -871,6 +876,15 @@ const EditInterviewConstruction = ({ hseCertif,
           hseDecision: idConstruction?.hseDecision,
           others: idConstruction?.others,
           intervtime:idConstruction?.intervtime,
+          workAtHeighTrain: idConstruction?.workAtHeighTrain,
+          hseTraining: idConstruction?.hseTraining,
+          workplace:idConstruction?.workplace,
+          fireFighting:idConstruction?.fireFighting,
+          hazardIdentification:idConstruction?.hazardIdentification,
+          cofinedSpace:idConstruction?.cofinedSpace,
+          safetyInWelding:idConstruction?.safetyInWelding,
+          hseStandard: idConstruction?.hseStandard,
+          others:idConstruction?.others
          
 
 
@@ -964,8 +978,16 @@ const EditInterviewConstruction = ({ hseCertif,
           // feedback,
           propsedsalary:idViewConstruction?. propsedsalary,
           notif: 52,
-          intervtime:idViewConstruction?.intervtime
-
+          intervtime:idViewConstruction?.intervtime?
+          workAtHeighTrain: idConstruction?.workAtHeighTrain,
+          hseTraining: idConstruction?.hseTraining,
+          workplace:idConstruction?.workplace,
+          fireFighting:idConstruction?.fireFighting,
+          hazardIdentification:idConstruction?.hazardIdentification,
+          cofinedSpace:idConstruction?.cofinedSpace,
+          safetyInWelding:idConstruction?.safetyInWelding,
+          hseStandard: idConstruction?.hseStandard,
+          others:idConstruction?.others
 
 
 
@@ -1171,9 +1193,13 @@ const EditInterviewConstruction = ({ hseCertif,
           // feedback,
           propsedsalary,
           notif: 1,
-          time: time
-
-
+          time: time,
+          evalName:name,
+          evalId:getsId,
+          intervtime: idViewConstruction?.intervtime,
+          inputInterview:idViewConstruction?.inputInterview,
+          requiredExperinece:idViewConstruction?.requiredExperinece,
+          experience:idViewConstruction?.experience,
         })
       });
 
@@ -1263,6 +1289,12 @@ const EditInterviewConstruction = ({ hseCertif,
           hrDesion,
           // feedback,
           propsedsalary,
+          evalName:name,
+          evalId:getsId,
+          intervtime: idViewConstruction?.intervtime,
+          inputInterview:idViewConstruction?.inputInterview,
+          requiredExperinece:idViewConstruction?.requiredExperinece,
+          experience:idViewConstruction?.experience,
           notif: 10,
           time: time
 
@@ -1278,7 +1310,7 @@ const EditInterviewConstruction = ({ hseCertif,
 
         const responseData = await response.json();
         // form.resetFields();
-        openNotification('bottomRight')
+        openNotificationRefuse('bottomRight')
         setTimeout(() => {
           window.location.reload();
           navigate(-1)
@@ -1367,13 +1399,20 @@ const EditInterviewConstruction = ({ hseCertif,
           emergency: idViewConstruction?.emergency,
           ptw: idViewConstruction?.ptw,
           hsePolicies: idViewConstruction?.hsePolicies,
-          others: idViewConstruction?.others,
           intervtime: idViewConstruction?.intervtime,
           /////////////////////////////////////////////////     
           requiredExperinece: idViewConstruction?.requiredExperinece,
           evalName:idViewConstruction?.evalName,
           evalId:idViewConstruction?.evalId,
-        
+          workAtHeighTrain: idConstruction?.workAtHeighTrain,
+          hseTraining: idConstruction?.hseTraining,
+          workplace:idConstruction?.workplace,
+          fireFighting:idConstruction?.fireFighting,
+          hazardIdentification:idConstruction?.hazardIdentification,
+          cofinedSpace:idConstruction?.cofinedSpace,
+          safetyInWelding:idConstruction?.safetyInWelding,
+          hseStandard: idConstruction?.hseStandard,
+          others:idConstruction?.others
 
         })
       });
@@ -1415,66 +1454,78 @@ const EditInterviewConstruction = ({ hseCertif,
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
         body: JSON.stringify({
-          interviewCode: interviewCode,
-          jobCode: jobCode,
-          interviwDate: newinterviwDate,
-          totalAccept: totalAccept,
-          totalInterv: totalInterv,
-          totalReqPos: totalReqPos,
+          interviewCode: idViewConstruction?.interviewCode,
+          jobCode: idViewConstruction?.jobCode,
+          interviwDate: idViewConstruction?.interviwDate,
+          totalAccept: idViewConstruction?.totalAccept,
+          totalInterv: idViewConstruction?.totalInterv,
+          totalReqPos: idViewConstruction?.totalReqPos,
           totalRequiredGrade: totalRequiredGrade,
-          idNumb: getsId,
-          department: department,
-          projname: projname,
-          requiredGrade: newrequiredGrade,
+          idNumb: idViewConstruction?.idNumb,
+          department: idViewConstruction?.department,
+          projname: idViewConstruction?.projname,
+          requiredGrade: idViewConstruction?.requiredGrade,
           requiredQualification: newrequiredQualification,
-          positionToBeFilled: positionToBeFilled,
-          fullName: fullName,
-          birthayDate: birthayDate,
-          familySituation: familySituation,
-          experience: experience,
-          educationLevel: educationLevel,
-          diploma: diploma,
-          contactPhone: contactPhone,
-          urlCv: urlCv,
-          validatesFor: idConstruction?.validatesFor,
-          goTotest2: idConstruction?.goTotest2,
-          psy_Person: idConstruction?.psy_Person,
-          psy_HumQuality: idConstruction?.psy_HumQuality,
-          psy_motivation: idConstruction?.psy_motivation,
-          psy_Intellig: idConstruction?.psy_Intellig,
-          goToTest3: idConstruction?.goToTest3,
-          techEnglishSkills: idConstruction?.techEnglishSkills,
-          evalDesision: idConstruction?.evalDesision,
-          techDate: idConstruction?.techDate,
-          meetDesision: idConstruction?.meetDesision,
-          techcommentaire: idConstruction?.techcommentaire,
+          positionToBeFilled: idViewConstruction?.positionToBeFilled,
+          fullName: idViewConstruction?.fullName,
+          birthayDate: idViewConstruction?.birthayDate,
+          familySituation: idViewConstruction?.familySituation,
+          experience: idViewConstruction?.experience,
+          educationLevel: idViewConstruction?.educationLevel,
+          diploma: idViewConstruction?.diploma,
+          contactPhone: idViewConstruction?.contactPhone,
+          urlCv: idViewConstruction?.urlCv,
+          validatesFor: idViewConstruction?.validatesFor,
+          goTotest2: idViewConstruction?.goTotest2,
+          psy_Person: idViewConstruction?.psy_Person,
+          psy_HumQuality: idViewConstruction?.psy_HumQuality,
+          psy_motivation: idViewConstruction?.psy_motivation,
+          psy_Intellig: idViewConstruction?.psy_Intellig,
+          goToTest3: idViewConstruction?.goToTest3,
+          techEnglishSkills: idViewConstruction?.techEnglishSkills,
+          evalDesision: idViewConstruction?.evalDesision,
+          techDate: idViewConstruction?.techDate,
+          meetDesision: idViewConstruction?.meetDesision,
+          techcommentaire: idViewConstruction?.techcommentaire,
           contactEmail: contactEmail,
-          hr_Person,
-          hr_HumQuality,
-          hr_motivation,
-          hr_Intellig,
-          level,
-
+          hr_Person: idViewConstruction?.hr_Person,
+          hr_HumQuality: idViewConstruction?.hr_HumQuality,
+          hr_motivation: idViewConstruction?.hr_motivation,
+          hr_Intellig: idViewConstruction?.hr_Intellig,
+          nlevel: idViewConstruction?.nlevel,
           headOfDepAprouv: isOkCheckedHead,
           // agreedJoinedDate,
-          expectedJoinDate,
-          dailyRate,
-          hrDesion,
+          expectedJoinDate: idViewConstruction?.expectedJoinDate,
+          dailyRate: idViewConstruction?.dailyRate,
+          hrDesion: idViewConstruction?.hrDesion,
           // feedback,
-          propsedsalary,
+          propsedsalary: idViewConstruction?.propsedsalary,
           notif: 53,
           hseDecision: isOkCheckedHSE,
           hseComment: commentHSE,
-          hseCertif: idConstruction?.hseCertif,
-          siteHazCont: idConstruction?.siteHazCont,
-          properUse: idConstruction?.properUse,
-          hzardousMater: idConstruction?.hzardousMater,
-          emergency: idConstruction?.emergency,
-          ptw: idConstruction?.ptw,
-          hsePolicies: idConstruction?.hsePolicies,
-          others: idConstruction?.others,
+          hseCertif: idViewConstruction?.hseCertif,
+          siteHazCont: idViewConstruction?.siteHazCont,
+          properUse: idViewConstruction?.properUse,
+          hzardousMater: idViewConstruction?.hzardousMater,
+          emergency: idViewConstruction?.emergency,
+          ptw: idViewConstruction?.ptw,
+          hsePolicies: idViewConstruction?.hsePolicies,
+          intervtime: idViewConstruction?.intervtime,
+          /////////////////////////////////////////////////     
+          requiredExperinece: idViewConstruction?.requiredExperinece,
           evalName:idViewConstruction?.evalName,
           evalId:idViewConstruction?.evalId,
+          workAtHeighTrain: idConstruction?.workAtHeighTrain,
+          hseTraining: idConstruction?.hseTraining,
+          workplace:idConstruction?.workplace,
+          fireFighting:idConstruction?.fireFighting,
+          hazardIdentification:idConstruction?.hazardIdentification,
+          cofinedSpace:idConstruction?.cofinedSpace,
+          safetyInWelding:idConstruction?.safetyInWelding,
+          hseStandard: idConstruction?.hseStandard,
+          others:idConstruction?.others
+
+          
         })
       });
 
@@ -1486,7 +1537,7 @@ const EditInterviewConstruction = ({ hseCertif,
 
         const responseData = await response.json();
         // form.resetFields();
-        openNotification('bottomRight')
+        openNotificationRefuse('bottomRight')
         setTimeout(() => {
           window.location.reload();
           navigate(-1)
@@ -1585,7 +1636,17 @@ const EditInterviewConstruction = ({ hseCertif,
           emergency:idConstruction?.emergency,
           ptw:idConstruction?.ptw,
           hsePolicies:idConstruction?.hsePolicies,
+          workAtHeighTrain: idConstruction?.workAtHeighTrain,
+          hseTraining: idConstruction?.hseTraining,
+          workplace:idConstruction?.workplace,
+          fireFighting:idConstruction?.fireFighting,
+          hazardIdentification:idConstruction?.hazardIdentification,
+          cofinedSpace:idConstruction?.cofinedSpace,
+          safetyInWelding:idConstruction?.safetyInWelding,
+          hseStandard: idConstruction?.hseStandard,
           others:idConstruction?.others,
+          evalName:idConstruction?.evalName,
+          evalId:idConstruction?.evalId,
          
         })
       });
@@ -1698,7 +1759,6 @@ const EditInterviewConstruction = ({ hseCertif,
           emergency: idConstruction?.emergency,
           ptw: idConstruction?.ptw,
           hsePolicies: idConstruction?.hsePolicies,
-          others: idConstruction?.others,
           // educAndTrain: idConstruction?.educAndTrain,
           // workExp: idConstruction?.workExp,
           // DiversityTal: idConstruction?.DiversityTal,
@@ -1710,7 +1770,17 @@ const EditInterviewConstruction = ({ hseCertif,
           // creativity: idConstruction?.creativity,
           // physicPres: idConstruction?.physicPres,
           // leadership: idConstruction?.leadership,
-
+          workAtHeighTrain: idConstruction?.workAtHeighTrain,
+          hseTraining: idConstruction?.hseTraining,
+          workplace:idConstruction?.workplace,
+          fireFighting:idConstruction?.fireFighting,
+          hazardIdentification:idConstruction?.hazardIdentification,
+          cofinedSpace:idConstruction?.cofinedSpace,
+          safetyInWelding:idConstruction?.safetyInWelding,
+          hseStandard: idConstruction?.hseStandard,
+          others:idConstruction?.others,
+          evalName:idConstruction?.evalName,
+          evalId:idConstruction?.evalId,
 
         })
       });
@@ -1867,7 +1937,7 @@ const EditInterviewConstruction = ({ hseCertif,
                     <Form.Item label='Reference' name='Reference'>
                       <Input
                         className='Input'
-                        placeholder={"CIS -" + idViewConstruction?.interviewCode}
+                        placeholder={"CIS -" + idViewConstruction?.interviewCode+"-"+year }
                         classNames="ViewInput"
                         readOnly={true} />
                     </Form.Item>
@@ -2550,7 +2620,7 @@ const EditInterviewConstruction = ({ hseCertif,
                     <Form.Item label='Reference' name='Reference'>
                       <Input
                         className='Input'
-                        placeholder={"CIS -" + idViewConstruction?.interviewCode}
+                        placeholder={"CIS -" + idViewConstruction?.interviewCode+"-"+year }
                         readOnly={true} />
                     </Form.Item>
                   </Col>
@@ -2704,8 +2774,9 @@ const EditInterviewConstruction = ({ hseCertif,
                     <Form.Item label='Requested Experience' name='requiredExperinece'>
                       <Input
                         className='Input'
-                        placeholder={idViewConstruction?.requiredExperinece}
-                        onChange={(e) => setNewrequiredGrade(e.target.value)}
+                        placeholder={idViewConstruction?.
+                          requiredExperinece}
+                    
                         readOnly />
                     </Form.Item>
                   </Col>
@@ -2817,7 +2888,7 @@ const EditInterviewConstruction = ({ hseCertif,
                     >
                       <Input
                         className='Input'
-                        placeholder={idViewConstruction?.experience}
+                        placeholder={idViewConstruction?.requiredExperinece}
                         readOnly={true}
 
                       />
@@ -2851,7 +2922,10 @@ const EditInterviewConstruction = ({ hseCertif,
                         >
                           <Input
                             className='Input'
-                            placeholder={idConstruction.validatesFor}
+                           
+                   
+                            placeholder={idViewConstruction.validatesFor?idViewConstruction.validatesFor:validatesFor}
+
                             readOnly={true}
                           />
                         </Form.Item>
@@ -3313,7 +3387,7 @@ const EditInterviewConstruction = ({ hseCertif,
 
                                     </Form.Item>
                                   </Col>
-                                  {affect==="Site" &&(
+                                  {affect==="Site " &&(
                                     <>
          
                                   <Col xs={24} md={12}>
@@ -3322,14 +3396,10 @@ const EditInterviewConstruction = ({ hseCertif,
                                       name='Proposed Daily Rate'
                                       rules={[
                                         { required: true, message: 'Please input your Proposed Daily Rate!' },
-                                        {
-                                          pattern: /^\d+(\.\d+)?$/,  
-                                          message: 'Proposed Daily Rate must be a valid number!',
-                                        },
-                                        
-                                      ]}
-                                    >
+                                      
+                                         ]}>
                                       <Input
+                                      
                                         value={proposedDailyRate}
                                         onChange={handleDailyChange}
                                         placeholder='Proposed Daily Rate'
@@ -3344,18 +3414,17 @@ const EditInterviewConstruction = ({ hseCertif,
                                       name='Proposed Salary'
                                       rules={[
                                         { required: true, message: 'Please input your Proposed Salary!' },
-                                        {
-                                          pattern: /^\d+(\.\d+)?$/,  
-                                          message: 'Proposed Daily Rate must be a valid number!',
-                                        },
+                                      
                                       ]}
                                     >
                                       <Input
+                                      type='number'
                                         value={proposedSalary}
                                         onChange={handleSalaryChange}
                                         placeholder='Proposed Salary'
                                       />
-                                      {salaryError && <Alert className="custom-alert" message={salaryError} type="error" showIcon />}
+                                      {salaryError && <Alert className="custom-alert" 
+                                      message={salaryError} type="error" showIcon />}
                                     </Form.Item>
                                   </Col>
                                   </>
@@ -3763,7 +3832,7 @@ const EditInterviewConstruction = ({ hseCertif,
                               <DatePicker
                                 style={{ width: '100%', height: "33px" }}
                                 autoFocus
-                                defaultValue={dayjs(evaluationDate, '16 06,1990')}
+                                defaultValue={dayjs(evaluationDate, '16-06-1990')}
 
                                 onChange={(value) => setEvaluationDate(dayjs(value).format('YYYY-MM-DD'))}
 
@@ -3994,7 +4063,8 @@ const EditInterviewConstruction = ({ hseCertif,
               <FcDownLeft style={{ marginRight: "5px", marginTop: "5px" }} />
               Return
             </Button>
-            {roles.includes("Manager") && !roles.includes("HSE") && !roles.includes("Human Ressource") && (
+            {roles.includes("Manager") && !roles.includes("HSE") 
+            && !roles.includes("Human Ressource") && (
               <>
                 <Button style={{ color: "green", borderColor: "green" }} onClick={UpdateManager}>
                   Approve
@@ -4009,10 +4079,11 @@ const EditInterviewConstruction = ({ hseCertif,
         {(roles.includes("HSE") && (idViewConstruction.goTotest2 || !idViewConstruction.validatesFor)) && (
               <>
                 <Button style={{ color: "green", borderColor: "green" }} 
-                onClick={UpdateHSE}>Approve
+                onClick={UpdateHSE}>Approve 
 
                 </Button>
-                <Button style={{ color: "red", borderColor: "red" }} onClick={RefuseHSE}
+                <Button style={{ color: "red", borderColor: "red" }}
+                 onClick={RefuseHSE}
                 >Refuse</Button>
               </>)}
             {(roles?.includes("HSE") && (!idViewConstruction.goTotest2)) && (
@@ -4024,8 +4095,9 @@ const EditInterviewConstruction = ({ hseCertif,
               </>)}
             {roles.includes("Leader") && (
               <>
-                <Button style={{ color: "green", borderColor: "green" }} onClick={UpdateProjectLeader}
-                >Approved</Button>
+                <Button style={{ color: "green", borderColor: "green" }}
+                 onClick={UpdateProjectLeader}
+                >Approve</Button>
                 <Button style={{ color: "red", borderColor: "red" }} onClick={RefuseProjectLeader}
                 >Refuse</Button>
               </>)}
@@ -4034,6 +4106,8 @@ const EditInterviewConstruction = ({ hseCertif,
                 <Button
                   style={{ color: "green", borderColor: "green" }}
                   onClick={UpdateHumanRessource}
+                  disabled={proposedDailyRate>lev1dailyRateMax}
+
                 >Approve </Button>
                 <Button
                   style={{ color: "red", borderColor: "red" }}

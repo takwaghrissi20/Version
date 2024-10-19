@@ -345,9 +345,7 @@ const UploadContractList = () => {
         body: JSON.stringify({
 
           actStatus: empT?.actStatus,
-
           approvalStatus: empT?.approvalStatus,
-
           arDestination: empT?.arDestination,
           arName: empT?.arName,
           arPosition: empT?.arPosition,
@@ -377,7 +375,6 @@ const UploadContractList = () => {
            getsEmail:empT?. getsEmail,
            nbchildren :empT?.nbchildren ,
            primeProductivity :empT?.primeProductivity  ,
-
           name: name,
           departement: departement,
           familyStatus: familyStatus,
@@ -444,7 +441,22 @@ const UploadContractList = () => {
           type_Emp: type_Emp,
           vCableReceive: vCableReceive,
           vCabledate: vCabledate,
-          visa_Nb: visa_Nb
+          visa_Nb: visa_Nb,
+          vacations:[], 
+          projects:[],
+          pointages:[],
+          integrations:[],
+          vaccins:[],
+          materials:[],
+          officeWorkStatus:[],
+          siteWorkStatus:[],
+          officepointages:[],
+          advancedSalarys:[],
+          salaries:[],
+          transferPermissions:[],
+          positionChanges: [],
+          trainings:[]
+       
 
           // idVisa,
           // arName,

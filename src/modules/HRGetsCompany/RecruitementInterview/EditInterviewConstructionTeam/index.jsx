@@ -1361,11 +1361,7 @@ const EditInterviewConstruction = () => {
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item label='Proposed Site Daily Rate' name='Proposed Daily Rate'
-
-
-
-                    >
+                    <Form.Item label='Proposed Site Daily Rate' name='Proposed Daily Rate' >
                       <Input
 
                         placeholder={dailyRate} />

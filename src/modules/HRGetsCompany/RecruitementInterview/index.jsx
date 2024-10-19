@@ -26,6 +26,7 @@ const RecruitementInterview = () => {
   const [allrecruitementbelow, setAllrecruitementbelow] = useState([]);
   const [allinterviewStaffManagement, setAllinterviewStaffManagement] = useState([]);
   const [allinterviewConstructionTeam, setAllinterviewConstructionTeam] = useState([]);
+  const [allinterviewConstructionTeamLeader, setAllinterviewConstructionTeamLeader] = useState([]);
   const [recruitementTypeIdAbove, setRecruitementTypeIdAbove] = useState([]);
   const [allrecruitementAbove, setAllrecruitementAbove] = useState([]);
   const [recruitementTypeIdbelow, setRecruitementTypeIdbelow] = useState("");
@@ -33,10 +34,16 @@ const RecruitementInterview = () => {
   const [recruitementTypeIdbelowBOD, setRecruitementTypeIdbelowBOD] = useState("");
   const [recruitementTypeIdAbovePMO, setRecruitementTypeIdAbovePMO] = useState("");
   const [recruitementTypeIdAboveBOD, setRecruitementTypeIdAboveBOD] = useState("");
-  const [interTypeIdManagement, setInterTypeIdManagement] = useState([]);
+  const [interTypeIdLeader, setInterTypeIdLeader] = useState([]);
   const [interTypeIdConstruction, setInterTypeIdConstruction] = useState("");
   const [recruitementTypeIdAboveOperationManager, setRecruitementAboveOperationManager] = useState("");
   const [recruitementTypeIdBelowOperationManager, setRecruitementBelowOperationManager] = useState("");
+  const [allinterviewConstructionHSE, setAllinterviewConstructionHSE] = useState([]);
+  const [allinterviewConstructionHRManager, setAllinterviewConstructionHRManager] = useState([]);
+  const [allinterviewStaffHRManager, setAllinterviewStaffHRManager] = useState([]);
+  const [allinterviewStaffOperationManager, setAllinterviewStaffOperationManager] = useState([]);
+  const [operationManagerintStaff, setOperationManagerintStaff] = useState([]);
+  const [allinterviewStaffbod, setAllinterviewStaffbod] = useState([]);
   const [project, setProject] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loading1, setLoading1] = useState(true);
@@ -60,8 +67,8 @@ const RecruitementInterview = () => {
         const data = await response.json();
         setIdgets(data?.getsId)
         const ProjectName = data.map(project => project.projName);
-        setProject(ProjectName);
-        console.log("testtttttg 55555", ProjectName)
+        setProject(ProjectName)
+
       } else {
         console.error("Erreur lors de la récupération du email:", response.status);
       }
@@ -76,6 +83,7 @@ const RecruitementInterview = () => {
       const response = await fetch(url, { method: "GET" });
       if (response.ok) {
         const data = await response.json();
+
         setIdProfile(data?.getsId);
       } else {
         console.error("Erreur lors de la récupération du email:", response.status);
@@ -86,6 +94,7 @@ const RecruitementInterview = () => {
   };
   const fetchRecruitementTypeProfile = async () => {
     try {
+
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list?token=${token}`, {
         method: 'GET',
         headers: {
@@ -96,15 +105,23 @@ const RecruitementInterview = () => {
       if (!response.ok) {
         throw new Error('La requête a échoué avec le code ' + response.status);
       }
-      const data = await response.json();
+
+      let data = await response.json();
+      data = data.sort((a, b) => {
+        if (a.jobCode < b.jobCode) return -1;
+        if (a.jobCode > b.jobCode) return 1;
+        return 0;
+      });
+
+      console.log("data sort", data);
       const filteredData = data.filter(item => item?.idemp === idProfile);
 
+      //Filte ById
       const filteredDataType = filteredData.filter(item => item?.type === "Above Foreman");
 
       setRecruitementTypeIdAbove(filteredDataType)
       ///////////////All Recruitement Staff
-      const filteredAllDataType = data.filter(item => item?.type === "Above Foreman");
-      setAllrecruitementAbove(filteredAllDataType)
+
 
       ///////////////////
       const filteredDataTypeAboveBOD = data.filter(item => {
@@ -144,7 +161,8 @@ const RecruitementInterview = () => {
         item?.signatureHod === "true") ||
         (item?.projectName &&
           !item.projectName.includes("Office") &&
-          item?.notif === 6
+          (item?.notif === 6 || item?.notif === 4) &&
+          item?.type === "Above Foreman"
 
         )
       )
@@ -157,7 +175,7 @@ const RecruitementInterview = () => {
           (item?.notif === 4 || item?.notif === 7 || item?.notif === 3 || item?.notif === 8) &&
           item?.dep?.includes('Operation') &&
           (
-            (item?.oDep === "true" && item?.exDep === "false") ||
+            (item?.oDepoDep === "true" && item?.exDep === "false") ||
             (item?.oDep === "false" && item?.exDep === "true")
           ) &&
           item?.position?.includes("Leader")
@@ -166,8 +184,22 @@ const RecruitementInterview = () => {
           item?.type === "Above Foreman" &&
           item?.notif === 8 &&
           item?.dep?.includes('Engineering')
-        )
+        ) ||
+        (
+          item?.type === "Above Foreman" &&
+          item?.notif === 7 &&
+          item?.dep?.includes('Operation') &&
+          item?.signatureHod === "true"
+        ) ||
+        (
+          item?.type === "Above Foreman" &&
+          item?.notif === 4 &&
+          item?.dep?.includes('Operation') &&
+          item?.position?.includes("Leader")
+        ) ||
+        (item?.idemp === idProfile)
       );
+
       setRecruitementAboveOperationManager(filteredDataTypeAboveOperation)
 
       console.log("Above", filteredDataTypeAboveOperation)
@@ -186,22 +218,34 @@ const RecruitementInterview = () => {
             item?.projectName !== "Office" &&
             item?.signatureHod === "true" &&
             !item.position.includes("Leader")
-          ) ||
+          )
+          ||
           (
             ((item?.oDep === "true" && item?.exDep === "false") ||
               (item?.oDep === "false" && item?.exDep === "true")) &&
             item?.projectName !== "Office" &&
             item?.signatureHod === "true" &&
             !item.position.includes("Manager")
-          ) ||
+          )
+          ||
 
 
-          // Condition 2: Project is "Office", signatureHod is true
           (
+            item?.type === "Foreman & Below" &&
             item?.projectName === "Office" &&
             item?.signatureHod === "true"
+          ) 
+          ||
+          (
+            ((item?.oDep === "true" && item?.exDep === "false") ||
+              (item?.oDep === "false" && item?.exDep === "true")) &&
+            item?.projectName !== "Office" &&
+            item?.signatureHod === "true" &&
+            (item?.position?.toLowerCase()?.includes ("operation")&&
+            item?.position?.toLowerCase()?.includes ("manager")
           )
         )
+      )
       );
 
       setRecruitementTypeIdbelowBOD(filteredDataTypeFormanBOD);
@@ -210,9 +254,22 @@ const RecruitementInterview = () => {
         item?.type === "Foreman & Below" && (
           // Condition 1: oDep or exDep is true, and projectName is not "Office", signatureHod is true
           (
+            item?.type === "Foreman & Below" &&
             item?.projectName !== "Office" &&
             item?.signatureHod === "true"
+          ) ||
+          ((item?.projectName && item?.type === "Foreman & Below" &&
+            !item.projectName.includes("Office") &&
+            item?.signatureHod === "true") ||
+            (item?.projectName &&
+              !item.projectName.includes("Office") &&
+              (item?.notif === 6 || item?.notif === 4)
+
+            )
           )
+
+
+
         )
       );
 
@@ -222,7 +279,8 @@ const RecruitementInterview = () => {
       const filteredDataTypeBelowOperation = data.filter(item =>
         (
           item?.type === "Foreman & Below" &&
-          item?.notif === 4 &&
+          (item?.notif === 4 || item?.notif === 7 || item?.notif === 3
+            || item?.notif === 8) &&
           item?.dep?.includes('Operation') &&
           (
             (item?.oDep === "true" && item?.exDep === "false") ||
@@ -232,13 +290,30 @@ const RecruitementInterview = () => {
         ) ||
         (
           item?.type === "Foreman & Below" &&
+          item?.dep?.includes('Operation') &&
+          item?.notif !== 6
+        )
+        ||
+        (
+          item?.type === "Foreman & Below" &&
+          (item?.notif === 4 || item?.notif === 7 || item?.notif === 3
+            || item?.notif === 8
+
+          ) &&
+          item?.dep?.includes('Operation') &&
+
+          item?.position?.includes("OPERATION MANAGER")
+        )
+        ||
+
+        (
+          item?.type === "Foreman & Below" &&
           item?.notif === 8 &&
           item?.dep?.includes('Engineering')
         )
 
       );
       setRecruitementBelowOperationManager(filteredDataTypeBelowOperation)
-
       setRecruitementTypeIdbelow(filteredDataTypeForman)
 
 
@@ -281,7 +356,6 @@ const RecruitementInterview = () => {
       children:
         <RecruitementStaff
           recruitementTypeIdAbove={recruitementTypeIdAbove}
-
           roles={roles}
           allrecruitementabove={allrecruitementabove}
           token={token}
@@ -291,7 +365,7 @@ const RecruitementInterview = () => {
           recruitementTypeIdAboveBOD={recruitementTypeIdAboveBOD}
           allrecruitementAbove={allrecruitementAbove}
           recruitementTypeIdAboveOperationManager={recruitementTypeIdAboveOperationManager}
-          
+
         />,
     },
     {
@@ -306,22 +380,30 @@ const RecruitementInterview = () => {
         token={token}
         loading={loading}
         setLoading={setLoading}
-        recruitementTypeIdAboveOperationManager={recruitementTypeIdAboveOperationManager}
         recruitementTypeIdBelowOperationManager={recruitementTypeIdBelowOperationManager}
 
       />,
     },
     {/*Interview Sheet**/ },
-    ...((roles?.includes('Cordinator') || roles?.includes('admin') || roles?.includes('PMO') ||
-      roles?.includes('bod') || roles?.includes('Ressource Manager') || roles?.includes('Manager')) ? [{
+    ...((roles?.includes('Cordinator') ||
+      roles?.includes('admin')
+      || roles?.includes('PMO') ||
+      roles?.includes('bod') ||
+      roles?.includes('Leader') ||
+      roles?.includes('Ressource Manager') ||
+      roles?.includes('Manager')) ? [{
         label: 'Staff Management Interview',
         key: '3',
         children: <InterviewStaff
           allinterviewStaffManagement={allinterviewStaffManagement}
+          allinterviewStaffHRManager={allinterviewStaffHRManager}
+          allinterviewStaffOperationManager={allinterviewStaffOperationManager}
+          allinterviewStaffbod={allinterviewStaffbod}
           token={token}
           roles={roles}
           departement={departement}
-
+          interTypeIdLeader={interTypeIdLeader}
+       
         />
 
       }] : []),
@@ -335,16 +417,25 @@ const RecruitementInterview = () => {
 
     //   />,
     // },
-    ...((roles?.includes('Cordinator') || roles?.includes('Ressource Manager') || roles?.includes('Manager') ||
-      roles?.includes('admin') || roles?.includes('PMO') || roles?.includes('bod') || roles?.includes('Ressource')) ? [{
-        label: 'Construction Staff Interview',
-        key: '4',
-        children: <InterviewConstruction
-          allinterviewConstructionTeam={allinterviewConstructionTeam}
-          token={token}
-        />
+    ...((roles?.includes('Cordinator') ||
+      roles?.includes('Ressource Manager')
+      || roles?.includes('Manager') ||
+      roles?.includes('admin') ||
+      roles?.includes('Leader') ||
+      roles?.includes('PMO') ||
+      roles?.includes('bod')
+    ) ? [{
+      label: 'Construction Staff Interview',
+      key: '4',
+      children: <InterviewConstruction
+        allinterviewConstructionTeam={allinterviewConstructionTeam}
+        token={token}
+        allinterviewConstructionTeamLeader={allinterviewConstructionTeamLeader}
+        allinterviewConstructionHSE={allinterviewConstructionHSE}
+        allinterviewConstructionHRManager={allinterviewConstructionHRManager}
+      />
 
-      }] : []),
+    }] : []),
     // {
     //   label: 'Construction Staff Interview',
     //   key: '4',
@@ -355,10 +446,6 @@ const RecruitementInterview = () => {
   useEffect(() => {
     const fetchDataStatiqueTotalInterviewRecruitement = async () => {
       try {
-        const endPoint =
-          process.env.NODE_ENV === "development"
-            ? "https://dev-gateway.gets-company.com"
-            : "";
 
         const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/int/list?token=${token}`, {
           method: 'GET',
@@ -369,15 +456,64 @@ const RecruitementInterview = () => {
           throw new Error('La requête a échoué avec le code ' + response.status);
         }
 
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-          throw new TypeError("La réponse n'est pas au format JSON");
-        }
         const responseData = await response.json();
+
         setTotalNumberInterview(responseData.length);
         setAllinterviewStaffManagement(responseData);
+        //Filter Table HR mANAGER 
+        const filteredDataStaffInterviewHRMANAGER = responseData.filter(item =>
+        (item?.projname !== "Office" &&
+          item?.evalDesision && item?.headOfDepAprouv)
 
 
+
+        );
+
+        setAllinterviewStaffHRManager(filteredDataStaffInterviewHRMANAGER)
+
+        //End Filter Table HRMANAGER
+        //Operation Manager 
+        const filteredDataTypeInterviewOperation = responseData.filter(item =>
+          item?.projname !== "Office" && 
+          item?.evalDesision &&
+          (
+            (item?.notif === 7 || item?.notif === 90) && !item?.headOfDepAprouv
+            ||
+            (item?.headOfDepAprouv || !item?.headOfDepAprouv)
+          )
+        );        
+        setOperationManagerintStaff(filteredDataTypeInterviewOperation)
+        setAllinterviewStaffOperationManager(filteredDataTypeInterviewOperation);
+        
+        ///BOD 
+        const filteredDataTypeInterviewBOD = responseData.filter(item =>
+        (item?.projname !== "Office" &&
+          item?.evalDesision && item?.headOfDepAprouv && item.evalDesisionSign === "true"
+          && item?.hrDesion
+        )
+
+        );
+
+        setAllinterviewStaffbod(filteredDataTypeInterviewBOD)
+     
+        //Interview Staff Leader
+        if (responseData && Array.isArray(responseData)) {
+          const filteredDataTypeInterviewLeader = responseData.filter(item =>
+            item?.projname !== "Office" &&
+            (item?.notif === 5 || item?.notif === 7 || item?.notif === 0 || item?.notif === 90) &&
+            project?.includes(item?.projname)
+          );
+  
+          setInterTypeIdLeader(filteredDataTypeInterviewLeader);
+          console.log("Données filtrées Leader:", filteredDataTypeInterviewLeader);
+        } else {
+          console.error("Problème avec les données Leader:", responseData);
+        }
+        /////////////
+        
+      
+        //Interview Staff Leader 
+        //Operation Manager
         const responseRecruitement = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/list?token=${token}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
@@ -394,12 +530,25 @@ const RecruitementInterview = () => {
         const resulttypebelove = responseDataRecruitement.filter(p => p.type === "Above Foreman");
         setAllrecruitementabove(resulttypebelove);
 
+
         const ItRecruitement = resulttypebelove.filter(p => p.dep && p?.dep?.includes('IT'));
         setAllrecruitementaboveItRecruitement(ItRecruitement.length);
 
         const resulttypebelow = responseDataRecruitement.filter(p => p.type === "Foreman & Below");
         setAllrecruitementbelow(resulttypebelow);
 
+      } catch (error) {
+        console.error("Erreur lors de la récupération des données:", error);
+      }
+    };
+
+    fetchDataStatiqueTotalInterviewRecruitement();
+  }, [allinterviewStaffOperationManager]);
+ 
+  //////////////
+  useEffect(() => {
+    const fetchDataInterviebById = async () => {
+      try {
         const responseInterviewConstruction = await fetch(`https://dev-gateway.gets-company.com/api/v1/intc/list?token=${token}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
@@ -408,16 +557,59 @@ const RecruitementInterview = () => {
         if (!responseInterviewConstruction.ok) {
           throw new Error('La requête a échoué avec le code ' + responseInterviewConstruction.status);
         }
-
         const responseDataInterview = await responseInterviewConstruction.json();
-        setAllinterviewConstructionTeam(responseDataInterview);
+        //Interview Construction HSE
+        const filteredDataConstInterviewHSE = responseDataInterview.filter(item =>
+          item?.projectName !== "Office" &&
+          (item?.goTotest2 || item?.validatesFor === "Valid for post")
+        );
+
+        setAllinterviewConstructionHSE(filteredDataConstInterviewHSE)
+
+
+
+        //End Interview Construction HSE
+        //Filter Table HR mANAGER 
+        const filteredDataConstInterviewHRMANAGER = responseDataInterview.filter(item =>
+          (item?.projname !== "Office" &&
+            (item?.goTotest2 || item?.validatesFor === "Valid for post") &&
+            item?.evalDesision && item?.hseDecision) ||
+          (item?.projname !== "Office" &&
+            (!item?.hseDecision === "false")
+          )
+        );
+
+        setAllinterviewConstructionHRManager(filteredDataConstInterviewHRMANAGER)
+
+
+
+        //End Filter Table HRMANAGER
+
+        if (responseDataInterview && Array.isArray(responseDataInterview)) {
+          setAllinterviewConstructionTeam(responseDataInterview)
+          const filteredDataConstInterview = responseDataInterview.filter(item => item?.evalId === idProfile);
+          console.log("Données filtréexs pour idProfile:", filteredDataConstInterview);
+          if (filteredDataConstInterview.length > 0) {
+
+            setAllinterviewConstructionTeamLeader(filteredDataConstInterview);
+          } else {
+            console.warn("Aucune donnée ne correspond à l'idProfile:", idProfile);
+          }
+        } else {
+          console.error("Les données retournées ne sont pas valides:", responseDataInterview);
+        }
       } catch (error) {
-        console.error("Erreur lors de la récupération des données:", error);
+        console.error("Erreur lors de la récupération des données:", error.message);
       }
+
+
     };
 
-    fetchDataStatiqueTotalInterviewRecruitement();
-  }, []);
+    fetchDataInterviebById();
+  }, [idProfile,allinterviewStaffOperationManager]);
+
+
+
   // useEffect(() => {
   //   if (!sessionStorage.getItem('reloaded')) {
   //     sessionStorage.setItem('reloaded', 'true');
@@ -443,7 +635,7 @@ const RecruitementInterview = () => {
       }, 2000);
       return () => clearTimeout(timer);
     }
-  }, [roles, idProfile])
+  }, [roles, idProfile, interTypeIdLeader])
 
 
   return (

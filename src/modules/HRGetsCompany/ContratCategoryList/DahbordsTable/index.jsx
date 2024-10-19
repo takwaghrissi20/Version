@@ -145,7 +145,8 @@ console.log("findIdData?.name",findIdData?.name)
         height: '100%',
       }}
     >
-      {!text ? <Image style={{width:"25px",height:"25px"}}src='../assets/images/nothing.png'></Image> : text}
+      {!text ? 
+      "---" : text}
     </div>
       ),
     },
@@ -164,7 +165,8 @@ console.log("findIdData?.name",findIdData?.name)
         height: '100%',
       }}
     >
-      {!text ? <Image style={{width:"25px",height:"25px"}}src='../assets/images/nothing.png'></Image> : text}
+      {!text ? 
+      "--- ": text}
     </div>
       ),
     },

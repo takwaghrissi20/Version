@@ -67,6 +67,7 @@ const Dashboards = () => {
   const [visaExperedProjet, setVisaExperedProjet] = useState([]);
   const [idRec, setIdRec] = useState("");
   const [listRecruitementId, setListRecruitementId] = useState([]);
+  const [listRecruitementIdGets, setListRecruitementIdGets] = useState([]);
   const [listRecruitementPMO, setListRecruitementPMO] = useState([]);
   const user = localStorage.getItem("role");
   const [project, setProject] = useState([]);
@@ -180,8 +181,6 @@ const Dashboards = () => {
     setDatarecruitementFiltrer([]);
     setIsDropdownOpen(false);
   };
-
-
   const fetchCountRecruitement = async () => {
     try {
       const endPoint =
@@ -207,6 +206,7 @@ const Dashboards = () => {
       setCount(data.length)
       //////Filter les count de Data de idem
       const dataRecruitement = data.filter(p => p.idemp === idRec);
+      console.log("testtttt 001",dataRecruitement )
       const dataRecruitementPMO = data.filter(p => p.notif === 4);
       setListRecruitementPMO(dataRecruitementPMO)
       setCountId(dataRecruitement)
@@ -274,9 +274,14 @@ const Dashboards = () => {
       if (!response.ok) {
         throw new Error('Failed to fetch employees');
       }
+      if (response.ok) {
+
       const data = await response.json();
       setListRecruitementId(data)
-      return data;
+
+      //setListRecruitementIdGets
+  
+      }
 
     }
     catch (error) {
@@ -294,9 +299,11 @@ const Dashboards = () => {
       fetchEmployeesByEmployees();
       fetchExpiredVisa();
       fetchProjectEmail();
+      fetchRecruitementByType();
 
     }
-    else if (user.includes("admin") || user.includes("bod") || !user.includes("Cordinator")
+    else if (user.includes("admin") || user.includes("bod") ||
+     !user.includes("Cordinator")
       || user.includes("Administrator")) {
       fetchCountRecruitement();
       fetchRecruitementByType();
@@ -460,9 +467,6 @@ const Dashboards = () => {
       }] : []),
 
 
-
-
-
     // ...(((!(user?.includes('Manager') || user?.includes('PMO') ||
     //   user?.includes('Construction') )) || user?.includes('Human Ressource') ||
     //   user?.includes('bod') || user?.includes('admin')
@@ -486,7 +490,7 @@ const Dashboards = () => {
     //     ),
     //   }] : []),
     /////////////////////Passport Expired
-    ...((user?.includes('PMO') || user?.includes('Construction') || user?.includes('Human Ressource') ||
+    ...((!user?.includes('PMO') || user?.includes('Construction') || user?.includes('Human Ressource') ||
       user?.includes('bod') || user?.includes('admin')
       || (user?.includes('Administrator') && !user?.includes('Cordinator'))) ? [{
         label: 'Passport Expired',
@@ -508,7 +512,7 @@ const Dashboards = () => {
         ),
       }] : []),
     /////////////////////End Passport Expired
-    ...((user?.includes('PMO') || user?.includes('Construction') || user?.includes('Human Ressource') ||
+    ...((!user?.includes('PMO') || user?.includes('Construction') || user?.includes('Human Ressource') ||
       user?.includes('bod') || user?.includes('admin')
       || (user?.includes('Administrator') && !user?.includes('Cordinator'))
 

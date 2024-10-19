@@ -144,7 +144,7 @@ const AddRecruitementForemanBelow = () => {
   ];
   const lieu = [
     { place: 'Office' },
-    { place: 'Site ' },
+    { place: 'Site' },
     { place: 'Office & Site' },
   ];
   const handleLevelSelect = (value) => {
@@ -731,12 +731,12 @@ const AddRecruitementForemanBelow = () => {
           totalNumber: vacancie,
           oDep: isOrDep,
           exDep: isExDep,
-
+        
           // type: "For Foreman & Below",
           // oDep: asper,
           // // exDep: "",
           // // status:"0",
-          nbExperience: desiredExperience,
+          nbExperience:desiredExperienceLevel,
           projRef: projectCode,
           // bod: isOkBod,
           idemp: profile?.getsId,
@@ -798,6 +798,8 @@ const AddRecruitementForemanBelow = () => {
     form.validateFields(['ProjectName', 'ProjectCode'
       , 'DateDesiredRecruitement', 'position'
       , 'RequiredLevel', 'Desiredyearsexperience', 'Numbervacancies',
+        'RecruitmentFor'
+
 
     ]).then(values => {
       //onSave(true)
@@ -1039,7 +1041,7 @@ const AddRecruitementForemanBelow = () => {
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item
-                    label='Recruitment For' name='Recruitment For'
+                    label='Recruitment For' name='RecruitmentFor'
 
                     rules={[
                       { required: true, message: 'Please Select your Recruitment For!' },
@@ -1139,6 +1141,21 @@ const AddRecruitementForemanBelow = () => {
 
                     />
 
+
+                  </Form.Item>
+                </Col>
+                <Col xs={24} md={12}>
+                  <Form.Item
+                    label='Academic Certificates /Comments (otherrequired Knowledge /Recruitment objective)'
+                    name='certif'
+
+                  >
+                    <Input
+                     placeholder="Academic Certificates /Comments (otherrequired Knowledge /Recruitment objective)"
+                      value={certif}
+                      onChange={(e) => setCertif(e.target.value)}
+
+                    />
 
                   </Form.Item>
                 </Col>

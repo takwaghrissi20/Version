@@ -89,7 +89,10 @@ const ViewInformationForm = (props) => {
     duration,
     primeProductivity,
     category,
-    findIdInterview
+    findIdInterview,
+    contactEmail,
+    contactPhone,
+    selectedCountry
 
   } = props;
 
@@ -103,7 +106,7 @@ const ViewInformationForm = (props) => {
       setUserImage(URL.createObjectURL(acceptedFiles[0]));
     },
   });
-  console.log("salary testtt salary", findIdInterview)
+ 
   console.log("salary testtt salary 222", dailyRate)
   const SaveVisa = async () => {
 
@@ -185,7 +188,7 @@ const ViewInformationForm = (props) => {
         nationality,
         birthDate,
         gender,
-        phoneNumber,
+        phoneNumber:contactPhone,
         familyStatus,
         nbchildren,
         residenceAdress,
@@ -198,13 +201,13 @@ const ViewInformationForm = (props) => {
         departement,
         type_Emp,
         projname,
-        email,
+        email:contactEmail,
         joinDate,
         finishDate,
         companyType,
         traveldate,
         endTravelDate,
-        destination,
+        destination:selectedCountry,
         arDestination,
         dailyRate: findIdInterview?.dailyRate,
         salary: findIdInterview?.propsedsalary,
@@ -237,6 +240,7 @@ const ViewInformationForm = (props) => {
       if (!contentType || !contentType.includes('application/json')) {
         throw new TypeError("La réponse n'est pas au format JSON");
       }
+      if (response.ok) {
       const data = await response.json();
       setData(data)
       setPasspordDate(data.passportSubmitdate)
@@ -251,13 +255,18 @@ const ViewInformationForm = (props) => {
       setTimeout(() => {
         handleAddContactClose();
         window.location.reload();
+        navigate(-1)
       }, 1500);
+      console.log("data.type_Emp",data.type_Emp)
 
-      if (data.type_Emp === "Site") {
+     
+      if (type_Emp === "Site") {
         console.log("data.type_EmpConstruction", data.type_Emp)
+        alert("EmpSite")
+    
         SaveVisa()
       }
-
+    }
 
       // handleAddContactClose()
       // Traiter la réponse de l'API si nécessaire
@@ -303,21 +312,15 @@ const ViewInformationForm = (props) => {
       <StyledContactModalScrollbar>
         <StyledContactFormContent>
           <StyledContactFormContentItem>
-            <StyledContactFormItemTitle>
+            <StyledContactFormItemTitle >
               <IntlMessages id='Personal Employee Information' />
             </StyledContactFormItemTitle>
 
             <StyledContactFormContentField>
-
-
-              <Form.Item
-                className='form-field'>
-
+              <Form.Item>
                 <FloatLabel name="name">
-                  <span className='modallabel'> Full Name :</span>
-                  <Input
-                    className='Input'
-
+                  <span className='modallabel'> Full Name :  </span>
+                  <input                  
                     placeholder="Full Name"
                     value={name}
                     classNames="ViewInput"
@@ -328,8 +331,8 @@ const ViewInformationForm = (props) => {
               <Form.Item className='form-field'>
                 <FloatLabel name="arName">
                   <span className='modallabel'> Arabic Full name :</span>
-                  <Input
-                    className='Input'
+                  <input
+                
                     placeholder="Arabic Full name"
                     value={arName}
                     classNames="ViewInput"
@@ -337,11 +340,13 @@ const ViewInformationForm = (props) => {
                   />
                 </FloatLabel>
               </Form.Item>
+             
               <Form.Item className='form-field'>
-                <span className='modallabel'> ID Card Number :</span>
+                
                 <FloatLabel name="CIN">
-                  <Input
-                    className='Input'
+                <span className='modallabel'> ID Card Number :</span>
+                  <input
+                 
                     placeholder="ID Card Number"
                     value={CIN}
                     classNames="ViewInput"
@@ -350,10 +355,11 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
-                <span className='modallabel'>Nationality :</span>
+               
 
                 <FloatLabel name="nationality">
-                  <Input
+                <span className='modallabel'>Nationality :</span>
+                  <input
                     className='Input'
                     value={nationality}
                     placeholder="Nationality"
@@ -363,11 +369,12 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
-                <span className='modallabel'>Date of Birth :</span>
+             
 
                 <FloatLabel name="birthDate">
-                  <Input
-                    className='Input'
+                <span className='modallabel'>Date of Birth :</span>
+                  <input
+                   
                     value={birthDate}
                     placeholder="Date of Birth"
                     classNames="ViewInput"
@@ -376,10 +383,11 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
-                <span className='modallabel'>Gender :</span>
+               
                 <FloatLabel name="gender">
-                  <Input
-                    className='Input'
+                <span className='modallabel'>Gender :</span>
+                  <input
+                   
                     value={gender}
                     placeholder="Gender"
                     classNames="ViewInput"
@@ -388,11 +396,12 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
-                <span className='modallabel'>Telephone :</span>
+       
                 <FloatLabel name="phoneNumber">
-                  <Input
-                    className='Input'
-                    value={phoneNumber}
+                <span className='modallabel'>Telephone :</span>
+                <input
+                 
+                    value={contactPhone}
                     placeholder="Telephone"
                     classNames="ViewInput"
                     readOnly={true}
@@ -400,10 +409,11 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
-                <span className='modallabel'>Marital Status :</span>
+               
                 <FloatLabel name="familyStatus">
-                  <Input
-                    className='Input'
+                <span className='modallabel'>Marital Status :</span>
+                   <input
+                   
                     value={familyStatus}
                     classNames="ViewInput"
                     placeholder="Marital Status"
@@ -412,11 +422,11 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
-                <span className='modallabel'>#Children :</span>
+               
                 <FloatLabel name="nbchildren">
-                  <Input
-                    className='Input'
-                    value={nbchildren}
+                <span className='modallabel'>#Children :</span>
+                  <input                  
+                    value={nbchildren?nbchildren:"nbchildren"}
                     classNames="ViewInput"
                     placeholder="#children"
                     readOnly={true}
@@ -425,11 +435,12 @@ const ViewInformationForm = (props) => {
               </Form.Item>
 
               <Form.Item className='form-field'>
-                <span className='modallabel'> Residence Address :</span>
+              
 
                 <FloatLabel name="residenceAdress">
-                  <Input
-                    className='Input'
+                <span className='modallabel'> Residence Address :</span>
+                <input 
+                    
                     value={residenceAdress}
                     classNames="ViewInput"
                     placeholder="Residence Address"
@@ -438,10 +449,11 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
-                <span className='modallabel'> Arabic Residence Address :</span>
+               
                 <FloatLabel name="arResidenceAdress">
-                  <Input
-                    className='Input'
+                <span className='modallabel'> Arabic Residence Address :</span>
+                   <input 
+                
                     value={arResidenceAdress}
                     placeholder="Arabic Residence Address"
                     classNames="ViewInput"
@@ -450,10 +462,11 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
-                <span className='modallabel'> Passport Number :</span>
+               
                 <FloatLabel name="passportnumber">
-                  <Input
-                    className='Input'
+                <span className='modallabel'> Passport Number :</span>
+                  <input 
+                
                     value={passportnumber}
                     placeholder="Passport Number"
                     classNames="ViewInput"
@@ -462,10 +475,11 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
-                <span className='modallabel'> Date of issue:</span>
+             
                 <FloatLabel name="passportSubmitdate">
-                  <Input
-                    className='Input'
+                <span className='modallabel'> Date of issue:</span>
+                <input 
+                    
                     placeholder="Date of issue"
                     classNames="ViewInput"
                     value={passportSubmitdate}
@@ -474,10 +488,11 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
-                <span className='modallabel'> Date of expiry :</span>
+            
                 <FloatLabel name="passport_finish_date">
-                  <Input
-                    className='Input'
+                <span className='modallabel'> Date of expiry :</span>
+                  <input
+                    
                     placeholder="Date of expiry"
                     value={passport_finish_date}
                     readOnly={true}
@@ -502,11 +517,12 @@ const ViewInformationForm = (props) => {
             </StyledContactFormItemTitle>
             <StyledContactFormContentField>
               <Form.Item className='form-field'>
-                <span className='modallabel'>Position To be filled :</span>
+            
 
                 <FloatLabel name="position">
-                  <Input
-                    className='Input'
+                <span className='modallabel'>Position To be filled :</span>
+                 <input
+                   
                     value={position}
                     placeholder="Position To be filled"
                     readOnly={true}
@@ -515,10 +531,11 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
-                <span className='modallabel'>Arabic Position To be filled :</span>
+                
                 <FloatLabel name="arPosition">
-                  <Input
-                    className='Input'
+                <span className='modallabel'>Arabic Position To be filled :</span>
+                <input
+               
                     value={arPosition}
                     placeholder="Arabic Position To be filled"
                     readOnly={true}
@@ -527,10 +544,11 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
-                <span className='modallabel'>Departement :</span>
+               
                 <FloatLabel name="departement">
-                  <Input
-                    className='Input'
+                <span className='modallabel'>Departement :</span>
+                <input
+                  
                     value={departement}
                     placeholder="Departement"
                     readOnly={true}
@@ -539,9 +557,10 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
-                <span className='modallabel'> Employee Type :</span>
+           
                 <FloatLabel name="type_Emp">
-                  <Input
+                <span className='modallabel'> Employee Type :</span>
+                <input
                     className='Input'
                     value={type_Emp}
                     placeholder="Employee Type"
@@ -552,10 +571,11 @@ const ViewInformationForm = (props) => {
 
           
               <Form.Item className='form-field'>
-                <span className='modallabel'> Project Name :</span>
+              
 
                 <FloatLabel name="projName">
-                  <Input
+                <span className='modallabel'> Project Name :</span>
+                <input
                     className='Input'
                     placeholder="Project Name"
                     value={projName}
@@ -564,12 +584,13 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
-                <span className='modallabel'> E-mail Address :</span>
+               
 
                 <FloatLabel name="email">
-                  <Input
+                <span className='modallabel'> E-mail Address :</span>
+                <input
                     className='Input'
-                    value={email}
+                    value={contactEmail}
                     placeholder="E-mail Address"
                     readOnly={true}
                   />
@@ -598,10 +619,11 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item> */}
               <Form.Item className='form-field'>
-                <span className='modallabel'> Company Type :</span>
+          
                 <FloatLabel name="companyType">
-                  <Input
-                    className='Input'
+                <span className='modallabel'> Company Type :</span>
+                <input
+                    
                     value={companyType}
                     placeholder="companyType"
                     readOnly={true}
@@ -612,9 +634,10 @@ const ViewInformationForm = (props) => {
                   {type_Emp === "Office" && (
                 <>
                   <Form.Item className='form-field'>
-                    <span className='modallabel'> Join Date :</span>
+                  
                     <FloatLabel name="joinDate">
-                      <Input
+                    <span className='modallabel'> Join Date :</span>
+                    <input
                        className='Input'
                        value={joinDate}
                        placeholder="Join Date"
@@ -623,9 +646,10 @@ const ViewInformationForm = (props) => {
                     </FloatLabel>
                   </Form.Item>
                   <Form.Item className='form-field'>
-                    <span className='modallabel'> Finish Date :</span>
+                 
                     <FloatLabel name="finishDate">
-                      <Input
+                    <span className='modallabel'> Finish Date :</span>
+                    <input
                        className='Input'
                        value={finishDate}
                        placeholder="Finish Date"
@@ -640,10 +664,11 @@ const ViewInformationForm = (props) => {
               {type_Emp === "Site" || type_Emp === "Office & Site" && (
                 <>
                   <Form.Item className='form-field'>
-                    <span className='modallabel'>Travel Date :</span>
+                   
 
                     <FloatLabel name="traveldate">
-                      <Input
+                    <span className='modallabel'>Travel Date :</span>
+                    <input
                         className='Input'
                         value={traveldate}
                         placeholder="Travel Date"
@@ -652,10 +677,11 @@ const ViewInformationForm = (props) => {
                     </FloatLabel>
                   </Form.Item>
                   <Form.Item className='form-field'>
-                    <span className='modallabel'>Travel End Date :</span>
+                
 
                     <FloatLabel name="endTravelDate">
-                      <Input
+                    <span className='modallabel'>Travel End Date :</span>
+                    <input
                         className='Input'
                         value={endTravelDate}
                         placeholder="Travel End Date"
@@ -667,24 +693,26 @@ const ViewInformationForm = (props) => {
               )}
 {/*END emp type*/}
               <Form.Item className='form-field'>
-                <span className='modallabel'> Location :</span>
+           
 
                 <FloatLabel name="destination">
-                  <Input
+                <span className='modallabel'> Location :</span>
+                <input
                     className='Input'
-                    value={destination}
+                    value={selectedCountry}
                     placeholder="Location"
                     readOnly={true}
                   />
                 </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
-                <span className='modallabel'> Arabic Location:</span>
+           
 
                 <FloatLabel name="arDestination">
-                  <Input
+                <span className='modallabel'> Arabic Location:</span>
+                <input
                     className='Input'
-                    value={destination}
+                    value={arDestination}
                     placeholder="Arabic Location"
                     readOnly={true}
                   />
@@ -726,9 +754,10 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item> */}
               <Form.Item className='form-field'>
-                <span className='modallabel'> Duration:</span>
+             
                 <FloatLabel name="duration">
-                  <Input
+                <span className='modallabel'> Duration:</span>
+                <input
                     className='Input'
                     value={duration}
                     placeholder="Duration"
@@ -747,9 +776,10 @@ const ViewInformationForm = (props) => {
             </StyledContactFormItemTitle>
             <StyledContactFormContentField>
               <Form.Item className='form-field'>
-                <span className='modallabel'> Emergency Full Name:</span>
                 <FloatLabel name="emergencyName">
-                  <Input
+                <span className='modallabel'> Emergency Full Name:</span>
+
+                <input
                     className='Input'
                     value={emergencyName}
                     placeholder="Emergency Full Name"
@@ -758,9 +788,10 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
-                <span className='modallabel'> RelationShip :</span>
+         
                 <FloatLabel name="emergencyRelation">
-                  <Input
+                <span className='modallabel'> RelationShip :</span>
+                <input
                     className='Input'
                     placeholder="RelationShip"
                     value={emergencyRelation}
@@ -769,9 +800,10 @@ const ViewInformationForm = (props) => {
                 </FloatLabel>
               </Form.Item>
               <Form.Item className='form-field'>
-                <span className='modallabel'> Emergency Telephone :</span>
+              
                 <FloatLabel name="phoneEmergency">
-                  <Input
+                <span className='modallabel'> Emergency Telephone :</span>
+                <input
                     className='Input'
                     value={phoneEmergency}
                     placeholder="Emergency Telephone"

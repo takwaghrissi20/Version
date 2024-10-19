@@ -260,7 +260,7 @@ export const ecommerceConfig = [
   {
     permittedRole: RoutePermittedRole.User,
     path: '/Hr/Recruitement&Interview/Recruitement/Update/:id',
-    element: < EditRecruitementInterview/>,
+    element: <EditRecruitementInterview/>,
   },
   {
     permittedRole: RoutePermittedRole.User,
@@ -282,7 +282,7 @@ export const ecommerceConfig = [
   {
     permittedRole: RoutePermittedRole.User,
     path: '/Hr/Recruitement&Interview/ConstructionStaffInterview/Update/:id',
-    element: < EditInterviewConstruction/>,
+    element: <EditInterviewConstruction/>,
   },
  
   {
@@ -496,7 +496,7 @@ export const ecommerceConfig = [
   {
     permittedRole: RoutePermittedRole.User,
     path: ['/Hr/EmployeesCategoryContract'],
-    element: < AddEmployeesContratCategory/>,
+    element: <AddEmployeesContratCategory/>,
   },
   {
     permittedRole: RoutePermittedRole.User,

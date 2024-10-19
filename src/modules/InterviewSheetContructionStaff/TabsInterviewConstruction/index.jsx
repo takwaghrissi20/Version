@@ -27,8 +27,11 @@ const TabsInterviewSheetConstructionId = () => {
   const level = location.state ? location.state.level : null;
   const projectName = location.state ? location.state.projectName : null;
   const position = location.state ? location.state.position : null;
+  const requestedDicipline = location.state ? location.state.requestedDicipline : null;
   const experienceRequired = location.state ? location.state.experience : null;
   const dep = location.state ? location.state.dep : null;
+  const requestName = location.state ? location.state.requestName : null;
+  const idemp = location.state ? location.state.idemp : null;
   const [isConfirmationInterview, setIsConfirmationInterview] = useState(false);
   const [showAlertError, setShowAlertError] = useState(false);
   const [showAlertConfirmation, setShowAlertConfirmation] = useState(false);
@@ -108,6 +111,11 @@ const TabsInterviewSheetConstructionId = () => {
   const [dailyError, setDailyError] = useState('');
   const [form] = Form.useForm();
   const token = localStorage.getItem("token")
+  //Tester Min Age est Min 20
+  const disabledDate = (current) => {
+    return current && current > dayjs().subtract(20, 'years');
+  };
+  const twentyYearsAgo = dayjs().subtract(20, 'years');
 
   const [evaluationDate, setEvaluationDate] = useState(dayjs().format('DD/MM/YYYY'));
   const [dateInput, setDateInput] = useState(new Date());
@@ -614,7 +622,7 @@ const TabsInterviewSheetConstructionId = () => {
           totalAccept: 2,
           requiredGrade: level,
           projname: projectName,
-          positionToBeFilled: position,
+          positionToBeFilled: requestedDicipline,
           department: departement,
           requiredExperinece: requiredExperinece,
           requiredQualification: requiredQualification,
@@ -623,6 +631,9 @@ const TabsInterviewSheetConstructionId = () => {
           contactPhone: contactFullNumber,
           contactEmail: contactEmail,
           familySituation: selectedSituation,
+          evalName: requestName,
+          evalId: idemp,
+      
           // telCondidate: contactFullNumber,
           // email: contactEmail,
           // birthayDate:scheduleDate,
@@ -652,7 +663,7 @@ const TabsInterviewSheetConstructionId = () => {
           // validatesFor:selectedValidation,
           // goTotest2: CheckedFinalGotest2,
           urlCv: cvCandidate,
-         
+
 
 
 
@@ -881,7 +892,7 @@ const TabsInterviewSheetConstructionId = () => {
                   <Col xs={24} md={12}>
                     <Form.Item label='Reference' name='interviewCode'>
                       <Input
-                        placeholder={"CIS-" + NewLastInterview}
+                        placeholder={"CIS-" + NewLastInterview + "-" + year}
                         readOnly={true} />
                     </Form.Item>
                   </Col>
@@ -919,11 +930,15 @@ const TabsInterviewSheetConstructionId = () => {
 
                   <Col xs={24} md={12}>
                     <Form.Item label='JOB CODE:' name='jobcode1'>
-                      <Input 
-                      placeholder={"RRS-"+JobCode+"-"+year } 
-                      readOnly={true} />{/*Ajout le MSIS OU cis*/}
+                      <Input
+                        placeholder={"RRS-" + JobCode + "-" + year}
+                        readOnly={true} />{/*Ajout le MSIS OU cis*/}
                     </Form.Item>
                   </Col>
+                  {/*Request Id And Name*/}
+
+
+                  {/*End Request Id And Name*/}
 
                   <Col xs={24} md={12}>
                     <Form.Item label='Total Number Required Position' name='Total Number Required Position'>
@@ -974,7 +989,9 @@ const TabsInterviewSheetConstructionId = () => {
                   </Col>
                   <Col xs={24} md={12}>
                     <Form.Item label='Position to be Filled' name='positionToBeFilled	'>
-                      <Input placeholder={position} readOnly={true} />
+                      <Input
+                        placeholder={requestedDicipline}
+                        readOnly={true} />
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
@@ -1083,6 +1100,7 @@ const TabsInterviewSheetConstructionId = () => {
                         <DatePicker
                           //defaultValue={new Date()} 
                           //defaultValue={dayjs(scheduleDate, '16 06,1990')}
+                          disabledDate={disabledDate}
                           placeholder='Select Date of Birth'
                           style={{ width: "100%", height: "34px" }}
                           onChange={(value) => setScheduleDate(dayjs(value).format('YYYY-MM-DD'))}
@@ -1090,6 +1108,7 @@ const TabsInterviewSheetConstructionId = () => {
                       </StyledTodoDetailDatePicker>
                     </Form.Item>
                   </Col>
+                
 
                   <Col xs={24} md={12}>
                     <Form.Item
@@ -1908,7 +1927,8 @@ const TabsInterviewSheetConstructionId = () => {
                 <AppRowContainer>
                   <Col xs={24} md={12}>
                     <Form.Item label='Reference' name='interviewCode'>
-                      <Input placeholder={"CIS-" + NewLastInterview} readOnly={true} />
+                      <Input placeholder={"CIS-" + NewLastInterview + "-" + year}
+                        readOnly={true} />
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
@@ -1978,7 +1998,7 @@ const TabsInterviewSheetConstructionId = () => {
                   <Col xs={24} md={12}>
                     <Form.Item label='JOB CODE:' name='jobcode1'>
                       <Input
-                      placeholder={"RRS-"+JobCode+"-"+year } readOnly={true} />{/*Ajout le MSIS OU cis*/}
+                        placeholder={"RRS-" + JobCode + "-" + year} readOnly={true} />{/*Ajout le MSIS OU cis*/}
                     </Form.Item>
                   </Col>
 
@@ -2032,7 +2052,7 @@ const TabsInterviewSheetConstructionId = () => {
                   </Col>
                   <Col xs={24} md={12}>
                     <Form.Item label='Position to be Filled' name='positionToBeFilled	'>
-                      <Input placeholder={position} readOnly={true} />
+                      <Input placeholder={requestedDicipline} readOnly={true} />
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
@@ -2133,22 +2153,19 @@ const TabsInterviewSheetConstructionId = () => {
                     </Form.Item>
                   </Col>
 
+        
                   <Col xs={24} md={12}>
-                    <Form.Item label='Date of Birth' name='birthayDate'
-                    >
-                      <StyledTodoDetailDatePicker className='form-field'>
-
+                    <Form.Item label="Date of Birth" name="birthdayDate">
+                      <StyledTodoDetailDatePicker className="form-field">
                         <DatePicker
-                          //defaultValue={new Date()} 
-                          defaultValue={dayjs(scheduleDate, '16 06,1990')}
-
                           style={{ width: "100%", height: "34px" }}
+
+                          disabledDate={(current) => current && current > twentyYearsAgo.endOf('day')}
                           onChange={(value) => setScheduleDate(dayjs(value).format('YYYY-MM-DD'))}
                         />
                       </StyledTodoDetailDatePicker>
                     </Form.Item>
                   </Col>
-
                   <Col xs={24} md={12}>
                     <Form.Item
                       label='Family Situation'

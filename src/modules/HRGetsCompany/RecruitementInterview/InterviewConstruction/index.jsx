@@ -15,7 +15,11 @@ import Pagination from '../../../../@crema/components/AppsPagination';
 import clsx from 'clsx';
 import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal'; 0
 import { useNavigate } from "react-router-dom";
-const InterviewConstruction = ({ allinterviewConstructionTeam,token }) => {
+const InterviewConstruction = ({allinterviewConstructionTeam,token ,
+  allinterviewConstructionTeamLeader,allinterviewConstructionHSE,
+  allinterviewConstructionHRManager
+
+}) => {
   const navigate = useNavigate();
   const [interviewConstructionTeam, setInterviewConstructionTeam] = useState([]);
   const [interviewConstructionTeamFiltrer, setInterviewConstructionTeamFiltrer] = useState([]);
@@ -34,7 +38,7 @@ const InterviewConstruction = ({ allinterviewConstructionTeam,token }) => {
   const fetchInterviewConstructionTeam = async () => {
     try {
 
-      const url = `https://dev-gateway.gets-company.com/api/v1/intc/listBypage?size=${pageSize}&page=${currentPage}&sortBy=interviwDate&token=${token}`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/intc/listBypage?size=${pageSize}&page=${currentPage}&sortBy=interviewCode&token=${token}`;
       const response = await fetch(url);
 
 
@@ -162,8 +166,6 @@ const InterviewConstruction = ({ allinterviewConstructionTeam,token }) => {
             )}
           </div>
 
-
-
         </StyledOrderHeader>
       </AppsHeader>
       <AppsContent
@@ -173,6 +175,8 @@ const InterviewConstruction = ({ allinterviewConstructionTeam,token }) => {
         }}>
         <OrderTable
           allinterviewConstructionTeam={allinterviewConstructionTeam}
+          allinterviewConstructionTeamLeader={allinterviewConstructionTeamLeader}
+          allinterviewConstructionHSE={allinterviewConstructionHSE}
           findIdData={findIdData}
           id={id}
           findId={findId}
@@ -181,10 +185,10 @@ const InterviewConstruction = ({ allinterviewConstructionTeam,token }) => {
           handleInterview={handleInterview}
           codeJob={codeJob}
           interviewCode={interviewCode}
+          allinterviewConstructionHRManager={allinterviewConstructionHRManager}
         />
           <div className='Pagination' >
         <StyledOrderHeaderRight>
-
           <Pagination
             currentPage={currentPage}
             totalPages={Math.ceil(count / pageSize)}

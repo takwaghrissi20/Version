@@ -15,8 +15,15 @@ import Pagination from '../../../../@crema/components/AppsPagination';
 import clsx from 'clsx';
 import ConfirmationModal from '../../../../@crema/components/AppConfirmationModal'; 
 import { useNavigate } from "react-router-dom";
-const StaffInterview = ({ allinterviewStaffManagement,token,departement }) => {
+const StaffInterview = ({ allinterviewStaffManagement,token,departement,
+  allinterviewStaffHRManager,
+  allinterviewStaffbod,interTypeIdLeader,
+  allinterviewStaffOperationManager,
+
+
+ }) => {
   const navigate = useNavigate();
+  
   const [interviewStaff, setInterviewStaff] = useState([]);
   const [interviewStaffFiltrer, setInterviewStaffFiltrer] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
@@ -31,7 +38,7 @@ const StaffInterview = ({ allinterviewStaffManagement,token,departement }) => {
 
   useEffect(() => {
     fetchInterviewStaff();
-  }, [currentPage, pageSize, nameFilter, count, id]);
+  }, [currentPage, pageSize, nameFilter, count, id,interTypeIdLeader]);
   const userRoles = localStorage.getItem("role");
   const fetchInterviewStaff = async () => {
     try {
@@ -169,6 +176,10 @@ const StaffInterview = ({ allinterviewStaffManagement,token,departement }) => {
         }}>
         <OrderTable
           allinterviewStaffManagement={allinterviewStaffManagement}
+          allinterviewStaffHRManager= {allinterviewStaffHRManager}
+          allinterviewStaffOperationManager={allinterviewStaffOperationManager}
+          allinterviewStaffbod={allinterviewStaffbod}
+          interTypeIdLeader={interTypeIdLeader}
           findIdData={findIdData}
           id={id}
           findId={findId}

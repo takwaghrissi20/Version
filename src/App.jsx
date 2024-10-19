@@ -10,7 +10,7 @@ import './@crema/mockapi';
 import { GlobalStyles } from './@crema/core/theme/GlobalStyle';
 import { Normalize } from 'styled-normalize';
 import './styles/index.css';
-import { Button, Modal, Space } from 'antd';
+import { Button, Modal, Space,notification } from 'antd';
 
 
 function App() {
@@ -25,6 +25,89 @@ function App() {
   const [visaExpired, setVisaExpired] = useState("");
   const [passportExpired, setPassportExpired] = useState("");
   const [contartExpired, setContratExpired] = useState("");
+  //Verifier Connextion
+
+
+  const checkNetworkStatus = () => {
+    if (navigator.onLine) {
+      if (navigator.connection) {
+        const { downlink, effectiveType } = navigator.connection;
+        console.log(`Connection speed: ${downlink} Mbps, type: ${effectiveType}`);
+
+        // Show alert for very slow connection (less than 1 Mbps)
+        if (downlink < 1) {
+          notification.warning({
+            message: 'Slow Connection',
+            description: 'Your connection speed is very slow. Please check your network.',
+            style: {
+              backgroundColor: 'red',
+              border: '1px solid #DAAB3A',
+              color: '#FFFFFF !important',
+              borderRadius: '3px',
+              boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+              cursor: 'pointer',
+              display: 'flex',
+              height: "102px",
+              width: "500px",
+              borderLeft: '8px solid #DAAB3A',
+              fontsize: '30px',
+              lineheight: '150%',
+              marginbottom: 0,
+              margintop: 0,
+              maxwidth: 'calc(100% - 15px)',
+              position: 'relative',
+            },
+            placement: 'topRight',
+            color: '#FFFFFF !important',  
+
+          });
+        }
+      } else {
+        console.log('Connection speed information is not available.');
+      }
+    } else {
+      notification.error({
+        message: 'No Connection',
+        description: 'You are offline. Please check your internet connection.',
+        style: {
+          backgroundColor: 'red',
+          border: '1px solid #dc3545',
+          color: '#FFFFFF !important',
+          borderRadius: '3px',
+          boxShadow: '1px 3px 4px rgba(0, 0, 0, 0.2)',
+          cursor: 'pointer',
+          display: 'flex',
+          height: "102px",
+          width: "500px",
+          borderLeft: '8px solid #bd1120',
+          fontsize: '30px',
+          lineheight: '150%',
+          marginbottom: 0,
+          margintop: 0,
+          maxwidth: 'calc(100% - 15px)',
+          position: 'relative',
+        },
+        placement: 'topRight',
+        color: '#FFFFFF !important',
+      
+      });
+    }
+  };
+
+  useEffect(() => {
+    checkNetworkStatus();
+
+    // Monitor changes in connection status
+    window.addEventListener('online', checkNetworkStatus);
+    window.addEventListener('offline', checkNetworkStatus);
+
+    return () => {
+      window.removeEventListener('online', checkNetworkStatus);
+      window.removeEventListener('offline', checkNetworkStatus);
+    };
+  }, []);
+
+  //End Verifier connecction
 
 
   //Fetch Employees Expired Passport et Visa 

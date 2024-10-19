@@ -27,7 +27,12 @@ const AddEmployeesIdConstructionStaff = ({
   const department=location.state ? location.state.department : null;
   const projname=location.state ? location.state.projname : null;
   const  agreedJoinedDate=location.state ? location.state.agreedJoinedDate : null; 
+  const contactPhone=location.state ? location.state.contactPhone : null;
+  const  contactEmail=location.state ? location.state. contactEmail: null; 
+ 
+ 
   const [listInterview, setListInterview] = useState([]);
+
   const [findIdInterview, setFindIdInterview] = useState([]);
  const token = localStorage.getItem("token")
 
@@ -102,6 +107,8 @@ const AddEmployeesIdConstructionStaff = ({
                  projname={projname}
                  agreedJoinedDate={agreedJoinedDate}
                  interviewCode={interviewCode}
+                 contactPhone={contactPhone}
+                 contactEmail={contactEmail}
                  
                            
                  ></EmployeeInformationConstruction>

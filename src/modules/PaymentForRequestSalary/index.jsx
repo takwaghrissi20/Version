@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import AppRowContainer from '../../@crema/components/AppRowContainer';
 import {
   Button, Col, Divider, Form, Input, Space, Typography, Select, Alert,
-  Checkbox, DatePicker, InputNumber, notification
+  Checkbox, DatePicker, InputNumber, notification, Table
 } from 'antd';
 
 import {
@@ -20,7 +20,6 @@ import { useLocation } from 'react-router-dom';
 const PaymentForRequestSalary = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const dateemp= location.state ? location.state.dateemp: null;
   const token = localStorage.getItem("token")
   const [lastRequest, setLastRequest] = useState(0);
   const [dateInput, setDateInput] = useState(new Date());
@@ -41,6 +40,7 @@ const PaymentForRequestSalary = () => {
   const [isCheque, setIsCheque] = useState(false);
   const [descriptions, setDescriptions] = useState({});
   const [getsIdData, setGetsIdData] = useState("");
+  const [getsIdTempData, setGetsIdTempData] = useState("");
   const [empId, setEmpId] = useState("");
   const [name, setName] = useState("");
   const [position, setPosition] = useState("");
@@ -51,47 +51,27 @@ const PaymentForRequestSalary = () => {
     LastRequestPayment()
     fetchCosCenter()
     listEmployees()
-    findIdEmployee()
-
   }, []);
   const listEmployees = async () => {
     try {
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/list?token=${token}`);
-    
+
       if (!response.ok) {
         throw new Error('Failed to fetch employees');
       }
       if (response.ok) {
         const data = await response.json();
-        console.log("dataaa reponse ",data)
+        console.log("dataaa reponse ", data)
       }
-     
+
 
     } catch (error) {
       console.error('Error fetching List Employees:', error);
     }
   };
   //Find By Id 
-  const findIdEmployee = async () => {
-    try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}&token=${token}`, {
-        method: 'GET',
-      });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      if (response.ok) {
-      const responseData = await response.json();
-      console.log("Employee Data:", responseData);
-        console.log("emppp333",responseData)
-        setGetsIdData(responseData);
-      }
-     
-    } catch (error) {
-      console.error("Error fetching employee ID:", error);
-    }
-  };
-  
+
+
   //End List Of Request Payment
   const handleCompany = (value) => {
     setTypecompany(value);
@@ -129,6 +109,20 @@ const PaymentForRequestSalary = () => {
   ];
   const Subject = [
     { type: 'FINANCE SETTLEMENT' },
+    { type: 'VISA REQUEST IN THE EMBASSY' },
+    { type: 'RATES PAYMENT SITE' },
+    { type: 'STANDBY WELDERS IN TUNISIA' },
+    { type: 'MISSION TO TUNISIA' },
+    { type: 'FLIGHT TICkET MANPOWER' },
+    { type: 'TRANSPORTATION BY ROAD MANPOWER' },
+    { type: 'INTERNAL TRANSPORTATION MANPOWER' },
+    { type: 'FRIDAY RATE SITE' },
+    { type: 'MANPOWER HOTEL PAYMENT' },
+    { type: 'SITE MANPOWER BONUS' },
+    { type: 'SALARY PAYMENT OFFICE' },
+    { type: 'ADVANCE PAYMENT SITE' },
+    { type: 'ADVANCE PAYMENT OFFICE' },
+    { type: 'HEALTH CERTIFICATE PAYMENT' },
   ];
   const handleSubject = (value) => {
     setSubject(value);
@@ -136,16 +130,10 @@ const PaymentForRequestSalary = () => {
       window.location.reload();
     }
   };
-  
-  const SaveRequest = async () => {
+
+  const SaveRequesttest = async () => {
     try {
-      const employees = Array.isArray(dateemp) ? dateemp : [dateemp];
-      const listRequestPayments = employees.map(employee => ({
-        ...employee,
-        // otherDescription: descriptions[employee.getsId] || '',
-        // amount: calculateSalary[employee.getsId] || 0,
-        fullName: employee?.name
-      }));
+
       const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/RequestPayment/add?token=${token}`, {
 
         method: 'POST',
@@ -154,16 +142,16 @@ const PaymentForRequestSalary = () => {
           "Access-Control-Allow-Headers": "Content-Type",
           "Access-Control-Allow-Origin": "*",
           'Content-Type': 'application/json',
-       
+
         },
-        body: JSON.stringify({         
-    
+        body: JSON.stringify({
+
           dateInput: formattedDate,
           object: subject,
           fromReq: from,
-          paymentType:isCash,
-          total:33,
-          monthBy:"",
+          paymentType: isCash,
+          total: 33,
+          monthBy: "",
           requstor: "Syrine",
           companyType: typecompany,
           fromBankCheque: bancAccount,
@@ -188,7 +176,7 @@ const PaymentForRequestSalary = () => {
           "virementOrdre": null,
           listRequestPayments,
           ibanCheque: ibanNumber
-        
+
         })
       });
 
@@ -203,14 +191,14 @@ const PaymentForRequestSalary = () => {
 
         const responseData = await response.json();
         console.log("setItemSave nnjj", responseData)
-        
+
         // setTimeout(() => {
         //   window.location.reload();
 
         // }, 100);
 
       }
-   
+
     } catch (error) {
       console.error("Erreur lors de la récupération du Id :", error);
     }
@@ -234,8 +222,7 @@ const PaymentForRequestSalary = () => {
         cosCenter: p.cosCenter
       }));
       setListCosCenterAndProjName(listCosCenterAndProjName)
-
-      const cosCenters = dataCosCenter.map(p => p.cosCenter);
+      const cosCenters = [...new Set(dataCosCenter.map(p => p.cosCenter))];
 
       setListCosCenter(cosCenters)
 
@@ -324,12 +311,9 @@ const PaymentForRequestSalary = () => {
       color: '#FFFFFF !important',
     });
   };
-  const [getsId, setGetsId] = useState("");
-  const handleInputGetsIdChange = (event) => {
-    setGetsId(event.target.value);
-  };
-   //Checkbox
-   function Cash(e) {
+
+  //Checkbox
+  function Cash(e) {
     console.log(`checkedHead = ${e.target.checked}`);
     setIsCash(e.target.checked)
     if (e.target.checked) {
@@ -410,32 +394,238 @@ const PaymentForRequestSalary = () => {
     }
   };
   const formattedDate = dayjs(dateInput).format('YYYY-MM-DD');
-  const findId = async () => {
+  const lastRequetPayment = lastRequest + 1
+  /////////////Table de request and payment
+  const [dataSource, setDataSource] = useState([
+    { key: '1', getsId: '', position: '', name: '', otherDescription: '', month: '', amount: '' }
+  ]);
+  const [totalAmount, setTotalAmount] = useState(0);
+
+  // Function to calculate the total amount
+  const calculateTotalAmount = () => {
+    const total = dataSource.reduce((sum, record) => {
+      return sum + parseFloat(record.amount || 0); 
+    }, 0);
+    setTotalAmount(total);
+  };
+
+
+  const [loading, setLoading] = useState(false);
+  const fetchDataByGetsId = async (getsId) => {
+    const isTemp = /^[A-Za-z]-\d+/.test(getsId);
+    const apiURL = isTemp
+      ? `https://dev-gateway.gets-company.com/api/v1/empT/getById?id=${getsId.slice(2)}&token=${token}`
+      : `https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}&token=${token}`;
+
     try {
-      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/emp/getById?id=${getsId}&token=${token}`, {
-        method: 'GET',
-
-      });
+      const response = await fetch(apiURL, { method: 'GET' });
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error('Failed to fetch data');
       }
-
-      if (response.ok) {
-        const responseData = await response.json();
-        setName(responseData?.name)
-        setPosition(responseData?.position)
-        setSalary(responseData?.salary)
-        console.log("testtt responseData",responseData)
-        setData(responseData)
-      }
+      const data = await response.json();
+      return {
+        position: data.position || '',
+        name: data.name || ''
+      };
     } catch (error) {
-      console.error("Erreur lors de la récupération du employees:", error);
+      console.error('Error fetching data:', error);
+      return { position: '', name: '' };
     }
   };
-  useEffect(() => {
-    findId()
+  const SaveRequest = async () => {
+    try {
+      const listRequestPayments = dataSource.map((item) => ({
+        "numero": 0,
+        // getsId: item.getsId,
+        getsId: extractNumberFromGetsId(item.getsId),
+        projName: item.projName,
+        costcenter: item.costcenter,
+        fullName: item.fullName,
+        position: item.position,
+        desiredDate: item.desiredDate,
+        amount: item.amount,
+      }));
 
-  }, [getsId]);
+      const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/RequestPayment/add?token=${token}`, {
+        method: 'POST',
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          dateInput: formattedDate,
+          object: subject,
+          fromReq: from,
+          paymentType: isCash,
+          total: 33,
+          monthBy: "",
+          requstor: "Syrine",
+          companyType: typecompany,
+          fromBankCheque: bancAccount,
+          payrollSign: null,
+          checkedByHod: null,
+          approvedByBod1: true,
+          approvedByBod2: null,
+          notif: 0,
+          listRequestPayments: listRequestPayments,
+          ibanCheque: ibanNumber,
+        }),
+      });
+
+      if (!response.ok) {
+        openNotificationError('bottomRight');
+        throw new Error('Network response was not ok');
+      }
+      console.log("List Request Payments: ", listRequestPayments);
+      const responseData = await response.json();
+      console.log("Response Data: ", responseData);
+      openNotification('bottomRight')
+
+    } catch (error) {
+      console.error("Error during API call:", error);
+    }
+  };
+
+  const handleInputChange = async (value, key, field) => {
+    setLoading(true);
+    const updatedDataSource = dataSource.map((item) => {
+      if (item.key === key) {
+        return { ...item, [field]: value };
+      }
+      return item;
+    });
+
+    if (field === 'getsId') {
+      const { position, name } = await fetchDataByGetsId(value);
+      const finalDataSource = updatedDataSource.map((item) => {
+        if (item.key === key) {
+          return { ...item, position, name };
+        }
+        return item;
+      });
+
+      setDataSource(finalDataSource);
+    } else {
+      setDataSource(updatedDataSource);
+    }
+    if (field === 'amount') {
+      calculateTotalAmount();
+    }
+
+    setLoading(false);
+  };
+  const extractNumberFromGetsId = (getsId) => {
+    if (typeof getsId === 'string' && getsId.startsWith('V-')) {
+      return getsId.split('-')[1]; 
+    }
+    return getsId; 
+  };
+
+  const year= new Date().getFullYear();
+  const columns = [
+    {
+      title: 'Gets ID',
+      dataIndex: 'getsId',
+      render: (text, record) => (
+        <Input
+          value={record.getsId}
+          onChange={(e) => handleInputChange(e.target.value, record.key, 'getsId')}
+          placeholder="Enter Gets ID"
+        />
+      ),
+    },
+    {
+      title: 'Position',
+      dataIndex: 'position',
+      render: (text, record) => (
+        <Input
+          value={record.position}
+          readOnly
+          placeholder="Position will auto-fill"
+        />
+      ),
+    },
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      render: (text, record) => (
+        <Input
+          value={record.name}
+          readOnly
+          placeholder="Name will auto-fill"
+        />
+      ),
+    },
+    {
+      title: 'Other Description',
+      dataIndex: 'otherDescription',
+      render: (text, record) => (
+        <Input
+          value={record.otherDescription}
+          onChange={(e) => handleInputChange(e.target.value, record.key, 'otherDescription')}
+          placeholder="Enter other description"
+        />
+      ),
+    },
+    {
+      title: 'Month',
+      dataIndex: 'month',
+      render: (text, record) => (
+        <Select
+          value={record.month}
+          onChange={(value) => handleInputChange(value, record.key, 'month')}
+          placeholder="Select month"
+          style={{ width: '100%' }}
+        >
+          {Array.from({ length: 12 }, (_, index) => (
+            <Select.Option key={index} value={`${new Date(0, index).toLocaleString('en-US', { month: 'long' })} ${new Date().getFullYear()}`}>
+              {new Date(0, index).toLocaleString('en-US', { month: 'long' })} {new Date().getFullYear()}
+            </Select.Option>
+          ))}
+        </Select>
+      ),
+    },
+    {
+      title: 'Amount(DT)',
+      dataIndex: 'amount',
+      render: (text, record) => (
+        <Input
+          type="number"
+          value={record.amount}
+          onChange={(e) => handleInputChange(e.target.value, record.key, 'amount')}
+          placeholder="Enter amount DT"
+        />
+      ),
+    },
+    // {
+    //   title: 'Amount(DT)',
+    //   dataIndex: 'amount',
+    //   render: (text, record) => (
+    //     <Input
+    //       type="number"
+    //       value={record.amount}
+    //       onChange={(e) => handleInputChange(e.target.value, record.key, 'amount')}
+    //       placeholder="Enter amount DT"
+    //     />
+    //   ),
+    // },
+
+  ];
+
+
+  const handleAddRow = () => {
+    const newRow = {
+      key: (dataSource.length + 1).toString(),
+      getsId: '',
+      position: '',
+      name: '',
+      otherDescription: '',
+      month: '',
+      amount: '',
+    };
+    setDataSource([...dataSource, newRow]);
+  };
   return (
     <div style={{ paddingLeft: "0.5rem", paddingRight: "0.5rem" }}>
       <Form
@@ -472,7 +662,7 @@ const PaymentForRequestSalary = () => {
                   <Form.Item label='Request Reference' name='Requestref'>
                     <Input
                       readOnly
-                      placeholder={"Request ref-" }
+                      placeholder={"DAF-FR-" + lastRequetPayment+"-"+year}
 
                     />
                   </Form.Item>
@@ -525,27 +715,27 @@ const PaymentForRequestSalary = () => {
                     <Input
                       placeholder={selectedProject}
                       readOnly
-                      />
+                    />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                <Form.Item label='Object' name='Object'>
-                  <Select
-                    // style={{ width: "100%", marginTop: "0.5rem" }}
-                    placeholder="Request Subject"
-                    allowClear
-                    onChange={handleSubject}
-                    value={subject}
-                  >
-                    <Select.Option key="default" value="default">
-                      Default
-                    </Select.Option>
-                    {Subject.map(p => (
-                      <Select.Option key={p.type} value={p.type}>
-                        {p?.type}
+                  <Form.Item label='Object' name='Object'>
+                    <Select
+                      // style={{ width: "100%", marginTop: "0.5rem" }}
+                      placeholder="Request Subject"
+                      allowClear
+                      onChange={handleSubject}
+                      value={subject}
+                    >
+                      <Select.Option key="default" value="default">
+                        Default
                       </Select.Option>
-                    ))}
-                  </Select>
+                      {Subject.map(p => (
+                        <Select.Option key={p.type} value={p.type}>
+                          {p?.type}
+                        </Select.Option>
+                      ))}
+                    </Select>
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
@@ -559,77 +749,78 @@ const PaymentForRequestSalary = () => {
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label='BANC ACCOUNT' name='BANCACCOUNT'>
-                  <Select
-                  style={{ width: "100%" }}
-                  placeholder="FROM BANK ACCOUNT"
-                  allowClear
-                  onChange={handleBanc}
-                  value={bancAccount}>
-                  <Select.Option key="default" value="default">
-                    Default
-                  </Select.Option>
-                  {listbancAccount.map(p => (
-                    <Select.Option key={p.type} value={p.type}>
-                      {p?.type}
-                    </Select.Option>
-                  ))}
-                </Select>
+                    <Select
+                      style={{ width: "100%" }}
+                      placeholder="FROM BANK ACCOUNT"
+                      allowClear
+                      onChange={handleBanc}
+                      value={bancAccount}>
+                      <Select.Option key="default" value="default">
+                        Default
+                      </Select.Option>
+                      {listbancAccount.map(p => (
+                        <Select.Option key={p.type} value={p.type}>
+                          {p?.type}
+                        </Select.Option>
+                      ))}
+                    </Select>
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                <Form.Item label='IBAN NUMBER' name='IBAN NUMBER'>
-                <Input
-                  type='number'
-                  placeholder={ibanNumber}
-                  value={ibanNumber}
-                  readOnly
-                ></Input>
+                  <Form.Item label='IBAN NUMBER' name='IBAN NUMBER'>
+                    <Input
+                      type='number'
+                      placeholder={ibanNumber}
+                      value={ibanNumber}
+                      readOnly
+                    ></Input>
                   </Form.Item>
-                  </Col>
-                  <Col xs={24} md={12}>
+                </Col>
+                <Col xs={24} md={12}>
                   <Form.Item label='GETS COMPANY/TRADE' name='GETS COMPANY/TRADE'>
-                  <Select
-                style={{ width: "100%", marginTop: "0.5rem" }}
-                placeholder={typecompany}
-                allowClear
-                onChange={handleCompany}
-                value={typecompany}
+                    <Select
+                      style={{ width: "100%", marginTop: "0.5rem" }}
+                      placeholder={typecompany}
+                      allowClear
+                      onChange={handleCompany}
+                      value={typecompany}
 
-              >
-                <Select.Option key="default" value="default">
-                  Default
-                </Select.Option>
-                {Company.map(p => (
-                  <Select.Option key={p.type} value={p.type}>
-                    {p?.type}
-                  </Select.Option>
-                ))}
-              </Select>
-              </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-              <Form.Item label='CHEQUE  RECEIVER NAME' name='CHEQUE  RECEIVER NAME'>
-              <Input
-                  placeholder="CHEQUE  RECEIVER NAME"
-                  value={chequeName}
-                  onChange={() => setChequeName()}
+                    >
+                      <Select.Option key="default" value="default">
+                        Default
+                      </Select.Option>
+                      {Company.map(p => (
+                        <Select.Option key={p.type} value={p.type}>
+                          {p?.type}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </Col>
+                {isCheque && (
+                  <Col xs={24} md={12}>
+                    <Form.Item label='CHEQUE RECEIVER NAME' name='chequeReceiverName'>
+                      <Input
+                        placeholder="CHEQUE RECEIVER NAME"
+                        value={chequeName}
+                        onChange={(e) => setChequeName(e.target.value)}
+                      />
+                    </Form.Item>
+                  </Col>
+                )}
 
-                ></Input>
+                <Col xs={24} md={12}>
+                  <Form.Item label='Total' name='Total'>
+                    <Input
+                    placeholder={totalAmount}
+                      
+                      readOnly
 
-              </Form.Item>
-              </Col>
-              <Col xs={24} md={12}>
-              <Form.Item label='Total' name='Total'>
-              <Input
-                  // placeholder={dateemp.paidSetelment}
-                  readOnly
-                 
+                    ></Input>
 
-                ></Input>
-
-              </Form.Item>
-              </Col>
-              <Col xs={24} md={24}>
+                  </Form.Item>
+                </Col>
+                <Col xs={24} md={24}>
                   <Form.Item label="Payment Type :" name="PaymentType">
                     <Col style={{ margin: "1rem" }} xs={24} md={8}>
                       <Checkbox
@@ -652,18 +843,18 @@ const PaymentForRequestSalary = () => {
                     <Col style={{ margin: "1rem" }} xs={24} md={8}>
                       <Checkbox
                         checked={isCheque}
-                        onChange={Cheque}                       
+                        onChange={Cheque}
                       >
                         <IntlMessages id='Cheque' />
                       </Checkbox>
                     </Col>
                   </Form.Item>
                 </Col>
-           
+
               </AppRowContainer>
             </StyledShadowWrapper>
-            </Col>
-        
+          </Col>
+
         </AppRowContainer>
         <Divider style={{ marginTop: 16, marginBottom: 16 }} />
         <AppRowContainer>
@@ -671,7 +862,7 @@ const PaymentForRequestSalary = () => {
             <Typography.Title level={5}>Payment Request Order</Typography.Title>
 
           </Col>
-     
+
           {/* <Col xs={24} md={12}>
                 <Form.Item className='form-field'>
                 
@@ -690,24 +881,22 @@ const PaymentForRequestSalary = () => {
           <Col xs={24} md={18}>
             <StyledShadowWrapper>
               <AppRowContainer>
-                <OrderTable
-                 dateemp={dateemp} 
-                 setDescriptions={setDescriptions}
-                 descriptions={descriptions}     
-                 findIdEmployee={findIdEmployee} 
-                 getsIdData={getsIdData}    
-                 setEmpId={setEmpId}
-                 empId={empId}
-                 getsId={getsId}
-                 handleInputGetsIdChange={handleInputGetsIdChange}
-                 name={name}
-                 position={position}
-                 salary={salary}
-                 data={data}
-
-                
-                  
-                />
+                {/*Order Payment*/}
+                <Col xs={24} md={24}>
+                  <Button onClick={handleAddRow} type="primary" style={{ marginBottom: 16 }}>
+                    Add Row
+                  </Button>
+                  <Table
+                  style={{width:"100%"}}
+                    columns={columns}
+                    dataSource={dataSource}
+                    loading={loading}
+                    rowKey="key"
+                    pagination={false}
+                    bordered
+                  />
+                </Col>  
+                {/*End Order Payment*/}
 
               </AppRowContainer>
             </StyledShadowWrapper>

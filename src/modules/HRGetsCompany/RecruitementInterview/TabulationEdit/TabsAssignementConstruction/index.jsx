@@ -45,6 +45,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 }) => {
 
   const navigate = useNavigate();
+  const [form] = Form.useForm();
   const location = useLocation();
   const roles = window.localStorage.getItem("role");
   const JobCode = location.state ? location.state.JobCode : null;
@@ -119,14 +120,24 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
   const [selectedLeadershipQualities, setSelectedLeadershipQualities] = useState('');
   const [selectedPhysicalpresentation, setSelectedPhysicalpresentation] = useState('');
   const [selectedHSECertificates, setSelectedHSECertificates] = useState('');
+  const [hseTraining, setHseTraining] = useState('');
+  const [workplaceErgonomics, setWorkplaceErgonomics] = useState('');
+  const [fireFightingTraining, setFireFightingTraining] = useState('');
+  const [hazardIdentification, setHazardIdentification] = useState('');
+  const [selectedHSEWorkingHeighTraining, setSelectedHSEWorkingHeighTraining] = useState('');
+
+  const [confinedTraining, setConfinedTraining] = useState('');
   const [hSECertificates, setHSECertificates] = useState('');
   const [selectedSitehazardscontrol, setSelectedSitehazardscontrol] = useState('');
   const [selectedProperuse, setSelectedProperuse] = useState('');
   const [selectedHazardousmaterials, setSelectedHazardousmaterials] = useState('');
   const [selectedEmergenceEvacuation, setSelectedEmergenceEvacuation] = useState('');
+  const [selectedSafety, setSelectedSafety] = useState('');
   const [selectedPTWknowledge, setSelectedPTWknowledge] = useState('');
   const [selectedHSEPolicies, setSelectedHSEPolicies] = useState('');
+  const [selectedHSEStandards, setSelectedHSEStandards] = useState('');
   const [selectedOthers, setSelectedOthers] = useState('');
+  const [othersHSE, setOthersHSE] = useState('');
   const [findInterviewConstruction, setFindInterviewConstruction] = useState('');
   const currentYear = new Date().getFullYear();
   const token = localStorage.getItem("token");
@@ -173,12 +184,17 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
       }
       const responseData = await response.json();
       setFindInterviewConstruction(responseData)
-     
+
 
     } catch (error) {
       console.error("Erreur lors de la récupération du jobcode:", error);
     }
   };
+  useEffect(() => {
+    if (findInterviewConstruction?.hseCertif) {
+      setSelectedHSECertificates(findInterviewConstruction.hseCertif);
+    }
+  }, [findInterviewConstruction]);
   useEffect(() => {
     fetchData()
     findIdInterviewConstruction()
@@ -199,10 +215,17 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
   ];
   const Rating = [
-    { rate: 'Excellent' },
-    { rate: 'Average' },
-    { rate: 'Good' },
-    { rate: 'Below Average' },
+    { rate: 'Already Have' },
+    { rate: 'No Need' },
+    { rate: 'Needed Certificat' },
+    { rate: 'Recommended Certificate' },
+
+  ];
+  const hseWorking = [
+    { select: 'Already Have' },
+    { select: 'No Need' },
+    { select: 'Needed Certificat' },
+    { select: 'Recommended Certificate' },
 
   ];
   const Others = [
@@ -314,7 +337,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
           others: selectedOthers,
           projname: findInterviewConstruction?.projname,
           notif: 100,
-          urlCv:findInterviewConstruction?.urlCv,
+          urlCv: findInterviewConstruction?.urlCv,
           jobCod: findInterviewConstruction?.jobCod,
           totalReqPos: findInterviewConstruction?.totalReqPos,
           intervtime: findInterviewConstruction?.intervtime,
@@ -383,7 +406,16 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
           feedback: findInterviewConstruction?.feedback,
           agreedJoinedDate: findInterviewConstruction?.agreedJoinedDate,
           diversityTal: findInterviewConstruction?.diversityTal,
-          
+          /////////////
+          workAtHeighTrain: selectedHSEWorkingHeighTraining,
+          hseTraining: hseTraining,
+          workplace: workplaceErgonomics,
+          fireFighting: fireFightingTraining,
+          hazardIdentification: hazardIdentification,
+          cofinedSpace: confinedTraining,
+          safetyInWelding: selectedSafety,
+          hseStandard: selectedHSEStandards,
+          others: othersHSE
 
         })
       });
@@ -416,6 +448,18 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
     }
   };
   {/*HRMANAGER*/ }
+  const BeforeSave = () => {
+    form.validateFields(['attribut', 'attributFirst', 'attribut14',
+
+
+    ]).then(values => {
+      Save()
+
+    }).catch(errorInfo => {
+
+      openNotification('Warning', 'All Fields Not Complete', { backgroundColor: '#eab000', color: '#fff' });
+    });
+  };
 
   const SaveHrManager = async () => {
     try {
@@ -449,10 +493,10 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
           others: findInterviewConstruction?.others,
           projname: findInterviewConstruction?.projname,
           notif: 600,
-          urlCv:findInterviewConstruction?.urlCv,
+          urlCv: findInterviewConstruction?.urlCv,
           jobCod: findInterviewConstruction?.jobCod,
           totalReqPos: findInterviewConstruction?.totalReqPos,
-          intervtime:findInterviewConstruction?.intervtime,
+          intervtime: findInterviewConstruction?.intervtime,
           totalInterv: findInterviewConstruction?.totalInterv,
           totalAccept: findInterviewConstruction?.totalAccept,
           totalRequiredGrade: findInterviewConstruction?.totalRequiredGrade,
@@ -518,7 +562,8 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
           feedback: findInterviewConstruction?.feedback,
           agreedJoinedDate: findInterviewConstruction?.agreedJoinedDate,
           diversityTal: selectedDiversity,
-      
+
+
 
 
 
@@ -600,6 +645,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
     <>
 
       <Form
+        form={form}
         layout='vertical'
         style={{ backgroundColor: "white", marginBottom: "20px", padding: "10px", borderRadius: "20px", marginTop: "20px" }}
       // initialValues={settings}
@@ -751,12 +797,15 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                 <Col xs={24} md={18}>
                   <StyledShadowWrapper>
                     <AppRowContainer>
+
                       <Col xs={24} md={12}>
                         <Form.Item
-                          label="HSE Certificates:Working at hight/ H2S/ First Aid"
+                          label="Working at Height Training"
                           name='attribut'>
                           <Input
-                            placeholder={idViewConstruction?.hseCertif}
+                            placeholder={idViewConstruction?.workAtHeighTrain ?
+                              idViewConstruction.workAtHeighTrain :
+                              'Select Working at Height Training'}
 
                             readOnly
                           ></Input>
@@ -764,13 +813,94 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                       </Col>
                       <Col xs={24} md={12}>
                         <Form.Item
-                          label="Site hazards and control measures khowledge"
-                          name='attribut14'
-
-
-                        >
+                          label="First Aid"
+                          name='attributFirst'>
                           <Input
-                            placeholder={idViewConstruction?.siteHazCont}
+                            placeholder={idViewConstruction?.hseCertif ?
+                              idViewConstruction.hseCertif :
+                              'First Aid'}
+
+                            readOnly
+                          ></Input>
+                        </Form.Item>
+                      </Col>
+
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label="H2S Training"
+                          name='attribut14'>
+                          <Input
+                            placeholder={idViewConstruction?.hseTraining ?
+                              idViewConstruction.hseTraining :
+                              'H2S Training'}
+
+
+                            readOnly
+                          ></Input>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label="Workplace Ergonomics Training"
+                          name='attribut14'>
+                          <Input
+                            placeholder={idViewConstruction?.hseTraining ?
+                              idViewConstruction.hseTraining :
+                              'Workplace Ergonomics Training'}
+
+                            readOnly
+                          ></Input>
+                        </Form.Item>
+                      </Col>
+
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label="Fire Fighting Training"
+                          name='attribut14'>
+                          <Input
+                            placeholder={idViewConstruction?.fireFighting ?
+                              idViewConstruction.fireFighting :
+                              'Fire Fighting Training'}
+
+                            readOnly
+                          ></Input>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label="Hazard Identification &Risk Assesment Training"
+                          name='attribut14'>
+                          <Input
+                            placeholder={idViewConstruction?.hazardIdentification ?
+                              idViewConstruction.hazardIdentification :
+                              'Hazard Identification &Risk Assesment Training'}
+
+                            readOnly
+                          ></Input>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label="Confined Space Training"
+                          name='attribut14'>
+                          <Input
+                            placeholder={idViewConstruction?.cofinedSpace ?
+                              idViewConstruction.cofinedSpace :
+                              'Confined Space Training'}
+
+                            readOnly
+                          ></Input>
+                        </Form.Item>
+                      </Col>
+
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label="Site hazards and control measures khowledge"
+                          name='attribut14'>
+                          <Input
+                            placeholder={idViewConstruction?.siteHazCont ?
+                              idViewConstruction?.siteHazCont :
+                              'Site hazards and control measures khowledge'}
 
                             readOnly
                           ></Input>
@@ -780,11 +910,11 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                         <Form.Item
                           label="Proper use of Personal Protective Equipment (PPE) "
                           name='attribut15'
-
-
                         >
                           <Input
-                            placeholder={idViewConstruction?.properUse}
+                            placeholder={idViewConstruction?.properUse ?
+                              idViewConstruction?.properUse :
+                              'Proper use of Personal Protective Equipment (PPE)'}
 
                             readOnly
                           ></Input>
@@ -798,7 +928,9 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                         >
                           <Input
-                            placeholder={idViewConstruction?.hzardousMater}
+                            placeholder={idViewConstruction?.hzardousMater ?
+                              idViewConstruction?.hzardousMater :
+                              'Hazardous materials handling.'}
 
                             readOnly
                           ></Input>
@@ -812,7 +944,10 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                         >
                           <Input
-                            placeholder={idViewConstruction?.emergency}
+                             placeholder={idViewConstruction?.emergency ?
+                              idViewConstruction?.emergency:
+                              'Emergency and Evacuation knowledge.'}
+                            
 
                             readOnly
                           ></Input>
@@ -820,14 +955,28 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                       </Col>
                       <Col xs={24} md={12}>
                         <Form.Item
-                          label="PTW knowledge "
-                          name='attribut18'
-
-
-                        >
+                          label="Safety in welding and gas cutting"
+                          name='attribut18' >
                           <Input
-                            placeholder={idViewConstruction?.ptw}
+                          placeholder={idViewConstruction?.safetyInWelding  ?
+                            idViewConstruction?.safetyInWelding :
+                            'Safety in welding and gas cutting.'}
+                          
 
+                            readOnly
+                          ></Input>
+                        </Form.Item>
+                      </Col>
+
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label="PTW knowledge "
+                          name='attribut18' >
+                          <Input
+                           placeholder={idViewConstruction?.ptw  ?
+                            idViewConstruction?.ptw :
+                            'PTW knowledge '}
+                      
                             readOnly
                           ></Input>
                         </Form.Item>
@@ -840,8 +989,25 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                         >
                           <Input
-                            placeholder={idViewConstruction?.hsePolicies}
+                             placeholder={idViewConstruction?.hsePolicies?
+                              idViewConstruction?.hsePolicies:
+                              'HSE Policies and Instructions'}
+                            
 
+                            readOnly
+                          ></Input>
+                        </Form.Item>
+                      </Col>
+
+                      <Col xs={24} md={12}>
+                        <Form.Item
+                          label="HSE Standards knowledge"
+                          name='attributStandars'>
+                          <Input
+                          placeholder={idViewConstruction?.hseStandard?
+                            idViewConstruction?.hseStandard:
+                            'HSE Standards knowledge'}
+                          
                             readOnly
                           ></Input>
                         </Form.Item>
@@ -849,12 +1015,12 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                       <Col xs={24} md={12}>
                         <Form.Item
                           label="Others… "
-                          name='attribut'
-
-
-                        >
+                          name='attribut'>
                           <Input
-                            placeholder={idViewConstruction?.others}
+                           placeholder={idViewConstruction?.others?
+                            idViewConstruction?.others:
+                            'Others… '}
+                          
 
                             readOnly
                           ></Input>
@@ -875,11 +1041,24 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                 <StyledShadowWrapper>
                   <AppRowContainer>
                     <Col xs={24} md={12}
-                    style={{marginTop:"1.3rem"}} 
+                      style={{ marginTop: "1.3rem" }}
                     >
                       <Form.Item
-                        label='Education and Training -scholastic achievements, special 
-                             studies, relevance to position applied for'
+                        label={
+                          <div>
+                            <span>Education and Training - scholastic achievements, special studies, relevance to position applied for;</span>
+                            <br />
+                            <span dir="rtl">-
+                              التدريب
+                              و
+                              التعليم
+                              اإلنجازات المدرسية، والدراسات الخاصة، وأهمية الوظيفة المتقدم لها
+                            </span>
+                          </div>
+                        }
+
+
+
                         name='attribut1'
                         rules={[
                           { required: true, message: 'Please Select your Select Education and Training !' },
@@ -892,19 +1071,31 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                           onChange={(value) => setSelectedEducationTraining(value)}
                           value={selectedEducationTraining}
                         >
-                          {Rating.map((p, index) => (
-                            <Select.Option key={index} value={p.rate}>
-                              {p.rate}
+                          {Others.map((p, index) => (
+                            <Select.Option key={index} value={p.Others}>
+                              {p.Others}
                             </Select.Option>
                           ))}
                         </Select>
                       </Form.Item>
                     </Col>
                     <Col xs={24} md={12}
+                      style={{ marginTop: "40px" }}
                     >
                       <Form.Item
+                        label={
+                          <div>
+                            <span>Work Experience achievements, relevance to position applied For/;</span>
+                            <br />
+                            <span dir="rtl">
+                              الخبرة العملية -
+                              اإلنجازات ذات الصلة بالمنصب المتقدم عليه
 
-                        label='Work Experience achievements, relevance to position applied For'
+                            </span>
+                          </div>
+                        }
+
+
                         name='attribut2'
                         rules={[
                           { required: true, message: 'Please Select your Select Work Experience achievements!' },
@@ -913,28 +1104,40 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                       >
                         <Select
-                          style={{ marginTop:"20px"}}
+
                           placeholder='Select Education and Training'
 
                           onChange={(value) => setSelectedWorkExperience(value)}
                           value={selectedworkExperience}
                         >
-                          {Rating.map((p, index) => (
-                            <Select.Option key={index} value={p.rate}>
-                              {p.rate}
+                          {Others.map((p, index) => (
+                            <Select.Option key={index} value={p.Others}>
+                              {p.Others}
                             </Select.Option>
                           ))}
                         </Select>
                       </Form.Item>
                     </Col>
                     <Col xs={24} md={12}
-                   
+
 
                     >
                       <Form.Item
-                        label="Diversity of Talents/Interests  Hobbies ; sports"
+                        label={
+                          <div>
+                            <span>Diversity of Talents/Interests  Hobbies ; sports;/</span>
+                            <br />
+                            <span dir="rtl">
+                              -
+                              الهتمامات
+                              الهوايات
+
+
+                            </span>
+                          </div>
+                        }
                         name='attribut3'
-                        style={{marginTop:"1.3rem"}} 
+                        style={{ marginTop: "1.3rem" }}
                         rules={[
                           { required: true, message: 'Please Select your Select Diversity of Talents/Interests !' },
 
@@ -947,21 +1150,34 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                           onChange={(value) => setSelectedDiversity(value)}
                           value={selectedDiversity}
                         >
-                          {Rating.map((p, index) => (
-                            <Select.Option key={index} value={p.rate}>
-                              {p.rate}
+                          {Others.map((p, index) => (
+                            <Select.Option key={index} value={p.Others}>
+                              {p.Others}
                             </Select.Option>
                           ))}
                         </Select>
                       </Form.Item>
                     </Col>
                     <Col xs={24} md={12}
-                        
+
                     >
                       <Form.Item
-                        label="Intellectual Capability comprehension ; judgment; ability to reason;decision 
-                        making-decision"
-                   
+
+                        label={
+                          <div>
+                            <span>Intellectual Capability comprehension ; judgment; ability to reason;decision
+                              making-decision/</span>
+                            <br />
+                            <span dir="rtl">
+
+                              القدرة الفكرية – الفهم ; حكم؛ القدرة
+                              على التفكير؛ القدرة على اتخاذ القرار
+
+
+                            </span>
+                          </div>
+                        }
+
                         name='attribut4'
                         rules={[
                           { required: true, message: 'Please Select your Select Intellectual Capability comprehension  !' },
@@ -974,9 +1190,9 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                           onChange={(value) => setSelectedIntellectualCapability(value)}
                           value={selectedIntellectualCapability}
                         >
-                          {Rating.map((p, index) => (
-                            <Select.Option key={index} value={p.rate}>
-                              {p.rate}
+                          {Others.map((p, index) => (
+                            <Select.Option key={index} value={p.Others}>
+                              {p.Others}
                             </Select.Option>
                           ))}
                         </Select>
@@ -984,9 +1200,21 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                     </Col>
                     <Col xs={24} md={12}>
                       <Form.Item
-                        label="Emotional Intelligence ability to work/relate with others; 
-                  attitude towards work/life; maturity"
-                  style={{marginTop:"1rem"}} 
+                        label={
+                          <div>
+                            <span>Emotional Intelligence ability to work/relate with others;
+                              attitude towards work/life; maturity/</span>
+                            <br />
+                            <span dir="rtl">
+                              على القدرة – العاطفي الذكاء
+                              العمل/التواصل مع
+                              اآلخرين؛ الموقف تجاه العمل/الحياة؛ نضج
+
+                            </span>
+                          </div>
+                        }
+
+                        style={{ marginTop: "1rem" }}
                         name='attribut5'
                         rules={[
                           { required: true, message: 'Please Select your Select Emotional Intelligence  !' },
@@ -999,19 +1227,29 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                           onChange={(value) => setSelectedEmotionalIntelligence(value)}
                           value={selectedEmotionalIntelligence}
                         >
-                          {Rating.map((p, index) => (
-                            <Select.Option key={index} value={p.rate}>
-                              {p.rate}
+                          {Others.map((p, index) => (
+                            <Select.Option key={index} value={p.Others}>
+                              {p.Others}
                             </Select.Option>
                           ))}
                         </Select>
                       </Form.Item>
                     </Col>
 
-                    <Col xs={24} md={12} style={{ marginTop: "1rem" }}>
+                    <Col xs={24} md={12} style={{ marginTop: "2.3rem" }}>
                       <Form.Item
-                        label="Self-confidence  self- assurance ; belief in one’s potential and
-                           capability"
+                        label={
+                          <div>
+                            <span>Self-confidence  self- assurance ; belief in one’s potential and
+                              capability/</span>
+                            <br />
+                            <span dir="rtl">
+                              لثقة بالنفس - ضمان الذات؛ إليمان  بإمكانيات الفرد وقدرته؛
+
+                            </span>
+                          </div>
+                        }
+
                         name='attribut6'
                         rules={[
                           { required: true, message: 'Please Select your Select Self-confidence  self- assurance   !' },
@@ -1025,9 +1263,9 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                           onChange={(value) => setSelectedSelfconfidence(value)}
                           value={selectedSelfconfidence}
                         >
-                          {Rating.map((p, index) => (
-                            <Select.Option key={index} value={p.rate}>
-                              {p.rate}
+                          {Others.map((p, index) => (
+                            <Select.Option key={index} value={p.Others}>
+                              {p.Others}
                             </Select.Option>
                           ))}
                         </Select>
@@ -1036,8 +1274,19 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                     <Col xs={24} md={12}>
                       <Form.Item
                         style={{ marginTop: "2rem" }}
-                        label="Communication Skills ability to express/present ideas in clear ,concise manner
-                "
+
+                        label={
+                          <div>
+                            <span>Communication Skills ability to express/present ideas in clear ,concise manner/;</span>
+                            <br />
+                            <span dir="rtl">
+
+                              مهارات االتصال - القدرة على التعبير عن /
+                              .تقديم األفكار بطريقة واضحة وموجزة
+
+                            </span>
+                          </div>
+                        }
                         name='attribut7'
                         rules={[
                           { required: true, message: 'Please Select your Select Communication Skills   !' },
@@ -1050,9 +1299,9 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                           onChange={(value) => setSelectedCommunicationSkills(value)}
                           value={selectedCommunicationSkills}
                         >
-                          {Rating.map((p, index) => (
-                            <Select.Option key={index} value={p.rate}>
-                              {p.rate}
+                          {Others.map((p, index) => (
+                            <Select.Option key={index} value={p.Others}>
+                              {p.Others}
                             </Select.Option>
                           ))}
                         </Select>
@@ -1060,8 +1309,24 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                     </Col>
                     <Col xs={24} md={12} style={{ marginTop: "1rem" }}>
                       <Form.Item
-                        label="Passion/Enthusiasm - energy & vitality in pursuing goals & 
-                 objectives"
+                        label={
+                          <div>
+                            <span>Passion/Enthusiasm – energy & vitality
+                              in pursuing <br></br>goals & objectives
+                            </span>
+                            <br />
+                            <span dir="rtl">
+
+                              العاطفة /
+
+                              الحماس -
+                              الطاقة والحيوية في
+                              متابعة األهداف والغايات
+
+                            </span>
+                          </div>
+                        }
+
                         name='attribut8'
                         rules={[
                           { required: true, message: 'Please Select your Select Passion/Enthusiasm   !' },
@@ -1078,9 +1343,9 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                           onChange={(value) => setSelectedPassion(value)}
                           value={selectedPassion}
                         >
-                          {Rating.map((p, index) => (
-                            <Select.Option key={index} value={p.rate}>
-                              {p.rate}
+                          {Others.map((p, index) => (
+                            <Select.Option key={index} value={p.Others}>
+                              {p.Others}
                             </Select.Option>
                           ))}
                         </Select>
@@ -1089,9 +1354,22 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                     <Col xs={24} md={12}>
                       <Form.Item
                         style={{ marginTop: "2rem" }}
-                        label="   
-                  Creativity / Imagination - ability to work/find solutions 
-                       outside the boundaries of conventions."
+                        label={
+                          <div>
+                            <span>Creativity / Imagination - ability to work/find solutions
+                              outside the boundaries of conventions./
+                            </span>
+                            <br />
+                            <span dir="rtl">
+
+                              / القدرة – الخيال/اإلبداع
+                              .على العمل/إيجاد الحلول خارج حدود األعراف
+
+
+                            </span>
+                          </div>
+                        }
+
                         name='attribut9'
                         rules={[
                           { required: true, message: 'Please Select your Select  Creativity / Imagination   !' },
@@ -1104,9 +1382,9 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                           onChange={(value) => setSelectedCreativity(value)}
                           value={selectedCreativity}
                         >
-                          {Rating.map((p, index) => (
-                            <Select.Option key={index} value={p.rate}>
-                              {p.rate}
+                          {Others.map((p, index) => (
+                            <Select.Option key={index} value={p.Others}>
+                              {p.Others}
                             </Select.Option>
                           ))}
                         </Select>
@@ -1114,8 +1392,20 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                     </Col>
                     <Col xs={24} md={12} style={{ marginTop: "1rem" }}>
                       <Form.Item
-                        label="   
-                  Ladership Qualities – initiative, ability to lead others; decisiveness"
+                        label={
+                          <div>
+                            <span> Ladership Qualities – initiative, ability to
+                              <br></br> lead others; decisiveness/;
+                            </span>
+                            <br />
+                            <span dir="rtl">
+
+                              صفات القيادة - المبادرة والقدرة على قيادة اآلخرين. الحسم /
+
+                            </span>
+                          </div>
+                        }
+
                         name='attribut10'
                         rules={[
                           { required: true, message: 'Please Select your Select   Ladership Qualities  !' },
@@ -1132,9 +1422,9 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                           onChange={(value) => setSelectedLeadershipQualities(value)}
                           value={selectedLeadershipQualities}
                         >
-                          {Rating.map((p, index) => (
-                            <Select.Option key={index} value={p.rate}>
-                              {p.rate}
+                          {Others.map((p, index) => (
+                            <Select.Option key={index} value={p.Others}>
+                              {p.Others}
                             </Select.Option>
                           ))}
                         </Select>
@@ -1142,8 +1432,21 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                     </Col>
                     <Col xs={24} md={12}>
                       <Form.Item
-                        label="   
-                  Physical presentation during the interview"
+                        label={
+                          <div>
+                            <span>Physical presentation during the interview/;
+                            </span>
+                            <br />
+                            <span dir="rtl">
+
+                              عند العام المظهر
+                              المقابلة
+
+                            </span>
+                          </div>
+                        }
+
+
                         name='attribut11'
                         rules={[
                           { required: true, message: 'Please Select your Select  Physical presentation  !' },
@@ -1156,9 +1459,9 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                           onChange={(value) => setSelectedPhysicalpresentation(value)}
                           value={selectedPhysicalpresentation}
                         >
-                          {Rating.map((p, index) => (
-                            <Select.Option key={index} value={p.rate}>
-                              {p.rate}
+                          {Others.map((p, index) => (
+                            <Select.Option key={index} value={p.Others}>
+                              {p.Others}
                             </Select.Option>
                           ))}
                         </Select>
@@ -1187,18 +1490,38 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                   <AppRowContainer>
                     <Col xs={24} md={12}>
                       <Form.Item
-                        label="HSE Certificates:Working at hight/ H2S/ First Aid"
+                        label="Working at Height Training"
+                        name='attributhse Working'
+                        rules={[
+                          { required: true, message: 'Please Select your Select Working at Height Training !' },
+
+                        ]} >
+                        <Select
+                          placeholder={findInterviewConstruction?.workAtHeighTrain ? findInterviewConstruction.workAtHeighTrain : 'Select Working at Height Training'}
+                          onChange={(value) => setSelectedHSEWorkingHeighTraining(value)}
+                          value={selectedHSEWorkingHeighTraining}
+                        >
+                          {hseWorking.map((p, index) => (
+                            <Select key={index} value={p.select}>
+                              {p.select}
+                            </Select>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label="First Aid"
                         name='attribut'
                         rules={[
-                          { required: true, message: 'Please Select your Select  HSE Certificates  !' },
+                          { required: true, message: 'Please Select your Select  First Aid Training   !' },
 
-                        ]}
-
-                      >
+                        ]}>
                         <Select
-                          placeholder='Select  HSE Certificates  '
+                          defaultValue={findInterviewConstruction?.hseCertif}
+                          placeholder={findInterviewConstruction?.hseCertif ? findInterviewConstruction.hseCertif : 'Select First Aid Training'}
                           onChange={(value) => setSelectedHSECertificates(value)}
-                          value={selectedHSECertificates}
+                          value={selectedHSECertificates || findInterviewConstruction?.hseCertif || ""}
                         >
                           {Rating.map((p, index) => (
                             <Select key={index} value={p.rate}>
@@ -1210,19 +1533,124 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                     </Col>
                     <Col xs={24} md={12}>
                       <Form.Item
+                        label="H2S Training "
+                        name='attributH2STraining '
+                        rules={[
+                          { required: true, message: 'Please Select your Select  H2S Training  !' },
+
+                        ]}>
+                        <Select
+                          placeholder={findInterviewConstruction?.hseTraining ? findInterviewConstruction.hseTraining : 'H2S Training'}
+                          onChange={(value) => setHseTraining(value)}
+                          value={hseTraining}
+                        >
+                          {hseWorking.map((p, index) => (
+                            <Select key={index} value={p.select}>
+                              {p.select}
+                            </Select>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label="Workplace Ergonomics Training"
+                        name='attribut"Workplace '
+                        rules={[
+                          { required: true, message: 'Please Select your Select Workplace Ergonomics Training !' },
+
+                        ]} >
+                        <Select
+                          placeholder={findInterviewConstruction?.hseTraining ? findInterviewConstruction.hseTraining : 'Workplace Ergonomics Training'}
+                          onChange={(value) => setWorkplaceErgonomics(value)}
+                          value={workplaceErgonomics}
+                        >
+                          {hseWorking.map((p, index) => (
+                            <Select key={index} value={p.select}>
+                              {p.select}
+                            </Select>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label="Fire Fighting Training"
+                        name='attributFireFighting'
+                        rules={[
+                          { required: true, message: 'Please Select your Select Fire Fighting Training !' },
+
+                        ]} >
+                        <Select
+                          placeholder={findInterviewConstruction?.fireFighting ? findInterviewConstruction.fireFighting : 'Fire Fighting Training'}
+                          onChange={(value) => setFireFightingTraining(value)}
+                          value={fireFightingTraining}
+                        >
+                          {hseWorking.map((p, index) => (
+                            <Select key={index} value={p.select}>
+                              {p.select}
+                            </Select>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label="Hazard Identification &Risk Assesment Training"
+                        name='attributHazardIdentification'
+                        rules={[
+                          { required: true, message: 'Please Select your Select Hazard Identification &Risk Assesment Training !' },
+
+                        ]} >
+                        <Select
+                          placeholder={findInterviewConstruction?.hazardIdentification ? findInterviewConstruction.hazardIdentification : 'Hazard Identification &Risk Assesment Training'}
+                          onChange={(value) => setHazardIdentification(value)}
+                          value={hazardIdentification}>
+                          {hseWorking.map((p, index) => (
+                            <Select key={index} value={p.select}>
+                              {p.select}
+                            </Select>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        label="Confined Space Training"
+                        name='attributConfinedSpaceTraining '
+                        rules={[
+                          { required: true, message: 'Please Select your Select Confined Space Training !' },
+
+                        ]} >
+                        <Select
+                          placeholder={findInterviewConstruction?.cofinedSpace ? findInterviewConstruction?.cofinedSpace : 'Confined Space Training'}
+                          onChange={(value) => setConfinedTraining(value)}
+                          value={confinedTraining}
+                        >
+                          {hseWorking.map((p, index) => (
+                            <Select key={index} value={p.select}>
+                              {p.select}
+                            </Select>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+
+
+
+
+                    <Col xs={24} md={12}>
+                      <Form.Item
                         label="Site hazards and control measures khowledge"
                         name='attribut14'
                         rules={[
                           { required: true, message: 'Please Select your Select  Site hazards and control  !' },
 
-                        ]}
-
-                      >
+                        ]} >
                         <Select
-                          placeholder='Select  Site hazards and control '
+                          placeholder={findInterviewConstruction?.siteHazCont ? findInterviewConstruction?.siteHazCont : 'Select  Site hazards and control'}
                           onChange={(value) => setSelectedSitehazardscontrol(value)}
-                          value={selectedSitehazardscontrol}
-                        >
+                          value={selectedSitehazardscontrol} >
                           {Rating.map((p, index) => (
                             <Select.Option key={index} value={p.rate}>
                               {p.rate}
@@ -1238,11 +1666,9 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                         rules={[
                           { required: true, message: 'Please Select your Select  Proper use of Personal Protective  !' },
 
-                        ]}
-
-                      >
+                        ]}>
                         <Select
-                          placeholder='Select  Proper use of Personal Protective '
+                          placeholder={findInterviewConstruction?.properUse ? findInterviewConstruction?.properUse : 'Select  Proper use of Personal Protective'}
                           onChange={(value) => setSelectedProperuse(value)}
                           value={selectedProperuse}
                         >
@@ -1265,7 +1691,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                       >
                         <Select
-                          placeholder='Select  Proper use of Hazardous materials '
+                          placeholder={findInterviewConstruction?.hzardousMater ? findInterviewConstruction?.hzardousMater : 'Select  Proper use of Hazardous materials'}
                           onChange={(value) => setSelectedHazardousmaterials(value)}
                           value={selectedHazardousmaterials}
                         >
@@ -1288,9 +1714,31 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                       >
                         <Select
-                          placeholder='Select Emergency and Evacuation knowledge. '
+                          placeholder={findInterviewConstruction?.emergency ? findInterviewConstruction?.emergency : 'Select Emergency and Evacuation knowledge.'}
                           value={selectedEmergenceEvacuation}
                           onChange={(value) => setSelectedEmergenceEvacuation(value)}
+                        >
+                          {Rating.map((p, index) => (
+                            <Select.Option key={index} value={p.rate}>
+                              {p.rate}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={12}>
+                      <Form.Item
+                        placeholder={findInterviewConstruction?.emergency ? findInterviewConstruction?.emergency : "Safety in welding and gas cutting"}
+                        label="Safety in welding and gas cutting"
+                        name='attributSafety'
+                        rules={[
+                          { required: true, message: 'Please Select your Select  Safety in welding and gas cutting !' },
+
+                        ]} >
+                        <Select
+                          placeholder={findInterviewConstruction?.safetyInWelding ? findInterviewConstruction?.safetyInWelding : 'Select Safety in welding and gas cutting'}
+                          value={selectedSafety}
+                          onChange={(value) => setSelectedSafety(value)}
                         >
                           {Rating.map((p, index) => (
                             <Select.Option key={index} value={p.rate}>
@@ -1311,7 +1759,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                       >
                         <Select
-                          placeholder='Select PTW knowledge. '
+                          placeholder={findInterviewConstruction?.ptw ? findInterviewConstruction?.ptw : 'Select PTW knowledge.'}
                           onChange={(value) => setSelectedPTWknowledge(value)}
                           value={selectedPTWknowledge}
                         >
@@ -1334,7 +1782,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
                       >
                         <Select
-                          placeholder='Select HSE Policies and Instructions '
+                          placeholder={findInterviewConstruction?.hsePolicies ? findInterviewConstruction?.hsePolicies : 'Select HSE Policies and Instructions'}
                           onChange={(value) => setSelectedHSEPolicies(value)}
                           value={selectedHSEPolicies}
                         >
@@ -1348,16 +1796,43 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                     </Col>
                     <Col xs={24} md={12}>
                       <Form.Item
-                        label="Others… "
-                        name='Others'
+                        label="HSE Standards knowledge"
+                        name='attributStandards'
                         rules={[
-                          { required: true, message: 'Please Select your Select  Others…  !' },
+                          { required: true, message: 'Please Select your Select  HSE Standards knowledge !' },
 
                         ]}
 
                       >
                         <Select
-                          placeholder='Select Others… '
+                          placeholder={findInterviewConstruction?.hseStandard ? findInterviewConstruction?.hseStandard : 'Select HSE Standards knowledge'}
+                          onChange={(value) => setSelectedHSEStandards(value)}
+                          value={selectedHSEStandards}
+                        >
+                          {Rating.map((p, index) => (
+                            <Select.Option key={index} value={p.rate}>
+                              {p.rate}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} md={24}>
+                      <Form.Item
+                        label="Others… "
+                        name='Others'
+                        rules={[
+                          { required: true, message: 'Please Select your Select  Others…  !' },
+
+                        ]}>
+                        <Input
+                          className='InputComment'
+                          placeholder='Others…'
+                          value={othersHSE}
+                          onChange={(e) => setOthersHSE(e.target.value)}
+                        />
+                        {/* <Select
+                          placeholder={findInterviewConstruction?.others ? findInterviewConstruction?.others : 'Select Others…'}
                           onChange={(value) => setSelectedOthers(value)}
                           value={selectedOthers}
                         >
@@ -1366,7 +1841,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
                               {p.Others}
                             </Select>
                           ))}
-                        </Select>
+                        </Select> */}
                       </Form.Item>
                     </Col>
 
@@ -1419,7 +1894,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
           size={15}
           style={{ display: 'flex', marginTop: 12, justifyContent: 'flex-end' }}>
           {roles.includes("HSE") &&
-            <Button onClick={Save}>Save</Button>
+            <Button onClick={BeforeSave}>Save</Button>
           }
           {roles.includes("Human Ressource Manager") &&
             <Button onClick={SaveHrManager}>Save </Button>

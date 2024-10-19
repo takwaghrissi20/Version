@@ -13,7 +13,7 @@ const AddRecruitement = () => {
       label: 'Construction Team',
       key: '1',
       children: <RecruitementForemanBelow ></RecruitementForemanBelow>,
-    }, // remember to pass the key prop
+    }, 
     {
       label: 'Management Team',
       key: '2',

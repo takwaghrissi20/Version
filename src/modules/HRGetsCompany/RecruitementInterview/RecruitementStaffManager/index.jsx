@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 const RecruitementStaff = ({ allrecruitementabove, roles, token,
   loading, setLoading, recruitementTypeIdAbovePMO, recruitementTypeIdAboveBOD,
   recruitementTypeIdAboveOperationManager,
-  recruitementTypeIdAbove,allrecruitementAbove
+  recruitementTypeIdAbove, allrecruitementAbove
 }) => {
   const navigate = useNavigate();
   const [recruitementabove, setRecruitementabove] = useState([]);
@@ -45,7 +45,7 @@ const RecruitementStaff = ({ allrecruitementabove, roles, token,
   const fetchRecruitementabove = async () => {
     try {
 
-      const url = `https://dev-gateway.gets-company.com/api/v1/re/getRecByType?size=${pageSize}&page=${currentPage}&type=Above Foreman&sortBy=desiredDate`;
+      const url = `https://dev-gateway.gets-company.com/api/v1/re/getRecByType?size=${pageSize}&page=${currentPage}&type=Above Foreman&sortBy=jobCode`;
       const response = await fetch(url);
 
 
@@ -54,6 +54,8 @@ const RecruitementStaff = ({ allrecruitementabove, roles, token,
       }
 
       const data = await response.json();
+      const filteredDataPMO =data.filter(item => item?.type === "Above Foreman");
+
       setRecruitementabove(data);
     } catch (error) {
       console.error('Error fetching employees:', error);
@@ -80,7 +82,7 @@ const RecruitementStaff = ({ allrecruitementabove, roles, token,
     setIsDropdownOpen(false)
   };
   const handleNameFilterChange = async (event) => {
-    const filterValue = event.target.value.trim(); 
+    const filterValue = event.target.value.trim();
     if (filterValue !== '') {
       try {
         const response = await fetch(`https://dev-gateway.gets-company.com/api/v1/re/filterByPosition?position=$${filterValue}&token=${token}`);
@@ -198,36 +200,36 @@ const RecruitementStaff = ({ allrecruitementabove, roles, token,
           paddingBottom: 10,
 
         }}>
+        
+        {roles.includes('bod')  &&
+          (
+            <>
+              <OrderTable
+                allrecruitementabove={recruitementabove}
+                findIdData={findIdData}
+                id={id}
+                findId={findId}
+                setFindIdData={setFindIdData}
+                open={open}
+                handleInterview={handleInterview}
+                roles={roles}
+                setLoading={setLoading}
+                loading={setLoading}
+                recruitementTypeIdAbovePMO={recruitementTypeIdAbovePMO}
+                recruitementTypeIdAboveBOD={recruitementTypeIdAboveBOD}
+              />
+              <div className='Pagination' >
+                <StyledOrderHeaderRight>
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={Math.ceil(recruitementTypeIdAboveBOD.length / pageSize)}
+                    handlePageChange={handlePageChange} />
 
-        {roles.includes('bod') &&            
-        (
-          <>
-            <OrderTable
-              allrecruitementabove={recruitementabove}
-              findIdData={findIdData}
-              id={id}
-              findId={findId}
-              setFindIdData={setFindIdData}
-              open={open}
-              handleInterview={handleInterview}
-              roles={roles}
-              setLoading={setLoading}
-              loading={setLoading}
-              recruitementTypeIdAbovePMO={recruitementTypeIdAbovePMO}
-              recruitementTypeIdAboveBOD={recruitementTypeIdAboveBOD}
-            />
-            <div className='Pagination' >
-              <StyledOrderHeaderRight>
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={Math.ceil(recruitementTypeIdAboveBOD.length / pageSize)}
-                  handlePageChange={handlePageChange} />
+                </StyledOrderHeaderRight>
 
-              </StyledOrderHeaderRight>
-
-            </div>
-          </>
-        )
+              </div>
+            </>
+          )
         }
         {/*PMO*/}
         {roles.includes('PMO') && (
@@ -261,70 +263,75 @@ const RecruitementStaff = ({ allrecruitementabove, roles, token,
 
         }
         {/*End  PMO*/}
-        {/*admin*/}      
-        {(roles.includes("Manager") ) && (
-          <>
-            <OrderTable
-              allrecruitementabove={recruitementTypeIdAbove}
-              findIdData={findIdData}
-              id={id}
-              findId={findId}
-              setFindIdData={setFindIdData}
-              open={open}
-              handleInterview={handleInterview}
-              roles={roles}
-              recruitementTypeIdAbovePMO={recruitementTypeIdAbovePMO}
-              recruitementTypeIdAboveBOD={recruitementTypeIdAboveBOD}
-              recruitementTypeIdAboveOperationManager={ recruitementTypeIdAboveOperationManager}
+        {/*Manager*/}
+        {((roles.includes("Manager") && 
+        !roles.includes("Human Ressource"))
+         || roles.includes("Leader")) && (
+            <>
+            
+              <OrderTable
+                allrecruitementabove={recruitementTypeIdAbove}
+                findIdData={findIdData}
+                id={id}
+                findId={findId}
+                setFindIdData={setFindIdData}
+                open={open}
+                handleInterview={handleInterview}
+                roles={roles}
+                recruitementTypeIdAbovePMO={recruitementTypeIdAbovePMO}
+                recruitementTypeIdAboveBOD={recruitementTypeIdAboveBOD}
+                recruitementTypeIdAboveOperationManager={recruitementTypeIdAboveOperationManager}
 
-            />
+              />
 
-            <div className='Pagination' >
-              <StyledCustomerHeaderRight>
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={Math.ceil(recruitementTypeIdAbove.length / pageSize)}
-                  handlePageChange={handlePageChange}
-                />
-              </StyledCustomerHeaderRight>
-            </div>
-          </>
-        )}
+              <div className='Pagination' >
+                <StyledCustomerHeaderRight>
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={Math.ceil(recruitementTypeIdAbove.length / pageSize)}
+                    handlePageChange={handlePageChange}
+                  />
+                </StyledCustomerHeaderRight>
+              </div>
+            </>
+          )}
 
         {/*OpeartionManager */}
         {/*CORDINATOR */}
-        {(roles.includes("Cordinator") || roles.includes("admin")) && (
-          <>
-            <OrderTable
-              allrecruitementabove={recruitementTypeIdAbove}
-              allrecruitementAbove={allrecruitementAbove}
-              findIdData={findIdData}
-              id={id}
-              findId={findId}
-              setFindIdData={setFindIdData}
-              open={open}
-              handleInterview={handleInterview}
-              roles={roles}
-              recruitementTypeIdAbovePMO={recruitementTypeIdAbovePMO}
-              recruitementTypeIdAboveBOD={recruitementTypeIdAboveBOD}
-              recruitementTypeIdAboveOperationManager={ recruitementTypeIdAboveOperationManager}
+        {(
+          roles.includes("admin") ||roles.includes("Cordinator") ||roles.includes("Administrator") ||
+          roles.includes("Human Ressource")) && (
+            <>
+              <OrderTable
+                allrecruitementabove={recruitementTypeIdAbove}
+                allrecruitementAbove={allrecruitementabove}
+                findIdData={findIdData}
+                id={id}
+                findId={findId}
+                setFindIdData={setFindIdData}
+                open={open}
+                handleInterview={handleInterview}
+                roles={roles}
+                recruitementTypeIdAbovePMO={recruitementTypeIdAbovePMO}
+                recruitementTypeIdAboveBOD={recruitementTypeIdAboveBOD}
+                recruitementTypeIdAboveOperationManager={recruitementTypeIdAboveOperationManager}
 
-            />
+              />
 
-            <div className='Pagination' >
-              <StyledCustomerHeaderRight>
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={Math.ceil(recruitementTypeIdAbove.length / pageSize)}
-                  handlePageChange={handlePageChange}
-                />
-              </StyledCustomerHeaderRight>
-            </div>
-          </>
-        )}
-        {/*End Cordinator */ }
-     
-   
+              <div className='Pagination' >
+                <StyledCustomerHeaderRight>
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={Math.ceil(recruitementTypeIdAbove.length / pageSize)}
+                    handlePageChange={handlePageChange}
+                  />
+                </StyledCustomerHeaderRight>
+              </div>
+            </>
+          )}
+        {/*End Cordinator */}
+
+
 
       </AppsContent>
       {isGenerateInterview ? (

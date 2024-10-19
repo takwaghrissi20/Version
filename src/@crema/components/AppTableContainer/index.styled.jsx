@@ -4,10 +4,12 @@ import { Table } from "antd";
 
 export const StyledQueueAnim = styled(Table)`
   min-height: 0.01%;
-  overflow-x: auto;
-  overflow-y: auto;
+  // overflow-x: auto;
+  // overflow-y: auto;
   box-shadow:none;
-   min-width:100px
+   min-width:100px;
+
+
 
 
   thead > tr > th,

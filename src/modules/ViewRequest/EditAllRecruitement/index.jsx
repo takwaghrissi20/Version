@@ -82,7 +82,7 @@ const EditRecruitement = () => {
 
   const lieu = [
     { place: 'Office' },
-    { place: 'Site ' },
+    { place: 'Site' },
     { place: 'Office & Site' },
   ];
 
