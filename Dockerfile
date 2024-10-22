@@ -1,27 +1,34 @@
 # Build stage
-FROM node:lts-alpine as build-stage
+FROM node:18 AS build-stage
 WORKDIR /app
 
-# Copie uniquement package.json et package-lock.json pour installer les dépendances
+# Copy only package.json and package-lock.json to install dependencies
 COPY package*.json ./
 
-# Installer les dépendances avec l'option legacy-peer-deps
-RUN npm install --legacy-peer-deps
+# Install dependencies with npm ci
+RUN npm ci --legacy-peer-deps
 
-# Copier le reste du code
+# Copy the rest of the code
 COPY . .
 
-# Augmenter la limite de mémoire allouée à Node.js pour la construction
-ENV NODE_OPTIONS="--max-old-space-size=4096"
+# Increase memory limit for Node.js during build
+ENV NODE_OPTIONS="--max-old-space-size=8192"
 
-# Construire l'application
+# Build the application
 RUN npm run build
 
-# Installer Serve pour servir l'application
+# Production stage
+FROM node:18 AS production-stage
+WORKDIR /app
+
+# Copy built files from the build stage
+COPY --from=build-stage /app/dist ./dist
+
+# Install Serve to serve the application
 RUN npm install -g serve
 
-# Exposer le port
+# Expose the port
 EXPOSE 3000
 
-# Démarrer le serveur
+# Start the server
 CMD ["serve", "-s", "dist"]
