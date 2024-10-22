@@ -183,17 +183,7 @@ const InterviewSheetById = () => {
         roles={roles} ></InterviewSheet>,
     },
 
-    // {
-    //   label: 'INTERVIEW ASSESMENT SHEET ',
-    //   key: '2',
-    //   children: <AssignementConstruction isSaveDisabled={true}
-    //   JobCode={JobCode}
-    //     // isSaveDisabled={activeTabKey !== '1'}
-    //     totalNumber={totalNumber} level={level} projectName={projectName} position={position}
-    //     roles={roles}
-
-    //   ></AssignementConstruction>,
-    // }
+   
 
   
 
@@ -203,7 +193,7 @@ const InterviewSheetById = () => {
     if (activeTabKey === '2') {
       setIsSaveDisabled(true)
     }
-    // setIsSaveDisabled(activeTabKey === '2'); 
+   
 
   }, [activeTabKey]);
 

@@ -436,28 +436,24 @@ const AddRecruitementForemanBelow = () => {
         },
         body: JSON.stringify({
 
-          //recruttrequestDate: DateRecruitement,
+          
           requestName: profile?.name,
           approuvedRecrutRequestNumber: null,
-          // jobCode: LastIndexRecruitementIncremente,
-          //jobCode: JobCode,
+          
           certif: certif,
           experience: selectedLevel,
           type: type,
           position: positionRecruitement,
           projectName: selectedProject,
-          // recruttrequestDate: requestorDate,
+          
           requestedDicipline: positionRecruitement,
           totalNumber: vacancie,
           oDep: isOrDep,
           exDep: isExDep,
-          // type: "For Foreman & Below",
-          // oDep: asper,
-          // // exDep: "",
-          // // status:"0",
+         
           nbExperience: desiredExperienceLevel,
           projRef: projectCode,
-          // bod: isOkBod,
+          
           idemp: profile?.getsId,
           desiredDate: desiredrecruitementDate,
           affectedTo: selectedLieu,
@@ -531,28 +527,25 @@ const AddRecruitementForemanBelow = () => {
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
         body: JSON.stringify({
-          //recruttrequestDate: DateRecruitement,
+          
           requestName: profile?.name,
           approuvedRecrutRequestNumber: null,
-          //jobCode: JobCode,
+          
           certif: certif,
           experience: selectedLevel,
-          // jobCode: LastIndexRecruitementIncremente,
+         
           type: type,
           position: profile?.position,
           projectName: selectedProject,
-          // recruttrequestDate: requestorDate,
+          
           requestedDicipline: positionRecruitement,
           totalNumber: vacancie,
           oDep: isOrDep,
           exDep: isExDep,
-          // type: "For Foreman & Below",
-          // oDep: asper,
-          // // exDep: "",
-          // // status:"0",
+          
           nbExperience: desiredExperience,
           projRef: projectCode,
-          // bod: isOkBod,
+         
           idemp: profile?.getsId,
           desiredDate: desiredrecruitementDate,
           affectedTo: selectedLieu,
@@ -622,30 +615,26 @@ const AddRecruitementForemanBelow = () => {
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
         body: JSON.stringify({
-          //recruttrequestDate: DateRecruitement,
+          
           requestName: profile?.name,
           approuvedRecrutRequestNumber: null,
           experience: selectedLevel,
-          // jobCode: LastIndexRecruitementIncremente,
-          //jobCode: JobCode,
+          
           certif: certif,
-          experience: selectedLevel,
+         
           type: type,
           position: profile?.position,
           projectName: selectedProject,
-          // recruttrequestDate: requestorDate,
+         
           requestedDicipline: positionRecruitement,
           totalNumber: vacancie,
           oDep: isOrDep,
           exDep: isExDep,
 
-          // type: "For Foreman & Below",
-          // oDep: asper,
-          // // exDep: "",
-          // // status:"0",
+          
           nbExperience: desiredExperience,
           projRef: projectCode,
-          // bod: isOkBod,
+          
           idemp: profile?.getsId,
           desiredDate: desiredrecruitementDate,
           affectedTo: selectedLieu,
@@ -715,30 +704,26 @@ const AddRecruitementForemanBelow = () => {
           "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH,PUT"
         },
         body: JSON.stringify({
-          //recruttrequestDate: DateRecruitement,
+          
           requestName: profile?.name,
           approuvedRecrutRequestNumber: null,
           experience: selectedLevel,
-          // jobCode: LastIndexRecruitementIncremente,
-          //jobCode: JobCode,
+          
           certif: certif,
-          experience: selectedLevel,
+          
           type: type,
           position: profile?.position,
           projectName: selectedProject,
-          // recruttrequestDate: requestorDate,
+          
           requestedDicipline: positionRecruitement,
           totalNumber: vacancie,
           oDep: isOrDep,
           exDep: isExDep,
         
-          // type: "For Foreman & Below",
-          // oDep: asper,
-          // // exDep: "",
-          // // status:"0",
+          
           nbExperience:desiredExperienceLevel,
           projRef: projectCode,
-          // bod: isOkBod,
+          
           idemp: profile?.getsId,
           desiredDate: desiredrecruitementDate,
           affectedTo: selectedLieu,

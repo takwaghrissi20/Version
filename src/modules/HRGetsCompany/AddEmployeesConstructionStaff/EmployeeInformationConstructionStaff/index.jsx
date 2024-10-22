@@ -258,63 +258,7 @@ const AddEmployeeTemporelleConstructionStaff = ({ listInterview }) => {
 
   const formData = form.getFieldsValue();
 
-  //Calcul Duration Period
-
-
-
-
-
-  // if (FinishDate) {
-  //   // Convertir la date en format "YYYY-MM-DD"
-  //   const formattedDate = FinishDate.format("YYYY-MM-DD");
-  //   console.log("FinishDatdddd", formattedDate);
-  // } else {
-  //   console.log("FinishDatdddd is undefined");
-  // }
-  //   console.log("expected JoinDate", findIdInterview?.expectedJoinDate)
-  //   const ExpectedJoinDate=findIdInterview?.expectedJoinDate
-  //   const finish=formData?.finishDate
-
-
-  // // Calcule la différence entre les deux dates en millisecondes
-  // const differenceInMilliseconds = Math.abs(ExpectedJoinDate- FinishDate);
-
-  // // Convertit la différence en jours
-  // const differenceInDays = differenceInMilliseconds / (1000 * 3600 * 24);
-
-  // console.log("Différence en jours :", differenceInDays);
-
-
-  // const handleOpenAfter = () => {
-  //   const formDataIsEmpty = Object.values(formData).every(value => !value);
-
-  //   if (formDataIsEmpty) {
-  //     setIsModalVisible(true);
-
-  //   } else {
-  //     setIsModalVisible(true);
-  //     console.log(" setIsModalVisible Forma",formDataIsEmpty)
-  //   }
-  // };
-
-  // const handleOpenAfter = () => {
-  //   if (formData.arName) {
-  //     setIsModalVisible(true);
-  //   } else {
-  //     setIsModalVisible(false);
-  //   }
-
-  // };
-  // const handleOpenAfter = () => {
-  //   const formDataIsEmpty = Object.values(formData).some(value => !value);
-
-  //   if (formDataIsEmpty) {
-  //     alert("Please replace all the champs");
-  //   } else {
-  //     setIsModalVisible(true);
-  //   }
-  // };
-  //selectedGenderType
+  
   const handleSubmit = (e) => {
     e.preventDefault();
   };

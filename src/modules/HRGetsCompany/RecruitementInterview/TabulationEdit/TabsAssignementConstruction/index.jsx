@@ -326,7 +326,6 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
 
         body: JSON.stringify({
           interviewCode: interviewCode,
-          techcommentaire: techcommentaire,
           hseCertif: selectedHSECertificates,
           siteHazCont: selectedSitehazardscontrol,
           properUse: selectedProperuse,
@@ -415,7 +414,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
           cofinedSpace: confinedTraining,
           safetyInWelding: selectedSafety,
           hseStandard: selectedHSEStandards,
-          others: othersHSE
+          
 
         })
       });
@@ -480,7 +479,7 @@ const TabsAssignement = ({ isSaveDisabled, interviewCode, inputInterview, valida
         body: JSON.stringify({
 
           interviewCode: interviewCode,
-          techcommentaire: techcommentaire,
+          //techcommentaire: techcommentaire,
           hseCertif: findInterviewConstruction?.hseCertif,
           siteHazCont: findInterviewConstruction?.siteHazCont,
           properUse: findInterviewConstruction?.properUse,

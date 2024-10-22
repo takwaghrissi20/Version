@@ -324,16 +324,7 @@ const TabsInterviewSheetConstructionId = () => {
       }
       const data = await response.json();
       console.log("ratteeee", level)
-      // case 'Level I':
-      //   return '1-5 years';
-      // case 'Level II':
-      //   return '7-8 years';
-      // case 'levelIII':
-      //   return 'More than 10 years';
-      // case 'LEVEL IV':
-      //   return 'More than 10 years';
-      // case 'Level V':
-      // Normalize the level variable
+     
       const normalizedLevel = level.trim();
       console.log("Normalized level:", normalizedLevel);
 
@@ -505,14 +496,7 @@ const TabsInterviewSheetConstructionId = () => {
 
 
   const Save = async () => {
-    // if (salaryError || dailyError) {
-    //   return;
-    // }
-
-    // if (parseFloat(proposedSalary) + parseFloat(proposedDailyRate) > totalMax) {
-    //   alert(`Total of Proposed Office Salary and Proposed Site Daily Rate exceeds the maximum allowed value of ${totalMax}`);
-    //   return;
-    // }
+   
     try {
       console.log("selectedValidation", selectedValidation)
       const endPoint =
@@ -531,22 +515,7 @@ const TabsInterviewSheetConstructionId = () => {
           jobcode1: JobCode,
           jobCode: JobCode,
 
-          // interviwDate: interviewDate,
-          // fullName: fullname,
-          // projname: projectName,
-          // department: departement,
-          // diploma: diploma,
-          // requiredExperinece: requiredExperinece,
-          // requiredQualification: requiredQualification,
-          // birthayDate: scheduleDate,
-          // familySituation: selectedSituation,
-          // educationLevel: educationLevel,
-          // requiredGrade: level,
-          // experience: experience,
-          // positionToBeFilled: position,
-          //telCondidate:contactFullNumber,
-          // validatesFor:selectedValidation,
-          // goTotest2: CheckedFinalGotest2
+          
 
 
 
@@ -593,14 +562,7 @@ const TabsInterviewSheetConstructionId = () => {
   };
   const year = new Date().getFullYear();
   const SaveHRADMONISTRTOR = async () => {
-    // if (salaryError || dailyError) {
-    //   return;
-    // }
-
-    // if (parseFloat(proposedSalary) + parseFloat(proposedDailyRate) > totalMax) {
-    //   alert(`Total of Proposed Office Salary and Proposed Site Daily Rate exceeds the maximum allowed value of ${totalMax}`);
-    //   return;
-    // }
+    
     try {
       const endPoint =
         process.env.NODE_ENV === "development"
@@ -633,35 +595,12 @@ const TabsInterviewSheetConstructionId = () => {
           familySituation: selectedSituation,
           evalName: requestName,
           evalId: idemp,
-      
-          // telCondidate: contactFullNumber,
-          // email: contactEmail,
-          // birthayDate:scheduleDate,
-          //familySituation:selectedSituation,
           diploma: diploma,
           educationLevel: educationLevel,
-          // requiredExperinece: requiredExperinece,
           notif: 0,
           inputInterview: formattedDate,
           birthayDate: scheduleDate,
           intervtime: interviewTime,
-          requiredExperinece: experience,
-          // interviwDate: interviewDate,
-          // fullName: fullname,
-          // projname: projectName,
-          // department: departement,
-          // diploma: diploma,
-          // requiredExperinece: requiredExperinece,
-          // requiredQualification: requiredQualification,
-          // birthayDate: scheduleDate,
-          // familySituation: selectedSituation,
-          // educationLevel: educationLevel,
-          // requiredGrade: level,
-          // experience: experience,
-          // positionToBeFilled: position,
-          //telCondidate:contactFullNumber,
-          // validatesFor:selectedValidation,
-          // goTotest2: CheckedFinalGotest2,
           urlCv: cvCandidate,
 
 

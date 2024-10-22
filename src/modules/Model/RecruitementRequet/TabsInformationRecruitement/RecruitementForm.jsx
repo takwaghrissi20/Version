@@ -90,7 +90,7 @@ const TabsInformationRecruitement = (props) => {
           approuvedRecrutRequestNumber: null,
           //jobCode: JobCode,
           certif: certif,
-          experience: level,
+          //experience: level,
           position: position,
           projectName: projname,
           recruttrequestDate: DateRequestor,

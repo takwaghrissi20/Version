@@ -170,7 +170,7 @@ const OrderTable = ({ dataSalary, fetchEmployees }) => {
         ibnTravel: editingData?.ibnTravel ,
         idPaid: editingData?.idPaid ,
     
-        prinRreq: editingData?.prinRreq,
+       
         listRequestPayments: editingData.listRequestPayments.map(payment => ({
           getsId: payment?.getsId,
           projName: payment?.projName,
@@ -237,7 +237,7 @@ console.log("pdatedData",updatedData)
         prinRreq: request?.prinRreq, 
         id:request?.id,
         fromReq:request?.fromReq,
-        prinRreq:request?.prinRreq,
+        
         dateInput:request?.dateInput,
         paymentRefDate:request?.paymentRefDate
       };

@@ -138,7 +138,7 @@ const FedbackForm = (props) => {
           educationLevel: findIdData?.educationLevel,
           diploma: findIdData?.diploma,
           telCondidate: findIdData?.telCondidate,
-          urlCv: findIdData?.urlCv,
+          
           validatesFor: findIdData?.validatesFor,
           goTotest2: findIdData?.goTotest2,
           psy_Person: findIdData?.psy_Person,
@@ -168,7 +168,7 @@ const FedbackForm = (props) => {
           urlCv: findIdData?.urlCv,
           agreedJoinedDate: newDateJointCandidate,
           feedback: selectedFedback,
-          hseDecision: findIdData?.hseDecision,
+         
           evalName: findIdData?.evalName,
           evalId: findIdData?.evalId,
           intervtime: findIdData?.intervtime,

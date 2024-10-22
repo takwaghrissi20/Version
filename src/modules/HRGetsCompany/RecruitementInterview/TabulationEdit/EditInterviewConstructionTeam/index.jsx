@@ -627,7 +627,6 @@ const EditInterviewConstruction = ({ hseCertif,
       description: 'Your decision has been processed successfully.',
       style: {
         backgroundColor: '#28a745',
-        backgroundColor: '#28a745',
         border: '1px solid #28a745',
         color: '#FFFFFF !important',
         borderRadius: '3px',
@@ -884,7 +883,7 @@ const EditInterviewConstruction = ({ hseCertif,
           cofinedSpace:idConstruction?.cofinedSpace,
           safetyInWelding:idConstruction?.safetyInWelding,
           hseStandard: idConstruction?.hseStandard,
-          others:idConstruction?.others
+          
          
 
 
@@ -1161,7 +1160,7 @@ const EditInterviewConstruction = ({ hseCertif,
           fullName: fullName,
           birthayDate: birthayDate,
           familySituation: familySituation,
-          experience: experience,
+          
           educationLevel: educationLevel,
           diploma: diploma,
           contactPhone: contactPhone,
@@ -1258,7 +1257,7 @@ const EditInterviewConstruction = ({ hseCertif,
           fullName: fullName,
           birthayDate: birthayDate,
           familySituation: familySituation,
-          experience: experience,
+          //experience: experience,
           educationLevel: educationLevel,
           diploma: diploma,
           contactPhone: contactPhone,

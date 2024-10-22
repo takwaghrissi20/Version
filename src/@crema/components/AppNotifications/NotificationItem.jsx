@@ -571,7 +571,7 @@ const NotificationItem = ({ setVisible, visible, user, isLoadingchargement, setI
         fromBankCheque: code?.fromBankCheque,
         total: code?.total,
         paymentType: code?.paymentType,
-        listRequestPayments: requestPayments,
+        //listRequestPayments: requestPayments,
         approvedByBod1: code?.approvedByBod1,
         approvedByBod2: code?.approvedByBod2,
         notif: code?.notif,
