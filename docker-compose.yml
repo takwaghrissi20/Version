@@ -1,14 +1,14 @@
 version: '3'
 services:
-  erp-front:
+  erp-front-prod:
     build:
       context: .
       dockerfile: Dockerfile
       args:
         BUILD_PROFILE: ${BUILD_PROFILE:-build}
-    container_name: erp-front
+    container_name: erp-front-prod-final
     ports:
-      - '3000:3000'
+      - '3007:3000'
     networks:
       - erp
 

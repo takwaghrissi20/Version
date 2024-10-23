@@ -4,11 +4,17 @@ WORKDIR /app
 
 # Copy only package.json and package-lock.json to install dependencies
 COPY package*.json ./
+<<<<<<< HEAD
 
 # Install dependencies with npm ci
 RUN npm ci --legacy-peer-deps
 
 # Copy the rest of the code
+=======
+RUN npm install --force
+RUN npm install next --force
+ARG BUILD_PROFILE
+>>>>>>> 706daad8c6b8fc1ae28df36425aa2e7d508e56f3
 COPY . .
 
 # Increase memory limit for Node.js during build
