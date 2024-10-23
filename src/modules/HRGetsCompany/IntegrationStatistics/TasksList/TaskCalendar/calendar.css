@@ -1,0 +1,5 @@
+.rbc-event,
+.rbc-event:focus,
+.rbc-event.rbc-selected {
+    background-color: rgba(244, 67, 54, 0.667);
+}
